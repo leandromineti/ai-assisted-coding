@@ -13,6 +13,7 @@ stars: 124319
 stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; never run
+harness_targets: "44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes"
 ---
 
 # spec-kit

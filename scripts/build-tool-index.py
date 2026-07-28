@@ -119,8 +119,12 @@ def render(reports: list[dict]) -> str:
         "predecessor's stars while keeping its history — see each report's provenance notes "
         "(gsd-core is the live case).",
         "",
-        "| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Version read | Depth | Report |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "`Harness targets` applies to layer-3/4 tools (which harnesses they officially "
+        "install into) — set in frontmatter only when verified in source or docs; `·` "
+        "means not yet checked, `—` not applicable.",
+        "",
+        "| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Harness targets | Version read | Depth | Report |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in reports:
         stack = r.get("stack") or []
@@ -139,10 +143,17 @@ def render(reports: list[dict]) -> str:
             shape = "—"
         stars = f"{r['stars']:,}" if isinstance(r.get("stars"), int) else "—"
         since = str(r.get("first_commit") or "—")
+        targets = r.get("harness_targets")
+        if isinstance(targets, list):
+            targets = ", ".join(str(t) for t in targets)
+        elif targets is not None:
+            targets = str(targets)
+        else:
+            targets = "·" if r["layer"] in (3, 4) else "—"
         lines.append(
             f"| {r['layer']} · {LAYER_NAMES.get(r['layer'], '?')} | {r['name']} | {shape} | "
-            f"{stack or '—'} | {r.get('license') or '—'} | {stars} | {since} | `{version}` | "
-            f"{r['depth']} | {link} |"
+            f"{stack or '—'} | {r.get('license') or '—'} | {stars} | {since} | {targets} | "
+            f"`{version}` | {r['depth']} | {link} |"
         )
 
     counts = {}

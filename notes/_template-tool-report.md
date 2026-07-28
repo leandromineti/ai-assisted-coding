@@ -18,6 +18,11 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
+# harness_targets: layer-4 (and layer-3) reports only — which harnesses the tool
+# officially installs into. Same discipline as features: set ONLY when verified in
+# source or official docs; omitted means "not yet checked". Either a list of harness
+# names, or a short string for large sets (e.g. "44 integrations incl. …").
+harness_targets: [<Harness>, <Harness>]
 # features: set a key ONLY when verified in source or official docs — omitted means
 # "not yet checked", false means "checked and absent". Both are claims; only one is safe
 # to guess, and neither should be. Keep the vocabulary to this fixed set so the generated

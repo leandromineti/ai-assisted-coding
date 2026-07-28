@@ -13,6 +13,7 @@ stars: 7336
 stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # full flow run end-to-end (experiments/01-gsd-vs-plain) + core workflow prose read; gsd-tools.cjs internals unread
+harness_targets: [Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot]
 ---
 
 # GSD — gsd-core

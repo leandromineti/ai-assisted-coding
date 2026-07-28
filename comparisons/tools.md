@@ -9,17 +9,19 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 
 `Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the *public* history's start, which for open-sourced-later tools postdates the product. Both columns describe the *current* repo only: a fork or org move strands the predecessor's stars while keeping its history — see each report's provenance notes (gsd-core is the live case).
 
-| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Version read | Depth | Report |
-|---|---|---|---|---|---|---|---|---|---|
-| 2 · Harnesses | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | MIT | 190,554 | 2025-03-21 | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../notes/02-harnesses/opencode.md) |
-| 2 · Harnesses | cline | ide + terminal · local | TypeScript, React | Apache-2.0 | 65,138 | 2024-07-05 | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../notes/02-harnesses/cline.md) |
-| 2 · Harnesses | continue | ide · local | TypeScript, React | Apache-2.0 | 35,166 | 2023-05-23 | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../notes/02-harnesses/continue.md) |
-| 2 · Harnesses | aider | terminal · local | Python | Apache-2.0 | 47,763 | 2023-04-03 | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../notes/02-harnesses/aider.md) |
-| 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | 102,141 | 2025-04-16 | `codex-zsh-v0.1.0-803-gbb1af235ea` | stub | [codex](../notes/02-harnesses/codex.md) |
-| 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | 106,225 | 2025-04-15 | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
-| 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | 7,336 | 2025-12-14 | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
-| 4 · Workflow frameworks | spec-kit | — | Python | MIT | 124,319 | 2025-08-21 | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
-| 4 · Workflow frameworks | ecc | — | Markdown, Node | MIT | 234,750 | 2026-01-17 | `v2.1.0-11-g4e973d3e` | stub | [ecc](../notes/04-workflow-frameworks/ecc.md) |
-| 4 · Workflow frameworks | openspec | — | TypeScript, Node | MIT | 62,948 | 2025-08-05 | `v1.6.0-88-g1637856` | stub | [openspec](../notes/04-workflow-frameworks/openspec.md) |
+`Harness targets` applies to layer-3/4 tools (which harnesses they officially install into) — set in frontmatter only when verified in source or docs; `·` means not yet checked, `—` not applicable.
+
+| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Harness targets | Version read | Depth | Report |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2 · Harnesses | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | MIT | 190,554 | 2025-03-21 | — | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../notes/02-harnesses/opencode.md) |
+| 2 · Harnesses | cline | ide + terminal · local | TypeScript, React | Apache-2.0 | 65,138 | 2024-07-05 | — | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../notes/02-harnesses/cline.md) |
+| 2 · Harnesses | continue | ide · local | TypeScript, React | Apache-2.0 | 35,166 | 2023-05-23 | — | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../notes/02-harnesses/continue.md) |
+| 2 · Harnesses | aider | terminal · local | Python | Apache-2.0 | 47,763 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../notes/02-harnesses/aider.md) |
+| 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | 102,141 | 2025-04-16 | — | `codex-zsh-v0.1.0-803-gbb1af235ea` | stub | [codex](../notes/02-harnesses/codex.md) |
+| 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | 106,225 | 2025-04-15 | — | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
+| 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | 7,336 | 2025-12-14 | Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
+| 4 · Workflow frameworks | spec-kit | — | Python | MIT | 124,319 | 2025-08-21 | 44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
+| 4 · Workflow frameworks | ecc | — | Markdown, Node | MIT | 234,750 | 2026-01-17 | · | `v2.1.0-11-g4e973d3e` | stub | [ecc](../notes/04-workflow-frameworks/ecc.md) |
+| 4 · Workflow frameworks | openspec | — | TypeScript, Node | MIT | 62,948 | 2025-08-05 | · | `v1.6.0-88-g1637856` | stub | [openspec](../notes/04-workflow-frameworks/openspec.md) |
 
 **10 tools** — 1 deep-dive · 5 stub · 4 survey.
