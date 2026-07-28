@@ -48,10 +48,32 @@ they measure layers 1+2 together, never the model alone:
 These figures lag the current model generation (they cite Opus 4.8 and GPT-5.5, both
 superseded). Treat leaderboard numbers as at least one generation stale by default.
 
+## References
+
+- **[llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)** — Fabio
+  Akita (`checked: 2026-07-28`). Many models build the *same* fixed Rails application spec
+  — cloud (OpenRouter, Z.ai) and local (Ollama / llama-swap): Opus, GPT variants, DeepSeek,
+  Qwen, Gemini, Kimi — all driven through the **same harness** (`opencode run`), scored on
+  an 8-dimension / 100-point rubric (deliverables, API correctness, tests, error handling,
+  persistence, Hotwire, architecture, production-readiness) plus manual code review. Two
+  properties earn it a place here:
+  - It **fixes the harness and varies the model** — the closest thing found so far to the
+    model-isolating benchmark the open question below asks for. (And the fixed harness is
+    opencode, whose per-model prompt dispatch is documented in
+    [`../02-harnesses/opencode.md`](../02-harnesses/opencode.md) — so "same harness" still
+    means each model gets its own system prompt. True isolation is harder than it looks.)
+  - Its headline finding — **structural completeness does not predict runtime
+    correctness**: models produce complete-looking apps whose tests mock hallucinated
+    library APIs, so the output scores well while not actually running. That's a
+    verification-layer insight as much as a model one; see
+    [`../cross-cutting/index.md`](../cross-cutting/index.md).
+
 ## Open questions
 
-- Is there any public benchmark that isolates *model* from *harness*? If not, what does
-  that mean for how this layer can be evaluated at all?
+- Is there any public benchmark that isolates *model* from *harness*? **Partial answer
+  2026-07-28:** [llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)
+  (References above) fixes the harness and varies the model — though the fixed harness
+  itself adapts its prompt per model, so the isolation is imperfect in an instructive way.
 - Long-horizon coherence has no standard measure. What would a homegrown one look like?
 - Does open-weight parity (Kimi K3) actually change anything practical, given that
   self-hosting a 2.8T-param model is out of reach for an individual?
