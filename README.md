@@ -11,6 +11,11 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 cross-cutting concerns, with a boundary rule for the many tools that straddle them.
 Everything else in the repo declares which layer it belongs to.
 
+**[`methodology.md`](methodology.md)** — how work is done here: verification and honesty
+rules, generated indexes, preregistered experiments, the upstream-reporting gate. Every
+rule earned its place by catching a real mistake; the anti-goal section keeps it from
+growing rigor for rigor's sake.
+
 | Layer | Index | Examples |
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
@@ -26,6 +31,7 @@ Everything else in the repo declares which layer it belongs to.
 | Path | Holds |
 |------|-------|
 | `taxonomy.md` | The layer definitions and boundary rule — the canonical reference |
+| `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
 | `notes/` | One index per layer, plus one file per tool, written while using it |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
@@ -89,3 +95,11 @@ note. Revised when evidence moves._
 5. **Reading source beats reading marketing, quickly** (2026-07-28). Every finding above
    except #4 came from a few hours of grepping cloned repos — none appears in any tool's
    own documentation. The `upstream/` workflow pays for itself.
+6. **A workflow framework's value concentrates in empirical grounding, not process
+   ceremony** (2026-07-28, n=1). In a preregistered A/B on a below-threshold task, GSD
+   tied a plain agent on every preregistered functional check at ~30–50× the cost — but
+   won decisively on a real crash class its research had predicted, gated, and verified.
+   Nearly all of that margin traced to agents that *measured* the domain (fixture repos,
+   crafted commits, timezone probes) and to measured verification gates; almost none to
+   the surrounding ceremony. Open follow-up: which 20% of the ceremony buys 80% of the
+   margin? → [`experiments/01-gsd-vs-plain/`](experiments/01-gsd-vs-plain/README.md)
