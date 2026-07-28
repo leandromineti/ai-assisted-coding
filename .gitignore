@@ -1,0 +1,11 @@
+# Cloned upstream sources — read-only study copies, never committed.
+# They belong to their own projects and would bloat this repo's history.
+upstream/*
+!upstream/README.md
+!upstream/repos.txt
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

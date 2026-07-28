@@ -1,0 +1,18 @@
+# Upstream sources to study. Format: layer|name|url
+# Verified 2026-07-28 (stars and licenses confirmed via the GitHub API).
+# Add a line and re-run scripts/sync-upstream.sh — it's idempotent.
+
+# --- Layer 2: harnesses ---
+2|opencode|https://github.com/anomalyco/opencode
+2|codex|https://github.com/openai/codex
+2|gemini-cli|https://github.com/google-gemini/gemini-cli
+2|aider|https://github.com/Aider-AI/aider
+2|cline|https://github.com/cline/cline
+2|continue|https://github.com/continuedev/continue
+
+# --- Layer 4: workflow frameworks ---
+4|spec-kit|https://github.com/github/spec-kit
+4|gsd-core|https://github.com/open-gsd/gsd-core
+
+# Not clonable — closed source. Study by observation only:
+#   Claude Code, Cursor, Windsurf, Devin, Copilot

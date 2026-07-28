@@ -27,12 +27,16 @@ Everything else in the repo declares which layer it belongs to.
 |------|-------|
 | `taxonomy.md` | The layer definitions and boundary rule — the canonical reference |
 | `notes/` | One index per layer, plus one file per tool, written while using it |
+| `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
 | `comparisons/` | Side-by-side matrices distilled from the notes and experiments |
+| `scripts/` | `sync-upstream.sh` — clone/update the sources in `upstream/repos.txt` |
 
 Per-tool entries follow [`notes/_template.md`](notes/_template.md). Its **"the
 distinguishing bet"** field is the one that matters: what does this tool believe that its
-competitors don't?
+competitors don't? Source-level deep-dives use
+[`notes/_template-architecture.md`](notes/_template-architecture.md) and live beside the
+survey entry as `<tool>-architecture.md` — same subject, different reader.
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in
