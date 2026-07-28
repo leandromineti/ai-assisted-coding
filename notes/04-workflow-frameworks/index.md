@@ -10,7 +10,7 @@ targets many harnesses.
 
 ## Seed inventory
 
-### GSD — <https://opengsd.net>
+### GSD — <https://opengsd.net> · [report](gsd-core.md)
 
 Bills itself as an *operating loop* for agentic engineering work — its stated enemy is
 context bloat and scope drift.
@@ -31,7 +31,7 @@ Ships as several pieces, which is itself instructive:
 *Already installed on this machine* — the `gsd-*` skills are live in this Claude Code
 install, which makes it the cheapest layer-4 subject to study first-hand.
 
-### spec-kit — <https://github.com/github/spec-kit>
+### spec-kit — <https://github.com/github/spec-kit> · [report](spec-kit.md)
 
 GitHub's toolkit for **Spec-Driven Development**: specifications come first and are treated
 as executable artifacts that *generate* the implementation, rather than documentation that

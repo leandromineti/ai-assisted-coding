@@ -30,13 +30,17 @@ Everything else in the repo declares which layer it belongs to.
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
 | `comparisons/` | Side-by-side matrices distilled from the notes and experiments |
-| `scripts/` | `sync-upstream.sh` — clone/update the sources in `upstream/repos.txt` |
+| `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` (regenerate the index) |
 
-Per-tool entries follow [`notes/_template.md`](notes/_template.md). Its **"the
-distinguishing bet"** field is the one that matters: what does this tool believe that its
-competitors don't? Source-level deep-dives use
-[`notes/_template-architecture.md`](notes/_template-architecture.md) and live beside the
-survey entry as `<tool>-architecture.md` — same subject, different reader.
+**[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-layer index of every
+tool with a report — generated from the reports' frontmatter, never hand-edited, so it
+can't drift from them.
+
+One report per tool, following
+[`notes/_template-tool-report.md`](notes/_template-tool-report.md). Its **"distinguishing
+bet"** field is the one that matters — what does this tool believe that its competitors
+don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
+`survey` (used or skimmed), `deep-dive` (agent loop and context assembly actually traced).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in

@@ -14,10 +14,10 @@ than repeating.
 | Harness | Maker | One-line |
 |---------|-------|----------|
 | **Claude Code** | Anthropic | CLI + desktop + web + IDE extensions. Deep extension surface (skills, hooks, subagents, plan mode). ~135k GitHub stars. |
-| **Codex CLI** | OpenAI | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. ~94k stars. |
-| **OpenCode** | Anomaly | Open source (MIT), ~180k stars — the most-starred agent. 75+ providers via Models.dev, LSP-aware, multi-session, shareable sessions, stores no code or context. |
-| **Gemini CLI → Antigravity CLI** | Google | ~105k stars. Individual free tier ended 2026-06-18 during the Antigravity transition. |
-| **Aider** | open source | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
+| [**Codex CLI**](codex.md) | OpenAI | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. ~94k stars. The only Rust harness in the set. |
+| [**OpenCode**](opencode.md) | Anomaly | Open source (MIT), ~190k stars — the most-starred agent. 75+ providers via Models.dev, LSP-aware, multi-session, shareable sessions, stores no code or context. |
+| [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | ~105k stars. Individual free tier ended 2026-06-18 during the Antigravity transition. |
+| [**Aider**](aider.md) | open source | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
 | **Grok Build** | xAI | Ships Grok 4.5 in a first-party CLI. |
 
 ## IDE-embedded
@@ -26,8 +26,8 @@ than repeating.
 |---------|-------|----------|
 | **Cursor** | Anysphere → **SpaceX/xAI** | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of layer 1↔2 consolidation. |
 | **Windsurf** | — | IDE-embedded agent. |
-| **Cline** | open source | VS Code extension; BYO model. |
-| **Continue** | open source | VS Code / JetBrains; BYO model. |
+| [**Cline**](cline.md) | open source | VS Code extension; BYO model. Ships its own `evals/` suite. |
+| [**Continue**](continue.md) | open source | VS Code / JetBrains over a shared core; BYO model. |
 | **GitHub Copilot** | GitHub/Microsoft | The incumbent; agent mode moved it from completion to loop. |
 
 ## Async / cloud

@@ -155,4 +155,5 @@ taxonomy needs revision — not the case.
 | ✕ Cross-cutting | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
 | ✕ Standards | [`notes/standards/index.md`](notes/standards/index.md) |
 
-Per-tool entries use [`notes/_template.md`](notes/_template.md).
+Per-tool reports use [`notes/_template-tool-report.md`](notes/_template-tool-report.md) and
+are indexed flat, across layers, in [`comparisons/tools.md`](comparisons/tools.md).

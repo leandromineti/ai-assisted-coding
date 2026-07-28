@@ -25,14 +25,26 @@ informative than the design itself.
 
 **Not here.** The clone is the raw material; the writing lives in `notes/`:
 
-| Artifact | Path | Purpose |
-|---|---|---|
-| Survey entry | `notes/0N-<layer>/<tool>.md` | What it is, its distinguishing bet — from [`notes/_template.md`](../notes/_template.md) |
-| Architecture deep-dive | `notes/0N-<layer>/<tool>-architecture.md` | How it's built — from [`notes/_template-architecture.md`](../notes/_template-architecture.md) |
+| Artifact | Path |
+|---|---|
+| Tool report — one per tool | `notes/0N-<layer>/<tool>.md`, from [`notes/_template-tool-report.md`](../notes/_template-tool-report.md) |
+| Flat cross-layer index | [`comparisons/tools.md`](../comparisons/tools.md) — **generated**, never hand-edited |
 
-Keeping the two separate matters: the survey entry is what you'd tell someone choosing a
-tool; the deep-dive is what you'd tell someone rebuilding it. Different readers, different
-half-lives.
+The index deliberately does **not** live in this directory: it has to cover tools that have
+no clone. Claude Code, Cursor, Devin, and Copilot are among the most important comparisons
+in the repo and none is open source, so an index under `upstream/` would either exclude
+them or misrepresent what's actually cloned.
+
+Workflow for a new tool:
+
+```sh
+./scripts/repo-facts.sh <name>        # verified frontmatter — never hand-type a SHA
+# write notes/0N-<layer>/<name>.md from the template
+python3 scripts/build-tool-index.py   # regenerate comparisons/tools.md
+```
+
+`build-tool-index.py --check` asserts every report's pinned commit still matches its
+clone's HEAD. A stale pin silently invalidates every architecture claim in the document.
 
 ## Method
 
