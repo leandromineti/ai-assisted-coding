@@ -11,7 +11,7 @@ stack: [TypeScript, React]
 version: nightly-main-20260728125218-dc175c73a8dd
 commit: dc175c73a
 read_at: 2026-07-28
-depth: stub
+depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 ---
 
 # Cline
@@ -20,8 +20,31 @@ Open-source IDE-embedded harness, originally a VS Code extension, bring-your-own
 
 ## The distinguishing bet
 
-_TODO_ — nominally that the harness should be **model-agnostic**, against the vendor-native
-harnesses (Claude Code, Codex, Gemini CLI) betting that tight model coupling wins.
+Model-agnostic like opencode — but it answers the per-model-prompt question the **opposite
+way**, and it did so *after trying both*.
+
+**Measured 2026-07-28 (commit `dc175c73a`):** the current system prompt is built by
+`buildClineSystemPrompt` (`sdk/packages/shared/src/prompt/cline.ts:110`), which takes
+**no model parameter at all**. Variation is by *mode* — default vs. YOLO
+(`sdk/packages/shared/src/prompt/system.ts`), plus a plan-mode contract — never by model.
+One prompt for Claude, GPT, Gemini, and everything else.
+
+The interesting part is the archaeology. Cline **used to have a per-model-family prompt
+architecture**: the deleted tree (visible at migration commit `791d23899`, "Move vscode to
+apps") contained `src/core/prompts/system-prompt/` with a `PromptRegistry`, a
+`PromptBuilder`, and `families/next-gen-models/gpt-5.ts`,
+`families/local-models/compact-system-prompt.ts` — the same shape as opencode's nine
+prompt files. Today `git ls-files | grep system-prompt` returns **zero files**, and the
+family-detection helpers (`isNextGenModelFamily` in
+`apps/vscode/src/utils/model-utils.ts:135`) survive with **no non-test callers** —
+vestigial organs of the dismantled design.
+
+So cline is a *directional* data point: it built opencode's bet, lived with it, and
+retreated to one prompt. Two readings, both plausible: (a) the per-model gain didn't
+justify the maintenance — evidence *for* model convergence; (b) the SDK rewrite favored
+simplicity and the variants died as collateral. The git history could distinguish these;
+the blobless clone makes that search expensive (a pickaxe query timed out), so it stays
+open.
 
 ## Main features
 
@@ -53,8 +76,13 @@ Open source; metered inference against whichever provider you configure.
 
 ## Surprises
 
-_Source unread — but a harness shipping its own `evals/` suite is already notable given how
-under-served verification is across the field._
+1. **It un-built the per-model prompt system.** Expected either "never tried it" or
+   "still has it" — found a dismantled registry with vestigial family-detectors instead.
+   Retreats are rarer than adoptions in public codebases, and more informative.
+2. A harness shipping its own `evals/` suite is notable given how under-served
+   verification is across the field. (Whether the evals drove the prompt retreat is an
+   open question worth chasing — that would be the first documented case of harness
+   evals actually settling a design bet.)
 
 ## Open questions
 

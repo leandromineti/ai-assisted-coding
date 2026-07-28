@@ -11,7 +11,7 @@ stack: [TypeScript, React]
 version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44
 read_at: 2026-07-28
-depth: stub
+depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 ---
 
 # Continue
@@ -20,9 +20,23 @@ Open-source IDE-embedded harness for VS Code and JetBrains, bring-your-own-model
 
 ## The distinguishing bet
 
-_TODO_ — nominally **portability across IDEs**, which no other tool in the set attempts.
-Cline is VS-Code-shaped; Continue maintains a JetBrains extension alongside it, which forces
-a genuine core/host separation.
+**Portability across IDEs** (no other tool in the set maintains two IDE extensions over a
+shared core) — and, on the prompt question, the most radical position measured here:
+**the system prompt barely matters**.
+
+**Measured 2026-07-28 (commit `5522c6f44`):** one default system message per *mode* —
+chat / agent / plan — in `core/llm/defaultSystemMessages.ts` (91 lines for all three; the
+agent message is ~15 lines of codeblock-formatting rules). No model conditioning anywhere
+in the prompt path: `getSystemMessageWithRules.ts` contains **zero** references to the
+model, and grep finds no `model.includes(...)` branching in message construction. The
+defaults are user-overridable config (`baseAgentSystemMessage`, `core/llm/index.ts:151`)
+and the file even ships its own GitHub URL as a constant, inviting users to read and
+replace it.
+
+The three-way contrast with its portable peers is the finding: opencode maintains nine
+bespoke per-model prompts (~1,256 lines); cline runs one ~35-line prompt per mode after
+*dismantling* a per-family registry; continue runs ~15 lines and delegates the rest to
+user-space rules. Same problem, three deliberate answers.
 
 ## Main features
 
@@ -53,7 +67,11 @@ Open source; metered inference against whichever provider you configure.
 
 ## Surprises
 
-_Source unread._
+**How little prompt there is.** ~15 lines of agent system message where opencode spends
+95–155 per model and Claude Code spends far more. Continue is betting that tool
+definitions, rules files, and retrieval do the work the others do with prose — or that
+the prose never did much work at all. Either way it's the null hypothesis of the
+per-model-prompt debate, running in production.
 
 ## Open questions
 

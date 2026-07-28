@@ -81,9 +81,12 @@ Codex's — `multi_tool_use.parallel`, a mandate to use `apply_patch` for every 
 dirty-worktree etiquette, and an explicit ban on conversational openers. Substantively
 different theories of how to drive an agent, not one theory in two dialects.
 
-**This is the strongest evidence in the repo against "the frontier models have converged."**
-A model-agnostic harness, with every incentive to write one prompt, concluded it needed
-nine — and that one of them must forbid parallel tool calls outright.
+**This is strong evidence that opencode's team believes the models haven't converged** —
+a model-agnostic harness, with every incentive to write one prompt, concluded it needed
+nine, one of which must forbid parallel tool calls outright. But it is one side of a
+live disagreement: cline *dismantled* exactly this architecture, and continue never
+built it (see the three-way comparison in [`index.md`](index.md)). Practitioner behavior
+is split; nobody's position is backed by a published eval.
 
 ## Main features
 

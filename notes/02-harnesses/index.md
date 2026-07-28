@@ -68,12 +68,24 @@ Feature lists mislead here. The axes that seem to matter:
   or only in principle?
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?
-- ~~Have the frontier models really converged?~~ **Evidence against, 2026-07-28.** opencode
-  — a deliberately model-agnostic harness with every incentive to write one prompt —
-  maintains nine per-model system prompts that share *zero* substantive lines between the
-  Anthropic and GPT variants, and one variant (`trinity`) exists solely to forbid parallel
-  tool calls. Measured in [`opencode.md`](opencode.md). If convergence were real, this
-  maintenance burden would be irrational. Worth checking whether other portable harnesses
-  (cline, continue) pay the same cost or take the one-prompt bet.
+- ~~Have the frontier models really converged?~~ **The portable harnesses split three ways
+  (measured 2026-07-28), so treat this as genuinely contested, not settled either way:**
+  - **opencode** maintains nine bespoke per-model prompts (~1,256 lines, zero shared
+    substantive lines between the Anthropic and GPT variants; one variant exists solely to
+    forbid parallel tool calls) — implicit claim: models differ enough to need different
+    driving. [`opencode.md`](opencode.md).
+  - **cline** runs one ~35-line prompt per *mode*, model-independent — **after building
+    and dismantling a per-family prompt registry** (deleted `families/next-gen-models/`
+    tree, vestigial `isNextGenModelFamily` with no callers). A retreat is directional
+    evidence that the per-model gain didn't pay — though the SDK rewrite is a confound.
+    [`cline.md`](cline.md).
+  - **continue** runs ~15 lines per mode and delegates to user-space rules — the null
+    hypothesis: the system prompt barely matters. [`continue.md`](continue.md).
+
+  My earlier framing ("if convergence were real, opencode's maintenance burden would be
+  irrational") was too strong: cline paid that burden and concluded it *was* irrational.
+  What would actually settle this: an eval of one model under all three regimes — which is
+  exactly what [PR #13 on llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark/pull/13)
+  makes runnable for the opencode case.
 - Is "all surfaces, both execution modes" really where every serious harness ends up? The
   inventory table above suggests so; re-check the single-surface rows in six months.

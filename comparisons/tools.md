@@ -10,12 +10,12 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | Layer | Tool | Surfaces · exec | Stack | License | Version read | Depth | Report |
 |---|---|---|---|---|---|---|---|
 | 2 · Harnesses | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | MIT | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../notes/02-harnesses/opencode.md) |
+| 2 · Harnesses | cline | ide + terminal · local | TypeScript, React | Apache-2.0 | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../notes/02-harnesses/cline.md) |
+| 2 · Harnesses | continue | ide · local | TypeScript, React | Apache-2.0 | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../notes/02-harnesses/continue.md) |
 | 2 · Harnesses | aider | terminal · local | Python | Apache-2.0 | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../notes/02-harnesses/aider.md) |
-| 2 · Harnesses | cline | ide + terminal · local | TypeScript, React | Apache-2.0 | `nightly-main-20260728125218-dc175c73a8dd` | stub | [cline](../notes/02-harnesses/cline.md) |
 | 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | `codex-zsh-v0.1.0-803-gbb1af235ea` | stub | [codex](../notes/02-harnesses/codex.md) |
-| 2 · Harnesses | continue | ide · local | TypeScript, React | Apache-2.0 | `v1.3.40-vscode-11-g5522c6f44` | stub | [continue](../notes/02-harnesses/continue.md) |
 | 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
 | 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | `v1.8.0-102-gd04592de` | stub | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
 | 4 · Workflow frameworks | spec-kit | — | Python | MIT | `v0.1.10-1039-g655a3cb` | stub | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
 
-**8 tools** — 1 deep-dive · 7 stub.
+**8 tools** — 1 deep-dive · 5 stub · 2 survey.
