@@ -55,14 +55,41 @@ Same diagnosis, different organ.
 
 That bet is falsifiable, and testing it is one of the more valuable things this repo could
 do: as models improve, does imposed structure keep paying, or does it become overhead?
+First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md).
+
+## Mechanisms — the unit of value
+
+*(Added 2026-07-28 after experiment 01. "GSD is a layer-4 tool" proved true and nearly
+useless as an analytical claim: the value variance was inside the tool. The tool is the
+unit of **distribution**; the mechanism is the unit of **value**. Compare frameworks
+mechanism-by-mechanism, not brand-by-brand.)*
+
+| Mechanism class | What it is | Exp-01 evidence (n=1) |
+|---|---|---|
+| **Empirical grounding** | Agents instructed to *measure* the domain (fixture repos, probes) rather than trust training data | Carried most of the quality margin: the invalid-UTF-8 crash class, timezone traps, exit-code collision were all found by measurement |
+| **Verification gates** | Machine-checkable acceptance criteria with *measured* expected values; verifiers that re-derive rather than trust | Carried the rest: the checker caught an untested claim; verifiers exceeded brief and honestly abstained on subjective checks |
+| **Context discipline** | Fresh right-sized context per unit of work; artifacts as the interface between stages | Plausibly load-bearing (each stage caught the previous stage's vagueness — the refinement funnel) but not isolated by this experiment |
+| **Process gates** | Approval points, threat models, mode ceremonies | Near-zero observed value on this task (STRIDE for a read-only CLI; three no-op default-on hooks) |
+| **Bookkeeping** | State files, checkboxes, traceability tables | Mixed: traceability caught requirement gaps; checkbox upkeep was dropped by the framework itself in both phases |
+
+Frameworks should get profiled against these columns as they're studied — spec-kit's
+mechanism mix is presumably intent-capture-heavy, and that difference is the real
+comparison, not "GSD vs spec-kit."
 
 ## Open questions
 
-- GSD and spec-kit both add ceremony. What's the task-size threshold below which the
-  ceremony costs more than it saves?
+- ~~GSD and spec-kit both add ceremony. What's the task-size threshold below which the
+  ceremony costs more than it saves?~~ **Partially answered 2026-07-28** (experiment 01,
+  n=1): the threshold splits by what "saves" means — the test task was below it for
+  build speed (~78 min vs ~1 min) and arguably above it for ship quality (a real
+  crash-class margin). The sharper successor question: **which mechanisms buy the
+  margin?** (table above — empirical grounding + gates, on this evidence).
 - Is the portability real? Does GSD-on-Cursor behave like GSD-on-Claude-Code, or does the
   underlying harness dominate the outcome?
 - Claude Code ships plan mode natively. Where's the line between a harness's built-in
   process features and an installed framework — and is layer 4 being absorbed into layer 2?
-- Neither is easy to A/B test, since you can't run the same task twice cleanly. What would
-  a fair comparison even look like?
+- ~~Neither is easy to A/B test, since you can't run the same task twice cleanly. What
+  would a fair comparison even look like?~~ **Working answer 2026-07-28:** preregister
+  the protocol and falsification criteria, run the contaminated arm second with fresh
+  subagent contexts, log during (not after), and state n honestly. Experiment 01 is the
+  template; its limitations section is part of the answer.

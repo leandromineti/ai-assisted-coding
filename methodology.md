@@ -53,6 +53,20 @@ say so).
 preregistration made it discoverable as *scorer error* rather than silently flattering
 either side.
 
+Two sub-rules, both scarred in experiment 01:
+
+- **5a. Scoring harnesses get measured expectations, not assumed ones.** The comparison
+  script asserted a fixture author had 4 commits from memory of its own fixture; she had
+  3. The framework under test measured its expected values and was right; the
+  experimenter derived his and shipped a bug. A comparison harness is an artifact — its
+  expected values need the same empirical grounding demanded of everything else. Run the
+  fixture, record what it *actually* produces, then assert that.
+- **5b. Orchestration experiments anchor paths absolutely and audit the staged set.**
+  Frameworks may key state on ambient cwd (GSD's research cache materialized in the
+  orchestrating repo's root, not the target project). When driving tooling against
+  another directory: absolute paths everywhere, and review `git status` / the staged
+  file list before any commit in the host repo — that review is what caught the leak.
+
 ## 6. Findings are promoted, not scattered
 
 The path is: run log → tool report / layer note (dated) → `README.md` Conclusions
