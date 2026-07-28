@@ -12,6 +12,13 @@ version: nightly-main-20260728125218-dc175c73a8dd
 commit: dc175c73a
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
+features:
+  mcp: true            # apps/vscode MCP configuration UI, McpPromptRow
+  subagents: true      # sdk .../tools/team/subagent-prompts.ts, AgentConfigLoader
+  plan_mode: true      # PLAN_MODE_INSTRUCTIONS + switch_to_act_mode tool (measured)
+  rules_files: true    # {{CLINE_RULES}} slot in the system prompt; filenames not yet verified
+  model_agnostic: true
+  evals: true          # evals/ with its own ARCHITECTURE.md
 ---
 
 # Cline

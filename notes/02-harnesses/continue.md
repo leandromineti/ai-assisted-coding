@@ -12,6 +12,11 @@ version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
+features:
+  mcp: true          # core/context/mcp/MCPConnection.ts
+  plan_mode: true    # DEFAULT_PLAN_SYSTEM_MESSAGE (measured)
+  rules_files: true  # core/llm/rules/getSystemMessageWithRules.ts
+  model_agnostic: true
 ---
 
 # Continue

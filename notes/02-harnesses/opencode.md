@@ -13,6 +13,16 @@ version: github-v1.2.25-1492-g017a5977d
 commit: 017a5977d
 read_at: 2026-07-28
 depth: deep-dive
+features:
+  mcp: true              # src/mcp/
+  lsp: true              # src/lsp/
+  hooks: true            # plugin lifecycle triggers, e.g. plugin.trigger("experimental.chat.messages.transform") in prompt.ts
+  skills: true           # tool/skill.ts + Skill service in system.ts
+  subagents: true        # agent/subagent-permissions.ts, task tool
+  plan_mode: true        # prompt/plan-mode.txt, plan.ts tool
+  rules_files: [AGENTS.md]   # session/instruction.ts
+  model_agnostic: true   # 75+ providers via Models.dev
+  session_sharing: true  # shareable session links (opencode.ai, checked 2026-07-28)
 ---
 
 # opencode

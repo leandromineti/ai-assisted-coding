@@ -14,6 +14,21 @@ version: <git describe --tags --always — omit if closed source>
 commit: <short SHA — omit if closed source>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
+# features: set a key ONLY when verified in source or official docs — omitted means
+# "not yet checked", false means "checked and absent". Both are claims; only one is safe
+# to guess, and neither should be. Keep the vocabulary to this fixed set so the generated
+# matrix stays comparable — don't add vendor pet names:
+features:
+  mcp: <true | false>              # MCP client support
+  lsp: <true | false>              # language-server integration
+  hooks: <true | false>            # deterministic lifecycle hooks / plugin triggers
+  skills: <true | false>           # on-demand packaged instructions
+  subagents: <true | false>        # spawnable isolated agents
+  plan_mode: <true | false>        # built-in plan/act split
+  rules_files: <true | false | [FILENAMES]>  # standing-instruction files; list names if known
+  model_agnostic: <true | false>   # bring-your-own-model by design
+  session_sharing: <true | false>  # shareable session links/artifacts
+  evals: <true | false>            # ships its own evaluation suite
 ---
 
 # <Tool>
