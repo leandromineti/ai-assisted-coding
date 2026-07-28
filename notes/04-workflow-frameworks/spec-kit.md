@@ -98,7 +98,8 @@ are the command and template definitions, which is where a layer-4 tool's actual
 lives. Ships `presets/ARCHITECTURE.md` and `workflows/ARCHITECTURE.md`, plus 11 `.sh` and
 10 `.ps1` — cross-platform shell scaffolding.
 
-1603 commits since 2025-08-21 — the youngest and smallest history in the set. 131 of those
+1603 commits since 2025-08-21 — the smallest history in the set, and second-youngest
+(gsd-core's first commit is 2025-12-14). 131 of those
 commits touch `templates/commands/` alone: the prompts are debugged like code, with
 regression-style fixes landing monthly.
 

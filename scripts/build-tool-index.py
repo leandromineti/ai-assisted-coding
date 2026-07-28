@@ -114,7 +114,10 @@ def render(reports: list[dict]) -> str:
         "",
         "`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; "
         "refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the "
-        "*public* history's start, which for open-sourced-later tools postdates the product.",
+        "*public* history's start, which for open-sourced-later tools postdates the product. "
+        "Both columns describe the *current* repo only: a fork or org move strands the "
+        "predecessor's stars while keeping its history — see each report's provenance notes "
+        "(gsd-core is the live case).",
         "",
         "| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Version read | Depth | Report |",
         "|---|---|---|---|---|---|---|---|---|---|",

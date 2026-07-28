@@ -29,6 +29,38 @@ announced-but-unshipped `gsd-workbench` and `gsd-cloud`.
 **Already installed on this machine**, so source claims can be cross-checked against
 observed behavior — the only tool in the set where that's possible.
 
+## Provenance — a fork born from a vanished maintainer
+
+`checked: 2026-07-28`
+
+`open-gsd/gsd-core` is a **community fork** of the original
+[`gsd-build/get-shit-done`](https://github.com/gsd-build/get-shit-done) ("Get Shit Done"
+by TÂCHES, created 2025-12-14). Per the fork announcement
+([discussion #109](https://github.com/open-gsd/gsd-core/discussions/109)) and the GitHub
+API (both checked 2026-07-28):
+
+- The original maintainer went silent **2026-04-01**; their social accounts were deleted
+  or unreachable, and the associated `$GSD` crypto token was publicly linked to a
+  rug-pull. The announcement is explicit that whether this was the maintainer's action,
+  a co-founder exit, or an account takeover is **unconfirmed**.
+- trek-e completed the fork **2026-05-22** (matches the new repo's `created_at`),
+  migrating 394 branches, 229 tags, 84 labels, 77 open issues, and 17 PRs. The original
+  repo is now archived (last push 2026-05-31).
+- Renames along the way: npm package `get-shit-done-cc` → `get-shit-done-redux` →
+  `gsd-core`; the brand quietly became "**Git. Ship. Done**"; token and
+  `@gsd_foundation` references were stripped. MIT license unchanged.
+
+Two consequences for this repo's index columns: `first_commit: 2025-12-14` **is** the
+product's true start (the history migrated intact), but `stars: 7,336` measures only the
+fork era — the original carries **64,799 stars**, stranded on the archive. GSD's actual
+reach is closer to the old number; the two can't be added (overlapping audiences).
+
+It's also the set's live example of **layer-4 supply-chain risk**: this is a tool that
+injects prose and hooks into your harness, whose upstream went dark in ambiguous
+circumstances — the fork itself states it cannot verify upstream security and forked
+precisely for that reason. "Who maintains the methodology you install" is a real
+question, not a hypothetical.
+
 ## The distinguishing bet
 
 That agents fail from **context mismanagement**, not insufficient intelligence — so the

@@ -13,7 +13,10 @@ targets many harnesses.
 ### GSD — <https://opengsd.net> · [report](gsd-core.md)
 
 Bills itself as an *operating loop* for agentic engineering work — its stated enemy is
-context bloat and scope drift.
+context bloat and scope drift. Note the provenance: `gsd-core` is a 2026-05-22 community
+fork of the original `gsd-build/get-shit-done` (64.8k stars, now archived), whose
+maintainer vanished amid a crypto-token rug-pull association — see the
+[report's provenance section](gsd-core.md#provenance--a-fork-born-from-a-vanished-maintainer).
 
 Three principles: explicit plans as **structured task graphs**, **clean execution
 contexts** per unit of work, and **real verification** producing human-readable evidence.
