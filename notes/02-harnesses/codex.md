@@ -1,7 +1,8 @@
 ---
 name: codex
 layer: 2
-sublayer: terminal
+surfaces: [terminal]
+execution: local   # cloud Codex is the async-remote sibling, a separate product
 vendor: OpenAI
 url: https://github.com/openai/codex
 license: Apache-2.0

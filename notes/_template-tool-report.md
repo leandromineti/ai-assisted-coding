@@ -1,7 +1,10 @@
 ---
 name: <tool>
 layer: <1-5>
-sublayer: <terminal | ide | cloud | ->
+# The next three fields are for layer-2 (harness) reports; omit where not meaningful.
+surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
+execution: <local | async-remote | both>        # how it runs
+environments: [<host | worktree | container | remote-sandbox>]  # layer-5 bindings (bleed) — only list what's verified
 vendor: <who maintains it>
 url: <repo or product URL>
 license: <SPDX id, or "proprietary">

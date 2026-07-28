@@ -1,7 +1,9 @@
 ---
 name: opencode
 layer: 2
-sublayer: terminal
+surfaces: [terminal, desktop, ide]
+execution: local
+environments: [host]   # a `containers` package exists; its role unverified — see Bleed
 vendor: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT

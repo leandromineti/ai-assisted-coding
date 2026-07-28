@@ -1,7 +1,8 @@
 ---
 name: gemini-cli
 layer: 2
-sublayer: terminal
+surfaces: [terminal]
+execution: local
 vendor: Google
 url: https://github.com/google-gemini/gemini-cli
 license: Apache-2.0

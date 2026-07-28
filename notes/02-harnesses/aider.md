@@ -1,7 +1,8 @@
 ---
 name: aider
 layer: 2
-sublayer: terminal
+surfaces: [terminal]
+execution: local
 vendor: Aider-AI
 url: https://github.com/Aider-AI/aider
 license: Apache-2.0

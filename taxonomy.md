@@ -31,11 +31,21 @@ model name stays the same.
 The program that runs the agent loop. Concretely: **loop + context assembly + permission
 model + UI**.
 
-Sub-divided by surface, because the affordances genuinely differ:
+Described by two axes, recorded separately because products increasingly span both:
 
-- **Terminal** — Claude Code, Codex CLI, OpenCode, Aider, Grok Build
-- **IDE-embedded** — Cursor, Windsurf, Cline, Continue, Copilot
-- **Async / cloud** — Devin, Jules, cloud Codex, Claude Code on web
+- **Surfaces** — where you interact: terminal, IDE, desktop, web. **Multi-valued.** An
+  earlier version of this taxonomy used a single surface bucket; that forced converged
+  products into one label (Claude Code spans all four; OpenCode ships terminal + desktop +
+  IDE from one core) and conflated web-as-interface with remote-as-execution.
+- **Execution** — how it runs: `local` (synchronous, on your machine, you watch) vs.
+  `async-remote` (Devin, Jules, cloud Codex, Claude Code on web — the agent runs elsewhere
+  and reports back). Claude Code on web and Devin are *not* the same kind of thing, and
+  the old "async/cloud" bucket said they were.
+
+Which layer-5 *environments* a harness can bind to (host, worktree, container, remote
+sandbox) is recorded on the harness entry as its bleed — not as harness configuration.
+The environments themselves remain independently distributed products; see the layer-5
+scope note.
 
 As of mid-2026 this is the most contested layer, and the consensus reason is worth
 recording: the frontier models have converged enough that the harness now decides most of

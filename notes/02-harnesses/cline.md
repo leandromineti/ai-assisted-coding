@@ -1,7 +1,8 @@
 ---
 name: cline
 layer: 2
-sublayer: ide
+surfaces: [ide, terminal]   # started as a VS Code extension; the tree carries apps/cli/
+execution: local
 vendor: Cline
 url: https://github.com/cline/cline
 license: Apache-2.0

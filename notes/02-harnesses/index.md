@@ -9,35 +9,45 @@ The prevailing mid-2026 read: the frontier models have converged enough that **t
 now decides most of the day-to-day experience**. That claim is worth testing here rather
 than repeating.
 
-## Terminal
+## Inventory
 
-| Harness | Maker | One-line |
-|---------|-------|----------|
-| **Claude Code** | Anthropic | CLI + desktop + web + IDE extensions. Deep extension surface (skills, hooks, subagents, plan mode). ~135k GitHub stars. |
-| [**Codex CLI**](codex.md) | OpenAI | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. ~94k stars. The only Rust harness in the set. |
-| [**OpenCode**](opencode.md) | Anomaly | Open source (MIT), ~190k stars — the most-starred agent. 75+ providers via Models.dev, LSP-aware, multi-session, shareable sessions, stores no code or context. |
-| [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | ~105k stars. Individual free tier ended 2026-06-18 during the Antigravity transition. |
-| [**Aider**](aider.md) | open source | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
-| **Grok Build** | xAI | Ships Grok 4.5 in a first-party CLI. |
+Two axes, recorded separately — an earlier version of this index grouped by a single
+"surface" bucket, which forced multi-surface tools into one label and conflated
+web-as-interface with remote-as-execution:
 
-## IDE-embedded
+- **Surfaces** — where you interact: terminal, IDE, desktop, web. Multi-valued, because
+  the serious products are converging on all of them.
+- **Execution** — how it runs: `local` (synchronous, on your machine, you watch) vs.
+  `async-remote` (the agent runs elsewhere and reports back).
 
-| Harness | Maker | One-line |
-|---------|-------|----------|
-| **Cursor** | Anysphere → **SpaceX/xAI** | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of layer 1↔2 consolidation. |
-| **Windsurf** | — | IDE-embedded agent. |
-| [**Cline**](cline.md) | open source | VS Code extension; BYO model. Ships its own `evals/` suite. |
-| [**Continue**](continue.md) | open source | VS Code / JetBrains over a shared core; BYO model. |
-| **GitHub Copilot** | GitHub/Microsoft | The incumbent; agent mode moved it from completion to loop. |
+| Harness | Maker | Surfaces | Execution | One-line |
+|---------|-------|----------|-----------|----------|
+| **Claude Code** | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode). ~135k GitHub stars. |
+| [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT), ~190k stars — the most-starred agent. 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
+| [**Codex CLI**](codex.md) | OpenAI | terminal | local | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. ~94k stars. The only Rust harness in the set. Cloud Codex is its async-remote sibling. |
+| [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | ~105k stars. Individual free tier ended 2026-06-18 during the Antigravity transition. |
+| [**Aider**](aider.md) | open source | terminal | local | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
+| **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
+| **Cursor** | Anysphere → **SpaceX/xAI** | IDE | local | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of layer 1↔2 consolidation. |
+| **Windsurf** | — | IDE | local | IDE-embedded agent. |
+| [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. |
+| [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. |
+| **GitHub Copilot** | GitHub/Microsoft | IDE · web | local + async (coding agent) | The incumbent; agent mode moved it from completion to loop. |
+| **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-5 bleed). |
+| **Jules** | Google | web | async-remote | Async repo-level agent. |
+| **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
 
-## Async / cloud
+Note what the two-axis view surfaces that the old buckets hid: **every major vendor
+harness now spans multiple surfaces and both execution modes** (Claude Code and Copilot
+already do; Codex does via its cloud sibling). Convergence on "all surfaces, both modes"
+looks like the trajectory — the single-surface rows are either young, niche, or
+deliberately minimal.
 
-| Harness | Maker | One-line |
-|---------|-------|----------|
-| **Devin** | Cognition | Autonomous agent that bundles its own execution environment (layer 5). |
-| **Jules** | Google | Async repo-level agent. |
-| **Cloud Codex** | OpenAI | Hosted counterpart to the CLI. |
-| **Claude Code on web** | Anthropic | Hosted sessions from the browser. |
+A harness's *environment bindings* — which layer-5 environments it can attach to (host,
+worktree, container, remote sandbox) — are recorded in each report's frontmatter as
+`environments`. That's bleed, not merger: the environments themselves stay independently
+distributed layer-5 entities (see the scope note in
+[`../../taxonomy.md`](../../taxonomy.md)).
 
 ## What actually differentiates a harness
 
@@ -65,3 +75,5 @@ Feature lists mislead here. The axes that seem to matter:
   tool calls. Measured in [`opencode.md`](opencode.md). If convergence were real, this
   maintenance burden would be irrational. Worth checking whether other portable harnesses
   (cline, continue) pay the same cost or take the one-prompt bet.
+- Is "all surfaces, both execution modes" really where every serious harness ends up? The
+  inventory table above suggests so; re-check the single-surface rows in six months.

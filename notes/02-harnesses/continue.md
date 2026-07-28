@@ -1,7 +1,8 @@
 ---
 name: continue
 layer: 2
-sublayer: ide
+surfaces: [ide]   # VS Code + JetBrains over a shared core
+execution: local
 vendor: Continue
 url: https://github.com/continuedev/continue
 license: Apache-2.0

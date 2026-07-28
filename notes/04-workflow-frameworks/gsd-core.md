@@ -1,7 +1,6 @@
 ---
 name: gsd-core
 layer: 4
-sublayer: '-'
 vendor: Open GSD
 url: https://github.com/open-gsd/gsd-core
 license: MIT

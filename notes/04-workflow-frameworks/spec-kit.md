@@ -1,7 +1,6 @@
 ---
 name: spec-kit
 layer: 4
-sublayer: '-'
 vendor: GitHub
 url: https://github.com/github/spec-kit
 license: MIT

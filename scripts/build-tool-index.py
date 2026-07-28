@@ -104,8 +104,8 @@ def render(reports: list[dict]) -> str:
         "nobody read the source; **survey** means it was used or skimmed; **deep-dive** means "
         "the agent loop and context assembly were actually traced.",
         "",
-        "| Layer | Tool | Stack | License | Version read | Depth | Report |",
-        "|---|---|---|---|---|---|---|",
+        "| Layer | Tool | Surfaces · exec | Stack | License | Version read | Depth | Report |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for r in reports:
         stack = r.get("stack") or []
@@ -115,8 +115,15 @@ def render(reports: list[dict]) -> str:
         version = r.get("version") or "—"
         if not r.get("open_source", True):
             version = "closed source"
+        surfaces = r.get("surfaces") or []
+        if surfaces:
+            shape = " + ".join(surfaces)
+            if r.get("execution"):
+                shape += f" · {r['execution']}"
+        else:
+            shape = "—"
         lines.append(
-            f"| {r['layer']} · {LAYER_NAMES.get(r['layer'], '?')} | {r['name']} | "
+            f"| {r['layer']} · {LAYER_NAMES.get(r['layer'], '?')} | {r['name']} | {shape} | "
             f"{stack or '—'} | {r.get('license') or '—'} | `{version}` | "
             f"{r['depth']} | {link} |"
         )
