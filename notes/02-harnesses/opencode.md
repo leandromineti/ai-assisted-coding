@@ -31,7 +31,9 @@ features:
 # opencode
 
 An open-source agent harness that runs in the terminal, as a desktop app, and as an IDE
-extension. The most-starred agent on GitHub (~190k). Provider-agnostic by design: 75+ LLM
+extension. Among the most-starred agents on GitHub (see frontmatter; hermes-agent passed
+it during 2026 — [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
+Provider-agnostic by design: 75+ LLM
 providers through Models.dev, including local models, plus GitHub Copilot and ChatGPT
 Plus/Pro accounts. Stores no code or context server-side.
 
