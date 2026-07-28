@@ -23,7 +23,13 @@ context measurably degrades attention on the relevant parts.
 - Retrieval vs. dumping — repo maps, semantic search, `grep`-driven exploration.
 - Memory — persistent facts across sessions, and when stale memory is worse than none.
 - Compaction — what survives a summarization, and what silently doesn't.
-- Subagent isolation — spawning a fresh context to protect the main one.
+- Subagent isolation — spawning a fresh context to protect the main one. *Evidence in
+  both directions (2026-07-28):* GSD's fresh-context stages caught each prior stage's
+  vagueness (the refinement funnel, experiment 01); spec-kit tried forking its
+  `/analyze` command into a subagent context and **reverted** it — the 300–500-line
+  report re-entered the main chat anyway and each later fork inherited the growth,
+  compounding until sessions froze (#3185). Isolation only pays if the *return path* is
+  compact — see [`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
 - Just-in-time loading — skills that load on demand rather than up front.
 
 **Candidate first experiment.** One task with real ambiguity in an unfamiliar mid-size
@@ -53,9 +59,14 @@ Almost nobody measures whether the output is *better*.
 - Personal eval — the hard and interesting one: how would *you* tell whether a technique
   helped, on your own work, without a leaderboard?
 
-**Open question that gates everything:** you can't run the same task twice cleanly — the
-first run changes the repo and your own understanding. So what does a fair A/B even mean
-here? Until that's answered, every comparison in this repo is anecdote, and it should say so.
+**The question that gates everything — partially answered (2026-07-28):** you can't run
+the same task twice cleanly — the first run changes the repo and your own understanding.
+Experiment 01's working answer: preregister the protocol and falsification criteria
+before any run, run the contaminated arm second with fresh subagent contexts, log during
+(never reconstruct), and state n honestly (methodology rule 5;
+[`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md) is the
+template). The epistemic caveat stands: n=1 preregistered is a *probe*, not a proof —
+but it's no longer anecdote, and the difference is the preregistration.
 
 ---
 
@@ -77,6 +88,12 @@ ones that bite:
 Grok 4.5's pitch is explicitly this argument: ~60% cheaper per token than the frontier
 tier, and roughly half the *per-task* cost in Codex. Whether per-task savings survive
 contact with harder tasks is the thing to check.
+
+One measured data point so far (2026-07-28, experiment 01, transcript-measured per
+methodology 5c): a layer-4 framework cost **~30–50× the plain-agent baseline** on a
+below-threshold task — and the orchestrator's cache reads, invisible to per-agent
+notification metadata, dominated the spend. Framework overhead is a real line item, and
+it hides in the aggregates.
 
 **Measure from transcripts, not from aggregates** (personal experience, mid-2026): Claude
 Code's `stats-cache.json` inflates cache reads by roughly 2.6x and can't be trusted for

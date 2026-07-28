@@ -83,10 +83,21 @@ Current state of the evidence:
 |---|---|---|
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
-| Skills | No — Claude-Code-shaped | Watch |
+| Skills | **Emerging** — `SKILL.md` consumed by ≥4 harnesses (evidence below, 2026-07-28) | Converging |
 | Hooks | No — harness-specific | No sign of movement |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
 
-Two of five have moved. That's the number to re-check in six months: if hooks and skills
-are still harness-specific, layer 3 is really "MCP plus a pile of vendor features," and the
+**Skills evidence (2026-07-28, from spec-kit's integration registry @ `655a3cb`):** a
+third party that must *install into* every harness is a good witness for what harnesses
+actually consume, and spec-kit's registry renders commands as `SKILL.md` for Claude Code
+and Codex (its `SkillsIntegration` subclasses), treats Kimi as a *native* skills
+integration, targets Hermes at `~/.hermes/skills`, and handles a shared `.agents/skills`
+directory that multiple integrations resolve to. Like rules files, this is
+convention-level (a filename + frontmatter shape, no schema) — but it's no longer
+Claude-Code-shaped. See
+[`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
+
+Two and a half of five have moved (the half being skills, at 2026-07-28). That's the
+number to re-check in six months: if hooks are still harness-specific and skills stall at
+convention level, layer 3 is really "MCP plus a pile of vendor features," and the
 taxonomy should say so.

@@ -22,10 +22,10 @@ web-as-interface with remote-as-execution:
 
 | Harness | Maker | Surfaces | Execution | One-line |
 |---------|-------|----------|-----------|----------|
-| **Claude Code** | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode). ~135k GitHub stars. |
-| [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT), ~190k stars — the most-starred agent. 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
-| [**Codex CLI**](codex.md) | OpenAI | terminal | local | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. ~94k stars. The only Rust harness in the set. Cloud Codex is its async-remote sibling. |
-| [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | ~105k stars. Individual free tier ended 2026-06-18 during the Antigravity transition. |
+| **Claude Code** | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode). |
+| [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT). 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
+| [**Codex CLI**](codex.md) | OpenAI | terminal | local | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. The only Rust harness in the set. Cloud Codex is its async-remote sibling. |
+| [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
 | [**Aider**](aider.md) | open source | terminal | local | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
 | **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
 | **Cursor** | Anysphere → **SpaceX/xAI** | IDE | local | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of layer 1↔2 consolidation. |
@@ -36,6 +36,10 @@ web-as-interface with remote-as-execution:
 | **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-5 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
+| **hermes-agent** | Nous Research | terminal | local *(unverified)* | "The agent that grows with you" — self-improving, skills-based. Backlogged for assessment: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) (2026-07-28); layer-2 classification to confirm at read time. |
+
+Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
+the GitHub API and dated (`stars_at`), never hand-kept here where they'd drift.
 
 Note what the two-axis view surfaces that the old buckets hid: **every major vendor
 harness now spans multiple surfaces and both execution modes** (Claude Code and Copilot

@@ -76,6 +76,16 @@ The layer test is **harness portability by design**: both GSD and spec-kit targe
 harnesses from one definition. A tool that only makes sense inside one harness's loop is
 probably that harness's feature, not a framework.
 
+*Addendum (2026-07-28, from the spec-kit source read).* The portability test now has a
+verified mechanism and a known price. Mechanism: portability is a **compile step over
+prompt files** — cheap because every harness converged on "slash command = prompt file in
+a directory." Price: that prose-only common denominator means the framework's **runtime
+is the model reading instructions**, so enforcement is only as strong as the prose
+(README conclusion 7). Corollary: layer-4→2 bleed is a *structural symptom*, not vendor
+ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`, spec-kit's
+`workflows/` YAML runner) as the escape hatch from prose-level control. Evidence:
+[`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md).
+
 ### 5. Execution environments
 
 Where the agent's code actually runs, and what it can damage: git worktrees,
@@ -156,6 +166,7 @@ taxonomy needs revision — not the case.
 | **Devin** | Layer 2, bundles layer 5 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ layer identity. |
 | **Aider** | Layer 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
 | **MCP itself** | Not a layer — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are layer 3. |
+| **ECC (everything-claude-code)** | Layer 4 *provisional* — live case | Added 2026-07-28. A 235k-star bundle of skills/"instincts"/memory spanning four harnesses. Passes the portability test but maybe not the *methodology* test: if the source read finds no process spine, it's a layer-3 config pack at scale. (Contrast SuperClaude, cleanly resolved by the existing rule: single-harness → harness feature, not framework.) Verdict pending: [`notes/04-workflow-frameworks/ecc.md`](notes/04-workflow-frameworks/ecc.md). |
 
 ## Deliberate exclusions
 

@@ -44,6 +44,11 @@ harness feature matrix — both generated from the reports' frontmatter, never h
 so they can't drift from them. In the matrix, `·` means *not yet checked*, which is
 deliberately distinct from ✗ *verified absent*.
 
+Tools queued for assessment but not yet cloned live as **GitHub issues on this repo**
+([issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) is the
+pattern) — candidates already weighed and passed over are recorded in the relevant
+layer index's "considered, not added" table instead.
+
 One report per tool, following
 [`notes/_template-tool-report.md`](notes/_template-tool-report.md). Its **"distinguishing
 bet"** field is the one that matters — what does this tool believe that its competitors
@@ -84,7 +89,10 @@ note. Revised when evidence moves._
    [`notes/01-models/index.md`](notes/01-models/index.md)
 3. **Layer 3 is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension kinds, only MCP has fully standardized; rules files are converging on a
-   filename convention; skills, hooks, and subagent definitions remain harness-specific.
+   filename convention; hooks and subagent definitions remain harness-specific.
+   *Revised same day:* skills moved — spec-kit's integration registry shows `SKILL.md`
+   consumed by at least four harnesses (Claude Code, Codex, Kimi, Hermes), so skills are
+   now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
    [`notes/standards/index.md`](notes/standards/index.md)
 4. **Structural completeness does not predict runtime correctness** (2026-07-28, from
