@@ -1,0 +1,82 @@
+{
+  "archives": {
+    "normal.tar": [
+      {
+        "name_bytes_hex": "646f6373",
+        "name_printable": "docs",
+        "type": "dir",
+        "size": 0,
+        "mtime": 1753660800,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "646f63732f6269672e62696e",
+        "name_printable": "docs/big.bin",
+        "type": "file",
+        "size": 5000,
+        "mtime": 1753660800,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "736d616c6c2e747874",
+        "name_printable": "small.txt",
+        "type": "file",
+        "size": 12,
+        "mtime": 1753660800,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "6d656469756d2e6c6f67",
+        "name_printable": "medium.log",
+        "type": "file",
+        "size": 700,
+        "mtime": 1753660800,
+        "linkname": null
+      }
+    ],
+    "traps.tar": [
+      {
+        "name_bytes_hex": "636166e95f6c6174696e312e747874",
+        "name_printable": "caf\ufffd_latin1.txt",
+        "type": "file",
+        "size": 12,
+        "mtime": 1753660800,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "65706f63682e747874",
+        "name_printable": "epoch.txt",
+        "type": "file",
+        "size": 3,
+        "mtime": 0,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "6675747572652e747874",
+        "name_printable": "future.txt",
+        "type": "file",
+        "size": 3,
+        "mtime": 4294967295,
+        "linkname": null
+      },
+      {
+        "name_bytes_hex": "6573636170655f6c696e6b",
+        "name_printable": "escape_link",
+        "type": "symlink",
+        "size": 0,
+        "mtime": 1753660800,
+        "linkname": "../../outside/secret"
+      },
+      {
+        "name_bytes_hex": "6162735f6c696e6b",
+        "name_printable": "abs_link",
+        "type": "symlink",
+        "size": 0,
+        "mtime": 1753660800,
+        "linkname": "/etc/passwd"
+      }
+    ],
+    "empty.tar": []
+  },
+  "notatar_size": 1040
+}

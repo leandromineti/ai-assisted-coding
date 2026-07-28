@@ -1,6 +1,8 @@
 # Experiment 02 — spec-kit vs. plain agent: does intent capture alone buy code quality?
 
-`preregistered: 2026-07-28` · status: **not yet run**
+`preregistered: 2026-07-28` · status: **not yet run** ·
+**amended 2026-07-28 (pre-run — see Protocol amendment at the end; original text
+untouched)**
 
 This file is written and committed **before** either run, so the protocol can't drift to
 flatter the result. Protocol follows the template set by
@@ -130,3 +132,33 @@ methodology rule 5a.
   measures "does the framework force writing things down" — that asymmetry is part of
   spec-kit's claim, not a scoring bug, but it's named here so the rubric isn't read as
   neutral.
+
+---
+
+## Protocol amendment (2026-07-28, before any run)
+
+Amended after the standardized-rig design session (user-directed). Every change below
+applies **identically to both arms**; nothing above this line was edited.
+
+1. **Model: Sonnet 5 (`claude-sonnet-5`), sole model for all arms** — supersedes "Opus"
+   in the Protocol section. Rationale: user's decision to standardize layer-4
+   comparisons on one mid-tier model; cheaper; machine-rule compliant.
+2. **Execution environment: the rig container** ([`../rig/`](../rig/README.md)) —
+   supersedes "scratch directories". The task is packaged in Terminal-Bench task format
+   at [`../rig/tarpeek/`](../rig/tarpeek/); pinned base image, fixed TZ/locale,
+   Claude Code CLI `2.1.220` headless. Container build pending Docker installation on
+   this machine — runs blocked until then.
+3. **Network policy: model API only.** Web tools denied at the harness layer inside the
+   container; framework "research" phases can therefore only do local measurement.
+   (v1 enforcement is harness-level, not egress-level — gap recorded in the rig README.)
+4. **Task instruction packaging:** one sentence appended to the task prompt — *"Name the
+   command `tarpeek` and install it so it runs from any directory (e.g. `pip install`
+   the project or place an executable script on PATH)."* Required so a state-based
+   verifier can find the artifact; adds no semantic requirements beyond installability.
+5. **Verifier relocated and hardened:** scoring now runs the rig's hidden pytest
+   verifier ([`../rig/tarpeek/tests/test_outputs.py`](../rig/tarpeek/tests/test_outputs.py)),
+   which asserts against the same `fixtures/expected.json`. Proven fails-closed before
+   any run: with no `tarpeek` installed all 8 checks error; against a do-nothing stub
+   all 8 fail — the first stub run exposed vacuous T4/T5 passes (a no-op tool is
+   trivially "timezone-invariant" and "write-free"), fixed by requiring real listing
+   content inside those tests. That catch is the fails-closed rule earning its keep.
