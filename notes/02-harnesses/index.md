@@ -58,3 +58,10 @@ Feature lists mislead here. The axes that seem to matter:
   or only in principle?
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?
+- ~~Have the frontier models really converged?~~ **Evidence against, 2026-07-28.** opencode
+  — a deliberately model-agnostic harness with every incentive to write one prompt —
+  maintains nine per-model system prompts that share *zero* substantive lines between the
+  Anthropic and GPT variants, and one variant (`trinity`) exists solely to forbid parallel
+  tool calls. Measured in [`opencode.md`](opencode.md). If convergence were real, this
+  maintenance burden would be irrational. Worth checking whether other portable harnesses
+  (cline, continue) pay the same cost or take the one-prompt bet.

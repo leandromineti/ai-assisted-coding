@@ -39,7 +39,49 @@ and that pretending one prompt fits all is where portable harnesses actually los
 
 It also quietly contradicts the mid-2026 consensus recorded in
 [`index.md`](index.md) that "the models have converged." A team maintaining nine prompts
-does not believe that.
+does not believe that — and the prompts themselves settle how seriously to take it.
+
+### How far apart are they? (measured 2026-07-28, commit `017a5977d`)
+
+Not variants of a shared base. **`anthropic.txt` and `gpt.txt` share exactly zero
+substantive lines** — Jaccard 0.00 over lines longer than 20 characters. They are
+independently authored documents that happen to drive the same agent loop.
+
+| Pair | Shared lines | Jaccard |
+|---|---|---|
+| anthropic ∩ gpt | **0** | 0.00 |
+| gpt ∩ codex | 10 | 0.09 |
+| anthropic ∩ default | 7 | 0.07 |
+| anthropic ∩ trinity | 5 | 0.05 |
+| trinity ∩ default | 40 | **0.73** |
+
+Every pair except one is near-disjoint. The exception is instructive: **trinity is
+`default.txt` plus six lines**, and all six are serialization constraints — *"Use exactly
+one tool per assistant message. After each tool call, wait for the result before
+continuing."* A model that can't handle parallel tool calls gets a forked prompt that
+forbids them. That's not stylistic variation; that's a capability difference in the model
+being papered over in the harness.
+
+The openings show what each file is actually imitating — each mimics the house idiom of
+that model's *own vendor harness*:
+
+| Prompt | Opens with |
+|---|---|
+| `anthropic` | "You are OpenCode, the best coding agent on the planet." |
+| `gpt` | "You and the user share the same workspace and collaborate…" |
+| `beast` | "please keep going until the user's query is completely resolved…" |
+| `gemini` | "an interactive CLI agent specializing in software engineering tasks" |
+| `meta` | "You are powered by Muse Spark…" |
+
+`anthropic.txt` reads like Claude Code's own prompt — TodoWrite discipline, tone-and-style
+rules, professional-objectivity section, `<system-reminder>` handling. `gpt.txt` reads like
+Codex's — `multi_tool_use.parallel`, a mandate to use `apply_patch` for every edit,
+dirty-worktree etiquette, and an explicit ban on conversational openers. Substantively
+different theories of how to drive an agent, not one theory in two dialects.
+
+**This is the strongest evidence in the repo against "the frontier models have converged."**
+A model-agnostic harness, with every incentive to write one prompt, concluded it needed
+nine — and that one of them must forbid parallel tool calls outright.
 
 ## Main features
 
@@ -219,9 +261,14 @@ you attach — which is itself the product's position.
 
 ## Open questions
 
-- Do the nine prompts actually diverge in strategy, or are they the same instructions with
-  cosmetic reformatting? A diff of `anthropic.txt` against `gpt.txt` answers this and would
-  be one of the more valuable half-hours available in this repo.
+- ~~Do the nine prompts actually diverge in strategy, or is it cosmetic reformatting?~~
+  **Answered 2026-07-28** — zero shared lines between `anthropic.txt` and `gpt.txt`. See
+  the measurement above.
+- Are the prompts *derived* from each vendor's published harness prompts, or independently
+  arrived at? The stylistic mimicry is strong enough to ask. `git log` on
+  `prompt/anthropic.txt` might show whether it was written at once or accreted.
+- Does each prompt measurably outperform `default.txt` on its own model? Nine prompts is a
+  large maintenance bet with, as far as the repo shows, no eval backing it.
 - What does compaction *keep*? `overflow.ts` decides when; `compaction.ts` decides what, and
   that's where the real context-engineering position lives. Not yet read.
 - `DOOM_LOOP_THRESHOLD = 3` and `COMPACTION_BUFFER = 20_000` are unexplained constants.
