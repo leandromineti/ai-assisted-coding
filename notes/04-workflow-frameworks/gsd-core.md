@@ -108,6 +108,13 @@ question worth measuring.
    "report files") collided with the framework's file-on-disk requirement — the agent
    self-healed via Bash heredoc; and a deterministic validator false-positived on an
    external-source citation. Layer-4-on-layer-2 bleed producing real failure modes.
+5. **Research caches are cwd-keyed and can leak.** A researcher's digest cache
+   (`.planning/research/.cache/*.json`) materialized in the *orchestrating* repo's root
+   rather than the target project, because the orchestrator's shell cwd differed from
+   the project directory. Nearly got committed; caught only by reviewing the staged
+   file list. Wart class: framework state keyed on ambient cwd instead of an explicit
+   project root. When orchestrating GSD against another directory, anchor every path
+   absolutely and audit `git status` before committing the host repo.
 
 ## Open questions
 
