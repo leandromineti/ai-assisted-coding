@@ -10,6 +10,9 @@ open_source: true
 stack: [TypeScript, Node, Ink]
 version: v0.49.0-preview.0-49-gbef611950
 commit: bef611950
+first_commit: 2025-04-15
+stars: 106225
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: stub
 ---

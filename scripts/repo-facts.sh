@@ -33,6 +33,20 @@ facts_for() {
   echo "first_commit: $(git -C "$dir" log --reverse --format=%ad --date=short | head -1)"
   echo "tracked_files: $(git -C "$dir" ls-files | wc -l)"
 
+  # Stars come from the GitHub API (needs `gh` auth); dated because they drift.
+  local gh_slug
+  gh_slug=$(sed -E 's#https?://github.com/##; s#/$##' <<<"${url:-}")
+  if [[ "$gh_slug" =~ ^[^/]+/[^/]+$ ]]; then
+    local stars
+    stars=$(gh api "repos/$gh_slug" --jq .stargazers_count 2>/dev/null || echo "")
+    if [[ -n "$stars" ]]; then
+      echo "stars: $stars"
+      echo "stars_at: $(date +%F)"
+    else
+      echo "stars: UNKNOWN (gh api failed — not authenticated?)"
+    fi
+  fi
+
   printf 'extensions:'
   git -C "$dir" ls-files \
     | sed -n 's/.*\.\([a-zA-Z0-9]\+\)$/\1/p' \

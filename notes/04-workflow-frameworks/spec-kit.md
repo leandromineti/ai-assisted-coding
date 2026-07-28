@@ -8,6 +8,9 @@ open_source: true
 stack: [Python]
 version: v0.1.10-1039-g655a3cb
 commit: 655a3cb
+first_commit: 2025-08-21
+stars: 124319
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; never run
 ---

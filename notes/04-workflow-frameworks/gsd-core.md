@@ -8,6 +8,9 @@ open_source: true
 stack: [Markdown, Node]
 version: v1.8.0-102-gd04592de
 commit: d04592de
+first_commit: 2025-12-14
+stars: 7336
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # full flow run end-to-end (experiments/01-gsd-vs-plain) + core workflow prose read; gsd-tools.cjs internals unread
 ---

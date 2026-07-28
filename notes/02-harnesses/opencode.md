@@ -11,6 +11,9 @@ open_source: true
 stack: [TypeScript, Bun, Effect]
 version: github-v1.2.25-1492-g017a5977d
 commit: 017a5977d
+first_commit: 2025-03-21
+stars: 190554
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: deep-dive
 features:

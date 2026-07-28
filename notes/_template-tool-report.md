@@ -12,6 +12,10 @@ open_source: <true | false>
 stack: [<Language>, <Runtime/Framework>]
 version: <git describe --tags --always — omit if closed source>
 commit: <short SHA — omit if closed source>
+# The next three come from scripts/repo-facts.sh — never hand-typed. Omit if closed source.
+first_commit: <YYYY-MM-DD — first commit in the public repo; postdates the product if open-sourced later>
+stars: <integer, GitHub API>
+stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
 # features: set a key ONLY when verified in source or official docs — omitted means

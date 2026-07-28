@@ -10,6 +10,9 @@ open_source: true
 stack: [Rust, TypeScript]
 version: codex-zsh-v0.1.0-803-gbb1af235ea
 commit: bb1af235ea
+first_commit: 2025-04-16
+stars: 102141
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: stub
 ---

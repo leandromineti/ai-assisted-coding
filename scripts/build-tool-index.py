@@ -112,8 +112,12 @@ def render(reports: list[dict]) -> str:
         "nobody read the source; **survey** means it was used or skimmed; **deep-dive** means "
         "the agent loop and context assembly were actually traced.",
         "",
-        "| Layer | Tool | Surfaces · exec | Stack | License | Version read | Depth | Report |",
-        "|---|---|---|---|---|---|---|---|",
+        "`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; "
+        "refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the "
+        "*public* history's start, which for open-sourced-later tools postdates the product.",
+        "",
+        "| Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Version read | Depth | Report |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in reports:
         stack = r.get("stack") or []
@@ -130,9 +134,11 @@ def render(reports: list[dict]) -> str:
                 shape += f" · {r['execution']}"
         else:
             shape = "—"
+        stars = f"{r['stars']:,}" if isinstance(r.get("stars"), int) else "—"
+        since = str(r.get("first_commit") or "—")
         lines.append(
             f"| {r['layer']} · {LAYER_NAMES.get(r['layer'], '?')} | {r['name']} | {shape} | "
-            f"{stack or '—'} | {r.get('license') or '—'} | `{version}` | "
+            f"{stack or '—'} | {r.get('license') or '—'} | {stars} | {since} | `{version}` | "
             f"{r['depth']} | {link} |"
         )
 

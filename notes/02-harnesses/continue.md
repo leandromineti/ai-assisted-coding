@@ -10,6 +10,9 @@ open_source: true
 stack: [TypeScript, React]
 version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44
+first_commit: 2023-05-23
+stars: 35166
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 features:

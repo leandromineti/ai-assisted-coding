@@ -10,6 +10,9 @@ open_source: true
 stack: [TypeScript, React]
 version: nightly-main-20260728125218-dc175c73a8dd
 commit: dc175c73a
+first_commit: 2024-07-05
+stars: 65138
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 features:

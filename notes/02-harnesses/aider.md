@@ -10,6 +10,9 @@ open_source: true
 stack: [Python]
 version: v0.86.3.dev-53-g5dc9490b
 commit: 5dc9490b
+first_commit: 2023-04-03
+stars: 47763
+stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: stub
 ---
