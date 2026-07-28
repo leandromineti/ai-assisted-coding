@@ -265,7 +265,12 @@ you attach — which is itself the product's position.
 
 - ~~Do the nine prompts actually diverge in strategy, or is it cosmetic reformatting?~~
   **Answered 2026-07-28** — zero shared lines between `anthropic.txt` and `gpt.txt`. See
-  the measurement above.
+  the measurement above. This finding produced an upstream report: the per-model dispatch
+  is an undocumented confound in akitaonrails/llm-coding-benchmark
+  ([issue #12](https://github.com/akitaonrails/llm-coding-benchmark/issues/12),
+  [PR #13](https://github.com/akitaonrails/llm-coding-benchmark/pull/13)) — bespoke
+  prompts for Claude/GPT/Gemini/Kimi vs `default.txt` for DeepSeek/Qwen/GLM/Grok et al.,
+  in a table read as a model-capacity ranking.
 - Are the prompts *derived* from each vendor's published harness prompts, or independently
   arrived at? The stylistic mimicry is strong enough to ask. `git log` on
   `prompt/anthropic.txt` might show whether it was written at once or accreted.

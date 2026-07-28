@@ -74,6 +74,12 @@ superseded). Treat leaderboard numbers as at least one generation stale by defau
   2026-07-28:** [llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)
   (References above) fixes the harness and varies the model — though the fixed harness
   itself adapts its prompt per model, so the isolation is imperfect in an instructive way.
+  **Reported upstream 2026-07-28** after confirming the team was unaware (all 11 blog
+  posts, docs, and issues checked):
+  [issue #12](https://github.com/akitaonrails/llm-coding-benchmark/issues/12) +
+  [PR #13](https://github.com/akitaonrails/llm-coding-benchmark/pull/13), an opt-in
+  `--uniform-system-prompt` mode that pins one prompt for all models via opencode's
+  `agent.build.prompt` override.
 - Long-horizon coherence has no standard measure. What would a homegrown one look like?
 - Does open-weight parity (Kimi K3) actually change anything practical, given that
   self-hosting a 2.8T-param model is out of reach for an individual?
