@@ -10,16 +10,36 @@ flatter the result.
 
 ## Results (appended 2026-07-28, after both runs — see `log.md` for the full trail)
 
-### Cost
+### Cost — measured from session + agent transcripts (superseding the earlier estimate)
 
-| | Run A (plain) | Run B (GSD) | Multiple |
+*(Initial accounting used the harness's per-agent notification metric, which summed to
+"~1.47M subagent tokens." Transcript measurement shows actual subagent **output** was
+346k — the notification metric is an opaque blend ~4× output. Same lesson as
+`stats-cache.json`: measure from transcripts, not metadata. Methodology rule 5c was
+added because this table's first version couldn't answer "what did it actually cost?")*
+
+| Measured tokens | Run A (plain) | Run B (GSD) | Multiple |
 |---|---|---|---|
-| Wall-clock | **~1 min** | **~78 min** | ~78× |
-| Model contexts | 1 orchestrator turn | 13 subagents + orchestrator | — |
-| Subagent tokens | ~0 (in-turn) | **~1.47M** | ~30–50× total spend |
+| Output — orchestrator | 16.8k | 186k | — |
+| Output — subagents | 0 | 346k | — |
+| **Output — total** | **16.8k** | **532k** | **~32×** |
+| Cache write — total | 26k | ~7.9M | ~300× |
+| Cache read — total | 8.5M | ~141.6M | ~17× |
+| Wall-clock | ~1 min | ~78 min | ~78× |
 | Commits | 0 (uncommitted) | 15 (5 planning, 10 delivery) | — |
 | Product LOC | 224 (3 files) | 763 (4 files) | 3.4× |
-| Process LOC | 0 | **~3,750 across 16 planning docs** | ∞ |
+| Process LOC | 0 | ~3,750 across 16 planning docs | ∞ |
+
+Rough dollar band (estimated — token figures above are measured; prices assumed at
+Sonnet $3/$15, Opus $15/$75, session model $10/$50 per Mtok with standard cache rates):
+run A ≈ **$10**, run B ≈ **$180–200**, so roughly **20×** in money.
+
+**The cost surprise:** the *orchestrator*, not the subagents, dominated run B's cost —
+~92M cache-read tokens accumulated by driving 15 stages from one long-lived context
+(≈2/3 of estimated spend). The subagents' fresh contexts were comparatively cheap. This
+directly validates GSD's own "run `/clear` between stages" advice and suggests the
+cheapest big optimization is a thinner orchestrator, not thinner agents — relevant to
+the "which mechanisms buy the margin" follow-up.
 
 ### Quality
 

@@ -66,6 +66,14 @@ Two sub-rules, both scarred in experiment 01:
   orchestrating repo's root, not the target project). When driving tooling against
   another directory: absolute paths everywhere, and review `git status` / the staged
   file list before any commit in the host repo — that review is what caught the leak.
+- **5c. Cost is measured from transcripts, not harness metadata.** Experiment 01's
+  headline cost figure ("~1.47M subagent tokens") came from per-agent notification
+  metadata and couldn't answer a direct "what did it cost?" — transcript measurement
+  showed actual subagent output was 346k (the metadata metric is an opaque ~4× blend),
+  and that the *orchestrator's* cache reads, invisible to notifications, dominated
+  total spend. Session + agent transcripts carry exact `usage` fields; parse those.
+  (Same failure family as `stats-cache.json` inflating cache reads —
+  `notes/cross-cutting/index.md`.)
 
 ## 6. Findings are promoted, not scattered
 

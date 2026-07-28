@@ -212,3 +212,20 @@
   Decisive delta on the deep case: **run A crashes (unhandled UnicodeDecodeError) on
   the invalid-UTF-8 author fixture; run B renders correctly.** Full results appended
   to README.md.
+
+## Post-hoc cost measurement (2026-07-28, ~19:0x, pre-session-close)
+
+Prompted by the direct question "are we counting token usage?" — the honest answer was
+"only from notification metadata." Measured properly from the session transcript + 16
+agent transcripts (`usage` fields):
+
+| measured | run A | run B orchestrator | run B subagents |
+|---|---|---|---|
+| output | 16.8k | 186k | 346k |
+| cache write | 26k | 2.54M | 5.34M |
+| cache read | 8.5M | 91.9M | 49.7M |
+
+Two corrections to the earlier accounting: the notification metric ("1.47M") is an
+opaque ~4× blend of actual output; and the orchestrator — not the subagents — dominated
+cost (~2/3 of estimated spend via 92M cache reads from one long-lived context).
+Methodology rule 5c added with this as its scar.
