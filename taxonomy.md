@@ -76,6 +76,19 @@ layer-5 problem routinely misread as a layer-2 bug — the worktree/gitignore tr
 up in [`notes/05-execution-environments/`](notes/05-execution-environments/index.md) is
 the case that convinced me this layer is real.
 
+**Scope note.** This layer is in scope only through the lens of agents. Most of its
+entities are borrowed infrastructure — Docker, devcontainers, and worktrees predate the
+field and earn no survey of their own here. The questions asked of them are agent-shaped:
+**blast radius** (what can the agent damage), **fidelity** (does the project's tooling run
+unmodified inside), and **parallelism** (how many agents at once, at what bootstrap cost).
+The reason those questions matter is that the field's autonomy ceiling is set by blast
+radius, not model capability — every fully-autonomous product to date bundles a sandbox,
+not a smarter model, and the same permission flag that is reckless on a host is sane in a
+container. The position is falsifiable: if sustained study never shows a layer-5 fact
+changing a tool choice or explaining a failure, demote this layer to a cross-cutting note.
+The prediction recorded here is the opposite — as autonomy rises, the environment question
+becomes more central, not less.
+
 ## Cross-cutting concerns
 
 These are **not layers**. They appear at several layers at once, and forcing them onto the
