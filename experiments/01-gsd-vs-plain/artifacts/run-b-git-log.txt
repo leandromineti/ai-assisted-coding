@@ -1,0 +1,15 @@
+74b2fb8 docs(02-01): complete filtering, JSON output, and release readiness plan
+c831392 docs(02-01): README covering usage, flags, JSON schema, exit codes, policy
+f6473d3 test(02-01): stdlib unittest suite driving the real CLI against fixtures
+671a6f5 feat(02-01): wire --since and --json end to end
+0efada8 docs(phase-2): create phase plan
+009828e docs(01-01): complete core summary command plan
+ff046a5 feat(01-01): pre-flight validation and exit-code contract
+c5e6ba0 test(01-01): add deterministic fixture repo proving the four correctness traps
+f4939f5 feat(01-01): end-to-end summarize-this-repo pipeline
+ff3f8b2 docs(phase-1): create phase plan
+40a6deb docs: create roadmap and initialize state
+1779b9b docs: define v1 requirements
+3d76459 docs: complete project research
+1b1521d docs: initialize project
+3e086dd chore: add project config
