@@ -9,7 +9,7 @@ stack: [Markdown, Node]
 version: v1.8.0-102-gd04592de
 commit: d04592de
 read_at: 2026-07-28
-depth: stub
+depth: survey   # full flow run end-to-end (experiments/01-gsd-vs-plain) + core workflow prose read; gsd-tools.cjs internals unread
 ---
 
 # GSD — gsd-core
@@ -35,7 +35,28 @@ in under-specified intent.
 
 ## Main features
 
-_TODO_
+Observed in a full run (new-project → plan → execute → verify ×2 phases; see
+[`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md)):
+
+- **A refinement funnel, not a pipeline.** Research → requirements → phase-research →
+  plan → check → execute → verify, where each stage catches what the previous left
+  vague. Observed concretely: pitfalls research became four checkable requirements; the
+  phase researcher caught an underspecified exit code in those requirements; the checker
+  caught an untested claim in the plan; the executor closed it.
+- **Empirical research agents** — the standout feature. GSD's researchers and planner
+  *measured* git behavior (fixture repos, `git hash-object` crafted commits, timezone
+  probes) instead of trusting training data. Nearly all observed quality delta traces
+  to this.
+- **Plans as runnable contracts**: tasks carry `<read_first>`, `<acceptance_criteria>`,
+  and `<verify>` gates with *measured* expected values; the planner dry-runs its own
+  gates before committing.
+- **Honest verification**: verifiers re-derive claims against real runs, exceed their
+  brief (ambient-config attack re-runs), and *abstain* on subjective checks
+  (`human_needed`) rather than auto-passing.
+- **Deterministic bookkeeping** via `gsd-tools.cjs` (init queries, commits, state) —
+  real code where prompt ceremony was expected.
+- **Self-healing prose**: workflows encode defenses against known LLM failure modes
+  (e.g. the #222 false-refusal recovery for the synthesizer).
 
 ## Stack & repo shape
 
@@ -70,9 +91,23 @@ question worth measuring.
 
 ## Surprises
 
-**The markdown-to-code ratio.** 1398 `.md` vs 810 `.cjs` is close to a proof of the layer-4
-definition: if the artifact is mostly prose, the thing being distributed really is a
-methodology rather than a program. Recorded before reading a line of source.
+1. **The markdown-to-code ratio.** 1398 `.md` vs 810 `.cjs` is close to a proof of the
+   layer-4 definition: if the artifact is mostly prose, the thing being distributed
+   really is a methodology rather than a program. Recorded before reading a line of
+   source.
+2. **The value concentrates in two places** (from the experiment): empirical research
+   agents and measured verification gates. The surrounding process ceremony — STRIDE
+   threat model for a read-only local CLI, three enterprise-shaped hooks seeded on by
+   default for a 200-line project, ROADMAP checkboxes the framework itself forgot to
+   tick in both phases — produced almost none of the observed quality delta.
+3. **Ceremony cost is front-loaded and enormous on small tasks:** first product code at
+   minute 40; ~1.47M subagent tokens and ~3,750 planning-doc lines for 763 product LOC.
+   Yet the result genuinely was more robust — a real crash-class difference plus four
+   latent-defect classes over the unstructured baseline (see the experiment's results).
+4. **Cross-layer frictions observed live:** a harness subagent guard (Write refusing
+   "report files") collided with the framework's file-on-disk requirement — the agent
+   self-healed via Bash heredoc; and a deterministic validator false-positived on an
+   external-source citation. Layer-4-on-layer-2 bleed producing real failure modes.
 
 ## Open questions
 

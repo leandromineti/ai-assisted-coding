@@ -1,9 +1,68 @@
 # Experiment 01 — GSD vs. plain agent on a deliberately small task
 
-`preregistered: 2026-07-28` · status: **preregistered, not yet run**
+`preregistered: 2026-07-28` · status: **complete — results below** (protocol section
+unchanged from preregistration; results appended after)
 
 This file is written and committed **before** either run, so the protocol can't drift to
 flatter the result.
+
+---
+
+## Results (appended 2026-07-28, after both runs — see `log.md` for the full trail)
+
+### Cost
+
+| | Run A (plain) | Run B (GSD) | Multiple |
+|---|---|---|---|
+| Wall-clock | **~1 min** | **~78 min** | ~78× |
+| Model contexts | 1 orchestrator turn | 13 subagents + orchestrator | — |
+| Subagent tokens | ~0 (in-turn) | **~1.47M** | ~30–50× total spend |
+| Commits | 0 (uncommitted) | 15 (5 planning, 10 delivery) | — |
+| Product LOC | 224 (3 files) | 763 (4 files) | 3.4× |
+| Process LOC | 0 | **~3,750 across 16 planning docs** | ∞ |
+
+### Quality
+
+- **Preregistered functional checks: tie, 6/6 each.** (The 7th check was a bug in the
+  comparison script — both tools were right.)
+- **The decisive delta:** against a fixture with a genuinely invalid-UTF-8 author name
+  (creatable only via `git hash-object`, exactly as GSD's researcher demonstrated),
+  **run A crashes with an unhandled `UnicodeDecodeError`; run B renders correctly.**
+  The pitfall was predicted by research, became requirement DATA-05, was enforced by a
+  plan gate, and was verified twice. That chain is the framework working exactly as
+  advertised.
+- Latent (unexercised) run-A defects found by run B's process: no `--no-renames` pin
+  (ambient-config sensitivity), no locale forcing, undocumented merge policy,
+  timezone-dependent behavior undocumented. Tests: 5 vs 21; run B's README documents
+  caveats run A's author (me) didn't know existed.
+- Run B also produced knowledge as a side effect: `--since` filters committer date while
+  columns show author date; bare `--since` dates are timezone-dependent; `.mailmap`
+  doesn't apply to `%an`. None of this is in run A.
+
+### Verdict against the preregistered falsification criteria
+
+The **mixed outcome** — near-equal functional surface at a large cost multiple, with a
+real robustness margin for GSD — which the prereg called "the expected boring outcome."
+But two things weren't boring:
+
+1. **The margin is real, not cosmetic.** One genuine crash-class difference (DATA-05)
+   and four latent-defect classes. For a tool meant to be *used*, run B is the one you'd
+   ship; for a tool meant to *exist by tonight*, run A won 77 minutes ago.
+2. **Where the value concentrated:** the empirical researchers and gate-running planner
+   — agents that **measured git instead of believing their training data** — produced
+   nearly all of the quality delta. The process ceremony around them (STRIDE threat
+   model for a read-only CLI, three no-op default hooks, ROADMAP bookkeeping the
+   framework itself kept forgetting to tick) produced nearly none of it. The
+   interesting follow-up isn't "GSD vs plain" but **"which 20% of the ceremony buys
+   80% of the margin"** — a cheaper harness that keeps empirical research + gates and
+   drops the rest.
+
+### Answer to the layer-4 index question
+
+*"What's the task-size threshold below which the ceremony costs more than it saves?"* —
+this task sits **below** the threshold for build-speed purposes and arguably **above**
+it for ship-quality purposes. The threshold isn't one number; it splits by what "saves"
+means. Recorded in `notes/04-workflow-frameworks/gsd-core.md`.
 
 ## Question
 
