@@ -60,4 +60,32 @@ possible here at all.
 
 ## Conclusions
 
-_(Kept here as they firm up — the running answer to "what did I actually learn?")_
+_The running answer to "what did I actually learn?" — each dated, each traceable to a
+note. Revised when evidence moves._
+
+1. **"The models have converged" is contested by the people best placed to know**
+   (2026-07-28). The three portable harnesses answer the per-model-prompt question three
+   different ways: opencode maintains nine bespoke prompts sharing zero substantive lines;
+   cline built that architecture and *dismantled* it; continue runs ~15 lines and bets the
+   prompt barely matters. Nobody's position is backed by a published eval. →
+   [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md)
+2. **No public benchmark isolates model from harness** (2026-07-28). Leaderboards pair
+   them ("Codex CLI + GPT-5.5"), and the one benchmark that fixes the harness turned out
+   to inherit that harness's per-model prompt dispatch — a confound its maintainer didn't
+   know about. Reporting it produced this repo's first upstream contribution
+   ([issue #12](https://github.com/akitaonrails/llm-coding-benchmark/issues/12),
+   [PR #13](https://github.com/akitaonrails/llm-coding-benchmark/pull/13)). →
+   [`notes/01-models/index.md`](notes/01-models/index.md)
+3. **Layer 3 is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
+   extension kinds, only MCP has fully standardized; rules files are converging on a
+   filename convention; skills, hooks, and subagent definitions remain harness-specific.
+   Re-check the scoreboard ~2027-01. →
+   [`notes/standards/index.md`](notes/standards/index.md)
+4. **Structural completeness does not predict runtime correctness** (2026-07-28, from
+   llm-coding-benchmark's data): models produce complete-looking apps whose tests mock
+   hallucinated APIs — green suites over dead code. Any personal eval must boot the
+   artifact, not count its files. →
+   [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md)
+5. **Reading source beats reading marketing, quickly** (2026-07-28). Every finding above
+   except #4 came from a few hours of grepping cloned repos — none appears in any tool's
+   own documentation. The `upstream/` workflow pays for itself.
