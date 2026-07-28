@@ -16,6 +16,12 @@ it goes in `experiments/`, not here.
 Idempotent. To add a tool, append a `layer|name|url` line to
 [`repos.txt`](repos.txt) and re-run.
 
+**Warning (scar, 2026-07-28):** the sync fast-forwards *every* clone, not just missing
+ones — which moves HEADs past the commits existing reports are pinned to and trips
+`build-tool-index.py --check`. After a sync that was only meant to add a tool, either
+re-read the flagged reports at the new HEAD or reset each clone back to its report's
+pin (`git -C upstream/<tool> reset --hard <pinned-sha>`).
+
 Clones are **blobless** (`--filter=blob:none`): full commit history and file listings, with
 file contents fetched on demand. That keeps `git log`, `git blame`, and
 `git log --follow` usable — which matters, because *when* a design appeared is often more

@@ -49,6 +49,38 @@ Workflow commands:
 40+ agent integrations (44 config dirs @ 655a3cb; `specify integration list`).
 Install: `uv tool install specify-cli` — needs Python 3.11+, git, and `uv`.
 
+### OpenSpec — <https://github.com/Fission-AI/OpenSpec> · [report](openspec.md)
+
+*(Added 2026-07-28 from the candidate sweep.)* The lean pole of spec-driven development:
+**delta specs** — spec only the change (proposal → delta spec → design → tasks), archive
+completed changes into a living source-of-truth. Same bet as spec-kit, opposite ceremony
+budget. 63k stars, MIT, visibly dogfooded (its own history lives in `openspec/changes/`).
+
+### ECC (everything-claude-code) — <https://github.com/affaan-m/ECC> · [report](ecc.md)
+
+*(Added 2026-07-28, deliberately as a boundary case.)* "Harness performance optimization
+system" — skills, "instincts", memory, continuous learning across Claude Code, Codex,
+OpenCode, Cursor. **The fastest-adopted tool in the study set: 235k stars in ~6 months.**
+Filed here provisionally: the source read must decide whether it's an encoded methodology
+(layer 4) or a config pack at scale (layer 3) — and whether "instincts"/memory earn new
+columns in the mechanism table below.
+
+## Considered, not added (2026-07-28)
+
+From the same web + GitHub-API sweep (stars as of 2026-07-28), recorded so the reasoning
+isn't re-derived later:
+
+| Candidate | Stars | Why not (yet) |
+|---|---|---|
+| BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if layer-4 scope expands; would make a good ceremony-pole test subject |
+| hermes-agent (`NousResearch`) | 222k | A layer-2 harness, not a framework (spec-kit installs *into* it). Queued on the layer-2 backlog: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) |
+| claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (layer-3 bleed dominant) |
+| SuperClaude_Framework | 24k | Single-harness (Claude Code only) — fails the layer-4 portability test; useful as the boundary counterexample |
+| wshobson/agents | 38k | Multi-harness plugin *marketplace* — layer-3 distribution, no methodology |
+| agent-os (`buildermethods`) | 5k | Too small, quieting since 2026-05 |
+| microsoft/amplifier | 3k | Too small; watchlist |
+| Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |
+
 ## The shared bet
 
 Both wager that **agents fail from insufficient structure, not insufficient intelligence** —

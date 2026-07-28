@@ -17,3 +17,5 @@ report's frontmatter when confirmed in source or official docs.
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../notes/04-workflow-frameworks/ecc.md) | · | · | · | · | · | · | · | · | · | · |
+| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · |

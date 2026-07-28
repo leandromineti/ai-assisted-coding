@@ -19,5 +19,7 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | 106,225 | 2025-04-15 | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
 | 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | 7,336 | 2025-12-14 | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
 | 4 · Workflow frameworks | spec-kit | — | Python | MIT | 124,319 | 2025-08-21 | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
+| 4 · Workflow frameworks | ecc | — | Markdown, Node | MIT | 234,750 | 2026-01-17 | `v2.1.0-11-g4e973d3e` | stub | [ecc](../notes/04-workflow-frameworks/ecc.md) |
+| 4 · Workflow frameworks | openspec | — | TypeScript, Node | MIT | 62,948 | 2025-08-05 | `v1.6.0-88-g1637856` | stub | [openspec](../notes/04-workflow-frameworks/openspec.md) |
 
-**8 tools** — 1 deep-dive · 3 stub · 4 survey.
+**10 tools** — 1 deep-dive · 5 stub · 4 survey.
