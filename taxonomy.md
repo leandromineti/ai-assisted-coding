@@ -100,6 +100,11 @@ from the layers that implement it — never given a layer entry of its own.
 - **MCP (Model Context Protocol)** — the protocol is a standard; the *servers* that speak
   it are layer 3.
 - **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are layer 3 artifacts.
+- **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
+
+Written up in [`notes/standards/`](notes/standards/index.md), which also tracks the
+question this category exists to answer: whether skills and hooks standardize the way MCP
+did, or stay vendor features — which decides whether layer 3 is a real layer.
 
 ## The boundary rule
 
@@ -148,5 +153,6 @@ taxonomy needs revision — not the case.
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/index.md`](notes/04-workflow-frameworks/index.md) |
 | 5 · Execution environments | [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md) |
 | ✕ Cross-cutting | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
+| ✕ Standards | [`notes/standards/index.md`](notes/standards/index.md) |
 
 Per-tool entries use [`notes/_template.md`](notes/_template.md).

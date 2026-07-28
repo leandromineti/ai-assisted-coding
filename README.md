@@ -19,6 +19,7 @@ Everything else in the repo declares which layer it belongs to.
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
 | 5 · Execution environments | [`notes/05-execution-environments/`](notes/05-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost |
+| ✕ Standards | [`notes/standards/`](notes/standards/index.md) | MCP, `AGENTS.md` convention |
 
 ## Layout
 
