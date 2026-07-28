@@ -16,6 +16,6 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | `codex-zsh-v0.1.0-803-gbb1af235ea` | stub | [codex](../notes/02-harnesses/codex.md) |
 | 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
 | 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
-| 4 · Workflow frameworks | spec-kit | — | Python | MIT | `v0.1.10-1039-g655a3cb` | stub | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
+| 4 · Workflow frameworks | spec-kit | — | Python | MIT | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
 
-**8 tools** — 1 deep-dive · 4 stub · 3 survey.
+**8 tools** — 1 deep-dive · 3 stub · 4 survey.

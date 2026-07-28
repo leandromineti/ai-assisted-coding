@@ -103,3 +103,15 @@ note. Revised when evidence moves._
    crafted commits, timezone probes) and to measured verification gates; almost none to
    the surrounding ceremony. Open follow-up: which 20% of the ceremony buys 80% of the
    margin? → [`experiments/01-gsd-vs-plain/`](experiments/01-gsd-vs-plain/README.md)
+7. **A layer-4 framework's portability and its enforcement power are the same tradeoff**
+   (2026-07-28, spec-kit source read). Cross-harness portability is cheap because every
+   harness converged on "slash command = prompt file" — but that lowest common
+   denominator means the framework's runtime *is* the model reading prose. spec-kit's git
+   history shows the consequence: hook execution was fixed twice by rewriting
+   instructions more forcefully (#2901, #2713 — enforcement by typography), the
+   constitution went eight months unenforced during implementation (#2460), and the one
+   attempt at real context isolation was reverted after compounding-context freezes
+   (#3185). Both frameworks studied grew deterministic engines (spec-kit's `workflows/`
+   YAML runner, GSD's `gsd-pi`) as the escape hatch — layer-2 bleed as a structural
+   symptom, not a coincidence. →
+   [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md)
