@@ -1,6 +1,6 @@
 # Cross-cutting concerns
 
-`checked: 2026-07-28`
+`checked: 2026-07-30`
 
 These are **not layers**. Each appears at several layers simultaneously, and forcing them
 onto the stack distorts them. See [`../../taxonomy.md`](../../taxonomy.md).
@@ -43,7 +43,21 @@ Failure modes are the signal; success is too coarse to learn from.
 
 **Where it lives:** layer 3 (review-bot MCP servers), layer 4 (frameworks that build in
 verification gates — GSD's "evidence" principle), layer 5 (sandboxes that make failure
-cheap to observe), plus the whole external CI apparatus.
+cheap to observe), plus the whole external CI apparatus. **And, as of 2026-07-30, layer 2
+natively:** hermes-agent ships an evidence-ledger verification gate inside the harness —
+`verification_stop` nudges the model back (bounded, ≤3 times) when it tries to finish
+right after editing code without fresh verification evidence, plus a `pre_verify` plugin
+hook for user policy. That's exp-01's "measured verification gate" mechanism — the one
+conclusion 6 credits with the layer-4 quality margin — living below layer 4.
+
+**Implication for experiment 03 (recorded before its design):** if harnesses ship
+verification gates natively, the layer-4 margin can migrate down the stack. The
+minimal-harness protocol must inventory what the *harness* already enforces before
+attributing any gate effect to the framework layer — otherwise exp-03 risks crediting
+layer 4 for a mechanism the layer-2 baseline silently exercises. (Hermes' gate is
+weaker than exp-01's: its evidence bar is "ran something fresh", not a hidden verifier —
+the distinction between *a* gate and a *measured* gate matters and should be scored,
+not blurred.)
 
 **Why it's first-class here:** it's the least-explored part of the field and the one that
 decides whether any of the rest is working. Everyone measures whether they *feel* faster.

@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-07-28`
+`checked: 2026-07-30`
 
 The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
 vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
@@ -41,6 +41,14 @@ Described by two axes, recorded separately because products increasingly span bo
   `async-remote` (Devin, Jules, cloud Codex, Claude Code on web — the agent runs elsewhere
   and reports back). Claude Code on web and Devin are *not* the same kind of thing, and
   the old "async/cloud" bucket said they were.
+
+  *Strain recorded (2026-07-30, hermes-agent deep-dive):* a third shape exists that
+  neither value describes — the **resident** agent: a persistent daemon that outlives any
+  conversation, receives messages from ~20 platforms, and runs cron jobs unattended
+  (hermes' gateway; its serverless backends hibernate between sessions). Not promoted to
+  a third value on one instance — recorded here so the second instance triggers the
+  revision. Same read strained **surfaces**: messaging platforms don't fit the four-value
+  vocabulary and are recorded as an annotation, not a fifth value.
 
 Which layer-5 *environments* a harness can bind to (host, worktree, container, remote
 sandbox) is recorded on the harness entry as its bleed — not as harness configuration.
@@ -154,6 +162,14 @@ xAI/SpaceX's $60B acquisition of Anysphere (Cursor), announced 2026-06-16 — a 
 vendor buying a layer-2 product, then training Grok 4.5 on that harness's session data.
 Vertical integration across layers 1 and 2 is the live structural story of 2026.
 
+*Second instance (2026-07-30):* the harness-as-training-data-instrument pattern is not
+exclusive to acquisitions. hermes-agent — open source, MIT — ships trajectory export and
+compression tooling openly labeled "for training the next generation of tool-calling
+models" (its maker, Nous Research, is a layer-1 vendor). opencode's "stores no code or
+context server-side" is the explicit counter-position. Two instances plus a named
+counter-position make this a pattern to track, not an anecdote:
+**who a harness's maker is at layer 1 predicts what the harness collects.**
+
 ## Stress test
 
 Five deliberately hard cases, classified. If a new case has no defensible home, the
@@ -167,6 +183,7 @@ taxonomy needs revision — not the case.
 | **Aider** | Layer 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
 | **MCP itself** | Not a layer — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are layer 3. |
 | **ECC (everything-claude-code)** | Layer 4 *provisional* — live case | Added 2026-07-28. A 235k-star bundle of skills/"instincts"/memory spanning four harnesses. Passes the portability test but maybe not the *methodology* test: if the source read finds no process spine, it's a layer-3 config pack at scale. (Contrast SuperClaude, cleanly resolved by the existing rule: single-harness → harness feature, not framework.) Verdict pending: [`notes/04-workflow-frameworks/ecc.md`](notes/04-workflow-frameworks/ecc.md). |
+| **hermes-agent** | Layer 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both layer-2 axes — see the execution-axis note above. Kept at layer 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md). |
 
 ## Deliberate exclusions
 
