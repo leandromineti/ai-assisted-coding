@@ -16,6 +16,12 @@ rules, generated indexes, preregistered experiments, the upstream-reporting gate
 rule earned its place by catching a real mistake; the anti-goal section keeps it from
 growing rigor for rigor's sake.
 
+**[`design-principles.md`](design-principles.md)** — the synthesis layer: design
+principles derived from the documented tools, per taxonomy layer, each carrying a
+confidence marker (convergent / single-instance / contested) and its evidence citations.
+Hypotheses under revision, not best practices — every new deep-dive or experiment must
+confirm, contradict, or note silence.
+
 | Layer | Index | Examples |
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
@@ -32,6 +38,7 @@ growing rigor for rigor's sake.
 |------|-------|
 | `taxonomy.md` | The layer definitions and boundary rule — the canonical reference |
 | `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
+| `design-principles.md` | Design principles derived from the reports, per layer, confidence-marked |
 | `notes/` | One index per layer, plus one file per tool, written while using it |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
