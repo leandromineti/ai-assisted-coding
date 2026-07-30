@@ -10,8 +10,11 @@ ENV TZ=UTC \
     LC_ALL=C.UTF-8
 
 # git for the frameworks' repo conventions; node for the Claude Code CLI; uv for
-# spec-kit's installer.
-RUN apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates nodejs npm \
+# spec-kit's installer. Node comes from NodeSource (22.x): the base image's distro
+# nodejs is 18, below Claude Code 2.1.220's required >=22 (EBADENGINE at first build).
+RUN apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && curl -LsSf https://astral.sh/uv/0.7.13/install.sh | sh
 

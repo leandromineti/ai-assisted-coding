@@ -1,9 +1,9 @@
 # The rig — standardized task + sandbox for layer-4 framework comparisons
 
-`created: 2026-07-28` · status: **files authored; verifier proven fails-closed
-(no-binary → 8/8 error; do-nothing stub → 8/8 fail, after a hardening pass — the first
-stub run exposed vacuous T4/T5 passes, fixed same day); container build pending Docker
-install on this machine**
+`created: 2026-07-28` · status: **image built 2026-07-30 (Docker 29.1.3, digests in the
+pins table); verifier proven fails-closed on the host 2026-07-28 (no-binary → 8/8 error;
+do-nothing stub → 8/8 fail, after a hardening pass — the first stub run exposed vacuous
+T4/T5 passes, fixed same day) and re-proven inside the container 2026-07-30**
 
 A reusable, pinned execution environment for comparing workflow frameworks fairly. First
 consumer: [`../02-spec-kit-vs-plain/`](../02-spec-kit-vs-plain/README.md) (see its
@@ -32,11 +32,11 @@ because its conventions match this repo's needs exactly:
 
 | What | Pin |
 |---|---|
-| Base image | `ghcr.io/laude-institute/t-bench/python-3-13:20250620` (T-Bench's own base) — digest recorded at first build: `PENDING` |
+| Base image | `ghcr.io/laude-institute/t-bench/python-3-13:20250620` (T-Bench's own base) — digest recorded at first build (2026-07-30): `sha256:236734f0cafcce942ca09316d57236c2273a2b5411e116454a22cf6d718d95f5` |
 | Harness | Claude Code CLI `2.1.220`, installed in-image via npm, run headless |
 | Model | `claude-sonnet-5` — sole model, all arms, all frameworks |
 | Framework versions | pinned per experiment in its preregistration (exp-02: spec-kit @ `655a3cb`) |
-| Rig image digest | `PENDING` (requires Docker; not installed on this machine at authoring time) |
+| Rig image digest | local image ID `sha256:c7c6587394fabae0924cf2f0bd9a4afeb74527a2223184f7dd46da1066c17155` (`tarpeek-rig:exp02`, built 2026-07-30; never pushed to a registry, so this is the config digest, not a repo digest). Build note: the base image's distro Node is 18, below Claude Code 2.1.220's floor — the Dockerfile installs NodeSource Node 22.x (22.23.2 at first build) |
 
 ## Harness decision: Claude Code, not an open-source harness
 
@@ -95,4 +95,4 @@ load-bearing — so no arm can substitute web lookup for empirical grounding.
 
 | Task | Status | Used by |
 |---|---|---|
-| [`tarpeek/`](tarpeek/) | authored; image build pending | exp-02 (spec-kit vs plain), exp-03 planned (minimal harness) |
+| [`tarpeek/`](tarpeek/) | image built (`tarpeek-rig:exp02`), verifier re-proven fails-closed in-container 2026-07-30 | exp-02 (spec-kit vs plain), exp-03 planned (minimal harness) |
