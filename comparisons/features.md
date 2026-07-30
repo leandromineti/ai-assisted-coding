@@ -9,6 +9,7 @@ report's frontmatter when confirmed in source or official docs.
 
 | Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals |
 |---|---|---|---|---|---|---|---|---|---|---|
+| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ |
 | [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · |
 | [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ |
 | [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · |

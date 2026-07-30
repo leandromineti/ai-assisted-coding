@@ -9,6 +9,7 @@
 2|aider|https://github.com/Aider-AI/aider
 2|cline|https://github.com/cline/cline
 2|continue|https://github.com/continuedev/continue
+2|hermes-agent|https://github.com/NousResearch/hermes-agent
 
 # --- Layer 4: workflow frameworks ---
 4|spec-kit|https://github.com/github/spec-kit

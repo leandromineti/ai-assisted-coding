@@ -1,6 +1,6 @@
 # Layer 2 — Harnesses
 
-`checked: 2026-07-28`
+`checked: 2026-07-30`
 
 Loop + context assembly + permission model + UI. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -36,7 +36,7 @@ web-as-interface with remote-as-execution:
 | **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-5 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
-| **hermes-agent** | Nous Research | terminal | local *(unverified)* | "The agent that grows with you" — self-improving, skills-based. Backlogged for assessment: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) (2026-07-28); layer-2 classification to confirm at read time. |
+| [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-5 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
 the GitHub API and dated (`stars_at`), never hand-kept here where they'd drift.
@@ -63,6 +63,15 @@ Feature lists mislead here. The axes that seem to matter:
 3. **Extension surface** — whether layer 3 and 4 can attach at all (hooks, skills, MCP).
 4. **Isolation story** — which layer-5 environment it assumes.
 5. **Failure behavior** — what it does when it's wrong, which is where the real cost lives.
+6. **Cache economics as a design constraint** *(added 2026-07-30)* — whether prompt-cache
+   discipline is an optimization or the architecture's governing rule. Evidence it
+   deserves its own axis: exp-01 found cache reads *dominating* framework spend (30–50×
+   baseline, invisible in aggregates), and hermes-agent designs its entire prompt around
+   cache warmth — three explicit cache tiers, date-only timestamps, a git snapshot that's
+   allowed to go stale rather than shatter the prefix, mode flips deferred to next
+   session ("per-conversation prompt caching is sacred" is its stated design law).
+   Correctness-vs-cache-warmth tradeoffs are a harness position, not an implementation
+   detail.
 
 ## Open questions
 
@@ -85,6 +94,13 @@ Feature lists mislead here. The axes that seem to matter:
     [`cline.md`](cline.md).
   - **continue** runs ~15 lines per mode and delegates to user-space rules — the null
     hypothesis: the system prompt barely matters. [`continue.md`](continue.md).
+  - **hermes-agent** (added 2026-07-30) stakes out a *fourth* position: one shared
+    prompt plus small per-family appendices (~4.4KB — tool-use enforcement for
+    `gpt/codex/gemini/gemma/grok/glm/qwen/deepseek`, plus OpenAI/Grok and Google
+    execution-discipline blocks; `agent/prompt_builder.py:309–470`). Notably, the
+    patch list covers every major family *except* Anthropic's — the appendices
+    correct deviations from Claude-default behavior.
+    [`hermes-agent.md`](hermes-agent.md).
 
   My earlier framing ("if convergence were real, opencode's maintenance burden would be
   irrational") was too strong: cline paid that burden and concluded it *was* irrational.
