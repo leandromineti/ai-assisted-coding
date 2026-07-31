@@ -88,3 +88,12 @@ Appended during the runs, never reconstructed afterwards (protocol).
   Standard rates ($3/$15) resume after that, so a Run B executed in September is NOT
   cost-comparable to this arm at face value — compare tokens, and reprice both arms at whichever
   rate is being quoted. The `total_cost_usd 0.3741` above is an intro-rate figure.
+- **Model verification (checked against the artifacts, not against the launch command).** All
+  **25** assistant turns in the transcript are `claude-sonnet-5`; it produced all 11,109 output
+  tokens, all 493,367 cache reads, and $0.3734 of the $0.3741.
+  **Caveat on amendment 1's "sole model" wording:** the harness's `modelUsage` also records
+  `claude-haiku-4-5` at 18 output / 684 input tokens, $0.00077 — Claude Code's internal
+  auxiliary call (session-title-class work). It contributed **zero assistant turns and no task
+  work**. Immaterial to the comparison (0.2% of cost, 0.16% of output tokens) and it will recur
+  identically in Run B, but recorded because "sole model" is not literally accurate: the arm's
+  *task* work was exclusively Sonnet 5, while the harness around it was not.
