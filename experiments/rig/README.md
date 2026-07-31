@@ -1,6 +1,6 @@
 # The rig — standardized task + sandbox for layer-4 framework comparisons
 
-`created: 2026-07-28` · status: **image built 2026-07-30 (Docker 29.1.3, digests in the
+`created: 2026-07-28` · status: **network condition enforced + probed 2026-07-31; image built 2026-07-30 (Docker 29.1.3, digests in the
 pins table); verifier proven fails-closed on the host 2026-07-28 (no-binary → 8/8 error;
 do-nothing stub → 8/8 fail, after a hardening pass — the first stub run exposed vacuous
 T4/T5 passes, fixed same day) and re-proven inside the container 2026-07-30**
@@ -65,6 +65,58 @@ Two deliberate choices:
 The key value is never committed, and never referenced in this repo by anything other
 than the variable name.
 
+## Network condition: declared, enforced at egress, probed
+
+Per methodology 8a, an experiment states which of three conditions it ran under, enforces it
+where traffic actually leaves the sandbox, and records a probe. **v1 of this rig did not do
+that** — it denied the web *tools* in `settings.json` and the README claimed arms therefore
+had model-API-only access. Measured 2026-07-31: `curl https://example.com` from the Bash
+tool returned **HTTP 200**. Tool-layer denial is not a network policy.
+
+| Condition | Meaning | Enforcement |
+|---|---|---|
+| `open` | arms may reach the internet | nothing to enforce; declare it |
+| **`package-hosts-only`** | package registries reachable, general web not | internal Docker network + allowlist proxy (below) |
+| `closed` | no egress at all | `--network none`; **breaks `pip install`**, so unusable for tasks that require installability |
+
+**`package-hosts-only` is the rig default from 2026-07-31.** Setup — the proxy runs from the
+*same pinned image*, so the condition adds no new image dependency:
+
+```sh
+docker network create --internal exp-closed-int          # no route off-host
+docker run -d --name exp-proxy tarpeek-rig:exp02 sleep infinity   # on the default bridge
+docker network connect exp-closed-int exp-proxy          # ...and on the internal net
+docker cp allowlist_proxy.py exp-proxy:/proxy.py
+docker exec -d exp-proxy bash -lc 'python3 /proxy.py > /proxy.log 2>&1'
+
+docker run -d --name <arm> --network exp-closed-int \
+  -e HTTP_PROXY=http://exp-proxy:8888 -e HTTPS_PROXY=http://exp-proxy:8888 \
+  -e http_proxy=http://exp-proxy:8888 -e https_proxy=http://exp-proxy:8888 \
+  -e ANTHROPIC_API_KEY="$PERSONAL_ANTHROPIC_KEY" -w /app tarpeek-rig:exp02 sleep infinity
+```
+
+Allowlist ([`allowlist_proxy.py`](allowlist_proxy.py)): `pypi.org`, `files.pythonhosted.org`,
+`pypi.python.org`. Denials are logged, so `/proxy.log` **is** the probe record — copy it out
+with the arm's artifacts.
+
+The arm sits on an `--internal` network, so egress is blocked at the network layer rather than
+by an environment variable: an arm that unsets `HTTPS_PROXY` gets no route, not a bypass. The
+model API is reached through the proxy the same way; add the API host to the allowlist if a
+future arm needs anything else, and record the change.
+
+**Probe results (2026-07-31, this configuration):**
+
+| Probe | Expected | Observed |
+|---|---|---|
+| raw egress with proxy env unset | fail | curl exit 6, host unresolvable |
+| general web via proxy | blocked | `DENY CONNECT example.com:443` |
+| PyPI via proxy | succeed | `pytest-8.4.1` wheel downloaded |
+| `pip install .` of a src-layout project with build isolation | succeed | exit 0, console script on PATH, runs |
+
+The last row is the load-bearing one: it is why `package-hosts-only` and not `closed` is the
+default — the task instruction requires the tool be installed and runnable from any directory,
+and full egress denial breaks the build-isolation download that requires.
+
 ## Harness decision: Claude Code, not an open-source harness
 
 Recorded reasoning (2026-07-28):
@@ -95,11 +147,27 @@ logging every blocking question and answer verbatim to the experiment's `log.md`
 Running a plain arm under stock `tb run` later remains possible for loose comparison
 against public T-Bench baselines.
 
-Network policy: arms get **model API only**. v1 enforcement is at the harness layer
-(container Claude Code settings deny WebSearch/WebFetch); hard egress filtering is
-future work and the gap is acknowledged. Rationale: with no web access, framework
-"research" phases can only do *local measurement* — the mechanism exp-01 found
-load-bearing — so no arm can substitute web lookup for empirical grounding.
+Network policy: see [§ Network condition](#network-condition-declared-enforced-at-egress-probed).
+The rationale for constraining it is unchanged — with no general web access, a framework's
+"research" phase can only do *local measurement*, the mechanism exp-01 found load-bearing, so
+no arm can substitute web lookup for empirical grounding. What changed on 2026-07-31 is that
+the constraint is now **enforced and probed** rather than asserted: the v1 tool-layer deny left
+`curl` working. `open` remains a legitimate declared condition for measuring the frameworks as
+users actually run them; it is simply never the silent default.
+
+**Tool permissions.** Arms run with an explicit `permissions.allow` list written to
+`/root/.claude/settings.json` at run time:
+
+```json
+{"permissions": {"allow": ["Bash","Read","Write","Edit","Glob","Grep"], "deny": ["WebSearch","WebFetch"]}}
+```
+
+Not `--dangerously-skip-permissions`: the CLI **refuses that flag outright when running as
+root**, which the image does (`--dangerously-skip-permissions cannot be used with root/sudo
+privileges for security reasons`), and it exits 0 while doing nothing — see methodology 5e.
+The allow-list is the intended headless mechanism and, unlike the skip flag, verifiably leaves
+the web-tool deny intact (probed 2026-07-31: `WebFetch` is absent from the agent's tool set
+entirely). Any change to this list applies identically to every arm on the task.
 
 ## Reuse rules
 
