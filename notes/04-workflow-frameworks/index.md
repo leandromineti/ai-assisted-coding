@@ -51,10 +51,17 @@ Install: `uv tool install specify-cli` — needs Python 3.11+, git, and `uv`.
 
 ### OpenSpec — <https://github.com/Fission-AI/OpenSpec> · [report](openspec.md)
 
-*(Added 2026-07-28 from the candidate sweep.)* The lean pole of spec-driven development:
-**delta specs** — spec only the change (proposal → delta spec → design → tasks), archive
-completed changes into a living source-of-truth. Same bet as spec-kit, opposite ceremony
-budget. 63k stars, MIT, visibly dogfooded (its own history lives in `openspec/changes/`).
+*(Added 2026-07-28; deep-dived 2026-07-31.)* The lean pole of spec-driven development:
+**delta specs** — spec only the change, archive completed changes, and let a
+**deterministic merge compiler** (`specs-apply.ts`: formal ADDED/MODIFIED/REMOVED/RENAMED
+grammar, conflict detection, ordered application) accrete them into a living
+source-of-truth. The read's headline: OpenSpec inverts conclusion 7 — the deterministic
+engine is the *founding architecture* (workflow-as-schema-YAML interpreted by a DAG
+engine; machine validation; prose shrunk to thin CLI adapters), not an escape hatch
+grown after prose failed. But its gates are **format** gates, never *measured* gates —
+it validates artifacts, not behavior (empirical grounding: absent, as predicted).
+Dogfooded at scale: 91 changes through its own pipeline over 36 living specs. 29
+harness adapters. 63k stars, MIT, 71% single-author.
 
 ### ECC (everything-claude-code) — **moved to layer 3** (2026-07-30)
 

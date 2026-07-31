@@ -17,6 +17,6 @@ report's frontmatter when confirmed in source or official docs.
 | [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [ecc](../notes/03-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
