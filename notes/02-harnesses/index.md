@@ -24,7 +24,7 @@ web-as-interface with remote-as-execution:
 |---------|-------|----------|-----------|----------|
 | **Claude Code** | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode). |
 | [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT). 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
-| [**Codex CLI**](codex.md) | OpenAI | terminal | local | Vendor-native OpenAI loop; leads Terminal-Bench 2.1. The only Rust harness in the set. Cloud Codex is its async-remote sibling. |
+| [**Codex CLI**](codex.md) | OpenAI | terminal (+ desktop launcher) | local | Vendor-native; leads Terminal-Bench 2.1. The Rust bet is *security*, not speed: OS sandboxes compiled into the binary, pre-main process hardening, PTC in sandboxed V8. WorldState diff-append context. Cloud Codex is its async-remote sibling. Deep-dived 2026-07-30. |
 | [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
 | [**Aider**](aider.md) | open source | terminal | local | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
 | **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
@@ -101,6 +101,11 @@ Feature lists mislead here. The axes that seem to matter:
     patch list covers every major family *except* Anthropic's — the appendices
     correct deviations from Claude-default behavior.
     [`hermes-agent.md`](hermes-agent.md).
+  - **codex** (added 2026-07-30) is the *fifth* data point, from the vendor-native
+    pole: model instructions swap per model slug inside its WorldState — per-model
+    prompting applied to one vendor's own model family. Even where portability isn't
+    the goal, "one prompt fits all models" isn't what the vendor itself practices.
+    [`codex.md`](codex.md).
 
   My earlier framing ("if convergence were real, opencode's maintenance burden would be
   irrational") was too strong: cline paid that burden and concluded it *was* irrational.

@@ -1,65 +1,269 @@
 ---
 name: codex
 layer: 2
-surfaces: [terminal]
-execution: local   # cloud Codex is the async-remote sibling, a separate product
+surfaces: [terminal]   # `codex app` launches the desktop app on macOS/Windows (cli/src/desktop_app.rs); cloud Codex is the async-remote sibling, a separate product
+execution: local   # cloud-tasks crate integrates the async-remote sibling from the CLI
+environments: [host]   # the point: OS-level sandboxing is compiled INTO the harness (seatbelt/landlock/bwrap/windows) — see Surprises 1
 vendor: OpenAI
 url: https://github.com/openai/codex
 license: Apache-2.0
 open_source: true
 stack: [Rust, TypeScript]
-version: codex-zsh-v0.1.0-803-gbb1af235ea
-commit: bb1af235ea
+version: rusty-v8-v150.4.0-94-g413492cd6c
+commit: 413492cd6c
 first_commit: 2025-04-16
-stars: 102141
-stars_at: 2026-07-28
-read_at: 2026-07-28
-depth: stub
+stars: 102646
+stars_at: 2026-07-30
+read_at: 2026-07-30
+depth: deep-dive
+features:
+  mcp: true              # codex-mcp, mcp-server, rmcp-client crates; MCP prewarm in the turn loop
+  lsp: false             # no LSP crate in the 94-crate workspace (crate list checked 2026-07-30); file-search is its own crate
+  hooks: true            # hooks crate + hook_runtime.rs; stop hooks can veto turn termination (session/turn.rs)
+  skills: true           # skills + core-skills crates; SKILL.md consumed (also confirmed from spec-kit's registry, conclusion 3)
+  subagents: true        # multi_agents handlers, codex_delegate.rs, agent-graph-store
+  plan_mode: true        # plan tool (tools/handlers/plan.rs) + collaboration-mode-templates crate
+  rules_files: [AGENTS.md]   # agents_md.rs: root-down AGENTS.md collection ONLY — no competitor files (contrast hermes)
+  model_agnostic: true   # model-provider, ollama, lmstudio crates — BYO works, but the product is OpenAI-first by design
 ---
 
 # Codex CLI
 
-OpenAI's vendor-native terminal harness. Leads Terminal-Bench 2.1 in the mid-2026 figures
-recorded in [`../01-models/index.md`](../01-models/index.md) (83.4% paired with GPT-5.5).
+OpenAI's vendor-native harness: a Rust workspace of **94 crates** compiled into a single
+`codex` binary (arg0 dispatch multiplexes subcommand personalities), fronting a TUI, a
+headless `exec` mode, and an app-server daemon that the desktop app, SDK, and editors
+talk to. The only harness in this set written in a systems language — and the read shows
+that's load-bearing, not aesthetic. Leads Terminal-Bench 2.1 (with its own models; the
+benchmark can't separate the two — README conclusion 2).
 
 ## The distinguishing bet
 
-_TODO_ — but the stack already hints at it: **it's the only harness in the set written in
-Rust.** That's a wager that the harness's own latency and resource use matter, not just the
-model's. Worth confirming against the source rather than assuming.
+**That the harness is a security boundary, and a security boundary must be compiled.**
+
+The stub predicted the Rust bet was about latency; the source says otherwise. Every
+other harness here delegates isolation: hermes to Docker/remote backends, opencode to a
+`containers` package, frameworks to whatever the host harness does. Codex compiles the
+boundary *into the process*:
+
+- **`sandboxing/`** — macOS Seatbelt (the `.sbpl` policies ship as data files in the
+  crate), Linux Landlock + a bwrap path, `windows-sandbox-rs`. Sandboxing is a
+  *library the loop calls per tool execution*, not an environment you run the agent in.
+- **`process-hardening/`** — runs **pre-`main()`** via `#[ctor]`: disables core dumps
+  and ptrace attach, strips `LD_PRELOAD`/`DYLD_*` from the environment. The binary
+  distrusts its own host before executing a line of application code.
+- **`execpolicy/`** — a policy engine classifying commands *before* execution, feeding
+  `SafetyCheck::{AutoApprove{sandbox_type}, AskUser, Reject}` (`core/src/safety.rs:21`).
+- **`code-mode*/`** — programmatic tool calling runs model-written code inside an
+  **embedded V8 with the V8 sandbox enabled** (`code-mode-runtime` carries a
+  `sandbox = ["v8/v8_enable_sandbox"]` feature; `v8-poc` exists solely to verify the
+  linked V8 was built sandboxed).
+
+This answers the stub's seeded question — **why Rust?** Because Landlock, Seatbelt
+spawning, Job objects, pre-main ctors, and an embedded V8 are syscall-level engineering.
+A Node or Python harness can *invoke* a sandbox; a Rust harness can *be* one. The other
+seeded question — **`agent-graph-store`?** — resolves to something much smaller than the
+name suggests: a storage-neutral parent/child topology store for thread-spawned agents
+(multi-agent bookkeeping, not a knowledge graph).
 
 ## Main features
 
-_TODO_
+| Feature | Distinctive? |
+|---|---|
+| In-process OS sandboxing (Seatbelt/Landlock/bwrap/Windows) + pre-main hardening | **Unique in this set** |
+| WorldState: sectioned, snapshot-diffed ambient context (see Architecture) | **Unique in this set** |
+| code-mode: PTC in embedded sandboxed V8 | Convergent mechanism (hermes' `execute_code`), unique enforcement |
+| Autonomous two-phase memory pipeline (stable, default-off) | Convergent with hermes' learning loop — see Surprises 3 |
+| 104 feature flags with staged rollout (`Stable`/`UnderDevelopment`/`Removed`) | Distinctive — vendor product discipline in an open repo |
+| App-server protocol + daemon + SDK (harness as a service) | Distinctive |
+| Model-queryable context economics (`get_context_remaining`, `new_context_window` tools) | **Unique in this set** |
+| MCP client + server, skills, hooks, plan tool, subagents | Table stakes by mid-2026 |
 
 ## Stack & repo shape
 
-Rust-dominant with a TypeScript surface — 2799 `.rs` against 648 `.ts` across 5799 tracked
-files. Cargo workspace under `codex-rs/` with a striking crate list including
-`agent-graph-store` and `agent-identity`; the npm-published CLI wrapper lives in
-`codex-cli/`. 665 `.snap` files means heavy snapshot testing.
+Rust: 2,819 `.rs` files across a **94-crate** Cargo workspace under `codex-rs/`, built
+with both Cargo and **Bazel** (MODULE.bazel, remote-build-execution config — CI at a
+scale no one else in the set needs). 676 `.snap` files — snapshot-test culture via
+`insta`. TypeScript (656 files) lives in the SDK, the npm distribution wrapper
+(`codex-cli/`), and devcontainer tooling. 8,764 commits since 2025-04-16.
 
-8658 commits since 2025-04-16.
+The version tag (`rusty-v8-v150.4.0`) is itself evidence: the repo's most recent tags
+pin their own V8 builds — a vendored, sandbox-enabled V8 is maintained as part of the
+product.
+
+Crate names sketch the roadmap: `chronicle` (under development), `personality`,
+`realtime_conversation` (voice), `collaboration-mode-templates`, `cloud-tasks`,
+`external-agent-migration` (importing competitors' state), `guardian` (follow-up review
+reminders).
 
 ## Architecture
 
-_TODO — source unread._
+### Entry point → one full trace
+
+```
+codex                       arg0_dispatch_or_else (one binary, multiple personalities)
+  └ cli/src/main.rs         clap Subcommand: (default→TUI) | exec | app-server | login | …
+      └ codex-tui           interactive; or codex-exec headless; both →
+          └ core: ThreadManager → CodexThread
+              └ tasks/regular.rs          one user submission = a Task
+                  └ session/turn.rs:150   run_turn — the spine
+                      └ [step loop] capture_step_context → WorldState diff →
+                        run_sampling_request → tool router → repeat
+```
+
+The app-server daemon wraps the same core behind a JSON-RPC protocol
+(`app-server-protocol`) — the TUI, desktop app, SDK, and MCP server are all clients of
+one loop implementation.
+
+### The agent loop
+
+`run_turn` (`core/src/session/turn.rs:150`). Each iteration: capture a **step context**
+(a request-scoped snapshot of environments, AGENTS.md, capability roots), rebuild
+**WorldState**, diff it (below), assemble history, run one sampling request, dispatch
+tools. Termination (`turn.rs:430–560`, verified at the branch sites):
+
+- **No step or iteration budget.** The loop ends when the model needs no follow-up and
+  no pending input is queued — like opencode's explicit conditions, unlike hermes'
+  500-cap.
+- **Stop hooks can veto the stop**: `run_turn_stop_hooks` may return `should_block`,
+  which injects a continuation prompt and loops again — user-policy gates at turn end,
+  the same architectural slot as hermes' `verification_stop`/`pre_verify` (second
+  layer-2-native instance for the cross-cutting verification note).
+- **Compaction is a loop outcome** (third convergent instance of design-principle H1):
+  `token_limit_reached` → `run_auto_compact(…, CompactionPhase::MidTurn)` → `continue`.
+  There's also *pre-sampling* compaction before the turn starts, and the model itself
+  can request a fresh window via the `new_context_window` tool.
+- Mid-turn **steering** via an input queue drained between steps (deferred right after
+  turn start and after auto-compact so continuations aren't hijacked).
+
+No doom-loop/repeated-call guard was found in the loop path (checked `turn.rs` and the
+tool router surface; possibly elsewhere — recorded as unverified absence, not verified).
+
+### Context assembly
+
+The most distinctive design in the set: **`WorldState`** (`session/world_state.rs`) is a
+list of typed sections — model instructions (per model slug, so switching models
+mid-thread swaps instructions), personality, AGENTS.md content, permissions
+instructions, tools state, environments, plugins, token-budget guidance. Per step:
+
+1. rebuild WorldState from the step context;
+2. snapshot it and **diff against the previous snapshot**
+   (`record_step_world_state_if_changed`, `session/mod.rs:2989`);
+3. inject **only the rendered diff** into history as developer/contextual-user messages
+   (merged by role, `context_manager/updates.rs`);
+4. persist the patch to the rollout for replay.
+
+This is a third position on the cache-vs-freshness tradeoff that design-principle H5
+recorded as two: hermes freezes the prefix and accepts staleness; codex keeps the
+prefix append-only *and* gets fresh state by appending deltas — cache warmth and
+freshness both, paid for in machinery and history growth. AGENTS.md is collected
+root-down per directory (`agents_md.rs`) — and *only* AGENTS.md: no CLAUDE.md, no
+`.cursorrules` (the inverse of hermes' read-everyone's-files posture). Memories, when
+enabled, inject with **citations** (`memories/read`), and the model can interrogate its
+own budget via `get_context_remaining`.
+
+Compaction is a subsystem, not a function: `compact.rs` plus remote variants
+(`compact_remote_v2`), a token-budget module, model fallback, and rollout truncation —
+with its own prompt templates in the `prompts` crate.
+
+### Tool surface & permissions
+
+Tools live in `core/src/tools/`: a registry + router + orchestrator with genuine
+**parallel dispatch** (`parallel.rs`), ~30 handlers across 57 files (shell, unified
+exec, apply_patch with a formal `.lark` grammar, plan, view_image, multi-agents,
+request_user_input, `tool_search` for deferred discovery, `wait_for_environment`,
+`sleep`).
+
+The permission architecture is **three-layered**, extending the two-chokepoint pattern
+(design-principle H3) downward:
+
+1. **Visibility**: the advertised tool set is finalized per step (`spec_plan.rs`) from
+   feature flags, collaboration mode, and available capability roots.
+2. **Decision**: `assess_*_safety` (`safety.rs`) classifies each call —
+   `AutoApprove{sandbox_type}` / `AskUser` / `Reject` — driven by the `AskForApproval`
+   policy (including `Granular`), the execpolicy engine, and writable-paths analysis.
+3. **Enforcement**: approved commands still execute **inside the OS sandbox** chosen in
+   step 2, with an escalation path (`shell-escalation`) when a sandboxed run fails for
+   sandbox reasons, network approval as its own flow, and hard denials (approval can't
+   grant what Landlock/Seatbelt won't).
+
+The harness asks the human *while holding the model inside a cage it built itself* —
+the approval prompt is a UX courtesy on top of enforcement, not the enforcement.
+
+### Layer boundaries in the code
+
+- **Layer 1:** OpenAI-native (Responses API, `responses-api-proxy`), but
+  `model-provider`, `ollama`, `lmstudio`, `aws-auth` make BYO real. Notably
+  model-*conditioned*: instructions swap per model slug inside WorldState — a fifth
+  data point for the per-model-prompt question (the vendor-native pole: one vendor,
+  many of its own models, instructions per model).
+- **Layer 3:** MCP client *and* server; skills; hooks; plugins with an install-request
+  tool. `external-agent-migration` imports competitors' state — layer-3 interop as a
+  product feature.
+- **Layer 4:** plan tool, collaboration-mode templates, `guardian` review reminders —
+  the usual absorption.
+- **Layer 5:** **internalized, not bundled** — the taxonomy's "harness binds to
+  environments" framing inverts here; see Surprises 1.
 
 ## Bleed
 
-_TODO_
+Layers 3 and 4 as above. The layer-5 relationship is the notable one: not a binding to
+external environments but an *absorption of the environment layer into the harness
+binary* (in-process OS sandboxes + embedded sandboxed V8). Layer 1 bleed runs in both
+directions: vendor-native models, and telemetry crates (`otel`, `analytics`) feeding
+the maker — same pattern class as the taxonomy's training-data-instrument note, though
+what's actually collected wasn't traced in this read.
 
 ## Cost model
 
-Metered through OpenAI API pricing, or bundled with a ChatGPT plan. _Details TODO._
+Apache-2.0, free; inference via ChatGPT subscription plans or API key — the
+flat-vs-metered choice inside one product. BYO local models (Ollama, LM Studio) make
+the zero-marginal-cost end real. The cloud sibling meters separately.
 
 ## Surprises
 
-_Source unread — nothing earned yet. The Rust choice is the first thing to interrogate._
+1. **Layer 5 lives inside the binary.** The taxonomy models execution environments as
+   external products a harness *binds to*; codex compiles Seatbelt policies, Landlock,
+   bwrap, and a Windows sandbox into the harness and hardens its own process pre-main.
+   That's a stress-test-worthy case: not bundling (Devin), not binding (hermes) —
+   *internalization*.
+2. **WorldState diffing** — ambient context as a snapshot-diffed state machine,
+   resolving the cache-vs-freshness tradeoff by appending deltas instead of choosing.
+   Design-principle H5 needs a third position.
+3. **An autonomous memory pipeline, shipped but off.** Two-phase (extraction from
+   rollouts → spawned consolidation agents), verified at the call site
+   (`turn_processor.rs:594` — fires at turn start for eligible root sessions), feature
+   `memories`: `Stage::Stable, default_enabled: false`. With hermes, that's **two
+   verified autonomous learning loops** — issue #2's decision-rule threshold, met one
+   read early. The posture difference is the finding: hermes ships it on; OpenAI built
+   it, stabilized it, and left it off.
+4. **104 feature flags** with lifecycle stages, in an open-source repo — the release
+   engineering of a hosted product applied to a CLI. Also the first tool here whose
+   *flag list* is a roadmap leak (chronicle, realtime, personality).
+5. **The model manages its own context window** — `get_context_remaining` and
+   `new_context_window` as tools. Context economics promoted from harness-internal
+   bookkeeping to model-visible affordances.
+6. **PTC convergence with a security twist**: hermes and codex independently built
+   "model writes code that calls tools" (hermes: Python over UDS/file RPC, iterations
+   refunded; codex: JS in embedded V8 *with the V8 sandbox on*). Two instances make
+   programmatic tool calling a pattern, and the enforcement gap between them is the two
+   products' bets in miniature.
+7. **`external-agent-migration`** — a crate whose job is importing other agents' state.
+   Competitor interop as a first-class feature, the offensive counterpart of hermes
+   reading `CLAUDE.md`.
 
 ## Open questions
 
-- Why Rust, when every peer chose TypeScript or Python? What did they think was the
-  bottleneck?
-- What are `agent-graph-store` and `agent-identity`? Neither has an obvious analogue in the
-  other harnesses.
+- What exactly do `analytics`/`otel` collect and where does it go? The
+  training-data-instrument pattern (taxonomy boundary rule) predicts one answer;
+  untraced here.
+- Is there a stuck-loop guard anywhere? Its absence from the turn path is recorded
+  above as unverified — a targeted grep for repeated-call detection is cheap and would
+  settle it.
+- `chronicle`, `guardian`, `personality`, `realtime` — how much of the chat product is
+  migrating into the harness, and does that dilute or compound the security bet?
+- Does code-mode's sandboxed-V8 PTC actually get used by the models (same question as
+  hermes' refund incentive), and do intermediate results stay out of context the same
+  way?
+- The Bazel + RBE + 676 snapshot tests infrastructure — what does CI catch that the
+  other harnesses' setups can't? (cline's `evals/` remains the only *behavioral* suite
+  claim in the set.)
