@@ -1,0 +1,89 @@
+# tarpeek
+
+Summarize the contents of a tar archive without extracting it.
+
+`tarpeek` reads the headers of a `.tar`, `.tar.gz`, `.tar.bz2`, or `.tar.xz`
+archive and prints a per-member table (name, type, size, last-modified date)
+sorted by size, largest first. It never writes anything to the filesystem -
+it only reads archive metadata.
+
+## Install
+
+From the project directory:
+
+```bash
+pip install .
+```
+
+For development (editable install so code changes are picked up immediately):
+
+```bash
+pip install -e .
+```
+
+This installs a `tarpeek` command on your `PATH`, runnable from any directory.
+
+## Usage
+
+```bash
+tarpeek path/to/archive.tar
+```
+
+Example output:
+
+```
+NAME          TYPE     SIZE  MODIFIED
+------------  -------  ----  -------------------
+big.txt       file     1000  2026-07-31 12:00:00
+small.txt     file        2  2026-07-31 12:00:00
+a_dir         dir         0  2026-07-31 12:00:00
+link_to_big   symlink     0  2026-07-31 12:00:00
+```
+
+### Filter by minimum size
+
+```bash
+tarpeek path/to/archive.tar --min-size 1024
+```
+
+Only members whose size is greater than or equal to `BYTES` are shown.
+
+### Machine-readable output
+
+```bash
+tarpeek path/to/archive.tar --json
+```
+
+Prints a JSON array of objects, e.g.:
+
+```json
+[
+  {
+    "name": "big.txt",
+    "type": "file",
+    "size": 1000,
+    "modified": "2026-07-31 12:00:00"
+  }
+]
+```
+
+## Exit codes
+
+| Code | Meaning                              |
+|------|---------------------------------------|
+| 0    | Success                               |
+| 1    | Archive file not found                |
+| 2    | Path is not a valid tar archive       |
+| 3    | Archive contains no members (empty)   |
+
+Errors are printed to stderr with a `tarpeek: error:` prefix.
+
+## Development
+
+Run the test suite:
+
+```bash
+pip install -e .
+pip install pytest
+pytest
+```
