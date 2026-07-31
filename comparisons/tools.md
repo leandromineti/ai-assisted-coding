@@ -13,6 +13,16 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 
 | Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Harness targets | Version read | Depth | Report |
 |---|---|---|---|---|---|---|---|---|---|---|
+| 1 · Models | claude-opus-5 | — | — | proprietary | — | — | — | `closed source` | survey | [claude-opus-5](../notes/01-models/claude-opus-5.md) |
+| 1 · Models | claude-sonnet-5 | — | — | proprietary | — | — | — | `closed source` | survey | [claude-sonnet-5](../notes/01-models/claude-sonnet-5.md) |
+| 1 · Models | claude-fable-5 | — | — | proprietary | — | — | — | `closed source` | stub | [claude-fable-5](../notes/01-models/claude-fable-5.md) |
+| 1 · Models | claude-haiku-4-5 | — | — | proprietary | — | — | — | `closed source` | stub | [claude-haiku-4-5](../notes/01-models/claude-haiku-4-5.md) |
+| 1 · Models | deepseek-v4 | — | — | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | — | — | — | `—` | stub | [deepseek-v4](../notes/01-models/deepseek-v4.md) |
+| 1 · Models | gemini-3-1-pro | — | — | proprietary | — | — | — | `closed source` | stub | [gemini-3-1-pro](../notes/01-models/gemini-3-1-pro.md) |
+| 1 · Models | gpt-5-6-sol | — | — | proprietary | — | — | — | `closed source` | stub | [gpt-5-6-sol](../notes/01-models/gpt-5-6-sol.md) |
+| 1 · Models | grok-4-5 | — | — | proprietary | — | — | — | `closed source` | stub | [grok-4-5](../notes/01-models/grok-4-5.md) |
+| 1 · Models | kimi-k3 | — | — | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | — | — | — | `—` | stub | [kimi-k3](../notes/01-models/kimi-k3.md) |
+| 1 · Models | qwen3-coder-next | — | — | Apache-2.0 | — | — | — | `—` | stub | [qwen3-coder-next](../notes/01-models/qwen3-coder-next.md) |
 | 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | 102,646 | 2025-04-16 | — | `rusty-v8-v150.4.0-94-g413492cd6c` | deep-dive | [codex](../notes/02-harnesses/codex.md) |
 | 2 · Harnesses | hermes-agent | terminal + desktop + web + ide · both | Python, TypeScript | MIT | 222,863 | 2025-07-22 | — | `v2026.7.20-3084-g524ab5399` | deep-dive | [hermes-agent](../notes/02-harnesses/hermes-agent.md) |
 | 2 · Harnesses | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | MIT | 190,554 | 2025-03-21 | — | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../notes/02-harnesses/opencode.md) |
@@ -25,4 +35,4 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | 7,336 | 2025-12-14 | Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
 | 4 · Workflow frameworks | spec-kit | — | Python | MIT | 124,319 | 2025-08-21 | 44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
 
-**11 tools** — 5 deep-dive · 2 stub · 4 survey.
+**21 tools** — 5 deep-dive · 10 stub · 6 survey.

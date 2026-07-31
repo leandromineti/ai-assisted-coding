@@ -1,25 +1,31 @@
 # Layer 1 — Models
 
-`checked: 2026-07-28`
+`checked: 2026-07-31`
 
 The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this layer is and how
 it's judged.
 
-## Seed inventory
+Per-model reports follow
+[`_template-model-report.md`](_template-model-report.md) — adapted from the tool
+template because closed weights have no source to trace: specs are verified against
+the vendor page (dated `checked`), and the depth vocabulary maps to **stub** (specs
+verified, not used) / **survey** (used on real work here, evidence named) /
+**deep-dive** (this repo's experiments produced measured data on it).
+
+## Inventory
 
 | Model | Vendor | Release | One-line |
 |-------|--------|---------|----------|
-| **Fable 5** | Anthropic | 2026 | Frontier tier; the reference point competitors benchmark against as of mid-2026. |
-| **Opus 5** | Anthropic | 2026 | Agentic workhorse; ships a 1M-context variant (`claude-opus-5[1m]`). |
-| **Sonnet 5** | Anthropic | 2026 | Mid-tier; the cost/capability compromise for high-volume agent loops. |
-| **Haiku 4.5** | Anthropic | 2025-10 | Small/fast tier; mechanical subagent work. |
-| **GPT-5.6 Sol** | OpenAI | 2026 | Frontier tier; cited alongside Fable 5 as the bar Kimi K3 was measured against. |
-| **GPT-5.5** | OpenAI | 2026 | The version behind the Terminal-Bench 2.1 numbers below. |
-| **Gemini 3.1 Pro** | Google | 2026 | Long-context specialist; the "hold the whole monorepo" option. |
-| **Grok 4.5** | xAI | 2026-07-08 | Coding/agent-tuned, on the 1.5T-param V9 base. **Trained on real Cursor session data.** $2/$6 per M tokens. No EU availability at launch. |
-| **Kimi K3** | Moonshot AI | 2026-07 | 2.8T params — largest open-weight model released. Kimi Delta Attention, 1M context, native vision. Trails Fable 5 / GPT-5.6 Sol overall but leads open weights. |
-| **DeepSeek** *(unverified)* | DeepSeek | — | Open-weight line; current version not confirmed at check date. |
-| **Qwen** *(unverified)* | Alibaba | — | Open-weight line, strong local-inference story; current version not confirmed. |
+| [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 | Frontier tier; always-on adaptive thinking; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
+| [**Opus 5**](claude-opus-5.md) | Anthropic | 2026 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |
+| [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | 2026 | Mid-tier; **the rig's pinned model for all layer-4 experiment arms.** Intro pricing $2/$10 through 2026-08-31 (then $3/$15) — experiment ledgers must record which price was in force. |
+| [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | 2025-10 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Feb 2025 cutoff. $1/$5. |
+| [**GPT-5.6 Sol**](gpt-5-6-sol.md) | OpenAI | 2026 | Frontier tier of a three-tier family (Sol $5/$30 · Terra $2/$12 · Luna $0.20/$1.20), all 1.05M ctx, Feb 2026 cutoff. **GPT-5.5 is retired** — gone from the current models page (2026-07-31), so the Terminal-Bench row below cites a model you can't buy. |
+| [**Gemini 3.1 Pro**](gemini-3-1-pro.md) | Google | 2026 | Still **Preview** while the Flash line is Stable. Tiered pricing doubles above 200k input tokens — taxing the long-context pitch. Advertised window *not found on the checked pages*; the "hold the whole monorepo" framing is currently unsourced. |
+| [**Grok 4.5**](grok-4-5.md) | xAI | 2026-07-08 | Coding/agent-tuned, 1.5T-param V9 base. **Trained on real Cursor session data.** 500k ctx — *half its cheaper siblings' 1M*. $2/$6 (<200k), $4/$12 above. No EU at launch (2026-07-28 check). |
+| [**Kimi K3**](kimi-k3.md) | Moonshot AI | 2026-07 | Largest open-weight model: 2.8T total / 104B activated, KDA, 1M ctx (2^20 exactly), native vision, **QAT-native MXFP4 release**. Bespoke "Kimi K3 License". Claims Terminal-Bench 2.1 **88.3** — harness unstated. |
+| [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | 2026 (GA ~Jul) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Flash output at $0.28/MTok ≈ 90× cheaper than Fable 5; cache hits near-free. |
+| [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | 2026-02 | Row verified: 80B total / **3B activated**, 256K ctx, Apache-2.0 — the one genuinely self-hostable agent model in the sweep. Publishes its own modest Terminal-Bench 2.0 score (36.2). A "Qwen 4 Coder" successor is third-party rumor, unresolvable on the official org (2026-07-31). |
 
 ## Sub-layer 1b — Model access
 
