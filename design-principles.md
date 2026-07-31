@@ -28,28 +28,41 @@ evidence has touched in two read-cycles gets flagged stale.
 ## Layer 2 — harness design
 
 **H1. Treat running out of context as a normal loop outcome, not an error.**
-*(convergent)* opencode models one provider turn as `"compact" | "stop" | "continue"` —
-compaction is a peer of finishing ([opencode](notes/02-harnesses/opencode.md),
-`processor.ts:30`). hermes wraps compression in a pluggable `ContextEngine` ABC with a
-documented lifecycle, and names it the *only* sanctioned exception to prompt immutability
-([hermes-agent](notes/02-harnesses/hermes-agent.md)). Designs that treat overflow as an
-exception path are the ones that break on long tasks.
+*(convergent — 3 instances)* opencode models one provider turn as
+`"compact" | "stop" | "continue"` — compaction is a peer of finishing
+([opencode](notes/02-harnesses/opencode.md), `processor.ts:30`). hermes wraps
+compression in a pluggable `ContextEngine` ABC with a documented lifecycle, and names it
+the *only* sanctioned exception to prompt immutability
+([hermes-agent](notes/02-harnesses/hermes-agent.md)). codex compacts mid-turn as a loop
+`continue`, compacts *pre-sampling* before turns, and even exposes a
+`new_context_window` tool so the model can request rollover itself
+([codex](notes/02-harnesses/codex.md), confirmed 2026-07-30). Designs that treat
+overflow as an exception path are the ones that break on long tasks.
 
 **H2. The loop needs an explicit stuck-state policy — and who resolves it is a product
-decision.** *(convergent on existence, contested on resolution)* Both deep-dived
-harnesses detect repeated-identical-call loops. opencode escalates to the *human* through
-the permission subsystem (doom-loop as a permission prompt); hermes resolves *in-band*
-with the model (warning guidance → synthetic tool results → bounded halt). The principle
-is that silence is not a policy; the human-vs-model choice is a position on autonomy.
+decision.** *(convergent on existence, contested on resolution; one silence)* Both
+2026-07-28 deep-dived harnesses detect repeated-identical-call loops. opencode escalates
+to the *human* through the permission subsystem (doom-loop as a permission prompt);
+hermes resolves *in-band* with the model (warning guidance → synthetic tool results →
+bounded halt). The principle is that silence is not a policy; the human-vs-model choice
+is a position on autonomy. *Revision-rule note (2026-07-30):* the codex read found no
+repeated-call guard in the turn path — recorded in its report as unverified absence,
+not a counter-instance; settle it before counting codex either way.
 
 **H3. Two chokepoints, not one: shape what the model can see, then gate what it does.**
-*(convergent — the strongest architectural pattern in the set)* opencode filters the
-tool list before the model sees it (`visibleTools`) and gates execution at call time
-(`Permission.ask`). hermes filters the schema by service availability (`check_fn`,
-TTL-cached) and gates dangerous commands at dispatch, with hard write-denials underneath
-that no approval can override. The emphases differ (permission-filtering vs
-availability-filtering) but the two-stage architecture is identical: **visibility
-shaping pre-decision, execution gating post-decision, invariants below both.**
+*(convergent — the strongest architectural pattern in the set; deepened 2026-07-30)*
+opencode filters the tool list before the model sees it (`visibleTools`) and gates
+execution at call time (`Permission.ask`). hermes filters the schema by service
+availability (`check_fn`, TTL-cached) and gates dangerous commands at dispatch, with
+hard write-denials underneath that no approval can override. The emphases differ
+(permission-filtering vs availability-filtering) but the two-stage architecture is
+identical: **visibility shaping pre-decision, execution gating post-decision,
+invariants below both.** codex confirms and extends it to a third, compiled layer:
+per-step advertised-tool finalization → `SafetyCheck` classification → execution
+*inside an in-process OS sandbox* (Seatbelt/Landlock/bwrap), where approval cannot
+grant what the sandbox denies ([codex](notes/02-harnesses/codex.md)). The revised
+statement: visibility, decision, **enforcement** — and the strongest designs make the
+third layer mechanical, not prose.
 
 **H4. Prompts are versioned data, not string literals.** *(convergent, spans layers 2
 and 4)* opencode imports tool descriptions from `.txt` files; spec-kit's product *is*
@@ -58,14 +71,20 @@ files against 810 of code; hermes builds its skill index from `SKILL.md` frontma
 with snapshot caching. Prose that drives the model belongs in diffable artifacts with
 their own history.
 
-**H5. Cache economics govern prompt architecture: order by volatility, never mutate the
-prefix, prefer staleness to invalidation.** *(one explicit constitution + two
-corroborations)* hermes states it as design law ("per-conversation prompt caching is
-sacred") and pays real correctness costs for it — date-only timestamps, a git snapshot
-allowed to go stale, mode flips deferred to next session. Corroborating: exp-01 found
-cache reads *dominating* framework spend (~30–50× baseline, invisible in aggregates);
-opencode counts cache reads toward its overflow budget (cheap ≠ absent). Also recorded
-as differentiation axis 6 in [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md).
+**H5. Cache economics govern prompt architecture — but "never mutate the prefix" has
+two implementations, not one.** *(revised 2026-07-30 per the revision rule)* Original
+form: order by volatility, never mutate the prefix, prefer staleness to invalidation —
+hermes' design law ("per-conversation prompt caching is sacred"), paid for with
+date-only timestamps, stale-by-design git snapshots, deferred mode flips.
+Corroborating: exp-01 found cache reads *dominating* framework spend (~30–50× baseline);
+opencode counts cache reads toward its overflow budget (cheap ≠ absent). **codex showed
+a third position that keeps the invariant while dropping the staleness cost:** rebuild
+ambient state per step as a sectioned `WorldState`, snapshot-diff it, and **append only
+the delta** to history — the prefix stays byte-stable *and* the model sees fresh state,
+paid for in machinery and history growth ([codex](notes/02-harnesses/codex.md)). The
+durable core of the principle is *append-only prefix discipline*; freshness-vs-staleness
+is an implementation choice on top of it. Also recorded as differentiation axis 6 in
+[`notes/02-harnesses/index.md`](notes/02-harnesses/index.md).
 
 **H6. Termination must be designed; budgets shape behavior in ways you choose.**
 *(convergent on the first clause, two designs on the second)* opencode terminates on
@@ -77,13 +96,15 @@ something, you're steering the model toward whatever the meter doesn't count. Ch
 knowingly.
 
 **H7. Model-agnostic is not prompt-agnostic — you must take a position on model
-divergence, and no position currently has eval backing.** *(contested — four documented
-positions)* Nine full per-model prompts (opencode); one prompt after *dismantling* a
-per-family registry (cline); ~15 lines betting prompts barely matter (continue); one
-shared prompt plus ~4.4KB of per-family patches covering every major family except
-Anthropic's (hermes). README conclusion 1 has the detail. This file records it as a
-*forced decision*, not a principle: portable-harness builders cannot avoid it, and none
-of the four has published evidence.
+divergence, and no position currently has eval backing.** *(contested — five documented
+positions as of 2026-07-30)* Nine full per-model prompts (opencode); one prompt after
+*dismantling* a per-family registry (cline); ~15 lines betting prompts barely matter
+(continue); one shared prompt plus ~4.4KB of per-family patches covering every major
+family except Anthropic's (hermes); and the vendor-native pole — codex swaps model
+instructions per model slug *inside* its WorldState, per-model prompting applied to one
+vendor's own family. README conclusion 1 has the detail. This file records it as a
+*forced decision*, not a principle: harness builders cannot avoid it, and none of the
+five has published evidence.
 
 **H8. Keep the core a narrow waist; ship capability at the edges as data.**
 *(convergent)* hermes states it outright (every core tool is paid for on every API
@@ -207,10 +228,10 @@ Recorded as open decisions, not principles — with the positions documented:
 
 | Decision | Positions in the set |
 |---|---|
-| Per-model prompting | four incompatible answers, none eval-backed (H7) |
+| Per-model prompting | five incompatible answers, none eval-backed (H7) |
 | Stuck-agent resolution | human-escalate (opencode) vs in-band (hermes) (H2) |
-| Memory authorship | autonomous agent-written (hermes) vs user-curated files (everyone else) — [issue #2](https://github.com/leandromineti/ai-assisted-coding/issues/2) tracks whether this earns a feature column |
+| Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files — [issue #2](https://github.com/leandromineti/ai-assisted-coding/issues/2)'s two-verified-instances threshold is now met |
 | Session-data posture | harness as training-data instrument (hermes, Cursor) vs stores-nothing (opencode) — taxonomy boundary-rule note |
-| Where verification lives | layer 4 gates (GSD), layer 2 native (hermes), external CI — cross-cutting note, feeds exp-03 |
+| Where verification lives | layer 4 gates (GSD), layer 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note, feeds exp-03 |
 
 Verdicts on these belong to future experiments, not to this file.
