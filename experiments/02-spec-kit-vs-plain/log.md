@@ -83,3 +83,8 @@ Appended during the runs, never reconstructed afterwards (protocol).
   possible, keep the 8/8 tie and report P2 as untested-by-ceiling, or accept the task as
   measuring only the *requirements* rubric (P1) where headroom demonstrably remains.
   Run B is NOT started; the P1 requirements comparison is unaffected by this and remains live.
+- **Pricing in force at Run A (recorded per methodology 5c, since it changes soon):** Sonnet 5
+  **introductory** rates, $2/MTok input and $10/MTok output, which run through **2026-08-31**.
+  Standard rates ($3/$15) resume after that, so a Run B executed in September is NOT
+  cost-comparable to this arm at face value — compare tokens, and reprice both arms at whichever
+  rate is being quoted. The `total_cost_usd 0.3741` above is an intro-rate figure.
