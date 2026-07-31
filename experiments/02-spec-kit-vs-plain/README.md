@@ -162,3 +162,34 @@ applies **identically to both arms**; nothing above this line was edited.
    all 8 fail — the first stub run exposed vacuous T4/T5 passes (a no-op tool is
    trivially "timezone-invariant" and "write-free"), fixed by requiring real listing
    content inside those tests. That catch is the fails-closed rule earning its keep.
+
+---
+
+## Protocol amendment 2 (2026-07-31, AFTER the calibration run — declared as such)
+
+Amendment 1 was written before any run. **This one is not**, and is labelled accordingly: Run A
+executed on 2026-07-31 (see `log.md`) before these changes were known to be necessary. Nothing
+above this line has been edited. Each item applies identically to both arms.
+
+1. **Driver mechanism.** `--dangerously-skip-permissions` (amendment 1's implied mechanism, via
+   the rig) is unusable: the CLI refuses it when running as root, exiting 0 without doing any
+   work. Replaced by an explicit `permissions.allow` list in the container's
+   `settings.json` — the intended headless mechanism, and one that verifiably preserves the
+   web-tool deny. Scarred into methodology 5e.
+2. **Network condition = `package-hosts-only`, enforced at the egress layer and probed.**
+   Amendment 1's "model API only, harness-level enforcement, gap acknowledged" is superseded:
+   the gap was measured real (`curl` reached the internet). See the rig README's § Network
+   condition for the configuration and four probe results. Scarred into methodology 8a.
+3. **Run A (2026-07-31) is a calibration run, not the scored baseline.** Its result stands as
+   evidence about the *instrument* — it saturated the trap set at 8/8 — but it is not the arm
+   the framework arm gets compared against, because it ran under the unenforced network
+   condition. The scored baseline is re-run alongside Run B under one shared instrument and one
+   shared condition.
+4. **Open falsification problem, unresolved at the time of writing.** The trap instrument has no
+   headroom: a perfect baseline means the framework arm cannot score *better*, so the
+   preregistered damage condition ("if spec-kit's code beats plain materially → conclusion 6 is
+   damaged") is unfalsifiable on this task. P1 (requirements rubric) is unaffected. The four
+   options are listed at the end of `log.md`; **the choice is deliberately not made here**,
+   because making it after seeing Run A's score and before Run B is exactly the kind of
+   post-hoc instrument selection preregistration exists to prevent. It must be settled and
+   committed before either arm runs again.

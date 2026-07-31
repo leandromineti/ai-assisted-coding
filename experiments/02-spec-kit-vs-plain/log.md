@@ -97,3 +97,30 @@ Appended during the runs, never reconstructed afterwards (protocol).
   work**. Immaterial to the comparison (0.2% of cost, 0.16% of output tokens) and it will recur
   identically in Run B, but recorded because "sole model" is not literally accurate: the arm's
   *task* work was exclusively Sonnet 5, while the harness around it was not.
+
+### Post-Run-A protocol changes (2026-07-31)
+
+- **Network condition now enforced, not asserted.** The v1 tool-layer deny was measured
+  half-effective (web tools absent, `curl` returning HTTP 200). The rig now runs
+  `package-hosts-only`: arms on an `--internal` Docker network with no route off-host, PyPI
+  reachable only via an allowlist CONNECT proxy, denials logged. Four probes recorded in the
+  rig README, including `pip install .` of a src-layout project succeeding end-to-end — which
+  is why the condition is `package-hosts-only` rather than `closed` (`--network none` breaks
+  the build-isolation download the task's installability requirement needs).
+- **Run A is reclassified as a calibration run, not the scored baseline.** Two reasons, and the
+  second is the honest one:
+  1. It ran under the *old* nominal condition. Its transcript shows zero network calls beyond
+     the model API, so its **realized** condition was equivalent to no-web — Run A is not
+     contaminated.
+  2. But the *affordances* differed: Run A could have reached the web and chose not to; a Run B
+     under enforcement cannot. If a framework's research phase would have used lookup, denying
+     it changes that arm's behavior in a way Run A was never subject to. Comparing them would
+     violate methodology 8a's "held identical across arms" on a technicality that happens to
+     matter exactly where the experiment is trying to measure.
+  Methodology 5d says the baseline arm *is* the instrument calibration, and that is precisely
+  what Run A delivered: it revealed the trap ceiling, proved the driver, and priced the arm at
+  $0.374. Re-running it under the final instrument + enforced condition costs ~$0.37 and 2
+  minutes — cheaper than defending a mismatched pair.
+- **Unchanged and still blocking:** the trap-ceiling decision above. Do not run Run B until the
+  instrument question is settled; a re-run of Run A should happen under the *same* decision, so
+  both arms share one instrument and one network condition.
