@@ -7,9 +7,11 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 
 ## Start here
 
-**[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. Five stack layers plus
-cross-cutting concerns, with a boundary rule for the many tools that straddle them.
-Everything else in the repo declares which layer it belongs to.
+**[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. Three core layers (models,
+harnesses, workflow frameworks) plus execution environments and a cross-layer
+portable-artifacts bucket (the former layer 3, demoted by evidence 2026-07-30), with a
+boundary rule for the many tools that straddle them. Everything else in the repo
+declares where it belongs.
 
 **[`methodology.md`](methodology.md)** — how work is done here: verification and honesty
 rules, generated indexes, preregistered experiments, the upstream-reporting gate. Every
@@ -26,7 +28,7 @@ confirm, contradict, or note silence.
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
 | 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Capability extensions | [`notes/03-capability-extensions/`](notes/03-capability-extensions/index.md) | MCP servers, skills, hooks, rules files |
+| 3 · Portable artifacts (bucket) | [`notes/03-capability-extensions/`](notes/03-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
 | 5 · Execution environments | [`notes/05-execution-environments/`](notes/05-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost |
@@ -130,3 +132,15 @@ note. Revised when evidence moves._
    YAML runner, GSD's `gsd-pi`) as the escape hatch — layer-2 bleed as a structural
    symptom, not a coincidence. →
    [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md)
+8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
+   codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
+   layer 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
+   codex's stop hooks that veto termination — the mechanism conclusion 6 credits with
+   layer 4's quality margin), autonomous memory loops (hermes on-by-default, codex
+   stable-but-off — now the `learning loop` matrix column), programmatic tool calling
+   (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
+   Consequence for the experiment arc: a layer-4 framework's measured margin must be
+   re-baselined against what the harness already does — recorded as a design rider on
+   exp-03 in [`notes/cross-cutting/`](notes/cross-cutting/index.md). →
+   [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md),
+   [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md)

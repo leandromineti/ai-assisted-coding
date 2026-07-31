@@ -114,7 +114,7 @@ excluding permissions, sessions, and orchestration from the model-calling packag
 cline's growth (SDK, CLI, hub around a core) rhymes. The waist is the loop + dispatch;
 everything else should be removable.
 
-## Layer 3 — extension design *(thin evidence — two principles only, held loosely)*
+## The artifacts bucket (formerly layer 3) — extension design *(two principles; bucket status per the 2026-07-30 taxonomy revision)*
 
 **X1. Design for the waist everything converged on: a prompt file in a directory.**
 *(convergent, structural)* spec-kit compiles one definition to 44 harnesses precisely

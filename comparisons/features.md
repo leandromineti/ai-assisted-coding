@@ -7,16 +7,16 @@ Cells: **✓** verified present · **✗** verified absent · **·** not yet che
 The dot is load-bearing — it is *not* a no. A feature key is only set in a
 report's frontmatter when confirmed in source or official docs.
 
-| Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals |
-|---|---|---|---|---|---|---|---|---|---|---|
-| [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · |
-| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ |
-| [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · |
-| [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ |
-| [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · |
-| [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · |
-| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · |
-| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · |
-| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · |
-| [ecc](../notes/04-workflow-frameworks/ecc.md) | · | · | · | · | · | · | · | · | · | · |
-| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · |
+| Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
+| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
+| [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
+| [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · | · |
+| [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../notes/03-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |

@@ -1,0 +1,172 @@
+---
+name: ecc
+layer: 3   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
+vendor: Affaan Mustafa (affaan-m)
+url: https://github.com/affaan-m/ECC
+license: MIT
+open_source: true
+stack: [Markdown, Node]
+version: v2.1.0-16-ge4e41631
+commit: e4e41631
+first_commit: 2026-01-17
+stars: 236217
+stars_at: 2026-07-30
+read_at: 2026-07-30
+depth: deep-dive   # ECC has no agent loop of its own; its runtime analogs were traced in source — learning pipeline (hooks/observe.sh → agents/observer-loop.sh → scripts/instinct-cli.py), enforcement lifecycle (hooks/hooks.json + memory-persistence contract), install/portability surface. The 281-skill catalog was sampled, not read; ecc2 read at README level
+harness_targets: "23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest"
+features:
+  learning_loop: true    # third verified instance — hook-observed sessions → background Haiku analysis → confidence-scored instinct files; traced at the scripts, not just SKILL.md (see Architecture)
+---
+
+# ECC — everything-claude-code
+
+Self-described "agent harness operating system": 281 skills, 67 agents, rules packs,
+enforcement hooks, memory persistence, and an instinct-based learning system, installed
+*into* a dozen-plus harnesses. The fastest-adopted tool in the study — 236k stars in
+~6.5 months — and, as of this read, a **solo-author product**: 1,517 of 2,336 commits
+(65%) from the maintainer, plus dependabot and `copilot-swe-agent[bot]` (agents
+maintaining the agent-config repo). A commercial arm exists: ECC Pro, a GitHub App,
+hosted badges at `api.ecc.tools` — the only tool in the set with a pricing page.
+
+## The layer verdict (the question this read was preregistered to answer)
+
+**Layer 3.** The layer-4 test — an encoded methodology, a prescribed operating loop —
+fails on the source:
+
+- The README's own guidance is *"Start with the workflow you need, not the full
+  catalog."* Workflow content exists (a `tdd-workflow` skill, `security-review`,
+  `mle-workflow`) but as **catalog items you opt into**, routed by a task-type table —
+  not a spine like GSD's plan→execute→verify or spec-kit's specify→plan→tasks→implement.
+- The nearest thing to orchestrated process — the `/multi-plan`, `/multi-execute`
+  command family — requires an **external runtime** (`npx ccg-workflow`, a separate
+  package) and doesn't run without it. The repo's own `workflows/` directory contains
+  one file.
+- What ECC *does* ship everywhere is reach and reflexes: rules, agents, skills,
+  enforcement hooks, memory, learning. That's layer 3's territory — what the agent can
+  see and touch — delivered at unprecedented scale, with real runtime components riding
+  each harness's hook system.
+
+So the stress-test's live case resolves: **a config pack at scale, with a learning
+runtime — not a methodology.** The report moved shelves accordingly (this file was
+`notes/04-workflow-frameworks/ecc.md` as a stub).
+
+## The distinguishing bet
+
+**That agent capability accumulates in the *user's* installation, not the vendor's
+harness — install reflexes, not process.**
+
+Where hermes and codex build learning loops *into* their harnesses, ECC **retrofits
+one onto any harness with hooks**: observation → background analysis → confidence-scored
+"instincts" → clustering into skills. The bet has two halves: (a) performance lives in
+accumulated configuration (rules, skills, learned behavior), not in following a
+prescribed process — the anti-spec-kit position; and (b) that accumulation layer should
+be harness-independent and *yours*, portable across the dozen harnesses you might use.
+235k stars in six months says the market wants at least one of those halves badly —
+and the solo-author + ready-made-catalog shape suggests it's mostly (a): people install
+the reflexes someone else already authored.
+
+## Architecture
+
+### The instinct pipeline (traced in source, per methodology 4a)
+
+`skills/continuous-learning-v2/`:
+
+1. **Observe** — `hooks/observe.sh`, registered on `PreToolUse`/`PostToolUse`, captures
+   tool events as JSON to a project-scoped store (`ecc-homunculus/projects/<hash>/`,
+   XDG-pathed; v2.1 isolates per project via git-remote hash to stop cross-project
+   contamination).
+2. **Analyze** — `agents/observer-loop.sh`: a background daemon (re-entrancy guard,
+   60s analysis cooldown, 30-min idle timeout, session leases — the guards carry issue
+   numbers from real runaway incidents, #521) spawns Haiku analysis over sampled
+   observations.
+3. **Write** — `scripts/instinct-cli.py` persists atomic instincts: YAML frontmatter
+   (id, trigger, confidence 0.3–0.9, domain, scope, project_id) over markdown
+   Action/Evidence sections.
+4. **Evolve** — `/evolve` clusters related instincts into skills/commands/agents;
+   `/instinct-export`/`-import` make learned behavior *shareable*; project instincts
+   seen in 2+ projects get promoted to global.
+
+This is the third verified autonomous learning loop (after hermes, codex) and the only
+**harness-independent** one — also the only one whose unit of learning is designed for
+*exchange* (import/export, confidence scores surviving transfer).
+
+### The enforcement runtime
+
+`hooks/hooks.json` + `hooks/memory-persistence/`: a lifecycle contract riding Claude
+Code's hook events — `SessionStart` loads bounded prior context; `PreCompact` snapshots
+state before compaction; `PreToolUse` dispatchers run consolidated Bash preflight
+(quality, push-protection, "GateGuard") through a Node bootstrap that resolves the
+plugin root across five install layouts; **`Stop` hooks run blocking quality gates**
+(format/typecheck batch, console.log audit). Verification gates delivered as
+*installable layer-3 artifacts* — a third delivery vehicle alongside layer-4 prose
+(GSD) and layer-2 native (hermes, codex).
+
+### Portability: adapters, not a compiler
+
+The stub asked whether cross-harness targeting is a spec-kit-style compile step. It
+isn't: `install.sh --target <harness>` **copies-with-adaptation** into each harness's
+convention directories (`.cursor/`, `.gemini/`, `.kimi/`, `.codex/` via a merge-sync
+script that backs up existing config), 23 documented install invocations across ~13
+named targets, plus a manual-adaptation guide that is explicitly honest about degraded
+capability where hooks don't exist ("without pretending hooks or native skill discovery
+are available"). The payload is files in convention dirs; the runtime parts (Node hook
+scripts) ride each harness's own extension points.
+
+### ecc2 — the layer-2 bleed, confirmed
+
+The stub predicted a runtime being grown; `ecc2/` confirms: a Rust "control-plane
+scaffold" (alpha) — TUI dashboard, SQLite session store, background daemon,
+worktree-aware multi-session orchestration, risk scoring. The stated goal is "the layer
+above individual harness installs." Same structural trajectory as spec-kit's YAML
+engine and GSD's `gsd-pi` (README conclusion 7's escape-hatch pattern), aimed higher:
+not enforcing one methodology, but managing fleets of sessions.
+
+## Bleed
+
+Layer 2 (ecc2 control plane; enforcement hooks shaping harness runtime behavior),
+layer 4 fragments (workflow skills, the external ccg-workflow family), and a hosted
+service arm (GitHub App, api.ecc.tools) that is neither layer — a product ring around
+the artifact bundle.
+
+## Cost model
+
+MIT core; inference is whatever your harness pays — note the background observer adds
+a continuous Haiku spend on top of every session. ECC Pro and the GitHub App are the
+paid ring. "Selective install" profiles (`minimal`/`full`, component manifests) exist
+because the full catalog's standing-context cost is real — the repo's own design
+acknowledges the context-budget problem (design-principle X2).
+
+## Surprises
+
+1. **Instincts are real machinery, not branding** — hook-observed, daemon-analyzed,
+   confidence-scored, project-scoped, with runaway-protection scars (#521) that prove
+   production use. The stub's skepticism ("branding over rules files?") was wrong.
+2. **The process spine genuinely isn't there** — and the repo knows it: the multi-*
+   orchestration commands outsource to an external runtime rather than pretending
+   prose can orchestrate. A 236k-star tool whose honest shape is "toolbox + reflexes"
+   is strong evidence about what adoption actually rewards at layer 3/4.
+3. **Solo-author at 236k stars**, with `copilot-swe-agent[bot]` in the top-5
+   committers — the most extreme adoption-to-maintainer ratio in the study, and the
+   supply-chain concentration question (GSD's fork lesson, F6) applies with force:
+   twelve harnesses' worth of installed hooks trace to one person's repo. The README's
+   own malware warning about unofficial mirrors underlines the stakes.
+4. **Verification gates via installable hooks** — blocking Stop-hook quality gates as
+   layer-3 artifacts. The verification mechanism now exists at three delivery layers.
+5. **SOUL.md at the repo root** — the identity-file convention converging across the
+   set (hermes loads SOUL.md as primary identity; ECC ships one).
+6. **The learning unit is designed for exchange** — instinct import/export with
+   confidence scores. Nobody else's memory artifacts are built to be *traded*. If that
+   catches on, "instinct marketplace" is the obvious next ring, and the standards
+   question (does the instinct format standardize?) becomes live.
+
+## Open questions
+
+- Does instinct import actually transfer value across users/projects, or does
+  confidence scoring collapse on foreign evidence? (An experiment-shaped question.)
+- What do the 281 skills actually contain at quality level — the catalog was sampled,
+  not audited. A skills-quality pass against the hermes authoring standards would be a
+  fair cross-tool instrument.
+- ecc2's trajectory: if the control plane ships, does ECC become a layer-2 product
+  with a config catalog attached — the full reverse of its origin?
+- The GitHub App and api.ecc.tools: what leaves the machine? Same telemetry question
+  as codex's `analytics`/`otel`, unanswered in both reads.

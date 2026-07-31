@@ -9,6 +9,11 @@ comparisons stay like-for-like.
 
 ## The stack
 
+Since the 2026-07-30 revision: **three core layers** (1 models, 2 harnesses, 4 workflow
+frameworks) **plus layer 5** (execution environments, kept on its own falsifier) and
+**one cross-layer bucket** (3 — portable artifacts & protocols, a demoted former
+layer). Numbering is historical and retained as storage keys.
+
 ### 1. Models
 
 The weights themselves. The foundation everything else sits on.
@@ -59,18 +64,52 @@ As of mid-2026 this is the most contested layer, and the consensus reason is wor
 recording: the frontier models have converged enough that the harness now decides most of
 the day-to-day experience.
 
-### 3. Capability extensions
+### 3. Portable artifacts & protocols — a cross-layer bucket, not a rung (since 2026-07-30)
 
-What the agent can **see and touch**. MCP servers, tools, skills, hooks, subagent
-definitions, and rules files (`CLAUDE.md`, `AGENTS.md`).
+What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
+rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
+packs at scale (ECC) — and the specifications they ride on (MCP the protocol, the
+`AGENTS.md` and `SKILL.md` conventions, tracked in the Standards section, which is this
+bucket's spec half).
 
-The layer test is **independent distribution**: an MCP server is authored, versioned, and
-installed separately from any harness, and the same one works across Claude Code, Codex,
-Cursor, Copilot, Gemini CLI, OpenCode, and Devin. That portability is what makes this a
-layer rather than a bag of harness features.
+Formerly "layer 2's ecosystem layer"; demoted to a bucket by the executed revision
+above. The reasoning that survives from the layer era: the *runtimes* (MCP clients,
+skills loaders, hook engines) were always layer-2 features, the *write paths* are being
+absorbed into layer 2 (conclusion 8), and what remains genuinely independent is
+**artifacts distributed on file conventions** — content plus specs, which is a bucket's
+shape, not a rung's. The number **3 is retained as a storage and index key only**
+(`notes/03-capability-extensions/`, `layer: 3` frontmatter, the comparisons tables) —
+renumbering would break every dated cross-reference in the repo for zero information
+gain.
+
+The independent-distribution test still governs what belongs *in the bucket*: an MCP
+server is authored, versioned, and installed separately from any harness, and the same
+one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and Devin.
 
 Distinct from layer 4: capability extensions govern **what the agent can reach**;
 workflow frameworks govern **what process it follows**.
+
+**Revision executed — "three core layers + bucket" (recorded and gated 2026-07-30 am;
+trigger (a) fired same day at the ECC deep-dive).** The challenge, raised after the
+hermes/codex deep-dives: layer 3's *mechanisms* were always layer-2 features (every
+harness ships its own MCP client, skills loader, hooks runtime), and the deep-dives
+showed the *write path* absorbed too (autonomous learning loops author the memory/skill
+artifacts — README conclusion 8). Trigger (a) required the ECC read to find **no
+process spine** (confirmed: opt-in catalog, orchestration outsourced to an external
+runtime) **and portability reducing to file conventions** (confirmed for the portable
+bundle: copy-with-adaptation into per-harness convention dirs; even its background
+observer daemon is installed as files and launched through each harness's own hook
+system). Per the gate, the revision executes: **the core stack is layers 1, 2, and 4,
+plus layer 5** (kept on its own surviving falsifier); **the former layer 3 becomes the
+cross-layer bucket below.**
+
+*Countervailing evidence, recorded at execution rather than buried:* the same read
+showed the artifact ecosystem is product-grade — ECC is a 236k-star business built
+entirely on independently distributed capability artifacts, and its instinct
+import/export design points at a *new* exchangeable artifact class. If instinct-like
+formats standardize across vendors (the ~2027-01 standards re-check remains scheduled),
+the bucket may deserve re-promotion to a layer — the door swings both ways, and that
+re-check is now the recorded trigger for the reverse revision.
 
 ### 4. Workflow frameworks
 
@@ -182,7 +221,7 @@ taxonomy needs revision — not the case.
 | **Devin** | Layer 2, bundles layer 5 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ layer identity. |
 | **Aider** | Layer 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
 | **MCP itself** | Not a layer — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are layer 3. |
-| **ECC (everything-claude-code)** | Layer 4 *provisional* — live case | Added 2026-07-28. A 235k-star bundle of skills/"instincts"/memory spanning four harnesses. Passes the portability test but maybe not the *methodology* test: if the source read finds no process spine, it's a layer-3 config pack at scale. (Contrast SuperClaude, cleanly resolved by the existing rule: single-harness → harness feature, not framework.) Verdict pending: [`notes/04-workflow-frameworks/ecc.md`](notes/04-workflow-frameworks/ecc.md). |
+| **ECC (everything-claude-code)** | **Resolved: layer 3** (was layer-4 provisional) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the three-core-layers revision** — see the executed revision note in the layer-3 section. [`notes/03-capability-extensions/ecc.md`](notes/03-capability-extensions/ecc.md). |
 | **hermes-agent** | Layer 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both layer-2 axes — see the execution-axis note above. Kept at layer 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md). |
 | **Codex CLI's in-process sandboxing** | Layer 2 that *internalized* layer 5 | Added 2026-07-30 at deep-dive. The layer-5 relationship vocabulary had two verbs — *bundle* (Devin ships a sandbox product alongside) and *bind* (hermes attaches to Docker/SSH/Modal). codex is a third: Seatbelt policies, Landlock, bwrap, and a Windows sandbox are **compiled into the harness binary** and invoked per tool call, plus pre-main process hardening. Still layer 2 — the sandbox is not independently distributed, so it fails the layer test — but the scope note's prediction ("as autonomy rises, the environment question becomes more central") gains a data point: the environment became a *harness subsystem*. [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md). |
 
@@ -201,7 +240,7 @@ taxonomy needs revision — not the case.
 |-------|-------|
 | 1 · Models | [`notes/01-models/index.md`](notes/01-models/index.md) |
 | 2 · Harnesses | [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md) |
-| 3 · Capability extensions | [`notes/03-capability-extensions/index.md`](notes/03-capability-extensions/index.md) |
+| 3 · Portable artifacts (bucket) | [`notes/03-capability-extensions/index.md`](notes/03-capability-extensions/index.md) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/index.md`](notes/04-workflow-frameworks/index.md) |
 | 5 · Execution environments | [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md) |
 | ✕ Cross-cutting | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |

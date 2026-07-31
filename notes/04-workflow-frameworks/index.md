@@ -56,14 +56,19 @@ Install: `uv tool install specify-cli` — needs Python 3.11+, git, and `uv`.
 completed changes into a living source-of-truth. Same bet as spec-kit, opposite ceremony
 budget. 63k stars, MIT, visibly dogfooded (its own history lives in `openspec/changes/`).
 
-### ECC (everything-claude-code) — <https://github.com/affaan-m/ECC> · [report](ecc.md)
+### ECC (everything-claude-code) — **moved to layer 3** (2026-07-30)
 
-*(Added 2026-07-28, deliberately as a boundary case.)* "Harness performance optimization
-system" — skills, "instincts", memory, continuous learning across Claude Code, Codex,
-OpenCode, Cursor. **The fastest-adopted tool in the study set: 235k stars in ~6 months.**
-Filed here provisionally: the source read must decide whether it's an encoded methodology
-(layer 4) or a config pack at scale (layer 3) — and whether "instincts"/memory earn new
-columns in the mechanism table below.
+*(Added 2026-07-28 as a deliberate boundary case; resolved at deep-dive.)* The source
+read answered the question this entry was created to ask: **no process spine** — the
+README's own guidance is "start with the workflow you need, not the full catalog,"
+workflow content is opt-in catalog items, and the multi-* orchestration commands
+require an external runtime (`ccg-workflow`). A config pack at scale with a real
+learning runtime, not an encoded methodology. Report now at
+[`../03-capability-extensions/ecc.md`](../03-capability-extensions/ecc.md). What it
+contributed to *this* layer's questions: verification gates can arrive as installable
+Stop hooks (a layer-3 delivery vehicle for the mechanism exp-01 credited to layer 4),
+and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
+outside layer 4 proper.
 
 ## Considered, not added (2026-07-28)
 

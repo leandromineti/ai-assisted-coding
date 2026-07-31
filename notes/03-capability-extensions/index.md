@@ -1,10 +1,12 @@
-# Layer 3 — Capability extensions
+# 3 — Portable artifacts & protocols (cross-layer bucket)
 
-`checked: 2026-07-28`
+`checked: 2026-07-30`
 
-What the agent can **see and touch**. The layer test is independent distribution: authored,
-versioned, and installed separately from any harness. See
-[`../../taxonomy.md`](../../taxonomy.md).
+What the agent can **see and touch**, as distributable content. **A bucket, not a layer,
+since the 2026-07-30 taxonomy revision** (three core layers; trigger fired at the ECC
+deep-dive — see the executed-revision note in [`../../taxonomy.md`](../../taxonomy.md)).
+The membership test is unchanged: independent distribution — authored, versioned, and
+installed separately from any harness. The "3" is a storage key.
 
 This index covers the **installable things**. The specifications they implement — MCP the
 protocol, the `AGENTS.md` convention — are not layer entries; they live in
@@ -30,13 +32,21 @@ today, so this layer is only partly portable — arguably it's "MCP plus a pile 
 features" wearing a layer's clothes. Whether that resolves depends on standards adoption,
 which is tracked in [`../standards/`](../standards/index.md) rather than here.
 
+## Reports
+
+| Tool | Depth | One-line |
+|---|---|---|
+| [**ECC** (everything-claude-code)](ecc.md) | deep-dive (2026-07-30) | 236k stars in ~6.5 months; reclassified here from provisional layer 4 — a config pack at scale (281 skills, 67 agents, rules, enforcement hooks) plus the set's only *harness-independent* autonomous learning loop (hook-observed "instincts", traced in source). Solo-author; commercial ring (Pro, GitHub App); `ecc2` Rust control plane growing toward layer 2. |
+
 ## The distinction that matters
 
 - **Layer 3 governs reach** — what the agent can access.
 - **Layer 4 governs process** — what it does with that access.
 
 A tool that adds a database connection is layer 3. A tool that says "write the spec before
-you touch the database" is layer 4.
+you touch the database" is layer 4. ECC is the case that proved the distinction cuts
+cleanly even at 236k stars: enormous reach, deliberately no prescribed process — see the
+verdict section of [`ecc.md`](ecc.md).
 
 ## Open questions
 

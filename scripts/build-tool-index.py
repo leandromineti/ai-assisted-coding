@@ -28,6 +28,7 @@ FEATURES_OUT = ROOT / "comparisons" / "features.md"
 FEATURE_KEYS = [
     "mcp", "lsp", "hooks", "skills", "subagents", "plan_mode",
     "rules_files", "model_agnostic", "session_sharing", "evals",
+    "learning_loop",  # added 2026-07-30 per issue #2's two-verified-instances rule
 ]
 
 REQUIRED = ("name", "layer", "depth")
@@ -35,7 +36,7 @@ DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
 LAYER_NAMES = {
     1: "Models",
     2: "Harnesses",
-    3: "Capability extensions",
+    3: "Portable artifacts",  # bucket, not a layer, since the 2026-07-30 taxonomy revision
     4: "Workflow frameworks",
     5: "Execution environments",
 }
