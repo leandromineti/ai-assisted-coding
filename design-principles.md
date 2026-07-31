@@ -134,12 +134,18 @@ and the *content* just-in-time.
 ## Layer 4 — workflow-framework design
 
 **F1. The methodology is prose, prose doesn't bind — plan the deterministic escape
-hatch from day one.** *(convergent; README conclusion 7)* Both frameworks studied hit
-enforcement-by-typography limits (spec-kit fixed hook execution twice by rewriting
-instructions "more forcefully"; its constitution went eight months unenforced) and both
-grew deterministic engines (spec-kit's `workflows/` YAML runner, GSD's `gsd-pi`).
-Layer-4→2 bleed is the structural symptom. If a gate *must* hold, it eventually needs
-code, not capitalization.
+hatch from day one.** *(convergent — 3 instances, one an existence proof; strengthened
+2026-07-31)* Both frameworks first studied hit enforcement-by-typography limits
+(spec-kit fixed hook execution twice by rewriting instructions "more forcefully"; its
+constitution went eight months unenforced) and both grew deterministic engines
+(spec-kit's `workflows/` YAML runner, GSD's `gsd-pi`). Layer-4→2 bleed is the
+structural symptom. **OpenSpec is the existence proof for the "from day one" clause:**
+its deterministic engine (delta-merge compiler, DAG workflow engine over declarative
+schemas, machine validator) is the *founding architecture*, with prose shrunk to thin
+CLI adapters (`allowed-tools: Bash(openspec:*)`) —
+[openspec](notes/04-workflow-frameworks/openspec.md). If a gate *must* hold, it
+eventually needs code, not capitalization — and the lean pole shows starting there is
+viable.
 
 **F2. Spend tokens measuring the domain, not on ceremony.** *(n=1, preregistered;
 under active test)* Exp-01's entire observed quality margin traced to agents that
@@ -172,7 +178,12 @@ keep catching vacuous T4/T5 passes before any run. Abstention: GSD's verifiers r
 `human_needed` on subjective checks instead of auto-passing. False-positive control:
 hermes' verification-stop ships a suppression list because a gate that nags on README
 edits trains users to bypass it. A gate missing any of the three degrades into either
-theater or noise.
+theater or noise. *Vocabulary sharpened 2026-07-31 (openspec read):* gates come in
+three mechanisms — **format** gates (deterministic checks on artifacts: OpenSpec's
+validator), **prose** gates (the model reading instructions: spec-kit's constitution
+check), and **measured** gates (checks against measured domain behavior: GSD/exp-01) —
+and only the third traced to exp-01's quality margin. Determinism and domain-contact
+are independent axes; a gate can be fully deterministic and never touch behavior.
 
 **F6. Installing a methodology means granting prose your harness's authority —
 maintainership is a security property.** *(single-instance, structural)* GSD's upstream

@@ -62,6 +62,16 @@ weaker than exp-01's: its evidence bar is "ran something fresh", not a hidden ve
 the distinction between *a* gate and a *measured* gate matters and should be scored,
 not blurred.)
 
+**Gate vocabulary for exp-03 (added 2026-07-31, openspec read):** three mechanisms,
+two axes (deterministic?, domain-contact?): **format** gates — deterministic checks on
+artifacts (OpenSpec's validator rejecting malformed/zero-delta changes); **prose**
+gates — the model reading gate instructions (spec-kit's constitution check, README
+conclusion 7's enforcement-by-typography); **measured** gates — checks against
+measured domain behavior (GSD/exp-01, the rig's hidden verifier). Only measured gates
+traced to exp-01's quality margin. Exp-03's "minimal harness" must therefore hold
+*measured* gates as its ingredient, and score any format/prose gating in either arm
+separately — a fully deterministic framework can still never touch the domain.
+
 **Why it's first-class here:** it's the least-explored part of the field and the one that
 decides whether any of the rest is working. Everyone measures whether they *feel* faster.
 Almost nobody measures whether the output is *better*.
