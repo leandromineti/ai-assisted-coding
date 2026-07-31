@@ -90,7 +90,36 @@ Two sub-rules, both scarred in experiment 01:
   and that the *orchestrator's* cache reads, invisible to notifications, dominated
   total spend. Session + agent transcripts carry exact `usage` fields; parse those.
   (Same failure family as `stats-cache.json` inflating cache reads —
-  `notes/cross-cutting/index.md`.)
+  `notes/cross-cutting/index.md`.) Attribute usage **per model**: exp-02's Run A ledger
+  showed an auxiliary `claude-haiku-4-5` call the protocol's "sole model" wording hadn't
+  anticipated — immaterial at $0.0008, but you only know that by looking.
+- **5d. Comparison instruments are proven to discriminate, not just to fail closed.**
+  Fails-closed proves an instrument can register failure; it says nothing about whether it
+  can register *difference*. Establish headroom before the comparative run: pilot the
+  instrument against a competent reference — the plain baseline is the natural one, so
+  **run the baseline arm first and treat it as instrument calibration** — and require a
+  non-perfect, non-zero score. A baseline that saturates the instrument means it is not a
+  comparison instrument for that pair; fix the instrument or narrow the claim *before*
+  spending on the second arm.
+
+  *Why it earned its place:* exp-02's trap set was proven fails-closed in-container (8/8
+  error against an empty container, 8/8 fail against a stub) and still turned out useless
+  for its main purpose — the plain arm cleared all five trap classes unaided on the first
+  attempt, leaving the framework arm no room to score *better* and rendering the
+  preregistered "intent capture buys code quality" damage condition unfalsifiable on that
+  task. The floor was proven twice; nobody checked the ceiling once.
+- **5e. The execution path is preregistered *and* smoke-tested; success is read from
+  artifacts, not exit status.** A protocol that names a driver command is not validated
+  until that exact command line has run end-to-end on a trivial prompt. And a harness can
+  exit 0 having done no work — confirm every run against its produced artifacts and
+  transcript before scoring it.
+
+  *Why it earned its place:* exp-02's preregistered driver specified
+  `--dangerously-skip-permissions`, which the harness refuses outright as root. The launch
+  died in 2 seconds, wrote nothing, and **reported exit 0**; the failure was visible only on
+  stderr. A $0.05 smoke run would have caught it before the protocol was called runnable.
+  The replacement mechanism (an explicit `permissions.allow` list) is also strictly better,
+  which is the tell that the original was never exercised.
 
 ## 6. Findings are promoted, not scattered
 
@@ -114,6 +143,25 @@ Where possible, cross-check what a tool's docs *say* against what its source *do
 when run* (the GSD experiment). The only tool where all three views exist — gsd-core —
 produced the repo's sharpest findings. Prefer subjects where behavior can be observed,
 not just read.
+
+- **8a. The same skepticism applies to the apparatus. The network condition is declared,
+  enforced at the egress layer, verified by probe, and held identical across arms.**
+  Configuring a tool permission is not enforcing a network policy. State which condition an
+  experiment ran under — **closed**, **package-hosts-only**, or **open** — enforce it where
+  traffic actually leaves the sandbox, prove it with a probe recorded in the log, and never
+  compare arms that ran under different conditions.
+
+  Open is a legitimate condition, not a failure: nobody runs these frameworks with the web
+  unplugged, so a permanently closed rig measures a configuration that doesn't exist in
+  practice. But it is never a *silent* default, because it lets a framework satisfy
+  "empirical grounding" by lookup instead of local measurement — the exact mechanism
+  conclusion 6 attributes the quality margin to — and because web content differs between
+  two runs days apart, which is a live confound for an n=1 A/B.
+
+  *Why it earned its place:* exp-02's rig denied the web *tools* and its README claimed arms
+  therefore had model-API-only access; `curl https://example.com` from the Bash tool returned
+  HTTP 200. The claim survived only because Run A's arm never thought to shell out — verified
+  after the fact from its transcript, which is luck, not method.
 
 ## 9. Public docs are self-contained
 
