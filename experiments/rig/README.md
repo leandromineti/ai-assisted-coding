@@ -33,10 +33,37 @@ because its conventions match this repo's needs exactly:
 | What | Pin |
 |---|---|
 | Base image | `ghcr.io/laude-institute/t-bench/python-3-13:20250620` (T-Bench's own base) — digest recorded at first build (2026-07-30): `sha256:236734f0cafcce942ca09316d57236c2273a2b5411e116454a22cf6d718d95f5` |
-| Harness | Claude Code CLI `2.1.220`, installed in-image via npm, run headless |
+| Harness | Claude Code CLI `2.1.220`, installed in-image via npm, run headless (auth: see [§ Auth](#auth-api-key-passed-in-at-run-time)) |
 | Model | `claude-sonnet-5` — sole model, all arms, all frameworks |
 | Framework versions | pinned per experiment in its preregistration (exp-02: spec-kit @ `655a3cb`) |
 | Rig image digest | local image ID `sha256:c7c6587394fabae0924cf2f0bd9a4afeb74527a2223184f7dd46da1066c17155` (`tarpeek-rig:exp02`, built 2026-07-30; never pushed to a registry, so this is the config digest, not a repo digest). Build note: the base image's distro Node is 18, below Claude Code 2.1.220's floor — the Dockerfile installs NodeSource Node 22.x (22.23.2 at first build) |
+
+## Auth: API key, passed in at run time
+
+The in-container harness runs headless, so the interactive login path is unavailable —
+there is no browser and no host home directory. Arms authenticate with an API key
+supplied at `docker run`:
+
+```sh
+source ~/.secrets/personal-anthropic.env   # exports PERSONAL_ANTHROPIC_KEY; 600, outside the repo
+docker run --rm -e ANTHROPIC_API_KEY="$PERSONAL_ANTHROPIC_KEY" tarpeek-rig:exp02 …
+```
+
+Two deliberate choices:
+
+- **The host variable is `PERSONAL_ANTHROPIC_KEY`, not `ANTHROPIC_API_KEY`.** A set
+  `ANTHROPIC_API_KEY` outranks every other credential source and conflicts with an
+  interactive CLI login on the same machine, so the canonical name exists only inside
+  the container. The name also omits the substring `ANTHROPIC_API_KEY` so that a
+  `grep ANTHROPIC_API_KEY` over the host environment still correctly reports "unset" —
+  no false positive for a credential probe.
+- **The mapping is the audit trail.** The `-e` line is where a key crosses into the
+  sandbox, visibly and on purpose, rather than being inherited ambiently from the
+  shell. Which key is used determines who is billed for a run — worth being explicit
+  about on any machine that holds more than one credential.
+
+The key value is never committed, and never referenced in this repo by anything other
+than the variable name.
 
 ## Harness decision: Claude Code, not an open-source harness
 
