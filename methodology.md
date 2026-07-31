@@ -1,6 +1,6 @@
 # Methodology
 
-`checked: 2026-07-28`
+`checked: 2026-07-30`
 
 How work is done in this repo — distilled from practice, not aspiration. Every rule here
 earned its place by catching a real mistake at least once; each entry names where it's
@@ -39,6 +39,23 @@ Architecture claims name a file, a line, and a pinned commit
 (`processor.ts:30 @ 017a5977d`). Reports on cloned tools are checked against the pin
 mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a design's
 *history* is often better documentation than the design.
+
+- **4a. Docstrings are testimony; call sites are evidence.** A claim about *when or
+  whether* a mechanism fires traces to its call site and gating condition, not the
+  module header — mandatory for anything entering a report's "distinguishing bet" or
+  "Surprises", the sections other conclusions build on. Well-documented codebases make
+  docstring-leaning reads efficient and flattering — those are the ones this rule
+  exists for. The mirror discipline for absence: a mechanism not found is recorded as
+  *unverified absence* with the search scope stated, never asserted as absent (the
+  prose analog of the matrix's `·` vs `✗`).
+
+  *Why it earned its place:* the hermes-agent deep-dive (2026-07-30) reported an
+  "after every turn" review fork from `background_review.py`'s docstring; the call
+  site (`turn_finalizer.py:653`) showed interval-gated, success-only, best-effort. The
+  overstated version was the report's flagship claim and had already propagated to the
+  layer-2 index before a parity check caught it. Applied prospectively in the codex
+  read same day (memory pipeline verified at `turn_processor.rs:594`; missing stuck-loop
+  guard recorded as unverified absence).
 
 ## 5. Experiments are preregistered
 

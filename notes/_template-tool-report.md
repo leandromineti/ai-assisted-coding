@@ -38,6 +38,7 @@ features:
   model_agnostic: <true | false>   # bring-your-own-model by design
   session_sharing: <true | false>  # shareable session links/artifacts
   evals: <true | false>            # ships its own evaluation suite
+  learning_loop: <true | false>    # AUTONOMOUS agent-written memory/skills (background/spawned write path) — distinct from `skills` (packaged instructions exist) and from user-curated memory files. Added 2026-07-30 per issue #2's two-verified-instances rule (hermes, codex); note default-on vs default-off in the comment
 ---
 
 # <Tool>

@@ -27,6 +27,7 @@ features:
   model_agnostic: true   # 33 provider plugins (plugins/model-providers/)
   session_sharing: true  # `hermes trace upload` → Hugging Face agent-trace dataset (private by default); no hosted live-session links
   evals: true            # mini_swe_runner.py, batch_runner.py, committed bench data (mcp-research-data/)
+  learning_loop: true    # ON by default: interval-gated review fork (turn_finalizer.py:653) + idle curator + /learn
 ---
 
 # hermes-agent
