@@ -1,0 +1,289 @@
+#!/usr/bin/env python3
+"""Generate refs/index.md and comparisons/benchmarks.md from the frontmatter of every ref note.
+
+Sibling of build-tool-index.py, same rule (methodology 3): a hand-kept catalog drifts from
+the notes it describes, and you find out when it's already wrong.
+
+    python3 scripts/build-refs-index.py            # write the catalog + benchmark matrix
+    python3 scripts/build-refs-index.py --check    # lint only, write nothing
+
+--check enforces the honesty properties the library exists for:
+
+  1. required frontmatter present, `kind` / `read_depth` inside the vocabulary
+  2. a ref cited elsewhere in the repo whose note says `read_depth: unread` — the guard
+     against an abstract skim hardening into a citation
+  3. a `refs/<key>.md` link with no note behind it
+  4. (warning only) a note with no `bears_on` — recorded but not yet used anywhere
+
+1-3 exit non-zero. Deliberately strict about 2: it is the failure this library was built
+to prevent.
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+REFS = ROOT / "refs"
+OUT = REFS / "index.md"
+BENCH_OUT = ROOT / "comparisons" / "benchmarks.md"
+
+# Files under refs/ that are not sources.
+NOT_A_NOTE = {"index.md", "README.md", "log.md"}
+
+REQUIRED = ("key", "title", "year", "kind", "read_depth", "retrieved")
+
+# Fixed vocabularies. Keep small; a new value is a deliberate decision, not a typo.
+KIND_ORDER = {
+    "benchmark": 0,        # ships tasks + a verifier we could run or borrow
+    "empirical-study": 1,  # ran something, reports measurements
+    "method": 2,           # proposes a technique or framework
+    "critique": 3,         # argues something else is wrong
+    "survey": 4,           # characterizes a field, usually without running it
+}
+# Order = increasing trust in what the note claims about the paper.
+READ_DEPTH_ORDER = {"full": 0, "extract": 1, "abstract": 2, "unread": 3}
+
+# Benchmark-only frontmatter. Order defines the matrix columns.
+BENCH_KEYS = [
+    "task_shape", "task_count", "task_source", "verifier",
+    "ambiguity_construction", "user_simulator", "metrics",
+    "contamination_posture", "headroom",
+]
+
+
+def read_frontmatter(path: Path) -> dict | None:
+    """Return the YAML frontmatter of a markdown file, or None if it has none.
+
+    Mirrors the same function in build-tool-index.py. Kept duplicated rather than
+    factored into a shared module: ten lines, and the two scripts validate different
+    schemas — coupling them would mean one script's vocabulary change breaking the other.
+    """
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        return None
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        return None
+    data = yaml.safe_load(text[4:end])
+    return data if isinstance(data, dict) else None
+
+
+def collect() -> list[dict]:
+    notes = []
+    if not REFS.is_dir():
+        return notes
+    for path in sorted(REFS.glob("*.md")):
+        if path.name in NOT_A_NOTE or path.name.startswith("_"):
+            continue
+        fm = read_frontmatter(path)
+        if fm is None:
+            print(f"warn: {path.relative_to(ROOT)} has no frontmatter", file=sys.stderr)
+            continue
+        fm["_path"] = path
+        notes.append(fm)
+    return sorted(
+        notes,
+        key=lambda n: (
+            KIND_ORDER.get(n.get("kind"), 9),
+            READ_DEPTH_ORDER.get(n.get("read_depth"), 9),
+            str(n.get("key", "")),
+        ),
+    )
+
+
+def citing_files(key: str) -> list[Path]:
+    """Markdown files outside refs/ that mention this ref key."""
+    hits = []
+    for path in ROOT.rglob("*.md"):
+        rel = path.relative_to(ROOT)
+        if rel.parts[0] in ("refs", "upstream", ".git"):
+            continue
+        if key in path.read_text(encoding="utf-8"):
+            hits.append(rel)
+    return hits
+
+
+def check(notes: list[dict]) -> int:
+    problems = 0
+    keys = {n.get("key") for n in notes}
+
+    for n in notes:
+        rel = n["_path"].relative_to(ROOT)
+        missing = [k for k in REQUIRED if k not in n]
+        if missing:
+            print(f"ERROR: {rel} missing {missing}", file=sys.stderr)
+            problems += 1
+            continue
+        if n["_path"].stem != n["key"]:
+            print(
+                f"ERROR: {rel} has key '{n['key']}' — must equal the filename stem "
+                f"'{n['_path'].stem}' (the key is the citekey)",
+                file=sys.stderr,
+            )
+            problems += 1
+        if n["kind"] not in KIND_ORDER:
+            print(
+                f"ERROR: {rel} kind '{n['kind']}' not in {sorted(KIND_ORDER)}",
+                file=sys.stderr,
+            )
+            problems += 1
+        if n["read_depth"] not in READ_DEPTH_ORDER:
+            print(
+                f"ERROR: {rel} read_depth '{n['read_depth']}' not in "
+                f"{sorted(READ_DEPTH_ORDER)}",
+                file=sys.stderr,
+            )
+            problems += 1
+
+        # The load-bearing check: unread sources must not be cited as evidence.
+        if n.get("read_depth") == "unread":
+            cited_by = citing_files(n["key"])
+            if cited_by:
+                where = ", ".join(str(p) for p in cited_by)
+                print(
+                    f"ERROR: {rel} is read_depth: unread but cited in {where} "
+                    f"— read it or remove the citation",
+                    file=sys.stderr,
+                )
+                problems += 1
+
+        if not n.get("bears_on"):
+            print(f"warn: {rel} has no bears_on — recorded but unused", file=sys.stderr)
+
+    # Dangling refs/<key>.md links anywhere in the repo.
+    for path in ROOT.rglob("*.md"):
+        if path.relative_to(ROOT).parts[0] in ("upstream", ".git"):
+            continue
+        for token in path.read_text(encoding="utf-8").split("refs/")[1:]:
+            name = token.split(".md")[0].split(")")[0].split("`")[0].strip()
+            if not name or "/" in name or name in ("index", "README", "log", "pdf"):
+                continue
+            if name not in keys:
+                print(
+                    f"ERROR: {path.relative_to(ROOT)} links refs/{name}.md — no such note",
+                    file=sys.stderr,
+                )
+                problems += 1
+    return problems
+
+
+def _fmt(value: object) -> str:
+    """Render a frontmatter value as a table cell. `·` means not recorded, not 'no'."""
+    if value is None:
+        return "·"
+    if value is True:
+        return "✓"
+    if value is False:
+        return "✗"
+    if isinstance(value, list):
+        return ", ".join(f"`{v}`" for v in value) if value else "·"
+    return str(value)
+
+
+def render(notes: list[dict]) -> str:
+    newest = max((str(n.get("retrieved", "")) for n in notes), default="")
+    lines = [
+        "# Reference index",
+        "",
+        "<!-- GENERATED by scripts/build-refs-index.py — do not edit by hand. -->",
+        "<!-- Edit the frontmatter of the notes in refs/, then re-run the script. -->",
+        "",
+        f"Every source with a note, grouped by kind. Newest retrieved: `{newest}`.",
+        "",
+        "`read` is the honesty column, mirroring `depth` in "
+        "[`../comparisons/tools.md`](../comparisons/tools.md): **full** means the paper was "
+        "read end to end; **extract** means a tool answered questions against it and nobody "
+        "read the whole thing; **abstract** means only the abstract; **unread** means the "
+        "source is recorded as a lead and nothing in this repo may cite it. "
+        "`build-refs-index.py --check` fails if an `unread` source is cited anywhere.",
+        "",
+        "`Peer` distinguishes peer-reviewed venues from preprints — a 2026 arXiv preprint is "
+        "a lead, not a settled result, and should not outweigh our own measurements without "
+        "reason.",
+        "",
+    ]
+    for kind in sorted(KIND_ORDER, key=lambda k: KIND_ORDER[k]):
+        group = [n for n in notes if n.get("kind") == kind]
+        if not group:
+            continue
+        lines += [
+            f"## {kind}",
+            "",
+            "| Source | Year | Venue | Peer | read | Bears on | What it does to our claims |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for n in group:
+            link = f"[{n['key']}]({n['_path'].name})"
+            bears = _fmt(n.get("bears_on"))
+            lines.append(
+                f"| {link} | {n.get('year', '·')} | {n.get('venue', '·')} | "
+                f"{_fmt(n.get('peer_reviewed'))} | {n['read_depth']} | {bears} | "
+                f"{n.get('verdict', '·')} |"
+            )
+        lines.append("")
+
+    counts: dict[str, int] = {}
+    for n in notes:
+        counts[n["read_depth"]] = counts.get(n["read_depth"], 0) + 1
+    summary = " · ".join(f"{v} {k}" for k, v in sorted(counts.items(), key=lambda kv: READ_DEPTH_ORDER.get(kv[0], 9)))
+    lines += [f"**{len(notes)} sources** — {summary}.", ""]
+    return "\n".join(lines)
+
+
+def render_benchmarks(notes: list[dict]) -> str:
+    bench = [n for n in notes if n.get("kind") == "benchmark"]
+    lines = [
+        "# Benchmark matrix",
+        "",
+        "<!-- GENERATED by scripts/build-refs-index.py — do not edit by hand. -->",
+        "<!-- Edit the frontmatter of the benchmark notes in refs/, then re-run. -->",
+        "",
+        "Benchmarks we could borrow a task from, or borrow a metric from. Cells: **·** means "
+        "not recorded — it is *not* a no.",
+        "",
+        "Two columns exist because of scars, and they are the ones to read first:",
+        "",
+        "- **headroom** — does a current frontier model still fail some of these tasks? "
+        "Methodology 5d: an instrument a competent baseline saturates cannot measure a "
+        "difference. exp-02's trap set was proven fails-closed and still useless for its "
+        "main purpose.",
+        "- **contamination** — a task in the training corpus is *more* likely to saturate, "
+        "because both arms partly recall the answer and the difference vanishes. "
+        "`canary` / `time-windowed` / `private-holdout` are defences; `none` is a warning.",
+        "",
+        "| Benchmark | " + " | ".join(k.replace("_", " ") for k in BENCH_KEYS) + " | Note |",
+        "|---|" + "---|" * (len(BENCH_KEYS) + 1),
+    ]
+    for n in bench:
+        cells = [_fmt(n.get(k)) for k in BENCH_KEYS]
+        link = f"[{n['key']}](../refs/{n['_path'].name})"
+        lines.append(f"| {n.get('title', n['key'])} | " + " | ".join(cells) + f" | {link} |")
+    lines += ["", f"**{len(bench)} benchmarks.**", ""]
+    return "\n".join(lines)
+
+
+def main() -> int:
+    notes = collect()
+    if not notes:
+        print("no ref notes with frontmatter found", file=sys.stderr)
+        return 1
+
+    if "--check" in sys.argv:
+        problems = check(notes)
+        print(f"{len(notes)} refs checked, {problems} problem(s)")
+        return 1 if problems else 0
+
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    BENCH_OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(render(notes), encoding="utf-8")
+    BENCH_OUT.write_text(render_benchmarks(notes), encoding="utf-8")
+    print(f"wrote {OUT.relative_to(ROOT)} — {len(notes)} sources")
+    print(f"wrote {BENCH_OUT.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

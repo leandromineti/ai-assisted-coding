@@ -9,3 +9,7 @@ upstream/*
 Thumbs.db
 .vscode/
 .idea/
+# Downloaded papers — read-only study copies, never committed.
+# Copyright belongs to the publishers; refetchable from each note's arxiv/doi frontmatter.
+refs/pdf/*
+!refs/pdf/.gitkeep
