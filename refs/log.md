@@ -29,3 +29,22 @@ frameworks we study, docs-only and single-rater. Independently reaches conclusio
 depth-vs-portability tradeoff. Scores GSD 0 on validation, which our exp-01 run contradicts —
 rule 8 earning its keep. Its research agenda names our attention-split instrument ("rate of
 human review required") as a gap.
+
+## [2026-07-31] ingest | ClarEval
+
+`clareval` · full read, body + appendices A–F. The design to copy: ambiguity injection by
+removal from complete specs, three types (missing goal / missing premises / ambiguous
+terminology), a *rule-based* user simulator validated at 96.5% agreement against an LLM judge,
+and a metric suite (KQC, PIR, MPR, ATC, EAR). Its headroom result — GPT-4o Pass@1 8.94%
+ambiguous vs 89.02% clarified — is direct evidence that withholding information produces the
+discrimination our trap set lacked. Also names Run A's T4 behaviour: "Assumptive Generation
+(silent failure)".
+
+## [2026-07-31] ingest | Ambig-SWE
+
+`ambig-swe` · full read, body pp. 1–9. **ICLR 2026, peer-reviewed** — the best-credentialed
+source in the batch. Repo-scale (SWE-Bench Verified, 500 issues) confirmation that withholding
+information creates headroom (Claude Sonnet 4: 40.0 Hidden vs 68.0 Full). Two things it changes
+for us: agents "almost never interact unless explicitly prompted", which confounds Run A's 0s
+attention reading; and its causal-identification argument for why the complete spec must exist
+before you delete from it.
