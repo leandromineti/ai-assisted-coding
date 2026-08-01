@@ -27,11 +27,20 @@ State-of-knowledge is always visible and machine-readable:
 
 ## 3. Generated, never hand-kept
 
-Anything that summarizes other files (`comparisons/tools.md`, `comparisons/features.md`)
-is generated from their frontmatter by `scripts/build-tool-index.py`. Hand-kept indexes
-drift, and you find out when they're already wrong. `--check` re-verifies that every
-report's pinned commit still matches its clone's HEAD — a stale pin silently invalidates
-every claim beneath it.
+Anything that summarizes other files (`comparisons/tools.md`, `comparisons/features.md`,
+`refs/index.md`, `comparisons/benchmarks.md`) is generated from their frontmatter by
+`scripts/build-tool-index.py` and `scripts/build-refs-index.py`. Hand-kept indexes drift, and
+you find out when they're already wrong. `--check` verifies every report's pinned commit is
+still **reachable** in its clone; a pin that no longer resolves means the claims beneath it
+can't be checked against their source, and that is an error.
+
+**Upstream moving on is not an error, and conflating the two was a bug (fixed 2026-07-31).**
+The check used to fail whenever a pin differed from clone HEAD, calling it "stale". But a pin
+records *the commit that was read* — a dated historical fact — so the only action that silenced
+the warning was re-pointing it at HEAD **without re-reading**, converting an honest dated
+observation into a false claim about current code. A lint whose only cheap remedy is to lie is
+worse than no lint. Drift is now reported with magnitude (commits ahead, files changed) so a
+human can decide whether a re-read is warranted; that decision is judgement, not a lint pass.
 
 ## 4. Source claims are traceable or they're opinions
 

@@ -7,8 +7,11 @@ reports it describes, and you find out when it's already wrong.
     python3 scripts/build-tool-index.py            # write the index
     python3 scripts/build-tool-index.py --check    # verify frontmatter, write nothing
 
---check also asserts each report's pinned `commit` still matches the clone's HEAD.
-A stale SHA silently invalidates every architecture claim in the document.
+--check verifies each report's pinned `commit` is still **reachable** in its clone — a pin
+that no longer resolves means the claims beneath it can't be checked against their source,
+which is an error. Upstream having moved on is reported separately and is *not* an error: a
+pin records the commit that was read, so re-pointing it at HEAD without re-reading would
+turn a dated observation into a false claim about current code.
 """
 from __future__ import annotations
 
@@ -75,8 +78,25 @@ def collect() -> list[dict]:
 
 
 def check(reports: list[dict]) -> int:
-    """Assert every pinned commit still matches the clone's HEAD."""
+    """Verify each report's pinned commit is still *reachable*, and report upstream drift.
+
+    Two different conditions, deliberately separated (2026-07-31):
+
+    * **UNVERIFIABLE (an error).** The pinned commit no longer resolves in the clone — a
+      force-push, a rewritten history, a wrong or missing remote. Every claim beneath the
+      report is now uncheckable against the code it came from. This is the real failure.
+    * **BEHIND (information, not an error).** The pin resolves but upstream has moved on.
+      The report is still fully verifiable; it just describes older code.
+
+    The earlier version treated *any* divergence from clone HEAD as "STALE … silently
+    invalidates every architecture claim", which was wrong in a way that mattered: a pin
+    records **the commit that was read**, so the only action that silenced the warning was
+    re-pointing the pin at HEAD without re-reading — converting "I read commit X" into a
+    false claim that the report describes HEAD. The check now refuses to invite that.
+    Deciding to re-read after drift is a judgement call for a human; it is not a lint error.
+    """
     problems = 0
+    behind = []
     for r in reports:
         pinned = r.get("commit")
         if not pinned or not r.get("open_source", True):
@@ -85,17 +105,30 @@ def check(reports: list[dict]) -> int:
         if not (clone / ".git").is_dir():
             print(f"warn: {r['name']} pinned to {pinned} but not cloned", file=sys.stderr)
             continue
-        head = subprocess.run(
-            ["git", "-C", str(clone), "rev-parse", "--short", "HEAD"],
-            capture_output=True, text=True, check=True,
-        ).stdout.strip()
-        if not head.startswith(str(pinned)) and not str(pinned).startswith(head):
+        g = lambda *a: subprocess.run(  # noqa: E731
+            ["git", "-C", str(clone), *a], capture_output=True, text=True
+        )
+        if g("cat-file", "-e", f"{pinned}^{{commit}}").returncode != 0:
             print(
-                f"STALE: {r['name']} report pins {pinned}, clone HEAD is {head} "
-                f"— re-read or re-pin before trusting {r['_path'].relative_to(ROOT)}",
+                f"UNVERIFIABLE: {r['name']} pins {pinned}, which no longer resolves in "
+                f"upstream/{r['name']} — history rewritten or wrong remote. Claims in "
+                f"{r['_path'].relative_to(ROOT)} cannot be checked against their source.",
                 file=sys.stderr,
             )
             problems += 1
+            continue
+        n = g("rev-list", "--count", f"{pinned}..HEAD").stdout.strip()
+        if n and n != "0":
+            head = g("rev-parse", "--short", "HEAD").stdout.strip()
+            files = g("diff", "--name-only", f"{pinned}..HEAD").stdout.split()
+            behind.append((r["name"], pinned, head, int(n), len(files), r.get("read_at", "?")))
+    for name, pinned, head, n, nfiles, read_at in sorted(behind, key=lambda b: -b[3]):
+        print(
+            f"behind: {name} read at {read_at} on {pinned}; upstream is {n} commits ahead "
+            f"({head}), {nfiles} files changed — re-read if the drift touches what the "
+            f"report claims; do NOT re-pin without re-reading.",
+            file=sys.stderr,
+        )
     return problems
 
 
@@ -214,7 +247,8 @@ def main() -> int:
 
     if "--check" in sys.argv:
         problems = check(reports)
-        print(f"{len(reports)} reports checked, {problems} stale")
+        print(f"{len(reports)} reports checked, {problems} unverifiable "
+              f"(drift is reported above and is not a failure)")
         return 1 if problems else 0
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
