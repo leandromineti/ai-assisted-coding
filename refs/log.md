@@ -48,3 +48,12 @@ information creates headroom (Claude Sonnet 4: 40.0 Hidden vs 68.0 Full). Two th
 for us: agents "almost never interact unless explicitly prompted", which confounds Run A's 0s
 attention reading; and its causal-identification argument for why the complete spec must exist
 before you delete from it.
+
+## [2026-07-31] ingest | Lost in Simulation
+
+`lost-in-simulation` · full read, body pp. 1–9. Real human user study (US/India/Kenya/Nigeria)
+against τ-Bench retail. Swapping only the *user* LLM moves measured agent success by ~9pp
+(Sonnet 3.7 67.0 vs Sonnet 4.5 75.9) — the apparatus becomes a free variable. Simulated users
+ask ~2× as many questions as humans and are far more polite; failure attribution shifts from
+user (62.2% human) to agent (48.9% simulated). Corrects an "information leakage" claim I made
+earlier from an extraction summary — that claim is not in the paper.
