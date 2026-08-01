@@ -38,14 +38,16 @@ confirm, contradict, or note silence.
 
 | Path | Holds |
 |------|-------|
+| `CLAUDE.md` | How the repo works: where things go, the ingest/lint operations, the honesty columns |
 | `taxonomy.md` | The layer definitions and boundary rule — the canonical reference |
 | `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
 | `design-principles.md` | Design principles derived from the reports, per layer, confidence-marked |
 | `notes/` | One index per layer, plus one file per tool, written while using it |
+| `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
 | `comparisons/` | Side-by-side matrices distilled from the notes and experiments |
-| `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` (regenerate the index) |
+| `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` and `build-refs-index.py` (regenerate the indexes) |
 
 **[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-layer index of every
 tool with a report, and **[`comparisons/features.md`](comparisons/features.md)** the
@@ -120,6 +122,12 @@ note. Revised when evidence moves._
    crafted commits, timezone probes) and to measured verification gates; almost none to
    the surrounding ceremony. Open follow-up: which 20% of the ceremony buys 80% of the
    margin? → [`experiments/01-gsd-vs-plain/`](experiments/01-gsd-vs-plain/README.md)
+   **Status 2026-07-31 — under re-examination, issue #8.** A published n=128 ablation
+   separates the two ingredients this conclusion credits jointly and finds post-phase
+   *validation* worth ~3× pre-phase *grounding* ([`refs/spec-kit-agents.md`](refs/spec-kit-agents.md)).
+   Its headline is an LLM-judge score its own blinded human sample mildly contradicts, and it
+   ran a different base model, so this is a competing decomposition rather than a refutation —
+   but our n=1 does not support asserting the split either way.
 7. **A layer-4 framework's portability and its enforcement power are the same tradeoff**
    (2026-07-28, spec-kit source read). Cross-harness portability is cheap because every
    harness converged on "slash command = prompt file" — but that lowest common
@@ -132,6 +140,12 @@ note. Revised when evidence moves._
    YAML runner, GSD's `gsd-pi`) as the escape hatch — layer-2 bleed as a structural
    symptom, not a coincidence. →
    [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md)
+   **Independently corroborated (2026-07-31):** a six-framework taxonomy study covering the
+   same subjects reaches the same tradeoff — "no framework strongly covers all six dimensions
+   … a structural trade-off between process depth and portability" — from documentation
+   alone, where ours came from reading git history
+   ([`refs/from-prompt-to-process.md`](refs/from-prompt-to-process.md)). Two methods, one
+   shape. Its GSD scores are also where our *run* evidence contradicts a docs-only reading.
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
    layer 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
