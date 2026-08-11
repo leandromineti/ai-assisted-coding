@@ -1,6 +1,6 @@
 # Standards — not a layer
 
-`checked: 2026-07-28`
+`checked: 2026-08-11`
 
 Specifications, not installable things. A standard has no layer of its own; it is recorded
 here once and referenced from the layers that implement it. See
@@ -50,6 +50,19 @@ vendor-specific predecessors.
 
 The *files* are layer 3 artifacts; the *convention* is what lives here.
 
+**Rival-implementation evidence (2026-08-11, Warp @ `80a20347`).** The strongest signal yet
+that this is a real convention rather than one vendor's habit: Warp reads `WARP.md` *and*
+`AGENTS.md` as project rules (`crates/repo_metadata/src/standing_queries.rs:22`) and
+`~/.agents/AGENTS.md` as global rules — and its project-init flow defines
+`LINKABLE_FILES = [CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules, .windsurfrules,
+.github/copilot-instructions.md]` (`app/src/terminal/view/init_project/mod.rs:50`), seven
+competitors' rules files it offers to link into its own. A shipping harness treating rival
+vendors' rules files as consumable input is what "converging on `AGENTS.md`" looks like from
+the implementer's side, not the spec's. Note what it *doesn't* show: linking is a
+concatenation courtesy, so it still tests nothing about schema — the convention remains
+weak in exactly the way the open question below says.
+[`../02-harnesses/warp.md`](../02-harnesses/warp.md).
+
 **Open questions**
 
 - Is a filename convention enough to be called a standard? It coordinates behavior with no
@@ -83,7 +96,7 @@ Current state of the evidence:
 |---|---|---|
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
-| Skills | **Emerging** — `SKILL.md` consumed by ≥4 harnesses (evidence below, 2026-07-28) | Converging |
+| Skills | **Emerging** — `SKILL.md` consumed by ≥5 harnesses (2026-07-28 evidence below; Warp added 2026-08-11) | Converging |
 | Hooks | No — harness-specific | No sign of movement |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
 
@@ -96,6 +109,12 @@ directory that multiple integrations resolve to. Like rules files, this is
 convention-level (a filename + frontmatter shape, no schema) — but it's no longer
 Claude-Code-shaped. See
 [`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
+
+*Direct-consumer evidence (2026-08-11):* Warp implements the format natively —
+`crates/ai/src/skills/` parses `SKILL.md`, resolves scoped skill directories with a
+`WARP_SKILL_DIRS` override, and ships 13 bundled skills of its own. That's a first-party
+implementation by a non-Anthropic vendor, which is a stronger witness than a third-party
+installer targeting it. [`../02-harnesses/warp.md`](../02-harnesses/warp.md).
 
 Two and a half of five have moved (the half being skills, at 2026-07-28). That's the
 number to re-check in six months: if hooks are still harness-specific and skills stall at

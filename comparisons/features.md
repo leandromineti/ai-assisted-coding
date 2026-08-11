@@ -24,6 +24,7 @@ report's frontmatter when confirmed in source or official docs.
 | [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
 | [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
 | [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · | · |
+| [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | ✓ | ✓ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
 | [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [ecc](../notes/03-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |

@@ -1,6 +1,6 @@
 # Layer 2 — Harnesses
 
-`checked: 2026-07-30`
+`checked: 2026-08-11`
 
 Loop + context assembly + permission model + UI. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -36,6 +36,7 @@ web-as-interface with remote-as-execution:
 | **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-5 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
+| [**Warp**](warp.md) | Warp (warpdotdev) | terminal · desktop · web (wasm) | local + async (cloud runs) | A terminal that became a harness — and then an orchestrator of other harnesses: Claude Code, Codex, Gemini CLI, and OpenCode are selectable backends for its child agents. AGPL-3.0, source-opened 2026-04-28. The only indexed context assembly in the set (embedding chunkers, consent-gated). Surveyed 2026-08-11. |
 | [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-5 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
@@ -58,7 +59,11 @@ distributed layer-5 entities (see the scope note in
 Feature lists mislead here. The axes that seem to matter:
 
 1. **Context assembly** — what gets loaded, when, and what gets dropped. Reportedly Claude
-   Code's edge is loading *less* but using it better.
+   Code's edge is loading *less* but using it better. *(2026-08-11)* Warp is the first
+   surveyed harness to build a real **embedding index** of the codebase (semantic and naive
+   chunkers, incremental re-index on changed files) rather than relying on grep and
+   model-driven search — an outlier worth a deep-dive, since whether that index actually
+   feeds the prompt is the difference between a genuine counter-position and a search tool.
 2. **Permission model** — how much it does without asking, and how that's configured.
 3. **Extension surface** — whether layer 3 and 4 can attach at all (hooks, skills, MCP).
 4. **Isolation story** — which layer-5 environment it assumes.

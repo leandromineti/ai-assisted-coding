@@ -10,6 +10,7 @@
 2|cline|https://github.com/cline/cline
 2|continue|https://github.com/continuedev/continue
 2|hermes-agent|https://github.com/NousResearch/hermes-agent
+2|warp|https://github.com/warpdotdev/warp
 
 # --- Layer 4: workflow frameworks ---
 4|spec-kit|https://github.com/github/spec-kit
