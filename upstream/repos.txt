@@ -16,7 +16,13 @@
 4|spec-kit|https://github.com/github/spec-kit
 4|gsd-core|https://github.com/open-gsd/gsd-core
 4|openspec|https://github.com/Fission-AI/OpenSpec
-4|ecc|https://github.com/affaan-m/ECC
+
+# --- Layer 3: portable artifacts (the cross-layer bucket) ---
+# ECC was ingested 2026-07-28 as provisional layer 4 and reclassified to 3 at the
+# 2026-07-30 deep-dive (no process spine). The manifest kept saying 4 until
+# 2026-08-11 — and repo-facts.sh reads `layer:` from here, so it was emitting a
+# value the report had already contradicted.
+3|ecc|https://github.com/affaan-m/ECC
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot

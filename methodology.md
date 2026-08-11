@@ -66,6 +66,22 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   read same day (memory pipeline verified at `turn_processor.rs:594`; missing stuck-loop
   guard recorded as unverified absence).
 
+  *Second instance, found 2026-08-11 — the rule did not hold on the same day it was
+  written.* The ECC deep-dive (2026-07-30, hours after the hermes correction) reported
+  "`/evolve` clusters related instincts into skills/commands/agents." That is
+  `cmd_evolve`'s docstring. The code below it keyed clusters on the whole trigger
+  sentence, so `skill_candidates` was always empty and `agent_candidates`, filtered from
+  it, always empty too — the mechanism did not fire *at all*, and it took an upstream bug
+  fix twelve days later to surface it
+  ([`notes/03-capability-extensions/ecc.md`](notes/03-capability-extensions/ecc.md)).
+  Two lessons, both cheap: **a pipeline is only as traced as its least-interesting
+  stage** — steps 1–3 were read at the call sites and the last step was skimmed because
+  by then the design was convincing; and **"clusters"/"promotes"/"selects" are verbs that
+  need a measurement, not a reading.** The fix's author reported one (42 instincts → 42
+  clusters, largest size 1) that the read could have made in a minute. Where a docstring
+  describes an aggregation, run it or read its key function — a grouping key is a
+  one-line thing to check and the whole claim rests on it.
+
 ## 5. Experiments are preregistered
 
 The protocol — task, measurements, falsification criteria, known contamination — is

@@ -11,9 +11,9 @@ commit: e4e41631
 first_commit: 2026-01-17
 stars: 236217
 stars_at: 2026-07-30
-read_at: 2026-07-30
+read_at: 2026-07-30   # drift-checked 2026-08-11 at 623f2c02 without re-reading — see "Drift check"; one claim corrected, pin deliberately not moved
 depth: deep-dive   # ECC has no agent loop of its own; its runtime analogs were traced in source — learning pipeline (hooks/observe.sh → agents/observer-loop.sh → scripts/instinct-cli.py), enforcement lifecycle (hooks/hooks.json + memory-persistence contract), install/portability surface. The 281-skill catalog was sampled, not read; ecc2 read at README level
-harness_targets: "23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest"
+harness_targets: "23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check"
 features:
   learning_loop: true    # third verified instance — hook-observed sessions → background Haiku analysis → confidence-scored instinct files; traced at the scripts, not just SKILL.md (see Architecture)
 ---
@@ -27,6 +27,45 @@ enforcement hooks, memory persistence, and an instinct-based learning system, in
 (65%) from the maintainer, plus dependabot and `copilot-swe-agent[bot]` (agents
 maintaining the agent-config repo). A commercial arm exists: ECC Pro, a GitHub App,
 hosted badges at `api.ecc.tools` — the only tool in the set with a pricing page.
+
+## Drift check — 2026-08-11 (not a re-read; the pin is unchanged)
+
+`--check` reported 16 commits / 68 files of movement since the read. Checking whether the
+drift touched what this report claims found that **it contradicts one claim and dates
+another**, so it is recorded here rather than left to the next reader. The pin stays at
+`e4e41631` and `read_at` stays 2026-07-30 — the sections below describe that commit, and
+re-pointing them at a HEAD nobody has read is the failure `upstream/README.md`'s scar
+warns about.
+
+1. **The `/evolve` claim was wrong at the pin** — corrected in place under the instinct
+   pipeline below, and verified against `e4e41631` rather than taken from the fix's
+   commit message.
+2. **`harness_targets` is now stale as a capability statement, though not as a count.**
+   #2681 (2026-08-04, "honest support matrix") rewrote the README's platform tables:
+   the old cross-tool *parity* table is gone, replaced by a status matrix that grades
+   Cursor and OpenCode **beta**, Copilot **instruction-only**, and "Gemini, Zed,
+   Antigravity, Qwen, Hermes, OpenClaw, Kimi, CodeBuddy, JoyCode" collectively as
+   **experimental/minimal adapters** where "full Claude feature parity is not claimed."
+   The marketing line moved from "first-class Codex support and adapters for …" to
+   "a supported Codex sync path and capability-limited adapters." The ~13 named targets
+   survive; what changed is that upstream now grades them, and the report's Portability
+   section — which already credited the repo for honesty about degraded capability — is
+   corroborated harder than it was written.
+3. **A concrete instance of that degradation:** #2680 excludes ECC skills from the
+   antigravity install target entirely, because antigravity's `.agent/` directory
+   already receives ECC *agents* and the two collided.
+4. **New, not contradictory:** the same matrix discloses open native-Windows defects in
+   continuous-learning v2's observer daemon and memory-vault writes (#2489, #2626), and
+   a macOS Bash 3.2 incompatibility in the GAN path (#2674). This report made no OS
+   claims, so this is added scope for a re-read, not a correction.
+
+**Unaffected:** the layer-3 verdict. Neither leg (no process spine; portability reduces
+to copy-with-adaptation into convention dirs) is touched by the drift, so the taxonomy
+revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
+
+**What a re-read should cost:** small. The evolve fix, the support matrix, and the
+antigravity exclusion are the three places to look, plus the 281-skill catalog that was
+sampled rather than audited at the original read.
 
 ## The layer verdict (the question this read was preregistered to answer)
 
@@ -85,6 +124,25 @@ the reflexes someone else already authored.
 4. **Evolve** — `/evolve` clusters related instincts into skills/commands/agents;
    `/instinct-export`/`-import` make learned behavior *shareable*; project instincts
    seen in 2+ projects get promoted to global.
+
+   **Correction (2026-08-11) — the skills/agents half of that sentence was the
+   docstring's claim, not the code's behaviour.** Verified against the pin:
+   `cmd_evolve`'s own docstring says "suggest evolutions to skills/commands/agents"
+   (`skills/continuous-learning-v2/scripts/instinct-cli.py:1149 @ e4e41631`), but the
+   clustering two lines below keys on the *entire trigger sentence*, lowercased with
+   six words stripped (`when/creating/writing/adding/implementing/testing`), and
+   `skill_candidates` only accepts clusters of ≥2 (`:1178–1191`). Triggers are free-form
+   sentences, so every instinct landed in its own bucket. `agent_candidates` is filtered
+   *from* `skill_candidates` (`:1233`), so it was empty too — `/evolve --generate` could
+   emit commands and nothing else. Upstream fixed it 2026-08-04 (#2664, overlap
+   coefficient at 0.5 with a 2-keyword floor) and reported the measurement this report
+   should have made: 42 instincts → 42 clusters, largest cluster size 1; after the fix,
+   4 clusters. The same commit found `_generate_evolved()` silently writing only the
+   first 5/5/3 candidates. **What survives:** steps 1–3 were traced at the scripts and
+   stand, so this is still an autonomous learning loop and still the only
+   harness-independent one — but at the read commit it accumulated instincts without
+   ever promoting them into skills or agents. A rule-4a violation in the exact shape
+   rule 4a describes; see the drift check above.
 
 This is the third verified autonomous learning loop (after hermes, codex) and the only
 **harness-independent** one — also the only one whose unit of learning is designed for
