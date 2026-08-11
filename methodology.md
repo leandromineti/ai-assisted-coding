@@ -82,6 +82,28 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   describes an aggregation, run it or read its key function — a grouping key is a
   one-line thing to check and the whole claim rests on it.
 
+- **4b. The `behind` list is a work queue, not a status line.** When
+  `build-tool-index.py --check` reports a report behind its pin, the obligation is to
+  ask *whether the drift touches what the report claims* — and to record the answer,
+  dated, in the report itself. Three outcomes, all of them writing:
+  **contradicted** (correct the claim in place, citing the pin), **corroborated** (say
+  so — upstream confirming a finding is evidence, and unrecorded it looks like silence),
+  **untouched** (one line, so the next reader doesn't redo the check).
+
+  **The pin does not move.** A drift check is not a re-read, and only a re-read earns a
+  new pin (`upstream/README.md`'s scar). A report may carry a dated drift check well
+  ahead of its `read_at` — that is the honest shape, not an inconsistency.
+
+  *Why it earned its place:* ECC sat 16 commits behind for twelve days. Inside that
+  drift was an upstream bug fix (#2664, 2026-08-04) proving that `/evolve` had never
+  produced a skill or agent candidate — falsifying a claim in a **deep-dive** report,
+  which is the depth most likely to be cited elsewhere. `--check` had been printing the
+  `behind` line the whole time and nothing in this file said it was actionable, so the
+  honest default was to read it as noise. Drift is where wrong claims surface, because
+  the people fixing the bug write down what was broken. Corollary: the backlog compounds
+  silently — issue #9 recorded gsd-core and spec-kit at 41 and 63 commits behind on
+  2026-08-01; eleven days later they were at 207 and 123.
+
 ## 5. Experiments are preregistered
 
 The protocol — task, measurements, falsification criteria, known contamination — is

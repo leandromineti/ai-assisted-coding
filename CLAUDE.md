@@ -56,6 +56,13 @@ python3 scripts/build-tool-index.py --check   # pinned commits still match clone
 python3 scripts/build-refs-index.py --check   # frontmatter, unread-but-cited, dangling links
 ```
 
+`--check` distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
+commit no longer resolves — claims can't be checked against their source at all.
+**behind** is not a failure, but it is not noise either: it is a work queue. Ask whether
+the drift touches what the report claims and record the answer, dated, in the report —
+**without moving the pin** (methodology rule 4b). ECC's 16-commit drift contained the
+upstream bug fix that falsified a claim in its deep-dive.
+
 ## The honesty columns
 
 Two fields carry more weight than anything else here, and both exist because a confident-sounding
