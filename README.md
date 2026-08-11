@@ -106,6 +106,15 @@ note. Revised when evidence moves._
    now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
    [`notes/standards/index.md`](notes/standards/index.md)
+   **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging kinds
+   gained their best evidence yet, and it is a better *class* of evidence: a first-party
+   implementation by a rival vendor rather than a third-party installer targeting the
+   format. Warp parses `SKILL.md` natively (`crates/ai/src/skills/`, 13 bundled skills) —
+   a fifth consumer — and its project-init flow offers to link seven *competitors'* rules
+   files (`CLAUDE.md`, `.cursorrules`, `GEMINI.md`, `.clinerules`, `.windsurfrules`,
+   Copilot instructions, `AGENT.md`) into its own. The headline still stands: both remain
+   filename-plus-frontmatter conventions with no schema, and hooks and subagent
+   definitions did not move. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
 4. **Structural completeness does not predict runtime correctness** (2026-07-28, from
    llm-coding-benchmark's data): models produce complete-looking apps whose tests mock
    hallucinated APIs — green suites over dead code. Any personal eval must boot the
@@ -158,3 +167,15 @@ note. Revised when evidence moves._
    exp-03 in [`notes/cross-cutting/`](notes/cross-cutting/index.md). →
    [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md),
    [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md)
+   **Third instance, and a counter-instance (2026-08-11, Warp survey — weaker evidence
+   than the two deep-dives above; the loop was not traced).** Extended: Warp absorbs
+   layer-4-shaped *orchestration* — multi-agent fan-out where the harness running each
+   child is a selectable field (`enum Harness { Oz, Claude, OpenCode, Gemini, Codex }`),
+   with drivers and transcript parsers for its competitors. Absorption is not only
+   downward and upward but *sideways*: a harness that treats rival harnesses as
+   interchangeable backends. Contradicted on one leg: the **autonomous memory loop is
+   absent**. Warp ships the whole store — versions, per-agent scoping, a CLI — and
+   `MemorySource` has exactly one variant, `Manual`. So of three harnesses examined for
+   it, one is on by default, one stable-but-off, one user-write-only. "Twice each" was
+   never "always," and the `learning loop` column now has a verified ✗ to sit beside its
+   ✓s. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
