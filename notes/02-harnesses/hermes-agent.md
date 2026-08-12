@@ -14,7 +14,7 @@ commit: 524ab5399
 first_commit: 2025-07-22
 stars: 222863
 stars_at: 2026-07-30
-read_at: 2026-07-30
+read_at: 2026-07-30   # drift-checked 2026-08-12 at 0957277f2 without re-reading (rule 4b) — one claim overtaken since the pin, three corroborated; pin deliberately not moved
 depth: deep-dive
 features:
   mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/)
@@ -46,6 +46,65 @@ The layer question the issue flagged is settled: **layer 2 confirmed**. spec-kit
 `upstream/spec-kit/tests/test_extension_skills.py`), and the repo's `AGENTS.md`
 self-describes as a platform extended "through plugins and skills, not by growing the
 core". But it is the least coding-centric harness on the shelf — see Surprises.
+
+## Drift check — 2026-08-12 (not a re-read; the pin is unchanged)
+
+1248 commits / 1456 files since the read — the largest drift in the set. **49 of those
+commits touch a file this report cites**, which is the set that was checked. Nothing
+below is wrong *at the pin*; one claim has been overtaken since, and the reason it was
+overtaken is the most interesting thing in the drift.
+
+**1. The skills index moved from the `stable` band to `volatile` — because this
+harness's flagship feature was defeating its flagship design law.** Verified at both
+ends rather than taken from the commit message: at `524ab5399`,
+`stable_parts.append(skills_prompt)` (`agent/system_prompt.py:329`); at HEAD the module
+docstring lists volatile as "skills index, memory snapshot, USER.md profile, external
+memory". The move landed 2026-08-03, four days after the read (authored 2026-06-02 on a
+long-lived branch — author dates are not landing dates, and `git log <pin>..HEAD` is the
+only reliable membership test). Upstream's stated reason:
+
+> The skills index is runtime-mutable: the agent adds and patches skills mid-session, so
+> it is not byte-stable. Keeping it in the stable band breaks that band's prefix-cache
+> contract, because every skill edit changes the stable band and invalidates the entire
+> cached prefix in front of it.
+
+Read that against the two things this report praises in separate sections. The
+distinguishing bet is that **the agent writes its own skills**; the context-assembly
+section opens with **"per-conversation prompt caching is sacred"** as a design law. They
+were in direct conflict: every autonomous skill write blew away the cached prefix in
+front of the stable band. Neither this read nor upstream had noticed at pin time. The
+lesson is not that the design was bad — it is that **a self-modifying agent and a
+byte-stable prompt prefix are structurally in tension**, and the tension surfaces
+exactly where the agent's write path crosses its own cache tiers. Any harness pairing an
+autonomous learning loop with prompt-cache discipline inherits this problem.
+
+**2. The learning loop is intact and being actively hardened — conclusion 8 corroborated,
+not just unfalsified.** The gate structure at `turn_finalizer.py` is unchanged in
+substance (now ~`:700–718`): still interval counters, still `final_response and not
+interrupted`, still `except Exception: pass` best-effort — i.e. the rule-4a-corrected
+description holds at HEAD, which is worth recording because that claim was wrong once
+already. Two additions since: `/refine` (2026-08-05) fires the same fork **on demand**
+with optional focus instructions, explicitly keeping automatic reviews byte-identical so
+the prompt cache is untouched; and a fix on 2026-07-31 — the day after the read —
+**rejects unresolved failures as skills**, a quality gate on what the loop is allowed to
+write. The trajectory is toward more autonomous authorship, with guardrails on output
+quality.
+
+**3. Also corroborated:** `agent/verification_stop.py` survives at HEAD and is still
+policy-only ("It never runs checks itself"), which is the leg conclusion 8 cites for
+turn-end verification gates; `background_review.py`, `curator.py` and
+`iteration_budget.py` all still exist.
+
+**4. Refined, not contradicted — the permission model.** Approval timeouts are now
+classified separately from explicit denials on the CLI/TUI/ACP surfaces (2026-08-02),
+bringing them to parity with the gateway's existing position: *"timed out without user
+response… Silence is not consent."* Still fail-closed either way. The report's
+permission claims stand; the vocabulary underneath them got sharper.
+
+**What a re-read should cost:** more than ECC's, less than 1248 commits suggests. The
+compression subsystem took heavy churn (feasibility skips, durable prune runways,
+tail-budget fixes) and is the one area where this report's context-assembly claims are
+now describing a much-changed component.
 
 ## The distinguishing bet
 

@@ -1,6 +1,6 @@
 # Layer 2 — Harnesses
 
-`checked: 2026-08-11`
+`checked: 2026-08-12`
 
 Loop + context assembly + permission model + UI. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -77,6 +77,19 @@ Feature lists mislead here. The axes that seem to matter:
    session ("per-conversation prompt caching is sacred" is its stated design law).
    Correctness-vs-cache-warmth tradeoffs are a harness position, not an implementation
    detail.
+
+   *(2026-08-12, from hermes' drift check — the axis gains a structural tension, not
+   just an exemplar.)* Upstream moved the **skills index out of the stable band** on
+   2026-08-03, because the agent writes and patches its own skills mid-session, so every
+   autonomous skill write was invalidating the entire cached prefix in front of it. The
+   harness that states cache sacredness as a design law had its *own flagship feature*
+   breaking that law, unnoticed at our read and theirs. Generalize it: **a self-modifying
+   agent and a byte-stable prompt prefix are in structural tension**, and it surfaces
+   wherever the agent's write path crosses its own cache tiers. Any harness pairing an
+   autonomous learning loop with cache discipline inherits the problem — which makes
+   "where does the agent's own output land in the prompt?" a design question worth asking
+   of every tool on this axis, not a hermes quirk.
+   [`hermes-agent.md`](hermes-agent.md).
 
 ## Open questions
 
