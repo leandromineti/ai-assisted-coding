@@ -225,6 +225,23 @@ plus a file-based RPC transport so programmatic tool calling still works *inside
 remote backends. Isolation is only half the design; the other half is what you
 deliberately let back in.
 
+**E3. How a harness *relates* to its environment is a design position, and there are
+exactly four — plus abstention.** *(convergent — four instances, one per verb, each found
+at a different deep-dive)* **bundle** (Devin ships one), **bind** (hermes attaches to
+eight swappable backends), **internalize** (codex compiles Seatbelt/Landlock/bwrap into
+the binary), **inhabit** (Warp detects the container it is already inside for workload
+identity). opencode takes the fifth position: **none of them** — it runs on the host and
+does nothing about isolation, which is a choice rather than an omission. Defined in
+[`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md),
+rendered in [`comparisons/environments.md`](comparisons/environments.md).
+
+*Recorded with the principle, because it is the uncomfortable part:* all four verbs are
+properties of **layer-2 tools**, discovered inside layer-2 reads. That is why the
+2026-08-16 adjudication concluded layer 5 survives as an analytic lens and fails as a
+population — see the gated revision in the layer-5 index. If that revision executes, E1–E3
+do not change; they simply become layer-2 principles about the environment axis, which is
+a sign the principles were about harnesses all along.
+
 ---
 
 ## The composite architecture (what the evidence points at, assembled)

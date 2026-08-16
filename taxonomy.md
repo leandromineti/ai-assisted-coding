@@ -156,6 +156,32 @@ changing a tool choice or explaining a failure, demote this layer to a cross-cut
 The prediction recorded here is the opposite — as autonomy rises, the environment question
 becomes more central, not less.
 
+**Adjudicated 2026-08-16 — split verdict, and the falsifier turned out to be the wrong
+question.** Full reasoning in
+[`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md);
+the short form: *"explaining a failure"* passed decisively (the worktree/gitignore trap),
+*"changing a tool choice"* has **no recorded instance**, and the deeper problem is that
+every layer-5 finding in three weeks has been a **property of a layer-2 tool** rather than
+a fact about an environment. All four relationship verbs describe harness behaviour; all
+four were discovered inside layer-2 deep-dives; the generated matrix
+([`comparisons/environments.md`](comparisons/environments.md)) has zero layer-5 rows. So
+the layer **survives as an analytic lens and fails as a population** — closer to a fifth
+axis of layer 2 than to a rung.
+
+The revision is **proposed and gated, not executed**: re-describe layer 5 as layer 2's
+environment-relationship axis, keeping the number as a storage key exactly as layer 3 kept
+its number. *Trigger:* the first report of an agent-native environment studied as a product
+in its own right (E2B, Modal, Cloudflare Sandbox SDK). If it yields findings that are not
+restatements of some harness's relationship to it, the layer is a population and stays a
+rung. If no such report exists within six months, the revision executes — a layer nobody
+populates in six months of active study is not a layer.
+
+**The relationship vocabulary** (*bundle* · *bind* · *internalize* · *inhabit*, plus the
+null case) is defined once in
+[`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md).
+The stress-test rows below record where each verb was *discovered*; the index is where the
+vocabulary lives.
+
 ## Cross-cutting concerns
 
 These are **not layers**. They appear at several layers at once, and forcing them onto the
