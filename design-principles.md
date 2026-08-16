@@ -40,7 +40,9 @@ the *only* sanctioned exception to prompt immutability
 overflow as an exception path are the ones that break on long tasks.
 
 **H2. The loop needs an explicit stuck-state policy — and who resolves it is a product
-decision.** *(convergent on existence, contested on resolution; one silence)* Both
+decision.** *(**contested** since 2026-08-16 — was "convergent on existence, contested on
+resolution; one silence" until codex's absence was verified; see the settlement note
+below)* Both
 2026-07-28 deep-dived harnesses detect repeated-identical-call loops. opencode escalates
 to the *human* through the permission subsystem (doom-loop as a permission prompt);
 hermes resolves *in-band* with the model (warning guidance → synthetic tool results →
@@ -48,6 +50,19 @@ bounded halt). The principle is that silence is not a policy; the human-vs-model
 is a position on autonomy. *Revision-rule note (2026-07-30):* the codex read found no
 repeated-call guard in the turn path — recorded in its report as unverified absence,
 not a counter-instance; settle it before counting codex either way.
+
+*Settled 2026-08-16 — codex is a verified counter-instance, and the confidence marker
+moves.* A workspace-wide grep at HEAD finds no repeated-call guard and no iteration cap
+anywhere in codex's 94 crates, and nothing in 206 commits of drift adds one
+([`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md)). So of the three
+deep-dived harnesses, **two detect the loop and one deliberately does not** — this is
+`contested`, not `convergent on existence`. The principle survives in weaker form: where
+a harness *does* guard, the human-vs-model choice is a real position on autonomy. What
+cannot be claimed any more is that guarding is what serious harnesses converge on.
+codex's silence is also not obviously carelessness — it is the harness that ends turns on
+model-declared completion with no step budget at all, so a repeated-call guard would be
+the only bound in a design that otherwise trusts the model to stop. Worth asking the next
+deep-dive explicitly, since a third data point either way settles the shape.
 
 **H3. Two chokepoints, not one: shape what the model can see, then gate what it does.**
 *(convergent — the strongest architectural pattern in the set; deepened 2026-07-30)*

@@ -14,7 +14,7 @@ commit: 413492cd6c
 first_commit: 2025-04-16
 stars: 102646
 stars_at: 2026-07-30
-read_at: 2026-07-30
+read_at: 2026-07-30   # drift-checked 2026-08-16 at 57f42a8113 without re-reading (rule 4b) — three claims corroborated, two refined, the stuck-loop absence settled; pin deliberately not moved
 depth: deep-dive
 features:
   mcp: true              # codex-mcp, mcp-server, rmcp-client crates; MCP prewarm in the turn loop
@@ -36,6 +36,57 @@ headless `exec` mode, and an app-server daemon that the desktop app, SDK, and ed
 talk to. The only harness in this set written in a systems language — and the read shows
 that's load-bearing, not aesthetic. Leads Terminal-Bench 2.1 (with its own models; the
 benchmark can't separate the two — README conclusion 2).
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+206 commits / 1058 files since the read; **60 of them touch a file this report cites**,
+which is the set that was checked. Nothing here was wrong at the pin. The substantive
+outcome is that the report's one open *absence* is now settled.
+
+**1. Settled: the missing stuck-loop guard is a verified absence, not an unverified one.**
+The read checked `turn.rs` and the tool-router surface and recorded "possibly elsewhere".
+Checked properly this time: a pattern grep across the **entire `codex-rs/` Rust
+workspace** at HEAD for `repeated_call` / `repeat_count` / `doom.?loop` / `stuck.?loop` /
+`loop_detect` / `identical_call` returns **zero** non-test hits, as does a search for any
+iteration or step cap (`max_iterations`, `max_steps`, `iteration_limit`, `step_budget`).
+No commit in the 206 mentions a loop, repeat, stuck, doom, spin or runaway guard.
+
+*Scope, stated because rule 4a demands it:* this is a pattern grep over the Rust
+workspace at HEAD, not a reading of every dispatch path, and the pin's full tree was not
+grepped (a blobless clone makes a historical whole-tree grep expensive). Absence at HEAD
+plus a silent drift implies absence at the pin unless a guard was removed without saying
+so, which the log does not support. That is enough to stop calling it unknown: **codex
+ships no repeated-call guard.** This settles the deferral in design-principle H2 — codex
+now counts as a verified counter-instance rather than a silence.
+
+**2. Corroborated — all three claims other notes cite.** The stop-hook veto that
+conclusion 8 rests on is intact (`run_turn_stop_hooks` → `should_block` at
+`session/turn.rs:467–474`). H3's decision layer is intact (`SafetyCheck::{Reject,
+AskUser, AutoApprove}`, `core/src/safety.rs:20+`). Conclusion 1's per-model-slug data
+point survives: `ModelInstructionsState` and `get_model_instructions(personality)` are
+present in `session/world_state.rs` at **both** the pin and HEAD.
+
+**3. Refined — how model instructions are sourced.** #36787 (landed 2026-08-03) removed
+`ModelInfo.base_instructions` as an in-memory instruction source, consolidating on
+`model_messages.instructions_template`, with legacy values promoted for compatibility.
+Per-model swapping survives — the commit's own tests cover "canonical-template
+precedence… and model switching" — so conclusion 1's reading holds, but the mechanism is
+now a rendered template rather than a per-slug string. Worth knowing before anyone
+quotes this report on *how* codex varies prompts by model.
+
+**4. Refined — permissions are read live, not snapshotted.** #36912 (2026-08-04) removed
+a duplicated approval-policy field from `TurnContext` because "thread settings can update
+the approval policy after a turn context is created… tool approval checks [could use] the
+previous policy." Policy is now resolved through the turn's current configuration
+everywhere it is needed — tool execution, Guardian routing, MCP handling, permission
+requests. This is concrete support for H3's third layer rather than a contradiction: an
+enforcement layer that reads a stale snapshot of policy is not an enforcement layer, and
+the fix is upstream discovering exactly that.
+
+**What a re-read should cost:** moderate. The permission and tool-namespace subsystems
+took the heaviest churn (strict tool-name collisions, per-surface MCP exposure controls,
+turn-environment permissions), so the tool-surface section is the one describing the
+most-changed component.
 
 ## The distinguishing bet
 
@@ -138,6 +189,9 @@ tools. Termination (`turn.rs:430–560`, verified at the branch sites):
 
 No doom-loop/repeated-call guard was found in the loop path (checked `turn.rs` and the
 tool router surface; possibly elsewhere — recorded as unverified absence, not verified).
+**Settled 2026-08-16 → verified absent**: a workspace-wide pattern grep at HEAD returns
+zero non-test hits for repeated-call/loop-detection or any iteration cap, and no commit
+in the 206-commit drift adds one. See the drift check above for the search scope.
 
 ### Context assembly
 
