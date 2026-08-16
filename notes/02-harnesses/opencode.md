@@ -4,6 +4,10 @@ layer: 2
 surfaces: [terminal, desktop, ide]
 execution: local
 environments: [host]   # a `containers` package exists; its role unverified — see Bleed
+# environment_relation: deliberately UNSET. opencode runs on the host and does nothing
+# about isolation — it neither bundles, binds, internalizes, nor inhabits. None of the four
+# verbs fits, and forcing one would fabricate a relationship. The null case is evidence for
+# the layer-5 adjudication, not a gap in the frontmatter.
 vendor: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT

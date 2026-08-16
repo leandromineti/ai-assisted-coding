@@ -5,6 +5,14 @@ layer: <1-5>
 surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
 execution: <local | async-remote | both>        # how it runs
 environments: [<host | worktree | container | remote-sandbox>]  # layer-5 bindings (bleed) — only list what's verified
+# environment_relation: HOW the tool relates to the environment, not just which ones it
+# reaches. One of: bundle (ships its own sandbox, not separately selectable — Devin) ·
+# bind (attaches to independently-distributed environments — hermes' 8 backends) ·
+# internalize (sandbox compiled into the harness binary — codex) · inhabit (detects the
+# environment it is already inside — Warp). Defined in notes/05-execution-environments/.
+# Set ONLY when verified, and **leave it unset if none of the four fits** — a harness that
+# just runs on the host has no relationship to layer 5, and that null case is data.
+environment_relation: <bundle | bind | internalize | inhabit>
 vendor: <who maintains it>
 url: <repo or product URL>
 license: <SPDX id, or "proprietary">

@@ -4,6 +4,7 @@ layer: 2
 surfaces: [terminal, desktop, web]   # native GPU app; crates/warp_tui (180 files) is the TUI; crates/serve-wasm compiles the client to wasm ("web-compiled Warp terminal", README)
 execution: both   # OrchestrationExecutionMode::{Local, Remote{environment_id, worker_host}}
 environments: [container, remote-sandbox]   # verified as *detected*, not launched — see Bleed
+environment_relation: inhabit   # crates/isolation_platform detects the container Warp is ALREADY inside (Docker/DockerSandbox/Kubernetes/Namespace) for workload identity; it launches nothing
 vendor: Warp (warpdotdev)
 url: https://github.com/warpdotdev/warp
 license: AGPL-3.0   # `warpui`/`warpui_core` carved out as MIT (README, LICENSE-MIT)
