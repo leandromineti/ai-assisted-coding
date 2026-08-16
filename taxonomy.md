@@ -220,7 +220,9 @@ So every entry records a **primary layer** plus an explicit **bleed** note. The 
 signal, not noise: it's how you watch layers consolidate. The clearest current example is
 xAI/SpaceX's $60B acquisition of Anysphere (Cursor), announced 2026-06-16 — a layer-1
 vendor buying a layer-2 product, then training Grok 4.5 on that harness's session data.
-Vertical integration across layers 1 and 2 is the live structural story of 2026.
+That acquisition is not bleed, though — it is *vendor span*, the distinct dimension
+formalized just below. Vertical integration across layers is the live structural story of
+2026.
 
 *Second instance (2026-07-30):* the harness-as-training-data-instrument pattern is not
 exclusive to acquisitions. hermes-agent — open source, MIT — ships trajectory export and
@@ -229,6 +231,54 @@ models" (its maker, Nous Research, is a layer-1 vendor). opencode's "stores no c
 context server-side" is the explicit counter-position. Two instances plus a named
 counter-position make this a pattern to track, not an anecdote:
 **who a harness's maker is at layer 1 predicts what the harness collects.**
+
+### Vendor span — when the layers stop being independent choices *(2026-08-16)*
+
+Bleed and vendor span are different axes, and the framework reasons about them differently:
+
+- **Bleed** is a property of a *tool* — one product reaching into an adjacent layer (codex
+  internalizing a sandbox, GSD shipping `gsd-pi`). Recorded per report, in the `bleed` note.
+- **Vendor span** is a property of a *maker* — one vendor owning distinct products across
+  several layers at once, and tuning them to each other. Recorded here, because it is a
+  fact about a company, not about any single entry.
+
+The framework's default posture treats the layers as **independent axes**: pick a model,
+pick a harness, pick an environment. That holds for the field's composable middle — a Nous
+model driven by OpenCode inside a Modal sandbox is three vendors and three separable
+decisions. It **breaks for vertically-integrated vendors**, where the choices *co-vary*:
+choosing the harness chooses the model, the sandbox, and the extension format, because one
+maker ships all of them. This is the single most important thing the taxonomy has to warn
+its reader about before they treat a layer choice as free.
+
+Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation-only, closed):
+
+| Vendor | 1 · Model | 2 · Harness | 3 · Artifacts | 5 · Environment |
+|---|---|---|---|---|
+| **OpenAI** | gpt-5-6-sol ✓ | Codex CLI ✓ · cloud Codex ○ | — | Codex's *internalized* OS sandbox ✓ · cloud Codex microVM ○ *(bundle)* |
+| **Anthropic** | opus/sonnet/fable/haiku ✓ | Claude Code ○ | skills, MCP ○ | Managed Agents / code-exec container ○ *(bundle)* |
+| **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
+| **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
+
+Two consequences a reasoner must carry:
+
+1. **"Portable" means less inside a spanned stack.** MCP is portable across harnesses *in
+   principle*; but a vendor owning model + harness + sandbox can co-optimize in ways a
+   portable artifact never reaches, so the portability guarantee is weakest exactly where a
+   vendor is most integrated. Layer-3 independence (the standards question) is a claim about
+   the composable middle, not about a spanned stack.
+2. **Attribution is confounded by construction.** When a spanned stack succeeds or fails,
+   you cannot hold the model fixed and swap the harness to find the cause — the vendor did
+   not build them to separate. This is the same confound README conclusion 2 records for
+   benchmarks ("Codex CLI + GPT-5.5"), promoted from a measurement artifact to a structural
+   property of the vendor.
+
+**Why this table is hand-kept, not generated** (and it is the one deliberate exception to
+rule 3 in this repo): the sharpest spanners are *closed* — Claude Code, cloud Codex, and
+Managed Agents have no report files — so a frontmatter-generated matrix would **understate
+vendor span precisely for the vendors that have the most of it.** `comparisons/tools.md`
+remains the exhaustive tracked view; this table deliberately admits observation-only (○)
+products to show the real shape, and is illustrative, not an index — re-date it when a
+spanner's coverage changes rather than trusting it to stay current on its own.
 
 ## Stress test
 
