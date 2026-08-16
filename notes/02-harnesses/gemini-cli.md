@@ -13,7 +13,7 @@ commit: bef611950
 first_commit: 2025-04-15
 stars: 106225
 stars_at: 2026-07-28
-read_at: 2026-07-28
+read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
 depth: stub
 ---
 
@@ -24,6 +24,20 @@ whole monorepo" option in the mid-2026 comparisons.
 
 Transitioning to **Antigravity CLI**; the individual free tier (1000 requests/day) ended
 2026-06-18.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+22 commits / 84 files, and **nothing to falsify** — the honest verdict for a stub, which
+asserts almost nothing beyond repo shape. Repo-shape numbers barely moved (`.tsx` 418 →
+418, `.ts` 1726 → 1729, tracked 2933 → 2963), so the stack description still holds. One
+commit in the drift mentions Antigravity, consistent with the transition noted above but
+not evidence about its state.
+
+The `_TODO_` sections are the real status here: a stub can't go stale because it never
+claimed anything. That is a reason to be relaxed about stub drift in general — and a
+reminder that this report's value is currently the *external* fact (the free tier ending
+2026-06-18), which drifts on Google's schedule rather than the repo's and is not checkable
+from a clone at all.
 
 ## The distinguishing bet
 

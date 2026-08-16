@@ -11,7 +11,7 @@ commit: d04592de
 first_commit: 2025-12-14
 stars: 7336
 stars_at: 2026-07-28
-read_at: 2026-07-28
+read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
 depth: survey   # full flow run end-to-end (experiments/01-gsd-vs-plain) + core workflow prose read; gsd-tools.cjs internals unread
 harness_targets: [Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot]
 ---
@@ -29,6 +29,33 @@ announced-but-unshipped `gsd-workbench` and `gsd-cloud`.
 
 **Already installed on this machine**, so source claims can be cross-checked against
 observed behavior — the only tool in the set where that's possible.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+207 commits / 1045 files since the read, and this is the **weakest verdict in the sweep**
+— not because the report is wrong, but because it cites almost nothing checkable. Its only
+file references are `docs/ARCHITECTURE.md` and an index link, so rule 4b's "does the drift
+touch what the report claims?" has almost no surface to test against. Recorded as the
+honest state rather than dressed up.
+
+What could be checked:
+
+- **`gsd-pi` is not in this repo's tree at either end** — and that is *correct*, not a
+  finding. It is a separately distributed CLI, which is what "standalone" in the bleed
+  section means. Verified before writing, because "the escape-hatch CLI has vanished" would
+  have been a conclusion-7-sized claim built on a bad grep.
+- **Version moved `1.8.0` → `1.9.1`** (`.claude-plugin/plugin.json`), a minor bump.
+- **Multi-harness support is still being actively worked**, judging by archived changesets
+  in the drift (`codex-install-skill-surface`, `codex-install-bundled-hooks-blocker`,
+  `codex-adapter-text-mode-fallback`) — consistent with the `harness_targets` claim, though
+  not a verification of it.
+
+**The methodological finding is the useful one: a survey that cites no source files cannot
+be drift-checked.** Rule 4b's cheap test runs off the report's own citations, so a report
+with none forces the expensive option (a re-read) or no answer at all. That is an argument
+for citing files even at `survey` depth — a citation is what makes a claim *re-checkable*
+later, not just traceable now. gsd-core and spec-kit are already queued for re-reads on
+issue #9; this one genuinely needs it, where spec-kit's turned out not to.
 
 ## Provenance — a fork born from a vanished maintainer
 

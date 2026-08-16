@@ -11,7 +11,7 @@ commit: 655a3cb
 first_commit: 2025-08-21
 stars: 124319
 stars_at: 2026-07-28
-read_at: 2026-07-28
+read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
 depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; never run
 harness_targets: "44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes"
 ---
@@ -29,6 +29,34 @@ Optional `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`, plus
 
 40+ agent integrations (44 config dirs in `src/specify_cli/integrations/` @ 655a3cb).
 Install: `uv tool install specify-cli`, requiring Python 3.11+, git, and `uv`.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged, and cannot be)
+
+123 commits / 136 files since the read. **Every countable claim is identical at both
+ends.** 15 commits touch `src/specify_cli/integrations/`, and none of them changes the
+integration inventory.
+
+| Claim | `655a3cb` | HEAD (`adb2413`) |
+|---|---|---|
+| integration modules (`.py` under `integrations/`) | 47 files | 47 files |
+| `workflows/` YAML files | 17 | 17 |
+| `SkillsIntegration` references | 22 | 22 |
+
+*Counting note:* 47 files against the report's "44 integrations" is not a discrepancy —
+the directory carries base classes and registry plumbing alongside the integrations
+themselves. The verified statement is that the number **did not move**.
+
+So conclusion 7's evidence is intact, and conclusion 3's `SkillsIntegration` → `SKILL.md`
+witness is intact. The git-history claims that carry conclusion 7 (#2901 and #2713 fixing
+hook execution by rewriting instructions more forcefully, #2460's eight-month unenforced
+constitution, #3185's reverted context isolation) are statements about *past commits* and
+cannot drift at all — worth noting as a property: **archaeological claims are the only
+kind that never go stale**, which is an argument for making them where possible.
+
+**This pin is structurally frozen.** `655a3cb` is exp-02's preregistered framework control,
+so it is not re-pinnable even if a re-read happens — a re-read would produce a *second*
+dated reading at a new commit, leaving the experiment's reference intact. Recorded here so
+nobody later "tidies" it.
 
 ## The distinguishing bet
 
