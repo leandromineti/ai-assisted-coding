@@ -179,3 +179,20 @@ note. Revised when evidence moves._
    it, one is on by default, one stable-but-off, one user-write-only. "Twice each" was
    never "always," and the `learning loop` column now has a verified ✗ to sit beside its
    ✓s. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
+9. **Layer 5 is a real rung, not an axis of layer 2 — decided by its own falsifier**
+   (2026-08-16). The taxonomy pre-committed to demoting execution-environments unless
+   study showed a layer-5 fact that isn't just a restatement of how a harness attaches to
+   one. For three weeks every layer-5 finding *was* a harness property (the four
+   relationship verbs — bundle/bind/internalize/inhabit — all live in layer-2 frontmatter),
+   and a gated demotion to "fifth axis of layer 2" was written and scheduled. The first
+   environment studied as a product in its own right — **E2B**, read from its open-source
+   infra — fired the keep-it-a-rung arm the same day: ~26 environment-facts to 6
+   attachment-restatements, **every one of the 26 invisible from the SDK** (Firecracker with
+   no jailer running as root; every "create" secretly a snapshot resume with no warm pool;
+   the credential-injection proxy absent from the open-source build; guest `kcompactd`
+   disabled for host snapshot-diff economics). One genuine population member falsifies "fails
+   as a population." *Live caveat:* the result may be an artifact of E2B being open — a
+   closed environment (Modal/Daytona/Cloudflare) might yield only testimony, which
+   [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) exists to test.
+   → [`notes/05-execution-environments/e2b.md`](notes/05-execution-environments/e2b.md),
+   [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md)

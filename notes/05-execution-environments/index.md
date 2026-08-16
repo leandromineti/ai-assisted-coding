@@ -15,7 +15,7 @@ The most-ignored layer, because it's invisible until it fails.
 | **git worktrees** | Parallel checkouts of one repo; lets several agents work without collision. | Filesystem only — same machine, same network, same credentials | Low |
 | **Devcontainers** | Declarative dev environment in a container; reproducible toolchain. | Process + filesystem | Medium |
 | **Docker** | General container isolation, hand-rolled. | Process + filesystem + network | Medium |
-| **E2B** | Remote sandboxes purpose-built for agent code execution. | Full VM/remote | Low, metered |
+| **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The layer's first and (so far) only report. | Full microVM/remote | Low, metered |
 | **Modal** | Serverless remote compute, used as an agent sandbox. | Full remote | Low, metered |
 | **Cloudflare Sandbox SDK** | Sandboxed execution on Workers; preview URLs, code interpreter. | Full remote | Low, metered |
 | **Bundled (Devin, cloud Codex, Claude Code web)** | The harness ships its own sandbox; not separately selectable. | Vendor-defined | None — and no choice |
@@ -139,6 +139,43 @@ retrospect: no worktree trap, no verb distinctions, and every environment fact r
 "it's a container, containers isolate things." Layer 5 cleared that bar easily. What it has
 not cleared is the bar for being a *rung*.
 
+## Gate RESOLVED — 2026-08-16, "keep it a rung" (the pending verdict above is now falsified)
+
+The trigger fired the same day it was recorded, faster than expected: the E2B deep-dive
+([`e2b.md`](e2b.md)) is the first report of an agent-native environment studied as a product
+in its own right, and **it passes the gate decisively.** ~26 findings that are facts about
+the environment itself against 6 that restate harness-attachment, with a clean discriminator:
+**every one of the 26 is invisible from the SDK.** A study of "how a harness attaches to E2B"
+produces the six and stops — it never learns that Firecracker runs with no jailer, that
+create-is-resume with no warm pool, that the credential-injection proxy is closed-source, or
+that guest `kcompactd` is disabled for host snapshot-diff economics.
+
+So the "fails as a population" clause of the pending verdict is **wrong**, and the reasoning
+is worth keeping visible: one genuine population member is all that claim needed to be false,
+and E2B is unambiguously one — independently distributed (zero AI-framework deps, generic
+Linux wire protocol), and productive of substantive non-derivative findings. **Layer 5 stays
+a rung.** The proposed "fifth axis of layer 2" revision does **not** execute; the reverse
+trigger (six months with no such report) is void because the report exists.
+
+**Two qualifications carried from the E2B read, because they bound what was actually shown:**
+
+1. **The axes are not equally productive.** Blast radius, fidelity, and credential exposure
+   each produced multiple non-obvious findings; **parallelism and startup produced mostly
+   numbers** — real and comparable, but datasheet-shaped. The rung's justification rests on
+   the first three. If a future environment read finds *only* the numeric axes productive,
+   that weakens the rung again.
+2. **The verdict rests on one instance, and a favourable one.** E2B open-sources its
+   infrastructure; that is what made the environment-facts reachable. The open follow-up,
+   now the layer's live question, is whether a **closed** environment (Modal, Daytona,
+   Cloudflare Sandboxes) yields the same or only testimony. If only testimony, the refined
+   finding would be "layer 5 is real but legible only when the environment is open" — sharper
+   than either original pole. Filed on issue #11.
+
+*What still stands from the pending verdict:* clause (b) of the original falsifier
+("explaining a failure") passed independently via the worktree trap, and the relationship
+vocabulary remains layer 5's own analytic contribution. What is overturned is only the
+"fails as a population / demote to an axis" conclusion.
+
 ## Axes that matter
 
 - **Blast radius** — what can it destroy? Files, the repo, the machine, production?
@@ -149,10 +186,11 @@ not cleared is the bar for being a *rung*.
 
 ## Open questions
 
-- **The one that decides this layer's fate:** can an agent-native environment (E2B, Modal,
-  Cloudflare Sandbox SDK) produce a finding that *isn't* a restatement of some harness's
-  relationship to it? That is the adjudication's trigger, and nothing else about layer 5
-  matters as much until it is answered.
+- ~~Can an agent-native environment produce a finding that isn't a restatement of harness
+  attachment?~~ **Answered 2026-08-16: yes (E2B). The layer stays a rung.** The successor
+  question: does that hold for a **closed** environment, or is it an artifact of E2B being
+  open source? A Modal/Daytona/Cloudflare read decides whether the rung is "real" or "real
+  only when legible." Issue #11.
 - Why has nobody verified `worktree` support for any harness, when the worktree trap is
   this layer's founding scar? Either it is universally supported and therefore boring, or
   nobody looked. The matrix currently cannot tell those apart.

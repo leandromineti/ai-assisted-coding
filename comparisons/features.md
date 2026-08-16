@@ -31,3 +31,4 @@ report's frontmatter when confirmed in source or official docs.
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [e2b](../notes/05-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · |

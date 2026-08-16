@@ -156,25 +156,20 @@ changing a tool choice or explaining a failure, demote this layer to a cross-cut
 The prediction recorded here is the opposite — as autonomy rises, the environment question
 becomes more central, not less.
 
-**Adjudicated 2026-08-16 — split verdict, and the falsifier turned out to be the wrong
-question.** Full reasoning in
+**Adjudicated 2026-08-16, then RESOLVED the same day.** The adjudication returned a split
+verdict — *"explaining a failure"* passed via the worktree trap, *"changing a tool choice"*
+had no instance — and proposed **gated** demotion to a "fifth axis of layer 2," pending the
+first report of an agent-native environment studied as a product in its own right. **That
+report landed the same day (E2B) and fired the "keep it a rung" arm of the gate.** Full
+reasoning in
 [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md);
-the short form: *"explaining a failure"* passed decisively (the worktree/gitignore trap),
-*"changing a tool choice"* has **no recorded instance**, and the deeper problem is that
-every layer-5 finding in three weeks has been a **property of a layer-2 tool** rather than
-a fact about an environment. All four relationship verbs describe harness behaviour; all
-four were discovered inside layer-2 deep-dives; the generated matrix
-([`comparisons/environments.md`](comparisons/environments.md)) has zero layer-5 rows. So
-the layer **survives as an analytic lens and fails as a population** — closer to a fifth
-axis of layer 2 than to a rung.
-
-The revision is **proposed and gated, not executed**: re-describe layer 5 as layer 2's
-environment-relationship axis, keeping the number as a storage key exactly as layer 3 kept
-its number. *Trigger:* the first report of an agent-native environment studied as a product
-in its own right (E2B, Modal, Cloudflare Sandbox SDK). If it yields findings that are not
-restatements of some harness's relationship to it, the layer is a population and stays a
-rung. If no such report exists within six months, the revision executes — a layer nobody
-populates in six months of active study is not a layer.
+the short form: E2B produced ~26 environment-facts against 6 attachment-restatements, every
+one of the 26 invisible from the SDK (no jailer on Firecracker; create-is-resume with no warm
+pool; the credential-injection proxy closed-source; guest `kcompactd` disabled for host
+snapshot economics). One genuine population member falsifies "fails as a population," so
+**layer 5 stays a rung and the demotion does not execute.** The live successor question — is
+this an artifact of E2B being open source, versus a closed environment yielding only
+testimony — is [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11).
 
 **The relationship vocabulary** (*bundle* · *bind* · *internalize* · *inhabit*, plus the
 null case) is defined once in

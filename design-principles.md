@@ -236,11 +236,24 @@ does nothing about isolation, which is a choice rather than an omission. Defined
 rendered in [`comparisons/environments.md`](comparisons/environments.md).
 
 *Recorded with the principle, because it is the uncomfortable part:* all four verbs are
-properties of **layer-2 tools**, discovered inside layer-2 reads. That is why the
-2026-08-16 adjudication concluded layer 5 survives as an analytic lens and fails as a
-population — see the gated revision in the layer-5 index. If that revision executes, E1–E3
-do not change; they simply become layer-2 principles about the environment axis, which is
-a sign the principles were about harnesses all along.
+properties of **layer-2 tools**, discovered inside layer-2 reads. The 2026-08-16
+adjudication first concluded from this that layer 5 fails as a population and proposed
+demotion to a layer-2 axis — **then the E2B read the same day overturned it** (README
+conclusion 9). E2B is a layer-5 entity that produces substantive facts *about the
+environment*, not about any harness's relationship to it (E4 below is one), so the verbs
+being harness-side does not make the layer harness-side. E1–E3 stand as layer-5 principles.
+
+**E4. An execution environment's economics leak upward into kernel and scheduler choices
+that no harness can see.** *(single-instance — E2B, 2026-08-16; structurally argued)* Every
+"create" is a snapshot **resume** with no warm pool; the resume working-set is computed by
+booting the template twice at build time and intersecting touched pages; guest `kcompactd`
+is disabled because host-side hugepage backing would dirty the snapshot diff; `discard` on
+the guest ext4 mount is a snapshot-*size* optimization, not a speed one. These are facts
+about the *environment as a product*, invisible from any SDK, and they are the concrete
+content that defeated the "layer 5 is just an axis of layer 2" verdict. Falsifiable and
+single-instance by construction: if a **closed** environment read (Modal/Daytona/Cloudflare)
+yields only testimony, E4 is real but legible only when the environment is open —
+[`notes/05-execution-environments/e2b.md`](notes/05-execution-environments/e2b.md), issue #11.
 
 ---
 
