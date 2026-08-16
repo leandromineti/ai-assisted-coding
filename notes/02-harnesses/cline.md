@@ -13,7 +13,7 @@ commit: dc175c73a
 first_commit: 2024-07-05
 stars: 65138
 stars_at: 2026-07-28
-read_at: 2026-07-28
+read_at: 2026-07-28   # drift-checked 2026-08-16 at 574b8eb45 without re-reading (rule 4b) — all claims corroborated; upstream deleted the vestigial classifier this report flagged; pin deliberately not moved
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 features:
   mcp: true            # apps/vscode MCP configuration UI, McpPromptRow
@@ -27,6 +27,36 @@ features:
 # Cline
 
 Open-source IDE-embedded harness, originally a VS Code extension, bring-your-own-model.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+224 commits / 799 files since the read. Every claim below is corroborated, and one of them
+in the strongest way available: **upstream deleted the vestigial code this report
+identified as vestigial.**
+
+- **The dismantled registry stays dismantled.** `git ls-tree | grep system-prompt` returns
+  **zero** files at `dc175c73a` and zero at HEAD. No per-model prompt architecture came
+  back.
+- **The vestigial organ was excised.** The report called `isNextGenModelFamily` a
+  "vestigial organ of the dismantled design" with no non-test callers. It now has **zero
+  occurrences anywhere in the tree**, removed by `2a0dd197b` — *"chore(vscode): remove dead
+  next-gen model classifier"* (#12887). Upstream reached the same conclusion the archaeology
+  did, and used the same word.
+- **One prompt, still no model parameter.** `buildClineSystemPrompt` survives (moved
+  `:110` → `:132`) and still takes only `ClineSystemPromptOptions`.
+- **A near-counterexample, checked and dismissed.** That options type carries
+  `providerId`, which looks like model-conditioned prompting. It is not: `providerId` feeds
+  `isClineProvider()`, which gates only whether **workspace metadata** is injected
+  (`:147`, `:152`, `:187`) — a hosted-provider distinction, not a model-family branch. It
+  was also present at the pin (`:107`), so it is not drift. Recorded because a reader
+  scanning for "does anything vary by model?" will hit it and deserve the answer.
+
+**Still open — the *why*.** The report left two readings of the retreat (the per-model gain
+didn't pay vs. the SDK rewrite killed the variants as collateral) and noted a pickaxe query
+had timed out on the blobless clone. Method note for the next attempt: `git log -S <symbol>`
+scoped to `<pin>..HEAD` is cheap and works — it is the *full-history* pickaxe that is
+expensive. That found the deletion commit above in seconds, but the original dismantling
+predates the pin, so the question stands.
 
 ## The distinguishing bet
 
