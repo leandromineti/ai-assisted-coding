@@ -14,7 +14,7 @@ commit: 017a5977d
 first_commit: 2025-03-21
 stars: 190554
 stars_at: 2026-07-28
-read_at: 2026-07-28
+read_at: 2026-07-28   # drift-checked 2026-08-16 at 03bff6500 without re-reading (rule 4b) — cited surface nearly frozen (7 of 123 commits, 5 of them release syncs); all claims corroborated; pin deliberately not moved
 depth: deep-dive
 features:
   mcp: true              # src/mcp/
@@ -38,6 +38,36 @@ providers through Models.dev, including local models, plus GitHub Copilot and Ch
 Plus/Pro accounts. Stores no code or context server-side.
 
 Formerly `sst/opencode`; the repo now lives under `anomalyco/`.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+123 commits / 461 files since the read, but **only 7 touch a file this report cites, and
+5 of those are release-version syncs**. The cited surface is close to frozen. Everything
+checked is corroborated; nothing is contradicted.
+
+- **Conclusion 1's flagship data point is byte-identical at both ends.** The per-model
+  prompt directory holds the same 14 `.txt` files at `017a5977d` and at HEAD — same
+  names, no additions, no deletions — of which nine are model-selectable (`anthropic`,
+  `beast`, `codex`, `copilot-gpt-5`, `default`, `gemini`, `gpt`, `kimi`, `trinity`); the
+  rest are mode prompts (`plan`, `plan-mode`, `plan-reminder-anthropic`, `build-switch`,
+  `meta`). Three weeks on, opencode is still paying the nine-prompt maintenance cost that
+  cline paid and abandoned. That is the strongest form this evidence can take: not an
+  assertion that the position is *right*, but confirmation that it is still *held*.
+- **H3's two chokepoints are intact:** `Permission.visibleTools`
+  (`packages/opencode/src/permission/index.ts:216`) still filters the tool list
+  pre-decision, `Permission.ask` (`:67`) still gates at call time.
+- **H2's opencode half is intact and precise:** `DOOM_LOOP_THRESHOLD = 3`
+  (`session/processor.ts:29`) with escalation raised as `permission: "doom_loop"`
+  (`:373`) — the loop guard really is routed through the permission subsystem to a human,
+  exactly as the report describes. Checked deliberately, because codex's guard was
+  verified *absent* on the same day and H2 now rests on the contrast between these two.
+- **Not a refactor, despite appearances:** `packages/core/` sits alongside
+  `packages/opencode/` with 489 files — and it did at the pin too, identically. Worth
+  recording because the two-package layout reads like a fresh extraction and isn't one.
+
+**What a re-read should cost:** low, and it is not due. Of the 123 commits, the ones
+landing outside the cited surface are the interesting question, but nothing in this
+report currently claims anything about them.
 
 ## The distinguishing bet
 
