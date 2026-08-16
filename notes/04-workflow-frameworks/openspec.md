@@ -11,7 +11,7 @@ commit: 2b3d368
 first_commit: 2025-08-05
 stars: 63241
 stars_at: 2026-07-31
-read_at: 2026-07-31
+read_at: 2026-07-31   # drift-checked 2026-08-16 at d578896 without re-reading (rule 4b) — specs-apply.ts nearly doubled, flagged for re-read on issue #10; pin deliberately not moved
 depth: deep-dive   # the runtime traced in source: delta-merge engine (specs-apply.ts), archive flow, artifact-graph DAG engine + schema loader, validator, command-generation adapters; skills read; dogfooding measured. Website/docs skimmed
 harness_targets: "29 adapter modules in src/core/command-generation/adapters/ (claude, cursor, cline, continue, opencode, gemini, copilot, devin, kiro, roocode, qwen, …); 37 tool configs with skills dirs; detection by scanning for each tool's config dirs"
 ---
@@ -23,6 +23,42 @@ design → tasks), archive completed changes, and let a deterministic merge accr
 deltas into a living source-of-truth spec. The lean pole of the 2026 SDD trio
 (BMAD / spec-kit / OpenSpec). Maintainer-dominated like most of the set: 516 of 723
 commits (71%) from one author under the Fission AI org.
+
+## Drift check — 2026-08-16 (not a re-read; the pin is unchanged)
+
+29 commits since the read. Small, but it lands in two places that matter, and one of them
+is flagged for a re-read rather than corrected here.
+
+**1. Flagged for re-read: `specs-apply.ts` has nearly doubled — 570 → 1086 lines.** The
+line count below was accurate at `2b3d368`; the *component* changed. This is the file the
+report's central answer rests on ("the delta→source-of-truth merge is deterministic"), and
+three commits grew it by ~90%: `521ee33` (let an archived change retire a capability it
+empties), `9cd845f` (security: "keep paths on a short leash"), `45cca5d` (warn before
+archiving deletes a note next to a requirement). The *verdict* — deterministic, not
+model-run — is not in doubt; what a reader cannot now trust is the description of the
+grammar and merge semantics in detail. Recorded on issue #10 as needing a re-read; not
+expanded into one here, per rule 4b.
+
+**2. `harness_targets` moved by one, and the interesting part isn't the count.** The 29
+adapter modules in `src/core/command-generation/adapters/` are **identical at both ends** —
+same count, same filenames, nothing added or removed. What changed is the tool-config
+table: **Rovo Dev CLI** was added as a first-class target (`.rovodev`, #1516), and
+**MiniMax Code** skills support landed (#1214).
+
+*Counting note:* the report's "37 tool configs with skills dirs" is not reproducible by a
+clean single-line regex over `config.ts` (which yields 35 at the pin, 36 at HEAD), so the
+original counted by some other method. The verified statement is the **delta (+1 named
+tool)**, not a corrected absolute — re-deriving a number by a different method and
+presenting it as a correction would be worse than leaving the original standing.
+
+**3. Standards-relevant, and it corroborates the 2026-08-11 update.** OpenSpec moved
+Codex's skills directory from `.codex` to **`.agents`**, demoting `.codex` to
+`legacySkillsDirs` and detecting both (`#1511`, "install skills in canonical agents
+directory"). A third-party installer relocating a vendor's skills into the shared
+`.agents/` convention — and calling it *canonical* — is convergence evidence from the
+installer's side, matching what Warp showed from the implementer's side. It also grew a
+`globalSkillsDir` / shared-skill-target concept for home-directory skill targets. See
+[`../standards/index.md`](../standards/index.md).
 
 ## The layer-4 questions, answered
 

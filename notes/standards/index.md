@@ -1,6 +1,6 @@
 # Standards — not a layer
 
-`checked: 2026-08-11`
+`checked: 2026-08-16`
 
 Specifications, not installable things. A standard has no layer of its own; it is recorded
 here once and referenced from the layers that implement it. See
@@ -109,6 +109,16 @@ directory that multiple integrations resolve to. Like rules files, this is
 convention-level (a filename + frontmatter shape, no schema) — but it's no longer
 Claude-Code-shaped. See
 [`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
+
+*Installer-side evidence (2026-08-16, OpenSpec drift check @ `d578896`):* OpenSpec moved
+**Codex's** skills directory from `.codex` to **`.agents`**, demoting `.codex` to
+`legacySkillsDirs` while still detecting both — the commit is titled "install skills in
+canonical agents directory" (#1511). A third-party installer relocating a *vendor's* skills
+into the shared `.agents/` tree, and calling that location canonical, is the convergence
+happening in the direction that matters: not a new tool adopting the convention, but an
+existing vendor-specific path being retired in favour of it. Watch whether `.codex` is
+eventually dropped rather than kept as legacy — that is when the convention has actually
+won. [`../04-workflow-frameworks/openspec.md`](../04-workflow-frameworks/openspec.md).
 
 *Direct-consumer evidence (2026-08-11):* Warp implements the format natively —
 `crates/ai/src/skills/` parses `SKILL.md`, resolves scoped skill directories with a
