@@ -16,4 +16,4 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [opencode](../notes/02-harnesses/opencode.md) | 2 | ✓ | · | · | · | · |
 | [warp](../notes/02-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 
-**4 of 23 reports declare `environments:`.**
+**4 of 24 reports declare `environments:`.**

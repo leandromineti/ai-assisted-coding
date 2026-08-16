@@ -109,7 +109,12 @@ def check(reports: list[dict]) -> int:
     behind = []
     for r in reports:
         pinned = r.get("commit")
-        if not pinned or not r.get("open_source", True):
+        # A recorded pin with a clone present is checked regardless of open_source: a
+        # closed *product* can still expose an open, pinned artifact (Modal — closed infra,
+        # open client), and its verified claims drift with that clone. Genuinely closed
+        # tools carry no `commit` and skip via `not pinned`; the clone-existence guard below
+        # keeps a pinned-but-uncloned entry a warning, not a crash. (Decoupled 2026-08-16.)
+        if not pinned:
             continue
         clone = ROOT / "upstream" / r["name"]
         if not (clone / ".git").is_dir():

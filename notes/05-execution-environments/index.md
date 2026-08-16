@@ -16,7 +16,7 @@ The most-ignored layer, because it's invisible until it fails.
 | **Devcontainers** | Declarative dev environment in a container; reproducible toolchain. | Process + filesystem | Medium |
 | **Docker** | General container isolation, hand-rolled. | Process + filesystem + network | Medium |
 | **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The layer's first and (so far) only report. | Full microVM/remote | Low, metered |
-| **Modal** | Serverless remote compute, used as an agent sandbox. | Full remote | Low, metered |
+| **[Modal](modal.md)** | Serverless compute used as an agent sandbox; **gVisor `runsc`**, not a VM. **Read 2026-08-16** as the closed-environment control — client open, infra closed. | gVisor container | Low, metered |
 | **Cloudflare Sandbox SDK** | Sandboxed execution on Workers; preview URLs, code interpreter. | Full remote | Low, metered |
 | **Bundled (Devin, cloud Codex, Claude Code web)** | The harness ships its own sandbox; not separately selectable. | Vendor-defined | None — and no choice |
 
@@ -176,6 +176,35 @@ trigger (six months with no such report) is void because the report exists.
 vocabulary remains layer 5's own analytic contribution. What is overturned is only the
 "fails as a population / demote to an axis" conclusion.
 
+### Successor question — first evidence (2026-08-16, Modal)
+
+Bound #2 above asked whether the E2B pass was an artifact of E2B being open source. The
+control read is [`modal.md`](modal.md): Modal's client is open (Apache-2.0), its
+**infrastructure closed**. Result — **the rung survives closure, with a precise grade cap:**
+
+- Modal still yields ~9 **source-verified** environment-facts, because its client ships a
+  richly-commented gRPC proto (a "leaky contract" — it must name every capability clients
+  configure) *and* the in-container agent (`cuda-checkpoint --toggle` is a literal subprocess
+  call). Plus mechanism-level **testimony** (gVisor built-in checkpoint/restore, a "pages"
+  file, FUSE lazy-loading overlay).
+- **But closure caps the grade at "declared / cited," never "audited."** Four of E2B's five
+  signature findings (no-jailer, cgroups-account-only, kcompactd-disabled, closed-proxy-seam
+  internals) have **no recoverable analog** — they are mechanism-below-the-API-line — and the
+  fifth (claim-vs-code discrepancy) is *structurally impossible*: with no source, you cannot
+  catch a vendor being wrong.
+
+**The two reads together are stronger than either alone.** E2B (Firecracker microVM) and Modal
+(gVisor userspace kernel) are two fundamentally different isolation primitives, both
+agent-native, with one **convergent** egress-control shape (domain-allowlisting restricted to
+TLS/443 in both). That is a **population with internal variation** — precisely what "layer 5 is
+a real rung" required and what a one-instance read could not show.
+
+**Refined law, replacing the old binary framing:** *an execution environment is legible in
+proportion to (client-contract richness + vendor disclosure); only open infrastructure yields
+audit-grade facts.* n=2 for the rung; n=1 for "closed but disclosure-rich." A **maximally**
+closed environment — thin uncommented client, no engineering blog — is still untested, and is
+the live question on issue #11.
+
 ## Axes that matter
 
 - **Blast radius** — what can it destroy? Files, the repo, the machine, production?
@@ -187,10 +216,11 @@ vocabulary remains layer 5's own analytic contribution. What is overturned is on
 ## Open questions
 
 - ~~Can an agent-native environment produce a finding that isn't a restatement of harness
-  attachment?~~ **Answered 2026-08-16: yes (E2B). The layer stays a rung.** The successor
-  question: does that hold for a **closed** environment, or is it an artifact of E2B being
-  open source? A Modal/Daytona/Cloudflare read decides whether the rung is "real" or "real
-  only when legible." Issue #11.
+  attachment?~~ **Answered 2026-08-16: yes (E2B). The layer stays a rung.**
+- ~~Does that hold for a **closed** environment?~~ **First evidence 2026-08-16 (Modal): yes,
+  but only to audit-grade where the infra is open — closed caps the grade at declared/cited.**
+  See the successor-question section above. Remaining: a **maximally** closed environment
+  (thin client, no engineering disclosure) — untested. Issue #11.
 - Why has nobody verified `worktree` support for any harness, when the worktree trap is
   this layer's founding scar? Either it is universally supported and therefore boring, or
   nobody looked. The matrix currently cannot tell those apart.

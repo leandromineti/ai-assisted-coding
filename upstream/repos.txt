@@ -33,6 +33,12 @@
 # One report (e2b.md) covers both; the pin is the e2b clone, infra facts dated inline.
 5|e2b|https://github.com/e2b-dev/E2B
 5|e2b-infra|https://github.com/e2b-dev/infra
+# Modal, added 2026-08-16 as issue #11's SUCCESSOR test: does the layer-5 rung
+# verdict hold for a CLOSED environment, or was E2B's pass an artifact of open
+# source? Only the CLIENT is open (modal-client, Apache-2.0). The isolation infra
+# is closed — so the environment-facts that made E2B pass exist here only as
+# vendor testimony (docs/blogs), which is exactly the variable under test.
+5|modal|https://github.com/modal-labs/modal-client
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot

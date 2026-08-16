@@ -36,5 +36,6 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | 4 · Workflow frameworks | gsd-core | — | Markdown, Node | MIT | 7,336 | 2025-12-14 | Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot | `v1.8.0-102-gd04592de` | survey | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) |
 | 4 · Workflow frameworks | spec-kit | — | Python | MIT | 124,319 | 2025-08-21 | 44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes | `v0.1.10-1039-g655a3cb` | survey | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) |
 | 5 · Execution environments | e2b | — | Python, TypeScript, Go | Apache-2.0 | 13,423 | 2023-03-04 | — | `@e2b/python-sdk@2.39.1` | deep-dive | [e2b](../notes/05-execution-environments/e2b.md) |
+| 5 · Execution environments | modal | — | Python, Go, TypeScript | Apache-2.0 | 502 | 2021-07-09 | — | `closed source` | survey | [modal](../notes/05-execution-environments/modal.md) |
 
-**23 tools** — 6 deep-dive · 10 stub · 7 survey.
+**24 tools** — 6 deep-dive · 10 stub · 8 survey.
