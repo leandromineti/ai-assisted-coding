@@ -96,3 +96,11 @@ per-task Docker, canary GUIDs; v2.1's "verified refresh" (a dozen instruction-te
 mismatches fixed) is the validity-arrives-late pattern's third instance.
 livecodebench-2024: the canonical time-windowed contamination posture — release-dated
 problems make contamination measurable (pre- vs post-cutoff gap), not just deterred.
+agent-frameworks-eval: FULL READ 2026-08-17 (PDF refetched — the 07-31 cache died with
+the 08-06 server rebuild). 7 frameworks × 3 tasks, one LLM, $875 of runs — and no
+framework-less control anywhere: exp-03's question confirmed unoccupied. Single-agent
+beat multi-agent on all three tasks; repair gaps traced to patch *tooling*, not
+reasoning. Correction-rate metric borrowed into metrics.md with its zero≠good caveat.
+Prose headlines contradict its own tables three ways (trajectories, vuln percentages);
+tables are the citable layer — the read-the-PDF rule pays out again, this time inside
+one paper.

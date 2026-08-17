@@ -141,9 +141,18 @@ large** (unaided models code through broken specs), and **clarification dissocia
 code capability** (ClarifyCodeBench's reasoning-effort finding) — which is spec-kit's
 bet restated as a measurable claim, and exactly the P1/P2 dissociation exp-02
 preregistered. The adjacent framework-comparison literature
-([agent-frameworks-eval](../../refs/agent-frameworks-eval.md), abstract depth) compares
-frameworks *to each other* on success/efficiency/token-overhead; the
-framework-vs-*plain* question this repo's experiments ask remains unoccupied.
+([agent-frameworks-eval](../../refs/agent-frameworks-eval.md), **full read
+2026-08-17**) compares frameworks *to each other* on success/efficiency/token-overhead
+— 7 frameworks × 3 tasks, one backend LLM, and **no framework-less control anywhere in
+the grid** — so the framework-vs-*plain* question this repo's experiments ask remains
+unoccupied, now confirmed at full depth rather than assumed from the abstract. The
+full read also surfaced two things the abstract hides: single-agent beats multi-agent
+on all three of its tasks (coordination overhead + patch-tooling gaps, corroborating
+the ceremony-is-cost decomposition at framework scale), and its correction-rate
+metric is usable here only jointly with effectiveness — zero corrections in its data
+signals missing self-monitoring, not efficiency (GPTswarm/OWL: ~0 corrections *and*
+3–10% repair rates). Its prose headlines contradict its own tables in places; cite
+tables only.
 
 ## 6. What this repo takes
 

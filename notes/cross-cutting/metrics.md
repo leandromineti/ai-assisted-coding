@@ -131,6 +131,15 @@ moment was not the *duration* of the block but the *content* of the answer (a
 one-line deferral decided the exit-code trap). Time-based attention metrics price
 the interruption, not the leverage.
 
+### Correction rate (candidate, borrowed 2026-08-17 — not yet used in an experiment)
+`correction attempts / trajectory steps`, from
+[`agent-frameworks-eval`](../../refs/agent-frameworks-eval.md) (its RQ2). Borrowed WITH
+its own sharpest caveat, which the paper demonstrates in its data: **zero corrections
+signals missing self-monitoring, not efficiency** — its two lowest-correction frameworks
+also had 3–10% repair rates. Never read this metric alone; pair it with an effectiveness
+score. Candidate use here: exp-03's arms, where a gates-only harness should show
+corrections concentrated at the gate rather than spread through the trajectory.
+
 ### Observed session throughput
 `output_tokens (dominant model) / duration_api_ms`, per headless session, computed from
 committed harness transcripts by `scripts/observed-throughput.py` — never hand-typed.
