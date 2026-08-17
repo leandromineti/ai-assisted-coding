@@ -24,8 +24,8 @@ happened when I started measuring.
 ## The core triad
 
 <figure>
-  <img src="img/the-core-triad.svg" alt="Minimal diagram of the core triad: a small person figure labeled You, connected by a double-headed arrow directly to a large Harness container. A Model box rests on the harness, lifted by a soft drop shadow — a separate component sitting on it, like a processor on a motherboard, not a part of it. Below, a second double-headed arrow connects the harness to the Execution environment: actions go down, observations come back. Harness and environment are equal-width boxes; the model carries the diagram's only accent color." />
-  <figcaption>The core triad: you talk to a harness, a swappable model rests on it, and actions land in — and report back from — an environment.</figcaption>
+  <img src="img/the-core-triad.svg" alt="Minimal diagram of the core triad: a small person figure labeled You, centered above a Harness container and connected to it by a vertical double-headed arrow. Inside the harness, the Model is a wide horizontal slab nearly filling its width, lifted by a soft drop shadow — a mounted, swappable component, like a card seated in a chassis. Below the harness sits an equal-width Execution environment box, and the two are joined in a circular loop: an arrow labeled actions curves out of the harness's right side down into the environment, and an arrow labeled feedback curves out of the environment's left side back up into the harness. The model carries the diagram's only accent color." />
+  <figcaption>The core triad: you talk to a harness, a swappable model is seated inside it, and the harness runs a loop of actions and feedback against an environment.</figcaption>
 </figure>
 
 Strip any working coding agent to the parts it cannot lack and three things remain
@@ -79,8 +79,8 @@ know can't agree, "the harness doesn't matter" is not a safe assumption.
 ## The two interfaces
 
 <figure>
-  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram — You connected directly to the Harness with its seated Model, Execution environment below — now with two additions drawn in dashed purple: a Workflow frameworks box to the upper left, labeled 'optional', reachable as a detour between You and the Harness while the direct arrow remains; and a Portable artifacts box on the right (MCP, skills, rules, hooks), labeled 'plugs in', with a dashed arrow into the harness's side." />
-  <figcaption>The same skeleton with the two interfaces added: an optional boundary between you and the harness, and plugins extending it from the side.</figcaption>
+  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a layer you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, and hooks. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
+  <figcaption>The full stack is the triad plus two additions: a process layer between you and the harness, and extensions seated inside it alongside the model.</figcaption>
 </figure>
 
 Between you and that triad sit two things that look like layers but behave like
