@@ -19,7 +19,7 @@
 
   <!-- Harness with the Model as a mounted slab -->
   <rect x="150" y="150" width="340" height="114" rx="12" fill="#eceff4" stroke="#d8dee9" stroke-width="1.5"/>
-  <text x="166" y="178" font-size="16" font-weight="600" fill="#2e3440">Harness</text>
+  <text x="320" y="178" text-anchor="middle" font-size="16" font-weight="600" fill="#2e3440">Harness</text>
 
   <rect x="166" y="190" width="308" height="62" rx="8" fill="#ffffff" stroke="#5e81ac" stroke-width="1.8" filter="url(#lift)"/>
   <text x="320" y="226" text-anchor="middle" font-size="16" font-weight="600" fill="#5e81ac">Model</text>
@@ -32,5 +32,5 @@
 
   <!-- Execution environment -->
   <rect x="150" y="276" width="340" height="62" rx="10" fill="#ffffff" stroke="#d8dee9" stroke-width="1.5"/>
-  <text x="166" y="313" font-size="16" font-weight="600" fill="#2e3440">Execution environment</text>
+  <text x="320" y="313" text-anchor="middle" font-size="16" font-weight="600" fill="#2e3440">Execution environment</text>
 </svg>
