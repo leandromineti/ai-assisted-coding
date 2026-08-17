@@ -25,18 +25,18 @@
   <rect x="150" y="218" width="340" height="188" rx="12" fill="#eceff4" stroke="#d8dee9" stroke-width="1.5"/>
   <text x="166" y="246" font-size="16" font-weight="600" fill="#2e3440">Harness</text>
 
-  <rect x="166" y="258" width="308" height="60" rx="8" fill="#ffffff" stroke="#5e81ac" stroke-width="1.8" filter="url(#lift)"/>
+  <rect x="166" y="258" width="308" height="62" rx="8" fill="#ffffff" stroke="#5e81ac" stroke-width="1.8" filter="url(#lift)"/>
   <text x="320" y="294" text-anchor="middle" font-size="16" font-weight="600" fill="#5e81ac">Model</text>
 
-  <rect x="166" y="330" width="308" height="64" rx="8" fill="#ffffff" stroke="#7b8494" stroke-width="1.6" filter="url(#lift)"/>
-  <text x="320" y="356" text-anchor="middle" font-size="14" font-weight="600" fill="#4c566a">Extensions</text>
+  <rect x="166" y="332" width="308" height="62" rx="8" fill="#ffffff" stroke="#7b8494" stroke-width="1.6" filter="url(#lift)"/>
+  <text x="320" y="357" text-anchor="middle" font-size="14" font-weight="600" fill="#4c566a">Extensions</text>
   <text x="320" y="376" text-anchor="middle" font-size="10.5" fill="#7b8494">MCP · skills · rules · hooks</text>
 
   <!-- the agent loop -->
-  <path d="M 490 270 C 548 292, 548 446, 494 462" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="550" y="366" font-size="10.5" fill="#7b8494">actions</text>
-  <path d="M 150 462 C 92 446, 92 292, 146 270" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="90" y="366" text-anchor="end" font-size="10.5" fill="#7b8494">feedback</text>
+  <path d="M 490 312 C 548 340, 548 458, 494 486" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="550" y="402" font-size="10.5" fill="#7b8494">actions</text>
+  <path d="M 150 486 C 92 458, 92 340, 146 312" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="90" y="402" text-anchor="end" font-size="10.5" fill="#7b8494">feedback</text>
 
   <!-- Execution environment -->
   <rect x="150" y="446" width="340" height="80" rx="10" fill="#ffffff" stroke="#d8dee9" stroke-width="1.5"/>
