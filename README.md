@@ -51,6 +51,7 @@ confirm, contradict, or note silence.
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
 | `comparisons/` | Side-by-side matrices distilled from the notes and experiments |
 | `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` and `build-refs-index.py` (regenerate the indexes) |
+| `articles/` | Public-facing writing drawn from the findings — drafted next to the evidence, every claim linked and dated. See [`articles/README.md`](articles/README.md) |
 
 **[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-layer index of every
 tool with a report, **[`comparisons/features.md`](comparisons/features.md)** the
