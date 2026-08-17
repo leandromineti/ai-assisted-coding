@@ -1,0 +1,21 @@
+{
+  "archives": {
+    "dup.tar": [
+      {
+        "name": "dup.txt",
+        "size": 100,
+        "mtime": 1753660800
+      },
+      {
+        "name": "bystander.txt",
+        "size": 50,
+        "mtime": 1753660800
+      },
+      {
+        "name": "dup.txt",
+        "size": 200,
+        "mtime": 1753660860
+      }
+    ]
+  }
+}

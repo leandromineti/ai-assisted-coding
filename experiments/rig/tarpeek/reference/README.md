@@ -27,4 +27,12 @@ output. Output is therefore timezone-invariant: `TZ` has no effect.
 | 2 | the path is not a tar archive |
 | 3 | valid tar archive with zero members (empty) |
 | 4 | corrupt or truncated archive (valid header, unreadable contents) |
-| 5 | path unreadable / missing |
+| 5 | path unreadable / missing / not a regular file (directory, permission, symlink loop) |
+
+## Escalation behaviors (2026-08-17)
+
+Hardened for the amendment-3 escalation's candidate families, before screening:
+path-level errors all land on exit 5 without a traceback (N1); with `--json`,
+diagnostics go to stderr and stdout stays empty or valid JSON (N2); duplicate
+member names are both listed — nothing is deduplicated (N3); `--min-size` that
+filters every member out is success over an empty result, exit 0 (N4).

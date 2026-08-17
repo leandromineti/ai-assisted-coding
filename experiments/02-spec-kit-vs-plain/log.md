@@ -170,3 +170,47 @@ reference. Costs ~5 × Run A ≈ $1.9 in API spend at intro rates plus rig time.
 **Awaiting owner sign-off before any screening run.** Until then the instrument stands
 as: 21 checks, fails-closed and fair, headroom insufficient for P2; P1 (requirements
 rubric) unaffected throughout.
+
+## 2026-08-17 — escalation (the Aider move): owner sign-off + candidate pool
+
+- **Owner sign-off received** ("Lets do the aider move") — the ~$1.9 screening spend is
+  authorized. Execution follows amendment 3 item 5 exactly: candidate pool of NEW
+  families → 5 fresh unaided baseline runs under `package-hosts-only` → keep candidates
+  failed in ≥ 2 of 5 → fairness screen against the reference. Screening runs are
+  instrument calibration, never scored arms.
+- **Candidate pool authored and committed BEFORE any screening run** so the pool cannot
+  be shaped by what the runs produce. 7 candidate checks in 4 new families, in
+  `../rig/tarpeek/tests/candidate_checks.py` (mirrored in `fixtures/`), deliberately
+  outside the five preregistered families:
+
+  | Family | Candidates | Sharp edge targeted |
+  |---|---|---|
+  | N1 hostile paths | n1a directory · n1b missing path · n1c dangling symlink | path-level `OSError`s escape a `tarfile.ReadError`-only handler as tracebacks |
+  | N2 stream discipline | n2a `--json` error keeps stdout clean | error text printed into the machine-readable stream |
+  | N3 duplicate members | n3a both listed (human) · n3b both in JSON — or dedup documented | name-keyed dict silently drops one of two same-named members |
+  | N4 filter semantics | n4a filter-to-empty is success (or distinct documented code) | empty-result conflated with empty-archive error; `max()` over empty rows raises |
+
+  One new fixture, `dup.tar` (same name twice: 100 B then 200 B a minute later),
+  built by `build_candidate_fixtures.py`, ground truth measured into
+  `candidate_expected.json` (rule 5a). Reference hardened for N1 (broad `OSError` →
+  exit 5, dated comment in source) — apparatus hardening before screening, recorded.
+- **Candidate pre-screen (venv, TZ=UTC, LANG=LC_ALL=C.UTF-8):**
+
+  | Leg | Result |
+  |---|---|
+  | Fails-closed: stub vs candidates | **7/7 fail** ✓ |
+  | Fairness: reference vs candidates | **7/7 pass** ✓ |
+  | Regression: reference vs accepted 21 | **21/21 pass** ✓ |
+  | Calibration preview: Run A artifact vs candidates | **7/7 pass** — Run A fails none |
+
+- **The preview is recorded, not acted on.** Run A passing the whole pool predicts a
+  possible null screening result, and that is fine: the keep criterion is failure in
+  ≥ 2 of 5 *fresh* runs — the Aider method selects on baseline variance, which one
+  careful calibration artifact cannot measure. The alternative (inflating the pool
+  with checks no careful implementation passes) is the exact unfairness
+  SWE-bench-Verified documented; not doing that. If screening keeps nothing, the
+  verdict is that the trap approach is consumed at this task size and the instrument
+  question moves to task scale — a distinct, honest finding.
+- Screening runs will additionally be scored against the accepted 21 (free variance
+  data on T1c/T3d/T4c across samples); that scoring is calibration bookkeeping, not
+  part of the keep rule.
