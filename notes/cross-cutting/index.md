@@ -1,9 +1,20 @@
 # Cross-cutting concerns
 
-`checked: 2026-07-30`
+`checked: 2026-08-17`
 
 These are **not layers**. Each appears at several layers simultaneously, and forcing them
 onto the stack distorts them. See [`../../taxonomy.md`](../../taxonomy.md).
+
+---
+
+## Benchmarks as instruments → [`benchmark-survey.md`](benchmark-survey.md)
+
+**Where it lives:** every layer at once — a benchmark score binds a model, a harness, and
+an environment into one number (conclusion 2), and vendor span makes that binding
+structural. The survey's thesis: the field ships instruments with at most one of the
+three properties an instrument needs (headroom, validity, contamination control) and
+retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the generated
+[benchmark matrix](../../comparisons/benchmarks.md) is its catalog half.
 
 ---
 

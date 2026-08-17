@@ -16,19 +16,22 @@ Every source with a note, grouped by kind. Newest retrieved: `2026-08-17`.
 | [ambig-swe](ambig-swe.md) | 2026 | ICLR 2026 | ✓ | full | `exp-02`, `exp-03`, `conclusion-6`, `methodology-5d`, `metrics` | peer-reviewed, repo-scale, and it identifies a confound in exp-02: agents almost never interact unless explicitly prompted, so 'plain asked nothing' is not evidence about plain |
 | [clareval](clareval.md) | 2026 | arXiv preprint | ✗ | full | `exp-02`, `exp-03`, `methodology-5d`, `metrics` | the design to copy — ambiguity injection creates ~80pp of headroom where our trap set had none, and its rule-based user simulator is validated at 96.5% agreement against an LLM judge |
 | [aider-polyglot-2024](aider-polyglot-2024.md) | 2024 | aider.chat blog | ✗ | extract | `exp-02`, `methodology-5d`, `issue-4` | supplies the exact recipe issue #4's option 1 needs — select trap items empirically by baseline failure (kept problems solved by ≤3 of 7 baselines), and its saturation diagnosis matches exp-02's symptoms verbatim |
+| [clarifycodebench](clarifycodebench.md) | 2026 | arXiv preprint | ✗ | extract | `exp-02`, `exp-03`, `metrics` | the most instrument-careful of the clarification benchmarks — annotated key questions with ground-truth answers and a default-reply fallback avoid the oracle-knows-everything proxy, and its finding that reasoning effort buys code correctness but NOT ambiguity detection bears directly on where clarification value lives |
+| [humanevalcomm](humanevalcomm.md) | 2024 | ACM TOSEM 34(7) | ✓ | extract | `exp-02`, `exp-03`, `metrics` | the degradation-construction benchmark — its headline (>60% of responses answer degraded specs with code, not questions) is the field-scale version of what exp-02's P1 rubric probes, but its clarification answers come from a GPT-3.5 proxy that has seen the original problem, an apparatus choice τ-bench taught us to distrust |
 | [tau-bench](tau-bench.md) | 2024 | ICLR 2025 | ✓ | extract | `metrics`, `exp-03`, `methodology-5d` | source of pass^k — the reliability metric we need, since >60% average success collapses to <25% when the same task must be solved 8 times |
+| [tau2-bench](tau2-bench.md) | 2025 | arXiv preprint | ✗ | extract | `metrics`, `exp-03` | the dual-control successor to τ-bench — constraining the user simulator through the environment cut simulator error rates from 40–47% to 16%, which is the strongest fix yet for the τ-bench apparatus problem our tau-bench note records |
+| [livecodebench-2024](livecodebench-2024.md) | 2024 | ICLR 2025 | ✓ | abstract | `exp-02`, `metrics` | the canonical time-windowed contamination defence — problems carry release dates so any model can be scored only on post-cutoff items; also evaluates self-repair/execution/test-prediction, not just generation |
 | [paperbench-2025](paperbench-2025.md) | 2025 | OpenAI (frontier-evals) | ✗ | abstract | `exp-02`, `issue-4` | shows what issue #4's option 2 looks like done well — partial credit via a hierarchical tree of ~8,000 individually gradable binary criteria with weights, not a holistic quality score; dissolves the option-1-vs-option-2 dichotomy |
+| [swe-bench-2023](swe-bench-2023.md) | 2023 | ICLR 2024 | ✓ | abstract | `conclusion-2`, `exp-02` | the field's de-facto agentic benchmark and its cautionary tale in one — launched with enormous headroom (1.96% resolve) and later needed SWE-bench Verified to remove the 68.3% of items that were invalid, proving headroom and validity are independent failures |
 | [swebench-verified-2024](swebench-verified-2024.md) | 2024 | OpenAI blog (with SWE-bench authors) | ✗ | abstract | `exp-02`, `methodology-5d`, `issue-4` | supplies the validity half issue #4's option 1 needs — an instrument must be screened for unfair items, not just hard ones: 68.3% of SWE-bench was filtered out, 61.1% for tests that rejected valid solutions |
-| [clarifycodebench](clarifycodebench.md) | 2026 | arXiv preprint | ✗ | unread | `exp-02`, `metrics` | UNREAD — queued lead, must not be cited until read |
-| [humanevalcomm](humanevalcomm.md) | 2024 | ACM TOSEM 34(7) | ✓ | unread | `exp-02`, `metrics` | UNREAD — queued lead, must not be cited until read |
-| [tau2-bench](tau2-bench.md) | 2025 | arXiv preprint | ✗ | unread | `metrics`, `exp-03` | UNREAD — queued lead, must not be cited until read |
+| [terminal-bench-2026](terminal-bench-2026.md) | 2026 | arXiv preprint + tbench.ai | ✗ | abstract | `exp-02`, `codex`, `conclusion-2` | the benchmark our rig quietly descends from — end-state verification in a per-task Docker sandbox and the canary-GUID convention are both copied in experiments/rig/tarpeek; its v2.1 'verified refresh' (instruction-test mismatches fixed across ~a dozen tasks) is the SWE-bench-Verified lesson replayed at smaller scale |
 
 ## empirical-study
 
 | Source | Year | Venue | Peer | read | Bears on | What it does to our claims |
 |---|---|---|---|---|---|---|
 | [spec-kit-agents](spec-kit-agents.md) | 2026 | arXiv preprint | ✗ | full | `conclusion-6`, `exp-03`, `spec-kit` | closest prior art to exp-03 — ablates grounding vs validation at n=128, but its own blinded human check contradicts its LLM-judge headline, and the agent was MiniMax-M2.5 |
-| [agent-frameworks-eval](agent-frameworks-eval.md) | 2025 | arXiv preprint | ✗ | unread | `conclusion-6`, `conclusion-8`, `exp-03` | UNREAD — queued lead, must not be cited until read |
+| [agent-frameworks-eval](agent-frameworks-eval.md) | 2025 | arXiv preprint | ✗ | abstract | `conclusion-6`, `conclusion-8`, `exp-03` | abstract-level: compares 7 general-purpose agent frameworks (AgentOrchestra, OpenHands, GPTswarm, ...) on dev/vuln-detection/repair via success+efficiency+token-overhead — adjacent to exp-03 but frameworks-vs-frameworks, not framework-vs-plain; the full read stays queued for exp-03 positioning |
 
 ## method
 
@@ -48,4 +51,4 @@ Every source with a note, grouped by kind. Newest retrieved: `2026-08-17`.
 |---|---|---|---|---|---|---|
 | [from-prompt-to-process](from-prompt-to-process.md) | 2026 | arXiv preprint | ✗ | full | `conclusion-7`, `conclusion-6`, `taxonomy`, `gsd-core`, `spec-kit`, `openspec`, `methodology-8` | independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep |
 
-**14 sources** — 5 full · 2 extract · 3 abstract · 4 unread.
+**17 sources** — 5 full · 5 extract · 7 abstract.

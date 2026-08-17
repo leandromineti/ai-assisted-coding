@@ -70,3 +70,29 @@ first move), paperbench-2025 (partial credit done as weighted binary criteria, n
 holistic judgment — dissolves the option-1-vs-2 dichotomy). Synthesis and
 recommendation posted to issue #4; no protocol amendment yet — that happens at
 decision time, per preregistration discipline.
+
+## 2026-08-17 — the three unread clarification stubs promoted to extract (issue #6)
+
+tau2-bench: dual-control τ successor; the apparatus finding transfers — constraining
+the user simulator through environment affordances cut simulator error from 40–47%
+(retail/airline) to 16% (telecom), the fix for the free-variable problem our τ-bench
+note measured at ~9pp. No-user ablation isolates coordination cost (+18/+25pp).
+humanevalcomm: 762 degraded HumanEval variants; >60% of code-LLM responses answer
+broken specs with code rather than questions; pass@1 drops 35–52%. Caveat: the
+question-answering proxy sees the original problem — the leaky-oracle shape.
+clarifycodebench: 419 LiveCodeBench-v6 tasks, ten ambiguity categories, annotated key
+questions with ground-truth answers + default-reply fallback (the clean oracle
+template); best TKQR 0.30; reasoning effort buys code correctness but not ambiguity
+detection — clarification dissociates from codegen capability, which is exp-02's P1/P2
+dissociation stated as a field result.
+
+## 2026-08-17 — three mainstream ingests for the benchmark survey (abstract depth)
+
+swe-bench-2023: 2,294 GitHub-issue tasks, 12 Python repos; Claude 2 resolved 1.96% at
+launch — biggest headroom in the field, and still needed Verified to remove the 68.3%
+invalid items later. Headroom, validity, contamination: three independent properties.
+terminal-bench-2026: our rig's closest relative — end-state pytest verification in
+per-task Docker, canary GUIDs; v2.1's "verified refresh" (a dozen instruction-test
+mismatches fixed) is the validity-arrives-late pattern's third instance.
+livecodebench-2024: the canonical time-windowed contamination posture — release-dated
+problems make contamination measurable (pre- vs post-cutoff gap), not just deterred.
