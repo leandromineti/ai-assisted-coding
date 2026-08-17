@@ -24,8 +24,8 @@ happened when I started measuring.
 ## The core triad
 
 <figure>
-  <img src="img/the-core-triad.svg" alt="Minimal diagram of the core triad as a vertical ladder: at the top, You, connected by a double-headed arrow directly to a large Harness container. The Model is a box seated inside the harness, straddling its top edge like a processor on a motherboard, with two ghost outlines behind it suggesting it is swappable. A downward arrow leads from the harness to the Execution environment, drawn wider than everything above it, as the ground the stack stands on. A faint axis on the left runs from 'abstract' at the top to 'concrete' at the bottom." />
-  <figcaption>The core triad: you talk to a harness, the harness seats a swappable model, and its actions land in an environment.</figcaption>
+  <img src="img/the-core-triad.svg" alt="Minimal diagram of the core triad: a small person figure labeled You, connected by a double-headed arrow directly to a large Harness container. A Model box rests on the harness, lifted by a soft drop shadow — a separate component sitting on it, like a processor on a motherboard, not a part of it. Below, a second double-headed arrow connects the harness to the Execution environment: actions go down, observations come back. Harness and environment are equal-width boxes; the model carries the diagram's only accent color." />
+  <figcaption>The core triad: you talk to a harness, a swappable model rests on it, and actions land in — and report back from — an environment.</figcaption>
 </figure>
 
 Strip any working coding agent to the parts it cannot lack and three things remain
