@@ -21,6 +21,11 @@ matures.
    absolute GitHub URLs (`https://github.com/leandromineti/ai-assisted-coding/blob/main/...`),
    set `draft: false`, pick `maturity`, add an OG image if wanted. The repo draft
    stays canonical; site edits flow back here first.
+   **Diagrams:** SVGs live in [`img/`](img/) and are embedded with the site's
+   `<figure>` convention using relative `src="img/<name>.svg"` (renders on GitHub
+   too). At publish time, copy the SVGs to `mineti-dev/public/diagrams/` and rewrite
+   `src` to `/diagrams/<name>.svg`. Alt text is a dense descriptive sentence, per
+   the site's accessibility convention.
 4. **Record it.** Update the status table below (hand-kept — it is tiny and
    article-shaped, not a generated index).
 

@@ -25,6 +25,11 @@ the thing that needed engineering.
 
 ## The rig
 
+<figure>
+  <img src="img/the-rig.svg" alt="Diagram of the measurement rig: inside a dashed border labeled 'internal Docker network — no direct route out', an arm container (pinned image by digest, pinned harness CLI and model, fixed timezone and locale) where the agent works autonomously in /app on the same one-paragraph task. All egress flows through an allowlist proxy — the only way out — whose log is the probe record. Green arrows reach the model API and the package registry (allowed); a red dashed arrow to 'everything else' is denied and logged, so no web research is possible. Below, a hidden verifier lane the arms never see: 21 binary checks over the final container state in a fresh venv, five seeded trap families, ground truth measured from what the fixture builder actually built, proven fails-closed and fair before any arm ran. The score flows into a box reading 'read against the noise band: five fresh baselines, 18–20 of 21, mean 19.0 — a score is a draw from a distribution, not a truth'." />
+  <figcaption>The rig: everything pinned, egress enforced and logged, and a verifier the arms never see.</figcaption>
+</figure>
+
 The setup ([full description](../experiments/rig/README.md)) is deliberately boring:
 
 - A **pinned container** — base image by digest, harness CLI version pinned, fixed

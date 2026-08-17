@@ -23,6 +23,11 @@ happened when I started measuring.
 
 ## The core triad
 
+<figure>
+  <img src="img/the-ai-coding-stack.svg" alt="Diagram of the AI-coding stack: a central column of three stacked layers — Models (the weights plus the API surface, which drifts monthly), Harnesses (the agent loop: context assembly, tools, execution, stopping), and Execution environments (host, worktree, container, cloud microVM) — connected by arrows for API calls and where actions land. To the left, a human connects to the harness through a Workflow frameworks box carrying intent down and evidence up. Bottom-left, a Portable artifacts bucket (MCP standardized; skills and rules files as filename conventions; hooks harness-specific) plugs into the edges between layers. Dashed arrows from the harness up and down mark absorption pressure: harnesses growing native gates, memory, and orchestration." />
+  <figcaption>The stack: a core triad, two interfaces, and a middle layer eating in both directions.</figcaption>
+</figure>
+
 Strip any working coding agent to the parts it cannot lack and three things remain
 ([the full taxonomy](../taxonomy.md)):
 
