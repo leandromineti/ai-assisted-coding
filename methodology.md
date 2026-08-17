@@ -16,6 +16,23 @@ anything unconfirmable is marked `unverified` rather than asserted.
 *Why it earned its place:* the opencode repo had moved orgs and GSD's org name didn't
 match its npm registry entry — both would have been wrong if asserted from memory.
 
+- **1a. One evidence-grade vocabulary for closed subjects.** When a subject's source is
+  not readable, every claim carries one of four grades, inline: **SOURCE** (read in a
+  pinned clone — the only grade that supports architecture claims), **OBSERVED** (live
+  behavior or config surface of a running installation, dated), **TESTIMONY** (vendor
+  docs/blogs, `retrieved:` date — mechanism-level at best, never auditable), **INFERENCE**
+  (marked as such). What none of them reaches is recorded as unverified, not omitted.
+  Ordering is strict: source beats observation (you can catch a vendor being wrong),
+  observation beats testimony (you can catch the docs being stale), and closure caps a
+  report's ceiling — a subject with no readable source cannot honestly reach `deep-dive`.
+
+  *Why it earned its place:* within one week two closed-subject reports coined two
+  different vocabularies for the same distinction (modal: VERIFIED/TESTIMONY/OPAQUE;
+  claude-code: OBSERVED/TESTIMONY/INFERENCE). Both were internally honest and mutually
+  incomparable — a third report would have coined a third. Existing reports keep their
+  original labels with this mapping: modal's VERIFIED = SOURCE (its client is open),
+  its OPAQUE = unverified; claude-code's OBSERVED/TESTIMONY/INFERENCE map directly.
+
 ## 2. Honesty markers beat completeness theater
 
 State-of-knowledge is always visible and machine-readable:

@@ -63,7 +63,9 @@ features:
 >
 > `depth` is a promise to your future self: **stub** = facts collected, source unread ·
 > **survey** = used it or skimmed it · **deep-dive** = the agent loop and context assembly
-> were actually traced. Never raise it out of optimism.
+> were actually traced. Never raise it out of optimism. Closed subjects cap at `survey`
+> and grade every claim inline per methodology rule 1a: SOURCE · OBSERVED · TESTIMONY ·
+> INFERENCE (strictly ordered; only SOURCE supports architecture claims).
 >
 > Relative links below are written for a report's destination, `notes/0N-<layer>/<tool>.md`
 > — they resolve once copied there, not from this file's own location.
