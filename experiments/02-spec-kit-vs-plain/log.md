@@ -415,3 +415,13 @@ as a finding about the *pool*, not a rule change. **Cost ledger:** $0.1258 +
 $0.1726 + $0.2002 + $0.1483 + $0.1026 = **$0.7495** total, mean $0.150/run —
 within the preregistered $0.75–1.25 estimate. All runs autonomous, proxy logs
 clean.
+
+## 2026-08-17 — pricing condition change (affects planning, not any recorded ledger)
+
+Verified on the vendor pricing page (retrieved 2026-08-17): **Sonnet 5's $2/$10 is
+now the standard price — the scheduled 2026-09-01 increase to $3/$15 was cancelled.**
+Every "intro rate" ledger above was recorded at what is now simply list price, so no
+September renormalization will ever be needed, and this log's standing warning that
+"a Run B executed in September is NOT cost-comparable to this arm at face value" is
+retired as of this date (it was true when written). The Run A′ + Run B decision loses
+its August deadline pressure.

@@ -12,8 +12,15 @@ context_window: <tokens>
 max_output: <tokens>
 pricing: "<$in / $out per MTok, with any time-limited pricing dated>"
 knowledge_cutoff: <vendor-stated>
+# API-feature keys (2026-08-17) — set ONLY when verified against `url`-linked vendor
+# docs on the `checked` date; omitted = not checked (models matrix renders ·).
+# Free-text values: the economics differ structurally across vendors.
+thinking: <adaptive | extended | none — generation + control style>
+effort_control: "<effort/reasoning-level parameter: default and surfaces, if offered>"
+prompt_caching: "<write/read economics + TTLs, in the vendor's own terms>"
+batch_discount: "<async batch pricing, if offered>"
 checked: <YYYY-MM-DD — the date every spec above was verified against `url`>
-depth: <stub | survey | deep-dive>
+depth: <stub | survey>
 ---
 
 # <Model>
@@ -21,10 +28,10 @@ depth: <stub | survey | deep-dive>
 > **Layer-1 depth mapping** (documented once here; the shared vocabulary is reused so
 > the generated index stays comparable): **stub** = specs verified against the vendor
 > page, model not used · **survey** = used on real work in this repo's orbit, with the
-> evidence named · **deep-dive** = this repo's own experiments produced *measured* data
-> on it (rig runs, preregistered A/Bs). Closed weights have no source to trace, so the
-> tool template's "loop traced" bar is replaced by "measured here" — same honesty
-> gradient, different instrument.
+> evidence named. *Corrected 2026-08-17:* a third grade (deep-dive = "this repo's
+> experiments produced measured data") predated methodology rule 1a and contradicted
+> it — closure caps a report at `survey`; measured behavior is OBSERVED-grade
+> evidence and goes in the axis cells, not the depth field.
 >
 > Every spec in the frontmatter carries the `checked` date and must come from `url`,
 > not from memory (methodology rule 1). Prices and context windows drift; a model

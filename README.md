@@ -53,9 +53,11 @@ confirm, contradict, or note silence.
 | `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` and `build-refs-index.py` (regenerate the indexes) |
 
 **[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-layer index of every
-tool with a report, and **[`comparisons/features.md`](comparisons/features.md)** the
-harness feature matrix — both generated from the reports' frontmatter, never hand-edited,
-so they can't drift from them. In the matrix, `·` means *not yet checked*, which is
+tool with a report, **[`comparisons/features.md`](comparisons/features.md)** the
+harness feature matrix, and **[`comparisons/models.md`](comparisons/models.md)** the
+layer-1 matrix (thinking control, caching economics, batch pricing — the API surface
+that drifts fastest) — all generated from the reports' frontmatter, never hand-edited,
+so they can't drift from them. In the matrices, `·` means *not yet checked*, which is
 deliberately distinct from ✗ *verified absent*.
 
 Tools queued for assessment but not yet cloned live as **GitHub issues on this repo**

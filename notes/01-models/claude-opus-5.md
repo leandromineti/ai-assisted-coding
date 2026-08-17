@@ -9,9 +9,13 @@ model_id: claude-opus-5
 release_mode: api-only
 context_window: 1000000
 max_output: 128000
-pricing: "$5 / $25 per MTok (verified 2026-07-31)"
+pricing: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"
 knowledge_cutoff: "May 2026 (reliable) — the freshest cutoff in the current lineup, newer than Fable 5's Jan 2026"
-checked: 2026-07-31
+thinking: adaptive
+effort_control: "effort param; defaults high on Claude API and Claude Code"
+prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
+batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
+checked: 2026-08-17
 depth: survey
 ---
 

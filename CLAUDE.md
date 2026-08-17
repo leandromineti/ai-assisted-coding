@@ -25,7 +25,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 | `notes/0N-*/index.md` | narrative front door per layer: what the layer *is*, seed inventory | yes |
 | `notes/cross-cutting/` | findings that span layers, plus [`metrics.md`](notes/cross-cutting/metrics.md) — the measurement vocabulary | yes |
 | `refs/` | one note per **source read** (papers, benchmarks). See [`refs/README.md`](refs/README.md) | notes yes, index no |
-| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `environments.md`, `vendors.md`, `benchmarks.md` | **no — generated** |
+| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `vendors.md`, `benchmarks.md` | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |
 | `experiments/rig/` | the pinned container + hidden verifier both arms run against | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |

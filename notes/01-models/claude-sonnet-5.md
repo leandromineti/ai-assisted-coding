@@ -9,9 +9,13 @@ model_id: claude-sonnet-5
 release_mode: api-only
 context_window: 1000000
 max_output: 128000
-pricing: "$3 / $15 per MTok — INTRODUCTORY $2 / $10 through 2026-08-31 (verified 2026-07-31; affects any cost ledger recorded before September)"
+pricing: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
 knowledge_cutoff: "Jan 2026 (reliable); training data Jan 2026"
-checked: 2026-07-31
+thinking: adaptive
+effort_control: "effort param; defaults high on Claude API and Claude Code"
+prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
+batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
+checked: 2026-08-17
 depth: survey
 ---
 
@@ -28,7 +32,7 @@ compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
 | Tool-call fidelity | OBSERVED (2026-08-17): 6 autonomous headless runs on the rig's tarpeek task (Run A + 5 screening baselines) — 6/6 completed with an installable artifact, 12–20 turns, zero blocking questions. See § Measured in this repo |
 | Long-horizon coherence | · (the tarpeek task is too small to load this axis) |
 | Usable context (vs advertised) | 1M advertised; unprobed here |
-| Cost per completed task | **Measured** (2026-08-17, intro $2/$10): $0.31–0.51 per completed tarpeek run, mean $0.41 (n=6). **Time-sensitive:** intro pricing ends 2026-08-31, then $3/$15 — a run costed in August is ~33% cheaper than the same run in September; ledgers record the price in force |
+| Cost per completed task | **Measured** (2026-08-17, at $2/$10): $0.31–0.51 per completed tarpeek run, mean $0.41 (n=6). The time-sensitivity warning that used to live here is retired — see Surprises §1's dated correction: $2/$10 became the standard price, so August ledgers need no September renormalization |
 | Release mode & access routes (1b) | API-only; Claude API + Bedrock + Vertex + Foundry. `effort` defaults to `high` on the Claude API and Claude Code — a cost-relevant default worth pinning in experiment configs |
 
 ## Role in this repo's work
@@ -68,6 +72,12 @@ model, so these are model-attributable behaviors, not harness effects:
    August and exp-03 in September, their raw dollar ledgers are not comparable without
    normalizing to list price — recorded here *before* either run so the ledgers can't
    silently mislead.
+   *Corrected 2026-08-17:* the window dissolved instead of closing — the vendor made
+   $2/$10 the standard price and cancelled the scheduled 2026-09-01 increase (pricing
+   page note, retrieved 2026-08-17). Every ledger in this repo recorded at $2/$10 is
+   now simply at list price; the cross-month normalization concern is moot. The
+   meta-lesson stands and sharpens: pricing claims drift *in both directions*, and a
+   dated `checked:` is what let this one be corrected instead of silently rotting.
 2. Max output 128k (and 300k via a batch-API beta header) — output ceilings have
    quietly stopped being the binding constraint for agent work; iteration structure
    has.
