@@ -2,6 +2,12 @@
 """CANDIDATE checks for the exp-02 escalation (Aider move) — NOT part of the
 accepted instrument.
 
+SCREENING OUTCOME (2026-08-17, after 5 unaided baseline runs): **all 7 candidates
+DISCARDED** — none failed in any run (keep rule required failure in >= 2 of 5).
+This file is retained as the record of the screen; nothing here entered
+test_outputs.py. Verdict and baseline distribution: experiments/02-spec-kit-vs-
+plain/log.md § Screening verdict.
+
 Preregistration status (amendment 3 item 5, owner sign-off 2026-08-17): these are
 screening candidates. Each enters the accepted set (test_outputs.py) only if it
 (a) fails in >= 2 of 5 fresh unaided baseline runs — the Aider select-by-baseline-

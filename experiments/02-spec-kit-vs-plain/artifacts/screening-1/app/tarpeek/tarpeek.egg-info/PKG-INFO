@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: tarpeek
+Version: 0.1.0
+Summary: Summarize the contents of a tar archive without extracting it
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+# tarpeek
+
+Summarize the contents of a tar archive without extracting it.
+
+`tarpeek` reads only the member headers of a tar file (via Python's `tarfile`
+module) — it never extracts file contents and never writes anything to disk.
+
+## Install
+
+From the project directory:
+
+```bash
+pip install .
+```
+
+This installs a `tarpeek` executable on your `PATH`, runnable from any
+directory. For local development, install in editable mode instead:
+
+```bash
+pip install -e .
+```
+
+## Usage
+
+```bash
+tarpeek path/to/archive.tar
+tarpeek path/to/archive.tar.gz --min-size 1024
+tarpeek path/to/archive.tar --json
+```
+
+Output is a table of `NAME`, `TYPE`, `SIZE`, and `MODIFIED`, sorted by size
+descending:
+
+```
+NAME       TYPE    SIZE  MODIFIED
+---------  ------  ----  -------------------
+big.log    file    1000  2023-11-14 22:13:20
+docs       dir     0     2023-11-14 22:13:20
+link       symlink 0     2023-11-14 22:13:20
+```
+
+### Options
+
+- `--min-size BYTES` — only show members at least `BYTES` bytes in size.
+- `--json` — print a JSON array of objects instead of a table.
+
+`tarpeek` transparently handles gzip- and bzip2/xz-compressed tar files
+(`.tar.gz`, `.tar.bz2`, `.tar.xz`, ...) since it delegates to Python's
+`tarfile` auto-detection.
+
+### Exit codes
+
+| Code | Meaning                                   |
+|------|--------------------------------------------|
+| 0    | Success                                     |
+| 1    | Path not found / is a directory / unreadable |
+| 2    | Path is not a valid tar archive, or bad arguments |
+| 3    | Archive is valid but contains no members    |
+
+Errors are printed to stderr.
+
+## Development
+
+Run the test suite with:
+
+```bash
+pip install -e ".[test]"
+pytest
+```
+
+(or simply `pip install pytest && pytest` if you don't need the extra).

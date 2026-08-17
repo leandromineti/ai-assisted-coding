@@ -1,0 +1,92 @@
+# tarpeek
+
+Summarize the contents of a tar archive without extracting it.
+
+`tarpeek` reads a `.tar`, `.tar.gz`, `.tar.bz2`, or `.tar.xz` archive's member
+metadata and prints a table (or JSON) of each member's name, type, size, and
+last-modified date — sorted by size, largest first. It never writes to disk;
+it only reads the archive's headers.
+
+## Install
+
+From the project directory:
+
+```console
+pip install .
+```
+
+For local development (editable install, so code changes are picked up
+immediately):
+
+```console
+pip install -e .
+```
+
+Either way, this installs a `tarpeek` command onto your `PATH`, so it can be
+run from any directory.
+
+## Usage
+
+```console
+tarpeek path/to/archive.tar
+```
+
+Example output:
+
+```
+NAME        TYPE     SIZE  MODIFIED
+----        ----     ----  --------
+big.bin     file     5000  2020-09-13 12:26:40
+small.txt   file     10    2020-09-13 12:25:00
+link        symlink  0     2020-09-13 12:25:00
+docs        dir      0     2020-09-13 12:26:40
+```
+
+### Filter by minimum size
+
+```console
+tarpeek path/to/archive.tar --min-size 1024
+```
+
+Only members whose size is at least `1024` bytes are shown.
+
+### JSON output
+
+```console
+tarpeek path/to/archive.tar --json
+```
+
+```json
+[
+  {
+    "name": "big.bin",
+    "type": "file",
+    "size": 5000,
+    "modified": "2020-09-13 12:26:40"
+  }
+]
+```
+
+### Member types
+
+Each member is classified as one of: `file`, `dir`, `symlink`, or `other`
+(for hard links, device files, FIFOs, etc.).
+
+## Errors
+
+`tarpeek` exits with a non-zero status and prints a message to stderr for:
+
+| Situation                       | Exit code |
+| -------------------------------- | --------- |
+| Path does not exist / not a file | 1         |
+| Path is not a valid tar archive  | 2         |
+| Archive contains no members      | 3         |
+
+## Development
+
+Run the test suite with:
+
+```console
+pip install -e ".[dev]"
+pytest
+```

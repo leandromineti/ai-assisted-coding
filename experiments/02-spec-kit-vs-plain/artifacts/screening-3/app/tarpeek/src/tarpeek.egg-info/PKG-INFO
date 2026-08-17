@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: tarpeek
+Version: 0.1.0
+Summary: Summarize the contents of a tar archive without extracting it
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+# tarpeek
+
+Summarize the contents of a tar archive without extracting it.
+
+`tarpeek` reads a `.tar` (or `.tar.gz`, `.tar.bz2`, `.tar.xz`) archive's member
+metadata directly and prints a table of what's inside — name, type, size, and
+last-modified date — sorted by size, largest first. It never writes anything
+to disk; it only reads archive metadata (`tarfile.getmembers()`), so nothing
+is ever extracted.
+
+## Install
+
+From the project directory:
+
+```bash
+pip install .
+```
+
+This installs a `tarpeek` executable on your `PATH`, runnable from any
+directory:
+
+```bash
+tarpeek /path/to/archive.tar.gz
+```
+
+For development (editable install, plus test dependencies):
+
+```bash
+pip install -e ".[test]"
+```
+
+## Usage
+
+```bash
+tarpeek ARCHIVE [--min-size BYTES] [--json]
+```
+
+- `ARCHIVE`: path to a tar archive (any compression `tarfile` supports).
+- `--min-size BYTES`: only show members whose size is at least `BYTES`.
+- `--json`: print machine-readable JSON instead of a table.
+
+### Example
+
+```bash
+$ tarpeek project.tar.gz
+NAME          TYPE     SIZE  LAST MODIFIED
+------------  -------  ----  -------------------
+big.log       file     4096  2026-08-10 12:03:41
+src           dir      0     2026-08-10 12:03:41
+README.md     file     512   2026-08-09 09:11:02
+link-to-log   symlink  0     2026-08-10 12:03:41
+```
+
+```bash
+$ tarpeek project.tar.gz --min-size 1000 --json
+[
+  {
+    "name": "big.log",
+    "type": "file",
+    "size": 4096,
+    "mtime": "2026-08-10T12:03:41Z"
+  }
+]
+```
+
+## Errors and exit codes
+
+`tarpeek` prints a clear message to stderr and exits with a non-zero code
+rather than crashing with a traceback:
+
+| Situation                        | Exit code |
+|-----------------------------------|-----------|
+| Success                          | 0         |
+| Archive path does not exist       | 1         |
+| Path is not a valid tar archive   | 2         |
+| Archive contains no members       | 3         |
+| Invalid arguments (e.g. negative `--min-size`) | 2 |
+
+Note: if `--min-size` filters out every member, that is **not** an error —
+`tarpeek` prints an empty table (or `[]` for `--json`) and exits 0. The
+"empty archive" error (exit code 3) only fires when the archive itself has
+zero members, before filtering.
+
+## Testing
+
+```bash
+pip install -e ".[test]"
+pytest
+```

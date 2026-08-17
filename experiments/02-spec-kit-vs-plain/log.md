@@ -236,3 +236,74 @@ rubric) unaffected throughout.
     failure shape). Cause: `~/.secrets/personal-anthropic.env` did not survive the
     server rebuild, so no key reached the container. **Screening runs blocked on
     restoring the key file**; no scored spend occurred (the smoke prompt cost $0).
+- `2026-08-17T11:38Z` — key file restored by owner; smoke config verified; screening
+  begins. Per-run protocol: fresh container `exp02-screen-N` on the internal network,
+  allow-list settings, instruction verbatim (651 chars) at `/root/instruction.txt`,
+  `claude -p … --model claude-sonnet-5 --output-format json`; artifacts + transcript +
+  per-run proxy-log slice to `artifacts/screening-N/`; scored immediately in a fresh
+  venv under TZ=UTC / C.UTF-8 against the accepted 21 + the 7 candidates.
+
+### Screening runs (2026-08-17, live)
+
+- `11:42–11:44Z` — **run 1** complete: `subtype success`, 16 turns, 2m25s api,
+  **$0.4669**. Proxy: only PyPI allows + Datadog telemetry denials — no web reads.
+  Score: **accepted 19/21** (fails `T3c` truncated-archive, `T4c` strict-stdio) ·
+  **candidates 7/7 pass**. First variance vs Run A appears on the accepted set, not
+  the candidate pool.
+- `11:46–11:48Z` — **run 2** complete: success, 20 turns, 2m42s, **$0.5115**. Proxy
+  clean (PyPI + telemetry denials only). Score: **accepted 20/21** (fails `T4c` only —
+  same profile as Run A) · **candidates 7/7 pass**.
+- `11:49–11:51Z` — **run 3** complete: success, 12 turns, 1m50s, **$0.3120**. Proxy
+  clean. Score: **accepted 20/21** (fails `T4c` only) · **candidates 7/7 pass**.
+- `11:51–11:53Z` — **run 4** complete: success, 13 turns, 2m02s, **$0.3500**. Proxy
+  clean. Score: **accepted 18/21** (fails `T3a` distinct exit codes — an *original
+  amendment-1 check* — plus `T3c`, `T4c`) · **candidates 7/7 pass**.
+- `11:54–11:56Z` — **run 5** complete: success, 15 turns, 2m14s, **$0.3993**. Proxy
+  clean. Score: **accepted 18/21** (fails `T3a`, `T3c`, `T4c`) · **candidates 7/7
+  pass**.
+
+### Screening verdict (2026-08-17)
+
+**Candidate keep rule (preregistered, amendment 3 item 5): no candidate reached ≥ 2
+failures in 5 runs — no candidate failed even once. All 7 candidates are DISCARDED.**
+The files stay in the repo as the record of the screen, marked as discarded; nothing
+enters `test_outputs.py`. The instrument remains the accepted 21 checks.
+
+Failure mechanics verified in the artifacts (not inferred): runs 4 and 5 give
+not-a-tar and empty-archive the same exit code 1 (T3a); runs 1, 4, 5 let an unhandled
+`Traceback` escape on the truncated archive (T3c); T4c's strict-stdio crash reproduced
+in all five.
+
+**What the screen actually bought — the baseline distribution (n=5 + Run A):**
+
+| Check | Baseline failures | Note |
+|---|---|---|
+| T3a distinct exit codes | 2/5 | original amendment-1 check |
+| T3c truncated archive | 3/5 | amendment-3 densification |
+| T4c strict stdio | 5/5 (and Run A) | amendment-3, provenance disclosed |
+| all 18 others | 0/5 | consumed at this task size |
+| per-run accepted score | 19 · 20 · 20 · 18 · 18 (mean 19.0/21) | Run A scored 20/21 |
+
+**Dated correction to the 2026-08-17 morning verdict.** "The trap families are
+genuinely consumed at this task size" was measured against a single calibration
+point and is now shown to be **partly wrong**: encoding (T1), time (T2), and safety
+(T5) are consumed (0/5 failures anywhere), but the exit-code and ambient-config
+families retain real discrimination — Run A was simply a strong draw. The
+single-point headroom estimate (1/21) understated true headroom (mean 2.0/21,
+range 1–3). The escalation's value was not the new families (clean null: unaided
+baselines handle path errors, stream discipline, duplicates, and filter edges
+without being asked) — it was replacing a point estimate with a distribution,
+which is what instrument calibration means (methodology 5d).
+
+**Instrument settled.** Fails-closed ✓ (stub 21/21 + candidates 7/7 fail) · fair ✓
+(reference passes everything) · discriminating ✓ (three items with baseline failure
+rates 40–100%, per-run scores spanning 18–20). Any future Run A′ vs Run B
+comparison must be read against this measured noise band: a framework arm at 21/21
+would exceed every observed baseline; an arm at 19–20 is within baseline variance.
+n=5 is still a small sample; the band is a calibration reference, not a
+significance test.
+
+**Cost ledger:** five screening runs $0.4669 + $0.5115 + $0.3120 + $0.3500 +
+$0.3993 = **$2.0397** (intro rates), vs the ~$1.9 estimate — 7% over, from run 2's
+20-turn session. All runs `subtype: success`, fully autonomous, zero blocking
+questions, proxy logs clean (PyPI + denied telemetry only; no web reads).

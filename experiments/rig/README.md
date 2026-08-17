@@ -194,4 +194,4 @@ entirely). Any change to this list applies identically to every arm on the task.
 
 | Task | Status | Used by |
 |---|---|---|
-| [`tarpeek/`](tarpeek/) | image built (`tarpeek-rig:exp02`), verifier re-proven fails-closed in-container 2026-07-30 | exp-02 (spec-kit vs plain), exp-03 planned (minimal harness) |
+| [`tarpeek/`](tarpeek/) | image built (`tarpeek-rig:exp02`), verifier re-proven fails-closed in-container 2026-07-30; rebuilt 2026-08-17 (base digest identical to pin); baseline distribution calibrated over 5 screening runs 2026-08-17 (exp-02 log § Screening verdict) | exp-02 (spec-kit vs plain), exp-03 planned (minimal harness) |
