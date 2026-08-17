@@ -7,11 +7,14 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 
 ## Start here
 
-**[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. Three core layers (models,
-harnesses, workflow frameworks) plus execution environments and a cross-layer
-portable-artifacts bucket (the former layer 3, demoted by evidence 2026-07-30), with a
-boundary rule for the many tools that straddle them. Everything else in the repo
-declares where it belongs.
+**[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. A **core triad** — models,
+harnesses, execution environments, the three things a running agent cannot lack — plus
+two **interfaces**: portable artifacts (a cross-layer bucket parameterizing the triad's
+edges; the former layer 3, demoted by evidence 2026-07-30) and workflow frameworks (the
+human⇄stack boundary: intent refined into specs and subtasks going down, research and
+verified evidence coming up). Reframed 2026-08-17; numbering retained as storage keys.
+With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
+tools that straddle the divisions. Everything else in the repo declares where it belongs.
 
 **[`methodology.md`](methodology.md)** — how work is done here: verification and honesty
 rules, generated indexes, preregistered experiments, the upstream-reporting gate. Every

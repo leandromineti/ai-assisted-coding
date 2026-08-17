@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-11`
+`checked: 2026-08-17`
 
 The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
 vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
@@ -9,10 +9,51 @@ comparisons stay like-for-like.
 
 ## The stack
 
-Since the 2026-07-30 revision: **three core layers** (1 models, 2 harnesses, 4 workflow
-frameworks) **plus layer 5** (execution environments, kept on its own falsifier) and
-**one cross-layer bucket** (3 — portable artifacts & protocols, a demoted former
-layer). Numbering is historical and retained as storage keys.
+**Reframed 2026-08-17 — the core triad and its two interfaces.** A recorded revision, and
+a *reframing rather than a reclassification*: no tool changes its home, the stress test
+stands unchanged, and the numbers remain storage keys (3 kept its number at the
+2026-07-30 demotion for the same reason — renumbering breaks dated cross-references for
+zero information gain). The 2026-07-30 "three core layers + bucket" framing this
+supersedes survives as the classification record in section 3.
+
+A running agent system requires exactly three things; everything else in this repo either
+parameterizes them or mediates between them and the human:
+
+- **Model (1)** — cognition. The weights.
+- **Harness (2)** — mediation. Runs the loop, assembles context, gates permissions,
+  fronts the user, reaches tools and files.
+- **Environment (5)** — situation. Where execution lands and what it can damage; the
+  autonomy ceiling lives here (principle E1), not in the model.
+
+**The necessity asymmetry** is why the layers feel so different to study: the model has
+**no degenerate form**, the harness degenerates to a bare while-loop around the API, and
+the environment degenerates to the host. Much of the field is the project of making the
+two degenerate forms non-degenerate — harness sophistication is the contested ground of
+2026, and every fully-autonomous product to date bought its autonomy at the environment.
+
+The two non-fundamentals are **interfaces**:
+
+- **Portable artifacts (3 — the cross-layer bucket)** parameterize the **edges of the
+  triad**: rules files and per-model prompts sit on the model↔harness edge, MCP on the
+  harness↔world edge, memory on the agent↔time edge, and the four layer-5 relationship
+  verbs (*bundle/bind/internalize/inhabit*) are the topology options of the
+  harness↔environment edge. This is not incidental — the repo's strongest findings are
+  *edge* findings (conclusion 1's per-model prompts; hermes' cache-vs-self-modification
+  tension; E2B's egress credential substitution), which is the empirical case that the
+  interactions deserve first-class vocabulary.
+- **Workflow frameworks (4)** sit on the **human⇄stack boundary** — see section 4 for
+  the four-function decomposition (intent flows down, evidence flows up).
+
+**Countervailing evidence and falsifiers, recorded at reframing time rather than
+buried:** (a) ECC is a 236k-star business built entirely on edge content, and the
+instinct-exchange re-check (~2027-01) can still force artifacts back from "interface
+detail" to a layer — the demotion's reverse trigger is unchanged by this reframing.
+(b) Warp shows the mediation role *nests* (a harness driving other harnesses), so
+"harness" names a function, not a unique slot. (c) The frame itself is falsifiable: it
+fails if artifacts standardize into an independently exchanged layer, or if a framework's
+measured value ever concentrates in intent-capture with the grounding and verification
+stripped out — the latter is exactly what exp-02 can test once its instrument is
+unblocked (issue #4).
 
 ### 1. Models
 
@@ -113,8 +154,27 @@ re-check is now the recorded trigger for the reverse revision.
 
 ### 4. Workflow frameworks
 
-An encoded **methodology** — spec-first, phased planning, on-disk artifacts, review gates
-— that rides on top of a harness.
+The **human⇄stack boundary**: an encoded methodology that turns what a person wants into
+something the triad can execute, and turns what the triad did into something a person can
+trust. Four functions, each observed in the studied frameworks *(decomposition recorded
+2026-08-17)*:
+
+1. **Refine intent into specs** — spec-kit's `/specify` + `/clarify` with budgeted
+   `[NEEDS CLARIFICATION]` markers; OpenSpec's proposal → delta-spec grammar.
+2. **Decompose work into concrete subtasks** — spec-kit's `tasks.md` task grammar
+   (`T001 [P] [US1]` + file path, phases by user story); GSD's structured task graphs.
+3. **Flag gaps that need research** — GSD's empirical research agents (fixture repos,
+   crafted commits — the machinery conclusion 6 credits with nearly all of GSD's measured
+   margin); spec-kit's Phase-0 `research.md` dispatch per unknown.
+4. **Set up verification that converts progress into evidence** — GSD's verifiers with
+   *measured* expected values and `human_needed` abstention; OpenSpec's validator
+   (enforcement by exit code); spec-kit's checklists and `/analyze`.
+
+Intent flows down through 1–2; evidence flows up through 3–4. The one preregistered
+experiment (exp-01) located nearly all of the measured value in **3 and 4** and almost
+none in 1–2's ceremony (conclusion 6, under re-examination via issue #8) — so when
+reasoning about a framework, weigh its grounding and verification machinery over its
+spec ceremony.
 
 The analogy: if the harness is the runtime, this is the framework. Node is to Next.js as
 Claude Code is to GSD.
@@ -137,6 +197,8 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 
 Where the agent's code actually runs, and what it can damage: git worktrees,
 devcontainers, Docker, remote sandboxes (E2B, Modal, Cloudflare Sandbox SDK), cloud VMs.
+In the 2026-08-17 reframing this is the **third fundamental of the core triad** — kept at
+its historical number as a storage key, like everything else.
 
 Easy to overlook until it bites. Isolation that hides the files the agent needs is a
 layer-5 problem routinely misread as a layer-2 bug — the worktree/gitignore trap written
