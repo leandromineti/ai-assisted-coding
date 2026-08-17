@@ -57,3 +57,16 @@ against τ-Bench retail. Swapping only the *user* LLM moves measured agent succe
 ask ~2× as many questions as humans and are far more polite; failure attribution shifts from
 user (62.2% human) to agent (48.9% simulated). Corrects an "information leakage" claim I made
 earlier from an extraction summary — that claim is not in the paper.
+
+## 2026-08-17 — instrument-saturation sweep for issue #4 (exp-02 trap redesign)
+
+Four sources ingested (1 extract, 3 abstract) answering "how does the community fix a
+saturated instrument": aider-polyglot-2024 (select items by baseline failure — kept
+problems solved by ≤3/7 baselines; saturation symptoms match exp-02's verbatim),
+swebench-verified-2024 (screen for *unfair* items too — 61.1% of SWE-bench's tests
+rejected valid solutions; headroom and validity are separate screens),
+evalplus-2023 (densify tests on existing tasks before authoring new ones — the cheap
+first move), paperbench-2025 (partial credit done as weighted binary criteria, not
+holistic judgment — dissolves the option-1-vs-2 dichotomy). Synthesis and
+recommendation posted to issue #4; no protocol amendment yet — that happens at
+decision time, per preregistration discipline.
