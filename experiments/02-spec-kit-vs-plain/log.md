@@ -214,3 +214,25 @@ rubric) unaffected throughout.
 - Screening runs will additionally be scored against the accepted 21 (free variance
   data on T1c/T3d/T4c across samples); that scoring is calibration bookkeeping, not
   part of the keep rule.
+
+### Screening pre-launch (2026-08-17)
+
+- The server hosting the rig was **rebuilt 2026-08-06** (post-Run-A): the pinned image
+  and the key file were gone. Restored and re-verified rather than assumed:
+  - Image `tarpeek-rig:exp02` rebuilt from the committed Dockerfile. Base digest
+    re-verified **identical to the 2026-07-30 pin** (`sha256:236734f0…`); Node again
+    22.23.2 (no drift); Claude Code 2.1.220 (pinned).
+  - `package-hosts-only` re-created and **re-probed**: raw egress without proxy → no
+    route; `example.com` via proxy → `DENY` logged; PyPI via proxy → 200;
+    `api.anthropic.com` via proxy → reached (405 on a bare GET, TLS established).
+  - **Rig change, recorded:** `api.anthropic.com` added to the proxy allowlist — the
+    screening runs are the first *agent* runs under the enforced condition (the
+    2026-07-31 probes were curl/pip only, so the in-container harness never needed
+    egress before). Telemetry hosts deliberately not added; their denials in
+    `/proxy.log` are probe records.
+  - Driver smoke-tested end to end through the proxy per methodology 5e — and it
+    caught a real failure: the harness returned `subtype: success` while the result
+    text read "Not logged in" (exit-status success, nothing done — the exact 5e
+    failure shape). Cause: `~/.secrets/personal-anthropic.env` did not survive the
+    server rebuild, so no key reached the container. **Screening runs blocked on
+    restoring the key file**; no scored spend occurred (the smoke prompt cost $0).

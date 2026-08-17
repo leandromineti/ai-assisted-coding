@@ -96,8 +96,12 @@ docker run -d --name <arm> --network exp-closed-int \
 ```
 
 Allowlist ([`allowlist_proxy.py`](allowlist_proxy.py)): `pypi.org`, `files.pythonhosted.org`,
-`pypi.python.org`. Denials are logged, so `/proxy.log` **is** the probe record — copy it out
-with the arm's artifacts.
+`pypi.python.org`, and — since 2026-08-17, when the exp-02 escalation screening became the
+first *agent* runs under this condition (the 2026-07-31 probes were curl/pip only) —
+`api.anthropic.com`, the model API the in-container harness itself needs. Harness telemetry
+hosts are deliberately **not** allowlisted; those denials are expected noise in the log.
+Denials are logged, so `/proxy.log` **is** the probe record — copy it out with the arm's
+artifacts.
 
 The arm sits on an `--internal` network, so egress is blocked at the network layer rather than
 by an environment variable: an arm that unsets `HTTPS_PROXY` gets no route, not a bypass. The

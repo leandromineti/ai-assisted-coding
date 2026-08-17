@@ -15,6 +15,12 @@ ALLOWED = {
     "pypi.org",
     "files.pythonhosted.org",
     "pypi.python.org",
+    # 2026-08-17: model API, added for the first agent runs under this condition
+    # (exp-02 escalation screening). The 2026-07-31 probes were curl/pip only, so
+    # the in-container harness had never needed egress before. Anything else the
+    # harness tries (telemetry etc.) stays denied and shows up in the proxy log —
+    # that is the probe record, not a problem to silence.
+    "api.anthropic.com",
 }
 
 
