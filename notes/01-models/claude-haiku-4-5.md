@@ -54,6 +54,11 @@ network) — the first in-repo measurement where only the model varied:
 - **Uniform 17/21 on the verifier in every completed run** (n=4; Sonnet: 18–20).
   Faster wall-clock (1m11s–2m05s) but *more* turns (16–34 vs Sonnet's 12–20) — it
   iterates smaller.
+- **Observed session throughput ≈ 109 tok/s** (median 116, range 91–124, n=5) — only
+  ~20% above Sonnet 5's 91 in the same rig, far less than the tier gap suggests:
+  session overhead (TTFT, tool turns) compresses the difference. Computed by
+  `scripts/observed-throughput.py`; caveats in
+  [`metrics.md`](../cross-cutting/metrics.md) § Observed session throughput.
 - **Failure style, not just failure count:** blanket `rc=1` error handling — no
   traceback ever escapes (it *beat* Sonnet on the truncated-archive trap, 0/4 vs
   3/5) but no failure is distinguishable (distinct-exit-codes trap failed 4/4).

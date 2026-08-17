@@ -131,6 +131,20 @@ moment was not the *duration* of the block but the *content* of the answer (a
 one-line deferral decided the exit-code trap). Time-based attention metrics price
 the interruption, not the leverage.
 
+### Observed session throughput
+`output_tokens (dominant model) / duration_api_ms`, per headless session, computed from
+committed harness transcripts by `scripts/observed-throughput.py` — never hand-typed.
+This is **session-level agent throughput, not decode speed**: the denominator includes
+per-turn TTFT, tool-result processing, and inter-turn overhead, so it lower-bounds raw
+generation and is the honest number for planning agent-run wall-clock. Known behaviors
+(2026-08-17, first measurement): overhead compresses tier gaps (Haiku 4.5 measured only
+~20% faster than Sonnet 5 in-session — far less than the tier difference suggests), and
+sub-500-token turns are latency-bound, not throughput-bound (excluded by the script).
+Why recorded at all: vendors publish no first-party tokens/sec (the models matrix
+correctly has no column), but the planned **local open-weight arm** makes throughput a
+first-class constraint — on self-hosted hardware, tok/s is the gating resource, and
+this metric is the comparable the API side needs to already have (issue #15).
+
 ### Cost ledger
 Output · cache-write · cache-read · uncached-input tokens, per model, from transcripts
 (methodology 5c). No literature equivalent found — most papers report latency or nothing.
