@@ -99,7 +99,12 @@ note. Revised when evidence moves._
    to inherit that harness's per-model prompt dispatch — a confound its maintainer didn't
    know about. Reporting it produced this repo's first upstream contribution
    ([issue #12](https://github.com/akitaonrails/llm-coding-benchmark/issues/12),
-   [PR #13](https://github.com/akitaonrails/llm-coding-benchmark/pull/13)). →
+   [PR #13](https://github.com/akitaonrails/llm-coding-benchmark/pull/13)).
+   **Complemented (2026-08-17):** the repo now holds its own model-isolated
+   measurement — the rig fixed harness/task/environment and varied only the model
+   (Sonnet 5 vs Haiku 4.5, n=5 each; see conclusion 10). The public-benchmark claim
+   stands unchanged; what changed is that the isolation the field lacks is
+   demonstrably buildable at personal scale for ~$3. →
    [`notes/01-models/index.md`](notes/01-models/index.md)
 3. **Layer 3 is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension kinds, only MCP has fully standardized; rules files are converging on a

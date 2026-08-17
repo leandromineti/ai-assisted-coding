@@ -12,7 +12,7 @@ max_output: 64000
 pricing: "$1 / $5 per MTok (verified 2026-07-31)"
 knowledge_cutoff: "Feb 2025 (reliable); training data Jul 2025"
 checked: 2026-07-31
-depth: stub
+depth: survey
 ---
 
 # Claude Haiku 4.5
@@ -26,10 +26,10 @@ thinking — a generation seam running visibly through the lineup.
 
 | Axis | Evidence here |
 |---|---|
-| Tool-call fidelity | · |
+| Tool-call fidelity | OBSERVED (2026-08-17): 5 autonomous headless runs on the rig's tarpeek task — all 5 sessions completed and reported success, but 1/5 shipped an artifact that is dead on arrival off-container (undeclared runtime dependency). See § Measured in this repo |
 | Long-horizon coherence | · (its designed role — short mechanical subagent work — mostly sidesteps the axis) |
 | Usable context (vs advertised) | 200k advertised; unprobed |
-| Cost per completed task | 1/5 of Sonnet per token; the interesting question is retry rate — a cheap model that needs two attempts isn't 5× cheaper (cross-cutting cost note) |
+| Cost per completed task | **Measured** (2026-08-17): $0.10–0.20 per tarpeek run, mean $0.150 (n=5) — ~2.7× cheaper than Sonnet's measured $0.41 on the identical task, at a measured quality gap (17/21 vs 19.0/21) and one packaging failure. The retry-rate question below is no longer hypothetical: the DOA run *is* the retry case |
 | Release mode & access routes (1b) | API-only; four cloud routes |
 
 ## Role in this repo's work
@@ -40,6 +40,30 @@ instinct pipeline runs its background analysis on Haiku**
 hermes routes auxiliary/compression work to cheap models of this class. The small tier's
 real niche in mid-2026 practice appears to be *background cognition inside other
 tools* — continuous, low-stakes, volume-priced — rather than interactive work.
+
+## Measured in this repo (2026-08-17, all OBSERVED)
+
+Five unaided baseline runs on the tarpeek task, identical rig configuration to the
+Sonnet 5 screening runs (same harness CLI 2.1.220, same instruction, same enforced
+network) — the first in-repo measurement where only the model varied:
+
+- **Uniform 17/21 on the verifier in every completed run** (n=4; Sonnet: 18–20).
+  Faster wall-clock (1m11s–2m05s) but *more* turns (16–34 vs Sonnet's 12–20) — it
+  iterates smaller.
+- **Failure style, not just failure count:** blanket `rc=1` error handling — no
+  traceback ever escapes (it *beat* Sonnet on the truncated-archive trap, 0/4 vs
+  3/5) but no failure is distinguishable (distinct-exit-codes trap failed 4/4).
+  The entire ambient-config family failed in every completed run: local-time
+  output, undocumented, plus the strict-stdio crash.
+- **The packaging DOA (1/5):** `cli.py` imports `tabulate`, the README documents
+  it, `pyproject.toml` never declares it — the agent pip-installed it by hand
+  in-container, so its own tests passed while the shipped package cannot run from
+  a fresh install. A concrete instance of conclusion 4 (structural completeness ≠
+  runtime correctness) at the packaging layer.
+- **Discarded-candidate checks caught it where Sonnet never failed:** filter-to-empty
+  crash 2/4, directory-path traceback 1/4 (Sonnet: 0 failures in 25 check-runs).
+  Full tables: [`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md)
+  § Model-tier calibration verdict.
 
 ## Surprises
 

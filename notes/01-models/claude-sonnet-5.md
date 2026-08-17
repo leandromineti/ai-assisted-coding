@@ -25,10 +25,10 @@ compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
 
 | Axis | Evidence here |
 |---|---|
-| Tool-call fidelity | · (exp-02 will produce the first in-repo evidence) |
-| Long-horizon coherence | · |
+| Tool-call fidelity | OBSERVED (2026-08-17): 6 autonomous headless runs on the rig's tarpeek task (Run A + 5 screening baselines) — 6/6 completed with an installable artifact, 12–20 turns, zero blocking questions. See § Measured in this repo |
+| Long-horizon coherence | · (the tarpeek task is too small to load this axis) |
 | Usable context (vs advertised) | 1M advertised; unprobed here |
-| Cost per completed task | **Time-sensitive:** intro pricing $2/$10 until 2026-08-31, then $3/$15 — a run costed in August is ~33% cheaper than the same run in September. Exp-02's ledger must record which price was in force |
+| Cost per completed task | **Measured** (2026-08-17, intro $2/$10): $0.31–0.51 per completed tarpeek run, mean $0.41 (n=6). **Time-sensitive:** intro pricing ends 2026-08-31, then $3/$15 — a run costed in August is ~33% cheaper than the same run in September; ledgers record the price in force |
 | Release mode & access routes (1b) | API-only; Claude API + Bedrock + Vertex + Foundry. `effort` defaults to `high` on the Claude API and Claude Code — a cost-relevant default worth pinning in experiment configs |
 
 ## Role in this repo's work
@@ -42,6 +42,26 @@ compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
 - Adaptive thinking; no legacy extended-thinking toggle — prompt/config written for
   4.x-era thinking controls doesn't carry over unchanged.
 
+## Measured in this repo (2026-08-17, all OBSERVED)
+
+Five unaided baseline runs on the tarpeek task (fresh containers, `package-hosts-only`,
+CLI 2.1.220) plus the Run A calibration — the rig held everything fixed except the
+model, so these are model-attributable behaviors, not harness effects:
+
+- **Verifier distribution 18–20/21** (19 · 20 · 20 · 18 · 18, mean 19.0; Run A 20).
+  Full tables: [`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md)
+  § Screening verdict.
+- **Failure signature is fine-grained-but-incomplete error handling:** it
+  differentiates exit codes (distinct not-a-tar vs empty codes in 3/5 runs) but 3/5
+  runs let an unhandled traceback escape on a truncated archive, and 5/5 crash under
+  strict stdio encoding on a non-UTF-8 member name (T4c). Timezone discipline was
+  perfect (0/5 failures, UTC pinned or documented).
+- **Known-groups anchor:** fully separated from Haiku 4.5 on the same instrument —
+  every completed Haiku run scored 17/21, below Sonnet's worst (18). The reversal
+  (Haiku beat Sonnet on the truncated-archive item) is a failure-style effect, not a
+  capability inversion — see [`benchmark-survey`](../cross-cutting/benchmark-survey.md)
+  § 6 and README conclusion 10.
+
 ## Surprises
 
 1. **The introductory-pricing window lands mid-experiment-arc.** If exp-02 runs in
@@ -54,8 +74,12 @@ compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
 
 ## Open questions
 
-- Exp-02 will produce the first measured trap-discovery and attention data on this
+- ~~Exp-02 will produce the first measured trap-discovery and attention data on this
   model — fold the result back here (this report graduates to `deep-dive` when the
-  repo's own measurements exist).
+  repo's own measurements exist).~~ *Corrected 2026-08-17:* the measurements exist
+  (§ Measured in this repo) and are folded back, but the graduation clause predated
+  methodology rule 1a — closure caps a report at `survey`; measured behavior is
+  OBSERVED-grade, and no amount of it reads the weights. Depth stays `survey`,
+  now with evidence in every load-bearing cell.
 - Does `effort: high`-by-default change the cost profile enough that experiment
   configs should pin it explicitly? (The rig currently doesn't set it.)

@@ -9,10 +9,10 @@ report's frontmatter when confirmed in source or official docs.
 
 | Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| [claude-haiku-4-5](../notes/01-models/claude-haiku-4-5.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [claude-opus-5](../notes/01-models/claude-opus-5.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [claude-sonnet-5](../notes/01-models/claude-sonnet-5.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [claude-fable-5](../notes/01-models/claude-fable-5.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [claude-haiku-4-5](../notes/01-models/claude-haiku-4-5.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [deepseek-v4](../notes/01-models/deepseek-v4.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-3-1-pro](../notes/01-models/gemini-3-1-pro.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gpt-5-6-sol](../notes/01-models/gpt-5-6-sol.md) | · | · | · | · | · | · | · | · | · | · | · |

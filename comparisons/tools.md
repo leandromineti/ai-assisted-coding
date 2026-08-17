@@ -13,10 +13,10 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 
 | Layer | Tool | Surfaces · exec | Stack | License | Stars | Since | Harness targets | Version read | Depth | Report |
 |---|---|---|---|---|---|---|---|---|---|---|
+| 1 · Models | claude-haiku-4-5 | — | — | proprietary | — | — | — | `closed source` | survey | [claude-haiku-4-5](../notes/01-models/claude-haiku-4-5.md) |
 | 1 · Models | claude-opus-5 | — | — | proprietary | — | — | — | `closed source` | survey | [claude-opus-5](../notes/01-models/claude-opus-5.md) |
 | 1 · Models | claude-sonnet-5 | — | — | proprietary | — | — | — | `closed source` | survey | [claude-sonnet-5](../notes/01-models/claude-sonnet-5.md) |
 | 1 · Models | claude-fable-5 | — | — | proprietary | — | — | — | `closed source` | stub | [claude-fable-5](../notes/01-models/claude-fable-5.md) |
-| 1 · Models | claude-haiku-4-5 | — | — | proprietary | — | — | — | `closed source` | stub | [claude-haiku-4-5](../notes/01-models/claude-haiku-4-5.md) |
 | 1 · Models | deepseek-v4 | — | — | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | — | — | — | `—` | stub | [deepseek-v4](../notes/01-models/deepseek-v4.md) |
 | 1 · Models | gemini-3-1-pro | — | — | proprietary | — | — | — | `closed source` | stub | [gemini-3-1-pro](../notes/01-models/gemini-3-1-pro.md) |
 | 1 · Models | gpt-5-6-sol | — | — | proprietary | — | — | — | `closed source` | stub | [gpt-5-6-sol](../notes/01-models/gpt-5-6-sol.md) |
@@ -39,4 +39,4 @@ Every tool with a report, flattened across layers for comparison. Newest read: `
 | 5 · Execution environments | e2b | — | Python, TypeScript, Go | Apache-2.0 | 13,423 | 2023-03-04 | — | `@e2b/python-sdk@2.39.1` | deep-dive | [e2b](../notes/05-execution-environments/e2b.md) |
 | 5 · Execution environments | modal | — | Python, Go, TypeScript | Apache-2.0 | 502 | 2021-07-09 | — | `closed source` | survey | [modal](../notes/05-execution-environments/modal.md) |
 
-**25 tools** — 6 deep-dive · 10 stub · 9 survey.
+**25 tools** — 6 deep-dive · 9 stub · 10 survey.

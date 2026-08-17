@@ -1,6 +1,6 @@
 # Layer 1 — Models
 
-`checked: 2026-07-31`
+`checked: 2026-08-17`
 
 The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this layer is and how
 it's judged.
@@ -9,8 +9,13 @@ Per-model reports follow
 [`_template-model-report.md`](_template-model-report.md) — adapted from the tool
 template because closed weights have no source to trace: specs are verified against
 the vendor page (dated `checked`), and the depth vocabulary maps to **stub** (specs
-verified, not used) / **survey** (used on real work here, evidence named) /
-**deep-dive** (this repo's experiments produced measured data on it).
+verified, not used) / **survey** (used on real work here, evidence named).
+*Corrected 2026-08-17:* this mapping originally defined a third grade, deep-dive =
+"this repo's experiments produced measured data" — written before methodology rule 1a
+(2026-08-16), which it contradicts: closure caps a report at `survey`, and measured
+behavior is OBSERVED-grade evidence, not source. Closed-weight models therefore top
+out at `survey` no matter how much we measure them; the measurements go into a
+report's evidence cells, not its depth field.
 
 ## Inventory
 
@@ -18,8 +23,8 @@ verified, not used) / **survey** (used on real work here, evidence named) /
 |-------|--------|---------|----------|
 | [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 | Frontier tier; always-on adaptive thinking; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
 | [**Opus 5**](claude-opus-5.md) | Anthropic | 2026 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |
-| [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | 2026 | Mid-tier; **the rig's pinned model for all layer-4 experiment arms.** Intro pricing $2/$10 through 2026-08-31 (then $3/$15) — experiment ledgers must record which price was in force. |
-| [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | 2025-10 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Feb 2025 cutoff. $1/$5. |
+| [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | 2026 | Mid-tier; **the rig's pinned model for all layer-4 experiment arms.** Now measured in-repo: 18–20/21 on the tarpeek verifier (n=6 incl. Run A), $0.41/run. Intro pricing $2/$10 through 2026-08-31 (then $3/$15) — experiment ledgers must record which price was in force. |
+| [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | 2025-10 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Now measured in-repo: uniform 17/21, one packaging DOA, $0.150/run — fully separated from Sonnet on the same instrument. Feb 2025 cutoff. $1/$5. |
 | [**GPT-5.6 Sol**](gpt-5-6-sol.md) | OpenAI | 2026 | Frontier tier of a three-tier family (Sol $5/$30 · Terra $2/$12 · Luna $0.20/$1.20), all 1.05M ctx, Feb 2026 cutoff. **GPT-5.5 is retired** — gone from the current models page (2026-07-31), so the Terminal-Bench row below cites a model you can't buy. |
 | [**Gemini 3.1 Pro**](gemini-3-1-pro.md) | Google | 2026 | Still **Preview** while the Flash line is Stable. Tiered pricing doubles above 200k input tokens — taxing the long-context pitch. Advertised window *not found on the checked pages*; the "hold the whole monorepo" framing is currently unsourced. |
 | [**Grok 4.5**](grok-4-5.md) | xAI | 2026-07-08 | Coding/agent-tuned, 1.5T-param V9 base. **Trained on real Cursor session data.** 500k ctx — *half its cheaper siblings' 1M*. $2/$6 (<200k), $4/$12 above. No EU at launch (2026-07-28 check). |
@@ -53,6 +58,28 @@ they measure layers 1+2 together, never the model alone:
 
 These figures lag the current model generation (they cite Opus 4.8 and GPT-5.5, both
 superseded). Treat leaderboard numbers as at least one generation stale by default.
+
+## In-repo measured data (2026-08-17) — the model-isolated comparison
+
+The confound the snapshot above suffers from is the one this repo's rig removes: the
+2026-08-17 model-tier calibration held **harness (Claude Code CLI 2.1.220), task,
+container, and network condition fixed** and varied only the model — the
+model-isolated measurement that conclusion 2 says no public benchmark provides.
+Small (n=5 per model, one task), but attributable:
+
+| | Sonnet 5 | Haiku 4.5 |
+|---|---|---|
+| tarpeek verifier, completed runs | 18–20/21 (mean 19.0) | 17/21, uniform |
+| completion | 5/5 | 4/5 (one undeclared-dependency DOA) |
+| mean cost/run | $0.41 (intro) | $0.150 |
+| characteristic failure | fine-grained exit codes, but tracebacks escape edge cases | blanket `rc=1`: never a traceback, never a distinguishable failure |
+
+The tier separation is carried by *family-level* patterns (Haiku fails the whole
+ambient-config family every run), and one item **reverses** (Haiku's coarse error
+handling beats Sonnet on the truncated-archive trap) — trap items measure failure
+style, not just capability. Details: the per-model reports' § Measured in this repo,
+[`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md) § Model-tier
+calibration verdict, README conclusion 10.
 
 ## References
 
