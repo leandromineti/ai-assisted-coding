@@ -163,8 +163,13 @@ users actually run them; it is simply never the silent default.
 `/root/.claude/settings.json` at run time:
 
 ```json
-{"permissions": {"allow": ["Bash","Read","Write","Edit","Glob","Grep"], "deny": ["WebSearch","WebFetch"]}}
+{"permissions": {"allow": ["Bash","Read","Write","Edit","Glob","Grep","Skill"], "deny": ["WebSearch","WebFetch"]}}
 ```
+
+(`Skill` added 2026-08-17 for exp-02's scored arms: spec-kit's Claude integration at
+the pin installs *skills*, which the harness invokes through the Skill tool. Applied
+to both arms per the change rule below; harmless where no skills exist — verified by
+that day's smoke test and Run A′.)
 
 Not `--dangerously-skip-permissions`: the CLI **refuses that flag outright when running as
 root**, which the image does (`--dangerously-skip-permissions cannot be used with root/sudo
@@ -194,4 +199,4 @@ entirely). Any change to this list applies identically to every arm on the task.
 
 | Task | Status | Used by |
 |---|---|---|
-| [`tarpeek/`](tarpeek/) | image built (`tarpeek-rig:exp02`), verifier re-proven fails-closed in-container 2026-07-30; rebuilt 2026-08-17 (base digest identical to pin); baseline distribution calibrated over 5 screening runs 2026-08-17 (exp-02 log § Screening verdict) | exp-02 (spec-kit vs plain), exp-03 planned (minimal harness) |
+| [`tarpeek/`](tarpeek/) | image built (`tarpeek-rig:exp02`), verifier re-proven fails-closed in-container 2026-07-30; rebuilt 2026-08-17 (base digest identical to pin); baseline distribution calibrated over 5 screening runs 2026-08-17 (exp-02 log § Screening verdict); **scored A/B executed 2026-08-17** — Run A′ (plain) 19/21 is the task's reusable plain baseline per the reuse rules, Run B (spec-kit) 19/21 (exp-02 README § Results). Trap families now heavily discussed in this repo — further frameworks score on it only with contamination declared | exp-02 (spec-kit vs plain, **complete**), exp-03 planned (minimal harness) |

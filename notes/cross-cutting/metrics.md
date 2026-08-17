@@ -124,6 +124,13 @@ required"). But it is coarser than ATC/EAR, which price *when* information arriv
 just how long someone was blocked. Prefer ATC + EAR where a per-question turn index exists;
 keep attention split for arms that block on approvals rather than questions.
 
+First real measurement 2026-08-17 (exp-02 Run B): 2 blocking events, ~63s
+orchestrator-blocked in a 21m33s run. The measurement also exposed the instrument's
+sharpest limitation, beyond the coarseness noted above: the run's decisive human
+moment was not the *duration* of the block but the *content* of the answer (a
+one-line deferral decided the exit-code trap). Time-based attention metrics price
+the interruption, not the leverage.
+
 ### Cost ledger
 Output · cache-write · cache-read · uncached-input tokens, per model, from transcripts
 (methodology 5c). No literature equivalent found — most papers report latency or nothing.

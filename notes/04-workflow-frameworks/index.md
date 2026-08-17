@@ -113,7 +113,7 @@ mechanism-by-mechanism, not brand-by-brand.)*
 
 | Mechanism class | What it is | Exp-01 evidence (n=1) |
 |---|---|---|
-| **Intent capture** | Structured extraction and pinning of the "what" before execution: ID'd requirements, rationed clarification, artifacts that test the English itself | Not exercised by exp-01 (added 2026-07-28 from the spec-kit source read — GSD is thin here) |
+| **Intent capture** | Structured extraction and pinning of the "what" before execution: ID'd requirements, rationed clarification, artifacts that test the English itself | Not exercised by exp-01 (added 2026-07-28 from the spec-kit source read — GSD is thin here). **Measured by exp-02 (2026-08-17):** wins every requirements-rubric item, leaves trap score exactly at baseline — it *steers* trap-relevant decisions in both directions (documented wrong exit-code choice, right UTC choice) but discovers nothing (README conclusion 11) |
 | **Empirical grounding** | Agents instructed to *measure* the domain (fixture repos, probes) rather than trust training data | Carried most of the quality margin: the invalid-UTF-8 crash class, timezone traps, exit-code collision were all found by measurement |
 | **Verification gates** | Machine-checkable acceptance criteria with *measured* expected values; verifiers that re-derive rather than trust | Carried the rest: the checker caught an untested claim; verifiers exceeded brief and honestly abstained on subjective checks |
 | **Context discipline** | Fresh right-sized context per unit of work; artifacts as the interface between stages | Plausibly load-bearing (each stage caught the previous stage's vagueness — the refinement funnel) but not isolated by this experiment |
@@ -122,8 +122,9 @@ mechanism-by-mechanism, not brand-by-brand.)*
 
 ### Profiles so far
 
-*(GSD: run + source read, exp-01. spec-kit: source read only, 2026-07-28 — see
-[spec-kit.md](spec-kit.md) for evidence.)*
+*(GSD: run + source read, exp-01. spec-kit: source read 2026-07-28 **and run
+2026-08-17** — exp-02's full 7-step pipeline at the pin; the profile below was
+validated by the run, see [spec-kit.md](spec-kit.md) § Profile validated by run.)*
 
 | Mechanism class | GSD | spec-kit |
 |---|---|---|

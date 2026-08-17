@@ -8,7 +8,9 @@ cited and dated; none is imported from blog-post folklore.
 
 **Evidence base at derivation time:** two deep-dives (opencode, hermes-agent), three
 surveys (cline, continue, spec-kit), one framework run end-to-end (gsd-core,
-experiment 01), one preregistered experiment with results. Known biases: n is small;
+experiment 01), one preregistered experiment with results. *Updated 2026-08-17:* two
+frameworks now run end-to-end (spec-kit via exp-02's full pipeline), two preregistered
+experiments with results. Known biases: n is small;
 the sample is survivorship-filtered (tools got read *because* they're prominent); and a
 pattern shared by successful tools is what builders *believe*, not what's been measured
 to work. Where a principle rests on a single well-engineered instance, it says so.
@@ -166,10 +168,14 @@ viable.
 under active test)* Exp-01's entire observed quality margin traced to agents that
 *measured* git (fixture repos, crafted commits, timezone probes) and to verification
 gates with measured expected values — almost none to the surrounding process ceremony,
-at ~30–50× cost (README conclusion 6). Exp-02 tests the complementary claim
-(intent capture without measurement); exp-03 is designed to isolate this principle
-directly. This is the repo's most consequential hypothesis, which is exactly why it's
-being tested rather than trusted.
+at ~30–50× cost (README conclusion 6). **Confirmed by exp-02 (2026-08-17, measured,
+n=1 per arm against an n=5 baseline band):** the complementary claim held — intent
+capture *without* measurement produced trap-identical code (19/21 = 19/21, same two
+failures) at 7.8× cost, and the mechanism was visible: clarify converted the
+exit-code ambiguity into a documented *wrong* decision its tests then enforced,
+while pinning UTC output right — steering without discovery (README conclusion 11).
+Exp-03 is designed to isolate this principle directly. This is the repo's most
+consequential hypothesis, which is exactly why it's being tested rather than trusted.
 
 **F3. Fresh context per stage works as a refinement funnel — but only if the return
 path is compact.** *(convergent, with the boundary condition observed in both
@@ -184,7 +190,11 @@ layers)* spec-kit caps clarification markers at 3, clarify questions at 5, asks 
 a time, and attaches a recommended answer acceptable with "yes" — attention economics
 in the template grammar. hermes gates its self-improvement asks behind nudge intervals
 rather than firing per-turn. The anti-pattern is unbounded question streams; the
-instrument for pricing this is exp-02's attention-split measurement.
+instrument for pricing this is exp-02's attention-split measurement. *First measured
+2026-08-17 (exp-02 Run B): the ration is real — one clarify question and one
+remediation offer across a full 7-step pipeline, ~63s orchestrator-blocked of 21m33s
+total. The cap did its job; the cost moved to the answer's* quality *(the one
+question got the trap-deciding deferral), which attention-split does not price.*
 
 **F5. Verification gates must fail closed, abstain when subjective, and control their
 false-positive rate.** *(convergent, three complementary lessons)* Fail-closed: the
