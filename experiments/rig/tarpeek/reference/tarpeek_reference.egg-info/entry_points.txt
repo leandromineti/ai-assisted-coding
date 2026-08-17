@@ -1,0 +1,2 @@
+[console_scripts]
+tarpeek = tarpeek_reference:main

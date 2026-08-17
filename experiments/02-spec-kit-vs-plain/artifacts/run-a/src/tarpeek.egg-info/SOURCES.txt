@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/tarpeek/__init__.py
+src/tarpeek/cli.py
+src/tarpeek/core.py
+src/tarpeek.egg-info/PKG-INFO
+src/tarpeek.egg-info/SOURCES.txt
+src/tarpeek.egg-info/dependency_links.txt
+src/tarpeek.egg-info/entry_points.txt
+src/tarpeek.egg-info/top_level.txt
+tests/test_cli.py

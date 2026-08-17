@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+tarpeek_reference.py
+tarpeek_reference.egg-info/PKG-INFO
+tarpeek_reference.egg-info/SOURCES.txt
+tarpeek_reference.egg-info/dependency_links.txt
+tarpeek_reference.egg-info/entry_points.txt
+tarpeek_reference.egg-info/top_level.txt

@@ -124,3 +124,49 @@ Appended during the runs, never reconstructed afterwards (protocol).
 - **Unchanged and still blocking:** the trap-ceiling decision above. Do not run Run B until the
   instrument question is settled; a re-run of Run A should happen under the *same* decision, so
   both arms share one instrument and one network condition.
+
+## 2026-08-17 — amendment-3 instrument work: densification + three-point proof
+
+Executed per amendment 3 (committed e932206 before any of the below). All scoring runs
+are instrument work against existing artifacts in local venvs — no experiment arm ran.
+
+**Instrument v2 built:** 21 binary machine checks (was 8 monolithic): F1–F4 functional ·
+T1a–c · T2a–c · T3a–d · T4a–c · T5a–d. Original 8 preserved in substance. New fixtures,
+all within preregistered families: `traps2.tar` (PAX long-name 169 chars — T1; hardlink +
+char-device members — T5), `truncated.tar` (valid header, cut body — T3).
+`expected.json` regenerated from measurement (13 members + truncated identity), mirrors
+synced. New apparatus: hardened reference implementation at `../rig/tarpeek/reference/`
+(never a contestant; documents exit codes 0/2/3/4/5; UTC-always output).
+
+**Three-point proof, under the declared condition (TZ=UTC, LANG=LC_ALL=C.UTF-8):**
+
+| Leg | Requirement | Result |
+|---|---|---|
+| Fails-closed | do-nothing stub fails every check | **21/21 fail** ✓ |
+| Fairness | reference passes every check | **21/21 pass** ✓ |
+| Headroom | Run A artifact fails ≥ 3 | **1/21 fail** ✗ (T4c only) |
+
+**Incidental finding (recorded, not exploited):** under the scoring host's default
+locale (strict UTF-8 stdio), Run A's artifact crashes on the T1 member — 5/20 checks
+fail (T1a, T1b, T2a, T2b, T5a all victims of one `UnicodeEncodeError` on the surrogate).
+Under the rig's pinned `C.UTF-8` (surrogateescape stdio) it passes cleanly. The
+declared condition is C.UTF-8, so the passing result is the honest one; switching the
+condition to manufacture headroom after seeing which condition fails the artifact would
+be post-hoc instrument selection. The legitimate residue is `T4c` (ambient-config
+family): `PYTHONIOENCODING=utf-8:strict` reproduces the fragility portably; reference
+passes it, stub fails it, Run A fails it. Provenance disclosed in the check's docstring.
+
+**Verdict per amendment 3 item 5: the EvalPlus step is exhausted.** Headroom 1 < 3.
+The informative content of the negative result: Run A's 8/8 was *not* a
+shallow-verifier artifact — under 13 additional, strictly harder checks the calibration
+artifact still clears the five families on their own terms (its one failure is
+environmental fragility, not domain logic). The trap families are genuinely consumed at
+this task size, exactly what the escalation exists for.
+
+**Escalation gate (preregistered, not yet begun):** Aider move — candidate pool of NEW
+trap families, screened by 5 fresh unaided baseline runs in the rig under
+`package-hosts-only`, keep-if-failed-in-≥2-of-5, fairness-screened against the
+reference. Costs ~5 × Run A ≈ $1.9 in API spend at intro rates plus rig time.
+**Awaiting owner sign-off before any screening run.** Until then the instrument stands
+as: 21 checks, fails-closed and fair, headroom insufficient for P2; P1 (requirements
+rubric) unaffected throughout.
