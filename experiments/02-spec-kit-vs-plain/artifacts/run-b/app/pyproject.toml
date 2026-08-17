@@ -1,0 +1,22 @@
+[project]
+name = "tarpeek"
+version = "0.1.0"
+description = "Inspect tar archive contents without extracting them"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+tarpeek = "tarpeek.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py39"
+include = ["src/**/*.py", "tests/**/*.py"]

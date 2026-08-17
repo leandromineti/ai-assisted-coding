@@ -425,3 +425,155 @@ September renormalization will ever be needed, and this log's standing warning t
 "a Run B executed in September is NOT cost-comparable to this arm at face value" is
 retired as of this date (it was true when written). The Run A′ + Run B decision loses
 its August deadline pressure.
+
+## 2026-08-17 — amendment 4 execution: scored A/B (Run A′ + Run B)
+
+Owner sign-off received ("Lets perform the AB test"); amendment 4 committed b4d5b5e
+**before** any of the below.
+
+### Pre-launch (2026-08-17, ~17:45–18:06Z)
+
+- **Condition re-created and re-probed** (the screening-era network/containers had
+  been cleaned up): `exp-closed-int` + `exp-proxy` from the pinned image, allowlist
+  unchanged (`pypi.org`, `files.pythonhosted.org`, `pypi.python.org`,
+  `api.anthropic.com`). Probes: raw egress no route (curl 000) · `example.com` via
+  proxy → `DENY` logged · `api.anthropic.com` via proxy → 404 on bare GET, TLS
+  established · PyPI → 200. All four as declared.
+- **Scaffold provenance (amendment 4 item 5), better than expected:** specify-cli
+  0.14.4.dev0 installed with `uv tool install` from a **worktree of the
+  preregistration pin 655a3cb** (upstream/spec-kit untouched). At this pin,
+  `specify init` scaffolds from **assets bundled inside the package** — its help
+  text states initialization needs no network and templates match the installed CLI
+  — so the scaffold provenance is exactly the pin, no release-zip fetch to record.
+  `specify init . --integration claude --force --script sh` → `.specify/` +
+  `.claude/skills/speckit-*` (ten skills, incl. the seven preregistered steps).
+- **Invocation-form note:** at this pin the Claude integration installs **skills**
+  invoked as `/speckit-constitution` (hyphen), not the docs' `/speckit.*` dot form —
+  the pinned quickstart itself says the form varies by agent and "the steps are
+  otherwise identical". The seven preregistered steps are unchanged.
+- **Rig change, recorded (applies to both arms):** `Skill` added to the
+  `permissions.allow` list — skills-form spec-kit invokes the Skill tool, absent
+  from the screening-era list. Harmless for the plain arm (no skills in its
+  workspace); verified live by the smoke below.
+
+### Driver smoke test (methodology 5e; amendment 4 item 6)
+
+Throwaway container `exp02-smoke`, scaffold + fresh git repo, allow-list settings.
+- Turn 1: `claude -p "/speckit-constitution Focus on code quality, testing
+  standards, user experience consistency, and clear error behavior."` →
+  `subtype: success`, 9 turns, **$0.2294**. Artifact read back (not exit status):
+  `.specify/memory/constitution.md` exists, v1.0.0, four concrete principles.
+- Turn 2: `claude -p --resume <session>` → same session id, correct one-line answer
+  naming the file, **$0.0806**.
+- **Smoke verdict: PASS** — skill resolution, headless artifact writing, and
+  within-session resume all work under the enforced condition. Smoke spend **$0.3101**
+  (calibration bookkeeping, not an arm). Container discarded.
+
+### Run A′ — the scored plain baseline (2026-08-17, live)
+
+- `18:06:51Z` container `exp02-run-a2` started: fresh `/app`, allow-list settings
+  (incl. the recorded `Skill` addition), instruction verbatim (651 chars) at
+  `/root/instruction.txt`, `claude -p … --model claude-sonnet-5
+  --output-format json`, fully autonomous.
+- `18:09:39Z` complete: `subtype: success`, 20 turns, **$0.5704**, 2m29s api.
+  Proxy slice clean: 25× `api.anthropic.com` + PyPI allows, 9 Datadog telemetry
+  denials, no web reads.
+- **Score (fresh venv, TZ=UTC, C.UTF-8): 19/21** — fails `T3a` (not-a-tar and
+  empty archive share an exit code) and `T4c` (strict-stdio crash on the non-UTF-8
+  member name). Both are the instrument's known discriminators (baseline failure
+  rates 40% and 100%); the draw sits at the noise-band mean (18–20, mean 19.0).
+  Artifacts: `artifacts/run-a-prime/` (app, harness result, stderr, proxy slice).
+
+### Run B — spec-kit arm (2026-08-17, live)
+
+Container `exp02-run-b`, scaffold from pin 655a3cb committed in a fresh git repo,
+allow-list settings, one fresh headless session per step (amendment 4 item 3).
+
+- `18:10:38Z` container staged. **Step 1/7 constitution** (declared generic text):
+  `18:12:21Z` success, 8 turns, **$0.2949** — `.specify/memory/constitution.md`
+  v1.0.0, no blocking questions.
+- **Step 2/7 specify** (task instruction verbatim): `18:13:58Z` success, 9 turns,
+  **$0.3051** — `specs/001-tarpeek-cli/spec.md` + a requirements checklist, zero
+  `[NEEDS CLARIFICATION]` markers; the framework itself judged clarify optional.
+- **Step 3/7 clarify** (bare): `18:15:11Z` the turn ended on **blocking question
+  #1** — the run's only one. Verbatim exchange (full text in
+  `artifacts/run-b/step3-clarify.json`):
+  - **Q (essential text):** "When the tool fails, should different failure reasons
+    … each produce their own distinct exit code, or is a single generic non-zero
+    exit code enough?" Options: A distinct per category (2=not found, 3=not a tar,
+    4=empty, …) · B one generic code, distinguish via message. **Recommended: B.**
+  - **A (orchestrator, per the declared deferral policy — the instruction does not
+    decide distinctness, and answering A would leak trap knowledge):** "your call —
+    make a reasonable choice and document the assumption"
+  - Blocked interval: question landed 18:15:11Z, answer dispatched 18:15:35Z
+    (~24s orchestrator latency; a human reading the options would plausibly take
+    1–3 min).
+  - `18:17:04Z` continuation complete, 9 turns, **$0.2960**. Clarify took its own
+    recommendation: **single generic exit code**, documented in
+    spec.md § Clarifications — a decision the hidden T3a check penalizes. It also
+    self-answered four more ambiguities without blocking, including **ISO 8601 UTC
+    timestamps** (the T4a/T4b-passing direction), snake_case JSON array schema,
+    deterministic size-then-name sort, and an `"other"` type fallback. The spec's
+    Assumptions additionally decide filter-to-empty = success — the exact semantics
+    of discarded candidate N4a. Intent capture is making trap-relevant calls in
+    *both* directions before any code exists.
+- **Step 4/7 plan** (declared minimal input, instruction-derived): `18:20:01Z`
+  success, 13 turns, **$0.4095** — plan.md, research.md, data-model.md,
+  contracts/, quickstart.md; stdlib-only architecture, `[project.scripts]` entry
+  point; no blocking questions. (Driver note, recorded: the step-4 wrapper shell
+  was mis-launched and died early; the in-container session survived orphaned and
+  completed normally — output verified from artifacts per 5e, no retry needed.)
+- **Step 5/7 tasks** (bare): `18:22:55Z` success, 12 turns, **$0.4023** — tasks.md
+  with 30 tasks, story-labelled, each naming its target file; no blocking questions.
+- **Step 6/7 analyze** (bare): `18:25:19Z` success, 12 turns, **$0.3721** —
+  read-only consistency report: 1 CRITICAL (constitution UX-consistency principle
+  vs an underspecified empty-table format), 1 HIGH-adjacent underspecification
+  (U1), 1 LOW cosmetic. The turn ended on **blocking question #2** — the
+  framework's remediation offer ("Would you like me to suggest concrete
+  remediation edits…?"). **A (orchestrator):** "No — proceed as is." — declining
+  keeps the run at the seven preregistered steps ("no step skipped, none added").
+  Continuation `18:25:58Z`, **$0.0467**. Blocked interval ~39s.
+- **Step 7/7 implement** (bare): `18:32:11Z` success, 92 turns, **$2.0804**, 5m27s
+  api — src/, tests/ (32 tests), README, pyproject with console script; 28/30 task
+  boxes checked, implement's own summary reports all stories and error paths
+  exercised. Full-run proxy slice clean: 162 API + 6 PyPI allows, 47 telemetry
+  denials, zero web reads.
+- **Run B cost ledger:** 0.2949 + 0.3051 + 0.2261 + 0.2960 + 0.4095 + 0.4023 +
+  0.3721 + 0.0467 + 2.0804 = **$4.4331** (vs Run A′ $0.5704 — 7.8×). Wall clock
+  18:10:38→18:32:11 = **21m33s** (vs 2m49s — 7.6×). Blocking events: 2, ~63s
+  orchestrator-blocked total.
+
+### Scoring (2026-08-17, fresh venvs, TZ=UTC, C.UTF-8)
+
+| | Run A′ (plain) | Run B (spec-kit) |
+|---|---|---|
+| Accepted 21 | **19/21** | **19/21** |
+| Failures | T3a, T4c | T3a, T4c |
+| vs noise band (18–20, mean 19.0) | at the mean | at the mean |
+
+**The two arms fail the identical two checks.** T4c (strict-stdio crash on the
+non-UTF-8 name) is the shared 100%-baseline-failure item — neither arm's process
+anticipated encoding anywhere in writing. **T3a is the traceable one: Run B's
+single-generic-exit-code behavior is not an oversight but a *documented decision* —
+clarify surfaced exactly the right question, recommended the trap-failing answer
+(option B), and the orchestrator's preregistered deferral let the framework take its
+own recommendation.** The framework also decided T4a/T4b in the passing direction
+(ISO 8601 UTC, pinned in FR-004) before any code existed — and its tests then
+enforced both decisions faithfully. Intent capture steers trap behavior in both
+directions; it does not add trap *discovery*.
+
+**P1 rubric (written artifacts only, scored before reading either arm's code):**
+
+| Rubric item | Run A′ | Run B |
+|---|---|---|
+| R1 machine-checkable acceptance criteria | ~10, prose README, unnumbered | **21 numbered** (FR-001..015, SC-001..006), MUST-form |
+| R2 documented assumptions | 0 explicit | **6 explicit** + 5 recorded clarify Q&As |
+| R3 trap classes anticipated in writing | 2/5 (exit codes partially, safety) | **4/5 partial** (exit codes debated + decided; time + ambient pinned via UTC; safety incl. error paths; encoding 0/5 both arms) |
+| R4 ambiguities surfaced | 0 | **1 blocking Q + 4 self-answered clarifications + 3 analyze findings** |
+
+**Preregistered verdicts: P1 SUPPORTED** (materially better written requirements on
+every rubric item). **P2 SUPPORTED** (code equal on traps — 19/21 = 19/21, same
+failures, both at the baseline mean; not better, not worse). Per the
+preregistration: both holding validates the mechanism-profile method, and exp-03
+(minimal harness: grounding + gates only) proceeds against a confirmed baseline.
+n=1 per arm; the noise band (n=5) is the reference frame.

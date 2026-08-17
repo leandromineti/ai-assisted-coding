@@ -220,3 +220,18 @@ note. Revised when evidence moves._
     and is recorded as such. →
     [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md),
     [`experiments/02-spec-kit-vs-plain/log.md`](experiments/02-spec-kit-vs-plain/log.md)
+11. **Intent capture steers trap behavior but does not add trap discovery** (2026-08-17,
+    measured — exp-02's preregistered A/B, both predictions supported). On the same
+    21-check instrument, one condition, one model: spec-kit's arm and the plain arm
+    scored **identically** (19/21, the same two failures, both at the n=5 baseline
+    mean), while spec-kit's *written requirements* won every rubric item (21 numbered
+    criteria vs ~10 prose claims; 4/5 trap families anticipated in writing vs 2/5) at
+    7.8× the cost. The mechanism is the finding: clarify surfaced exactly the right
+    exit-code question and **recommended the trap-failing answer**, which its tests
+    then enforced faithfully — and pinned UTC output in the passing direction before
+    any code existed. A framework that never measures the domain converts ambiguity
+    into *documented decisions*, not into *correct* ones; which direction it steers is
+    up to the model's priors, not the process. Conclusion 6's decomposition survives
+    its second framework: the quality margin lives in grounding + gates, not
+    ceremony — and exp-03 now proceeds against a confirmed baseline. →
+    [`experiments/02-spec-kit-vs-plain/`](experiments/02-spec-kit-vs-plain/README.md)

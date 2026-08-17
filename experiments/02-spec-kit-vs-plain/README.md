@@ -1,6 +1,6 @@
 # Experiment 02 — spec-kit vs. plain agent: does intent capture alone buy code quality?
 
-`preregistered: 2026-07-28` · status: **not yet run** ·
+`preregistered: 2026-07-28` · status: **run 2026-08-17, both arms — results at the end** ·
 **amended 2026-07-28 (pre-run — see Protocol amendment at the end; original text
 untouched)**
 
@@ -326,3 +326,42 @@ is `claude-sonnet-5`; the harness is Claude Code CLI 2.1.220 in the pinned image
    and the owner decides — recorded either way. A structurally stalled pipeline is a
    finding to record, not a thing to rescue by ad-hoc prompting: rescue prompts beyond
    the declared inputs would turn the arm into a steelman.
+
+---
+
+# Results (2026-08-17 — both arms run under amendment 4; protocol above untouched)
+
+Full live trace in [`log.md`](log.md) § amendment 4 execution; artifacts in
+`artifacts/run-a-prime/` and `artifacts/run-b/`.
+
+| | Run A′ (plain) | Run B (spec-kit) |
+|---|---|---|
+| Trap instrument (accepted 21) | **19/21** | **19/21** |
+| Failed checks | T3a, T4c | **the same two** — T3a, T4c |
+| vs baseline noise band (18–20, n=5) | at the mean | at the mean |
+| Cost | $0.5704 | $4.4331 (**7.8×**) |
+| Wall clock | 2m49s | 21m33s (**7.6×**) |
+| Blocking human events | 0 | 2 (~63s orchestrator; a reading human: minutes) |
+
+**P1 — SUPPORTED.** Spec-kit's written requirements beat the plain arm on every
+rubric item: 21 numbered MUST-form criteria vs ~10 prose claims; 6 explicit
+assumptions + 5 recorded clarifications vs none; 4/5 trap families *anticipated in
+writing* vs 2/5; ambiguities actively surfaced (1 blocking question, 4 self-answered,
+3 analyze findings) vs zero.
+
+**P2 — SUPPORTED.** The code is trap-equal: identical scores, identical failures,
+both at the baseline mean. The instructive mechanism: **clarify surfaced exactly the
+right question on the exit-code trap and recommended the failing answer** (one
+generic exit code; the orchestrator's preregistered deferral let the framework take
+its own recommendation, and its tests then enforced the choice faithfully — T3a
+failed *by documented design*). The same machinery pinned ISO-8601-UTC output before
+planning, deciding T4a/T4b in the passing direction. Neither arm anticipated
+encoding anywhere (T4c, the 100%-baseline-failure item, failed in both). Intent
+capture **steers** trap behavior — in both directions — but does not add trap
+*discovery*, exactly as the mechanism profile predicted.
+
+**Consequence (per the preregistered decision rule):** the profile method is
+validated; exp-03 (minimal harness: grounding + gates only) proceeds against a
+confirmed baseline. Limitations as declared: n=1 per arm (the n=5 noise band is the
+reference frame), non-blind scoring, orchestrator-answered clarify understates an
+engaged human's value.

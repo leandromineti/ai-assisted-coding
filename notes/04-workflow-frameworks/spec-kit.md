@@ -12,7 +12,7 @@ first_commit: 2025-08-21
 stars: 124319
 stars_at: 2026-07-28
 read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
-depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; never run
+depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; RUN 2026-08-17 (exp-02 Run B, full 7-step pipeline at this pin — rule 8 gap closed)
 harness_targets: "44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes"
 ---
 
@@ -194,6 +194,24 @@ The comparison with GSD is now sharp: **GSD spends its structure on the executio
 (fresh contexts, measured verification); spec-kit spends it on the intake side (extracting
 and pinning intent before execution).** Each is thin exactly where the other is thick.
 Neither has both halves.
+
+### Profile validated by run (2026-08-17 — exp-02, this pin, full 7-step pipeline)
+
+The A/B measured exactly what the table above predicted (README conclusion 11; both
+preregistered predictions supported). Intent capture performed as profiled: 21
+numbered MUST-form requirements, 5 recorded clarifications, 6 explicit assumptions —
+beating the plain arm on every rubric item. And the grounding/verification thinness
+showed up precisely where predicted: **trap score identical to plain** (19/21, same
+two failures, both at the n=5 baseline mean), at 7.8× the cost ($4.43 vs $0.57). The
+sharpest mechanism observation: clarify surfaced the right exit-code question and
+*recommended the trap-failing answer* — its document-vs-document machinery converts
+ambiguity into decisions and enforces them faithfully (tests asserted the generic
+exit code), but nothing in the chain ever measures which decision is right. It also
+pinned ISO-8601-UTC output pre-plan, deciding the ambient-config traps in the
+passing direction. Steering, both directions; discovery, none. One blocking question
+in the whole run (the rationed budget is real); analyze's remediation offer was the
+only other human touchpoint. Run details:
+[`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md), results in its README.
 
 ## Bleed
 
