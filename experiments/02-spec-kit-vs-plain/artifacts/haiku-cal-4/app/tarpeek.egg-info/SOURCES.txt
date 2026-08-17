@@ -1,0 +1,13 @@
+README.md
+setup.py
+tarpeek/__init__.py
+tarpeek/archive.py
+tarpeek/cli.py
+tarpeek.egg-info/PKG-INFO
+tarpeek.egg-info/SOURCES.txt
+tarpeek.egg-info/dependency_links.txt
+tarpeek.egg-info/entry_points.txt
+tarpeek.egg-info/top_level.txt
+tests/__init__.py
+tests/test_archive.py
+tests/test_cli.py

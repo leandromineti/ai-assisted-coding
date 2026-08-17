@@ -339,3 +339,79 @@ A/B remains Sonnet-only per amendment 1; these runs never enter it.
 - **Cost estimate:** Haiku $1/$5 per MTok vs Sonnet's intro $2/$10 → ~$0.75–1.25
   total at the Sonnet token profile; rises if Haiku needs more turns. Logged per
   run.
+
+### Haiku calibration runs (2026-08-17, live)
+
+Network re-created, all 4 probes correct (no-route / DENY / PyPI 200 / API
+reached), preregistration committed `dfd4300` before launch.
+
+- `15:00–15:02Z` — **run 1** complete: success, 23 turns, 1m29s, **$0.1258**.
+  Proxy clean. Score: **accepted 17/21** (fails `T3a`, `T4a`, `T4b`, `T4c` — the
+  whole ambient-config family) · **candidates 6/7** — fails `N4a` filter-to-empty,
+  **the first candidate failure in any run** (Sonnet: 0 in 25 check-runs).
+  Prediction 3 confirmed on the first sample.
+- `15:02–15:04Z` — **run 2** complete: success, 32 turns, 2m05s, **$0.1726**.
+  Proxy clean. Score: **accepted 17/21** (fails `T3a`, `T4a`, `T4b`, `T4c` — same
+  profile as run 1) · **candidates 6/7** — fails `N1a` directory-path traceback
+  (a *different* candidate than run 1's `N4a`).
+- `15:05–15:07Z` — **run 3** complete: success, 34 turns, 1m58s, **$0.2002**.
+  Proxy clean. Score: **accepted 17/21** (fails `T3a`, `T4a`, `T4b`, `T4c` —
+  identical profile third time) · **candidates 6/7** — fails `N4a`.
+- `15:08–15:09Z` — **run 4** complete as a session (success, 28 turns, 1m26s,
+  **$0.1483**) but the artifact is **broken as a package: 1/21 accepted, 0/7
+  candidates**. Mechanism verified in the artifact, not inferred: `cli.py` imports
+  `tabulate`, the README documents it as a requirement, but `pyproject.toml`
+  declares no dependencies — the agent had run `pip install -e . tabulate` by hand
+  in-container, so it worked *there* and dies with `ModuleNotFoundError` on any
+  fresh install. Scored per the preregistered procedure (fresh venv, identical for
+  every run, Sonnet and Haiku); counted as a **completion failure** in the
+  distribution-vs-completion split — the instruction's "install it so it runs from
+  any directory" is exactly what an undeclared runtime dep breaks. Nuance recorded:
+  the *final container state* would have passed more checks; the venv procedure is
+  the declared one and is what makes runs comparable.
+- `15:10–15:12Z` — **run 5** complete: success, 16 turns, 1m11s, **$0.1026**.
+  Proxy clean. Score: **accepted 17/21** (fails `T3a`, `T4a`, `T4b`, `T4c`) ·
+  **candidates 7/7 pass**.
+
+### Model-tier calibration verdict (2026-08-17)
+
+**Known-groups validity: SUPPORTED**, via the first branch of the preregistered
+rule — Haiku's completed-run mean (17.0/21) sits below the Sonnet *minimum* (18).
+Complete separation: every completed Haiku run scored 17; every Sonnet run scored
+18–20. Plus one Haiku completion failure (run 4) against Sonnet's 5/5.
+
+| | Sonnet 5 (n=5) | Haiku 4.5 (n=5) |
+|---|---|---|
+| completion (installable, runs fresh) | 5/5 | **4/5** (run 4: undeclared `tabulate` dep) |
+| accepted score, completed runs | 19 · 20 · 20 · 18 · 18 (mean 19.0) | 17 · 17 · 17 · 17 (mean 17.0) |
+| T3a distinct exit codes | 2/5 fail | **4/4 fail** |
+| T3c truncated archive | 3/5 fail | **0/4 fail** ← reversal |
+| T4a TZ-invariant-or-documented | 0/5 fail | **4/4 fail** |
+| T4b `--json` TZ-stable | 0/5 fail | **4/4 fail** |
+| T4c strict stdio | 5/5 fail | 4/4 fail |
+| candidate failures (completed runs) | 0 in 25 check-runs | `N4a` 2/4 · `N1a` 1/4 |
+| mean cost / run | $0.408 (intro $2/$10) | $0.150 ($1/$5) |
+| wall-clock range | 1m50s–2m42s | 1m11s–2m05s |
+
+**Predictions vs outcomes:** (1) mean < 19.0 ✓, but the per-item clause is
+**half-wrong** — T3c *reversed* (Haiku 0/4 vs Sonnet 3/5), recorded as stated.
+(2) ✓ exactly one completion failure. (3) ✓ candidates discriminate tiers:
+N4a and N1a caught Haiku in completed runs; Sonnet never failed any.
+
+**The mechanism behind the reversal is the most instructive finding.** Haiku's
+implementations wrap everything in coarse blanket error handling (`rc=1`, one
+message shape): no traceback ever escapes (passes T3c) but no failure is
+distinguishable (fails T3a, 4/4). Sonnet differentiates exit codes (passes T3a
+3/5) but 3/5 runs forgot the truncated case and let a traceback escape. Trap
+items are not monotone in capability — some measure *failure style*, not skill.
+The crispest tier separator is the **ambient-config family**: Haiku renders
+local-time output, undocumented, in every completed run (T4a/T4b 4/4); Sonnet
+never did (0/5). The whole-family failure pattern, not any single item, is what
+separates tiers.
+
+**Scope note:** candidates stay discarded for exp-02 (the A/B is Sonnet-only and
+they don't discriminate Sonnet baselines); their tier-discrimination is recorded
+as a finding about the *pool*, not a rule change. **Cost ledger:** $0.1258 +
+$0.1726 + $0.2002 + $0.1483 + $0.1026 = **$0.7495** total, mean $0.150/run —
+within the preregistered $0.75–1.25 estimate. All runs autonomous, proxy logs
+clean.

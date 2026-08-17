@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: tarpeek
+Version: 1.0.0
+Summary: Summarize tar archive contents without extracting
+Author: Claude
+Requires-Python: >=3.7
+Dynamic: author
+Dynamic: requires-python
+Dynamic: summary

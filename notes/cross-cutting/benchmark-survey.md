@@ -161,6 +161,20 @@ framework-vs-*plain* question this repo's experiments ask remains unoccupied.
    protocol).
 5. **Apparatus scrutiny** — any simulated human (exp-03's oracle) gets the
    affordance-constrained design (τ², ClarifyCodeBench), never the sees-the-answer proxy.
+6. **Known-groups validation** (added 2026-08-17, after running it): before trusting an
+   instrument's discrimination claims, run a group it *should* separate and check that it
+   does. Executed for exp-02's settled 21-check instrument with 5 `claude-haiku-4-5`
+   baselines against the 5 Sonnet 5 screening baselines: complete separation (Haiku
+   completed runs all 17/21; Sonnet 18–20/21; plus one Haiku completion failure from an
+   undeclared runtime dependency). Two lessons with reach beyond this task:
+   **saturated-within-tier is not saturated-across-tiers** — the same instrument that
+   couldn't rank Sonnet baselines cleanly ranks tiers; and **trap items are not monotone
+   in capability** — Haiku *beat* Sonnet on the truncated-archive item because its coarse
+   blanket error handling never lets a traceback escape, while failing everything that
+   requires distinguishing failures. Family-level failure patterns (Haiku: the whole
+   ambient-config family, every completed run), not single items, are what separate
+   tiers. Full tables: `experiments/02-spec-kit-vs-plain/log.md` § Model-tier
+   calibration verdict.
 
 The measurement vocabulary these map onto lives in [`metrics.md`](metrics.md); the
 per-benchmark facts live in the [matrix](../../comparisons/benchmarks.md) and its refs

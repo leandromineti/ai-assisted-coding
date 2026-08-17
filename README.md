@@ -199,3 +199,17 @@ note. Revised when evidence moves._
    [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) exists to test.
    → [`notes/05-execution-environments/e2b.md`](notes/05-execution-environments/e2b.md),
    [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md)
+10. **A task-level trap instrument that cannot rank same-tier runs still separates model
+    tiers — and its items are not monotone in capability** (2026-08-17, measured). exp-02's
+    21-check instrument, saturated against Sonnet 5 baselines (mean 19.0/21, n=5), fully
+    separates Haiku 4.5 (every completed run 17/21, n=4, plus one run dead-on-arrival from
+    an undeclared runtime dependency) — known-groups validity, preregistered with the
+    verdict rule fixed before the runs. The reversal inside the result is the deeper
+    finding: Haiku *beat* Sonnet on the truncated-archive trap (0/4 vs 3/5 failures)
+    because its blanket `rc=1` error handling never lets a traceback escape, while failing
+    everything that requires *distinguishing* failures; whole-family failure patterns
+    (Haiku: the entire ambient-config family, every completed run), not single items,
+    carried the separation. Preregistered prediction on per-item dominance was half-wrong
+    and is recorded as such. →
+    [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md),
+    [`experiments/02-spec-kit-vs-plain/log.md`](experiments/02-spec-kit-vs-plain/log.md)

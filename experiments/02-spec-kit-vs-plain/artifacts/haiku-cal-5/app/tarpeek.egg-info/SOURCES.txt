@@ -1,0 +1,8 @@
+README.md
+setup.py
+tarpeek.py
+tarpeek.egg-info/PKG-INFO
+tarpeek.egg-info/SOURCES.txt
+tarpeek.egg-info/dependency_links.txt
+tarpeek.egg-info/entry_points.txt
+tarpeek.egg-info/top_level.txt
