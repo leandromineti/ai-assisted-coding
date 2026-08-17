@@ -82,6 +82,14 @@ measured domain behavior (GSD/exp-01, the rig's hidden verifier). Only measured 
 traced to exp-01's quality margin. Exp-03's "minimal harness" must therefore hold
 *measured* gates as its ingredient, and score any format/prose gating in either arm
 separately — a fully deterministic framework can still never touch the domain.
+**Priced instance for the format quadrant (2026-08-17,
+[swe-agent-2024](../../refs/swe-agent-2024.md)):** SWE-agent's in-`edit` linter — a
+deterministic, no-domain-contact gate that discards invalid edits mechanically — is
+worth a measured **+3.0pp** on SWE-bench Lite, and the paper's recovery curve shows
+why: edit-success odds halve after a single failed edit, so the gate's value is
+cascade *prevention*, not correctness checking. Format gates are not zero; they are
+bounded by what syntax can see. Exp-03's scoring should keep the quadrants separate
+precisely because both now carry measured, non-equal values.
 
 **Why it's first-class here:** it's the least-explored part of the field and the one that
 decides whether any of the rest is working. Everyone measures whether they *feel* faster.

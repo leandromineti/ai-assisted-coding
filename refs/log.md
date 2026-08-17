@@ -104,3 +104,10 @@ reasoning. Correction-rate metric borrowed into metrics.md with its zero≠good 
 Prose headlines contradict its own tables three ways (trajectories, vuln percentages);
 tables are the citable layer — the read-the-PDF rule pays out again, this time inside
 one paper.
+swe-agent-2024: FULL READ 2026-08-17 (owner-directed ingest after it surfaced as the
+ACI origin inside agent-frameworks-eval). The layer-2 premise, peer-reviewed with
+numbers: interface alone is +64% relative over a bare shell, same model. Ablation
+table folded into design-principles H3 (earliest measured two-chokepoint evidence);
+linter guardrail (+3.0pp) folded into the cross-cutting gate vocabulary as the format
+quadrant's priced instance. Sharpest single result: a badly shaped tool (iterative
+search) scores BELOW no tool — a ✓ in a feature matrix can be negative.

@@ -80,6 +80,14 @@ per-step advertised-tool finalization → `SafetyCheck` classification → execu
 grant what the sandbox denies ([codex](notes/02-harnesses/codex.md)). The revised
 statement: visibility, decision, **enforcement** — and the strongest designs make the
 third layer mechanical, not prose.
+*Earliest measured evidence found (2026-08-17, [swe-agent-2024](refs/swe-agent-2024.md)
+full read):* the 2024 ACI ablations price both chokepoints separately, holding the
+model fixed — visibility shaping (100-line viewer window beats both 30 lines and
+full file; last-5 history collapse beats full history, +3.0pp) and mechanical
+enforcement (an in-`edit` linter that *discards* invalid edits, +3.0pp) each buy
+points, and a badly shaped tool (iterative search) scores *below having no tool at
+all* (−6.0 vs −2.3). The pattern this repo found convergent in 2026 harness source
+was measured at NeurIPS 2024.
 
 **H4. Prompts are versioned data, not string literals.** *(convergent, spans layers 2
 and 4)* opencode imports tool descriptions from `.txt` files; spec-kit's product *is*

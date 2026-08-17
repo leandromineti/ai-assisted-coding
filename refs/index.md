@@ -34,6 +34,7 @@ Every source with a note, grouped by kind. Newest retrieved: `2026-08-17`.
 |---|---|---|---|---|---|---|---|
 | [agent-frameworks-eval](agent-frameworks-eval.md) | 2025 | arXiv preprint (ACM template, "publication date November 2025", no venue named — v1 2025-11-02) | ✗ | full | 6 (0 influential) | `conclusion-6`, `conclusion-8`, `conclusion-11`, `exp-03`, `metrics` | does NOT preempt exp-03 — no framework-less control anywhere in its 7×3 grid, which is exactly our question; corroborates the ceremony-is-cost decomposition at framework scale (single-agent beats multi-agent on all three tasks, 'specialized tools > more agents'); its correction-rate metric is worth borrowing WITH its own caveat (zero corrections = no self-monitoring, not efficiency); several internal inconsistencies between abstract, tables, and answer boxes — cite tables, not prose |
 | [spec-kit-agents](spec-kit-agents.md) | 2026 | arXiv preprint | ✗ | full | 4 (0 influential) | `conclusion-6`, `exp-03`, `spec-kit` | closest prior art to exp-03 — ablates grounding vs validation at n=128, but its own blinded human check contradicts its LLM-judge headline, and the agent was MiniMax-M2.5 |
+| [swe-agent-2024](swe-agent-2024.md) | 2024 | NeurIPS 2024 | ✓ | full | 1626 (160 influential) | `conclusion-8`, `exp-03`, `taxonomy`, `metrics`, `design-principles` | the academic origin of this repo's layer-2 premise — the interface between agent and computer is a measurable capability layer, worth +64% relative over a bare shell with the SAME model; its ablation table is the earliest measured H3 evidence we hold (visibility shaping and execution gating each buy points), and its iterative-search result proves interfaces can SUBTRACT (worse than no tool at all); peer-reviewed, 2,294-instance scale |
 
 ## method
 
@@ -53,4 +54,4 @@ Every source with a note, grouped by kind. Newest retrieved: `2026-08-17`.
 |---|---|---|---|---|---|---|---|
 | [from-prompt-to-process](from-prompt-to-process.md) | 2026 | arXiv preprint | ✗ | full | 0 (0 influential) | `conclusion-7`, `conclusion-6`, `taxonomy`, `gsd-core`, `spec-kit`, `openspec`, `methodology-8` | independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep |
 
-**17 sources** — 6 full · 5 extract · 6 abstract.
+**18 sources** — 7 full · 5 extract · 6 abstract.
