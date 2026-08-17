@@ -10,7 +10,7 @@ Read these three first. They are the constitution, and they outrank anything in 
 
 | File | What it governs |
 |---|---|
-| [`methodology.md`](methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5e), rule 8 (docs/source/run) constrain nearly every task here |
+| [`methodology.md`](methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
 | [`taxonomy.md`](taxonomy.md) | the layers, and what a layer *test* is |
 | [`design-principles.md`](design-principles.md) | the hypotheses, and the rule for revising them |
 

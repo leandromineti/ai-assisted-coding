@@ -184,6 +184,23 @@ Two sub-rules, both scarred in experiment 01:
   stderr. A $0.05 smoke run would have caught it before the protocol was called runnable.
   The replacement mechanism (an explicit `permissions.allow` list) is also strictly better,
   which is the tell that the original was never exercised.
+- **5f. Instrument calibration is a distribution, not a point estimate.** One baseline
+  run gives one draw from the baseline's score distribution: a strong draw reads as
+  saturation, a weak one as headroom that isn't there, and nothing in a single run says
+  which you got. When a verdict hangs on headroom, buy a small distribution of
+  independent baseline runs (five reversed a verdict here), and when discrimination
+  itself is the claim, add a known-groups check — a population the instrument *should*
+  separate, run under identical conditions, that it in fact separates.
+
+  *Why it earned its place:* exp-02's densified instrument was declared "consumed at
+  this task size" on 2026-08-17 from a single calibration artifact scoring 20/21 —
+  with 5d followed to the letter. Five fresh baseline runs later the same day (run to
+  screen new candidate traps, every one of which was discarded) scored 18–20 with
+  three checks failing at 40–100% baseline rates: the saturation verdict was an
+  artifact of one strong draw. The ~$2 that bought the distribution also bought the
+  known-groups result (a weaker tier fully separated, one trap *reversing* because it
+  measures failure style rather than skill) — the screening's discarded candidates
+  cost the same as its real finding.
 
 ## 6. Findings are promoted, not scattered
 

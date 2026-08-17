@@ -89,11 +89,32 @@ Pass/fail against a preregistered set of seeded defect classes, machine-checked
 plain baseline scored 8/8, leaving no headroom (methodology 5d, issue #4). Still useful as a
 regression check — it just cannot measure a *difference*.
 
-The replacement is not a harder trap set: withholding information produces headroom reliably at
-both scales measured in the literature — ~80 points on function-level tasks
-([`clareval`](../../refs/clareval.md) Figure 3) and 28 points on repository issues
-([`ambig-swe`](../../refs/ambig-swe.md) Figure 3) — whereas escalating edge-case difficulty is
-speculative and needs its own headroom proof.
+**Un-retired as v2 (2026-08-17).** The 8/8 retirement was a single-point-calibration artifact
+(methodology 5f): densified to 21 binary checks and calibrated against **five** fresh baseline
+runs, the instrument discriminates — baselines score 18–20/21 (mean 19.0) with three checks
+failing at 40–100% baseline rates — and it passes a known-groups test (below). A trap score is
+read **against the measured baseline noise band**, never as a raw pass count: 21/21 beats every
+observed baseline; 19–20 is inside baseline variance. Verdict tables:
+[`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md).
+
+The withholding-information design below remains the plan for exp-03's headroom — it is a
+different instrument for a different question, not a correction to this one:
+withholding produces headroom reliably at both scales measured in the literature — ~80 points on
+function-level tasks ([`clareval`](../../refs/clareval.md) Figure 3) and 28 points on repository
+issues ([`ambig-swe`](../../refs/ambig-swe.md) Figure 3) — whereas escalating edge-case
+difficulty needed its own headroom proof (which v2 now has).
+
+### Known-groups separation
+Standard psychometric construct-validity check, imported for instruments here on 2026-08-17
+([`benchmark-survey`](benchmark-survey.md) §6): run the instrument on a population it *should*
+separate, under otherwise identical conditions, and require separation. exp-02's execution:
+Haiku 4.5 vs Sonnet 5, same harness/task/environment (n=5 each) — complete separation (every
+completed Haiku run below every Sonnet run, plus one Haiku completion failure). Two caveats the
+execution taught: report **completion rate separately** from per-check scores (a run that can't
+install isn't a low score, it's a different failure), and judge on **distributions and
+family-level patterns, not per-item dominance** — one trap item reversed (the weaker tier's
+blanket error handling never tracebacks), because trap items can measure failure *style* rather
+than skill.
 
 ### Attention split
 Wall-clock divided into *autonomous* vs *attention-required*, with each blocking event logged
