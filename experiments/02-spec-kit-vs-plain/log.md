@@ -307,3 +307,35 @@ significance test.
 $0.3993 = **$2.0397** (intro rates), vs the ~$1.9 estimate — 7% over, from run 2's
 20-turn session. All runs `subtype: success`, fully autonomous, zero blocking
 questions, proxy logs clean (PyPI + denied telemetry only; no web reads).
+
+## 2026-08-17 — model-tier calibration (known-groups validity), preregistered
+
+Owner-approved follow-up, declared **before any run**. Question: does the settled
+21-check instrument separate model tiers? If it measures real capability, a weaker
+tier should sit measurably below the Sonnet baseline distribution
+(19 · 20 · 20 · 18 · 18, mean 19.0/21). **Calibration, not an exp-02 arm** — the
+A/B remains Sonnet-only per amendment 1; these runs never enter it.
+
+- **Config:** `claude-haiku-4-5`, n=5 sequential fresh containers, everything else
+  identical to the screening runs (image/CLI 2.1.220, instruction verbatim,
+  allow-list settings, `package-hosts-only` re-created and re-probed). Artifacts to
+  `artifacts/haiku-cal-{1..5}/`; each run scored immediately (venv, TZ=UTC,
+  C.UTF-8) against the accepted 21 + the 7 discarded candidates.
+- **Predictions, fixed now:**
+  1. Haiku mean accepted score **< 19.0/21**; failure rates on T3a/T3c/T4c ≥
+     Sonnet's.
+  2. Non-trivial chance (~1 in 5) that at least one run fails completion outright
+     (no installable `tarpeek` on PATH); Sonnet completed 5/5.
+  3. Haiku fails at least one of the 7 discarded candidates somewhere (Sonnet:
+     0 failures in 25 check-runs). Candidates stay discarded for exp-02 regardless
+     — any hit is recorded as tier-discrimination evidence, not a rule change.
+- **Completion-failure accounting:** completion rate reported separately; per-check
+  comparison over completed runs only; the separation verdict must cite both (a
+  tier that cannot finish is separated *more*, not less).
+- **Verdict rule:** known-groups validity **supported** if Haiku's mean is below
+  the Sonnet minimum (18) or every discriminating item's failure rate is ≥
+  Sonnet's with at least one strictly higher; **unsupported** if the distributions
+  fully overlap. n=5 vs n=5 is calibration, not a significance test.
+- **Cost estimate:** Haiku $1/$5 per MTok vs Sonnet's intro $2/$10 → ~$0.75–1.25
+  total at the Sonnet token profile; rises if Haiku needs more turns. Logged per
+  run.
