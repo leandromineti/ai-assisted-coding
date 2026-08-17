@@ -13,6 +13,16 @@ kinds of object. The servers are layer 3. The protocol is this.
 **The general test:** can you install it? If yes, it's a layer entry. If it's a document
 that other people implement, it belongs here.
 
+**How to read the scoreboard below (sharpened 2026-08-17, owner's formulation):**
+portability is not an intrinsic property of an extension — it is a status the
+ecosystem *confers by adoption*, and this page tracks the conferral, not the design.
+The bucket's own members prove the mechanism: hooks are the control group (same kind
+of artifact, no second adopter, no portability); rules files gained portability the
+day a rival vendor chose to link competitors' formats (the artifact unchanged, the
+market moved — Warp, 2026-08-11); MCP is the limit case, portability by
+standardization. This is why conclusion 3 carries a re-check date: conferred
+statuses can be conferred further, or withdrawn.
+
 ---
 
 ## MCP — Model Context Protocol

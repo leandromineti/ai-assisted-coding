@@ -9,8 +9,9 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 
 **[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. A **core triad** — models,
 harnesses, execution environments, the three things a running agent cannot lack — plus
-two **interfaces**: portable artifacts (a cross-layer bucket parameterizing the triad's
-edges; the former layer 3, demoted by evidence 2026-07-30) and workflow frameworks (the
+two **interfaces**: extensions (a cross-layer bucket parameterizing the triad's
+edges; the former layer 3, demoted by evidence 2026-07-30, renamed 2026-08-17 —
+portability is conferred by adoption, not intrinsic, so the name no longer claims it) and workflow frameworks (the
 human⇄stack boundary: intent refined into specs and subtasks going down, research and
 verified evidence coming up). Reframed 2026-08-17; numbering retained as storage keys.
 With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
@@ -31,7 +32,7 @@ confirm, contradict, or note silence.
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
 | 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Portable artifacts (bucket) | [`notes/03-capability-extensions/`](notes/03-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
+| 3 · Extensions (bucket) | [`notes/03-capability-extensions/`](notes/03-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
 | 5 · Execution environments | [`notes/05-execution-environments/`](notes/05-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost |

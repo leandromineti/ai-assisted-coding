@@ -1,4 +1,9 @@
-# 3 — Portable artifacts & protocols (cross-layer bucket)
+# 3 — Extensions & protocols (cross-layer bucket)
+
+> Renamed from "Portable artifacts" 2026-08-17: portability is not an intrinsic
+> property of an extension but a status the ecosystem confers by adoption — unevenly
+> across the kinds below (see the Standards scoreboard and the dated rename note in
+> [`../../taxonomy.md`](../../taxonomy.md) §3).
 
 `checked: 2026-07-30`
 

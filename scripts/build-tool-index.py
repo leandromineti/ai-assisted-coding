@@ -70,7 +70,7 @@ DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
 LAYER_NAMES = {
     1: "Models",
     2: "Harnesses",
-    3: "Portable artifacts",  # bucket, not a layer, since the 2026-07-30 taxonomy revision
+    3: "Extensions",  # bucket, not a layer; renamed from "Portable artifacts" 2026-08-17 (portability is conferred, not intrinsic)
     4: "Workflow frameworks",
     5: "Execution environments",
 }

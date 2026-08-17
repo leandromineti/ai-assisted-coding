@@ -1,54 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 620" font-family="system-ui, -apple-system, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="36 20 560 436" font-family='system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#4c566a"/>
     </marker>
-    <marker id="arrowdash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b48ead"/>
-    </marker>
+    <filter id="lift" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#2e3440" flood-opacity="0.22"/>
+    </filter>
   </defs>
 
-  <rect x="0" y="0" width="700" height="620" fill="#ffffff"/>
+  <rect x="36" y="20" width="560" height="436" fill="#ffffff"/>
 
-  <!-- You -->
-  <circle cx="320" cy="80" r="34" fill="#eceff4" stroke="#4c566a" stroke-width="1.5"/>
-  <text x="320" y="86" text-anchor="middle" font-size="16" font-weight="600" fill="#2e3440">You</text>
+  <!-- Developer -->
+  <circle cx="220" cy="38" r="9" fill="#ffffff" stroke="#4c566a" stroke-width="1.8"/>
+  <path d="M 205 72 C 205 52, 235 52, 235 72" fill="none" stroke="#4c566a" stroke-width="1.8" stroke-linecap="round"/>
+  <text x="220" y="89" text-anchor="middle" font-size="13" fill="#4c566a">You</text>
 
-  <!-- direct route (unchanged from the triad) -->
-  <line x1="320" y1="114" x2="320" y2="168" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <line x1="220" y1="96" x2="220" y2="110" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
 
-  <!-- optional detour: workflow frameworks -->
-  <rect x="60" y="96" width="170" height="64" rx="10" fill="#f4ecf7" stroke="#b48ead" stroke-width="1.5"/>
-  <text x="145" y="123" text-anchor="middle" font-size="15" font-weight="600" fill="#2e3440">Workflow</text>
-  <text x="145" y="142" text-anchor="middle" font-size="15" font-weight="600" fill="#2e3440">frameworks</text>
-  <text x="145" y="180" text-anchor="middle" font-size="11" fill="#9aa5b5">optional</text>
+  <!-- Workflow framework: connection to the harness implied by proximity -->
+  <rect x="150" y="112" width="340" height="62" rx="8" fill="#ffffff" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="172" y="148" font-size="14" font-weight="600" fill="#4c566a">Workflow framework</text>
 
-  <path d="M 288 92 C 260 84, 250 92, 232 108" fill="none" stroke="#b48ead" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowdash)" marker-start="url(#arrowdash)"/>
-  <path d="M 165 162 C 200 200, 230 210, 268 218" fill="none" stroke="#b48ead" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowdash)" marker-start="url(#arrowdash)"/>
+  <!-- Harness container -->
+  <rect x="150" y="186" width="340" height="150" rx="12" fill="#eceff4" stroke="#d8dee9" stroke-width="1.5"/>
+  <text x="172" y="322" font-size="17" font-weight="600" fill="#2e3440">Harness</text>
 
-  <!-- Harness with model straddling the top edge -->
-  <rect x="150" y="188" width="340" height="230" rx="12" fill="#e9f2e4" stroke="#a3be8c" stroke-width="2.5"/>
+  <!-- Portable artifacts: mounted component -->
+  <rect x="170" y="198" width="118" height="86" rx="8" fill="#ffffff" stroke="#7b8494" stroke-width="1.6" filter="url(#lift)"/>
+  <text x="182" y="224" font-size="13" font-weight="600" fill="#4c566a">Extensions</text>
+  <text x="182" y="248" font-size="10" fill="#7b8494">MCP · skills</text>
+  <text x="182" y="261" font-size="10" fill="#7b8494">rules · hooks</text>
 
-  <rect x="242" y="182" width="180" height="86" rx="8" fill="none" stroke="#5e81ac" stroke-width="1" stroke-dasharray="3 4" opacity="0.45"/>
-  <rect x="234" y="175" width="180" height="86" rx="8" fill="none" stroke="#5e81ac" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
-  <rect x="226" y="168" width="180" height="86" rx="8" fill="#e8f0f7" stroke="#5e81ac" stroke-width="1.8"/>
-  <text x="316" y="218" text-anchor="middle" font-size="17" font-weight="600" fill="#2e3440">Model</text>
+  <!-- Model: mounted component -->
+  <rect x="300" y="198" width="160" height="86" rx="8" fill="#ffffff" stroke="#5e81ac" stroke-width="1.8" filter="url(#lift)"/>
+  <text x="314" y="222" font-size="16" font-weight="600" fill="#5e81ac">Model</text>
 
-  <text x="320" y="348" text-anchor="middle" font-size="18" font-weight="600" fill="#2e3440">Harness</text>
+  <!-- the agent loop, cycling around the pair -->
+  <path d="M 490 296 C 545 310, 545 375, 494 390" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="542" y="347" font-size="10.5" fill="#7b8494">actions</text>
+  <path d="M 150 390 C 95 376, 95 311, 146 296" fill="none" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="98" y="347" text-anchor="end" font-size="10.5" fill="#7b8494">feedback</text>
 
-  <!-- plugin: portable artifacts -->
-  <rect x="540" y="248" width="130" height="110" rx="10" fill="#fbf6e3" stroke="#ebcb8b" stroke-width="1.5"/>
-  <text x="605" y="280" text-anchor="middle" font-size="15" font-weight="600" fill="#2e3440">Portable</text>
-  <text x="605" y="299" text-anchor="middle" font-size="15" font-weight="600" fill="#2e3440">artifacts</text>
-  <text x="605" y="324" text-anchor="middle" font-size="11" fill="#4c566a">MCP · skills</text>
-  <text x="605" y="340" text-anchor="middle" font-size="11" fill="#4c566a">rules · hooks</text>
-  <text x="605" y="376" text-anchor="middle" font-size="11" fill="#9aa5b5">plugs in</text>
-
-  <line x1="538" y1="303" x2="494" y2="303" stroke="#b48ead" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowdash)"/>
-
-  <line x1="320" y1="418" x2="320" y2="462" stroke="#4c566a" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Execution environment: the ground -->
-  <rect x="110" y="464" width="420" height="80" rx="10" fill="#fdf3e7" stroke="#d08770" stroke-width="1.5"/>
-  <text x="320" y="511" text-anchor="middle" font-size="17" font-weight="600" fill="#2e3440">Execution environment</text>
+  <!-- Execution environment -->
+  <rect x="150" y="364" width="340" height="80" rx="10" fill="#ffffff" stroke="#d8dee9" stroke-width="1.5"/>
+  <text x="166" y="392" font-size="16" font-weight="600" fill="#2e3440">Execution environment</text>
 </svg>

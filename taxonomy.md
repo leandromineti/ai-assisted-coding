@@ -33,7 +33,7 @@ two degenerate forms non-degenerate — harness sophistication is the contested 
 
 The two non-fundamentals are **interfaces**:
 
-- **Portable artifacts (3 — the cross-layer bucket)** parameterize the **edges of the
+- **Extensions (3 — the cross-layer bucket)** parameterize the **edges of the
   triad**: rules files and per-model prompts sit on the model↔harness edge, MCP on the
   harness↔world edge, memory on the agent↔time edge, and the four layer-5 relationship
   verbs (*bundle/bind/internalize/inhabit*) are the topology options of the
@@ -105,7 +105,7 @@ As of mid-2026 this is the most contested layer, and the consensus reason is wor
 recording: the frontier models have converged enough that the harness now decides most of
 the day-to-day experience.
 
-### 3. Portable artifacts & protocols — a cross-layer bucket, not a rung (since 2026-07-30)
+### 3. Extensions & protocols — a cross-layer bucket, not a rung (since 2026-07-30)
 
 What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
 rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
@@ -129,6 +129,16 @@ one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and 
 
 Distinct from layer 4: capability extensions govern **what the agent can reach**;
 workflow frameworks govern **what process it follows**.
+
+**Renamed "portable artifacts" → "Extensions" (2026-08-17).** The old display name
+baked an adoption *outcome* into the category's identity. Portability is not an
+intrinsic property of an extension — it is a status the ecosystem confers by
+adoption, and it has been conferred unevenly: hooks are the control group (same kind
+of thing, no second adopter, no portability), rules files gained portability when a
+rival vendor chose to link competitors' formats (artifact unchanged, market moved —
+the Warp evidence under conclusion 3), and MCP holds the limit case, portability by
+standardization. The bucket's members are extensions; *how portable each kind is* is
+a dated, per-kind measurement (the Standards scoreboard), not a name.
 
 **Revision executed — "three core layers + bucket" (recorded and gated 2026-07-30 am;
 trigger (a) fired same day at the ECC deep-dive).** The challenge, raised after the
@@ -325,7 +335,7 @@ Two consequences a reasoner must carry:
 
 1. **"Portable" means less inside a spanned stack.** MCP is portable across harnesses *in
    principle*; but a vendor owning model + harness + sandbox can co-optimize in ways a
-   portable artifact never reaches, so the portability guarantee is weakest exactly where a
+   portable extension never reaches, so the portability guarantee is weakest exactly where a
    vendor is most integrated. Layer-3 independence (the standards question) is a claim about
    the composable middle, not about a spanned stack.
 2. **Attribution is confounded by construction.** When a spanned stack succeeds or fails,
@@ -377,7 +387,7 @@ taxonomy needs revision — not the case.
 |-------|-------|
 | 1 · Models | [`notes/01-models/index.md`](notes/01-models/index.md) |
 | 2 · Harnesses | [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md) |
-| 3 · Portable artifacts (bucket) | [`notes/03-capability-extensions/index.md`](notes/03-capability-extensions/index.md) |
+| 3 · Extensions (bucket) | [`notes/03-capability-extensions/index.md`](notes/03-capability-extensions/index.md) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/index.md`](notes/04-workflow-frameworks/index.md) |
 | 5 · Execution environments | [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md) |
 | ✕ Cross-cutting | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
