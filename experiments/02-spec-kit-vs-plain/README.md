@@ -193,3 +193,59 @@ above this line has been edited. Each item applies identically to both arms.
    because making it after seeing Run A's score and before Run B is exactly the kind of
    post-hoc instrument selection preregistration exists to prevent. It must be settled and
    committed before either arm runs again.
+
+---
+
+## Protocol amendment 3 (2026-08-17, before any further run — settles amendment 2's open problem)
+
+Amendment 2 item 4 left the trap-instrument choice deliberately unmade. It is made here,
+**before either arm runs again**, informed by a community-practice review ingested
+2026-08-17 (refs: `aider-polyglot-2024`, `swebench-verified-2024`, `evalplus-2023`,
+`paperbench-2025`; synthesis on issue #4). Nothing above this line is edited.
+
+1. **Decision: option 1, executed EvalPlus-first.** The trap dimension is kept and the
+   instrument is rebuilt by **densifying checks on the existing five trap families**
+   (T1–T5). New fixture members are permitted *within* those families; **no new trap
+   families in this step**. Rationale: Run A's 8/8 has two candidate causes — the
+   baseline genuinely clears the families, or the per-family checks are too shallow to
+   see partial clears — and only the first requires new task content (EvalPlus's
+   finding: densifying tests ~80× made previously-"passing" HumanEval solutions fail).
+
+2. **Legitimacy of designing against the calibration artifact.** Amendment 2 reclassified
+   Run A as calibration; methodology 5d says the baseline run *is* the instrument's
+   calibration. Selecting checks that the calibration artifact fails is the
+   select-by-baseline-failure step (Aider polyglot: keep items solved by ≤3/7 baselines)
+   applied at check granularity. The line preregistration protects is unchanged and
+   uncrossed: **no instrument choice may follow a framework-arm run**, and none has
+   occurred.
+
+3. **Acceptance criterion: the three-point instrument-validity proof.** The rebuilt
+   verifier is accepted only if all three hold, each demonstrated by a recorded pytest
+   run in `log.md`:
+   - **Fails-closed** — the do-nothing stub fails every check (re-proof of the
+     2026-07-28 property against the new set);
+   - **Fairness** — a **hardened reference implementation** (new apparatus at
+     `../rig/tarpeek/reference/`, part of the instrument like `build_fixtures.py`,
+     never a contestant) passes every check. No check enters the set without this —
+     the SWE-bench Verified lesson (61.1% of its tests could reject valid solutions);
+   - **Headroom** — Run A's artifact (`artifacts/run-a/`, installed into a clean venv)
+     **fails ≥ 3** of the new checks.
+
+4. **Scoring form.** The verifier becomes ~15–20 small binary checks (each family split
+   into graded sub-checks), machine-checked only, equal weights, reported per-family and
+   as a total. This is analytic partial credit (PaperBench's shape) without an LLM
+   judge; the original 8 checks survive as a subset so prior results remain comparable.
+
+5. **Escalation rule, fixed now in case it is needed.** If densification cannot meet the
+   headroom criterion (≥3 calibration-artifact failures with all fairness checks
+   passing), the EvalPlus step is recorded as exhausted and the instrument moves to the
+   Aider step: a candidate pool of **new** trap families, screened by **5 fresh unaided
+   baseline runs** in the rig under the enforced network condition, keeping candidates
+   that fail in **≥2 of 5** runs, fairness-screened against the reference. Those
+   screening runs are instrument calibration, not scored arms. This step costs real API
+   spend and does not begin without the owner's sign-off.
+
+6. **Unchanged:** both scored arms (Run A re-run + Run B) execute only after this
+   instrument is accepted, under it, and under the enforced `package-hosts-only`
+   condition — one instrument, one condition, both arms (methodology 8a). P1
+   (requirements rubric) is untouched by this amendment.
