@@ -7,7 +7,7 @@ license: proprietary            # or the weights license (Apache-2.0, MIT, Kimi 
 open_source: false              # true only for released weights
 model_id: <exact API model ID / HF repo id>
 release_mode: api-only          # api-only | open-weights | both
-ga_date: <YYYY-MM-DD if disclosed>
+released: "<lifecycle: date + stage in the vendor's OWN vocabulary — 'GA YYYY-MM-DD, no preview stage' / 'Preview since YYYY-MM-DD, no GA date' / 'weights YYYY-MM-DD, first-party API YYYY-MM-DD'. Stages don't align across vendors, so the stage word is part of the fact (replaced ga_date 2026-08-17)>"
 context_window: <tokens>
 max_output: <tokens>
 pricing: "<$in / $out per MTok, with any time-limited pricing dated>"

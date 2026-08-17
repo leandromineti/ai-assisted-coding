@@ -7,6 +7,7 @@ license: proprietary
 open_source: false
 model_id: gemini-3.1-pro (Preview)
 release_mode: api-only
+released: "Preview since 2026-02-19 (API changelog: 'Released Gemini 3.1 Pro Preview'); no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"
 context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap)
 max_output: 65536
 pricing: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"

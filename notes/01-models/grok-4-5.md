@@ -7,6 +7,7 @@ license: proprietary
 open_source: false
 model_id: grok-4.5
 release_mode: api-only
+released: "July 2026, no stage vocabulary ('now available on the xAI API') — month-level only from the first-party release notes; the day this repo carries (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"
 context_window: 500000
 max_output: "no model-specific figure published; generic max_completion_tokens defaults to 128000, visible-output only (checked 2026-08-17)"
 pricing: "$2 / $6 per MTok for prompts <200k tokens; $4 / $12 at ≥200k — the higher rate applies to ALL tokens once the prompt reaches 200k (re-verified 2026-08-17)"

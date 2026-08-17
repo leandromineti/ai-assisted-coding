@@ -58,6 +58,13 @@ MODEL_FEATURE_KEYS = [
     "batch_discount",   # async batch pricing, if offered
 ]
 
+# Layer-1 lifecycle key (added 2026-08-17): first-availability date plus lifecycle
+# stage, in the vendor's own vocabulary (GA / Preview / beta / launch), since stages
+# don't align across vendors (Google ships flagships as Preview; DeepSeek previews
+# then GAs; xAI documents no stage at all). Free text, verified-only like the rest:
+# a date needs a primary source, and "GA" vs "preview" is a claim, not a default.
+MODEL_LIFECYCLE_KEYS = ["released"]
+
 REQUIRED = ("name", "layer", "depth")
 DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
 LAYER_NAMES = {
@@ -278,8 +285,9 @@ def render_models(reports: list[dict]) -> str:
     not checked). Spec cells come from the existing frontmatter fields. `checked`
     is a column because a model row with a stale date is a rumor.
     """
-    cols = MODEL_FEATURE_KEYS + ["context_window", "max_output", "pricing",
-                                 "knowledge_cutoff", "checked", "depth"]
+    cols = MODEL_LIFECYCLE_KEYS + MODEL_FEATURE_KEYS + [
+        "context_window", "max_output", "pricing",
+        "knowledge_cutoff", "checked", "depth"]
     lines = [
         "# Model matrix (layer 1)",
         "",
@@ -289,6 +297,9 @@ def render_models(reports: list[dict]) -> str:
         "API-feature cells are set only when verified against the report's `url` on",
         "its `checked` date — **·** means not checked, never absent. Values are",
         "free-text because the economics differ structurally across vendors.",
+        "`released` carries first-availability date **plus lifecycle stage** in the",
+        "vendor's own vocabulary (GA / Preview / beta) — stages don't align across",
+        "vendors, so the stage word is part of the fact, same verified-only rule.",
         "",
         "| Model | " + " | ".join(c.replace("_", " ") for c in cols) + " |",
         "|---|" + "---|" * len(cols),

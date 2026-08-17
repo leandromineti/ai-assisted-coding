@@ -7,6 +7,7 @@ license: proprietary
 open_source: false
 model_id: claude-opus-5
 release_mode: api-only
+released: "GA 2026-07-24, no preview stage — 'available today' across all surfaces (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
 pricing: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"

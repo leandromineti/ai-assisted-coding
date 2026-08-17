@@ -7,6 +7,7 @@ license: "Kimi K3 License (model card's own term; third-party summaries describe
 open_source: true
 model_id: moonshotai/Kimi-K3
 release_mode: open-weights
+released: "API + products 'available today' per the launch blog, which prints NO calendar date (third-party ~2026-07-16); weights promised 'by July 27, 2026' and the HF initial commit is consistent with that — no stage vocabulary used (verified 2026-08-17)"
 context_window: 1048576
 max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17)"
 pricing: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"

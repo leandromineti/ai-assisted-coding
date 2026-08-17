@@ -7,7 +7,7 @@ license: proprietary
 open_source: false
 model_id: claude-fable-5
 release_mode: api-only
-ga_date: 2026-06-09
+released: "GA 2026-06-09, no preview stage — then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01): the sweep's only GA interruption (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
 pricing: "$10 / $50 per MTok (verified 2026-08-17)"
@@ -22,7 +22,11 @@ depth: stub
 # Claude Fable 5
 
 Anthropic's most capable widely released model: "next-generation intelligence for
-long-running agents." GA 2026-06-09 across Claude API and all cloud routes.
+long-running agents." GA 2026-06-09 across Claude API and all cloud routes — then
+**suspended three days later** (2026-06-12) and redeployed, with the vendor's
+restoration update dated 2026-07-01 (anthropic.com/news/redeploying-fable-5). The only
+GA interruption in this sweep: a lifecycle event no "GA date" cell can carry alone,
+and a reminder that GA is a state, not a milestone.
 Comparative latency: *slower* — the flagship trades speed for depth. Adaptive thinking
 is **always on** (not merely available). A sibling exists: **Claude Mythos 5**, same
 specs and pricing, invitation-only under Project Glasswing for defensive-cybersecurity

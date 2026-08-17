@@ -7,6 +7,7 @@ license: "unverified for V4 weights (HF org page shows no license in the listing
 open_source: true
 model_id: deepseek-v4-pro / deepseek-v4-flash (API); deepseek-ai/DeepSeek-V4-Pro, DeepSeek-V4-Flash (+ -Base, -DSpark variants) on HF
 release_mode: both   # first-party API and published weights, verified on both surfaces 2026-07-31
+released: "Preview 2026-04-24 ('DeepSeek-V4 Preview is officially live & open-sourced') → GA 2026-08-13 (vendor's own title: 'GA Release') — the sweep's only explicit preview→GA arc, 3.5 months (verified 2026-08-17)"
 context_window: 1000000
 max_output: 384000
 pricing: "peak/off-peak since 2026-08-16 16:00 UTC — off-peak is 50% of peak (peak 01:00–04:00 + 06:00–10:00 UTC): Pro $1.32 / $3.96 peak, $0.66 / $1.98 off-peak; Flash $0.44 / $1.32 peak, $0.22 / $0.66 off-peak per MTok (verified 2026-08-17; supersedes the flat launch rates recorded 2026-07-31)"

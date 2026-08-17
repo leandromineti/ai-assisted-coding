@@ -7,6 +7,7 @@ license: proprietary
 open_source: false
 model_id: claude-sonnet-5
 release_mode: api-only
+released: "GA 2026-06-30, no preview stage — launched as the default model on Free/Pro plans day one (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
 pricing: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"

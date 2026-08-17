@@ -7,6 +7,7 @@ license: Apache-2.0
 open_source: true
 model_id: Qwen/Qwen3-Coder-Next
 release_mode: open-weights
+released: "weights: HF initial commit 2026-01-30 (refines the '~Feb 2026' recorded 2026-07-31); no vendor stage vocabulary anywhere — the Model Studio page carries no GA/preview label and a blank update-time field (checked 2026-08-17)"
 context_window: 262144
 max_output: 65536   # Model Studio context-limits table; max input 204800 of the 262144 window (verified 2026-08-17)
 pricing: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
