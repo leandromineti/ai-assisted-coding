@@ -249,3 +249,80 @@ Amendment 2 item 4 left the trap-instrument choice deliberately unmade. It is ma
    instrument is accepted, under it, and under the enforced `package-hosts-only`
    condition — one instrument, one condition, both arms (methodology 8a). P1
    (requirements rubric) is untouched by this amendment.
+
+---
+
+## Protocol amendment 4 (2026-08-17, before either scored arm — the execution procedure)
+
+Owner sign-off for the scored A/B received 2026-08-17 ("Lets perform the AB test").
+Declared before Run A′ or Run B executes; nothing above this line is edited. The
+instrument is the accepted 21 checks; the condition is `package-hosts-only`; the model
+is `claude-sonnet-5`; the harness is Claude Code CLI 2.1.220 in the pinned image.
+
+1. **Run A′ is the scored plain baseline.** Mechanically identical to a screening run
+   (fresh container, instruction verbatim at `/root/instruction.txt`, allow-list
+   settings, one autonomous `claude -p` session), scored against the accepted 21 in a
+   fresh venv under the declared condition. The five screening runs remain calibration
+   only, as declared when they ran; Run A′ is a fresh draw, and the A/B comparison
+   reads **both** arms against the measured baseline noise band (18–20/21, mean 19.0,
+   n=5) rather than treating either as a point truth.
+
+2. **Run B pipeline = the seven preregistered steps.** The original protocol names
+   constitution → specify → clarify → plan → tasks → analyze → implement. **Discrepancy
+   disclosed:** the quickstart at the preregistration pin (655a3cb) prescribes a
+   9-step "full path" that also contains `/speckit.checklist` and `/speckit.converge`
+   (and a 4-step "shorter path" for small features that omits constitution and
+   clarify). The preregistered enumeration governs — rewriting the step list in either
+   direction now, after five baseline draws are known, would be post-hoc protocol
+   editing. The tension between "exactly as the quickstart prescribes" and the
+   7-step enumeration is recorded here as a preregistration imprecision, resolved in
+   favor of the explicit list.
+
+3. **Session structure: one fresh headless session per pipeline step** (`claude -p`,
+   new session each step — the protocol's "fresh contexts", and spec-kit's own bet
+   that state lives on disk in `.specify/`, exercised honestly). **Within a step**, if
+   the turn ends awaiting user input (clarify by design; any other step incidentally),
+   the same session is continued with `--resume`, and every such continuation is a
+   logged blocking event: command, question, verbatim answer, minutes blocked — the
+   attention instrument. Turn-level `usage` from `--output-format json` is the cost
+   ledger, per step, per methodology 5c.
+
+4. **What the orchestrator feeds each step** (fixed now to bound contamination):
+   - `/speckit.constitution` — generic engineering-quality principles, no domain
+     content: *"Focus on code quality, testing standards, user experience consistency,
+     and clear error behavior."*
+   - `/speckit.specify` — the task instruction **verbatim** (the identical prompt both
+     arms receive, 651 chars).
+   - `/speckit.clarify` — bare, no focus area.
+   - `/speckit.plan` — only content already present in the task instruction: *"Python
+     CLI, installable with pip so `tarpeek` runs from any directory."*
+   - `/speckit.tasks`, `/speckit.analyze`, `/speckit.implement` — bare.
+   - **Clarify-answer policy:** answer from the task instruction where it decides the
+     question; where it is silent, defer with *"your call — make a reasonable choice
+     and document the assumption"* (spec-kit's own default posture). The orchestrator
+     never volunteers trap-family specifics (encodings, timezones, symlink targets,
+     exit-code layouts) beyond what the instruction text states. All Q&A verbatim in
+     `log.md`.
+
+5. **Scaffold provisioning is framework installation, not agent work.** `specify init`
+   needs GitHub egress, which the condition denies at runtime; the scaffold
+   (`.specify/`, `.claude/commands/speckit.*`) is therefore produced **outside the
+   network condition** — CLI installed from the pinned source checkout (655a3cb, the
+   preregistration pin; source install is a documented first-party route) — and
+   copied into the container before the agent's first turn, in a fresh git repo as
+   the protocol requires. Exact provenance (CLI version, template origin, any
+   init-time fetches) recorded in `log.md`. The agent runs entirely under
+   `package-hosts-only`.
+
+6. **Driver smoke test before the scored Run B (methodology 5e).** On the same image:
+   multi-turn `--resume` continuation works headless; the `speckit.*` commands resolve
+   as slash commands; step artifacts appear on disk. Success is read from artifacts,
+   never exit status. The smoke uses a throwaway prompt, not the task; its (small)
+   cost is recorded. A smoke failure blocks the arm, never edits the protocol.
+
+7. **Failure and spend rules, fixed now:** an API-errored turn is retried once and
+   both attempts logged. If Run B's cumulative cost crosses **$20** (≈2.5× the high
+   end of the $2–8 estimate; issue #5 forbids projecting from exp-01), the run pauses
+   and the owner decides — recorded either way. A structurally stalled pipeline is a
+   finding to record, not a thing to rescue by ad-hoc prompting: rescue prompts beyond
+   the declared inputs would turn the arm into a steelman.
