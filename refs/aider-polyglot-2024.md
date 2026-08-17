@@ -9,6 +9,15 @@ url: https://aider.chat/2024/12/21/polyglot.html
 kind: benchmark
 read_depth: extract   # WebFetch answered targeted construction-methodology questions against it; not read end to end
 retrieved: 2026-08-17
+task_shape: function-level
+task_count: 225
+task_source: Exercism, 6 languages (C++/Go/Java/JS/Python/Rust), screened from 697 by baseline failure (solved by ≤3/7 models)
+verifier: unit-tests
+ambiguity_construction: none
+user_simulator: none
+metrics: [solve-rate]
+# contamination_posture / headroom omitted: Exercism is public (likely contaminated) and
+# current-2026 headroom was not checked at this read — dots are honest here
 bears_on: [exp-02, methodology-5d, issue-4]
 verdict: "supplies the exact recipe issue #4's option 1 needs — select trap items empirically by baseline failure (kept problems solved by ≤3 of 7 baselines), and its saturation diagnosis matches exp-02's symptoms verbatim"
 ---

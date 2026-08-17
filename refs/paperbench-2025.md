@@ -9,6 +9,14 @@ url: https://github.com/openai/frontier-evals/tree/main/project/paperbench
 kind: benchmark
 read_depth: abstract
 retrieved: 2026-08-17
+task_shape: paper-replication
+task_count: 20
+task_source: ICML 2024 Spotlight/Oral papers, hand-built rubric tree per paper (>8,000 leaves total)
+verifier: llm-judge
+ambiguity_construction: none
+user_simulator: none
+metrics: [weighted-rubric-score]
+# contamination_posture / headroom omitted at abstract depth
 bears_on: [exp-02, issue-4]
 verdict: "shows what issue #4's option 2 looks like done well — partial credit via a hierarchical tree of ~8,000 individually gradable binary criteria with weights, not a holistic quality score; dissolves the option-1-vs-option-2 dichotomy"
 ---

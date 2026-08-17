@@ -9,6 +9,15 @@ url: https://openai.com/index/introducing-swe-bench-verified/
 kind: benchmark
 read_depth: abstract   # search-level summaries with specific figures; the post itself was not fetched
 retrieved: 2026-08-17
+task_shape: repo-issue
+task_count: 500
+task_source: SWE-bench (real GitHub issues), human-filtered by 93 annotators from 1699 sampled
+verifier: hidden-tests
+ambiguity_construction: none   # inverse — underspecified items were REMOVED (38.3% flagged)
+user_simulator: none
+metrics: [resolve-rate]
+# contamination_posture / headroom omitted at abstract depth — figures above need
+# re-verification against the post before any cell claims more
 bears_on: [exp-02, methodology-5d, issue-4]
 verdict: "supplies the validity half issue #4's option 1 needs — an instrument must be screened for unfair items, not just hard ones: 68.3% of SWE-bench was filtered out, 61.1% for tests that rejected valid solutions"
 ---
