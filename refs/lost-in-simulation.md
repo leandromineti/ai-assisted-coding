@@ -6,6 +6,8 @@ year: 2026
 venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2601.17087
+citations: "25 (3 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2601.17087
 kind: critique
 read_depth: full

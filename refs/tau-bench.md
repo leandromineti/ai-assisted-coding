@@ -6,6 +6,8 @@ year: 2024
 venue: ICLR 2025
 peer_reviewed: true
 arxiv: 2406.12045
+citations: "965 (129 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2406.12045
 kind: benchmark
 read_depth: extract

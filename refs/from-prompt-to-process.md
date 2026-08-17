@@ -6,6 +6,8 @@ year: 2026
 venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2606.04967
+citations: "0 (0 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2606.04967
 kind: survey
 read_depth: full

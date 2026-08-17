@@ -6,6 +6,8 @@ year: 2023
 venue: "NeurIPS 2023"
 peer_reviewed: true
 arxiv: 2305.01210
+citations: "2062 (198 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2305.01210
 kind: method
 read_depth: abstract

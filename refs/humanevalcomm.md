@@ -6,6 +6,8 @@ year: 2024
 venue: ACM TOSEM 34(7)
 peer_reviewed: true
 arxiv: 2406.00215
+citations: "34 (1 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2406.00215
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against the HTML full text

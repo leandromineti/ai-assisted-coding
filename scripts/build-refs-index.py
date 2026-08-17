@@ -215,6 +215,12 @@ def render(notes: list[dict]) -> str:
         "a lead, not a settled result, and should not outweigh our own measurements without "
         "reason.",
         "",
+        "`Cites` is field-acceptance **context, never a quality weight** — fetched by "
+        "`scripts/fetch-citations.py --write` (Semantic Scholar; each note carries its "
+        "`citations_at` date). It is age-confounded (recent preprints cannot have accumulated "
+        "citations) and validity-independent (the most-cited member here, SWE-bench, later had "
+        "68.3% of its items removed as invalid). **·** = no arXiv id, count not applicable.",
+        "",
     ]
     for kind in sorted(KIND_ORDER, key=lambda k: KIND_ORDER[k]):
         group = [n for n in notes if n.get("kind") == kind]
@@ -223,15 +229,17 @@ def render(notes: list[dict]) -> str:
         lines += [
             f"## {kind}",
             "",
-            "| Source | Year | Venue | Peer | read | Bears on | What it does to our claims |",
-            "|---|---|---|---|---|---|---|",
+            "| Source | Year | Venue | Peer | read | Cites | Bears on | What it does to our claims |",
+            "|---|---|---|---|---|---|---|---|",
         ]
         for n in group:
             link = f"[{n['key']}]({n['_path'].name})"
             bears = _fmt(n.get("bears_on"))
+            cites = n.get("citations")
+            cites_cell = str(cites).split(" — ")[0] if cites else "·"
             lines.append(
                 f"| {link} | {n.get('year', '·')} | {n.get('venue', '·')} | "
-                f"{_fmt(n.get('peer_reviewed'))} | {n['read_depth']} | {bears} | "
+                f"{_fmt(n.get('peer_reviewed'))} | {n['read_depth']} | {cites_cell} | {bears} | "
                 f"{n.get('verdict', '·')} |"
             )
         lines.append("")

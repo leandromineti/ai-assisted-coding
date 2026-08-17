@@ -6,6 +6,8 @@ year: 2026
 venue: "arXiv preprint + tbench.ai"
 peer_reviewed: false
 arxiv: 2601.11868
+citations: "332 (78 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://www.tbench.ai/
 kind: benchmark
 read_depth: abstract   # search-level + site summaries; the arXiv paper not fetched

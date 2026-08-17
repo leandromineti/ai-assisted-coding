@@ -6,6 +6,8 @@ year: 2025
 venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2506.07982
+citations: "385 (53 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2506.07982
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against abstract + HTML full text; PDF not read end to end

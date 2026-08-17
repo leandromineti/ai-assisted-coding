@@ -6,6 +6,8 @@ year: 2026
 venue: ICLR 2026
 peer_reviewed: true
 arxiv: 2502.13069
+citations: "27 (3 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2502.13069
 kind: benchmark
 read_depth: full

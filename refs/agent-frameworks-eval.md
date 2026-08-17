@@ -6,6 +6,8 @@ year: 2025
 venue: arXiv preprint (ACM template, "publication date November 2025", no venue named — v1 2025-11-02)
 peer_reviewed: false
 arxiv: 2511.00872
+citations: "6 (0 influential) — Semantic Scholar"
+citations_at: 2026-08-17
 url: https://arxiv.org/abs/2511.00872
 kind: empirical-study
 read_depth: full

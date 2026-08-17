@@ -7,6 +7,10 @@ venue: <"arXiv preprint" | "ICLR 2025" | "ACM TOSEM" | ...>
 peer_reviewed: <true | false>   # a 2026 preprint is a lead, not a settled result
 arxiv: <NNNN.NNNNN — omit if not on arXiv>
 doi: <10.xxxx/yyyy — omit if none>
+# citations: NEVER hand-typed — run `python3 scripts/fetch-citations.py --write`
+# (Semantic Scholar, needs arxiv:). Context only: age-confounded, validity-independent.
+citations: "<N (M influential) — Semantic Scholar>"
+citations_at: <YYYY-MM-DD>
 url: <canonical landing page, not the PDF>
 kind: <benchmark | empirical-study | method | critique | survey>
 # read_depth is the honesty field, and the one --check polices. Downgrade it freely;
