@@ -7,13 +7,13 @@ One row per `vendor:` string, columns by layer. **This understates vendor span b
 
 | Vendor | 1 · Models | 2 · Harnesses | 3 · Artifacts | 4 · Frameworks | 5 · Environments | Layers |
 |---|---|---|---|---|---|---|
+| Anthropic | claude-opus-5, claude-sonnet-5, claude-fable-5, claude-haiku-4-5 | claude-code | — | — | — | **2** |
 | Google | gemini-3-1-pro | gemini-cli | — | — | — | **2** |
 | OpenAI | gpt-5-6-sol | codex | — | — | — | **2** |
 | Affaan Mustafa (affaan-m) | — | — | ecc | — | — | **1** |
 | Aider-AI | — | aider | — | — | — | **1** |
 | Alibaba (Qwen team) | qwen3-coder-next | — | — | — | — | **1** |
 | Anomaly | — | opencode | — | — | — | **1** |
-| Anthropic | claude-opus-5, claude-sonnet-5, claude-fable-5, claude-haiku-4-5 | — | — | — | — | **1** |
 | Cline | — | cline | — | — | — | **1** |
 | Continue | — | continue | — | — | — | **1** |
 | DeepSeek | deepseek-v4 | — | — | — | — | **1** |
@@ -27,4 +27,4 @@ One row per `vendor:` string, columns by layer. **This understates vendor span b
 | Warp (warpdotdev) | — | warp | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | **1** |
 
-**19 vendors** across 24 tracked tools; **2 span ≥2 layers among tracked tools** (Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**19 vendors** across 25 tracked tools; **3 span ≥2 layers among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

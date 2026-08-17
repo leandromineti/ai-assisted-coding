@@ -22,6 +22,7 @@ report's frontmatter when confirmed in source or official docs.
 | [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
 | [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
 | [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
+| [claude-code](../notes/02-harnesses/claude-code.md) | ✓ | · | ✓ | ✓ | ✓ | ✓ | `CLAUDE.md` | ✗ | ✓ | · | ✓ |
 | [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
 | [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · | · |
 | [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | ✓ | ✓ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |

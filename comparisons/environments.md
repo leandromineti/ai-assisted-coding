@@ -14,6 +14,7 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [codex](../notes/02-harnesses/codex.md) | 2 | ✓ | · | · | · | **internalize** |
 | [hermes-agent](../notes/02-harnesses/hermes-agent.md) | 2 | ✓ | · | ✓ | ✓ | **bind** |
 | [opencode](../notes/02-harnesses/opencode.md) | 2 | ✓ | · | · | · | · |
+| [claude-code](../notes/02-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 | [warp](../notes/02-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 
-**4 of 24 reports declare `environments:`.**
+**5 of 25 reports declare `environments:`.**

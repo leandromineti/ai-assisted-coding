@@ -255,7 +255,7 @@ Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation
 | Vendor | 1 · Model | 2 · Harness | 3 · Artifacts | 5 · Environment |
 |---|---|---|---|---|
 | **OpenAI** | gpt-5-6-sol ✓ | Codex CLI ✓ · cloud Codex ○ | — | Codex's *internalized* OS sandbox ✓ · cloud Codex microVM ○ *(bundle)* |
-| **Anthropic** | opus/sonnet/fable/haiku ✓ | Claude Code ○ | skills, MCP ○ | Managed Agents / code-exec container ○ *(bundle)* |
+| **Anthropic** | opus/sonnet/fable/haiku ✓ | Claude Code ✓ *(observation-only, 2026-08-17)* | skills, MCP ○ | Managed Agents / code-exec container ○ *(bundle)* |
 | **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
 | **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
 

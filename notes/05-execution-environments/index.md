@@ -221,9 +221,13 @@ the live question on issue #11.
   but only to audit-grade where the infra is open — closed caps the grade at declared/cited.**
   See the successor-question section above. Remaining: a **maximally** closed environment
   (thin client, no engineering disclosure) — untested. Issue #11.
-- Why has nobody verified `worktree` support for any harness, when the worktree trap is
-  this layer's founding scar? Either it is universally supported and therefore boring, or
-  nobody looked. The matrix currently cannot tell those apart.
+- ~~Why has nobody verified `worktree` support for any harness?~~ **First cell filled
+  2026-08-17: Claude Code, observed** — native enter/exit-worktree operations plus
+  per-subagent worktree isolation ([`../02-harnesses/claude-code.md`](../02-harnesses/claude-code.md)).
+  The irony is recorded there: the first verified worktree support is on the *closed*
+  harness, from product-surface observation. The rest of the column is still `·` —
+  the universal-or-unexamined question stands for the open harnesses, where checking
+  is a grep away.
 - Isolation and fidelity trade off directly. Where's the useful middle?
 - Does parallel multi-agent work actually pay, once the environment-bootstrap tax is
   counted honestly?
