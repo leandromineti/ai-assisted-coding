@@ -79,14 +79,14 @@ know can't agree, "the harness doesn't matter" is not a safe assumption.
 ## The two interfaces
 
 <figure>
-  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a layer you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, and hooks. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
+  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a layer you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, hooks, and memory. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
   <figcaption>The full stack is the triad plus two additions: a process layer between you and the harness, and extensions seated inside it alongside the model.</figcaption>
 </figure>
 
 Between you and that triad sit two things that look like layers but behave like
 boundaries.
 
-**Extensions** — MCP servers, skills, rules files, hooks: packaged capabilities
+**Extensions** — MCP servers, skills, rules files, hooks, memory stores: packaged capabilities
 that plug into a harness. Portability is not an intrinsic property of an extension —
 it's a status the ecosystem confers by adoption, and it has been conferred very
 unevenly across the four kinds ([the taxonomy's bucket](../taxonomy.md) tracks
