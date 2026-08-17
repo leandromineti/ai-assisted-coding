@@ -20,6 +20,12 @@ open_source: <true | false>
 stack: [<Language>, <Runtime/Framework>]
 version: <git describe --tags --always — omit if closed source>
 commit: <short SHA — omit if closed source>
+# ONE machine-checked pin per report — this `commit:` is what build-tool-index --check
+# validates against upstream/<name>. A multi-repo subject (e.g. an SDK repo plus an infra
+# repo) records secondary pins in a PROSE comment right here in the frontmatter, naming
+# the clone and the SHA read, and its Drift-check sections must re-check those by hand
+# (`repo-facts.sh <clone>`). Precedent: e2b.md (SDK pin machine-checked, infra pin
+# prose-recorded). Don't invent a second commit: field — the checker reads only one.
 # The next three come from scripts/repo-facts.sh — never hand-typed. Omit if closed source.
 first_commit: <YYYY-MM-DD — first commit in the public repo; postdates the product if open-sourced later>
 stars: <integer, GitHub API>
@@ -61,6 +67,18 @@ features:
 >
 > Relative links below are written for a report's destination, `notes/0N-<layer>/<tool>.md`
 > — they resolve once copied there, not from this file's own location.
+
+## Drift check — YYYY-MM-DD (not a re-read; the pin is unchanged)
+
+*Added when `build-tool-index.py --check` reports this report behind and the drift is
+checked (methodology rule 4b) — not part of the initial read; delete this section when
+writing a fresh report.* Scope the check to commits touching files this report cites
+(`git log <pin>..HEAD -- <cited files>`), verify at both ends, and record every claim as
+**contradicted** (correct in place, citing the pin), **corroborated** (say so — silence
+reads as unchecked), or **untouched** (one line). The pin never moves — a drift check is
+not a re-read. Stamp the `read_at:` line with a trailing comment naming the check date and
+HEAD. A report that cites no source files cannot be drift-checked (the gsd-core lesson) —
+cite files even at `survey` depth.
 
 ## What it is
 

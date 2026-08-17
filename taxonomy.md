@@ -275,10 +275,13 @@ Two consequences a reasoner must carry:
 **Why this table is hand-kept, not generated** (and it is the one deliberate exception to
 rule 3 in this repo): the sharpest spanners are *closed* — Claude Code, cloud Codex, and
 Managed Agents have no report files — so a frontmatter-generated matrix would **understate
-vendor span precisely for the vendors that have the most of it.** `comparisons/tools.md`
-remains the exhaustive tracked view; this table deliberately admits observation-only (○)
-products to show the real shape, and is illustrative, not an index — re-date it when a
-spanner's coverage changes rather than trusting it to stay current on its own.
+vendor span precisely for the vendors that have the most of it.** The generated half does
+exist: [`comparisons/vendors.md`](comparisons/vendors.md) derives vendor coverage from
+`vendor:` frontmatter and is the tracked-only **floor** (2026-08-17: it finds 2 spanners
+where this table shows 4 — that gap *is* the closed-product blind spot, quantified). This
+table deliberately admits observation-only (○) products to show the real shape, and is
+illustrative, not an index — re-date it when a spanner's coverage changes rather than
+trusting it to stay current on its own.
 
 ## Stress test
 
