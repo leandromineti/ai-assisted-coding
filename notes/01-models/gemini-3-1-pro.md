@@ -7,11 +7,15 @@ license: proprietary
 open_source: false
 model_id: gemini-3.1-pro (Preview)
 release_mode: api-only
-context_window: unverified   # not stated on the pages checked; the 200k pricing-tier boundary implies a window well beyond it, but implying is not verifying
-max_output: unverified
-pricing: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k; batch half-price; caching $0.20–$0.40 (verified 2026-07-31)"
-knowledge_cutoff: unverified
-checked: 2026-07-31
+context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap)
+max_output: 65536
+pricing: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
+knowledge_cutoff: "unverified — model page has no cutoff row, only 'Latest update: February 2026'; the DeepMind model card may carry it (unchecked, off first-party API docs)"
+thinking: "dynamic ('thinking by default'), cannot be fully disabled; thinking_level caps depth; legacy thinking_budget mutually exclusive with it"
+effort_control: "thinking_level: low/medium/high, default high — IS the effort surface, no separate param; 'minimal' exists only on Flash lines"
+prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
+batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
+checked: 2026-08-17
 depth: stub
 ---
 
@@ -29,7 +33,7 @@ the fast/cheap line; the flagship Pro trails it in release status.
 |---|---|
 | Tool-call fidelity | · |
 | Long-horizon coherence | · |
-| Usable context (vs advertised) | Advertised window **not found on the checked pages** — a gap worth flagging given the seed inventory called this the "hold the whole monorepo" option. That framing is currently unsourced; the 200k pricing boundary is the only window-related primary fact captured |
+| Usable context (vs advertised) | 1,048,576-token input limit, 65,536 output, from the model page (resolved 2026-08-17 — the 2026-07-31 check found no window on the overview page; the per-model page carries it). Usable-vs-advertised unprobed |
 | Cost per completed task | Tiered pricing doubles input cost above 200k prompt tokens — long-context work is priced super-linearly, which directly taxes the "whole monorepo in context" use case the model is marketed for |
 | Release mode & access routes (1b) | API-only (Gemini API + Vertex); free tier exists on Flash lines, not Pro |
 
@@ -48,6 +52,10 @@ transition deferred its own read) and the stale Terminal-Bench snapshot.
 
 ## Open questions
 
-- What is the actual advertised context window, from a primary source? (The models
-  page omits it; resolve before any long-context claim about this model is repeated.)
+- ~~What is the actual advertised context window, from a primary source?~~ Resolved
+  2026-08-17: 1,048,576 in / 65,536 out on the per-model page (the overview table
+  omits it — the gap was real, just one page deep).
 - Does "Preview" gate anything material (SLAs, caching, rate limits) for agent use?
+- Knowledge cutoff is still unverified: the model page's spec table has no cutoff row
+  (only "Latest update: February 2026"). The DeepMind model card is the likely primary
+  source; it lives outside the API docs surface this stub was checked against.

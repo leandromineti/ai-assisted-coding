@@ -8,10 +8,14 @@ open_source: true
 model_id: Qwen/Qwen3-Coder-Next
 release_mode: open-weights
 context_window: 262144
-max_output: unverified
-pricing: "weights free; hosted via Alibaba/aggregators at route-dependent prices"
-knowledge_cutoff: unverified
-checked: 2026-07-31
+max_output: 65536   # Model Studio context-limits table; max input 204800 of the 262144 window (verified 2026-08-17)
+pricing: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
+knowledge_cutoff: "not stated by Qwen — HF README (full read), Model Studio page, and launch blog all silent (checked 2026-08-17)"
+thinking: "none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)"
+effort_control: "n/a — no thinking mode, so Model Studio's thinking_budget/reasoning_effort surfaces are not offered for this model"
+prompt_caching: "unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash"
+batch_discount: "unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)"
+checked: 2026-08-17
 depth: stub
 ---
 
@@ -56,6 +60,12 @@ treat it as needing execution-discipline correction).
 2. **3B activated parameters** as a serious agent-model bet — the opposite pole from
    Kimi K3's 104B-activated within the same open-weights world. The open ecosystem is
    exploring the activated-params axis far more aggressively than the closed one.
+3. **The vendor's own platform hosts it as a second-class citizen** (2026-08-17): on
+   Model Studio, context caching, batch inference, and fine-tuning are all
+   capability-row "Unsupported" for this model, while its siblings (coder-plus,
+   coder-flash) get the platform's caching. A 1b lesson: "first-party hosted API
+   exists" is not one fact but a per-feature matrix — the route can carry the model
+   without carrying the platform's economics.
 
 ## Open questions
 

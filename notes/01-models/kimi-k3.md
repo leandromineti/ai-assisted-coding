@@ -8,10 +8,14 @@ open_source: true
 model_id: moonshotai/Kimi-K3
 release_mode: open-weights
 context_window: 1048576
-max_output: unverified
-pricing: "weights free; hosted API via Moonshot/OpenRouter at route-dependent prices (not pinned here)"
-knowledge_cutoff: unverified
-checked: 2026-07-31
+max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17)"
+pricing: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"
+knowledge_cutoff: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
+thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"
+effort_control: "reasoning_effort: low/high/max, default MAX — the only default-to-most-expensive in the sweep; reasoning tokens billed as output (first-party API)"
+prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
+batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
+checked: 2026-08-17
 depth: stub
 ---
 
@@ -53,6 +57,14 @@ whose per-model dispatch this repo documented upstream).
 3. **A bespoke license with a name** ("Kimi K3 License") — neither Apache/MIT nor
    proprietary; open-weights licensing is speciating, and `open_source: true` needs
    the license field read, not assumed.
+4. **`reasoning_effort` defaults to `max`** (2026-08-17) — the only
+   default-to-most-expensive in the sweep (OpenAI defaults `medium`, DeepSeek `high`,
+   and reasoning tokens bill as output at $15/MTok). Thinking is also always-on with
+   no toggle: "K3 always thinks." The vendor's default posture is maximum spend.
+5. **Two first-party price lists, and a rebrand** (2026-08-17): `platform.moonshot.ai`
+   now 301s to `platform.kimi.ai` (USD) and `platform.moonshot.cn` to
+   `platform.kimi.com` (CNY, ¥20/¥100 — its own list, not a conversion). Moonshot's
+   batch API (40% off) explicitly excludes K3: it covers only k2.5/k2.6.
 
 ## Open questions
 

@@ -9,9 +9,13 @@ model_id: gpt-5.6-sol (alias gpt-5.6); siblings gpt-5.6-terra, gpt-5.6-luna
 release_mode: api-only
 context_window: 1050000
 max_output: 128000
-pricing: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20 (verified 2026-07-31)"
+pricing: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20; prompts >272k input tokens billed 2x in / 1.5x out for the whole request (verified 2026-08-17)"
 knowledge_cutoff: "Feb 16, 2026 (all three tiers)"
-checked: 2026-07-31
+thinking: "adaptive (docs: fewer tokens for simpler tasks); disable per-request via reasoning.effort: none"
+effort_control: "reasoning.effort: none/low/medium/high/xhigh/max, default medium — identical across tiers; no 'minimal' on the 5.6 family"
+prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
+batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
+checked: 2026-08-17
 depth: stub
 ---
 
@@ -49,6 +53,11 @@ pairings) and as Kimi K3's claimed comparison target. No repo work has run on it
    context and cutoff — the vendor is pricing capability tiers, not infrastructure.
 2. GPT-5.5's quiet disappearance between benchmark publication and this check —
    leaderboard citations now point at a model you can't buy.
+3. **Cache economics converged on Anthropic's exact multipliers** (2026-08-17): read
+   0.1×, write 1.25× — the same two numbers, differing only in TTL (one fixed 30m vs
+   Anthropic's 5m/1h pair). The effort ladder (`none`→`max`, default `medium`) is also
+   a six-step version of the same control Anthropic exposes as `effort`. Convergence at
+   the API-surface layer, whatever the models are doing underneath.
 
 ## Open questions
 
