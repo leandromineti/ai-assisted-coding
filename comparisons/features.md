@@ -23,8 +23,8 @@ report's frontmatter when confirmed in source or official docs.
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | ✓ | · | · | · | · | · | · | · |

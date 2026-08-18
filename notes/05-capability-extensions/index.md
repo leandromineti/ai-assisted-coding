@@ -48,7 +48,7 @@ which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than
 | Tool | Depth | One-line |
 |---|---|---|
 | [**ECC** (everything-claude-code)](ecc.md) | deep-dive (2026-07-30) | 236k stars in ~6.5 months; reclassified here from provisional layer 4 — a config pack at scale (281 skills, 67 agents, rules, enforcement hooks) plus the set's only *harness-independent* autonomous learning loop (hook-observed "instincts", traced in source). Solo-author; commercial ring (Pro, GitHub App); `ecc2` Rust control plane growing toward layer 2. |
-| [**ai-memory**](ai-memory.md) | stub (2026-08-19) | Cross-harness long-term memory for coding agents: MCP server + lifecycle hooks feeding a plain-markdown wiki (no vector DB), session-end consolidation, bounded handoffs into the next session — ~20 harness targets per its README support matrix. Rust, first commit 2026-05-21, 2.6k stars in 3 months. Candidate **second harness-independent learning-loop instance** (issue #13's promotion trigger) — pending source verification. |
+| [**ai-memory**](ai-memory.md) | deep-dive (2026-08-18) | Cross-harness memory as one Rust daemon: hook capture (closed 10-kind vocabulary) → rule-based session pages in a git-versioned markdown wiki → heuristic handoff injected at next session start, any harness. Zero-LLM default path; with a provider, a **source-verified background learning loop** auto-approves its own wiki edits (`_rules/`, `procedures/`) — second harness-independent instance after ECC. Surprise: the continuity baton is first + last prompt + tool names, no LLM; the rich memory is pull-only via 18 MCP tools. |
 | [**mem0**](mem0.md) | stub (2026-08-19) | "The memory layer for personalized AI" — YC-backed managed platform + OSS SDK (Python/TS) that LLM-extracts memories from conversations and retrieves them per-user; publishes its own benchmark results (LoCoMo, LongMemEval). Reaches coding harnesses via integrations and ships itself partly as a `SKILL.md` skill. The SDK-facing shape of the memory kind. |
 | [**cognee**](cognee.md) | stub (2026-08-19) | "Open-source AI memory platform for agents" since 2023-08 (oldest in the kind, 30.1k stars): knowledge-graph + vector pipelines, in-repo MCP server, self-benchmarks. The graph-memory wager. |
 | [**memori**](memori.md) | stub (2026-08-19) | "Memory from what agents do, not just what they say" — Rust core with Python/Node bindings, BYODB or cloud, 16.1k stars in ~13 months. Action-capture framing, embeddable-engine shape. |
@@ -88,6 +88,8 @@ verdict section of [`ecc.md`](ecc.md).
 - The memory-authorship open decision (design-principles, "What the field visibly does
   not agree on") gains a fourth position: agent-written **and independently stored**
   (ai-memory's wiki, mem0's store) vs the three harness-side positions already recorded.
-- Issue #13's `learning_loop` promotion trigger: ECC was the only harness-independent
-  autonomous loop; ai-memory is a *candidate* second instance at stub depth. Verify in
-  source before promoting the boolean to a mechanism vocabulary.
+- Issue #13's `learning_loop` promotion trigger: **ai-memory verified in source
+  (2026-08-18)** as the second harness-independent autonomous loop after ECC — mechanism
+  `background` (server-side scheduler, default-on with a provider, auto-approving). The
+  promotion trigger itself still hasn't fired: `background` now has four instances,
+  `in-loop` and `manual` still one each.
