@@ -1,0 +1,16 @@
+2026-06-10T09:00:00+00:00 INFO api.http: listening on :8080
+2026-06-10T09:00:05+00:00 DEBUG api.http: route table built
+2026-06-10T09:01:00+00:00 INFO api.auth: user 12 login ok
+-- MARK --
+2026-06-10T09:02:00-03:00 WARNING api.db: slow query 300ms
+2026-06-10T09:03:00+00:00 ERROR api.auth: bad password user 9
+2026-06-10T09:04:00+00:00 INFO api.http: 200 GET /health
+2026-06-10T09:05:1
+2026-06-10T09:06:00+00:00 DEBUG api.cache: hit ratio 0.93
+2026-06-10T09:07:00-03:00 INFO api.auth: user café login ok
+2026-06-10T09:08:00+00:00 WARNING api.http: 429 throttled
+2026-06-10T09:09:00+00:00 CRITICAL api.db: replica down
+[reload]
+2026-06-10T09:10:00+00:00 INFO api.http: 200 GET /orders
+2026-06-10T09:11:00+00:00 ERROR api.db: timeout
+2026-06-10T09:12:00+00:00 INFO api.http: 200 GET /orders

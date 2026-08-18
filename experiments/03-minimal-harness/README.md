@@ -295,3 +295,42 @@ annotation (issue #8 — weaken, re-decompose, or corroborate, dated), F2 in
 must confront it), the where-verification-lives open decision (design-principles'
 disputed table), and the rig task inventory. n=1 per arm is a probe and will be
 labelled as such.
+
+---
+
+## Protocol amendment 1 — corpus scale-up (2026-08-18, PRE-ARM-RUN)
+
+Appended after the tier-1 calibration band v1 and **before any scored arm** (none has
+run). The protocol text above is untouched.
+
+**Trigger (per clause 3):** the v1 band saturated the discoverable subset — plain
+Haiku 4.5 scored 9,9,9,9,7 of 9 (mean 8.6; gate requires ≤6). Mechanism, from the
+band's own artifacts: v1's sample files were ≤23 lines, fully readable in one or two
+tool calls, so every plain arm read the corpus and grounded *spontaneously* (all five
+parsed the epoch-seconds format that exists nowhere but the corpus). Discovery that
+costs nothing cannot discriminate an instruction to discover.
+
+**Change (fixture content only; task prompt, harness files, check set, and scoring
+all unchanged):** the corpus is scaled so that casual inspection no longer reveals
+the traps — `samples/app_main.log` becomes ~40,000 lines of the ISO format with the
+trap instances *buried* (rare epoch-seconds lines ≈0.4%, three non-UTF-8 lines deep
+in the file, scattered malformed lines, offset variants, epoch-extreme entries near
+the tail), plus a small clean decoy file and the empty file. The hidden
+`svc_orders.log` scales the same way at fresh positions; the other six hidden
+fixtures are unchanged. `head`/`tail` now shows a uniform single-format file;
+finding what else is in 40k lines requires exactly the systematic measurement
+GROUNDING.md instructs — and running one's tool against the full corpus (GATES.md)
+now has real discovery value (the buried encoding line crashes a naive parser).
+Both mechanisms get room; that is the redesign's point.
+
+**Consequences:** `expected.json` regenerated (measured, 5a); fails-closed re-proof
+required; **band v1 is void as a reference frame** — a fresh 5-run plain band runs
+against v2 with the same headroom gate. Spend to date $1.40 of the ≈$4 tier-1
+ceiling; if the v2 band pushes the arms past the ceiling, arms wait for a top-up
+approval rather than silently exceeding it.
+
+**Recorded as a finding, not just a fix (feeds F2/conclusion 6 discussion):
+affordance beats instruction.** A visible, cheaply-readable domain induces
+grounding in plain agents without being told — the grounding *instruction* can only
+matter when measurement has nontrivial cost. Dated, transcript-backed, band v1
+artifacts.

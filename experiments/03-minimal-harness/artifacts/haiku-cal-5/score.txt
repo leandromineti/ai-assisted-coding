@@ -1,0 +1,111 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /home/leandro/personal/ai-assisted-coding/experiments/rig/logpeek/tests
+collected 23 items
+
+test_outputs.py .................F.FF..                                  [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_t3c_distinct_exit_codes _________________________
+
+logpeek_cmd = '/tmp/tmp.Y0RFQ3MaIn/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-47/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-47/test_t3c_distinct_exit_codes0')
+
+    def test_t3c_distinct_exit_codes(logpeek_cmd, fixtures_dir, tmp_path):
+        r_bin = run_logpeek(logpeek_cmd, [str(fixtures_dir / "notalog.bin")], cwd=tmp_path)
+        r_empty = run_logpeek(
+            logpeek_cmd, [str(fixtures_dir / "empty_hidden.log")], cwd=tmp_path
+        )
+        assert r_bin.returncode != 0 and r_empty.returncode != 0
+>       assert r_bin.returncode != r_empty.returncode, (
+            "not-a-log and empty file share one exit code — indistinguishable to callers"
+        )
+E       AssertionError: not-a-log and empty file share one exit code — indistinguishable to callers
+E       assert 1 != 1
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.Y0RFQ3MaIn/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-47/logs0/hidden/notalog....t='', stderr="Error: File '/tmp/pytest-of-leandro/pytest-47/logs0/hidden/notalog.bin' contains no valid log entries\n").returncode
+E        +  and   1 = CompletedProcess(args=['/tmp/tmp.Y0RFQ3MaIn/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-47/logs0/hidden/empty_hi...urncode=1, stdout='', stderr="Error: File '/tmp/pytest-of-leandro/pytest-47/logs0/hidden/empty_hidden.log' is empty\n").returncode
+
+test_outputs.py:279: AssertionError
+_______________ test_t4a_human_output_tz_invariant_or_documented _______________
+
+logpeek_cmd = '/tmp/tmp.Y0RFQ3MaIn/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-47/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-47/test_t4a_human_output_tz_invar0')
+
+    def test_t4a_human_output_tz_invariant_or_documented(logpeek_cmd, fixtures_dir, tmp_path):
+        r_utc = run_logpeek(logpeek_cmd, [str(fixtures_dir / SVC)], tz="UTC", cwd=tmp_path)
+        r_sp = run_logpeek(
+            logpeek_cmd, [str(fixtures_dir / SVC)], tz="America/Sao_Paulo", cwd=tmp_path
+        )
+        assert r_utc.returncode == 0 and r_sp.returncode == 0
+        assert "orders" in r_utc.stdout and "orders" in r_sp.stdout  # vacuous-pass guard
+        if r_utc.stdout != r_sp.stdout:
+            docs = _project_docs().lower()
+>           assert any(k in docs for k in ("timezone", "time zone", "tz", "utc")), (
+                "output is timezone-dependent and no README documents it"
+            )
+E           AssertionError: output is timezone-dependent and no README documents it
+E           assert False
+E            +  where False = any(<generator object test_t4a_human_output_tz_invariant_or_documented.<locals>.<genexpr> at 0x7ddd46d179f0>)
+
+test_outputs.py:306: AssertionError
+________________________ test_t4b_json_output_tz_stable ________________________
+
+logpeek_cmd = '/tmp/tmp.Y0RFQ3MaIn/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-47/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-47/test_t4b_json_output_tz_stable0')
+
+    def test_t4b_json_output_tz_stable(logpeek_cmd, fixtures_dir, tmp_path):
+        r_utc = run_logpeek(
+            logpeek_cmd, ["--json", str(fixtures_dir / SVC)], tz="UTC", cwd=tmp_path
+        )
+        r_sp = run_logpeek(
+            logpeek_cmd, ["--json", str(fixtures_dir / SVC)],
+            tz="America/Sao_Paulo", cwd=tmp_path,
+        )
+        assert r_utc.returncode == 0 and r_sp.returncode == 0
+        assert "orders" in r_utc.stdout  # vacuous-pass guard
+>       assert r_utc.stdout == r_sp.stdout, (
+            "--json output changes with TZ — machine-readable output is "
+            "ambient-config-dependent"
+        )
+E       AssertionError: --json output changes with TZ — machine-readable output is ambient-config-dependent
+E       assert '{\n  "file":...: 3\n  }\n}\n' == '{\n  "file":...: 3\n  }\n}\n'
+E         
+E         Skipping 232 identical leading characters in diff, use -v to show
+E         Skipping 144 identical trailing characters in diff, use -v to show
+E         - 25-11-02T05:14:07",
+E         ?           ^
+E         + 25-11-02T08:14:07",
+E         ?           ^...
+E         
+E         ...Full output truncated (5 lines hidden), use '-vv' to show
+
+test_outputs.py:321: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED test_outputs.py::test_f1_normal_summary
+PASSED test_outputs.py::test_f2_json_parses
+PASSED test_outputs.py::test_f3_json_total_lines
+PASSED test_outputs.py::test_f4_json_level_counts
+PASSED test_outputs.py::test_f5_level_filter
+PASSED test_outputs.py::test_f6_top_logger
+PASSED test_outputs.py::test_f7_multiple_files
+PASSED test_outputs.py::test_f8_time_span_faithful
+PASSED test_outputs.py::test_t1a_nonutf8_lines_no_crash
+PASSED test_outputs.py::test_t1b_nonutf8_json_valid
+PASSED test_outputs.py::test_t1c_nonutf8_lines_still_counted
+PASSED test_outputs.py::test_t2a_epoch_extremes_no_crash
+PASSED test_outputs.py::test_t2b_epoch_span_faithful
+PASSED test_outputs.py::test_t2c_epoch_format_parsed_as_events
+PASSED test_outputs.py::test_t2d_mixed_formats_in_one_file
+PASSED test_outputs.py::test_t3a_notalog_nonzero
+PASSED test_outputs.py::test_t3b_empty_nonzero
+PASSED test_outputs.py::test_t3d_error_messages_distinguishable
+PASSED test_outputs.py::test_t5a_inputs_never_modified
+PASSED test_outputs.py::test_t5b_readonly_dir_input
+FAILED test_outputs.py::test_t3c_distinct_exit_codes - AssertionError: not-a-...
+FAILED test_outputs.py::test_t4a_human_output_tz_invariant_or_documented - As...
+FAILED test_outputs.py::test_t4b_json_output_tz_stable - AssertionError: --js...
+========================= 3 failed, 20 passed in 1.88s =========================

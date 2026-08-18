@@ -1,0 +1,7 @@
+0 INFO daemon.boot: first light
+1735689600 INFO daemon.loop: tick
+1735693200 DEBUG daemon.loop: gc
+1735696800 WARNING daemon.net: retry
+1735700400 ERROR daemon.net: unreachable
+1735704000 INFO daemon.loop: tick
+4294967295 WARNING daemon.clock: horizon reached

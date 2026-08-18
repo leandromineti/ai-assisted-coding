@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logpeek"
+version = "0.1.0"
+description = "Summarize structured log files"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "Author"}]
+
+[project.scripts]
+logpeek = "logpeek.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["logpeek*"]

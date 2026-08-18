@@ -27,3 +27,54 @@ Appended live during runs, never reconstructed (methodology rule 5). Protocol:
   first passing arm. A check failing at 100% across the calibration band is
   ambiguous (real discriminator vs. unpassable) — exp-02's T4c precedent; will be
   read with that caveat.
+
+## 2026-08-18 — network condition, smoke, tier-1 calibration band v1
+
+- `00:3xZ` — rig network stood up per rig README: `exp-closed-int` (internal) +
+  `exp-proxy` (allowlist). **8a probes:** raw egress rc=6 (unresolvable) ✓ ·
+  `example.com` via proxy `DENY CONNECT` ✓ · `api.anthropic.com` via proxy
+  reachable ✓. Proxy log slices copied per run (the probe record).
+- `00:3xZ` — **driver smoke (5e): PASS.** Throwaway container `exp03-smoke`,
+  allowlist settings, trivial prompt, `--model claude-haiku-4-5`,
+  `--output-format json`. `subtype success`, artifact verified in-container
+  (`/app/hello.txt` = "hello"), **$0.0159**. CLI in-image 2.1.220 (pin). Container
+  discarded.
+- `00:40–01:0xZ` — **calibration band v1, 5 × plain Haiku 4.5** (fresh container
+  each, prompt verbatim 736 chars + samples/ corpus, fully autonomous, zero
+  blocking questions). Per-run: fresh host venv, pytest 8.4.1, TZ=UTC, C.UTF-8.
+
+| run | result | turns | api | cost | score /23 | discoverable /9 | fails |
+|---|---|---|---|---|---|---|---|
+| cal-1 | success | 49 | 1m59s | $0.2561 | 22 | 9 | T3c |
+| cal-2 | success | 57 | 2m16s | $0.3220 | 21 | 9 | F3, T3c |
+| cal-3 | success | 42 | 2m05s | $0.2705 | 22 | 9 | T3c |
+| cal-4 | success | 51 | 1m58s | $0.2696 | 21 | 9 | F3, T3c |
+| cal-5 | success | 45 | 2m10s | $0.2692 | 20 | 7 | T3c, T4a, T4b |
+
+- Band: 20–22/23 (mean 21.2), nonzero variance ✓. **Discoverable subset: mean
+  8.6/9 — the headroom gate (mean ≤ 6/9) FAILS.** Per protocol clause 3 the tier
+  stops for instrument redesign before any scored arm spends. No arm has run.
+- T3c (distinct exit codes) failed 5/5 — satisfiability caveat from the build
+  entry applies (decided-family check; exp-02 T4c precedent).
+- **Behavioral finding (dated, transcript-backed):** all five plain arms passed
+  T2c — parsing the epoch-seconds format that exists *nowhere but the corpus* —
+  and two of five committed tests/README referencing `samples/`. Plain agents
+  ground **spontaneously** when the domain sits in the working directory: the
+  corpus's *presence* induces the mechanism the GROUNDING.md instruction was
+  meant to isolate. v1's small files (≤23 lines) are fully readable in a couple
+  of tool calls, so discovery costs nothing. This is the saturation mechanism.
+- Tier-1 spend so far (smoke + band v1): **$1.4032** of the ≈$4 ceiling.
+
+## 2026-08-18 — amendment 1 executed: instrument v2, fails-closed re-proof
+
+- `00:46Z` — fixtures v2 built (amendment 1): `samples/app_main.log` 40,000 lines /
+  2.3MB (buried: ~159 epoch-format lines, 3 non-UTF-8 deep, ~36 malformed, -03:00
+  offset variants, epoch-0 + 2106 entries near the tail), small clean `boot.log`
+  decoy, `empty.log`. Hidden `svc_orders.log` 30,000 lines, same classes at fresh
+  positions (measured: 29,969 parseable events, top logger orders.payment, span
+  2025-11-02 → 2026-06-07). Other six hidden fixtures unchanged. `expected.json`
+  regenerated (measured, 5a). F8 vacuous-pass audit: no count value equals 2025.
+- `00:47Z` — **fails-closed re-proof vs v2: empty env 23/23 ERROR ✓ · stub 23/23
+  FAIL ✓.**
+- Driver note: artifact copies now exclude `/app/samples` (reproducible from the
+  committed builder; avoids 2.3MB per run in the repo).

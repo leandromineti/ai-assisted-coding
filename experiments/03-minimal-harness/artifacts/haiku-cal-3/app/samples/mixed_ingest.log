@@ -1,0 +1,6 @@
+2026-02-01T12:00:00+00:00 INFO ingest.a: begin
+1738411260 DEBUG ingest.b: shard load
+2026-02-01T12:02:00+05:30 INFO ingest.a: row batch 1
+1738411380 WARNING ingest.b: skew detected
+2026-02-01T12:04:00+00:00 ERROR ingest.a: parse fail row 88
+1738411500 INFO ingest.b: shard done

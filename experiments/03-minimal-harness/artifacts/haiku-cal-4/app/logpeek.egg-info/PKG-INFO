@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: logpeek
+Version: 0.1.0
+Summary: A Python CLI that summarizes structured log files
+Author: 
+Requires-Python: >=3.8
+Dynamic: requires-python
+Dynamic: summary
