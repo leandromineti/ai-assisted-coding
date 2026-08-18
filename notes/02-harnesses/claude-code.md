@@ -18,7 +18,9 @@ depth: survey   # OBSERVATION-ONLY (issue #12): daily use + live-session instrum
 features:
   mcp: true              # OBSERVED: .mcp.json convention, mcp__<server>__<tool> namespacing, MCP server management in-product
   hooks: true            # OBSERVED: deterministic lifecycle hooks configured in settings.json (the harness executes them, not the model)
+  turn_end_gates: hook   # OBSERVED in official hooks docs (retrieved 2026-08-18): Stop hook exit-2 "prevents Claude from stopping, continues the conversation" — a turn-end veto at hook grade. NOTE: a user-configured SURFACE, empty by default (exp-03 rig verified no gates configured), unlike hermes' always-on loop policy
   skills: true           # OBSERVED: SKILL.md convention, ~/.claude/skills + .claude/skills + plugin skills, /name invocation, description-based triggering
+  ptc: false             # checked in official docs (retrieved 2026-08-18): no code-mode/programmatic-tool-calling mechanism documented; tool use is chat-loop only
   subagents: true        # OBSERVED: Agent tool with named types (general-purpose, Explore, Plan, custom .claude/agents/*.md definitions), per-agent model/tool overrides, worktree isolation
   plan_mode: true        # OBSERVED: an actual MODE with enforced read-only state + plan-file workflow + user approval gate — not a prompt convention
   rules_files: [CLAUDE.md]   # OBSERVED: global ~/.claude/CLAUDE.md + project CLAUDE.md, both loaded; the convention the whole field's rules-file story descends from

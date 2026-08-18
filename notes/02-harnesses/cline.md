@@ -17,6 +17,8 @@ read_at: 2026-07-28   # drift-checked 2026-08-16 at 574b8eb45 without re-reading
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 features:
   mcp: true            # apps/vscode MCP configuration UI, McpPromptRow
+  turn_end_gates: false  # 2026-08-18 targeted probe at pin dc175c73a: no stop-hook/should_block/turn-end machinery anywhere in src; attempt_completion's feedback loop is a HUMAN gate (process), not a native verification veto
+  ptc: false             # 2026-08-18 targeted probe at pin: no execute_code/code-mode/programmatic mechanism in src
   subagents: true      # sdk .../tools/team/subagent-prompts.ts, AgentConfigLoader
   plan_mode: true      # PLAN_MODE_INSTRUCTIONS + switch_to_act_mode tool (measured)
   rules_files: true    # {{CLINE_RULES}} slot in the system prompt; filenames not yet verified

@@ -25,7 +25,9 @@ features:
   rules_files: [WARP.md, AGENTS.md]   # crates/repo_metadata/src/standing_queries.rs:22; global ~/.agents/AGENTS.md
   model_agnostic: true # bounded: LLMProvider::API_KEY_PROVIDERS = OpenAI, Anthropic, Google, xAI
   session_sharing: true # app/src/terminal/shared_session/ with its own permissions_manager
-  hooks: false         # checked: no lifecycle-hook engine for Warp's own loop. It *installs* hooks into Codex — see The distinguishing bet
+  hooks: false         # checked: no lifecycle-hook engine for Warp's own loop. It *installs* hooks into Codex
+  # turn_end_gates deliberately NOT SET after the 2026-08-18 probe: the agent loop is server-side (only client bindings in the drop), so neither presence nor absence is decidable from this source — omitted is the honest cell
+  ptc: false           # 2026-08-18 targeted probe: "code mode" in this drop is a UI chip flag (CodeModeChip, features.rs:258) + telemetry field (is_code_mode_v2) — no model-code-drives-tools runtime anywhere in app/src or crates (execute_code/codemode/quickjs/v8-eval sweep); tool execution is client-side, so a runtime would be visible here — see The distinguishing bet
   learning_loop: false # checked: MemorySource has exactly one variant, `Manual` (app/src/server/server_api/ai.rs:1080)
   evals: false         # checked: no agent eval suite. Two near-misses: crates/input_classifier/src/bin/evaluate.rs (one component) and an eval viewer inside the bundled create-skill skill
 ---

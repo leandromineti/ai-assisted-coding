@@ -16,7 +16,9 @@ stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 features:
-  mcp: true          # core/context/mcp/MCPConnection.ts
+  mcp: true
+  turn_end_gates: false  # 2026-08-18 targeted probe at pin 5522c6f44: no stop-hook/should_block/turn-end machinery in core/
+  ptc: false             # 2026-08-18 targeted probe at pin: no PTC mechanism in core/ (only vendored-model noise matched)          # core/context/mcp/MCPConnection.ts
   plan_mode: true    # DEFAULT_PLAN_SYSTEM_MESSAGE (measured)
   rules_files: true  # core/llm/rules/getSystemMessageWithRules.ts
   model_agnostic: true
