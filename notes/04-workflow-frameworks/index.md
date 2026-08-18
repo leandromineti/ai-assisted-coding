@@ -46,8 +46,11 @@ Workflow commands:
 `/speckit.plan` (technical strategy) → `/speckit.tasks` (task list) → `/speckit.implement`
 (execute). Optional: `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`.
 
-40+ agent integrations (44 config dirs @ 655a3cb; `specify integration list`).
-Install: `uv tool install specify-cli` — needs Python 3.11+, git, and `uv`.
+37 registered integrations @ 655a3cb (verified at deep-dive 2026-08-18; the earlier
+"44 config dirs" figure did not reproduce). Install: `uv tool install specify-cli` —
+needs Python 3.11+, git, and `uv`. Deep-dived 2026-08-18: two systems — prose methodology
++ an 11-step-type orchestration engine that dispatches the prose by name, never reads it,
+and ships 78 lines of workflow against ~17k lines of runtime ([report](spec-kit.md)).
 
 ### OpenSpec — <https://github.com/Fission-AI/OpenSpec> · [report](openspec.md)
 
