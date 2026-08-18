@@ -103,7 +103,9 @@ enforced at the egress layer, probed, identical across arms; see
 - **Relative markdown links**, not wikilinks — they render on GitHub.
 - **Issues are the backlog.** Propose the 1–3 strongest next moves; park the rest as GitHub
   issues rather than growing a TODO file.
-- **This repo is public-facing.** No employer references, no pointers to private local files, no
-  paths a reader can't resolve. Restate work-derived findings generically as personal experience
-  with a rough date.
+- **Write as if public-facing, whatever the visibility.** No employer references, no pointers to
+  private local files, no paths a reader can't resolve. Restate work-derived findings generically
+  as personal experience with a rough date. (The GitHub repo's visibility has flipped before —
+  most recently back to private on 2026-08-18 — and may flip again; this discipline is what
+  makes that switch safe in either direction, so it holds regardless of current state.)
 - Commits go straight to `main` (sole contributor, deliberate exception to branch-first).

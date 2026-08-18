@@ -295,7 +295,12 @@ note. Revised when evidence moves._
     checked exceed their instruments' own published scales (mem0's 92.5 vs LoCoMo's
     87.9 *human* baseline; cognee's 0.79 vs BEAM's ~0.36 best configs) — so the
     kind's efficacy for coding is currently an unmeasured claim resting on
-    conversational proxies. →
+    conversational proxies. *Deepened same day by the mem0 vendor paper
+    ([`refs/2025-mem0.md`](refs/2025-mem0.md), full read): mem0's own published
+    comparison shows the no-memory full-context baseline beating its memory system
+    on quality (J 72.90 vs 68.44) — the measured claim is latency/token efficiency —
+    and the 92.5 belongs to a later rewrite whose architecture the paper doesn't
+    describe.* →
     [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md) §6 ·
     [`notes/05-capability-extensions/index.md`](notes/05-capability-extensions/index.md)
 
