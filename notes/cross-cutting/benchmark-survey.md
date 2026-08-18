@@ -20,8 +20,8 @@ lessons below are load-bearing rather than decorative.
 
 The repo's headline benchmark finding (README conclusion 2) is that **no public
 benchmark isolates model from harness** — every leaderboard entry is a model+scaffold
-pair. [SWE-bench](../../refs/swe-bench-2023.md) resolve rates are scaffold-dependent;
-[Terminal-Bench](../../refs/terminal-bench-2026.md) leaderboard rows name harnesses
+pair. [SWE-bench](../../refs/2023-swe-bench.md) resolve rates are scaffold-dependent;
+[Terminal-Bench](../../refs/2026-terminal-bench.md) leaderboard rows name harnesses
 (codex's report cites "leads Terminal-Bench 2.1" — with its own caveat that the
 benchmark can't separate the harness from the vendor's model); and the one benchmark
 this repo found that *tried* to fix the harness turned out to inherit that harness's
@@ -39,21 +39,21 @@ bundles, which is fine only as long as it says so.
 
 Coding benchmarks follow one lifecycle, documented across a decade of instances:
 
-1. **Launch with headroom** — [SWE-bench](../../refs/swe-bench-2023.md) opened with the
+1. **Launch with headroom** — [SWE-bench](../../refs/2023-swe-bench.md) opened with the
    best model resolving 1.96%.
 2. **Scores climb; the ceiling arrives.** HumanEval reached the high-90s and stopped
-   informing (recorded via [EvalPlus](../../refs/evalplus-2023.md), whose premise is
+   informing (recorded via [EvalPlus](../../refs/2023-evalplus.md), whose premise is
    that "passing" HumanEval had stopped meaning correct).
-   [Aider's original benchmark](../../refs/aider-polyglot-2024.md) showed the diagnostic
+   [Aider's original benchmark](../../refs/2024-aider-polyglot.md) showed the diagnostic
    symptoms this repo now knows firsthand: top score ~84%, new champions winning by 1–2
    items, models two generations old clearing half the set.
 3. **The instrument gets rebuilt or retired.** Three rebuild strategies exist:
-   - **Densify the verifier** ([EvalPlus](../../refs/evalplus-2023.md)): keep the tasks,
+   - **Densify the verifier** ([EvalPlus](../../refs/2023-evalplus.md)): keep the tasks,
      multiply the tests (~80×) until previously-passing solutions fail. Cheapest;
      buys time, not immunity — the densified sets approached saturation within two
      model generations.
    - **Select items by baseline failure** ([Aider
-     polyglot](../../refs/aider-polyglot-2024.md)): run K baselines over a large
+     polyglot](../../refs/2024-aider-polyglot.md)): run K baselines over a large
      candidate pool, keep only items most baselines fail (Aider: solved by ≤3 of 7,
      from 697 candidates to 225). Headroom by construction — the scale recalibrated
      from an 84% ceiling to a 62% top score.
@@ -71,10 +71,10 @@ repo's live instance: proven fails-closed twice and still saturated on first con
 
 The lifecycle above is about headroom. A different failure arrives independently:
 **items that no correct solution can pass.**
-[SWE-bench Verified](../../refs/swebench-verified-2024.md) is the canonical audit —
+[SWE-bench Verified](../../refs/2024-swebench-verified.md) is the canonical audit —
 93 annotators found 38.3% of sampled items underspecified and **61.1% with tests that
 could reject valid solutions**; 68.3% of the benchmark was discarded. The pattern
-repeats at smaller scale: [Terminal-Bench](../../refs/terminal-bench-2026.md) 2.1 is a
+repeats at smaller scale: [Terminal-Bench](../../refs/2026-terminal-bench.md) 2.1 is a
 "verified refresh" of 2.0 that fixed instruction–test mismatches across roughly a dozen
 tasks. Validity screening arrives *late*, after scores misled — three instances now,
 counting exp-02's own vacuous-pass catch (a do-nothing stub was trivially
@@ -82,9 +82,9 @@ counting exp-02's own vacuous-pass catch (a do-nothing stub was trivially
 
 **Contamination is the third independent property.** The matrix names three postures,
 in increasing strength: `none` (public tasks, hope), `canary`
-([Terminal-Bench](../../refs/terminal-bench-2026.md)'s searchable GUID convention —
+([Terminal-Bench](../../refs/2026-terminal-bench.md)'s searchable GUID convention —
 detection, not prevention; this repo's own rig verifier carries one), and
-`time-windowed` ([LiveCodeBench](../../refs/livecodebench-2024.md): problems stamped
+`time-windowed` ([LiveCodeBench](../../refs/2024-livecodebench.md): problems stamped
 with release dates, so contamination becomes *measurable* as a pre-/post-cutoff score
 gap). Contamination and saturation compound: a contaminated task saturates faster
 because both arms partly recall the answer — which is why the matrix's two scar columns
@@ -100,26 +100,26 @@ before launch; that is the field's actual lesson, learned here the same way.
 
 Binary pass/fail is the floor, and three refinements matter:
 
-- **Reliability exponents**: [τ-bench](../../refs/tau-bench.md)'s `pass^k` (all of k
+- **Reliability exponents**: [τ-bench](../../refs/2024-tau-bench.md)'s `pass^k` (all of k
   runs succeed) prices flakiness that pass@1 hides — carried forward by
-  [τ²-bench](../../refs/tau2-bench.md) (4 runs per task).
-- **Analytic partial credit**: [PaperBench](../../refs/paperbench-2025.md) decomposes
+  [τ²-bench](../../refs/2025-tau2-bench.md) (4 runs per task).
+- **Analytic partial credit**: [PaperBench](../../refs/2025-paperbench.md) decomposes
   each task into thousands of individually gradable weighted binary criteria. This is
   the honest form of "graded rubric" — many small checks summed, not one holistic
   judgment — and it dissolves the false choice between machine-checked binary scoring
   and partial credit (exp-02's option-1-vs-option-2 debate ended exactly there).
 - **Judge dependence is a cost, not a detail**: PaperBench's leaves are LLM-judged;
-  [HumanEvalComm](../../refs/humanevalcomm.md)'s Good Question Rate is GPT-3.5-rated;
+  [HumanEvalComm](../../refs/2024-humanevalcomm.md)'s Good Question Rate is GPT-3.5-rated;
   and this repo's issue #8 exists because a published n=128 result's LLM-judge headline
   is mildly contradicted by its own blinded human sample. Where a leaf *can* be
   machine-checked, it should be; judges belong at the margin.
 
-**The apparatus is part of the instrument.** [τ-bench](../../refs/tau-bench.md)'s user
+**The apparatus is part of the instrument.** [τ-bench](../../refs/2024-tau-bench.md)'s user
 simulator moves measured agent success by ~9pp when only the simulator's LLM changes;
-[τ²-bench](../../refs/tau2-bench.md) measured simulator error at 40–47% in its inherited
+[τ²-bench](../../refs/2025-tau2-bench.md) measured simulator error at 40–47% in its inherited
 domains and cut it to 16% by constraining the simulator to environment affordances.
-[HumanEvalComm](../../refs/humanevalcomm.md)'s question-answering proxy *sees the
-original problem* — a leaky oracle; [ClarifyCodeBench](../../refs/clarifycodebench.md)'s
+[HumanEvalComm](../../refs/2024-humanevalcomm.md)'s question-answering proxy *sees the
+original problem* — a leaky oracle; [ClarifyCodeBench](../../refs/2026-clarifycodebench.md)'s
 matched-key-question + default-reply oracle is the clean template. A benchmark's
 simulated human deserves the same fails-closed scrutiny as its verifier.
 
@@ -130,11 +130,11 @@ question (does a framework's clarify machinery buy anything?) lives there:
 
 | Benchmark | Construction | The result that matters here |
 |---|---|---|
-| [HumanEvalComm](../../refs/humanevalcomm.md) | 762 degraded HumanEval variants (3 defect types, singly/pairwise) | >60% of responses answer broken specs with code, not questions; pass@1 drops 35–52% |
-| [ClarEval](../../refs/clareval.md) | 750 clear tasks × 3 ambiguity types | (read at full depth — see note) |
-| [Ambig-SWE](../../refs/ambig-swe.md) | SWE-bench Verified issues, underspecified variants | (read at full depth — see note) |
-| [ClarifyCodeBench](../../refs/clarifycodebench.md) | 419 LiveCodeBench-v6 tasks, 10 ambiguity categories, annotated key questions | best model asks <⅓ of key questions (TKQR 0.30); **reasoning effort buys code correctness but not ambiguity detection** |
-| [τ²-bench](../../refs/tau2-bench.md) | dual-control dialogue | removing the user *raises* scores 18–25pp — coordination cost isolated |
+| [HumanEvalComm](../../refs/2024-humanevalcomm.md) | 762 degraded HumanEval variants (3 defect types, singly/pairwise) | >60% of responses answer broken specs with code, not questions; pass@1 drops 35–52% |
+| [ClarEval](../../refs/2026-clareval.md) | 750 clear tasks × 3 ambiguity types | (read at full depth — see note) |
+| [Ambig-SWE](../../refs/2026-ambig-swe.md) | SWE-bench Verified issues, underspecified variants | (read at full depth — see note) |
+| [ClarifyCodeBench](../../refs/2026-clarifycodebench.md) | 419 LiveCodeBench-v6 tasks, 10 ambiguity categories, annotated key questions | best model asks <⅓ of key questions (TKQR 0.30); **reasoning effort buys code correctness but not ambiguity detection** |
+| [τ²-bench](../../refs/2025-tau2-bench.md) | dual-control dialogue | removing the user *raises* scores 18–25pp — coordination cost isolated |
 
 Two field-scale priors fall out for exp-02/03: the **don't-ask default is real and
 large** (unaided models code through broken specs), and **clarification dissociates from
@@ -145,7 +145,7 @@ the don't-ask default held (zero clarifying questions in 20 runs, fixed oracle n
 exercised), and the discoverable-ambiguity variant of withholding proved tier-fragile:
 plain Sonnet resolved it unprompted. Layer-4 code-outcome A/Bs stop per issue #17;
 this section stays as the map of the instruments' literature.)* The adjacent framework-comparison literature
-([agent-frameworks-eval](../../refs/agent-frameworks-eval.md), **full read
+([agent-frameworks-eval](../../refs/2025-agent-frameworks-eval.md), **full read
 2026-08-17**) compares frameworks *to each other* on success/efficiency/token-overhead
 — 7 frameworks × 3 tasks, one backend LLM, and **no framework-less control anywhere in
 the grid** — so the framework-vs-*plain* question this repo's experiments ask remains

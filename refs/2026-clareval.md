@@ -1,5 +1,5 @@
 ---
-key: clareval
+key: 2026-clareval
 title: "ClarEval: A Benchmark for Evaluating Clarification Skills of Code Agents under Ambiguous Instructions"
 authors: [Jialin Li, Yuan Wu, Yi Chang]
 year: 2026
@@ -7,12 +7,12 @@ venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2603.00187
 citations: "3 (0 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2603.00187
 kind: benchmark
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/clareval.pdf
+pdf: refs/pdf/2026-clareval.pdf
 task_shape: function-level
 task_count: 2250
 task_source: HumanEval (150) + LiveCodeBench (600) = 750 clear tasks × 3 ambiguity types
@@ -159,7 +159,7 @@ behaviour. Those are two instruments, not one.
 - **Function-level tasks** (HumanEval / LiveCodeBench), far below our task size, and the paper
   says so: it is a "unit test" for communicative intelligence in a controlled environment,
   deliberately free of repository context. Transfer to repo-scale work is unproven — that is
-  what [`ambig-swe.md`](ambig-swe.md) is for.
+  what [`2026-ambig-swe.md`](2026-ambig-swe.md) is for.
 - Ambiguity is injected by GPT-4o, so the instrument inherits one model's notion of vagueness,
   mitigated but not eliminated by human verification.
 - Own stated limits (p. 9): no cross-cutting or composite ambiguities; and whether clarification

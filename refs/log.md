@@ -111,3 +111,29 @@ table folded into design-principles H3 (earliest measured two-chokepoint evidenc
 linter guardrail (+3.0pp) folded into the cross-cutting gate vocabulary as the format
 quadrant's priced instance. Sharpest single result: a badly shaped tool (iterative
 search) scores BELOW no tool — a ✓ in a feature matrix can be negative.
+
+## 2026-08-18 — memory-benchmark instrument catalog (issue #18 close-out)
+
+Three full reads, all `kind: benchmark`, cataloging the instruments the memory-kind
+vendors self-report on before any vendor number is repeated (benchmark-survey
+discipline):
+
+- **[2024-locomo](2024-locomo.md)** — the instrument mem0's headline numbers ride on.
+  Persona-driven social-chat memory, 50 LLM-generated conversations, F1 scoring.
+  Saturation by 2026 models plausible; discriminance unverified.
+- **[2025-longmemeval](2025-longmemeval.md)** — the strongest of the three: human-curated
+  questions, judge meta-evaluated at 97% human agreement, retrieval recall observable.
+  Its indexing/retrieval/reading control points map 1:1 onto what ai-memory and memos
+  ship — folded into both tool reports' framing.
+- **[2026-beam](2026-beam.md)** — behind cognee's 0.79/0.67 claims; fully synthetic up to
+  10M tokens, nugget-scored LLM judge; the paper's own best configs average ~0.36 at
+  100K, so the vendor number needs config reconciliation before belief.
+
+Cross-cutting finding recorded in all three notes: every instrument measures personal
+chat-assistant memory — **no coding-agent memory benchmark exists** (no tool traces, no
+repo state, no code entities). The kind's vendors benchmark on conversation and sell to
+coding harnesses.
+
+Same day: library renamed to year-first citekeys (`<year>-<name>.md`), all 21 notes +
+pdf/ copies + repo-wide links; `key:` fields updated in place. Convention noted in
+README.md. Generated index/benchmarks rebuilt.

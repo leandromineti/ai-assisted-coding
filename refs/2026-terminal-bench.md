@@ -1,13 +1,13 @@
 ---
-key: terminal-bench-2026
+key: 2026-terminal-bench
 title: "Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces"
 authors: [Terminal-Bench team / Harbor framework, et al.]
 year: 2026
 venue: "arXiv preprint + tbench.ai"
 peer_reviewed: false
 arxiv: 2601.11868
-citations: "332 (78 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations: "342 (83 influential) — Semantic Scholar"
+citations_at: 2026-08-18
 url: https://www.tbench.ai/
 kind: benchmark
 read_depth: abstract   # search-level + site summaries; the arXiv paper not fetched

@@ -108,9 +108,11 @@ Python-dominant (2,168 `.py`) monorepo with a TS frontend; 9,781 commits — the
 most-committed repo in the kind, with a real contributor base (unlike the kind's
 solo-author entries). `cognee-mcp/` is its own package (pyproject + uv.lock).
 `evals/` archives head-to-head HotpotQA runs against mem0, graphiti, and falkor
-(2025-04 vintage) and points to a current "BEAM" 100K/10M-context report —
-instruments not yet cataloged in `refs/`, so no numbers are cited here
-(benchmark-survey discipline, same gate as mem0's LoCoMo).
+(2025-04 vintage) and points to a current "BEAM" 100K/10M-context report. BEAM is
+now cataloged ([2026-beam](../../refs/2026-beam.md), full read 2026-08-18): cognee's
+0.79-at-100K sits far above the BEAM paper's own best configurations (~0.36 average
+at 100K), so the vendor number needs eval-config reconciliation before it is
+repeated — and the report itself flags the 10M figure (0.67) as in-sample/exploratory.
 
 ## Surprises
 
@@ -134,11 +136,12 @@ instruments not yet cataloged in `refs/`, so no numbers are cited here
 
 ## Open questions
 
-- Catalog BEAM (`cognee/eval_framework/beam/REPORT.md`) and the archived comparative
-  evals in `refs/` before any vendor-number is cited — the kind now has three vendors
-  self-benchmarking (mem0: LoCoMo/LongMemEval; cognee: BEAM/HotpotQA; memos:
-  `evaluation/`), and no shared instrument. The instrument survey may be a better
-  next read than another vendor.
+- ~~Catalog BEAM before any vendor-number is cited~~ — done 2026-08-18
+  ([2026-beam](../../refs/2026-beam.md), plus [2024-locomo](../../refs/2024-locomo.md)
+  and [2025-longmemeval](../../refs/2025-longmemeval.md)). The catalog's cross-cutting
+  finding: all three instruments measure chat-assistant memory; **no coding-agent
+  memory benchmark exists**. Remaining: memos' `evaluation/` tree and the archived
+  HotpotQA comparative runs stay uncataloged.
 - Does the Claude Code plugin's hook capture actually call `save_interaction`, or the
   lower-level remember/HTTP API? (Determines whether *any* deployed path reaches rule
   extraction.) Requires cloning `cognee-integrations` — cheap if the loop question

@@ -1,5 +1,5 @@
 ---
-key: paperbench-2025
+key: 2025-paperbench
 title: "PaperBench: Evaluating AI's Ability to Replicate AI Research"
 authors: [OpenAI, et al.]
 year: 2025

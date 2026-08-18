@@ -112,7 +112,7 @@ The cleanest evidence predates the current tool wave. The SWE-agent paper (NeurI
 2024) held the model fixed and redesigned only the *interface* the agent works
 through — and moved SWE-bench Lite from 11.0% (bare Linux shell) to 18.0%, a +64%
 relative improvement from interface design alone
-([full read notes](../refs/swe-agent-2024.md)). The same paper contains my favorite
+([full read notes](../refs/2024-swe-agent.md)). The same paper contains my favorite
 negative result in the field: a search tool faithfully copied from *human* UI
 patterns scored **below having no search tool at all**. Tool existence is not tool
 value; a checkmark on a feature matrix can be negative.
@@ -173,7 +173,7 @@ constitution unenforced during implementation for eight months
 2026-07-28). Both frameworks I studied eventually grew small deterministic engines as
 escape hatches. Portability and enforcement power are the same tradeoff
 ([conclusion 7](../README.md#conclusions)) — a finding independently reproduced by a
-[six-framework academic study](../refs/from-prompt-to-process.md) using documentation
+[six-framework academic study](../refs/2026-from-prompt-to-process.md) using documentation
 analysis alone.
 
 The three tracked so far:

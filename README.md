@@ -145,7 +145,7 @@ note. Revised when evidence moves._
    margin? → [`experiments/01-gsd-vs-plain/`](experiments/01-gsd-vs-plain/README.md)
    **Status 2026-07-31 — under re-examination, issue #8.** A published n=128 ablation
    separates the two ingredients this conclusion credits jointly and finds post-phase
-   *validation* worth ~3× pre-phase *grounding* ([`refs/spec-kit-agents.md`](refs/spec-kit-agents.md)).
+   *validation* worth ~3× pre-phase *grounding* ([`refs/2026-spec-kit-agents.md`](refs/2026-spec-kit-agents.md)).
    Its headline is an LLM-judge score its own blinded human sample mildly contradicts, and it
    ran a different base model, so this is a competing decomposition rather than a refutation —
    but our n=1 does not support asserting the split either way.
@@ -172,7 +172,7 @@ note. Revised when evidence moves._
    same subjects reaches the same tradeoff — "no framework strongly covers all six dimensions
    … a structural trade-off between process depth and portability" — from documentation
    alone, where ours came from reading git history
-   ([`refs/from-prompt-to-process.md`](refs/from-prompt-to-process.md)). Two methods, one
+   ([`refs/2026-from-prompt-to-process.md`](refs/2026-from-prompt-to-process.md)). Two methods, one
    shape. Its GSD scores are also where our *run* evidence contradicts a docs-only reading.
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
@@ -267,7 +267,7 @@ note. Revised when evidence moves._
     miscounts, 0/3), and the two files *combined* interfered: grounding went
     checkbox-shallow in 3 of 3 runs. On our fails-closed binary instrument the
     decomposition is **grounding > gates > both** — the opposite direction from the
-    published LLM-judge ablation ([`refs/spec-kit-agents.md`](refs/spec-kit-agents.md)),
+    published LLM-judge ablation ([`refs/2026-spec-kit-agents.md`](refs/2026-spec-kit-agents.md)),
     recorded with both candidate attributions (instrument, model). Then tier 2: **plain
     Sonnet discovered 8.3/9 unprompted** — one model tier absorbed the instruction's
     entire measured value (P5's shrink-with-capability prediction, in the limit).

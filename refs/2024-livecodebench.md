@@ -1,13 +1,13 @@
 ---
-key: livecodebench-2024
+key: 2024-livecodebench
 title: "LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code"
 authors: [Naman Jain, King Han, Alex Gu, et al.]
 year: 2024
 venue: "ICLR 2025"
 peer_reviewed: true
 arxiv: 2403.07974
-citations: "1985 (306 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations: "1994 (309 influential) — Semantic Scholar"
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2403.07974
 kind: benchmark
 read_depth: abstract

@@ -1,5 +1,5 @@
 ---
-key: spec-kit-agents
+key: 2026-spec-kit-agents
 title: "Spec Kit Agents: Context-Grounded Agentic Workflows"
 authors: [Pardis Taghavi, Santosh Bhavani]
 year: 2026
@@ -7,12 +7,12 @@ venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2604.05278
 citations: "4 (0 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2604.05278
 kind: empirical-study
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/spec-kit-agents.pdf
+pdf: refs/pdf/2026-spec-kit-agents.pdf
 bears_on: [conclusion-6, exp-03, spec-kit]
 verdict: "closest prior art to exp-03 — ablates grounding vs validation at n=128, but its own blinded human check contradicts its LLM-judge headline, and the agent was MiniMax-M2.5"
 ---

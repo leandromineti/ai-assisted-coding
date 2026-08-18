@@ -1,5 +1,5 @@
 ---
-key: swebench-verified-2024
+key: 2024-swebench-verified
 title: "Introducing SWE-bench Verified"
 authors: [OpenAI, et al.]
 year: 2024

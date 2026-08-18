@@ -16,7 +16,7 @@ Conclusion 6 (n=1, exp-01) credits a workflow framework's quality margin to **em
 grounding and measured verification gates, jointly**. Exp-02 confirmed the complement
 (intent capture without measurement buys steering, not discovery) and its decision rule
 green-lit this experiment. Since then, a published n=128 ablation
-([`refs/spec-kit-agents.md`](../../refs/spec-kit-agents.md)) separated the two
+([`refs/2026-spec-kit-agents.md`](../../refs/2026-spec-kit-agents.md)) separated the two
 ingredients and found post-phase **validation worth ~3× pre-phase grounding** on an
 LLM-judge composite — a decomposition pointing *away* from conclusion 6's emphasis, with
 declared caveats (its own blinded human sample mildly contradicts the headline; different
@@ -33,7 +33,7 @@ binary instruments, that is a finding about the *judge*, not just the mechanisms
 So, two questions, one experiment:
 
 1. **Minimal-harness question** (exp-02's decision rule, confirmed unoccupied by the
-   field — [`refs/agent-frameworks-eval.md`](../../refs/agent-frameworks-eval.md) full
+   field — [`refs/2025-agent-frameworks-eval.md`](../../refs/2025-agent-frameworks-eval.md) full
    read found no framework-less control in $875 of published runs): does a harness
    reduced to grounding + gates alone — two prompt files, no ceremony — capture the
    layer-4 quality margin at near-plain cost?

@@ -1,13 +1,13 @@
 ---
-key: swe-bench-2023
+key: 2023-swe-bench
 title: "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?"
 authors: [Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, et al.]
 year: 2023
 venue: "ICLR 2024"
 peer_reviewed: true
 arxiv: 2310.06770
-citations: "3377 (530 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations: "3400 (535 influential) — Semantic Scholar"
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2310.06770
 kind: benchmark
 read_depth: abstract

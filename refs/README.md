@@ -24,7 +24,7 @@ they apply to source code. This is where that happens.
 | Path | What | Hand-kept? |
 |---|---|---|
 | `_template-ref-note.md` | the note template + frontmatter schema | yes |
-| `<citekey>.md` | one note per source; filename stem **is** the citekey | yes |
+| `<citekey>.md` | one note per source; filename stem **is** the citekey, shaped `<year>-<name>` (year first, per owner convention 2026-08-18; year = the frontmatter `year:` field) | yes |
 | `index.md` | catalog of every source, grouped by kind | **generated** |
 | `log.md` | append-only ingest log | append-only |
 | `pdf/` | local copies of the sources | gitignored |

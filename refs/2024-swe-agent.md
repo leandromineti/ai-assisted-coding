@@ -1,18 +1,18 @@
 ---
-key: swe-agent-2024
+key: 2024-swe-agent
 title: "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering"
 authors: [John Yang, Carlos E. Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik Narasimhan, Ofir Press]
 year: 2024
 venue: NeurIPS 2024
 peer_reviewed: true
 arxiv: 2405.15793
-citations: "1626 (160 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations: "1638 (161 influential) — Semantic Scholar"
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2405.15793
 kind: empirical-study
 read_depth: full   # main body + appendices A–B end to end; C (prompt listings) and D (case studies) surveyed at structure level
 retrieved: 2026-08-17
-pdf: refs/pdf/swe-agent-2024.pdf
+pdf: refs/pdf/2024-swe-agent.pdf
 bears_on: [conclusion-8, exp-03, taxonomy, metrics, design-principles]
 verdict: "the academic origin of this repo's layer-2 premise — the interface between agent and computer is a measurable capability layer, worth +64% relative over a bare shell with the SAME model; its ablation table is the earliest measured H3 evidence we hold (visibility shaping and execution gating each buy points), and its iterative-search result proves interfaces can SUBTRACT (worse than no tool at all); peer-reviewed, 2,294-instance scale"
 ---

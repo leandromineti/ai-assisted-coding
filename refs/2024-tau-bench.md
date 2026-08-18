@@ -1,18 +1,18 @@
 ---
-key: tau-bench
+key: 2024-tau-bench
 title: "τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains"
 authors: [Shunyu Yao, Noah Shinn, Pedram Razavi, Karthik Narasimhan]
 year: 2024
 venue: ICLR 2025
 peer_reviewed: true
 arxiv: 2406.12045
-citations: "965 (129 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations: "979 (133 influential) — Semantic Scholar"
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2406.12045
 kind: benchmark
 read_depth: extract
 retrieved: 2026-07-31
-pdf: refs/pdf/tau-bench.pdf
+pdf: refs/pdf/2024-tau-bench.pdf
 task_shape: dialogue
 task_count: 165
 task_source: hand-authored (τ-retail 115 + τ-airline 50)

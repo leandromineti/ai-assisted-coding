@@ -1,5 +1,5 @@
 ---
-key: lost-in-simulation
+key: 2026-lost-in-simulation
 title: "Lost in Simulation: LLM-Simulated Users are Unreliable Proxies for Human Users in Agentic Evaluations"
 authors: [Preethi Seshadri, Samuel Cahyawijaya, Ayomide Odumakinde, Sameer Singh, Seraphina Goldfarb-Tarrant]
 year: 2026
@@ -7,12 +7,12 @@ venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2601.17087
 citations: "25 (3 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2601.17087
 kind: critique
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/lost-in-simulation.pdf
+pdf: refs/pdf/2026-lost-in-simulation.pdf
 bears_on: [exp-03, metrics, methodology-8]
 verdict: "the reason to prefer a rule-based simulator: swapping only the user LLM moves measured agent success by 9pp, and simulated users are systematically miscalibrated against real humans"
 ---

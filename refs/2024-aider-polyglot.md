@@ -1,5 +1,5 @@
 ---
-key: aider-polyglot-2024
+key: 2024-aider-polyglot
 title: "o1 tops aider's new polyglot leaderboard (the polyglot benchmark construction post)"
 authors: [Paul Gauthier]
 year: 2024

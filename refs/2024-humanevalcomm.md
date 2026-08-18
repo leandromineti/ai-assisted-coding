@@ -1,5 +1,5 @@
 ---
-key: humanevalcomm
+key: 2024-humanevalcomm
 title: "HumanEvalComm: Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agents"
 authors: [Jie JW Wu, Fatemeh H Fard]
 year: 2024
@@ -7,12 +7,12 @@ venue: ACM TOSEM 34(7)
 peer_reviewed: true
 arxiv: 2406.00215
 citations: "34 (1 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2406.00215
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against the HTML full text
 retrieved: 2026-08-17
-pdf: refs/pdf/humanevalcomm.pdf
+pdf: refs/pdf/2024-humanevalcomm.pdf
 task_shape: function-level
 task_count: 762
 task_source: "HumanEval's 164 problems, degraded into variants: 1a ambiguity 164 · 1c inconsistency 164 · 1p incompleteness 164 · 2ac 162 · 2ap 74 · 2cp 34"

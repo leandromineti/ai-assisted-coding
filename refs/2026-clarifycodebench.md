@@ -1,5 +1,5 @@
 ---
-key: clarifycodebench
+key: 2026-clarifycodebench
 title: "ClarifyCodeBench: Evaluating LLMs on Clarifying Ambiguous Requirements for Code Generation"
 authors: [unverified]
 year: 2026
@@ -7,12 +7,12 @@ venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2607.00711
 citations: "1 (0 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2607.00711
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against abstract + HTML full text
 retrieved: 2026-08-17
-pdf: refs/pdf/clarifycodebench.pdf
+pdf: refs/pdf/2026-clarifycodebench.pdf
 task_shape: function-level
 task_count: 419
 task_source: "LiveCodeBench v6 problems, manually annotated: 199 with one ambiguity, 169 with two, 51 with three"

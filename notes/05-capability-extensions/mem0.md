@@ -44,9 +44,15 @@ artifact.
 - The **memory kind's** SDK/API-facing seed (bucket index, kind added 2026-08-18) —
   the shape comparison against ai-memory is the kind's first real question: does
   coding-agent memory want a retrieval service or a readable wiki?
-- Self-benchmarking makes it refs-relevant: LoCoMo/LongMemEval are memory benchmarks
-  the benchmark survey hasn't cataloged — vendor-reported numbers, so any citation
-  needs the instrument read first.
+- Self-benchmarking makes it refs-relevant — and the instruments are now cataloged
+  ([2024-locomo](../../refs/2024-locomo.md), [2025-longmemeval](../../refs/2025-longmemeval.md),
+  both full reads 2026-08-18). First grading pass on the README claims: mem0's
+  "LoCoMo 92.5" is *above the LoCoMo paper's measured human baseline* (87.9 overall
+  F1, Table 2) and ~2.4× its best model score (37.8) — so the vendor number cannot be
+  on the paper's own metric as published; a mem0 read must reconcile the scoring
+  scheme (likely LLM-judge, not the paper's F1) before the number is repeated. Both
+  instruments measure social/chat-assistant memory — zero coding content — so even a
+  reconciled score wouldn't ground coding-harness claims.
 - Bucket-membership edge case worth watching: an SDK you *build into an app* is not
   obviously "installed into a harness" — its claim to this bucket runs through the
   skill/plugin integrations, not the SDK itself.

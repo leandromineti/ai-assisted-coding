@@ -1,5 +1,5 @@
 ---
-key: from-prompt-to-process
+key: 2026-from-prompt-to-process
 title: "From Prompt to Process: a Process Taxonomy and Comparative Assessment of Frameworks Supporting AI Software Development Agents"
 authors: [Sanderson Oliveira de Macedo]
 year: 2026
@@ -7,12 +7,12 @@ venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2606.04967
 citations: "0 (0 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2606.04967
 kind: survey
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/from-prompt-to-process.pdf
+pdf: refs/pdf/2026-from-prompt-to-process.pdf
 bears_on: [conclusion-7, conclusion-6, taxonomy, gsd-core, spec-kit, openspec, methodology-8]
 verdict: "independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep"
 ---

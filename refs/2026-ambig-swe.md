@@ -1,5 +1,5 @@
 ---
-key: ambig-swe
+key: 2026-ambig-swe
 title: "Ambig-SWE: Interactive Agents to Overcome Underspecificity in Software Engineering"
 authors: [Sanidhya Vijayvargiya, Xuhui Zhou, Akhila Yerukola, Maarten Sap, Graham Neubig]
 year: 2026
@@ -7,12 +7,12 @@ venue: ICLR 2026
 peer_reviewed: true
 arxiv: 2502.13069
 citations: "27 (3 influential) — Semantic Scholar"
-citations_at: 2026-08-17
+citations_at: 2026-08-18
 url: https://arxiv.org/abs/2502.13069
 kind: benchmark
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/ambig-swe.pdf
+pdf: refs/pdf/2026-ambig-swe.pdf
 task_shape: repo-issue
 task_count: 500
 task_source: SWE-Bench Verified, underspecified variants via GPT-4o
