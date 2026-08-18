@@ -93,6 +93,23 @@ isn't re-derived later:
 | microsoft/amplifier | 3k | Too small; watchlist |
 | Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |
 
+## Spec-Driven Development (SDD)
+
+*(Added 2026-08-18 — the term was already load-bearing in the reports but defined nowhere.)*
+
+**SDD** names the layer-4 sub-family whose organizing artifact is the **specification**:
+written first, machine-validated, and treated as the *generator* of the implementation
+rather than documentation that guides it. The term is vendor-coined — it is
+[spec-kit's own branding](spec-kit.md) — but third-party usage has settled on a
+recognizable set, the "2026 SDD trio": **BMAD / spec-kit / OpenSpec** (so named in the
+[OpenSpec report](openspec.md)). Of the trio, this repo tracks two (spec-kit, OpenSpec —
+the ceremony and lean poles respectively) and holds BMAD first in line above.
+
+SDD is a sub-family, not the layer: **GSD is layer 4 without being SDD** — its organizing
+artifact is the task graph and its enemy is context bloat, not under-specified intent.
+That is the same split "the shared bet" below describes without naming: where a framework
+locates the failure (intent vs. context) determines whether it is SDD.
+
 ## The shared bet
 
 Both wager that **agents fail from insufficient structure, not insufficient intelligence** —
