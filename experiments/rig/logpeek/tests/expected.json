@@ -1,0 +1,80 @@
+{
+  "svc_orders.log": {
+    "sha256": "2d2629a7258defa33e702b610fd6a6025347daffd3e934ef8822ed877ee9a6f2",
+    "total_lines": 23,
+    "parseable_events": 20,
+    "levels": {
+      "CRITICAL": 1,
+      "DEBUG": 3,
+      "ERROR": 4,
+      "INFO": 7,
+      "WARNING": 5
+    },
+    "first_epoch": 1762071247.0,
+    "last_epoch": 1780858800.0,
+    "top_logger": "orders.payment"
+  },
+  "enc_gateway.log": {
+    "sha256": "cb829453d3944a52d323bf635450f1ec8e41f0913e969dc96af9bd4ad3fd26c8",
+    "total_lines": 11,
+    "parseable_events": 11,
+    "levels": {
+      "DEBUG": 2,
+      "ERROR": 3,
+      "INFO": 4,
+      "WARNING": 2
+    },
+    "first_epoch": 1775808000.0,
+    "last_epoch": 1775808600.0,
+    "top_logger": "gw.push"
+  },
+  "old_scheduler.log": {
+    "sha256": "1e3ee582997f73e740adbcec0c3088067ed4280f700bc38f21fcb4e02ecb7405",
+    "total_lines": 9,
+    "parseable_events": 9,
+    "levels": {
+      "DEBUG": 1,
+      "ERROR": 2,
+      "INFO": 4,
+      "WARNING": 2
+    },
+    "first_epoch": 0.0,
+    "last_epoch": 4294967295.0,
+    "top_logger": "sched.core"
+  },
+  "mixed_bus.log": {
+    "sha256": "d95ab76691597804bfad74a0674aae1f4a661f54760cb504cc837aa9b656b281",
+    "total_lines": 12,
+    "parseable_events": 12,
+    "levels": {
+      "DEBUG": 3,
+      "ERROR": 2,
+      "INFO": 5,
+      "WARNING": 2
+    },
+    "first_epoch": 1777600000.0,
+    "last_epoch": 1777630320.0,
+    "top_logger": "bus.ingest"
+  },
+  "ro_dir/ro_events.log": {
+    "sha256": "1eabeec1d96cd9916fde281a8a003451b39b6b8f872b64541fbf3752ec4804ff",
+    "total_lines": 5,
+    "parseable_events": 5,
+    "levels": {
+      "ERROR": 2,
+      "INFO": 3
+    },
+    "first_epoch": 1782864000.0,
+    "last_epoch": 1782864240.0,
+    "top_logger": "ro.svc"
+  },
+  "notalog.bin": {
+    "sha256": "a9c8a46924afca4e56d7d0dc843f8d78c0e821bbdaa0e303b2607fa55aa7d799"
+  },
+  "empty_hidden.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "total_lines": 0,
+    "parseable_events": 0,
+    "levels": {}
+  }
+}
