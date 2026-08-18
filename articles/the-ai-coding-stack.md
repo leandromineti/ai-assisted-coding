@@ -178,8 +178,9 @@ analysis alone.
 
 The three tracked so far:
 
-- **spec-kit** (GitHub) — spec-driven development; 44 harness integrations at
-  the commit read; survey read.
+- **spec-kit** (GitHub) — spec-driven development; 37 registered harness
+  integrations at the commit read (an earlier "44" count did not reproduce when
+  the source was traced, 2026-08-18); deep-dive read.
 - **OpenSpec** (Fission AI) — 29 harness adapter modules in its command
   generation; deep-dive read.
 - **GSD** (Open GSD) — an operating loop whose stated enemy is context bloat;

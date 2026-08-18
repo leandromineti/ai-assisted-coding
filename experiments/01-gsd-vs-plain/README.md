@@ -146,3 +146,16 @@ developer finishes in an afternoon without writing a plan.
   a probe, not a proof — the point is a first honest data point and a reusable protocol.
 - The orchestrator answers GSD's discovery questions itself (logged), which understates
   the value GSD gets from a genuinely engaged human.
+
+## Post-run note — 2026-08-18 (probe-reachability finding from the gsd-core deep-dive)
+
+*(Dated, appended post-run per rule 5; the protocol and results above are untouched.)*
+
+The 2026-08-18 gsd-core deep-dive found that GSD's spec-phase edge/prohibition probes
+were unreachable dead prose from 2026-06-12 to 2026-07-31 — including at this
+experiment's pin (d04592de, 2026-07-28). This does **not** touch the empirical-grounding
+credit assigned above: the measured behavior observed here (fixture repos, crafted
+commits, timezone probes) came from the researcher/planner instructions, which were
+live. It does mean any reading of this experiment that attributes grounding to the
+*spec-phase probe steps* specifically would be wrong — they could not have executed at
+this pin. Details: [`notes/04-workflow-frameworks/gsd-core.md`](../../notes/04-workflow-frameworks/gsd-core.md).

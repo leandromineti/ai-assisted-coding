@@ -1,6 +1,6 @@
 # Layer 4 — Workflow frameworks
 
-`checked: 2026-07-28`
+`checked: 2026-08-18`
 
 An encoded **methodology** riding on top of a harness. Runtime is to framework as harness
 is to this. See [`../../taxonomy.md`](../../taxonomy.md).
