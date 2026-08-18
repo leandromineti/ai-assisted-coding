@@ -94,6 +94,11 @@ judgment, zero hooks. Portability is anti-translation: byte-identical Agent Skil
 to 47 platform codes (22 distinct dirs, 26 sharing `.agents/skills/`) — no translation to
 degrade; the real price is a hand-forked 6-skill `web-bundles/`. The layer's purest
 large-scale model-trust bet, falsifiable by exp-01's mechanism finding.
+Companion: [**bmad-loop**](bmad-loop.md) *(stubbed 2026-08-18)* — the ecosystem's
+enforcement, sold separately: a deterministic Python orchestrator ("No LLM in the
+control loop") with the tracked ecosystem's first **engine-graded measured and process
+gates**; drives claude/codex/gemini/copilot/antigravity sessions via tmux + harness
+hooks. Even there, retro→plan stays roadmap.
 
 ### Stubs — promoted from the ledger (2026-08-18)
 

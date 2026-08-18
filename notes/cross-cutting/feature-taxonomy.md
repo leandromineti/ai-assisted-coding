@@ -100,7 +100,7 @@ features:
     applies_to: [4]
     definition: "acceptance criteria with measured expected values (behavior, not format); GRADED per ADR-0011: engine | hook | script | prose | true | false"
     kind_link: hook
-    note: "the ECC finding — deliverable as installable layer-5 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the layer's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts"
+    note: "the ECC finding — deliverable as installable layer-5 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the layer's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts. bmad-loop stub 2026-08-18: first engine-graded value in the registry — policy-defined verify commands executed and judged by the orchestrator (verify.py:2661, engine.py:2037-2040); in BMAD's companion orchestrator, not the framework"
   - id: process_gates
     block: workflow_features
     applies_to: [4]

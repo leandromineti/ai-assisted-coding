@@ -200,7 +200,13 @@ note. Revised when evidence moves._
    artifact copied to 47 platform codes (22 distinct dirs; 26 share the
    `.agents/skills/` convention), so there is no degradation gradient to measure; the
    price surfaces instead as a hand-forked, runtime-stripped 6-of-29-skill
-   `web-bundles/` for chat platforms, quarantined outside the mechanism. →
+   `web-bundles/` for chat platforms, quarantined outside the mechanism. The
+   same-day [bmad-loop stub](notes/04-workflow-frameworks/bmad-loop.md) completes the
+   shape: the ecosystem's companion orchestrator holds the tracked layer's first
+   **engine-graded measured and process gates** ("No LLM in the control loop") — so
+   "no framework yet has an engine-graded measured or process gate" stays true
+   precisely because BMAD ships those gates outside the framework, in the escape
+   hatch productized. →
    [`notes/04-workflow-frameworks/bmad-method.md`](notes/04-workflow-frameworks/bmad-method.md)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in

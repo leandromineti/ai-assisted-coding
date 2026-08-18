@@ -12,7 +12,7 @@ first_commit: 2025-04-13
 stars: 52030
 stars_at: 2026-08-18
 read_at: 2026-08-18   # deep-dive, same day and same pin as the stub — promoted stub → deep-dive directly; the read did the survey's work en route
-depth: deep-dive   # 2026-08-18: source traced by three parallel readers at the pin (routing spine + plan/ship pipeline; gates/runtime/personas; installer/portability), load-bearing claims spot-verified in main session
+depth: deep-dive   # 2026-08-18: source traced by three parallel readers at the pin (routing spine + plan/ship pipeline; gates/runtime/personas; installer/portability), load-bearing claims spot-verified in main session; install RUN-probed same day in a node:22 container (npm 6.11.0 = the pin's release tag, 29 commits behind the pin)
 harness_targets: "47 platform codes @ 86beb065 (tools/installer/ide/platform-codes.yaml) — but only 22 distinct target dirs, and 26 of the 47 share the `.agents/skills/` cross-tool convention; 4 marked preferred (claude-code, codex, cursor, github-copilot); none deprecated or suspended at the pin"
 workflow_features:   # deep-dive 2026-08-18; gates graded per ADR-0011
   intent_pipeline: true          # brief/prfaq → prd → ux → architecture → spec → epics → sprint-status.yaml → spec-{slug}.md; two handoffs machine-readable (spec `companions:` frontmatter, sprint-status keys), the rest filename-glob discovery + prose "Common next" pointers
@@ -29,8 +29,9 @@ workflow_features:   # deep-dive 2026-08-18; gates graded per ADR-0011
 # BMAD-METHOD
 
 "Agile AI Driven Development": an encoded delivery methodology installed as Agent Skills
-into the user's harness via `npx bmad-method install`. 29 real skills (49 `SKILL.md` minus
-20 deprecated shims; fresh installs get 29 — `shim-policy.js:96`), ~123k words of
+into the user's harness via `npx bmad-method install`. 29 real skills plus
+20 deprecated shims (49 `SKILL.md` total; the source predicts fresh installs get 29 —
+`shim-policy.js:96` — but the run probe below observed all 49 installed), ~123k words of
 methodology prose (12,185 lines across 182 markdown files in `src/`), a ~2.6k-line Python
 script layer the skills call at runtime, and a 10.4k-line Node installer. 52k stars in
 ~16 months. MIT but trademarked (TRADEMARK.md, "BMad Code, LLC") — open method, protected
@@ -173,9 +174,11 @@ Module ecosystem: only `core` + `bmm` are in-repo; Builder, Creative Intelligenc
 Test Architect, Game Dev Studio, and — most significantly — the entire unattended
 orchestration loop (`bmad-loop`, with its hooks and orchestrator binary) live in separate
 repos, resolved by shallow git clone + `npm install`. Claude Code install footprint:
-everything lands in the project (`_bmad/` + `.claude/skills/`, every skill written
-twice); nothing touches `~/.claude` or settings/hooks/MCP config unless a global install
-is chosen.
+everything lands in the project — `.claude/skills/` (3.0M) plus a light `_bmad/` (196K:
+config, manifests, 5 shared scripts, per-module help CSVs); nothing touches `~/.claude`
+or settings/hooks/MCP config unless a global install is chosen. *(Corrected by the run
+probe: the source-read prediction that every skill is written twice under
+`_bmad/<module>/` did not reproduce — skills land once, under the platform dir.)*
 
 ## The learning loop closes into tracking, not planning
 
@@ -207,6 +210,29 @@ in full" (`bmad-create-story`, `bmad-dev-story`): the older story-centric dev lo
 ships whole alongside the newer spec-centric `bmad-build` flow — the clearest marker of
 the transition, and the same two-generations seam the ceremony section describes.
 
+## Run probe — 2026-08-18 (rule 8: docs/source/run closed same day)
+
+`npx -y bmad-method@latest install --yes --tools claude-code` in a clean `node:22-slim`
+container (npm delivered 6.11.0, the pin's release tag — 29 commits behind the pin), git
+repo initialized, no `uv`/python on PATH. Findings, read from artifacts:
+
+- **The first attempt was a rule-5e specimen**: `--yes` still stopped at an interactive
+  "Installation directory:" prompt, the process exited 0, and *nothing was installed*
+  (empty footprint, 0 skills). `--directory <path>` is required for a truly
+  non-interactive run. A harness reading exit status would have called this a success.
+- **49 skill directories installed, not the predicted 29** — every deprecated shim
+  included, under `--yes` defaults. The `shim-policy.js:96` inference ("fresh installs
+  default shims off") does not describe the observed non-interactive path. Source
+  prediction, falsified by the artifact; not re-traced — recorded as observed.
+- **Footprint**: `.claude/skills/` 3.0M (49 dirs, per-skill `scripts/` included —
+  `sprint_plan.py` lands inside `bmad-sprint-planning/scripts/`, with its tests);
+  `_bmad/` 196K (manifests incl. `manifest.yaml` recording version/date/ides, 5 shared
+  scripts, module config + help CSVs). No skill duplication. `~/.claude` untouched.
+- **The uv warning behaves as documented**: a prominent "REQUIRED: uv" panel including
+  the instruction to "ask your AI agent to install and set up uv for me"; the install
+  completes without it, exactly as `uv-check.js` promises — 49 perfectly-copied skills
+  whose build/plan flows would HALT on activation.
+
 ## My take
 
 The most interesting thing about BMAD at this pin is that it is **mid-molt, and every
@@ -236,17 +262,20 @@ staying *maximally* prose-governed.
 
 ## Open questions
 
-- **Does `bmad-loop` actually close the loops this repo designs for?** Both the retro
-  `verdict:` frontmatter and the ecosystem's only hooks point at that external module.
-  A stub-level read of `bmad-code-org/bmad-loop` would settle whether the enforcement
-  story changes when the orchestrator is present.
-- **Is the long platform tail real?** `platform-codes.yaml` claims hand-verification
-  "as of 2026-04-25" with no per-entry evidence. Sampling 3–4 obscure entries (`bob`,
-  `adal`, `codewhale`) against those tools' docs would test whether the tail is verified
-  or aspirational.
+- ~~**Does `bmad-loop` actually close the loops this repo designs for?**~~ *Answered
+  same day at stub depth — [report](bmad-loop.md): the enforcement story inverts
+  wholesale (engine-graded measured and process gates, "No LLM in the control loop"),
+  but the retro-verdict consumer does not exist there either — retro items are parsed
+  and explicitly "not yet driven as work" (roadmap). Learn → Plan stays unshipped
+  ecosystem-wide.*
+- ~~**Is the long platform tail real?**~~ *Sampled same day: `bob`, `adal`,
+  `codewhale` all resolve to real tools whose public docs document exactly the claimed
+  skills directories (IBM Bob: project `.bob/skills` + global `~/.bob/skills`; AdaL
+  `~/.adal/skills`; CodeWhale `~/.codewhale/skills`). 3/3 — the tail reads as verified,
+  not aspirational.*
 - **Is the one-shot route ever taken in practice?** The tiebreak text biases against it;
   source can only show the fork exists. A live-run probe (rule 8) would need a real
   project and both a trivial and a non-trivial change.
-- **Install not executed** — the footprint section derives from installer source; no
-  `node` on this host at read time. A container run would confirm the 29-skill count and
-  exact file list.
+- ~~**Install not executed**~~ *Run same day in a node:22 container — see the run-probe
+  section: 49 skills (not 29), no `_bmad/` skill duplication, `--yes` alone is not
+  non-interactive.*
