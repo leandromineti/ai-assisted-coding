@@ -1,0 +1,8 @@
+README.md
+logpeek.py
+setup.py
+logpeek.egg-info/PKG-INFO
+logpeek.egg-info/SOURCES.txt
+logpeek.egg-info/dependency_links.txt
+logpeek.egg-info/entry_points.txt
+logpeek.egg-info/top_level.txt

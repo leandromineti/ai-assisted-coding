@@ -106,3 +106,45 @@ Appended live during runs, never reconstructed (methodology rule 5). Protocol:
   Arm projection at P4's cap (≤2× band median $0.31): 3 × ≤$0.62 ≈ $1.9 worst
   case → cumulative ≈$4.8, **over the ceiling**. Per amendment 1, arms WAIT for
   a top-up approval.
+
+## 2026-08-18 — arm top-up approval + order roll
+
+- **Top-up approval (owner, 2026-08-18, verbatim): "Approve top-up to $5.50
+  (Recommended)"** — selected from the in-session spend prompt after the band-v2
+  budget projection. Tier-1 ceiling now $5.50.
+- `01:1xZ` — arm order die roll (shuf 1–6, mapping fixed before the roll:
+  1=G,V,GV · 2=G,GV,V · 3=V,G,GV · 4=V,GV,G · 5=GV,G,V · 6=GV,V,G):
+  **rolled 1**.
+
+## 2026-08-18 — scored arms (order per die roll: G, V, G+V) + extensions
+
+All arms: fresh container, Haiku 4.5, prompt verbatim + pointer line(s) to the
+harness file(s) copied into /app, fully autonomous — **zero blocking questions
+across all 7 arm runs** (the fixed-oracle path was never exercised).
+
+| run | turns | cost | /23 | disc /9 | func /8 | compliance |
+|---|---|---|---|---|---|---|
+| arm-g | 48 | $0.2950 | **20** | **8** | 8 | MEASUREMENTS.md real (probe outputs, malformed inventory, format analysis) |
+| arm-v | 66 | $0.3922 | 17 | 6 | 7 | check.sh + GATELOG.md, induced-bug proof recorded |
+| arm-v-2 | 57 | $0.3083 | 16 | 6 | 7 | ditto |
+| arm-v-3 | 61 | $0.3538 | 14 | 5 | 6 | ditto |
+| arm-gv | 61 | $0.3968 | 14 | 5 | 6 | all three artifacts present |
+| arm-gv-2 | 62 | $0.3653 | 13 | 5 | 5 | ditto |
+| arm-gv-3 | 59 | $0.3858 | 14 | 5 | 5 | ditto |
+
+- Extension rule fired for **G+V** (first run landed exactly on the band max 14/23,
+  disc 5/9) and **V** (disc 6 vs band max 5) → both re-run to n=3. **G-only cleared
+  the boundary by 3 checks (no extension mandated; n=1 stands, declared).**
+- **Group means:** band 12.2 total / 4.0 disc / 4.4 func · G-only 20 / 8 / 8 ·
+  V-only 15.7 / 5.7 / 6.7 · G+V 13.7 / 5.0 / 5.3. Costs: band median $0.309;
+  G 0.95×, V 1.14×, G+V 1.24× band median — all far under P4's 2× cap.
+- **Mechanism evidence:** G+V's MEASUREMENTS.md mentions the buried epoch format in
+  **0 of 3 runs** (grep: epoch/unix/1767/relay.legacy — zero hits; arm-g's hits);
+  no G+V run passed any T2 content check. The gates arms discovered **crash-class**
+  traps (T1 3/3 in all three runs, via running check.sh over the full corpus) but
+  never the **silent-miscount** class (T2c/T2d 0/3).
+- **Satisfiability caveat (declared pre-run):** `t2b` and `t3c` passed in **0 of
+  17 runs** across the whole experiment — flagged as possibly-unpassable for this
+  tier; a post-run oracle or tier 2 will settle them. All other checks passed
+  somewhere (band or arms), proving them satisfiable.
+- Tier-1 total spend: **$5.3992** of the $5.50 topped-up ceiling.

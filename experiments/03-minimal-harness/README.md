@@ -334,3 +334,68 @@ affordance beats instruction.** A visible, cheaply-readable domain induces
 grounding in plain agents without being told — the grounding *instruction* can only
 matter when measurement has nontrivial cost. Dated, transcript-backed, band v1
 artifacts.
+
+---
+
+## Results — tier 1, Haiku 4.5 (2026-08-18; protocol and amendment above untouched)
+
+Full run-by-run detail in [`log.md`](log.md). Band v1 saturated and was voided
+(amendment 1); everything below is against the v2 buried-trap corpus. n per arm as
+shown; the n=5 band is the reference frame. **Zero blocking questions in any run** —
+the attention-split instrument recorded nothing to price.
+
+| group | total /23 | discoverable /9 | functional /8 | cost vs band median |
+|---|---|---|---|---|
+| plain band (n=5) | 7–14, mean 12.2 | 2–5, mean 4.0 | 0–6, mean 4.4 | 1.0× ($0.309) |
+| **G-only (n=1)** | **20** | **8** | **8** | 0.95× |
+| V-only (n=3) | 14–17, mean 15.7 | 5–6, mean 5.7 | 6–7, mean 6.7 | 1.14× |
+| G+V (n=3) | 13–14, mean 13.7 | 5, mean 5.0 | 5–6, mean 5.3 | 1.24× |
+
+**Preregistered verdicts:**
+
+- **P1 (grounding buys discovery): SUPPORTED for G-only, with the n=1 caveat** —
+  8/9 discoverable vs band mean 4.0, three checks above the band's best draw; it
+  found the buried epoch format no plain run found. **Not supported for G+V**: mean
+  5.0 exceeds the band mean but never its max — the grounding effect vanished in
+  combination (see the interference finding).
+- **P2 (gates: containment, not discovery): the containment clause holds, the
+  no-discovery clause is falsified in an instructive way.** Functional 6.7 ≥ band
+  4.4 ✓, and GATELOG.md shows gate-triggered fixes. But V-only sat *above* the band
+  on discoverables (5.7 vs 4.0; two of three runs above the band max): running your
+  own tool over the full corpus **is** a discovery mechanism — for **crash-visible**
+  traps (encoding: T1 3/3 in every V run). It never found the **silent-miscount**
+  class (buried epoch lines: T2c/T2d 0/3). Gates discover what fails loudly; only
+  measurement discovers what fails silently.
+- **P3 (decomposition): on binary instruments, grounding > validation — the
+  opposite direction from the published LLM-judge ablation.** G-only (20) >
+  V-only (15.7) on totals, 8 vs 5.7 on discoverables. Per the preregistration,
+  conclusion 6's decomposition survives its first adversarial test, and the
+  divergence from spec-kit-agents' +1.71%-validation result is recorded with both
+  candidate attributions: instrument (binary verifier vs LLM judge) and/or base
+  model (Haiku vs MiniMax-M2.5). G-only's n=1 tempers the strength, not the
+  direction: G+V and V (n=3 each) bracket it below.
+- **P4 (cost): SUPPORTED.** Every arm ≤1.24× band median — the minimal harness is
+  effectively free, against spec-kit's measured 7.8×.
+- **P5 (tier sensitivity): pending tier 2.**
+
+**Unpredicted finding — instruction interference (the tier-1 headline):** G+V
+(13.7) landed *below both single arms* and at the plain band's ceiling. At n=3 the
+signature is uniform: no G+V run discovered the buried format, and no G+V
+`MEASUREMENTS.md` so much as mentions epochs — the grounding step went
+checkbox-shallow whenever the gates instruction was also present, while arm-g's
+solo grounding produced real probe records and the discovery. At this tier,
+stacking process instructions *diluted* the mechanism each carries alone. This is
+P5-adjacent (weaker models may be hurt most by combined process) and is exactly
+what tier 2 can test.
+
+**Instrument caveats, declared:** `t2b` and `t3c` passed in 0 of 17 runs —
+satisfiability unproven under the no-oracle rule; every other check passed
+somewhere. T5a/F7 failures correlate with the undiscovered epoch format (the tool
+errors on the hidden pure-B file inside those checks); the preregistered subsets
+were not reclassified mid-run.
+
+**Tier-2 trigger:** per protocol item 5, tier 1 shows non-null effects on a
+discriminating instrument → the Sonnet 5 tier is warranted; it requires its own
+spend approval, re-estimated from tier-1 actuals (Sonnet ≈2–3× Haiku per run:
+estimate ≈$4–7 for band + arms + extensions). Tier-1 spend: **$5.40** (v1 band
+$1.39 + v2 band $1.50 + smoke $0.02 + arms $2.50).
