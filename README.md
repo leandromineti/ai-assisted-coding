@@ -265,3 +265,17 @@ note. Revised when evidence moves._
     one check (t3c) went 0/20 with satisfiability unproven. →
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
     [`notes/cross-cutting/layer-2-program.md`](notes/cross-cutting/layer-2-program.md)
+
+## License
+
+Dual-licensed by content kind:
+
+- **Code** — the scripts (`scripts/`), experiment rigs, fixtures, verifiers, and any
+  other executable content: [MIT](LICENSE).
+- **Prose** — the notes, refs, articles, experiment write-ups, and the
+  taxonomy/methodology/design-principles documents:
+  [CC BY 4.0](LICENSE-CC-BY-4.0) — reuse freely with attribution to Leandro
+  Brioschi Mineti, linking back to this repository.
+
+Cloned upstream sources (`upstream/`, gitignored) and cached papers (`refs/pdf/`,
+gitignored) belong to their respective owners and are not covered by either grant.
