@@ -1,6 +1,6 @@
 # Layer 2 — Harnesses
 
-`checked: 2026-08-12`
+`checked: 2026-08-18`
 
 Loop + context assembly + permission model + UI. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -37,6 +37,7 @@ web-as-interface with remote-as-execution:
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
 | [**Warp**](warp.md) | Warp (warpdotdev) | terminal · desktop · web (wasm) | local + async (cloud runs) | A terminal that became a harness — and then an orchestrator of other harnesses: Claude Code, Codex, Gemini CLI, and OpenCode are selectable backends for its child agents. AGPL-3.0, source-opened 2026-04-28. The only indexed context assembly in the set (embedding chunkers, consent-gated). Surveyed 2026-08-11. |
+| **DeepSeek Harness** (`dsh`) | DeepSeek | web (locally served UI) | local | Registered 2026-08-18, README level only — no report yet. Vendor-native, open source (MIT, TypeScript), in *developer preview*: "everything is a plugin" on the Cordis framework, launched as a local web UI (`npx @deepseek-ai/dsh web`). 159.6k stars in **five days** (created 2026-08-13; fetched 2026-08-18) — the fastest adoption ramp in the study. Already a memory-kind install target (memos ships a `dsh` plugin with background capture + auto-recall, per its stub). Backlog: issue #19. |
 | [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-3 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
