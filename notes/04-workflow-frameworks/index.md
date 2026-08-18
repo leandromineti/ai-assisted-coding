@@ -77,25 +77,12 @@ Stop hooks (a layer-5 delivery vehicle for the mechanism exp-01 credited to laye
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
 outside layer 4 proper.
 
-## Considered, not added (2026-07-28)
+## Candidates
 
-From the same web + GitHub-API sweep (stars as of 2026-07-28), recorded so the reasoning
-isn't re-derived later:
-
-| Candidate | Stars | Why not (yet) |
-|---|---|---|
-| BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if layer-4 scope expands; would make a good ceremony-pole test subject |
-| hermes-agent (`NousResearch`) | 222k | A layer-2 harness, not a framework (spec-kit installs *into* it). Queued on the layer-2 backlog: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) |
-| claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (layer-5 bleed dominant) |
-| SuperClaude_Framework | 24k | Single-harness (Claude Code only) — fails the layer-4 portability test; useful as the boundary counterexample |
-| wshobson/agents | 38k | Multi-harness plugin *marketplace* — layer-5 distribution, no methodology |
-| agent-os (`buildermethods`) | 5k | Too small, quieting since 2026-05 |
-| microsoft/amplifier | 3k | Too small; watchlist |
-| Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |
-| Conductor (`gemini-cli-extensions`) | 3.7k *(2026-08-18)* | Added 2026-08-18. Google-org SDD plugin ("measure twice, code once"; Context → Spec & Plan → Implement) installing into Antigravity and Claude Code — passes the portability test on paper and would extend the [SDD set](#spec-driven-development-sdd) beyond the trio. Young (created 2025-12-17) and plugin-distributed (layer-5 delivery vehicle, like ECC's hooks). Queue behind BMAD |
-| pilot-shell (`maxritter`) | 2.0k *(2026-08-18)* | Added 2026-08-18. Has a real process spine (spec-driven `/prd` → `/spec` with enforced TDD → `/build` judge loops), targets two harnesses (Claude Code primary + Codex) — passes the portability test, barely. Held back by ECC-shaped platform sprawl around the spine (bot, console, semantic search, code graph, own binary — spine-or-catalog needs a source read), youth (2025-10, 2k stars, 95% single-author), and a custom all-rights-reserved EULA (only non-OSI candidate here; check clone/read terms before ingesting) |
-| spec-kitty (`Priivacy-ai`) | 1.5k *(2026-08-18)* | Added 2026-08-18. SDD, and literally a **spec-kit derivative** — carries spec-kit's commit history and `.specify` constitution layout (the `localden` commits in its log are imported history), then extends the pipeline toward a "governed software factory": work packages in kanban lanes, parallel agents in isolated git worktrees (layer-3 bleed), review/accept/merge gates, per-mission retrospectives, `dispatch` governance records. Genuinely multi-maintainer (two leads, ~8k commits) — rare in this table. Why not yet: derivative of an already-tracked seed, so marginal new mechanism per read-hour vs BMAD; young (2025-10, 1.5k stars). Evidence the SDD family is speciating: spec-kit's intent pipeline + orchestration grafted on |
-| haft (`m0n0x41d`) | 1.4k *(2026-08-18)* | Added 2026-08-18. Not SDD — a **decision-governance** pole: typed decision records (frame → compare → decide) with **evidence decay** and parity enforcement, implementing Levenchuk's First Principles Framework; SQLite ledger served over MCP. Strongest portability claim in this table (Claude Code + Codex stable, 8 more adapters experimental). Why not yet: 1.4k stars, created 2025-12, ~100% single-author, and MCP-runtime delivery raises the claude-task-master layer-5 question — is it an encoded methodology or a memory extension? Worth watching regardless: evidence decay is this repo's own `checked:`-dates discipline as a runtime mechanism, and typed decision records ≈ ADRs. MIT in LICENSE (GitHub API reports NOASSERTION) |
+The "Considered, not added (2026-07-28)" table moved to the cross-layer
+[candidates ledger](../candidates.md) on 2026-08-18 ([ADR-0009](../../adrs/0009-candidates-ledger.md)) —
+candidate is now the named pre-report rung of the engagement ladder, one ledger for
+all layers.
 
 ## Spec-Driven Development (SDD)
 
@@ -107,7 +94,8 @@ rather than documentation that guides it. The term is vendor-coined — it is
 [spec-kit's own branding](spec-kit.md) — but third-party usage has settled on a
 recognizable set, the "2026 SDD trio": **BMAD / spec-kit / OpenSpec** (so named in the
 [OpenSpec report](openspec.md)). Of the trio, this repo tracks two (spec-kit, OpenSpec —
-the ceremony and lean poles respectively) and holds BMAD first in line above.
+the ceremony and lean poles respectively) and holds BMAD first in line in the
+[candidates ledger](../candidates.md).
 
 SDD is a sub-family, not the layer: **GSD is layer 4 without being SDD** — its organizing
 artifact is the task graph and its enemy is context bloat, not under-specified intent.

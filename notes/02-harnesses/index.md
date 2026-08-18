@@ -55,6 +55,11 @@ worktree, container, remote sandbox) — are recorded in each report's frontmatt
 distributed layer-3 entities (see the scope note in
 [`../../taxonomy.md`](../../taxonomy.md)).
 
+## Candidates
+
+Sighted-but-not-ingested harnesses live in the cross-layer
+[candidates ledger](../candidates.md) (first entry: qwen-code, 2026-08-18).
+
 ## What actually differentiates a harness
 
 Feature lists mislead here. The axes that seem to matter:

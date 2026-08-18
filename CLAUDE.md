@@ -23,6 +23,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 |---|---|---|
 | `notes/0N-*/` | one report per tool, by taxonomy layer. Template: `notes/_template-tool-report.md` | yes |
 | `notes/0N-*/index.md` | narrative front door per layer: what the layer *is*, seed inventory | yes |
+| `notes/candidates.md` | cross-layer ledger of sighted-but-not-ingested tools — the pre-`stub` rung (candidate → stub → survey → deep-dive). Dated hand-typed stars are its documented exception | yes |
 | `notes/cross-cutting/` | findings that span layers, plus [`metrics.md`](notes/cross-cutting/metrics.md) — the measurement vocabulary | yes |
 | `refs/` | one note per **source read** (papers, benchmarks). See [`refs/README.md`](refs/README.md) | notes yes, index no |
 | `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `vendors.md`, `benchmarks.md` | **no — generated** |
