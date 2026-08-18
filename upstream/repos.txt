@@ -44,3 +44,8 @@
 #   Claude Code, Cursor, Windsurf, Devin, Copilot
 5|ai-memory|https://github.com/akitaonrails/ai-memory
 5|mem0|https://github.com/mem0ai/mem0
+5|cognee|https://github.com/topoteretes/cognee
+5|memori|https://github.com/MemoriLabs/Memori
+5|everos|https://github.com/EverMind-AI/EverOS
+5|memos|https://github.com/MemTensor/MemOS
+5|memmachine|https://github.com/MemMachine/MemMachine

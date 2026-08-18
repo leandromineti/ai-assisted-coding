@@ -17,16 +17,21 @@ One row per `vendor:` string, columns by layer. **This understates vendor span b
 | Cline | — | cline | — | — | — | **1** |
 | Continue | — | continue | — | — | — | **1** |
 | DeepSeek | deepseek-v4 | — | — | — | — | **1** |
+| EverMind AI (EverMind-AI) | — | — | — | — | everos | **1** |
 | Fabio Akita (akitaonrails) | — | — | — | — | ai-memory | **1** |
 | Fission AI | — | — | — | openspec | — | **1** |
 | FoundryLabs, Inc. (E2B) | — | — | e2b | — | — | **1** |
 | GitHub | — | — | — | spec-kit | — | **1** |
 | Mem0 (mem0ai, YC S24) | — | — | — | — | mem0 | **1** |
+| MemMachine | — | — | — | — | memmachine | **1** |
+| MemoriLabs | — | — | — | — | memori | **1** |
+| MemTensor | — | — | — | — | memos | **1** |
 | Modal Labs | — | — | modal | — | — | **1** |
 | Moonshot AI | kimi-k3 | — | — | — | — | **1** |
 | Nous Research | — | hermes-agent | — | — | — | **1** |
 | Open GSD | — | — | — | gsd-core | — | **1** |
+| Topoteretes (topoteretes) | — | — | — | — | cognee | **1** |
 | Warp (warpdotdev) | — | warp | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | **1** |
 
-**21 vendors** across 27 tracked tools; **3 span ≥2 layers among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**26 vendors** across 32 tracked tools; **3 span ≥2 layers among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

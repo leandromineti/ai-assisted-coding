@@ -17,4 +17,4 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [claude-code](../notes/02-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 | [warp](../notes/02-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 
-**5 of 27 reports declare `environments:`.**
+**5 of 32 reports declare `environments:`.**
