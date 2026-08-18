@@ -109,6 +109,7 @@ Current state of the evidence:
 | Skills | **Emerging** — `SKILL.md` consumed by ≥5 harnesses (2026-07-28 evidence below; Warp added 2026-08-11) | Converging |
 | Hooks | No — harness-specific | No sign of movement |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
+| Memory | **No — seven vendors, zero shared formats** (2026-08-19, kind seeded at stub depth): each of ai-memory/mem0/cognee/memori/everos/memos/memmachine defines its own store, capture path, and injection mechanism; the only shared surfaces are the carriers (MCP, hooks, `SKILL.md`) | Watch — a memory-interchange convention would be the next MCP-shaped event |
 
 **Skills evidence (2026-07-28, from spec-kit's integration registry @ `655a3cb`):** a
 third party that must *install into* every harness is a good witness for what harnesses

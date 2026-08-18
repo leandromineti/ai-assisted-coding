@@ -186,7 +186,8 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 
 What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
 rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
-packs at scale (ECC) — and the specifications they ride on (MCP the protocol, the
+packs at scale (ECC), memory extensions (persistent cross-session state — the kind
+added 2026-08-19, seven seeds in the bucket index) — and the specifications they ride on (MCP the protocol, the
 `AGENTS.md` and `SKILL.md` conventions, tracked in the Standards section, which is this
 bucket's spec half).
 
