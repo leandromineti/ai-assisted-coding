@@ -149,6 +149,13 @@ note. Revised when evidence moves._
    Its headline is an LLM-judge score its own blinded human sample mildly contradicts, and it
    ran a different base model, so this is a competing decomposition rather than a refutation —
    but our n=1 does not support asserting the split either way.
+   **Resolved 2026-08-18 — issue #8's option 3 executed (exp-03, conclusion 12).** On this
+   repo's fails-closed binary instrument the split ran the *other* way: grounding-only beat
+   gates-only (8/9 vs 5.7/9 trap discovery at Haiku tier), gates discovered only crash-visible
+   failures, and the combination interfered. The divergence from the published LLM-judge result
+   is recorded with both candidate attributions (instrument, base model). Conclusion 6's
+   emphasis stands as written — with exp-03's tier caveat: at Sonnet tier the plain bundle
+   grounds unprompted, so the split matters most where models are weak.
 7. **A layer-4 framework's portability and its enforcement power are the same tradeoff**
    (2026-07-28, spec-kit source read). Cross-harness portability is cheap because every
    harness converged on "slash command = prompt file" — but that lowest common

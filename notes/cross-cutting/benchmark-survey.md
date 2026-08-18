@@ -140,7 +140,11 @@ Two field-scale priors fall out for exp-02/03: the **don't-ask default is real a
 large** (unaided models code through broken specs), and **clarification dissociates from
 code capability** (ClarifyCodeBench's reasoning-effort finding) — which is spec-kit's
 bet restated as a measurable claim, and exactly the P1/P2 dissociation exp-02
-preregistered. The adjacent framework-comparison literature
+preregistered. *(Closed 2026-08-18: exp-03 ran and the arc it belonged to closed with it —
+the don't-ask default held (zero clarifying questions in 20 runs, fixed oracle never
+exercised), and the discoverable-ambiguity variant of withholding proved tier-fragile:
+plain Sonnet resolved it unprompted. Layer-4 code-outcome A/Bs stop per issue #17;
+this section stays as the map of the instruments' literature.)* The adjacent framework-comparison literature
 ([agent-frameworks-eval](../../refs/agent-frameworks-eval.md), **full read
 2026-08-17**) compares frameworks *to each other* on success/efficiency/token-overhead
 — 7 frameworks × 3 tasks, one backend LLM, and **no framework-less control anywhere in

@@ -97,8 +97,13 @@ read **against the measured baseline noise band**, never as a raw pass count: 21
 observed baseline; 19–20 is inside baseline variance. Verdict tables:
 [`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md).
 
-The withholding-information design below remains the plan for exp-03's headroom — it is a
-different instrument for a different question, not a correction to this one:
+The withholding-information design was exp-03's headroom plan, and it ran 2026-08-18 with a
+lesson the literature's numbers didn't carry: **withheld-but-discoverable information only
+produces headroom while discovery has nontrivial cost.** exp-03's v1 corpus (≤23-line files)
+saturated — every plain arm grounded spontaneously — and headroom appeared only after the v2
+amendment buried the traps in a 40k-line corpus; even then, one model tier erased it (plain
+Sonnet 8.3/9 vs plain Haiku 4.0/9; exp-03 README § Results). The design remains a different
+instrument for a different question, not a correction to this one:
 withholding produces headroom reliably at both scales measured in the literature — ~80 points on
 function-level tasks ([`clareval`](../../refs/clareval.md) Figure 3) and 28 points on repository
 issues ([`ambig-swe`](../../refs/ambig-swe.md) Figure 3) — whereas escalating edge-case
@@ -137,8 +142,11 @@ the interruption, not the leverage.
 its own sharpest caveat, which the paper demonstrates in its data: **zero corrections
 signals missing self-monitoring, not efficiency** — its two lowest-correction frameworks
 also had 3–10% repair rates. Never read this metric alone; pair it with an effectiveness
-score. Candidate use here: exp-03's arms, where a gates-only harness should show
-corrections concentrated at the gate rather than spread through the trajectory.
+score. Used in exp-03 (2026-08-18): the gates-only arms' GATELOG.md showed gate-triggered
+fixes as predicted — and the gate loop doubled as a *discovery* mechanism for crash-visible
+traps (encoding 3/3) while never catching silent miscounts (buried-format counts 0/3), which
+is the sharper reading: correction location tells you which failure classes a gate can even
+see (exp-03 README § Results).
 
 ### Observed session throughput
 `output_tokens (dominant model) / duration_api_ms`, per headless session, computed from
