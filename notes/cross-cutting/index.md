@@ -18,6 +18,17 @@ retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the ge
 
 ---
 
+## The layer-2 program → [`layer-2-program.md`](layer-2-program.md)
+
+**Where it lives:** the decision spans layers 1–4 — it is *about* which layer gets
+measured. Adopted 2026-08-18 at the exp-03 arc close: framework A/Bs on code outcomes
+stop (bundle noise wider than the effects; mechanisms absorbed tier by tier; published
+effect sizes concentrated at layer 2; framework value demonstrably artifact-level).
+The note assembles the four evidence strands, defines the three measurement tracks
+(harness A/B, variance atlas, throughput), and states what would reopen layer-4 A/Bs.
+
+---
+
 ## Context engineering
 
 **Where it lives:** layer 2 (the harness decides what to load and when), layer 3 (rules

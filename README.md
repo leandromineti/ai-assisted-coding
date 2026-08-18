@@ -261,4 +261,5 @@ note. Revised when evidence moves._
     band is wider than most framework effects) and **artifact-level** framework value
     (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
     one check (t3c) went 0/20 with satisfiability unproven. →
-    [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md)
+    [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
+    [`notes/cross-cutting/layer-2-program.md`](notes/cross-cutting/layer-2-program.md)
