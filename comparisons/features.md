@@ -9,27 +9,27 @@ report's frontmatter when confirmed in source or official docs. Keys are
 defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)
 (ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
 
-| Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
-| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
-| [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
-| [claude-code](../notes/02-harnesses/claude-code.md) | ✓ | · | ✓ | ✓ | ✓ | ✓ | `CLAUDE.md` | ✗ | ✓ | · | ✓ |
-| [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
-| [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | ✓ | ✓ | ✓ | · | · | · |
-| [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | ✓ | ✓ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
-| [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | ✗ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | ✓ | · | · | · | · | · | · | ✓ |
-| [memos](../notes/05-capability-extensions/memos.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | `hook` | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
+| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | `engine` | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | · | ✓ | ✓ | · | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
+| [claude-code](../notes/02-harnesses/claude-code.md) | ✓ | · | ✓ | · | ✓ | ✓ | · | ✓ | `CLAUDE.md` | ✗ | ✓ | · | ✓ |
+| [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | · | · | ✓ | · | ✓ | ✓ | ✓ | · | ✓ | · |
+| [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | · | · | · | · | ✓ | ✓ | ✓ | · | · | · |
+| [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | · | ✓ | ✓ | · | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
+| [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
+| [memos](../notes/05-capability-extensions/memos.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Workflow frameworks (layer 4)
 
@@ -63,6 +63,7 @@ tracked yet. Definitions and links live in the
 |---|---|---|---|---|
 | mcp | 2 | 7/7 | `mcp-server` · 0 tracked |  |
 | hooks | 2 | 4/5 | `hook` · 0 tracked | supply side also carries layer-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks |
+| turn end gates | 2 | 2/2 | `hook` · 0 tracked | added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding |
 | skills | 2 | 5/5 | `skill` · 0 tracked |  |
 | subagents | 2 | 6/6 | `subagent-def` · 0 tracked |  |
 | rules files | 2 | 7/7 | `rules-file` · 0 tracked |  |

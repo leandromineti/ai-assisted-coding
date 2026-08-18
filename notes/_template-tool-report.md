@@ -48,9 +48,9 @@ harness_targets: [<Harness>, <Harness>]
 workflow_features:
   intent_pipeline: <true | false>
   deterministic_engine: <true | false>
-  format_gates: <true | false>
-  measured_gates: <true | false>
-  process_gates: <true | false>
+  format_gates: <engine | hook | script | prose | true | false>    # GRADED, ADR-0011
+  measured_gates: <engine | hook | script | prose | true | false>  # GRADED, ADR-0011
+  process_gates: <engine | hook | script | prose | true | false>   # GRADED, ADR-0011
   context_isolation: <true | false>
   parallel_orchestration: <true | false>
   state_store: <repo-files | database>
@@ -63,8 +63,10 @@ features:
   mcp: <true | false>              # MCP client support
   lsp: <true | false>              # language-server integration
   hooks: <true | false>            # deterministic lifecycle hooks / plugin triggers
+  turn_end_gates: <engine | hook | script | prose | true | false>  # native turn-end stop/verification gate, GRADED (ADR-0012)
   skills: <true | false>           # on-demand packaged instructions
   subagents: <true | false>        # spawnable isolated agents
+  ptc: <true | false>              # programmatic tool calling in a sandboxed runtime (ADR-0012)
   plan_mode: <true | false>        # built-in plan/act split
   rules_files: <true | false | [FILENAMES]>  # standing-instruction files; list names if known
   model_agnostic: <true | false>   # bring-your-own-model by design

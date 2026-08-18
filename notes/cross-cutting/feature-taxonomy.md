@@ -44,6 +44,12 @@ features:
     definition: deterministic lifecycle hooks / plugin triggers
     kind_link: hook
     note: "supply side also carries layer-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks"
+  - id: turn_end_gates
+    block: features
+    applies_to: [2]
+    definition: "native turn-end verification/stop gate — the harness can veto or re-prompt the model's attempt to end its turn; GRADED per ADR-0011/0012: engine | hook | script | prose | true | false"
+    kind_link: hook
+    note: "added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
   - id: skills
     block: features
     applies_to: [2]
@@ -54,10 +60,16 @@ features:
     applies_to: [2]
     definition: spawnable isolated agents
     kind_link: subagent-def
+  - id: ptc
+    block: features
+    applies_to: [2]
+    definition: programmatic tool calling — model-emitted code drives tools in a sandboxed runtime instead of chat-loop tool calls
+    note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it?"
   - id: plan_mode
     block: features
     applies_to: [2]
     definition: built-in plan/act split
+    note: "shape diverges across verified instances — enforced MODE (claude-code, opencode, cline) · tool (codex) · bundled skill (hermes) — but only `mode` has ≥2 instances, so the enum promotion is deferred (ADR-0012, tracked with issue #13)"
   - id: rules_files
     block: features
     applies_to: [2]

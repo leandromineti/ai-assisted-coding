@@ -21,8 +21,10 @@ features:
   mcp: true              # codex-mcp, mcp-server, rmcp-client crates; MCP prewarm in the turn loop
   lsp: false             # no LSP crate in the 94-crate workspace (crate list checked 2026-07-30); file-search is its own crate
   hooks: true            # hooks crate + hook_runtime.rs; stop hooks can veto turn termination (session/turn.rs)
+  turn_end_gates: hook   # ADR-0012 graded: run_turn_stop_hooks → should_block injects a continuation prompt and loops (session/turn.rs:467-474, drift-corroborated 2026-08-16); set 2026-08-18 from the existing deep-dive read
   skills: true           # skills + core-skills crates; SKILL.md consumed (also confirmed from spec-kit's registry, conclusion 3)
   subagents: true        # multi_agents handlers, codex_delegate.rs, agent-graph-store
+  ptc: true              # code-mode* crates: model-written code in embedded V8, V8 sandbox enabled (ADR-0012; set 2026-08-18 from the existing deep-dive read)
   plan_mode: true        # plan tool (tools/handlers/plan.rs) + collaboration-mode-templates crate
   rules_files: [AGENTS.md]   # agents_md.rs: root-down AGENTS.md collection ONLY — no competitor files (contrast hermes)
   model_agnostic: true   # model-provider, ollama, lmstudio crates — BYO works, but the product is OpenAI-first by design

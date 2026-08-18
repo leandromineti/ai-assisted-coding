@@ -21,8 +21,10 @@ features:
   mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/)
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks
+  turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤3 re-prompts when the model finishes without fresh verification evidence (body §termination); set 2026-08-18 from the existing deep-dive read, no re-read
   skills: true           # 70 bundled + 111 optional SKILL.md dirs; agentskills.io-compatible
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
+  ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; set 2026-08-18 from the existing deep-dive read)
   plan_mode: true        # bundled /plan *skill* (plans under .hermes/plans/), not a core loop mode
   rules_files: [SOUL.md, HERMES.md, AGENTS.md, CLAUDE.md, .cursorrules]   # reads competitors' files too — prompt_builder.py
   model_agnostic: true   # 33 provider plugins (plugins/model-providers/)

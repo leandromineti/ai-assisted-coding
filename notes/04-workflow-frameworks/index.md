@@ -224,8 +224,14 @@ spec-kit" as brands was the wrong comparison — this table is the real one.
   and bounded by it: the methodology can't use any capability beyond prose-following, so
   forks, code-level hooks, and context isolation are structurally unavailable. Behavioral
   equivalence across harnesses remains untested.
-- Claude Code ships plan mode natively. Where's the line between a harness's built-in
-  process features and an installed framework — and is layer 4 being absorbed into layer 2?
+- ~~Claude Code ships plan mode natively. Where's the line between a harness's built-in
+  process features and an installed framework — and is layer 4 being absorbed into layer 2?~~
+  **Answered 2026-08-18** — systematized against the feature registry: 6 of the 9
+  layer-4 keys have ≥2 verified harness-native instances, at `engine`/`hook` grades the
+  frameworks themselves never reach; the unabsorbed remainder is exactly the SDD spine
+  (intent pipeline, format gates, workflow-scoped state). The line, on current evidence:
+  harnesses absorb *mechanisms*, methodology stays here. →
+  [layer-2 index, "What layer 2 has absorbed"](../02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses)
 - ~~Neither is easy to A/B test, since you can't run the same task twice cleanly. What
   would a fair comparison even look like?~~ **Working answer 2026-07-28:** preregister
   the protocol and falsification criteria, run the contaminated arm second with fresh

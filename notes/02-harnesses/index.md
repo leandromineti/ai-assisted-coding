@@ -97,6 +97,56 @@ Feature lists mislead here. The axes that seem to matter:
    of every tool on this axis, not a hermes quirk.
    [`hermes-agent.md`](hermes-agent.md).
 
+## What layer 2 has absorbed — the layer-4 feature set, checked against harnesses
+
+*(Added 2026-08-18, systematizing [conclusion 8](../../README.md). This is a mechanism
+table, not a checkbox grid — the "feature lists mislead here" warning above applies to
+itself. Vocabulary: the nine layer-4 `workflow_features` keys from the
+[feature taxonomy](../cross-cutting/feature-taxonomy.md); grades per
+[ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md).)*
+
+For each mechanism the workflow-framework layer sells, what do tracked harnesses
+already do natively — and who enforces it?
+
+| Layer-4 key | Harness-native instances (verified) | Grade of the native form |
+|---|---|---|
+| `measured_gates` | **2** — hermes `verification_stop` (≤3 re-prompts on unverified finishes); codex stop-hook veto (`should_block` → continuation prompt). Now the graded layer-2 column `turn_end_gates` (ADR-0012) | `engine` / `hook` — but these are *gates*, not *measured* gates: the evidence bar is "ran something fresh", not a hidden verifier ([cross-cutting](../cross-cutting/index.md)) |
+| `process_gates` | **≥3** — permission approval at tool dispatch is universal machinery: hermes `tools/approval.py`, codex `SafetyCheck::AskUser` inside an OS sandbox, opencode `Permission.ask`, claude-code's plan-approval gate | `engine` — compiled chokepoints, above every tracked framework's `prose` |
+| `context_isolation` | **6/6** checked harnesses ship `subagents: true`; claude-code adds per-subagent worktree isolation; hermes budgets subagents separately (50 iterations) | native machinery; frameworks can only instruct or hook it (GSD's exit-2 guard is the strongest framework-side form) |
+| `parallel_orchestration` | **3** — hermes `delegate_task` parallel batch; codex `tools/parallel.rs` + `agent-graph-store`; Warp's fan-out with *rival harnesses as selectable backends* | native; the layer's frameworks either lack it (BMAD: banned; spec-kit: reverted) or drive it from outside the loop (bmad-loop, gsd) |
+| `retrospectives` | **3✓ / 1✗** as the `learning_loop` column — hermes on-by-default background fork, codex stable-but-off pipeline, claude-code in-loop memory, Warp verified manual-only | mechanism shapes diverge; enum promotion tracked in issue #13 |
+| `state_store` | universal at **session** scope — codex rollout + WorldState replay, hermes FTS5 session store, opencode event-sourced inputs, Warp versioned memory store | native, but session-scoped: no harness ships *workflow*-scoped state (sprint boards, epic ledgers) — that remains framework territory |
+| `intent_pipeline` | **thin** — plan artifacts exist (codex collaboration-mode templates, claude-code plan files with an approval gate) but no staged requirements→implementation pipeline | **not absorbed** — the SDD spine remains layer 4's own |
+| `format_gates` | **1** — codex `apply_patch` with a formal grammar; below the two-instance bar | **not absorbed** (yet) |
+| `deterministic_engine` | trivially true of every harness — the loop *is* a program | non-discriminating at layer 2; the key only separates tools within layer 4 |
+
+Three readings of the table:
+
+- **The enforcement inversion.** The layer-4 arc's headline question was "who enforces
+  the gate?", and its answer was: almost always the model ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md) —
+  every tracked framework's gates grade `prose` or `script`; the only `engine`-graded
+  measured/process gates live in bmad-loop, *outside* its framework). The harness rows
+  above grade `engine`/`hook` natively. The framework layer's hardest problem is the
+  harness layer's default posture.
+- **What is NOT absorbed is a coherent remainder, not a lag.** The three unabsorbed
+  keys are exactly the SDD spine — staged intent artifacts, artifact-structure gates,
+  workflow-scoped state machines. Harnesses absorb *mechanisms* (gates, isolation,
+  memory, fan-out) and leave *methodology* (what artifact comes next and why) alone.
+  Conclusion 8 claimed the four absorbed legs and never these — the table confirms the
+  boundary sits where the prose said it did.
+- **The H8 tension, previously unremarked.** [Design principle H8](../../design-principles.md)
+  says a good harness keeps its core a narrow waist and ships capability at the edges
+  as data. Absorption is the counter-motion: every mechanism above is core growth. The
+  tracked harnesses split visibly — codex ships gates as *hook surface* (waist-shaped:
+  the mechanism is an extension point) while hermes ships `verification_stop` as *loop
+  policy* (core growth). Whether absorbed mechanisms arrive as extension surfaces or as
+  core code may be the next differentiation axis this list needs — it is the same
+  engine-vs-prose fork, one layer down.
+
+Baseline duty (issue #17): any harness-vs-harness A/B must inventory these rows for
+both arms before attributing an effect — the exp-03 rider ("net of what the layer-2
+harness already does") generalized from gates to the full table.
+
 ## Open questions
 
 - Does the Cursor acquisition mean vertical integration (model tuned on harness telemetry)
