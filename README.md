@@ -36,8 +36,7 @@ confirm, contradict, or note silence.
 | 3 · Execution environments | [`notes/03-execution-environments/`](notes/03-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
 | 5 · Extensions (bucket) | [`notes/05-capability-extensions/`](notes/05-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
-| ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost |
-| ✕ Standards | [`notes/standards/`](notes/standards/index.md) | MCP, `AGENTS.md` convention |
+| ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
 
@@ -118,7 +117,7 @@ note. Revised when evidence moves._
    consumed by at least four harnesses (Claude Code, Codex, Kimi, Hermes), so skills are
    now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
-   [`notes/standards/index.md`](notes/standards/index.md)
+   [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
    **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging kinds
    gained their best evidence yet, and it is a better *class* of evidence: a first-party
    implementation by a rival vendor rather than a third-party installer targeting the

@@ -33,3 +33,4 @@ living docs, the ADR trail is the decoder.
 | [0005](0005-rename-to-extensions.md) | 2026-08-17 | Rename "portable artifacts" → "Extensions" | accepted |
 | [0006](0006-layer-2-program.md) | 2026-08-18 | Framework code-outcome A/Bs stop; the layer-2 program | accepted |
 | [0007](0007-renumber-core-triad-first.md) | 2026-08-19 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
+| [0008](0008-standards-into-cross-cutting.md) | 2026-08-19 | Standards folded into cross-cutting (one non-layer bucket) | accepted |

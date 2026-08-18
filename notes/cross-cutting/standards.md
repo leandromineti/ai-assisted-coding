@@ -79,7 +79,7 @@ weak in exactly the way the open question below says.
   specification at all — which is either elegant or a sign the category is too loose.
 - Rules files are the cheapest context intervention and the least measured anywhere. What
   is the marginal value of a longer one, and where does it turn negative? (Candidate first
-  experiment — see [`../cross-cutting/index.md`](../cross-cutting/index.md).)
+  experiment — see [`../cross-cutting/index.md`](index.md).)
 
 ---
 

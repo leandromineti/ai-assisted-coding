@@ -15,17 +15,17 @@ installed separately from any harness. The "3" is a storage key.
 
 This index covers the **installable things**. The specifications they implement — MCP the
 protocol, the `AGENTS.md` convention — are not layer entries; they live in
-[`../standards/`](../standards/index.md).
+[`../standards/`](../cross-cutting/standards.md).
 
 ## Kinds
 
 | Kind | What it does | Portability |
 |------|--------------|-------------|
 | **MCP servers** | Expose external systems (filesystems, APIs, databases, browsers, SaaS) as tools over the Model Context Protocol. | High — one server works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, Devin. |
-| **Skills** | Packaged instructions loaded on demand for a class of task. | Converging (2026-07-28): `SKILL.md` consumed by ≥4 harnesses per spec-kit's integration registry — convention-level, like rules files. See [standards](../standards/index.md). |
+| **Skills** | Packaged instructions loaded on demand for a class of task. | Converging (2026-07-28): `SKILL.md` consumed by ≥4 harnesses per spec-kit's integration registry — convention-level, like rules files. See [standards](../cross-cutting/standards.md). |
 | **Hooks** | Deterministic code the harness runs at lifecycle points (pre/post tool use, session start/stop). Not model-mediated — the harness executes them, so they *always* fire. | Harness-specific. |
 | **Subagent definitions** | Named agents with their own prompt, tools, and model, spawned for isolated work. | Harness-specific format; the pattern is universal. |
-| **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../standards/index.md). |
+| **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../cross-cutting/standards.md). |
 
 ## Why this is a layer and not a pile of harness features
 
@@ -35,7 +35,7 @@ to a particular agent loop. The same is *aspirationally* true of skills and rule
 The counter-argument worth holding: hooks and subagent definitions are harness-specific
 today, so this layer is only partly portable — arguably it's "MCP plus a pile of vendor
 features" wearing a layer's clothes. Whether that resolves depends on standards adoption,
-which is tracked in [`../standards/`](../standards/index.md) rather than here.
+which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than here.
 
 ## Reports
 
@@ -56,7 +56,7 @@ verdict section of [`ecc.md`](ecc.md).
 ## Open questions
 
 *Questions about the specifications themselves live in
-[`../standards/`](../standards/index.md). These are about the installable artifacts.*
+[`../standards/`](../cross-cutting/standards.md). These are about the installable artifacts.*
 
 - Hooks are the only deterministic escape hatch in an otherwise probabilistic system —
   the harness executes them, so they always fire. How much of a workflow *should* be moved

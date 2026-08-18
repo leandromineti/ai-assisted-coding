@@ -239,7 +239,9 @@ from the layers that implement it — never given a layer entry of its own.
 - **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are layer-5 artifacts.
 - **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
 
-Written up in [`notes/standards/`](notes/standards/index.md), which also tracks the
+Written up in [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
+(one of the cross-cutting notes since 2026-08-19, [ADR-0008](adrs/0008-standards-into-cross-cutting.md)),
+which also tracks the
 question this category exists to answer: whether skills and hooks standardize the way MCP
 did, or stay vendor features — which decides whether the extensions bucket is a real layer.
 
@@ -354,8 +356,7 @@ taxonomy needs revision — not the case.
 | 3 · Execution environments | [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/index.md`](notes/04-workflow-frameworks/index.md) |
 | 5 · Extensions (bucket) | [`notes/05-capability-extensions/index.md`](notes/05-capability-extensions/index.md) |
-| ✕ Cross-cutting | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
-| ✕ Standards | [`notes/standards/index.md`](notes/standards/index.md) |
+| ✕ Cross-cutting (incl. standards) | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
 
 Per-tool reports use [`notes/_template-tool-report.md`](notes/_template-tool-report.md) and
 are indexed flat, across layers, in [`comparisons/tools.md`](comparisons/tools.md).

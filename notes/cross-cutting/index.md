@@ -29,6 +29,18 @@ The note assembles the four evidence strands, defines the three measurement trac
 
 ---
 
+## Standards → [`standards.md`](standards.md)
+
+**Where it lives:** wherever two vendors implement one specification — MCP on the
+harness↔world edge, `AGENTS.md`/`SKILL.md` conventions across harnesses. Not a layer:
+specifications, not installable things (the servers and files that *implement* them are
+layer-5 extensions). Folded into this folder 2026-08-19 (ADR-0008) — a standard is a
+cross-cutting concern whose subject is interoperability. Carries the standardization
+scoreboard that gates the extensions bucket's re-promotion (ADR-0002's ~2027-01
+re-check).
+
+---
+
 ## Context engineering
 
 **Where it lives:** layer 2 (the harness decides what to load and when), layer 5 (rules
