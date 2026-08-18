@@ -92,6 +92,7 @@ isn't re-derived later:
 | agent-os (`buildermethods`) | 5k | Too small, quieting since 2026-05 |
 | microsoft/amplifier | 3k | Too small; watchlist |
 | Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |
+| Conductor (`gemini-cli-extensions`) | 3.7k *(2026-08-18)* | Added 2026-08-18. Google-org SDD plugin ("measure twice, code once"; Context → Spec & Plan → Implement) installing into Antigravity and Claude Code — passes the portability test on paper and would extend the [SDD set](#spec-driven-development-sdd) beyond the trio. Young (created 2025-12-17) and plugin-distributed (layer-5 delivery vehicle, like ECC's hooks). Queue behind BMAD |
 
 ## Spec-Driven Development (SDD)
 
