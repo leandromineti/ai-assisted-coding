@@ -20,14 +20,6 @@ report's frontmatter when confirmed in source or official docs.
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [conductor](../notes/04-workflow-frameworks/conductor.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [haft](../notes/04-workflow-frameworks/haft.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | ✗ |
@@ -36,3 +28,21 @@ report's frontmatter when confirmed in source or official docs.
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · |
+
+## Workflow frameworks (layer 4)
+
+Separate vocabulary — `workflow_features:` frontmatter, defined in
+`notes/_template-tool-report.md`. Structural presence-claims, not value-claims:
+a ✓ says the machinery exists in source/docs, not that it pays (that is the
+mechanism table's job, notes/04-workflow-frameworks/index.md).
+
+| Tool | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
+|---|---|---|---|---|---|---|---|---|---|
+| [openspec](../notes/04-workflow-frameworks/openspec.md) | ✓ | ✓ | ✓ | ✗ | · | ✗ | ✗ | `repo-files` | ✗ |
+| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | ✓ | ✓ | · | ✓ | ✓ | ✓ | · | `repo-files` | · |
+| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | ✓ | ✓ | ✓ | ✗ | ✓ | · | · | `repo-files` | ✗ |
+| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | ✓ | · | · | · | · | · | · | · | ✓ |
+| [conductor](../notes/04-workflow-frameworks/conductor.md) | ✓ | ✗ | ✗ | · | · | · | · | `repo-files` | · |
+| [haft](../notes/04-workflow-frameworks/haft.md) | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |
+| [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | ✓ | ✓ | · | ✓ | · | · | · | · | · |
+| [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |

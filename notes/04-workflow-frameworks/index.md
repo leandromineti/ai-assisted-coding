@@ -124,6 +124,18 @@ That bet is falsifiable, and testing it is one of the more valuable things this 
 do: as models improve, does imposed structure keep paying, or does it become overhead?
 First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md).
 
+## Feature taxonomy (2026-08-18)
+
+The layer now carries a structural feature vocabulary — `workflow_features:` in report
+frontmatter, defined in [`notes/_template-tool-report.md`](../_template-tool-report.md),
+rendered in [`comparisons/features.md`](../../comparisons/features.md). The division of
+labor with the mechanism table below: a **feature** is a presence-claim (the machinery
+exists, verified in source or docs); a **mechanism** is a value-claim (it measurably
+pays). The matrix says *what* each framework built; the experiments say *whether it
+matters*. Keys follow the same discipline as the harness vocabulary — omitted means
+"not checked", `false` means "checked and absent", and absences are findings
+(Conductor's verified-absent engine; haft's verified-absent intent pipeline).
+
 ## Mechanisms — the unit of value
 
 *(Added 2026-07-28 after experiment 01. "GSD is a layer-4 tool" proved true and nearly

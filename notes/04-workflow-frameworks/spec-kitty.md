@@ -14,6 +14,13 @@ stars_at: 2026-08-18
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README + tree inspection; source unread
 harness_targets: [Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, Windsurf, OpenCode]
+workflow_features:   # added 2026-08-18; stub — README + tree-level claims
+  intent_pipeline: true          # spec → plan → tasks → next → review → accept → merge
+  deterministic_engine: true     # Python runtime: lifecycle lanes, worktree management, dashboard
+  process_gates: true            # review/accept/merge gates with audit trail (README)
+  parallel_orchestration: true   # isolated git worktrees under .worktrees/ (README)
+  state_store: repo-files        # kitty-specs/ — verified in the tree (dogfood artifacts checked in)
+  retrospectives: true           # per-mission retrospective, default-on (README)
 ---
 
 # spec-kitty

@@ -40,6 +40,21 @@ kind: <see comment>
 # source or official docs; omitted means "not yet checked". Either a list of harness
 # names, or a short string for large sets (e.g. "44 integrations incl. …").
 harness_targets: [<Harness>, <Harness>]
+# workflow_features: layer-4 reports only — same verified-only discipline as features:
+# (omitted = not checked, false = checked and absent). Vocabulary added 2026-08-18,
+# grounded in the mechanism classes of notes/04-workflow-frameworks/index.md — a feature
+# is a structural PRESENCE-claim (the machinery exists in source/docs); whether it pays
+# is the mechanism table's question, never this block's.
+workflow_features:
+  intent_pipeline: <true | false>        # staged requirements→implementation artifact pipeline (the SDD spine)
+  deterministic_engine: <true | false>   # a program — not prose — parses/validates/advances workflow state
+  format_gates: <true | false>           # machine-checkable artifact-structure gates
+  measured_gates: <true | false>         # acceptance criteria with measured expected values (behavior, not format)
+  process_gates: <true | false>          # human approval checkpoints encoded in the flow
+  context_isolation: <true | false>      # fresh/right-sized agent context per unit of work, by design
+  parallel_orchestration: <true | false> # concurrent agents/work-packages machinery (worktrees, fan-out)
+  state_store: <repo-files | database>   # where workflow state lives
+  retrospectives: <true | false>         # encoded learning step feeding completed work back into the process
 # features: set a key ONLY when verified in source or official docs — omitted means
 # "not yet checked", false means "checked and absent". Both are claims; only one is safe
 # to guess, and neither should be. Keep the vocabulary to this fixed set so the generated

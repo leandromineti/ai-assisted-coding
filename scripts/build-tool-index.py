@@ -46,6 +46,17 @@ FEATURE_KEYS = [
     "learning_loop",  # added 2026-07-30 per issue #2's two-verified-instances rule
 ]
 
+# Layer-4 (workflow framework) vocabulary — added 2026-08-18, grounded in the
+# mechanism classes of notes/04-workflow-frameworks/index.md. Features are
+# structural presence-claims (the machinery exists); mechanisms are value-claims
+# (it pays). Same verified-only semantics as FEATURE_KEYS. state_store is
+# string-valued: repo-files | database.
+WORKFLOW_FEATURE_KEYS = [
+    "intent_pipeline", "deterministic_engine", "format_gates",
+    "measured_gates", "process_gates", "context_isolation",
+    "parallel_orchestration", "state_store", "retrospectives",
+]
+
 # Layer-1 API-feature keys (added 2026-08-17): the drift-prone, experiment-relevant
 # surface of a model's API. Same verified-only semantics as FEATURE_KEYS — a key is
 # set only when confirmed against the report's `url` on its `checked` date; omitted
@@ -253,6 +264,8 @@ def render_features(reports: list[dict]) -> str:
         if r.get("layer") == 1:
             continue  # models have their own matrix (models.md); these columns are
             # harness/artifact features and every cell would be a category error
+        if r.get("layer") == 4:
+            continue  # workflow frameworks have their own vocabulary — second table below
         feats = r.get("features") or {}
         if not isinstance(feats, dict):
             feats = {}
@@ -274,6 +287,42 @@ def render_features(reports: list[dict]) -> str:
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     for k in sorted(unknown_keys):
         print(f"warn: feature key '{k}' not in FEATURE_KEYS — not rendered", file=sys.stderr)
+
+    lines += [
+        "",
+        "## Workflow frameworks (layer 4)",
+        "",
+        "Separate vocabulary — `workflow_features:` frontmatter, defined in",
+        "`notes/_template-tool-report.md`. Structural presence-claims, not value-claims:",
+        "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
+        "mechanism table's job, notes/04-workflow-frameworks/index.md).",
+        "",
+        "| Tool | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
+        "|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
+    ]
+    wf_unknown: set[str] = set()
+    for r in reports:
+        if r.get("layer") != 4:
+            continue
+        feats = r.get("workflow_features") or {}
+        if not isinstance(feats, dict):
+            feats = {}
+        wf_unknown.update(k for k in feats if k not in WORKFLOW_FEATURE_KEYS)
+        cells = []
+        for key in WORKFLOW_FEATURE_KEYS:
+            v = feats.get(key)
+            if v is True:
+                cells.append("✓")
+            elif v is False:
+                cells.append("✗")
+            elif v is None:
+                cells.append("·")
+            else:
+                cells.append(f"`{v}`")
+        rel = r["_path"].relative_to(ROOT)
+        lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
+    for k in sorted(wf_unknown):
+        print(f"warn: workflow feature key '{k}' not in WORKFLOW_FEATURE_KEYS — not rendered", file=sys.stderr)
     lines.append("")
     return "\n".join(lines)
 

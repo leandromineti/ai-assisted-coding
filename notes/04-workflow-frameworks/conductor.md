@@ -14,6 +14,11 @@ stars_at: 2026-08-18
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + full README; rules/skills prose unread
 harness_targets: [Antigravity, Claude Code]
+workflow_features:   # added 2026-08-18; stub — but absences here are tree-verified (28 files)
+  intent_pipeline: true          # Context → Spec & Plan → Implement
+  deterministic_engine: false    # nothing to run: 22 md files + plugin.json IS the framework
+  format_gates: false            # follows — no machinery to check formats with
+  state_store: repo-files        # "context as a managed artifact alongside your code" (README)
 ---
 
 # Conductor

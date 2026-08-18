@@ -14,6 +14,10 @@ stars_at: 2026-08-18
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README + LICENSE read; source unread
 harness_targets: [Claude Code, Codex]
+workflow_features:   # added 2026-08-18; stub — README-level claims only
+  intent_pipeline: true          # /prd → /spec → /build
+  deterministic_engine: true     # pilot binary + quality-hook runtime
+  measured_gates: true           # lint/typecheck/tests enforced as gates; /build judge loops until criterion passes
 ---
 
 # pilot-shell

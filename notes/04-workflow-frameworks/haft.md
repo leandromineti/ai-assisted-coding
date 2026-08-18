@@ -14,6 +14,11 @@ stars_at: 2026-08-18
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + full README; Go source and FPF spec unread
 harness_targets: "Claude Code + Codex stable; experimental adapters: Grok, Pi, Hermes, Zed, Antigravity, Cursor, Gemini CLI, OpenCode (haft init flags @ 8a5f038)"
+workflow_features:   # added 2026-08-18; stub — README-level claims only
+  intent_pipeline: false         # governs decisions and evidence, not an implementation pipeline
+  deterministic_engine: true     # Go runtime: ledger, migrations, MCP server
+  format_gates: true             # typed records + parity enforcement
+  state_store: database          # project SQLite ledger — the only non-repo-files store in the layer
 ---
 
 # haft

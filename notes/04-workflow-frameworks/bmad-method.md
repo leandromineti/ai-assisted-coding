@@ -14,6 +14,9 @@ stars_at: 2026-08-18
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README skim + installer platform list; source unread
 harness_targets: "47 platform codes @ 86beb065 (tools/installer/ide/platform-codes.yaml) incl. Claude Code, Codex, Cursor, Gemini, Copilot, Warp"
+workflow_features:   # added 2026-08-18; stub — README-level claims only
+  intent_pipeline: true          # Clarify → Plan → Build & verify → Learn (README delivery loop)
+  retrospectives: true           # the Learn phase loops back to Plan (README); depth unknown
 ---
 
 # BMAD-METHOD

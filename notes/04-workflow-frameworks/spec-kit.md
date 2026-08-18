@@ -14,6 +14,14 @@ stars_at: 2026-07-28
 read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
 depth: survey   # all 10 command templates + 5 artifact templates read in full; installer/registrar (agents.py, integration configs) read; presets/workflows read at ARCHITECTURE level; RUN 2026-08-17 (exp-02 Run B, full 7-step pipeline at this pin — rule 8 gap closed)
 harness_targets: "44 integrations @ 655a3cb, incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes"
+workflow_features:   # added 2026-08-18 from the survey read + exp-02 run; deep-dive pass pending
+  intent_pipeline: true          # constitution→specify→plan→tasks→implement
+  deterministic_engine: true     # `specify workflow run` YAML step engine (see Presets section)
+  format_gates: true             # checklist gate before implement; ≥80% reference-coverage rule
+  measured_gates: false          # gates test the English, never measured behavior (exp-02 corroborates)
+  process_gates: true            # clarify iteration cap, checklist override, constitution approval
+  state_store: repo-files        # specs/NNN-*/ + .specify/
+  retrospectives: false          # none of the 10 commands closes the loop
 ---
 
 # spec-kit

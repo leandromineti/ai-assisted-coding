@@ -14,6 +14,13 @@ stars_at: 2026-07-28
 read_at: 2026-07-28   # drift-checked 2026-08-16 (rule 4b) — see the drift-check section; pin deliberately not moved
 depth: survey   # full flow run end-to-end (experiments/01-gsd-vs-plain) + core workflow prose read; gsd-tools.cjs internals unread
 harness_targets: [Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot]
+workflow_features:   # added 2026-08-18 from the survey read + exp-01 run
+  intent_pipeline: true          # structured task graphs from requirements
+  deterministic_engine: true     # gsd-tools.cjs bookkeeping (existence verified; internals unread)
+  measured_gates: true           # <verify> gates with measured expected values
+  process_gates: true            # mode ceremonies, approval points (exp-01: near-zero observed value)
+  context_isolation: true        # clean execution contexts per unit — the founding principle
+  state_store: repo-files        # planning artifacts committed to the repo
 ---
 
 # GSD — gsd-core

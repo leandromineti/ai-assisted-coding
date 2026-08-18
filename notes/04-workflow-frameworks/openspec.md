@@ -14,6 +14,15 @@ stars_at: 2026-07-31
 read_at: 2026-07-31   # drift-checked 2026-08-16 at d578896 without re-reading (rule 4b) — specs-apply.ts nearly doubled, flagged for re-read on issue #10; pin deliberately not moved
 depth: deep-dive   # the runtime traced in source: delta-merge engine (specs-apply.ts), archive flow, artifact-graph DAG engine + schema loader, validator, command-generation adapters; skills read; dogfooding measured. Website/docs skimmed
 harness_targets: "29 adapter modules in src/core/command-generation/adapters/ (claude, cursor, cline, continue, opencode, gemini, copilot, devin, kiro, roocode, qwen, …); 37 tool configs with skills dirs; detection by scanning for each tool's config dirs"
+workflow_features:   # added 2026-08-18 from the deep-dive
+  intent_pipeline: true          # proposal→specs→design→tasks
+  deterministic_engine: true     # specs-apply.ts merge compiler + DAG engine
+  format_gates: true             # validator (format contract, not instruction-rewriting)
+  measured_gates: false          # "format gates, never measured gates" — the read's headline
+  context_isolation: false       # one artifact chain; no context management in the runtime
+  parallel_orchestration: false  # "no multi-agent fan-out" by design
+  state_store: repo-files        # openspec/ tree: living specs + dated archive
+  retrospectives: false          # archive is history, not a learning step
 ---
 
 # OpenSpec
