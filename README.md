@@ -1,4 +1,4 @@
-# ai-assisted-coding
+# AI-assisted coding
 
 A personal sandbox for understanding the AI-assisted-coding tooling landscape — from
 first-hand trial rather than from marketing pages.
