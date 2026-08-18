@@ -143,6 +143,11 @@ matters*. Keys follow the same discipline as the harness vocabulary — omitted 
 "not checked", `false` means "checked and absent", and absences are findings
 (Conductor's verified-absent engine; haft's verified-absent intent pipeline).
 
+Second calibration, also 2026-08-18: the GSD deep-dive supplied the second verified
+instance of the who-enforces ambiguity, and the gate keys became **graded**
+(`engine | hook | script | prose | true | false` — [ADR-0011](../../adrs/0011-graded-gate-enforcement.md));
+a bare `true` in a gate column is now an explicit unanswered question.
+
 First falsification, same day it was created (2026-08-18): spec-kit's `format_gates`
 went ✓→✗ at deep-dive — the survey-visible gates turned out to be prose the agent
 enforces on itself, not machinery. The calibration this buys: **a gate stated in prose

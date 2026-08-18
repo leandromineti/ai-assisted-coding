@@ -17,7 +17,7 @@ harness_targets: "29 adapter modules in src/core/command-generation/adapters/ (c
 workflow_features:   # added 2026-08-18 from the deep-dive
   intent_pipeline: true          # proposal→specs→design→tasks
   deterministic_engine: true     # specs-apply.ts merge compiler + DAG engine
-  format_gates: true             # validator (format contract, not instruction-rewriting)
+  format_gates: engine           # ADR-0011 graded: the validator is a real in-runtime format contract
   measured_gates: false          # "format gates, never measured gates" — the read's headline
   context_isolation: false       # one artifact chain; no context management in the runtime
   parallel_orchestration: false  # "no multi-agent fan-out" by design

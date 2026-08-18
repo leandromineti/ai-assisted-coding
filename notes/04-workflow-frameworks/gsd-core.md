@@ -19,9 +19,9 @@ harness_targets: "18 install targets @ fee72d55 (bin/install.js:647): claude, co
 workflow_features:   # survey 2026-07-28 + exp-01; completed & re-verified at the 2026-08-18 deep-dive
   intent_pipeline: true          # structured task graphs from requirements
   deterministic_engine: true     # far beyond bookkeeping: 96k-line TS runtime (src/*.cts) behind a one-arm dispatcher; Kahn's-algorithm wave computation; engineered locking
-  format_gates: true             # code-enforced plan schema: 8 required frontmatter fields hard-error, checkpoint/autonomous consistency, artifacts/key_links checks (src/verify.cts:846-900, 1063-1235)
-  measured_gates: true           # Nyquist rule + measurement-provenance dimensions (#1478-1480) — but <verify> BODIES are never machine-read; executor/verifier are LLM; blocking enforcement lives in hooks
-  process_gates: true            # checkpoints (checkpoint:decision/human-verify); agentVerdict gates structurally FORBIDDEN from blocking (capability-validator: "non-deterministic checks may not halt the loop")
+  format_gates: engine           # ADR-0011 graded: plan schema hard-errors in the runtime (src/verify.cts:846-900, 1063-1235); the layer's only engine-graded format gate alongside OpenSpec's validator
+  measured_gates: prose          # ADR-0011 graded: measurement enforced in code one level up (#1478-1480 live-measurement, provenance rules) but the VERDICT is an LLM invocation — <verify> bodies never machine-read
+  process_gates: prose           # ADR-0011 graded: checkpoints honored by the orchestrator LLM; the codified boundary (agentVerdict may not block) is engine-enforced but is a meta-rule, not the gate itself
   context_isolation: true        # founding principle, now hook-ENFORCED: gsd-agent-isolation-guard blocks (exit 2) executor dispatch missing its isolation flag
   parallel_orchestration: true   # DAG waves computed in code + worktree machinery; dispatch itself is prose (model emits Agent() calls); Claude Workflow backend is default-off BETA
   state_store: repo-files        # .planning/ markdown (STATE.md regex-parsed, pid-liveness locking); no database

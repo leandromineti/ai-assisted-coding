@@ -19,7 +19,7 @@ workflow_features:   # added 2026-08-18 (survey + exp-02); context_isolation & p
   deterministic_engine: true     # 11-type workflow engine + setup scripts — but it advances its OWN run state and never parses SDD artifacts (deep-dive)
   format_gates: false            # FLIPPED ✓→✗ at deep-dive 2026-08-18: the checklist gate and ≥80% rule are prose the agent enforces on itself; script gates test existence only; no code machine-checks any artifact's structure
   measured_gates: false          # gates test the English, never measured behavior (exp-02 corroborates)
-  process_gates: true            # clarify iteration cap, checklist override, constitution approval
+  process_gates: prose           # ADR-0011 graded: clarify cap, checklist STOP-and-ask, constitution approval — all agent-enforced; the engine's code gate is opt-in and checks nothing
   context_isolation: false       # no fresh-context instruction anywhere; handoffs `send: true` chains steps in ONE conversation (deep-dive §context)
   parallel_orchestration: false  # [P] has no code consumer; FORK_CONTEXT_COMMANDS = {} (tried, retreated #3185); fan-out engine ships unused (deep-dive)
   state_store: repo-files        # specs/NNN-*/ + .specify/ (+ .specify/workflows/runs/<id>/ for the opt-in engine)

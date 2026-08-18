@@ -93,23 +93,23 @@ features:
   - id: format_gates
     block: workflow_features
     applies_to: [4]
-    definition: machine-checkable artifact-structure gates
-    note: "calibration lesson 2026-08-18: spec-kit's ✓ flipped to ✗ at deep-dive — a gate stated in prose looks like machinery until you check who enforces it"
+    definition: "artifact-structure gates; GRADED value = strongest verified enforcer: engine | hook | script | prose | true (present, unclassified) | false (ADR-0011)"
+    note: "calibration lesson 2026-08-18: spec-kit's ✓ flipped to ✗ at deep-dive; same day GSD's deep-dive showed a four-rung enforcement ladder — hence the grading. A bare `true` is an unanswered who-enforces question"
   - id: measured_gates
     block: workflow_features
     applies_to: [4]
-    definition: acceptance criteria with measured expected values (behavior, not format)
+    definition: "acceptance criteria with measured expected values (behavior, not format); GRADED per ADR-0011: engine | hook | script | prose | true | false"
     kind_link: hook
-    note: "the ECC finding — this mechanism can be delivered as installable layer-5 Stop hooks, independent of any framework"
+    note: "the ECC finding — deliverable as installable layer-5 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the layer's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts"
   - id: process_gates
     block: workflow_features
     applies_to: [4]
-    definition: human approval checkpoints encoded in the flow
+    definition: "human approval checkpoints encoded in the flow; GRADED per ADR-0011: engine | hook | script | prose | true | false"
   - id: context_isolation
     block: workflow_features
     applies_to: [4]
     definition: fresh/right-sized agent context per unit of work, by design
-    note: "supply side is layer-2 machinery (subagents, fresh sessions) — a framework can only instruct it"
+    note: "supply side is layer-2 machinery (subagents, fresh sessions). 2026-08-18 correction: 'a framework can only instruct it' was falsified by GSD's deep-dive — its agent-isolation-guard ENFORCES it as a hard-blocking harness hook (exit 2)"
   - id: parallel_orchestration
     block: workflow_features
     applies_to: [4]
