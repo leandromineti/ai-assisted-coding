@@ -78,3 +78,31 @@ Appended live during runs, never reconstructed (methodology rule 5). Protocol:
   FAIL ✓.**
 - Driver note: artifact copies now exclude `/app/samples` (reproducible from the
   committed builder; avoids 2.3MB per run in the repo).
+
+## 2026-08-18 — calibration band v2: gate PASSES
+
+- `00:50–01:10Z` — band v2, 5 × plain Haiku 4.5 vs the buried-trap corpus, same
+  driver, fresh containers, zero blocking questions.
+
+| run | turns | api | cost | score /23 | discoverable /9 | failed families |
+|---|---|---|---|---|---|---|
+| cal2-1 | 35 | 1m26s | $0.1945 | 14 | 5 | F3 F4 F7 · T2×4 · T3c · T5a |
+| cal2-2 | 38 | 1m40s | $0.2133 | 7 | 3 | F×6 · T2×4 · T3c · T4×2 · T5a |
+| cal2-3 | 53 | 2m36s | $0.3442 | 14 | 5 | F3 F4 F7 · T2×4 · T3c · T5a |
+| cal2-4 | 69 | 2m57s | $0.4379 | 14 | 5 | F4 F7 · T2×4 · T3b T3c · T5a |
+| cal2-5 | 56 | 2m08s | $0.3090 | 12 | 2 | F4 F7 · T1×3 · T2×4 · T3c · T5a |
+
+- **Headroom gate: PASS.** Discoverable subset 5,3,5,5,2 → mean 4.0/9 (gate ≤6),
+  ~5 checks of headroom; totals 7–14/23 (mean 12.2), healthy variance. The
+  buried-trap redesign discriminates.
+- Family reading: **T2 (buried epoch format) 0/20 sub-checks across the whole
+  band** — no plain arm discovered it; the prime headroom for G arms. T1
+  (encoding) discovered by 4/5; T4 by 4/5. T3c fails 5/5 again (decided family).
+- Instrument note, declared: T5a and F7 failures are *driven by* the undiscovered
+  B format (the tool errors on the hidden pure-B file inside those checks), so
+  they correlate with discovery in practice. The preregistered discoverable
+  subset is unchanged mid-run; noted for interpretation.
+- Band v2 spend $1.4989. **Cumulative tier-1: $2.9021 of the ≈$4 ceiling.**
+  Arm projection at P4's cap (≤2× band median $0.31): 3 × ≤$0.62 ≈ $1.9 worst
+  case → cumulative ≈$4.8, **over the ceiling**. Per amendment 1, arms WAIT for
+  a top-up approval.

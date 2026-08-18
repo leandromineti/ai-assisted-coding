@@ -1,0 +1,385 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /home/leandro/personal/ai-assisted-coding/experiments/rig/logpeek/tests
+collected 23 items
+
+test_outputs.py FFFFFFFF...FFFF..F.FFF.                                  [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_f1_normal_summary ____________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_f1_normal_summary0')
+
+    def test_f1_normal_summary(logpeek_cmd, fixtures_dir, tmp_path):
+        r = run_logpeek(logpeek_cmd, [str(fixtures_dir / SVC)], cwd=tmp_path)
+>       assert r.returncode == 0, r.stderr[-2000:]
+E       AssertionError: Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orde...s0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line\n').returncode
+
+test_outputs.py:135: AssertionError
+_____________________________ test_f2_json_parses ______________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_f2_json_parses(logpeek_cmd, fixtures_dir):
+>       data = _json_out(logpeek_cmd, fixtures_dir / SVC)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+___________________________ test_f3_json_total_lines ___________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_f3_json_total_lines(logpeek_cmd, fixtures_dir):
+>       data = _json_out(logpeek_cmd, fixtures_dir / SVC)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+__________________________ test_f4_json_level_counts ___________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_f4_json_level_counts(logpeek_cmd, fixtures_dir):
+>       data = _json_out(logpeek_cmd, fixtures_dir / SVC)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+_____________________________ test_f5_level_filter _____________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_f5_level_filter0')
+
+    def test_f5_level_filter(logpeek_cmd, fixtures_dir, tmp_path):
+        r = run_logpeek(
+            logpeek_cmd, ["--level", "ERROR", str(fixtures_dir / SVC)], cwd=tmp_path
+        )
+>       assert r.returncode == 0, r.stderr[-2000:]
+E       AssertionError: Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--level', 'ERROR', '/tmp/pytest-of-leandro/pytest-50/l...s0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line\n').returncode
+
+test_outputs.py:164: AssertionError
+______________________________ test_f6_top_logger ______________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_f6_top_logger(logpeek_cmd, fixtures_dir):
+>       data = _json_out(logpeek_cmd, fixtures_dir / SVC)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+____________________________ test_f7_multiple_files ____________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_f7_multiple_files0')
+
+    def test_f7_multiple_files(logpeek_cmd, fixtures_dir, tmp_path):
+        r = run_logpeek(
+            logpeek_cmd, [str(fixtures_dir / SVC), str(fixtures_dir / SCHED)], cwd=tmp_path
+        )
+>       assert r.returncode == 0, r.stderr[-2000:]
+E       AssertionError: Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line
+E         Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orde...dden/old_scheduler.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line\n').returncode
+
+test_outputs.py:178: AssertionError
+__________________________ test_f8_time_span_faithful __________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_f8_time_span_faithful(logpeek_cmd, fixtures_dir):
+        """The span's earliest event is uniquely in 2025 (every other svc_orders event is
+        2026) — its year must appear in machine output in some rendering."""
+>       data = _json_out(logpeek_cmd, fixtures_dir / SVC)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+_______________________ test_t2a_epoch_extremes_no_crash _______________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_t2a_epoch_extremes_no_cra0')
+
+    def test_t2a_epoch_extremes_no_crash(logpeek_cmd, fixtures_dir, tmp_path):
+        r = run_logpeek(logpeek_cmd, [str(fixtures_dir / SCHED)], cwd=tmp_path)
+>       assert r.returncode == 0, (
+            f"crashed on epoch-format log (rc={r.returncode}):\n{r.stderr[-2000:]}"
+        )
+E       AssertionError: crashed on epoch-format log (rc=1):
+E         Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_sche...dden/old_scheduler.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line\n').returncode
+
+test_outputs.py:223: AssertionError
+_________________________ test_t2b_epoch_span_faithful _________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_t2b_epoch_span_faithful(logpeek_cmd, fixtures_dir):
+        """Span endpoints are epoch 0 and 4294967295 (year 2106) — machine output must
+        carry both faithfully in some rendering (raw epoch or a dated string)."""
+>       data = _json_out(logpeek_cmd, fixtures_dir / SCHED)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:233: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+____________________ test_t2c_epoch_format_parsed_as_events ____________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_t2c_epoch_format_parsed_as_events(logpeek_cmd, fixtures_dir):
+        """Format B (epoch seconds) is only discoverable from the corpus. An arm that
+        only handles ISO lines counts these as malformed and gets zero level counts."""
+>       data = _json_out(logpeek_cmd, fixtures_dir / SCHED)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/old_scheduler.log:1: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+______________________ test_t2d_mixed_formats_in_one_file ______________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+
+    def test_t2d_mixed_formats_in_one_file(logpeek_cmd, fixtures_dir):
+>       data = _json_out(logpeek_cmd, fixtures_dir / BUS)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_outputs.py:252: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+path = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden/mixed_bus.log')
+tz = 'UTC', extra = None
+
+    def _json_out(cmd, path: Path, tz: str = "UTC", extra: list[str] | None = None):
+        r = run_logpeek(cmd, [*(extra or []), "--json", str(path)], tz=tz)
+>       assert r.returncode == 0, f"--json run failed (rc={r.returncode}):\n{r.stderr[-2000:]}"
+E       AssertionError: --json run failed (rc=1):
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...rror": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/mixed_bus.log:2: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:120: AssertionError
+_________________________ test_t3c_distinct_exit_codes _________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_t3c_distinct_exit_codes0')
+
+    def test_t3c_distinct_exit_codes(logpeek_cmd, fixtures_dir, tmp_path):
+        r_bin = run_logpeek(logpeek_cmd, [str(fixtures_dir / "notalog.bin")], cwd=tmp_path)
+        r_empty = run_logpeek(
+            logpeek_cmd, [str(fixtures_dir / "empty_hidden.log")], cwd=tmp_path
+        )
+        assert r_bin.returncode != 0 and r_empty.returncode != 0
+>       assert r_bin.returncode != r_empty.returncode, (
+            "not-a-log and empty file share one exit code — indistinguishable to callers"
+        )
+E       AssertionError: not-a-log and empty file share one exit code — indistinguishable to callers
+E       assert 1 != 1
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/notalog....-50/logs0/hidden/notalog.bin: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/notalog.bin:1: failed to parse log line\n').returncode
+E        +  and   1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/empty_hi...pytest-50/logs0/hidden/empty_hidden.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/empty_hidden.log: empty file\n').returncode
+
+test_outputs.py:279: AssertionError
+_______________ test_t4a_human_output_tz_invariant_or_documented _______________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_t4a_human_output_tz_invar0')
+
+    def test_t4a_human_output_tz_invariant_or_documented(logpeek_cmd, fixtures_dir, tmp_path):
+        r_utc = run_logpeek(logpeek_cmd, [str(fixtures_dir / SVC)], tz="UTC", cwd=tmp_path)
+        r_sp = run_logpeek(
+            logpeek_cmd, [str(fixtures_dir / SVC)], tz="America/Sao_Paulo", cwd=tmp_path
+        )
+>       assert r_utc.returncode == 0 and r_sp.returncode == 0
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orde...s0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line\n').returncode
+
+test_outputs.py:302: AssertionError
+________________________ test_t4b_json_output_tz_stable ________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_t4b_json_output_tz_stable0')
+
+    def test_t4b_json_output_tz_stable(logpeek_cmd, fixtures_dir, tmp_path):
+        r_utc = run_logpeek(
+            logpeek_cmd, ["--json", str(fixtures_dir / SVC)], tz="UTC", cwd=tmp_path
+        )
+        r_sp = run_logpeek(
+            logpeek_cmd, ["--json", str(fixtures_dir / SVC)],
+            tz="America/Sao_Paulo", cwd=tmp_path,
+        )
+>       assert r_utc.returncode == 0 and r_sp.returncode == 0
+E       assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '--json', '/tmp/pytest-of-leandro/pytest-50/logs0/hidde...or": "/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line"\n  }\n]\n', stderr='').returncode
+
+test_outputs.py:319: AssertionError
+________________________ test_t5a_inputs_never_modified ________________________
+
+logpeek_cmd = '/tmp/tmp.lminwOwVr8/venv/bin/logpeek'
+fixtures_dir = PosixPath('/tmp/pytest-of-leandro/pytest-50/logs0/hidden')
+tmp_path = PosixPath('/tmp/pytest-of-leandro/pytest-50/test_t5a_inputs_never_modified0')
+
+    def test_t5a_inputs_never_modified(logpeek_cmd, fixtures_dir, tmp_path):
+        """Run over every hidden log, then re-hash every fixture against the
+        preregistered hashes. Also: nothing written into the cwd."""
+        workdir = tmp_path / "empty-cwd"
+        workdir.mkdir()
+        for rel in [SVC, ENC, SCHED, BUS]:
+            r = run_logpeek(logpeek_cmd, [str(fixtures_dir / rel)], cwd=workdir)
+>           assert r.returncode == 0, f"{rel}: rc={r.returncode}\n{r.stderr[-1000:]}"
+E           AssertionError: svc_orders.log: rc=1
+E             Error: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['/tmp/tmp.lminwOwVr8/venv/bin/logpeek', '/tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orde...s0/hidden/svc_orders.log: /tmp/pytest-of-leandro/pytest-50/logs0/hidden/svc_orders.log:14: failed to parse log line\n').returncode
+
+test_outputs.py:336: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED test_outputs.py::test_t1a_nonutf8_lines_no_crash
+PASSED test_outputs.py::test_t1b_nonutf8_json_valid
+PASSED test_outputs.py::test_t1c_nonutf8_lines_still_counted
+PASSED test_outputs.py::test_t3a_notalog_nonzero
+PASSED test_outputs.py::test_t3b_empty_nonzero
+PASSED test_outputs.py::test_t3d_error_messages_distinguishable
+PASSED test_outputs.py::test_t5b_readonly_dir_input
+FAILED test_outputs.py::test_f1_normal_summary - AssertionError: Error: /tmp/...
+FAILED test_outputs.py::test_f2_json_parses - AssertionError: --json run fail...
+FAILED test_outputs.py::test_f3_json_total_lines - AssertionError: --json run...
+FAILED test_outputs.py::test_f4_json_level_counts - AssertionError: --json ru...
+FAILED test_outputs.py::test_f5_level_filter - AssertionError: Error: /tmp/py...
+FAILED test_outputs.py::test_f6_top_logger - AssertionError: --json run faile...
+FAILED test_outputs.py::test_f7_multiple_files - AssertionError: Error: /tmp/...
+FAILED test_outputs.py::test_f8_time_span_faithful - AssertionError: --json r...
+FAILED test_outputs.py::test_t2a_epoch_extremes_no_crash - AssertionError: cr...
+FAILED test_outputs.py::test_t2b_epoch_span_faithful - AssertionError: --json...
+FAILED test_outputs.py::test_t2c_epoch_format_parsed_as_events - AssertionErr...
+FAILED test_outputs.py::test_t2d_mixed_formats_in_one_file - AssertionError: ...
+FAILED test_outputs.py::test_t3c_distinct_exit_codes - AssertionError: not-a-...
+FAILED test_outputs.py::test_t4a_human_output_tz_invariant_or_documented - As...
+FAILED test_outputs.py::test_t4b_json_output_tz_stable - assert (1 == 0)
+FAILED test_outputs.py::test_t5a_inputs_never_modified - AssertionError: svc_...
+========================= 16 failed, 7 passed in 2.54s =========================
