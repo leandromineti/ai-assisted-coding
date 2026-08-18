@@ -7,6 +7,14 @@ vs. Opus 5" is a category error — three things that aren't the same kind of th
 Every note and comparison in this repo declares which layer its subject occupies, so that
 comparisons stay like-for-like.
 
+This is the repo's **tool taxonomy** — it classifies what a tool *is*. Its companion is
+the **feature taxonomy**
+([`notes/cross-cutting/feature-taxonomy.md`](notes/cross-cutting/feature-taxonomy.md),
+[ADR-0010](adrs/0010-two-taxonomies.md)): the characteristics assessed on tools, defined
+once with per-layer applicability, from which the comparison matrices are generated.
+Layers may carry **sub-categories** (layer 5's `kind`; layer 4's SDD /
+context-discipline / decision-governance poles) — those live in the layer indexes.
+
 This document always describes the **current** taxonomy. How it got this shape — the
 bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
 renumbering — is recorded in [`adrs/`](adrs/README.md), one dated, immutable decision

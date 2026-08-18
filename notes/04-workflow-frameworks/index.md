@@ -129,9 +129,11 @@ First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-pla
 
 ## Feature taxonomy (2026-08-18)
 
-The layer now carries a structural feature vocabulary — `workflow_features:` in report
-frontmatter, defined in [`notes/_template-tool-report.md`](../_template-tool-report.md),
-rendered in [`comparisons/features.md`](../../comparisons/features.md). The division of
+The layer now carries the layer-4 slice of the repo's **feature taxonomy** —
+`workflow_features:` in report frontmatter, with every key defined once in
+[`notes/cross-cutting/feature-taxonomy.md`](../cross-cutting/feature-taxonomy.md)
+([ADR-0010](../../adrs/0010-two-taxonomies.md)), rendered in
+[`comparisons/features.md`](../../comparisons/features.md). The division of
 labor with the mechanism table below: a **feature** is a presence-claim (the machinery
 exists, verified in source or docs); a **mechanism** is a value-claim (it measurably
 pays). The matrix says *what* each framework built; the experiments say *whether it

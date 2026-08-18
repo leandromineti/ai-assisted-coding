@@ -5,7 +5,9 @@
 
 Cells: **✓** verified present · **✗** verified absent · **·** not yet checked.
 The dot is load-bearing — it is *not* a no. A feature key is only set in a
-report's frontmatter when confirmed in source or official docs.
+report's frontmatter when confirmed in source or official docs. Keys are
+defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)
+(ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
 
 | Tool | mcp | lsp | hooks | skills | subagents | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -31,8 +33,9 @@ report's frontmatter when confirmed in source or official docs.
 
 ## Workflow frameworks (layer 4)
 
-Separate vocabulary — `workflow_features:` frontmatter, defined in
-`notes/_template-tool-report.md`. Structural presence-claims, not value-claims:
+The layer-4 slice of the feature taxonomy — `workflow_features:` frontmatter,
+defined in `notes/cross-cutting/feature-taxonomy.md`. Structural
+presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
 mechanism table's job, notes/04-workflow-frameworks/index.md).
 
@@ -46,3 +49,21 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 | [haft](../notes/04-workflow-frameworks/haft.md) | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |
 | [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | ✓ | ✓ | · | ✓ | · | · | · | · | · |
 | [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
+
+## Cross-layer features
+
+The bleed, quantified. **Demand** counts presence among reports of the
+feature's `applies_to` layers (✓ / checked); **supply** counts tracked
+layer-5 tools of the linked `kind`. Zeros are honest — no supply-side tool
+tracked yet. Definitions and links live in the
+[feature taxonomy](../notes/cross-cutting/feature-taxonomy.md).
+
+| Feature | Layer | Demand (✓/checked) | Supply (layer-5 kind) | Note |
+|---|---|---|---|---|
+| mcp | 2 | 7/7 | `mcp-server` · 0 tracked |  |
+| hooks | 2 | 4/5 | `hook` · 0 tracked | supply side also carries layer-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks |
+| skills | 2 | 5/5 | `skill` · 0 tracked |  |
+| subagents | 2 | 6/6 | `subagent-def` · 0 tracked |  |
+| rules files | 2 | 7/7 | `rules-file` · 0 tracked |  |
+| learning loop | 2 | 3/4 | `memory` · 7 tracked | added 2026-07-30 per issue #2's two-verified-instances rule (hermes, codex); note default-on vs default-off when setting |
+| measured gates | 4 | 2/4 | `hook` · 0 tracked | the ECC finding — this mechanism can be delivered as installable layer-5 Stop hooks, independent of any framework |

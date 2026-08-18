@@ -15,6 +15,7 @@ turn a dated observation into a false claim about current code.
 """
 from __future__ import annotations
 
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -40,21 +41,38 @@ ENV_RELATIONS = ["bundle", "bind", "internalize", "inhabit"]
 
 # Fixed vocabulary — order defines the matrix columns. Keep small and axis-aligned;
 # vendor pet names don't get columns.
-FEATURE_KEYS = [
-    "mcp", "lsp", "hooks", "skills", "subagents", "plan_mode",
-    "rules_files", "model_agnostic", "session_sharing", "evals",
-    "learning_loop",  # added 2026-07-30 per issue #2's two-verified-instances rule
-]
+# The feature taxonomy is the single source of truth for feature keys — one entry
+# per assessed characteristic, with definitions, applicability, and demand↔supply
+# kind links (ADR-0010). Do NOT hardcode keys here; edit the registry.
+FEATURE_REGISTRY_PATH = ROOT / "notes" / "cross-cutting" / "feature-taxonomy.md"
 
-# Layer-4 (workflow framework) vocabulary — added 2026-08-18, grounded in the
-# mechanism classes of notes/04-workflow-frameworks/index.md. Features are
-# structural presence-claims (the machinery exists); mechanisms are value-claims
-# (it pays). Same verified-only semantics as FEATURE_KEYS. state_store is
-# string-valued: repo-files | database.
+
+def _load_feature_registry() -> list[dict]:
+    try:
+        text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
+    except OSError as e:
+        sys.exit(f"feature taxonomy missing: {FEATURE_REGISTRY_PATH} ({e})")
+    m = re.search(r"```yaml\n(.*?)```", text, re.DOTALL)
+    if not m:
+        sys.exit(f"feature taxonomy has no ```yaml block: {FEATURE_REGISTRY_PATH}")
+    try:
+        data = yaml.safe_load(m.group(1))
+    except yaml.YAMLError as e:
+        sys.exit(f"feature taxonomy YAML unparsable: {e}")
+    entries = (data or {}).get("features")
+    if not isinstance(entries, list) or not entries:
+        sys.exit("feature taxonomy: `features:` must be a non-empty list")
+    for e in entries:
+        for req in ("id", "block", "applies_to", "definition"):
+            if req not in e:
+                sys.exit(f"feature taxonomy entry missing `{req}`: {e}")
+    return entries
+
+
+FEATURE_REGISTRY = _load_feature_registry()
+FEATURE_KEYS = [e["id"] for e in FEATURE_REGISTRY if e["block"] == "features"]
 WORKFLOW_FEATURE_KEYS = [
-    "intent_pipeline", "deterministic_engine", "format_gates",
-    "measured_gates", "process_gates", "context_isolation",
-    "parallel_orchestration", "state_store", "retrospectives",
+    e["id"] for e in FEATURE_REGISTRY if e["block"] == "workflow_features"
 ]
 
 # Layer-1 API-feature keys (added 2026-08-17): the drift-prone, experiment-relevant
@@ -245,6 +263,51 @@ def render(reports: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def _render_cross_layer(reports: list[dict]) -> list[str]:
+    """The bleed, quantified: demand-side presence counts vs tracked layer-5 supply
+    for every feature that spans layers or has a kind_link (ADR-0010)."""
+    rows = [e for e in FEATURE_REGISTRY
+            if e.get("kind_link") or len(e.get("applies_to", [])) > 1]
+    if not rows:
+        return []
+    lines = [
+        "",
+        "## Cross-layer features",
+        "",
+        "The bleed, quantified. **Demand** counts presence among reports of the",
+        "feature's `applies_to` layers (✓ / checked); **supply** counts tracked",
+        "layer-5 tools of the linked `kind`. Zeros are honest — no supply-side tool",
+        "tracked yet. Definitions and links live in the",
+        "[feature taxonomy](../notes/cross-cutting/feature-taxonomy.md).",
+        "",
+        "| Feature | Layer | Demand (✓/checked) | Supply (layer-5 kind) | Note |",
+        "|---|---|---|---|---|",
+    ]
+    for e in rows:
+        block, key = e["block"], e["id"]
+        present = checked = 0
+        for r in reports:
+            if r.get("layer") not in e["applies_to"]:
+                continue
+            v = (r.get(block) or {}).get(key) if isinstance(r.get(block), dict) else None
+            if v is None:
+                continue
+            checked += 1
+            if v is not False:
+                present += 1
+        kind = e.get("kind_link")
+        if kind:
+            supply_n = sum(1 for r in reports
+                           if r.get("layer") == 5 and r.get("kind") == kind)
+            supply = f"`{kind}` · {supply_n} tracked"
+        else:
+            supply = "—"
+        layers = "+".join(str(x) for x in e["applies_to"])
+        note = e.get("note", "")
+        lines.append(f"| {key.replace('_', ' ')} | {layers} | {present}/{checked} | {supply} | {note} |")
+    return lines
+
+
 def render_features(reports: list[dict]) -> str:
     lines = [
         "# Feature matrix",
@@ -254,7 +317,9 @@ def render_features(reports: list[dict]) -> str:
         "",
         "Cells: **✓** verified present · **✗** verified absent · **·** not yet checked.",
         "The dot is load-bearing — it is *not* a no. A feature key is only set in a",
-        "report's frontmatter when confirmed in source or official docs.",
+        "report's frontmatter when confirmed in source or official docs. Keys are",
+        "defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)",
+        "(ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.",
         "",
         "| Tool | " + " | ".join(k.replace("_", " ") for k in FEATURE_KEYS) + " |",
         "|---|" + "---|" * len(FEATURE_KEYS),
@@ -286,14 +351,15 @@ def render_features(reports: list[dict]) -> str:
         rel = r["_path"].relative_to(ROOT)
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     for k in sorted(unknown_keys):
-        print(f"warn: feature key '{k}' not in FEATURE_KEYS — not rendered", file=sys.stderr)
+        print(f"warn: feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
     lines += [
         "",
         "## Workflow frameworks (layer 4)",
         "",
-        "Separate vocabulary — `workflow_features:` frontmatter, defined in",
-        "`notes/_template-tool-report.md`. Structural presence-claims, not value-claims:",
+        "The layer-4 slice of the feature taxonomy — `workflow_features:` frontmatter,",
+        "defined in `notes/cross-cutting/feature-taxonomy.md`. Structural",
+        "presence-claims, not value-claims:",
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
         "mechanism table's job, notes/04-workflow-frameworks/index.md).",
         "",
@@ -322,7 +388,9 @@ def render_features(reports: list[dict]) -> str:
         rel = r["_path"].relative_to(ROOT)
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     for k in sorted(wf_unknown):
-        print(f"warn: workflow feature key '{k}' not in WORKFLOW_FEATURE_KEYS — not rendered", file=sys.stderr)
+        print(f"warn: workflow feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
+
+    lines += _render_cross_layer(reports)
     lines.append("")
     return "\n".join(lines)
 

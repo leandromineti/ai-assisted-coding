@@ -43,3 +43,4 @@ living docs, the ADR trail is the decoder.
 | [0007](0007-renumber-core-triad-first.md) | 2026-08-18 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
 | [0008](0008-standards-into-cross-cutting.md) | 2026-08-18 | Standards folded into cross-cutting (one non-layer bucket) | accepted |
 | [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`notes/candidates.md`) | accepted |
+| [0010](0010-two-taxonomies.md) | 2026-08-18 | Two taxonomies: tool taxonomy + feature taxonomy (registry, cross-layer view) | accepted |
