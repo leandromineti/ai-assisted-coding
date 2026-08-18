@@ -138,6 +138,12 @@ schema entries. opencode's `packages/llm` redesign draft draws the same line by
 excluding permissions, sessions, and orchestration from the model-calling package.
 cline's growth (SDK, CLI, hub around a core) rhymes. The waist is the loop + dispatch;
 everything else should be removable.
+*(2026-08-18 tension, recorded not resolved: conclusion 8's absorption is core growth —
+the counter-motion to this principle. The tracked harnesses split on it: codex absorbs
+turn-end gates as a hook SURFACE (waist-shaped — the mechanism is an extension point),
+hermes as always-on loop POLICY (core growth). Whether absorbed mechanisms arrive as
+surfaces or as core code may be H8's real test — see
+[the absorption table](notes/02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses).)*
 
 ## Layer 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
 

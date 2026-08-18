@@ -86,6 +86,12 @@ architectural slot with more teeth: a stop hook can **veto turn termination** an
 a continuation prompt (`session/turn.rs`, confirmed at the branch site same day). That's
 exp-01's "measured verification gate" mechanism — the one conclusion 6 credits with the
 layer-4 quality margin — living below layer 4, twice.
+*(2026-08-18: "twice" is now a measured floor, not a norm — the mechanism became the
+graded `turn_end_gates` matrix column (ADR-0012) and a probe of all seven
+feature-bearing harnesses found 3✓ / 3✗ / 1 undecidable, with hermes still the only
+always-on native policy; codex and claude-code carry it as hook surfaces, empty unless
+the user configures them. Full table:
+[layer-2 index, "What layer 2 has absorbed"](../02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses).)*
 
 **Implication for experiment 03 (recorded before its design):** if harnesses ship
 verification gates natively, the layer-4 margin can migrate down the stack. The
