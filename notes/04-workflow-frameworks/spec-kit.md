@@ -16,8 +16,8 @@ depth: deep-dive   # 2026-08-18: runtime traced in source by three parallel read
 harness_targets: "37 registered integrations @ 655a3cb (36 named + `generic`), incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes — survey's \"44 config dirs\" did not reproduce at deep-dive"
 workflow_features:   # added 2026-08-18 (survey + exp-02); context_isolation & parallel_orchestration settled by the same-day deep-dive
   intent_pipeline: true          # constitution→specify→plan→tasks→implement
-  deterministic_engine: true     # `specify workflow run` YAML step engine (see Presets section)
-  format_gates: true             # checklist gate before implement; ≥80% reference-coverage rule
+  deterministic_engine: true     # 11-type workflow engine + setup scripts — but it advances its OWN run state and never parses SDD artifacts (deep-dive)
+  format_gates: false            # FLIPPED ✓→✗ at deep-dive 2026-08-18: the checklist gate and ≥80% rule are prose the agent enforces on itself; script gates test existence only; no code machine-checks any artifact's structure
   measured_gates: false          # gates test the English, never measured behavior (exp-02 corroborates)
   process_gates: true            # clarify iteration cap, checklist override, constitution approval
   context_isolation: false       # no fresh-context instruction anywhere; handoffs `send: true` chains steps in ONE conversation (deep-dive §context)

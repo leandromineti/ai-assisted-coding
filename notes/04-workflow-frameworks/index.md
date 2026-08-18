@@ -139,6 +139,13 @@ matters*. Keys follow the same discipline as the harness vocabulary — omitted 
 "not checked", `false` means "checked and absent", and absences are findings
 (Conductor's verified-absent engine; haft's verified-absent intent pipeline).
 
+First falsification, same day it was created (2026-08-18): spec-kit's `format_gates`
+went ✓→✗ at deep-dive — the survey-visible gates turned out to be prose the agent
+enforces on itself, not machinery. The calibration this buys: **a gate stated in prose
+looks like a feature until you check who enforces it**, so every README-sourced ✓ in a
+stub row (pilot-shell's `measured_gates` especially) carries an implicit asterisk until
+its source is read.
+
 ## Mechanisms — the unit of value
 
 *(Added 2026-07-28 after experiment 01. "GSD is a layer-4 tool" proved true and nearly
