@@ -31,6 +31,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |
 | `refs/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
 | `scripts/` | the generators. `build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh` | yes |
+| `adrs/` | dated, immutable decision records for taxonomy/structure decisions. Living docs always speak the current state; ADRs hold how it was reached and the old→new decoders. Never edit an accepted ADR except `superseded-by`. See [`adrs/README.md`](adrs/README.md) | yes |
 | `articles/` | public-facing drafts, one file per article, site-schema frontmatter. Drafted here so claims keep repo-relative links (rule 4 for prose); published to the personal site as a downstream copy. See [`articles/README.md`](articles/README.md) | yes |
 
 **Never hand-edit anything in `comparisons/` or `refs/index.md`.** Edit the frontmatter of the
