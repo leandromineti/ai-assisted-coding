@@ -42,3 +42,5 @@
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot
+5|ai-memory|https://github.com/akitaonrails/ai-memory
+5|mem0|https://github.com/mem0ai/mem0

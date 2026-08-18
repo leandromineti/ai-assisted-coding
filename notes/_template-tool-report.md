@@ -32,6 +32,9 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
+# kind: layer-5 (extensions) reports only — one of the bucket's kind vocabulary:
+# mcp-server | skill | hook | subagent-def | rules-file | config-pack | memory
+kind: <see comment>
 # harness_targets: layer-4 (and layer-5) reports only — which harnesses the tool
 # officially installs into. Same discipline as features: set ONLY when verified in
 # source or official docs; omitted means "not yet checked". Either a list of harness
