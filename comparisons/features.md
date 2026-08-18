@@ -41,9 +41,9 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 
 | Tool | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
 |---|---|---|---|---|---|---|---|---|---|
+| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `repo-files` | ✓ |
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | ✓ | ✓ | ✓ | ✗ | · | ✗ | ✗ | `repo-files` | ✗ |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | `repo-files` | ✗ |
-| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | ✓ | ✓ | · | ✓ | ✓ | ✓ | · | `repo-files` | · |
 | [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | ✓ | · | · | · | · | · | · | · | ✓ |
 | [conductor](../notes/04-workflow-frameworks/conductor.md) | ✓ | ✗ | ✗ | · | · | · | · | `repo-files` | · |
 | [haft](../notes/04-workflow-frameworks/haft.md) | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |

@@ -25,14 +25,16 @@ Ships as several pieces, which is itself instructive:
 
 | Piece | What | Layer |
 |-------|------|-------|
-| `gsd-core` | The framework proper; installs into Claude Code, Codex, Gemini CLI, Cursor, Windsurf, Copilot. | 4 |
+| `gsd-core` | The framework proper; 18 install targets @ fee72d55 (Gemini CLI removed upstream 2026-06-18 — July's list was stale at read time). | 4 |
 | `gsd-pi` | Standalone CLI for autonomous workflows. | **2 — bleed** |
 | `gsd-browser` | Deterministic Chrome control with recording and assertions. | **3 — bleed** |
 | `gsd-workbench` | Desktop workspace. Announced, not shipped at check date. | 2 |
 | `gsd-cloud` | Hosted cross-device state. Announced, not shipped at check date. | — |
 
-*Already installed on this machine* — the `gsd-*` skills are live in this Claude Code
-install, which makes it the cheapest layer-4 subject to study first-hand.
+*(2026-08-18: the "already installed on this machine" advantage is gone — no gsd-*
+artifacts under `~/.claude` on this host, almost certainly lost in the 2026-08-06 server
+rebuild. Deep-dived 2026-08-18 at fee72d55 — the layer's third deep-dive:
+[report](gsd-core.md).)*
 
 ### spec-kit — <https://github.com/github/spec-kit> · [report](spec-kit.md)
 
