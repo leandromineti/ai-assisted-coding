@@ -1,6 +1,6 @@
 # Benchmarks as instruments — a survey
 
-`checked: 2026-08-17`
+`checked: 2026-08-18`
 
 This is the narrative half of the repo's benchmark review; the catalog half is the
 generated matrix ([`../../comparisons/benchmarks.md`](../../comparisons/benchmarks.md)),
@@ -158,7 +158,34 @@ signals missing self-monitoring, not efficiency (GPTswarm/OWL: ~0 corrections *a
 3–10% repair rates). Its prose headlines contradict its own tables in places; cite
 tables only.
 
-## 6. What this repo takes
+## 6. The memory corner (what the layer-5 memory kind reports against)
+
+*(Added 2026-08-18, closing the memory-kind reading arc's instrument question — three
+full reads the same day.)* The instruments the memory vendors self-report on:
+
+| Benchmark | Construction | The result that matters here |
+|---|---|---|
+| [LoCoMo](../../refs/2024-locomo.md) | 50 LLM-generated persona dialogues (~9K tokens, ≤35 sessions), human-patched; F1 scoring | human 87.9 vs best model 32.4; long context *collapses* adversarial answerability (2.1 F1); observation-granularity RAG beats sessions and summaries |
+| [LongMemEval](../../refs/2025-longmemeval.md) | 500 human-curated questions in scalable simulated histories (115K / 1.5M tokens); judge meta-evaluated at 97% human agreement | commercial memory systems drop 37–64% vs offline reading; even with *oracle* retrieval, reading strategy costs up to 10 points |
+| [BEAM](../../refs/2026-beam.md) | 100 fully synthetic conversations, 100K–10M tokens; nugget-scored LLM judge | best configs average ~0.36 at 100K — huge headroom; weakest ability everywhere is contradiction resolution |
+
+Three take-aways, each recorded in the refs notes:
+
+1. **No coding-agent memory benchmark exists.** All three measure personal
+   chat-assistant memory — no tool traces, no repo state, no code entities. The kind's
+   vendors benchmark on conversation and sell to coding harnesses; every transfer claim
+   is unmeasured.
+2. **Vendor numbers exceed the instruments' own scales.** mem0's "LoCoMo 92.5" is above
+   the paper's measured *human* baseline (87.9); cognee's BEAM 0.79 is ~2× the paper's
+   best configurations. Neither is comparable to the published metric without config
+   reconciliation — flagged in both tool notes.
+3. **The instruments converge on the mechanisms the vendors ship.** LongMemEval's
+   indexing/retrieval/reading control points and BEAM's episodic/working/scratchpad
+   decomposition map onto ai-memory's tiers-and-slots and memos' trace layers almost
+   term for term — academia and vendors building the same three memories under
+   different names (rule-4 trace in each ref note's "what it means" section).
+
+## 7. What this repo takes
 
 1. **The three-point instrument proof** (§3) — now the preregistered acceptance
    criterion for exp-02's rebuilt trap set, and the default for any future instrument

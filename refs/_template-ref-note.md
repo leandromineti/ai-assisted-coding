@@ -1,5 +1,5 @@
 ---
-key: <citekey — MUST equal this file's name without .md; --check enforces it>
+key: <citekey, shaped <year>-<name> (year = the year: field below) — MUST equal this file's name without .md; --check enforces it>
 title: "<full title, quoted>"
 authors: [<First Last>, <First Last>]   # first few is fine; add "et al." as a final entry
 year: <YYYY>

@@ -40,7 +40,7 @@ they're already wrong (rule 3).
 
 ## The three operations
 
-**Ingest a source.** Read it — actually read it. Write `refs/<citekey>.md` from
+**Ingest a source.** Read it — actually read it. Write `refs/<year>-<name>.md` (year-first citekeys since 2026-08-18) from
 [`refs/_template-ref-note.md`](refs/_template-ref-note.md), cache the PDF in `refs/pdf/`, set
 `read_depth` honestly, fill `bears_on` and `verdict`. Then update whatever note or conclusion the
 source actually touches, append a line to `refs/log.md`, and re-run

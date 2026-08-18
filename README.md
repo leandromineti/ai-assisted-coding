@@ -278,6 +278,21 @@ note. Revised when evidence moves._
     one check (t3c) went 0/20 with satisfiability unproven. →
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
     [`notes/cross-cutting/layer-2-program.md`](notes/cross-cutting/layer-2-program.md)
+13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18,
+    memory-kind reading arc: one deep-dive, two surveys, three instrument full-reads).
+    The kind's verified substance is real — three distinct wagers (markdown wiki / RL
+    policy database / knowledge graph), three consolidation postures (background cron /
+    per-turn event cascade / agent-invoked), and cross-harness continuity as the one
+    bet no single harness can absorb (conclusion 8's counter-current). But every
+    instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
+    personal chat-assistant memory: no tool traces, no repo state, no code entities.
+    **No coding-agent memory benchmark exists**, and the two vendor headline numbers
+    checked exceed their instruments' own published scales (mem0's 92.5 vs LoCoMo's
+    87.9 *human* baseline; cognee's 0.79 vs BEAM's ~0.36 best configs) — so the
+    kind's efficacy for coding is currently an unmeasured claim resting on
+    conversational proxies. →
+    [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md) §6 ·
+    [`notes/05-capability-extensions/index.md`](notes/05-capability-extensions/index.md)
 
 ## License
 
