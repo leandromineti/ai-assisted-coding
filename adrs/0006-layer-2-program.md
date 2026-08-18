@@ -1,6 +1,6 @@
 # ADR-0006 — Framework code-outcome A/Bs stop; the bundle becomes the subject
 
-`decided: 2026-08-18` · `recorded: 2026-08-19 (backfill)` · status: **accepted**
+`decided: 2026-08-18` · `recorded: 2026-08-18 (backfill)` · status: **accepted**
 
 ## Decision
 

@@ -1,6 +1,6 @@
 # ADR-0007 — Renumber the layers: core triad first
 
-`decided: 2026-08-19` · status: **accepted** · supersedes the storage-keys rule of
+`decided: 2026-08-18` · status: **accepted** · supersedes the storage-keys rule of
 [ADR-0004](0004-core-triad-reframing.md) (and ADR-0001's original ordering)
 
 ## Decision
@@ -34,14 +34,16 @@ for zero information gain." Two things changed that calculus:
    breaking silently — is paid differently: living documents always speak the current
    taxonomy, and anything dated earlier is decoded here rather than by inline
    disclaimers scattered through living text. The owner chose this structure
-   explicitly (2026-08-19) over per-mention annotations.
+   explicitly (2026-08-18) over per-mention annotations.
 
 ## The decoder
 
-Any material dated **before 2026-08-19** — git history, experiment protocols and logs
-(immutable by methodology rule 5), published article snapshots, old GitHub URLs, issue
-threads — uses the old scheme: **3 = extensions, 5 = execution environments**.
-Everything at or after this date, and every living document at HEAD, uses the new
+Any material predating the renumber commit (`6a3cf01`, 2026-08-18 ~17:30 UTC) — git
+history, experiment protocols and logs (immutable by methodology rule 5), published
+article snapshots, old GitHub URLs, issue threads — uses the old scheme: **3 =
+extensions, 5 = execution environments**. That includes same-day material from earlier
+on 2026-08-18 (exp-03's arc close among it), so the boundary is the commit, not the
+calendar date. Everything after it, and every living document at HEAD, uses the new
 scheme. Design-principles' letter-coded principle IDs (H*, X*, F*, E*) are
 number-free and unaffected; `notes/cross-cutting/layer-2-program.md` refers to the
 harness layer, whose number did not change.

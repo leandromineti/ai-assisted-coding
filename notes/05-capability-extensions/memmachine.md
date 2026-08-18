@@ -12,7 +12,7 @@ commit: 2d28c1c
 first_commit: 2025-08-15
 stars: 3178
 stars_at: 2026-08-18
-read_at: 2026-08-19
+read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README skim; source not read
 harness_targets: "integrations/openclaw/ and a Strands integration in-repo (file listing at the pin); not verified per-target"
 ---

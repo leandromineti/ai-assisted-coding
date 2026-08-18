@@ -12,7 +12,7 @@ commit: acd9c0b
 first_commit: 2026-05-21
 stars: 2596
 stars_at: 2026-08-18
-read_at: 2026-08-18   # deep-dive read; the stub (same pin) was stamped 2026-08-19 by a clock-skewed session — see the arc's dating note
+read_at: 2026-08-18   # deep-dive read, same day as the stub
 depth: deep-dive   # capture→consolidate→handoff traced in source (hooks/, ai-memory-hooks, ai-memory-consolidate); Claude Code installer read end-to-end (install_hooks.rs + render_shared.rs + commands/hook.rs); MCP tool surface read at router + ARCHITECTURE level. NOT traced: the managed-workstream loop (`ai-memory run`, docs-level only), the web frontend, and the retrieval RRF internals beyond the store's table shapes
 harness_targets: "README support matrix at acd9c0b lists ~24 targets — Supported with MCP + lifecycle hooks: Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Devin CLI, Command Code, Kimi Code, Kiro CLI, OpenClaw, Antigravity CLI, Grok Build CLI, Zero, Pi, OMP; MCP-only: Claude Desktop, VS Code Copilot, Zed, Swival; community: Hermes. Counted from README; Claude Code verified in source (this read), others spot-checked at the event-table level in render_shared.rs"
 features:

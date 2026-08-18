@@ -1,6 +1,6 @@
 # ADR-0004 — The core-triad reframing; numbers kept as storage keys
 
-`decided: 2026-08-17` · `recorded: 2026-08-19 (backfill — text extracted verbatim from
+`decided: 2026-08-17` · `recorded: 2026-08-18 (backfill — text extracted verbatim from
 taxonomy.md's preamble as of commit fd9f189)` · status: **reframing accepted; the
 storage-keys rule is superseded by [ADR-0007](0007-renumber-core-triad-first.md)**
 

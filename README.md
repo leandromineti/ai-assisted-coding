@@ -13,7 +13,7 @@ lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack b
 intent refined into specs and subtasks going down, research and verified evidence coming
 up) and extensions (5 — a cross-layer bucket parameterizing the triad's edges;
 portability is conferred by adoption, not intrinsic, so the name doesn't claim it). How
-the taxonomy reached this shape — demotions, adjudications, the 2026-08-19
+the taxonomy reached this shape — demotions, adjudications, the 2026-08-18
 renumbering — is one dated decision record each in [`adrs/`](adrs/README.md).
 With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
 tools that straddle the divisions. Everything else in the repo declares where it belongs.

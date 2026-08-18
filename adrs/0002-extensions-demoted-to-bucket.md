@@ -1,6 +1,6 @@
 # ADR-0002 — Extensions demoted from rung to cross-layer bucket
 
-`decided: 2026-07-30` · `recorded: 2026-08-19 (backfill — text extracted verbatim from
+`decided: 2026-07-30` · `recorded: 2026-08-18 (backfill — text extracted verbatim from
 taxonomy.md §3 as of commit fd9f189)` · status: **accepted** (numbering of the bucket
 later changed by [ADR-0007](0007-renumber-core-triad-first.md))
 

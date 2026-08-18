@@ -1,6 +1,6 @@
 # ADR-0005 — Rename "portable artifacts" → "Extensions"
 
-`decided: 2026-08-17` · `recorded: 2026-08-19 (backfill — text extracted verbatim from
+`decided: 2026-08-17` · `recorded: 2026-08-18 (backfill — text extracted verbatim from
 taxonomy.md §3 as of commit fd9f189)` · status: **accepted**
 
 ## Decision

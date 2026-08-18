@@ -1,6 +1,6 @@
 # ADR-0001 — A five-layer taxonomy for AI-assisted-coding tooling
 
-`decided: 2026-07-28` · `recorded: 2026-08-19 (backfill, reconstructed from commit
+`decided: 2026-07-28` · `recorded: 2026-08-18 (backfill, reconstructed from commit
 c662b92 and the taxonomy as then written)` · status: **superseded by
 [ADR-0007](0007-renumber-core-triad-first.md)** (the numbering; the layers themselves
 stand)

@@ -1,6 +1,6 @@
 # ADR-0003 — Execution environments stay a rung
 
-`decided: 2026-08-16` · `recorded: 2026-08-19 (backfill — text extracted verbatim from
+`decided: 2026-08-16` · `recorded: 2026-08-18 (backfill — text extracted verbatim from
 taxonomy.md §5 as of commit fd9f189)` · status: **accepted** (rung renumbered 5→3 by
 [ADR-0007](0007-renumber-core-triad-first.md))
 

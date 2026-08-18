@@ -1,6 +1,6 @@
 # ADR-0008 — Standards folded into cross-cutting
 
-`decided: 2026-08-19` · status: **accepted**
+`decided: 2026-08-18` · status: **accepted**
 
 ## Decision
 

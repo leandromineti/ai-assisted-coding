@@ -1,6 +1,6 @@
 # Architecture decision records
 
-`created: 2026-08-19`
+`created: 2026-08-18`
 
 One dated, immutable record per structural decision about this repo's taxonomy and
 organization. The living documents ([`taxonomy.md`](../taxonomy.md),
@@ -15,11 +15,19 @@ living docs, the ADR trail is the decoder.
 - An ADR is written when a structural decision is made, and **never edited after
   acceptance** — except to set `superseded-by` when a later ADR overturns it.
 - Each carries `decided:` (when the decision was made) and, for the initial backfill,
-  `recorded: 2026-08-19 (backfill)` — ADRs 0001–0006 were extracted from revision
+  `recorded: 2026-08-18 (backfill)` — ADRs 0001–0006 were extracted from revision
   records previously embedded in `taxonomy.md`; the extracted text is preserved
   as written, under its original date.
 - Live falsifiers and re-check triggers stay in the living documents; ADRs record the
   narrative and evidence of the decision.
+- **Dating correction (2026-08-18):** the session that wrote ADRs 0007–0008, the
+  backfill stamps, and the memory-kind seeds ran with a clock one day ahead and
+  stamped everything `2026-08-19`; all its work was actually committed 2026-08-18 UTC
+  (verified against git timestamps and an external clock). The wrong date was swept
+  to 2026-08-18 across the repo the same day — a mechanical correction of a clock
+  error, not a decision revision. ADR-0007's decoder boundary was reworded to name
+  the renumber commit rather than a calendar date, since correct same-day material
+  now exists on both sides of it.
 - This index table is hand-kept — a deliberate, documented exception to methodology
   rule 3: it is append-only and one line per ADR, the lowest-drift shape a hand-kept
   list can have.
@@ -32,5 +40,5 @@ living docs, the ADR trail is the decoder.
 | [0004](0004-core-triad-reframing.md) | 2026-08-17 | Core-triad reframing; numbers kept as storage keys | storage-keys rule superseded by 0007 |
 | [0005](0005-rename-to-extensions.md) | 2026-08-17 | Rename "portable artifacts" → "Extensions" | accepted |
 | [0006](0006-layer-2-program.md) | 2026-08-18 | Framework code-outcome A/Bs stop; the layer-2 program | accepted |
-| [0007](0007-renumber-core-triad-first.md) | 2026-08-19 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
-| [0008](0008-standards-into-cross-cutting.md) | 2026-08-19 | Standards folded into cross-cutting (one non-layer bucket) | accepted |
+| [0007](0007-renumber-core-triad-first.md) | 2026-08-18 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
+| [0008](0008-standards-into-cross-cutting.md) | 2026-08-18 | Standards folded into cross-cutting (one non-layer bucket) | accepted |

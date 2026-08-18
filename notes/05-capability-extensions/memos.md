@@ -12,7 +12,7 @@ commit: 85532420
 first_commit: 2025-07-06
 stars: 10762
 stars_at: 2026-08-18
-read_at: 2026-08-18   # survey read; the stub (same pin) was stamped 2026-08-19 by a clock-skewed session
+read_at: 2026-08-18   # survey read, same day as the stub
 depth: survey   # read in full: top README, memos-local-plugin/ARCHITECTURE.md (module map + data flow), adapters/README.md, deepseek-harness adapter README; spot-checked in source: the orchestrator's subscriber chain wiring (core/pipeline/orchestrator.ts). NOT traced: the per-module math (reward backprop, induction, crystallization), the Python core beyond its directory shape, the OpenClaw/OpenWork apps
 harness_targets: "verified in-repo at the pin: OpenClaw (two plugins — MemOS-Cloud-OpenClaw-Plugin and memos-local-openclaw — plus an openclaw adapter in memos-local-plugin), DeepSeek Harness (in-process Cordis adapter), hermes-agent (out-of-process Python adapter over JSON-RPC), OpenWork (openwork-memos-integration)"
 features:

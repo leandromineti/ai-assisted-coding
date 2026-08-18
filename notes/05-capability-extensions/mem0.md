@@ -12,7 +12,7 @@ commit: 001c2352
 first_commit: 2023-06-20
 stars: 63535
 stars_at: 2026-08-18
-read_at: 2026-08-19
+read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README skim; source not read
 features:
   skills: true   # ships itself partly as a SKILL.md skill (skills/mem0/ in-repo, plus integrations/mem0-plugin/); presence verified by file listing, behavior not read
@@ -41,7 +41,7 @@ artifact.
 
 ## Why it's in this repo
 
-- The **memory kind's** SDK/API-facing seed (bucket index, kind added 2026-08-19) —
+- The **memory kind's** SDK/API-facing seed (bucket index, kind added 2026-08-18) —
   the shape comparison against ai-memory is the kind's first real question: does
   coding-agent memory want a retrieval service or a readable wiki?
 - Self-benchmarking makes it refs-relevant: LoCoMo/LongMemEval are memory benchmarks

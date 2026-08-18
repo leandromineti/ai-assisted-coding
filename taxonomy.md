@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-19`
+`checked: 2026-08-18`
 
 The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
 vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
@@ -8,9 +8,9 @@ Every note and comparison in this repo declares which layer its subject occupies
 comparisons stay like-for-like.
 
 This document always describes the **current** taxonomy. How it got this shape — the
-bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-19
+bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
 renumbering — is recorded in [`adrs/`](adrs/README.md), one dated, immutable decision
-record each. Anything dated before 2026-08-19 (git history, old URLs, experiment logs)
+record each. Anything dated before 2026-08-18 (git history, old URLs, experiment logs)
 uses the pre-renumbering scheme; [ADR-0007](adrs/0007-renumber-core-triad-first.md)
 carries the mapping.
 
@@ -187,7 +187,7 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
 rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
 packs at scale (ECC), memory extensions (persistent cross-session state — the kind
-added 2026-08-19, seven seeds in the bucket index) — and the specifications they ride on (MCP the protocol, the
+added 2026-08-18, seven seeds in the bucket index) — and the specifications they ride on (MCP the protocol, the
 `AGENTS.md` and `SKILL.md` conventions, tracked in the Standards section, which is this
 bucket's spec half).
 
@@ -241,7 +241,7 @@ from the layers that implement it — never given a layer entry of its own.
 - **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
 
 Written up in [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
-(one of the cross-cutting notes since 2026-08-19, [ADR-0008](adrs/0008-standards-into-cross-cutting.md)),
+(one of the cross-cutting notes since 2026-08-18, [ADR-0008](adrs/0008-standards-into-cross-cutting.md)),
 which also tracks the
 question this category exists to answer: whether skills and hooks standardize the way MCP
 did, or stay vendor features — which decides whether the extensions bucket is a real layer.

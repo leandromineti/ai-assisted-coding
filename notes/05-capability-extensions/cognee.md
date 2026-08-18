@@ -12,7 +12,7 @@ commit: b948f88d4
 first_commit: 2023-08-16
 stars: 30103
 stars_at: 2026-08-18
-read_at: 2026-08-18   # survey read; the stub (same pin) was stamped 2026-08-19 by a clock-skewed session
+read_at: 2026-08-18   # survey read, same day as the stub
 depth: survey   # read: README, cognee-mcp/src/server.py (tool surface + save_interaction + improve + tool modes), codingagents/coding_rule_associations.py (top), pyproject dependency spec, evals/README. Cross-examined against ai-memory's docs/issues-cognee.md (competitor testimony, 2026-05-21) with two structural claims spot-checked in source at the pin. NOT read: the core pipeline internals (cognify tasks, retrievers), the frontend, the separate cognee-integrations repo (README via GitHub API only)
 harness_targets: "in-repo: cognee-mcp (MCP server, stdio/HTTP, agent-scoped datasets per client). Separate repos/packages, README-level: Claude Code marketplace plugin (cognee-integrations — hooks capture, prompt-submit injection, session-end graph sync; a Codex plugin shares its config), OpenClaw plugin (@cognee/cognee-openclaw on npm)"
 features:
