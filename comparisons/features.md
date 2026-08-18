@@ -41,10 +41,10 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 
 | Tool | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
 |---|---|---|---|---|---|---|---|---|---|
+| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | ✓ | ✓ | `script` | `prose` | `prose` | ✓ | ✗ | `repo-files` | ✓ |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | ✓ | ✓ | `engine` | `prose` | `prose` | ✓ | ✓ | `repo-files` | ✓ |
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | ✓ | ✓ | `engine` | ✗ | · | ✗ | ✗ | `repo-files` | ✗ |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | ✓ | ✓ | ✗ | ✗ | `prose` | ✗ | ✗ | `repo-files` | ✗ |
-| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | ✓ | · | · | · | · | · | · | · | ✓ |
 | [conductor](../notes/04-workflow-frameworks/conductor.md) | ✓ | ✗ | ✗ | · | · | · | · | `repo-files` | · |
 | [haft](../notes/04-workflow-frameworks/haft.md) | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |
 | [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | ✓ | ✓ | · | ✓ | · | · | · | · | · |
@@ -66,4 +66,4 @@ tracked yet. Definitions and links live in the
 | subagents | 2 | 6/6 | `subagent-def` · 0 tracked |  |
 | rules files | 2 | 7/7 | `rules-file` · 0 tracked |  |
 | learning loop | 2 | 3/4 | `memory` · 7 tracked | added 2026-07-30 per issue #2's two-verified-instances rule (hermes, codex); note default-on vs default-off when setting |
-| measured gates | 4 | 2/4 | `hook` · 0 tracked | the ECC finding — deliverable as installable layer-5 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the layer's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts |
+| measured gates | 4 | 3/5 | `hook` · 0 tracked | the ECC finding — deliverable as installable layer-5 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the layer's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts |

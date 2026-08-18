@@ -190,6 +190,18 @@ note. Revised when evidence moves._
    ([ADR-0011](adrs/0011-graded-gate-enforcement.md)): no framework yet has an
    engine-graded measured or process gate. →
    [`notes/04-workflow-frameworks/gsd-core.md`](notes/04-workflow-frameworks/gsd-core.md)
+   **Third shape added (2026-08-18, BMAD deep-dive):** an engine divergence datapoint that
+   *inverts* GSD's thesis — BMAD ships ~2.6k lines of tested Python state tooling and
+   deliberately denies it authority (every script failure licenses the LLM to "deliver
+   the same outcome by best judgment"; both dedicated validators exit 0 by design; zero
+   hooks — the ecosystem's hooks live in the external `bmad-loop` module). And the
+   portability side of the tradeoff has a shape the "measured price" framing didn't
+   predict: BMAD does **no translation at all** — one byte-identical Agent Skills
+   artifact copied to 47 platform codes (22 distinct dirs; 26 share the
+   `.agents/skills/` convention), so there is no degradation gradient to measure; the
+   price surfaces instead as a hand-forked, runtime-stripped 6-of-29-skill
+   `web-bundles/` for chat platforms, quarantined outside the mechanism. →
+   [`notes/04-workflow-frameworks/bmad-method.md`](notes/04-workflow-frameworks/bmad-method.md)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
    layer 2*, twice each: turn-end verification gates (hermes' `verification_stop`,

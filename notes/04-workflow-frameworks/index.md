@@ -82,12 +82,25 @@ Stop hooks (a layer-5 delivery vehicle for the mechanism exp-01 credited to laye
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
 outside layer 4 proper.
 
+### BMAD-METHOD — <https://github.com/bmad-code-org/BMAD-METHOD> · [report](bmad-method.md)
+
+*(Stubbed and deep-dived 2026-08-18, same pin `86beb065` — the layer's fourth deep-dive.)*
+The AiDD delivery loop, mid-molt: build-first entry (`bmad-build`, planning artifacts
+optional context — the "process-heavy funnel" prediction falsified), a real one-shot/full
+fork that is nonetheless one prose judgment biased heavy and deleted in the unattended
+variant. Ships the layer's fourth engine shape: ~2.6k lines of tested Python state
+tooling with **no authority** — every script failure licenses the LLM to proceed by best
+judgment, zero hooks. Portability is anti-translation: byte-identical Agent Skills copied
+to 47 platform codes (22 distinct dirs, 26 sharing `.agents/skills/`) — no translation to
+degrade; the real price is a hand-forked 6-skill `web-bundles/`. The layer's purest
+large-scale model-trust bet, falsifiable by exp-01's mechanism finding.
+
 ### Stubs — promoted from the ledger (2026-08-18)
 
 Five candidates ingested at stub depth in one sweep — mechanical facts plus README
-skim, sources unread; each report says what a survey read should check first:
+skim, sources unread; each report says what a survey read should check first.
+*(BMAD-METHOD graduated from this list to a deep-dive the same day — entry above.)*
 
-- [**BMAD-METHOD**](bmad-method.md) — the AiDD delivery loop; widest verified portability in the layer (47 installer platform codes). Is v6's "right-sized process" real routing or a default-heavy funnel?
 - [**Conductor**](conductor.md) — Google-org SDD plugin; the smallest subject in the layer (22 markdown files *are* the framework) — purest prose-only pole for the conclusion-7 question.
 - [**pilot-shell**](pilot-shell.md) — spec spine (`/prd`→`/spec` TDD→`/build` judge loops) inside an ECC-shaped platform; only non-OSI subject (source-available EULA). Spine or catalog?
 - [**spec-kitty**](spec-kitty.md) — spec-kit fork grown into a worktree-parallel "governed software factory"; imported parent history verifiable in `first_commit`. What did the fork change in the parent's pipeline?
@@ -109,9 +122,10 @@ written first, machine-validated, and treated as the *generator* of the implemen
 rather than documentation that guides it. The term is vendor-coined — it is
 [spec-kit's own branding](spec-kit.md) — but third-party usage has settled on a
 recognizable set, the "2026 SDD trio": **BMAD / spec-kit / OpenSpec** (so named in the
-[OpenSpec report](openspec.md)). Of the trio, this repo tracks two (spec-kit, OpenSpec —
-the ceremony and lean poles respectively) and holds BMAD first in line in the
-[candidates ledger](../candidates.md).
+[OpenSpec report](openspec.md)). The repo now tracks all three: spec-kit and
+OpenSpec (the ceremony and lean poles respectively) deep-dived first, and BMAD
+deep-dived 2026-08-18 — whose read complicates the pole labels: v6 is shedding ceremony
+while remaining the most prose-governed of the trio ([report](bmad-method.md)).
 
 SDD is a sub-family, not the layer: **GSD is layer 4 without being SDD** — its organizing
 artifact is the task graph and its enemy is context bloat, not under-specified intent.
