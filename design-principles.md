@@ -317,6 +317,6 @@ Recorded as open decisions, not principles — with the positions documented:
 | Stuck-agent resolution | human-escalate (opencode) vs in-band (hermes) (H2) |
 | Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files — [issue #2](https://github.com/leandromineti/ai-assisted-coding/issues/2)'s two-verified-instances threshold is now met |
 | Session-data posture | harness as training-data instrument (hermes, Cursor) vs stores-nothing (opencode) — taxonomy boundary-rule note |
-| Where verification lives | layer 4 gates (GSD), layer 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note, feeds exp-03 |
+| Where verification lives | layer 4 gates (GSD), layer 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note. exp-03 (2026-08-18) measured the layer-4 pole: an instructed gate catches crash-visible failures only, and at Sonnet tier the bundle grounds/verifies unprompted — the live question is now layer-2-native vs external CI (issue #17) |
 
 Verdicts on these belong to future experiments, not to this file.
