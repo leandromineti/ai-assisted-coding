@@ -205,7 +205,12 @@ note. Revised when evidence moves._
    bet is the one thing a single harness cannot absorb — cross-harness continuity —
    and they *colonize* harnesses that already absorbed the feature: memos installs
    into hermes as a `MemoryProvider`, alongside hermes' own on-by-default loop.
-   Absorption and colonization are simultaneous, not sequential. Caveat from the same
+   Absorption and colonization are simultaneous, not sequential. **Escalated to
+   displacement (2026-08-18, mem0 survey):** mem0's harness plugin ships a PreToolUse
+   gate that *blocks* Claude Code's own native memory writes (MEMORY.md, exit 2) and
+   redirects the model to mem0's MCP tool — the extension actively suppressing the
+   absorbed feature to replace it, plus a competitor-store import script
+   (cursorrules/copilot/cline/continue → mem0). Caveat from the same
    arc: the continuity mechanism is real but its automatic floor is thin (ai-memory's
    baton is first + last prompt + tool names, no LLM) — whether the bet survives
    contact with use is an open rig question. →
