@@ -76,6 +76,11 @@ before believing a comparison on this instrument, ask whether it still discrimin
 
 - Dataset is LLM-generated (gpt-3.5-turbo) with human patching; the authors flag it
   "may not fully reflect the nuances of real-world online conversations" (§8).
+- **The public release is smaller than the paper's 50 conversations**: downstream
+  evaluations describe the released LoCoMo as **10** conversations (~26K tokens, ~200
+  questions each) — see [2025-mem0](2025-mem0.md) §3.1, which also drops the
+  adversarial category. Numbers "on LoCoMo" from different reports may not share
+  either the item set or the categories.
 - 50 conversations; QA set ~7.5K questions but correlated within conversations.
 - F1-on-short-phrases scoring; the authors themselves flag verbose-LLM evaluation
   trouble (§8) — no LLM judge, unlike LongMemEval/BEAM.

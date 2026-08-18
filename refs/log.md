@@ -137,3 +137,14 @@ coding harnesses.
 Same day: library renamed to year-first citekeys (`<year>-<name>.md`), all 21 notes +
 pdf/ copies + repo-wide links; `key:` fields updated in place. Convention noted in
 README.md. Generated index/benchmarks rebuilt.
+
+## 2026-08-18 — mem0 vendor paper (owner-supplied source)
+
+**[2025-mem0](2025-mem0.md)** (arXiv 2504.19413, full read) — closes the mem0 side of
+the vendor-number reconciliation the instrument catalog opened. Three findings folded
+into the notes: the README's "LoCoMo 92.5" exceeds even the paper's own best J
+(68.44); the paper's no-memory full-context baseline *beats* both mem0 variants on
+quality (J 72.90) — the measured claim is an efficiency frontier (p95 1.44s vs 17.12s,
+7K-token store), not accuracy; and the evaluated instrument is LoCoMo-minus-adversarial
+at 10 conversations, so released LoCoMo ≠ the paper's 50 (limitation added to
+2024-locomo). mem0 tool note and benchmark-survey §6 updated in place.

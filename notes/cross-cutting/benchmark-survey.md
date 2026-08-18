@@ -178,7 +178,13 @@ Three take-aways, each recorded in the refs notes:
 2. **Vendor numbers exceed the instruments' own scales.** mem0's "LoCoMo 92.5" is above
    the paper's measured *human* baseline (87.9); cognee's BEAM 0.79 is ~2× the paper's
    best configurations. Neither is comparable to the published metric without config
-   reconciliation — flagged in both tool notes.
+   reconciliation — flagged in both tool notes. *(mem0's side resolved 2026-08-18 by
+   reading the vendor paper, [2025-mem0](../../refs/2025-mem0.md): the metric is
+   LLM-judge on LoCoMo-minus-adversarial, the paper's own best J is 68.44 — still far
+   below the README's 92.5 — and the paper's no-memory full-context baseline scores
+   J 72.90, beating the memory system on quality. The measured claim is efficiency,
+   not accuracy. It also documents that released LoCoMo = 10 conversations, not the
+   paper's 50 — "on LoCoMo" scores may not even share an item set.)*
 3. **The instruments converge on the mechanisms the vendors ship.** LongMemEval's
    indexing/retrieval/reading control points and BEAM's episodic/working/scratchpad
    decomposition map onto ai-memory's tiers-and-slots and memos' trace layers almost

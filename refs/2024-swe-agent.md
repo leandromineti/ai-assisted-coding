@@ -6,7 +6,7 @@ year: 2024
 venue: NeurIPS 2024
 peer_reviewed: true
 arxiv: 2405.15793
-citations: "1638 (161 influential) — Semantic Scholar"
+citations: "1639 (161 influential) — Semantic Scholar"
 citations_at: 2026-08-18
 url: https://arxiv.org/abs/2405.15793
 kind: empirical-study

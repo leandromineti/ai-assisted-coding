@@ -44,15 +44,19 @@ artifact.
 - The **memory kind's** SDK/API-facing seed (bucket index, kind added 2026-08-18) —
   the shape comparison against ai-memory is the kind's first real question: does
   coding-agent memory want a retrieval service or a readable wiki?
-- Self-benchmarking makes it refs-relevant — and the instruments are now cataloged
-  ([2024-locomo](../../refs/2024-locomo.md), [2025-longmemeval](../../refs/2025-longmemeval.md),
-  both full reads 2026-08-18). First grading pass on the README claims: mem0's
-  "LoCoMo 92.5" is *above the LoCoMo paper's measured human baseline* (87.9 overall
-  F1, Table 2) and ~2.4× its best model score (37.8) — so the vendor number cannot be
-  on the paper's own metric as published; a mem0 read must reconcile the scoring
-  scheme (likely LLM-judge, not the paper's F1) before the number is repeated. Both
-  instruments measure social/chat-assistant memory — zero coding content — so even a
-  reconciled score wouldn't ground coding-harness claims.
+- Self-benchmarking makes it refs-relevant — instruments cataloged
+  ([2024-locomo](../../refs/2024-locomo.md), [2025-longmemeval](../../refs/2025-longmemeval.md))
+  and the vendor paper now read at full depth
+  ([2025-mem0](../../refs/2025-mem0.md), arXiv 2504.19413, 2026-08-18). The grading
+  resolved in two steps: the README's "LoCoMo 92.5" is an LLM-judge-style number from
+  a later (2026) eval — it exceeds even the *paper's* best overall J (68.44), not just
+  the LoCoMo paper's F1 scale — and the paper's own Table 2 shows the no-memory
+  **full-context baseline beating both mem0 variants on quality (J 72.90)**. The
+  honest, source-grounded claim is an efficiency frontier: near-competitive J at ~8%
+  of full-context's p95 latency and a fraction of the tokens, measured on
+  LoCoMo-minus-adversarial (10 conversations, abstention never tested). Both
+  instruments measure social/chat-assistant memory — zero coding content — so even
+  the reconciled numbers wouldn't ground coding-harness claims.
 - Bucket-membership edge case worth watching: an SDK you *build into an app* is not
   obviously "installed into a harness" — its claim to this bucket runs through the
   skill/plugin integrations, not the SDK itself.

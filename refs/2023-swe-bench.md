@@ -6,7 +6,7 @@ year: 2023
 venue: "ICLR 2024"
 peer_reviewed: true
 arxiv: 2310.06770
-citations: "3400 (535 influential) — Semantic Scholar"
+citations: "3401 (535 influential) — Semantic Scholar"
 citations_at: 2026-08-18
 url: https://arxiv.org/abs/2310.06770
 kind: benchmark

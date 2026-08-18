@@ -6,7 +6,7 @@ year: 2025
 venue: arXiv preprint
 peer_reviewed: false
 arxiv: 2506.07982
-citations: "391 (53 influential) — Semantic Scholar"
+citations: "392 (53 influential) — Semantic Scholar"
 citations_at: 2026-08-18
 url: https://arxiv.org/abs/2506.07982
 kind: benchmark
