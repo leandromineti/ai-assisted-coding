@@ -399,3 +399,35 @@ discriminating instrument → the Sonnet 5 tier is warranted; it requires its ow
 spend approval, re-estimated from tier-1 actuals (Sonnet ≈2–3× Haiku per run:
 estimate ≈$4–7 for band + arms + extensions). Tier-1 spend: **$5.40** (v1 band
 $1.39 + v2 band $1.50 + smoke $0.02 + arms $2.50).
+
+---
+
+## Results — tier 2, Sonnet 5 (2026-08-18): saturation branch — the arc-closer
+
+Pre-declared interpretation rule (log, before any tier-2 run): a saturating Sonnet
+band is not an instrument failure but the finding itself. Band amended to n=3 on
+measured cost ($1.23–2.46/run vs ~$0.60 estimated; amendment in log, declared
+before run 3, with the 5f gate-reading-not-noise-band caveat).
+
+| | plain Haiku (n=5) | Haiku + GROUNDING.md (n=1) | plain Sonnet (n=3) |
+|---|---|---|---|
+| discoverable /9 | mean 4.0 | 8 | 7, 9, 9 — **mean 8.3** |
+| total /23 | mean 12.2 | 20 | 20, 22, 22 |
+
+**Verdict: P5 supported in the limit.** The buried-trap discovery a weak model
+achieves only under an explicit grounding instruction, the stronger model performs
+unprompted — plain Sonnet matches Haiku-plus-instruction almost exactly. The
+grounding instruction's entire measured value was absorbed by one model tier. Arms
+were not run (pre-declared rule); there is no delta left to measure at this tier
+on this instrument class.
+
+Satisfiability closure: t2b proven satisfiable at tier 2 (two Sonnet passes); the
+standing caveat narrows to **t3c: 0/20 runs**, unproven. Tier-2 spend $5.03 of
+$7.00; experiment total $10.43.
+
+**Arc consequence (owner decision 2026-08-18):** the layer-4 A/B program on code
+outcomes closes. Framework effects on code, where they exist, ride on mechanisms
+the model+harness bundle absorbs tier by tier (this experiment measured one such
+absorption directly); the durable measurement subjects are the **bundle itself**
+(harness A/Bs, baseline variance, tier effects, throughput) and **artifact-level
+framework value** (exp-02's P1 dissociation). Pivot tracked in the repo backlog.

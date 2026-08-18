@@ -184,6 +184,17 @@ exit-code ambiguity into a documented *wrong* decision its tests then enforced,
 while pinning UTC output right — steering without discovery (README conclusion 11).
 Exp-03 is designed to isolate this principle directly. This is the repo's most
 consequential hypothesis, which is exactly why it's being tested rather than trusted.
+*Isolation test complete (2026-08-18, exp-03, two tiers):* the principle survives
+**with a tier condition attached**. At Haiku tier the bare instruction to measure was
+worth +4/9 trap-discovery checks over plain — the mechanism isolated cleanly, at ~1×
+plain cost. At Sonnet tier the plain bundle did the measuring unprompted (8.3/9,
+saturation branch) — **the instruction pays only where the model doesn't ground on
+its own; what persists across tiers is the affordance** (a measurable domain within
+reach), not the prose. Same experiment: gates-only discovered crash-visible traps but
+never silent miscounts, and stacking both instructions diluted grounding to checkbox
+compliance (README conclusion 12). F2's "spend tokens measuring" survives as a
+statement about *affordances and weak tiers*, not as universal framework design
+advice.
 
 **F3. Fresh context per stage works as a refinement funnel — but only if the return
 path is compact.** *(convergent, with the boundary condition observed in both

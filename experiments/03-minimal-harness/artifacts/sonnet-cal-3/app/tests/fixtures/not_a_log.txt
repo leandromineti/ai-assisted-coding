@@ -1,0 +1,4 @@
+This is just a plain text file.
+It has multiple lines, but none of them
+look anything like a structured log entry.
+{"also": "not a log line, just json"}

@@ -237,3 +237,21 @@ note. Revised when evidence moves._
     its second framework: the quality margin lives in grounding + gates, not
     ceremony — and exp-03 now proceeds against a confirmed baseline. →
     [`experiments/02-spec-kit-vs-plain/`](experiments/02-spec-kit-vs-plain/README.md)
+12. **A model tier absorbed a workflow mechanism whole — and the layer-4 A/B arc closes
+    on it** (2026-08-18, exp-03, preregistered two-tier ablation, saturation branch
+    pre-declared). On a buried-trap corpus, a one-file "measure the domain first"
+    instruction lifted Haiku's trap discovery from 4.0/9 (plain band, n=5) to 8/9 —
+    while a gates-only file found just the crash-visible traps (never the silent
+    miscounts, 0/3), and the two files *combined* interfered: grounding went
+    checkbox-shallow in 3 of 3 runs. On our fails-closed binary instrument the
+    decomposition is **grounding > gates > both** — the opposite direction from the
+    published LLM-judge ablation ([`refs/spec-kit-agents.md`](refs/spec-kit-agents.md)),
+    recorded with both candidate attributions (instrument, model). Then tier 2: **plain
+    Sonnet discovered 8.3/9 unprompted** — one model tier absorbed the instruction's
+    entire measured value (P5's shrink-with-capability prediction, in the limit).
+    Consequence, decided with the owner: layer-4 code-outcome A/Bs stop; the
+    measurable subjects are the model+harness **bundle** (whose 7–14/23 run-to-run
+    band is wider than most framework effects) and **artifact-level** framework value
+    (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
+    one check (t3c) went 0/20 with satisfiability unproven. →
+    [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md)

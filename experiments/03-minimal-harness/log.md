@@ -148,3 +148,57 @@ across all 7 arm runs** (the fixed-oracle path was never exercised).
   tier; a post-run oracle or tier 2 will settle them. All other checks passed
   somewhere (band or arms), proving them satisfiable.
 - Tier-1 total spend: **$5.3992** of the $5.50 topped-up ceiling.
+
+## 2026-08-18 — tier 2 (Sonnet 5) approval + pre-declared interpretation rule
+
+- **Tier-2 spend approval (owner, 2026-08-18, verbatim): "Lets do 1"** — selecting
+  the proposed option "run exp-03 tier 2 (Sonnet) once, as the arc-closer, then
+  stop layer-4 A/Bs." Ceiling from tier-1 actuals ×2–3 Sonnet pricing: **$7.00**.
+- **Interpretation rule, declared BEFORE any tier-2 run** (so the reading of a
+  saturated band cannot be post-hoc): the tier-1 headroom gate (band mean ≤6/9
+  discoverable) is kept, but its two outcomes now mean different things:
+  - **Band leaves headroom** → arms run exactly as at tier 1 (G, V, G+V, same
+    extension rule); P1–P5 verdicts as preregistered.
+  - **Band saturates (mean >6/9)** → arms do NOT run, and the tier's result is
+    itself the finding: at Sonnet tier the plain model+harness bundle discovers
+    the buried traps spontaneously — the grounding instruction has nothing left
+    to add, P5 supported in the limit (the grounding effect shrinks to
+    unmeasurable as the model improves). This is the arc-closing claim, measured.
+  Either branch closes the layer-4 A/B arc per the owner's direction.
+- Same v2 corpus, same driver, same verifier, same network condition. Model:
+  `claude-sonnet-5` (the rig's pinned task model).
+
+## 2026-08-18 — tier-2 band: cost overrun + n=3 amendment (declared before run 3)
+
+- `sonnet-cal-1`: success, 55 turns, 4m38s api, **$1.2284** — **20/23, discoverable
+  7/9** (fails t2b, t2c, t3c).
+- `sonnet-cal-2`: the orchestrator-side driver pipe was killed by a 10-minute
+  tool timeout mid-run; the container **completed autonomously** (5e: success read
+  from artifacts + transcript, not the dead pipe). Salvaged: /app + full session
+  transcript; cost computed from transcript usage at Sonnet 5 list prices (5c):
+  82 assistant turns, **≈$2.4575** — **22/23, discoverable 9/9** (fails t3c only).
+- **Budget amendment (pre-declared before any further run): tier-2 band is n=3,
+  not n=5.** Sonnet runs cost 2–4× the estimate ($1.23–2.46 vs ~$0.60 assumed).
+  Spend $3.69 of $7.00; n=5 cannot fit. Decision rule unchanged (band mean vs
+  6/9); with draws 7 and 9, the mean can only fall ≤6 if run 3 scores ≤2 — below
+  the *Haiku* band mean. 5f caveat recorded: the tier-2 band is a **gate
+  reading**, not a calibrated noise distribution; if arms were to run (headroom
+  branch), a proper band would need a fresh approval.
+
+## 2026-08-18 — tier-2 band verdict: SATURATION BRANCH — arc closes
+
+- `sonnet-cal-3`: success, 48 turns, 4m28s api, **$1.3415** — **22/23,
+  discoverable 9/9** (fails t3c only).
+- **Band (n=3, amended): totals 20/22/22; discoverable 7/9/9, mean 8.3 — >6, the
+  saturation branch of the pre-declared interpretation rule fires. Arms do not
+  run.** The tier-2 result: at Sonnet tier the plain model+harness bundle
+  discovers the buried traps spontaneously — plain Sonnet (8.3/9) ≈ Haiku +
+  grounding instruction (8/9), vs plain Haiku 4.0/9. **P5 supported in the
+  limit: the grounding instruction's entire measured value at Haiku tier is
+  absorbed by the stronger model.**
+- Satisfiability updates: **t2b is proven satisfiable** (passed by sonnet-cal-2
+  and -3) — it was genuinely hard for Haiku, not unpassable; the tier-1 caveat
+  narrows to **t3c alone: 0/20 runs** across the whole experiment, still
+  unproven under the no-oracle rule.
+- Tier-2 spend: **$5.0274** of $7.00. Experiment total: **$10.43**.
+- Per the owner's arc decision ("Lets do 1"), the layer-4 A/B arc closes here.

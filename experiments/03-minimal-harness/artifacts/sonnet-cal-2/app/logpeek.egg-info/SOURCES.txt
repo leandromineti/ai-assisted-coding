@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+logpeek/__init__.py
+logpeek/analyzer.py
+logpeek/cli.py
+logpeek/parser.py
+logpeek.egg-info/PKG-INFO
+logpeek.egg-info/SOURCES.txt
+logpeek.egg-info/dependency_links.txt
+logpeek.egg-info/entry_points.txt
+logpeek.egg-info/requires.txt
+logpeek.egg-info/top_level.txt
+tests/test_analyzer.py
+tests/test_cli.py
+tests/test_parser.py

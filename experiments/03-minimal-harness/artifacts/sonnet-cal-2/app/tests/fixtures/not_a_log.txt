@@ -1,0 +1,4 @@
+This is just a plain text file.
+It has no timestamps, no log levels, and no logger names.
+Someone accidentally pointed logpeek at the wrong file.
+Please handle this gracefully instead of crashing.
