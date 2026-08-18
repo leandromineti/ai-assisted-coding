@@ -198,6 +198,19 @@ note. Revised when evidence moves._
    it, one is on by default, one stable-but-off, one user-write-only. "Twice each" was
    never "always," and the `learning loop` column now has a verified ✗ to sit beside its
    ✓s. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
+   **Counter-current (2026-08-18, memory-kind reading arc).** Absorption predicts
+   independent memory extensions get eaten by native loops; the arc found the opposite
+   motion running concurrently. The extensions are growing *despite* native memory
+   (ai-memory: 2.6k stars in 3 months sitting outside every harness), their verified
+   bet is the one thing a single harness cannot absorb — cross-harness continuity —
+   and they *colonize* harnesses that already absorbed the feature: memos installs
+   into hermes as a `MemoryProvider`, alongside hermes' own on-by-default loop.
+   Absorption and colonization are simultaneous, not sequential. Caveat from the same
+   arc: the continuity mechanism is real but its automatic floor is thin (ai-memory's
+   baton is first + last prompt + tool names, no LLM) — whether the bet survives
+   contact with use is an open rig question. →
+   [`notes/05-capability-extensions/ai-memory.md`](notes/05-capability-extensions/ai-memory.md),
+   [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
 9. **The environments layer (3) is a real rung, not an axis of the harness layer —
    decided by its own falsifier** (2026-08-16, decision record
    [ADR-0003](adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to

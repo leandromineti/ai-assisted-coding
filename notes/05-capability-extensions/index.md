@@ -31,7 +31,7 @@ added 2026-08-18 so the bucket can be sliced by kind as it grows.
 | **Subagent definitions** | Named agents with their own prompt, tools, and model, spawned for isolated work. | Harness-specific format; the pattern is universal. |
 | **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../cross-cutting/standards.md). |
 | **Config packs** | Curated bundles of the other kinds at scale (skills + agents + rules + hooks), installed as a set. | Rides on the file conventions of what it bundles — ECC's ~13 install targets are the measured case. |
-| **Memory** | Persistent cross-session state fed by hooks/MCP and injected back at session start — the agent↔time edge as an installable product. *(Kind added 2026-08-18; seeds below.)* | Seven seeds, 2026-08-18, spanning two recurring shapes — harness-facing (ai-memory via MCP + hooks; memos and everos via per-harness plugins) and SDK/API-facing (mem0, cognee, memori, memmachine) — with three distinct technical wagers (markdown wiki, knowledge graph, action capture) and an "OS" branding convergence. Portability claims untested here. |
+| **Memory** | Persistent cross-session state fed by hooks/MCP and injected back at session start — the agent↔time edge as an installable product. *(Kind added 2026-08-18; seeds below.)* | Seven seeds; the 2026-08-18 reading arc (ai-memory deep-dive, memos + cognee surveys) verified three distinct wagers — markdown wiki (ai-memory), RL policy database that mints skills (memos), knowledge graph over a tripartite store (cognee) — and three consolidation postures: background cron, per-turn event cascade, agent-invoked. Zero shared formats (scoreboard row); each vendor pays the harness-fragmentation cost separately, in code. The SDK-facing shape earns membership only via its shims — and the shims are where the coding-agent behavior lives (cognee verdict). |
 
 ## Why this is a layer and not a pile of harness features
 
@@ -80,14 +80,18 @@ verdict section of [`ecc.md`](ecc.md).
   fat rules file, or does it just move the same tokens around?
 - Is there a real difference between a skill and a well-written section of a rules file,
   other than *when* it enters the context?
-- **Memory (added 2026-08-18):** harnesses ship native memory loops (conclusion 8's
-  absorption story — hermes on-by-default, codex built-but-off), yet independent memory
-  extensions are growing fast anyway (ai-memory: 2.6k stars in 3 months). What does the
-  extension buy that the native loop doesn't — cross-harness continuity is the obvious
-  candidate bet — and does conclusion 8 predict its absorption next?
-- The memory-authorship open decision (design-principles, "What the field visibly does
-  not agree on") gains a fourth position: agent-written **and independently stored**
-  (ai-memory's wiki, mem0's store) vs the three harness-side positions already recorded.
+- **Memory (added 2026-08-18; arc verdict same day):** what the extension buys over the
+  native loop is confirmed as cross-harness continuity — the one thing a single harness
+  cannot absorb — and the mechanism is real in source (ai-memory: one server,
+  per-harness injection envelopes). Two qualifications keep it open: the *automatic*
+  continuity floor is thin (ai-memory's baton is first + last prompt + tool names; the
+  rich memory is pull-only), and absorption runs both ways — memos installs into hermes
+  alongside hermes' own loop (conclusion 8's counter-current). The falsifiable residue
+  is a rig question: capture a session, switch harness, measure what the second agent
+  actually knows.
+- ~~The memory-authorship fourth position~~ — resolved into design-principles
+  (2026-08-18): independent storage *stacks* authorships rather than picking one; the
+  sharpened question is who approves writes, not who makes them.
 - Issue #13's `learning_loop` promotion trigger: **ai-memory verified in source
   (2026-08-18)** as the second harness-independent autonomous loop after ECC — mechanism
   `background` (server-side scheduler, default-on with a provider, auto-approving). The
