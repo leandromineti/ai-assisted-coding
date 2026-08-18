@@ -16,6 +16,13 @@
 4|spec-kit|https://github.com/github/spec-kit
 4|gsd-core|https://github.com/open-gsd/gsd-core
 4|openspec|https://github.com/Fission-AI/OpenSpec
+# Five candidates promoted to stubs 2026-08-18 (see notes/candidates.md for the
+# sighting rows and ADR-0009 for the ledger):
+4|bmad-method|https://github.com/bmad-code-org/BMAD-METHOD
+4|conductor|https://github.com/gemini-cli-extensions/conductor
+4|pilot-shell|https://github.com/maxritter/pilot-shell
+4|spec-kitty|https://github.com/Priivacy-ai/spec-kitty
+4|haft|https://github.com/m0n0x41d/haft
 
 # --- Layer 3: portable artifacts (the cross-layer bucket) ---
 # ECC was ingested 2026-07-28 as provisional layer 4 and reclassified to 3 at the

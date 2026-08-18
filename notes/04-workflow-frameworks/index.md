@@ -77,6 +77,17 @@ Stop hooks (a layer-5 delivery vehicle for the mechanism exp-01 credited to laye
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
 outside layer 4 proper.
 
+### Stubs — promoted from the ledger (2026-08-18)
+
+Five candidates ingested at stub depth in one sweep — mechanical facts plus README
+skim, sources unread; each report says what a survey read should check first:
+
+- [**BMAD-METHOD**](bmad-method.md) — the AiDD delivery loop; widest verified portability in the layer (47 installer platform codes). Is v6's "right-sized process" real routing or a default-heavy funnel?
+- [**Conductor**](conductor.md) — Google-org SDD plugin; the smallest subject in the layer (22 markdown files *are* the framework) — purest prose-only pole for the conclusion-7 question.
+- [**pilot-shell**](pilot-shell.md) — spec spine (`/prd`→`/spec` TDD→`/build` judge loops) inside an ECC-shaped platform; only non-OSI subject (source-available EULA). Spine or catalog?
+- [**spec-kitty**](spec-kitty.md) — spec-kit fork grown into a worktree-parallel "governed software factory"; imported parent history verifiable in `first_commit`. What did the fork change in the parent's pipeline?
+- [**haft**](haft.md) — decision-governance pole (FPF: typed records, evidence decay); heaviest runtime in the layer (2k+ Go files). Encoded methodology or memory extension?
+
 ## Candidates
 
 The "Considered, not added (2026-07-28)" table moved to the cross-layer

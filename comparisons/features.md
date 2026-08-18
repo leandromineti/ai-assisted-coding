@@ -23,6 +23,11 @@ report's frontmatter when confirmed in source or official docs.
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [conductor](../notes/04-workflow-frameworks/conductor.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [haft](../notes/04-workflow-frameworks/haft.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | ✗ |
