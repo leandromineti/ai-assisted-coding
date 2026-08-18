@@ -8,12 +8,13 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 ## Start here
 
 **[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. A **core triad** — models,
-harnesses, execution environments, the three things a running agent cannot lack — plus
-two **interfaces**: extensions (a cross-layer bucket parameterizing the triad's
-edges; the former layer 3, demoted by evidence 2026-07-30, renamed 2026-08-17 —
-portability is conferred by adoption, not intrinsic, so the name no longer claims it) and workflow frameworks (the
-human⇄stack boundary: intent refined into specs and subtasks going down, research and
-verified evidence coming up). Reframed 2026-08-17; numbering retained as storage keys.
+harnesses, execution environments (layers 1–3), the three things a running agent cannot
+lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack boundary:
+intent refined into specs and subtasks going down, research and verified evidence coming
+up) and extensions (5 — a cross-layer bucket parameterizing the triad's edges;
+portability is conferred by adoption, not intrinsic, so the name doesn't claim it). How
+the taxonomy reached this shape — demotions, adjudications, the 2026-08-19
+renumbering — is one dated decision record each in [`adrs/`](adrs/README.md).
 With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
 tools that straddle the divisions. Everything else in the repo declares where it belongs.
 
@@ -32,9 +33,9 @@ confirm, contradict, or note silence.
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
 | 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Extensions (bucket) | [`notes/03-capability-extensions/`](notes/03-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
+| 3 · Execution environments | [`notes/03-execution-environments/`](notes/03-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
-| 5 · Execution environments | [`notes/05-execution-environments/`](notes/05-execution-environments/index.md) | worktrees, devcontainers, E2B |
+| 5 · Extensions (bucket) | [`notes/05-capability-extensions/`](notes/05-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
 | ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost |
 | ✕ Standards | [`notes/standards/`](notes/standards/index.md) | MCP, `AGENTS.md` convention |
 
@@ -110,7 +111,7 @@ note. Revised when evidence moves._
    stands unchanged; what changed is that the isolation the field lacks is
    demonstrably buildable at personal scale for ~$3. →
    [`notes/01-models/index.md`](notes/01-models/index.md)
-3. **Layer 3 is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
+3. **The extensions bucket (layer 5) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension kinds, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
    *Revised same day:* skills moved — spec-kit's integration registry shows `SKILL.md`
@@ -198,12 +199,14 @@ note. Revised when evidence moves._
    it, one is on by default, one stable-but-off, one user-write-only. "Twice each" was
    never "always," and the `learning loop` column now has a verified ✗ to sit beside its
    ✓s. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
-9. **Layer 5 is a real rung, not an axis of layer 2 — decided by its own falsifier**
-   (2026-08-16). The taxonomy pre-committed to demoting execution-environments unless
-   study showed a layer-5 fact that isn't just a restatement of how a harness attaches to
-   one. For three weeks every layer-5 finding *was* a harness property (the four
-   relationship verbs — bundle/bind/internalize/inhabit — all live in layer-2 frontmatter),
-   and a gated demotion to "fifth axis of layer 2" was written and scheduled. The first
+9. **The environments layer (3) is a real rung, not an axis of the harness layer —
+   decided by its own falsifier** (2026-08-16, decision record
+   [ADR-0003](adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to
+   demoting execution-environments unless study showed an environment fact that isn't
+   just a restatement of how a harness attaches to one. For three weeks every
+   environment finding *was* a harness property (the four relationship verbs —
+   bundle/bind/internalize/inhabit — all live in layer-2 frontmatter),
+   and a gated demotion to "an axis of layer 2" was written and scheduled. The first
    environment studied as a product in its own right — **E2B**, read from its open-source
    infra — fired the keep-it-a-rung arm the same day: ~26 environment-facts to 6
    attachment-restatements, **every one of the 26 invisible from the SDK** (Firecracker with
@@ -213,8 +216,8 @@ note. Revised when evidence moves._
    as a population." *Live caveat:* the result may be an artifact of E2B being open — a
    closed environment (Modal/Daytona/Cloudflare) might yield only testimony, which
    [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) exists to test.
-   → [`notes/05-execution-environments/e2b.md`](notes/05-execution-environments/e2b.md),
-   [`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md)
+   → [`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md),
+   [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md)
 10. **A task-level trap instrument that cannot rank same-tier runs still separates model
     tiers — and its items are not monotone in capability** (2026-08-17, measured). exp-02's
     21-check instrument, saturated against Sonnet 5 baselines (mean 19.0/21, n=5), fully

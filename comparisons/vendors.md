@@ -5,12 +5,12 @@
 
 One row per `vendor:` string, columns by layer. **This understates vendor span by construction**: it can only show tools that have reports, and the largest spanners' flagship products are closed with no report (Claude Code, cloud Codex, Cursor, Managed Agents). The authoritative span picture — including observation-only products — is the hand-kept table in [`../taxonomy.md`](../taxonomy.md) → *Vendor span*; this file is its generated, tracked-only floor.
 
-| Vendor | 1 · Models | 2 · Harnesses | 3 · Artifacts | 4 · Frameworks | 5 · Environments | Layers |
+| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Artifacts | Layers |
 |---|---|---|---|---|---|---|
 | Anthropic | claude-haiku-4-5, claude-opus-5, claude-sonnet-5, claude-fable-5 | claude-code | — | — | — | **2** |
 | Google | gemini-3-1-pro | gemini-cli | — | — | — | **2** |
 | OpenAI | gpt-5-6-sol | codex | — | — | — | **2** |
-| Affaan Mustafa (affaan-m) | — | — | ecc | — | — | **1** |
+| Affaan Mustafa (affaan-m) | — | — | — | — | ecc | **1** |
 | Aider-AI | — | aider | — | — | — | **1** |
 | Alibaba (Qwen team) | qwen3-coder-next | — | — | — | — | **1** |
 | Anomaly | — | opencode | — | — | — | **1** |
@@ -18,9 +18,9 @@ One row per `vendor:` string, columns by layer. **This understates vendor span b
 | Continue | — | continue | — | — | — | **1** |
 | DeepSeek | deepseek-v4 | — | — | — | — | **1** |
 | Fission AI | — | — | — | openspec | — | **1** |
-| FoundryLabs, Inc. (E2B) | — | — | — | — | e2b | **1** |
+| FoundryLabs, Inc. (E2B) | — | — | e2b | — | — | **1** |
 | GitHub | — | — | — | spec-kit | — | **1** |
-| Modal Labs | — | — | — | — | modal | **1** |
+| Modal Labs | — | — | modal | — | — | **1** |
 | Moonshot AI | kimi-k3 | — | — | — | — | **1** |
 | Nous Research | — | hermes-agent | — | — | — | **1** |
 | Open GSD | — | — | — | gsd-core | — | **1** |

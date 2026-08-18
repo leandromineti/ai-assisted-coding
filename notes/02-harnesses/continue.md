@@ -66,7 +66,7 @@ in this set where a harness had to abstract its own UI._
 
 ## Bleed
 
-_TODO_ — supports MCP (layer 3). The `binary/` sidecar is arguably a layer-5 concern
+_TODO_ — supports MCP (layer 5). The `binary/` sidecar is arguably a layer-3 concern
 (process isolation) solved incidentally.
 
 ## Cost model

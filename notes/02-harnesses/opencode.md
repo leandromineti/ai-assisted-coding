@@ -7,7 +7,7 @@ environments: [host]   # a `containers` package exists; its role unverified — 
 # environment_relation: deliberately UNSET. opencode runs on the host and does nothing
 # about isolation — it neither bundles, binds, internalizes, nor inhabits. None of the four
 # verbs fits, and forcing one would fabricate a relationship. The null case is evidence for
-# the layer-5 adjudication, not a gap in the frontmatter.
+# the layer-3 adjudication, not a gap in the frontmatter.
 vendor: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT
@@ -275,9 +275,9 @@ something it will never be allowed to do.
 - **Layer 1 (models):** cleanly abstracted behind `packages/llm` and the AI SDK — *except*
   the per-model prompts, which are a deliberate leak. The abstraction is over the API, not
   over model behavior.
-- **Layer 3 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
+- **Layer 5 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
   `agent/subagent-permissions.ts`.
-- **Layer 5 (execution):** a `containers` package exists, so isolation is a modeled concern
+- **Layer 3 (execution):** a `containers` package exists, so isolation is a modeled concern
   rather than an assumption of the host.
 
 `packages/llm/DESIGN.md` is a **proposed redesign**, not documentation of what's there — a
@@ -287,7 +287,7 @@ They're drawing a line between "call a model" and "run an agent."
 
 ## Bleed
 
-Layer 3 (ships an MCP client, plugin system, skills, subagents) and layer 5 (`containers`).
+Layer 5 (ships an MCP client, plugin system, skills, subagents) and layer 3 (`containers`).
 Reaches upward into layer 4 too: plan mode with its own prompts (`prompt/plan-mode.txt`,
 `plan.txt`, `build-switch.txt`) is process methodology living inside a harness — the same
 absorption noted in [`../04-workflow-frameworks/index.md`](../04-workflow-frameworks/index.md).

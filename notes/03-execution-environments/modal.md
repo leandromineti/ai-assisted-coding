@@ -1,6 +1,6 @@
 ---
 name: modal
-layer: 5
+layer: 3
 vendor: Modal Labs
 url: https://github.com/modal-labs/modal-client
 license: Apache-2.0   # the CLIENT only; the infrastructure is closed and has no public repo
@@ -20,7 +20,7 @@ depth: survey   # client source (proto + shipped container agent) read closely; 
 
 # Modal
 
-The second layer-5 report, and it exists to answer the question E2B's read left open
+The second layer-3 report, and it exists to answer the question E2B's read left open
 ([issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11)): **was E2B's
 gate pass an artifact of E2B being open source?** E2B let me read its *infrastructure*, which
 is where 26 of its 26 gate-winning environment-facts lived. Modal is the control: its client
@@ -117,7 +117,7 @@ claim against. **Closure does not remove environment-facts — it removes the *a
   off, no workspace-resource access ("blast radius … limited to the Sandbox container itself",
   docs TESTIMONY). Controls: `block_network`, `outbound_cidr_allowlist`,
   `outbound_domain_allowlist` (beta, **TLS/443 only**). That 443-only domain restriction is the
-  *same shape* as E2B's SNI-inspecting firewall — a convergent layer-5 design fact across two
+  *same shape* as E2B's SNI-inspecting firewall — a convergent layer-3 design fact across two
   independently-built environments.
 - **Fidelity** [VERIFIED] — remote image build; full GPU enumeration in the client
   (T4…H200, `api.proto:229-241`). gVisor means the fidelity ceiling is *syscall coverage*, not
@@ -152,7 +152,7 @@ which a harness-attachment study could never produce because it never looks at t
 
 Two agent-native environments, two fundamentally different isolation primitives, one convergent
 egress-control shape. That is a **population with internal variation**, not a monoculture — which
-is exactly what "layer 5 is a real rung" needed and what the E2B-only read could not establish.
+is exactly what "layer 3 is a real rung" needed and what the E2B-only read could not establish.
 
 ## The successor-question verdict (issue #11)
 
@@ -183,7 +183,7 @@ tighter-lipped closed environment would fall further toward Bucket C. n=2 for th
    *inside* the sandbox, not in the SDK that calls it.
 3. **A Modal sandbox is a thin specialization of its serverless-function substrate** (shared
    `runtime`/`checkpointing_enabled` fields, sub-containers, function-style scheduling), where an
-   E2B sandbox is a purpose-built flat microVM. Two products solving the same layer-5 problem from
+   E2B sandbox is a purpose-built flat microVM. Two products solving the same layer-3 problem from
    opposite starting substrates.
 4. **You cannot catch Modal being wrong.** E2B's most valuable findings were places its own docs
    over-claimed relative to its code. For Modal there is no code to convict the docs — the read

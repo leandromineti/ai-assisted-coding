@@ -252,17 +252,17 @@ the approval prompt is a UX courtesy on top of enforcement, not the enforcement.
   model-*conditioned*: instructions swap per model slug inside WorldState — a fifth
   data point for the per-model-prompt question (the vendor-native pole: one vendor,
   many of its own models, instructions per model).
-- **Layer 3:** MCP client *and* server; skills; hooks; plugins with an install-request
-  tool. `external-agent-migration` imports competitors' state — layer-3 interop as a
+- **Layer 5:** MCP client *and* server; skills; hooks; plugins with an install-request
+  tool. `external-agent-migration` imports competitors' state — layer-5 interop as a
   product feature.
 - **Layer 4:** plan tool, collaboration-mode templates, `guardian` review reminders —
   the usual absorption.
-- **Layer 5:** **internalized, not bundled** — the taxonomy's "harness binds to
+- **Layer 3:** **internalized, not bundled** — the taxonomy's "harness binds to
   environments" framing inverts here; see Surprises 1.
 
 ## Bleed
 
-Layers 3 and 4 as above. The layer-5 relationship is the notable one: not a binding to
+Layers 3 and 4 as above. The layer-3 relationship is the notable one: not a binding to
 external environments but an *absorption of the environment layer into the harness
 binary* (in-process OS sandboxes + embedded sandboxed V8). Layer 1 bleed runs in both
 directions: vendor-native models, and telemetry crates (`otel`, `analytics`) feeding
@@ -277,7 +277,7 @@ the zero-marginal-cost end real. The cloud sibling meters separately.
 
 ## Surprises
 
-1. **Layer 5 lives inside the binary.** The taxonomy models execution environments as
+1. **Layer 3 lives inside the binary.** The taxonomy models execution environments as
    external products a harness *binds to*; codex compiles Seatbelt policies, Landlock,
    bwrap, and a Windows sandbox into the harness and hardens its own process pre-main.
    That's a stress-test-worthy case: not bundling (Devin), not binding (hermes) —

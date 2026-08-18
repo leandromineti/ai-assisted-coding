@@ -139,22 +139,55 @@ excluding permissions, sessions, and orchestration from the model-calling packag
 cline's growth (SDK, CLI, hub around a core) rhymes. The waist is the loop + dispatch;
 everything else should be removable.
 
-## The artifacts bucket (formerly layer 3) — extension design *(two principles; bucket status per the 2026-07-30 taxonomy revision)*
+## Layer 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
 
-**X1. Design for the waist everything converged on: a prompt file in a directory.**
-*(convergent, structural)* spec-kit compiles one definition to 44 harnesses precisely
-because "slash command = prompt file" became universal; skills reached convention-level
-the same way (`SKILL.md` consumed by ≥4 harnesses — README conclusion 3). An extension
-that needs more than files-in-known-directories forfeits portability — see F1 for what
-that costs frameworks.
+**E1. Blast radius sets the autonomy ceiling — buy autonomy with isolation, not model
+quality.** *(convergent; taxonomy scope-note position)* Every fully-autonomous product
+documented bundles a sandbox, not a smarter model; hermes ships eight terminal-backend
+implementations and its serverless pitch is an *economics* answer to keeping an
+always-on agent isolated. The same permission flag that is reckless on a host is sane
+in a container.
 
-**X2. Standing-instruction surface is a hard budget; bodies load on demand.**
-*(single-instance mechanism, structurally forced everywhere)* hermes budgets its skill
-index at ~60 chars of description per skill in the system prompt — its authoring
-standards call the limit "NOT cosmetic: anything past char 60 is silently cut and never
-routes" — and loads skill bodies only on invocation. The general form: every installed
-extension competes for the same standing-context budget, so the *index* must be cheap
-and the *content* just-in-time.
+**E2. Isolation without fidelity produces layer-2-looking failures — engineer the
+fidelity back explicitly.** *(convergent)* The worktree/gitignore trap
+([`notes/03-execution-environments/`](notes/03-execution-environments/index.md)):
+isolation that hides `node_modules`/`.env`/plans breaks agents in ways misread as
+harness bugs. hermes engineers around the same class from the other side — file-sync
+plus a file-based RPC transport so programmatic tool calling still works *inside*
+remote backends. Isolation is only half the design; the other half is what you
+deliberately let back in.
+
+**E3. How a harness *relates* to its environment is a design position, and there are
+exactly four — plus abstention.** *(convergent — four instances, one per verb, each found
+at a different deep-dive)* **bundle** (Devin ships one), **bind** (hermes attaches to
+eight swappable backends), **internalize** (codex compiles Seatbelt/Landlock/bwrap into
+the binary), **inhabit** (Warp detects the container it is already inside for workload
+identity). opencode takes the fifth position: **none of them** — it runs on the host and
+does nothing about isolation, which is a choice rather than an omission. Defined in
+[`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md),
+rendered in [`comparisons/environments.md`](comparisons/environments.md).
+
+*Recorded with the principle, because it is the uncomfortable part:* all four verbs are
+properties of **layer-2 tools**, discovered inside layer-2 reads. The 2026-08-16
+adjudication first concluded from this that layer 3 fails as a population and proposed
+demotion to a layer-2 axis — **then the E2B read the same day overturned it** (README
+conclusion 9). E2B is a layer-3 entity that produces substantive facts *about the
+environment*, not about any harness's relationship to it (E4 below is one), so the verbs
+being harness-side does not make the layer harness-side. E1–E3 stand as layer-3 principles.
+
+**E4. An execution environment's economics leak upward into kernel and scheduler choices
+that no harness can see.** *(single-instance — E2B, 2026-08-16; structurally argued)* Every
+"create" is a snapshot **resume** with no warm pool; the resume working-set is computed by
+booting the template twice at build time and intersecting touched pages; guest `kcompactd`
+is disabled because host-side hugepage backing would dirty the snapshot diff; `discard` on
+the guest ext4 mount is a snapshot-*size* optimization, not a speed one. These are facts
+about the *environment as a product*, invisible from any SDK, and they are the concrete
+content that defeated the "layer 3 is just an axis of layer 2" verdict. Falsifiable and
+single-instance by construction: if a **closed** environment read (Modal/Daytona/Cloudflare)
+yields only testimony, E4 is real but legible only when the environment is open —
+[`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md), issue #11.
+
+---
 
 ## Layer 4 — workflow-framework design
 
@@ -236,55 +269,22 @@ cannot verify upstream security and forked for that reason. Layer-4 supply chain
 real: you are `curl | sh`-ing *instructions* that will run with everything your agent
 can touch.
 
-## Layer 5 — execution-environment design
+## The extensions bucket (5) — extension design *(two principles; bucket status per ADR-0002, renumbered per ADR-0007)*
 
-**E1. Blast radius sets the autonomy ceiling — buy autonomy with isolation, not model
-quality.** *(convergent; taxonomy scope-note position)* Every fully-autonomous product
-documented bundles a sandbox, not a smarter model; hermes ships eight terminal-backend
-implementations and its serverless pitch is an *economics* answer to keeping an
-always-on agent isolated. The same permission flag that is reckless on a host is sane
-in a container.
+**X1. Design for the waist everything converged on: a prompt file in a directory.**
+*(convergent, structural)* spec-kit compiles one definition to 44 harnesses precisely
+because "slash command = prompt file" became universal; skills reached convention-level
+the same way (`SKILL.md` consumed by ≥4 harnesses — README conclusion 3). An extension
+that needs more than files-in-known-directories forfeits portability — see F1 for what
+that costs frameworks.
 
-**E2. Isolation without fidelity produces layer-2-looking failures — engineer the
-fidelity back explicitly.** *(convergent)* The worktree/gitignore trap
-([`notes/05-execution-environments/`](notes/05-execution-environments/index.md)):
-isolation that hides `node_modules`/`.env`/plans breaks agents in ways misread as
-harness bugs. hermes engineers around the same class from the other side — file-sync
-plus a file-based RPC transport so programmatic tool calling still works *inside*
-remote backends. Isolation is only half the design; the other half is what you
-deliberately let back in.
-
-**E3. How a harness *relates* to its environment is a design position, and there are
-exactly four — plus abstention.** *(convergent — four instances, one per verb, each found
-at a different deep-dive)* **bundle** (Devin ships one), **bind** (hermes attaches to
-eight swappable backends), **internalize** (codex compiles Seatbelt/Landlock/bwrap into
-the binary), **inhabit** (Warp detects the container it is already inside for workload
-identity). opencode takes the fifth position: **none of them** — it runs on the host and
-does nothing about isolation, which is a choice rather than an omission. Defined in
-[`notes/05-execution-environments/index.md`](notes/05-execution-environments/index.md),
-rendered in [`comparisons/environments.md`](comparisons/environments.md).
-
-*Recorded with the principle, because it is the uncomfortable part:* all four verbs are
-properties of **layer-2 tools**, discovered inside layer-2 reads. The 2026-08-16
-adjudication first concluded from this that layer 5 fails as a population and proposed
-demotion to a layer-2 axis — **then the E2B read the same day overturned it** (README
-conclusion 9). E2B is a layer-5 entity that produces substantive facts *about the
-environment*, not about any harness's relationship to it (E4 below is one), so the verbs
-being harness-side does not make the layer harness-side. E1–E3 stand as layer-5 principles.
-
-**E4. An execution environment's economics leak upward into kernel and scheduler choices
-that no harness can see.** *(single-instance — E2B, 2026-08-16; structurally argued)* Every
-"create" is a snapshot **resume** with no warm pool; the resume working-set is computed by
-booting the template twice at build time and intersecting touched pages; guest `kcompactd`
-is disabled because host-side hugepage backing would dirty the snapshot diff; `discard` on
-the guest ext4 mount is a snapshot-*size* optimization, not a speed one. These are facts
-about the *environment as a product*, invisible from any SDK, and they are the concrete
-content that defeated the "layer 5 is just an axis of layer 2" verdict. Falsifiable and
-single-instance by construction: if a **closed** environment read (Modal/Daytona/Cloudflare)
-yields only testimony, E4 is real but legible only when the environment is open —
-[`notes/05-execution-environments/e2b.md`](notes/05-execution-environments/e2b.md), issue #11.
-
----
+**X2. Standing-instruction surface is a hard budget; bodies load on demand.**
+*(single-instance mechanism, structurally forced everywhere)* hermes budgets its skill
+index at ~60 chars of description per skill in the system prompt — its authoring
+standards call the limit "NOT cosmetic: anything past char 60 is silently cut and never
+routes" — and loads skill bodies only on invocation. The general form: every installed
+extension competes for the same standing-context budget, so the *index* must be cheap
+and the *content* just-in-time.
 
 ## The composite architecture (what the evidence points at, assembled)
 

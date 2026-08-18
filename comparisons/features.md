@@ -18,9 +18,9 @@ report's frontmatter when confirmed in source or official docs.
 | [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | ✓ | ✓ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
 | [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [ecc](../notes/03-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [openspec](../notes/04-workflow-frameworks/openspec.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [e2b](../notes/05-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · |
-| [modal](../notes/05-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | ✓ |

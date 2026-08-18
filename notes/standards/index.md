@@ -8,7 +8,7 @@ here once and referenced from the layers that implement it. See
 
 This category exists because the taxonomy's stress test broke on MCP: it has no defensible
 home in the stack, because *the protocol* and *the servers that speak it* are different
-kinds of object. The servers are layer 3. The protocol is this.
+kinds of object. The servers are layer 5. The protocol is this.
 
 **The general test:** can you install it? If yes, it's a layer entry. If it's a document
 that other people implement, it belongs here.
@@ -33,9 +33,9 @@ SaaS) to agents as callable tools.
 **Implemented by:** Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, OpenCode, and
 Devin — i.e. every major harness. One server, set up once, works across all of them.
 
-**Why it matters structurally:** MCP is the only part of layer 3 that has fully cleared the
+**Why it matters structurally:** MCP is the only part of layer 5 that has fully cleared the
 independent-distribution bar. It's the existence proof that capability extensions can be a
-real layer rather than a bag of per-harness features. Everything else in layer 3 is
+real layer rather than a bag of per-harness features. Everything else in layer 5 is
 measured against how close it gets to this.
 
 **Open questions**
@@ -58,7 +58,7 @@ there's no schema to conform to and no way to be non-compliant. `AGENTS.md` appe
 converging into the cross-harness spelling, with `CLAUDE.md` and `.cursorrules` as
 vendor-specific predecessors.
 
-The *files* are layer 3 artifacts; the *convention* is what lives here.
+The *files* are layer 5 artifacts; the *convention* is what lives here.
 
 **Rival-implementation evidence (2026-08-11, Warp @ `80a20347`).** The strongest signal yet
 that this is a real convention rather than one vendor's habit: Warp reads `WARP.md` *and*
@@ -96,13 +96,13 @@ visible.
 
 This is the prediction the standards category is really for, and it's testable:
 
-> If skills and rules files converge on standards the way MCP did, layer 3 solidifies as a
+> If skills and rules files converge on standards the way MCP did, layer 5 solidifies as a
 > genuine layer. If they don't, part of it collapses back into layer 2 as per-harness
 > features.
 
 Current state of the evidence:
 
-| Layer-3 kind | Standardized? | Trend |
+| Layer-5 kind | Standardized? | Trend |
 |---|---|---|
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
@@ -138,5 +138,5 @@ installer targeting it. [`../02-harnesses/warp.md`](../02-harnesses/warp.md).
 
 Two and a half of five have moved (the half being skills, at 2026-07-28). That's the
 number to re-check in six months: if hooks are still harness-specific and skills stall at
-convention level, layer 3 is really "MCP plus a pile of vendor features," and the
+convention level, layer 5 is really "MCP plus a pile of vendor features," and the
 taxonomy should say so.

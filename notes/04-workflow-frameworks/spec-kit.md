@@ -215,7 +215,7 @@ only other human touchpoint. Run details:
 
 ## Bleed
 
-Layer 3 — it installs slash commands and templates into whichever harness you point it at;
+Layer 5 — it installs slash commands and templates into whichever harness you point it at;
 the `specify` CLI itself is a thin installer/compiler, not a harness.
 
 Layer 2 — the `workflows/` engine (`specify workflow run`) is a deterministic YAML

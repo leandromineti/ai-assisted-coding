@@ -51,7 +51,7 @@ distribution point, not source.
 ## The distinguishing bet
 
 **That the harness is a platform, and the extension surface is the product.** Every
-layer-3 and layer-4 mechanism this repo tracks as a separate category ships *natively and
+layer-5 and layer-4 mechanism this repo tracks as a separate category ships *natively and
 first-party* here — and most of the field's conventions for them descend from this
 product's:
 
@@ -108,20 +108,20 @@ half is below.
 
 The heaviest bleed profile in the tracked set — which is the point of the entry:
 
-- **→ layer 3**: ships skills, hooks, subagent definitions, MCP client, plugins — and
-  *originated* the file conventions (CLAUDE.md, SKILL.md) that layer 3's independence
+- **→ layer 5**: ships skills, hooks, subagent definitions, MCP client, plugins — and
+  *originated* the file conventions (CLAUDE.md, SKILL.md) that layer 5's independence
   story is measured against. When conclusion 3 says "MCP plus vendor features," the
   vendor is, mostly, this product.
 - **→ layer 4**: plan mode as an enforced harness mode — the strongest form of the
   layer-4-absorption pattern (conclusion 8), stronger than prose frameworks can build
   (conclusion 7's enforcement-by-exit-code vs -typography distinction, settled at the
   harness level).
-- **→ layer 5**: dual relation. Locally it **binds** worktrees as a native operation;
+- **→ layer 3**: dual relation. Locally it **binds** worktrees as a native operation;
   the web/cloud side **bundles** a vendor sandbox. One product exhibiting two of the four
   relationship verbs is itself vocabulary evidence.
 - **→ vendor span (the reason this report exists)**: Anthropic now shows tracked
-  coverage at layers 1 (four model reports) **and 2** (this report), with layer-3
-  conventions and the bundled layer-5 sandbox as bleed. The generated floor
+  coverage at layers 1 (four model reports) **and 2** (this report), with layer-5
+  conventions and the bundled layer-3 sandbox as bleed. The generated floor
   (`comparisons/vendors.md`) narrows against the taxonomy's hand-kept table accordingly:
   the span is co-designed — the harness is tuned to the models and the models to the
   harness (TESTIMONY: Anthropic's own model-migration guidance ships Claude-Code-derived
@@ -145,7 +145,7 @@ every token. Cloud sessions bill separately from local API use.
    `learning_loop` column now spans three mechanism shapes plus one absence; per issue
    #2's own rule, that heterogeneity is approaching the point where the column needs a
    vocabulary (background / in-loop / manual), not a boolean.
-2. **The first verified `worktree` cell in the environments matrix.** The layer-5 index
+2. **The first verified `worktree` cell in the environments matrix.** The layer-3 index
    asks why nobody had verified worktree support anywhere despite the worktree/gitignore
    trap being the layer's founding scar. First answer, and it's ironic: the harness with
    native worktree operations is the *closed* one — observed from product surface, not

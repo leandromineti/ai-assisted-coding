@@ -31,7 +31,7 @@ The note assembles the four evidence strands, defines the three measurement trac
 
 ## Context engineering
 
-**Where it lives:** layer 2 (the harness decides what to load and when), layer 3 (rules
+**Where it lives:** layer 2 (the harness decides what to load and when), layer 5 (rules
 files, skills, memory), layer 4 (frameworks impose context discipline as method). No single
 layer owns it — which is exactly why it's mis-taught as a prompting trick.
 
@@ -63,8 +63,8 @@ Failure modes are the signal; success is too coarse to learn from.
 
 ## Verification & evaluation
 
-**Where it lives:** layer 3 (review-bot MCP servers), layer 4 (frameworks that build in
-verification gates — GSD's "evidence" principle), layer 5 (sandboxes that make failure
+**Where it lives:** layer 5 (review-bot MCP servers), layer 4 (frameworks that build in
+verification gates — GSD's "evidence" principle), layer 3 (sandboxes that make failure
 cheap to observe), plus the whole external CI apparatus. **And, as of 2026-07-30, layer 2
 natively — two instances:** hermes-agent ships an evidence-ledger verification gate
 inside the harness — `verification_stop` nudges the model back (bounded, ≤3 times) when
@@ -130,7 +130,7 @@ but it's no longer anecdote, and the difference is the preregistration.
 ## Cost & economics
 
 **Where it lives:** layer 1 (token prices), 1b (route-dependent caching and rate limits),
-layer 2 (how efficiently the harness spends context), layer 5 (metered sandboxes).
+layer 2 (how efficiently the harness spends context), layer 3 (metered sandboxes).
 
 **The framing that matters:** per-token price is the least interesting form of cost. The
 ones that bite:

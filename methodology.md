@@ -90,7 +90,7 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   sentence, so `skill_candidates` was always empty and `agent_candidates`, filtered from
   it, always empty too — the mechanism did not fire *at all*, and it took an upstream bug
   fix twelve days later to surface it
-  ([`notes/03-capability-extensions/ecc.md`](notes/03-capability-extensions/ecc.md)).
+  ([`notes/05-capability-extensions/ecc.md`](notes/05-capability-extensions/ecc.md)).
   Two lessons, both cheap: **a pipeline is only as traced as its least-interesting
   stage** — steps 1–3 were read at the call sites and the last step was skimmed because
   by then the design was convincing; and **"clusters"/"promotes"/"selects" are verbs that

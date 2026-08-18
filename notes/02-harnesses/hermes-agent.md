@@ -151,7 +151,7 @@ coding is a *posture* the agent shifts into when it finds itself in a git repo
 |---|---|
 | Autonomous learning loop (review fork + curator + /learn) | **Unique in this set** |
 | One agent core across CLI/TUI/desktop/web/ACP + ~20 messaging platforms | **Unique at this breadth** |
-| 8 terminal-backend implementations incl. serverless (Modal, Daytona) | Distinctive — deepest layer-5 bleed in the set |
+| 8 terminal-backend implementations incl. serverless (Modal, Daytona) | Distinctive — deepest layer-3 bleed in the set |
 | Programmatic tool calling (`execute_code`: model-written Python calls tools via RPC) | Distinctive |
 | 33 provider plugins, model-agnostic | Table stakes at this point; breadth notable |
 | MCP client, LSP, subagents, skills | Table stakes by mid-2026 |
@@ -280,13 +280,13 @@ opencode's `visibleTools`.
   33 bundled) read by one registry (`providers/`); adapters in `agent/` normalize
   Anthropic, Gemini-native, Bedrock, Vertex, Codex-responses APIs. Model-agnostic, but
   *not* prompt-agnostic — see the per-family appendices in Surprises.
-- **Layer 3 (extensions):** first-class and the designated growth path — MCP client +
+- **Layer 5 (extensions):** first-class and the designated growth path — MCP client +
   OAuth manager, plugin system with lifecycle hooks, the skills standard
   (agentskills.io-compatible), LSP (`agent/lsp/`).
 - **Layer 4 (methodology):** absorbed in pieces: `/plan` as a bundled skill, todo tool,
   verification-stop gates, kanban multi-agent coordination tools — process opinions
   shipped inside the harness, same absorption noted for opencode.
-- **Layer 5 (execution):** the deepest bleed in the set. `tools/environments/base.py`
+- **Layer 3 (execution):** the deepest bleed in the set. `tools/environments/base.py`
   is a real abstraction with 8 implementations, including serverless-persistent ones
   (Daytona/Modal hibernate between sessions). `execute_code` even has a file-based RPC
   transport so programmatic tool calling works *inside* remote backends.

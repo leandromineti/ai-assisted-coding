@@ -31,8 +31,10 @@ happened when I started measuring.
 Strip any working coding agent to the parts it cannot lack and three things remain
 ([the full taxonomy](../taxonomy.md)):
 
-**Models** — the weights, and the API surface around them. This layer drifts fastest:
-pricing, caching economics, effort controls, and lifecycle stages change monthly (one
+### Models
+
+The weights, and the API surface around them. This layer drifts fastest: pricing,
+caching economics, effort controls, and lifecycle stages change monthly (one
 vendor repriced its entire API to time-of-day billing the day before I checked
 [its row](../notes/01-models/deepseek-v4.md)). The part nobody advertises: vendors
 don't even share a lifecycle vocabulary — of ten models I track, one has been "in
@@ -40,21 +42,69 @@ Preview" for six months with no GA plan stated, another's GA was quietly suspend
 three days after launch and redeployed weeks later
 ([the released column](../comparisons/models.md), verified 2026-08-17).
 
-**Harnesses** — the software that turns a model into an agent: the loop that
-assembles context, offers tools, executes actions, and decides when to stop. Claude
-Code, Codex CLI, OpenCode, Cursor. This is the layer most discourse treats as
-plumbing. It isn't, and there's now good evidence it isn't — more below.
+The ten tracked so far, from [the model matrix](../comparisons/models.md)
+(release dates in each vendor's own lifecycle vocabulary — or lack of one —
+verified 2026-08-17):
 
-**Execution environments** — where the agent's actions actually land: your host, a
-git worktree, a devcontainer, a cloud microVM. For weeks I suspected this layer was
-just an *attribute* of the harness ("where does it attach?"), and the repo carried a
-pre-committed demotion rule for it. Then the first environment studied as a product
-in its own right — E2B, read from its open-source infrastructure — produced roughly
-[26 facts invisible from the SDK](../notes/05-execution-environments/e2b.md): every
+| Model | Provider | Released |
+|---|---|---|
+| Claude Haiku 4.5 | Anthropic | GA 2025-10-15 |
+| Claude Fable 5 | Anthropic | GA 2026-06-09 |
+| Claude Sonnet 5 | Anthropic | GA 2026-06-30 |
+| Claude Opus 5 | Anthropic | GA 2026-07-24 |
+| DeepSeek V4 | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 |
+| Gemini 3.1 Pro | Google | Preview since 2026-02-19, no GA plan stated |
+| GPT-5.6 Sol · Terra · Luna | OpenAI | 2026-07-09 — "preview" per the launch post, "released" per the same-day changelog |
+| Grok 4.5 | xAI | July 2026, no stage word, month-level only |
+| Kimi K3 | Moonshot AI | ~July 2026 — the launch blog prints no date |
+| Qwen3-Coder-Next | Alibaba | open weights Jan 2026, no stage stated |
+
+### Harnesses
+
+The software that turns a model into an agent: the loop that assembles context,
+offers tools, executes actions, and decides when to stop. This is the layer most
+discourse treats as plumbing. It isn't, and there's now good evidence it isn't —
+more below.
+
+The nine tracked so far, from [the tool index](../comparisons/tools.md). *Depth*
+is the repo's honesty marker: **deep-dive** means the agent loop and context
+assembly were actually traced in source, **survey** means used or skimmed,
+**stub** means facts were collected but nobody read the code yet.
+
+| Harness | Depth | Notes from the index |
+|---|---|---|
+| Hermes Agent | deep-dive | MIT; every surface (terminal, desktop, web, IDE); the largest repo tracked (~223k stars at last check) |
+| Codex CLI (OpenAI) | deep-dive | Apache-2.0; Rust core; terminal |
+| OpenCode | deep-dive | MIT; terminal, desktop, IDE; 75+ providers, LSP-aware |
+| Claude Code (Anthropic) | survey | proprietary; terminal, desktop, web, IDE |
+| Cline | survey | Apache-2.0; IDE-first |
+| Continue | survey | Apache-2.0; IDE |
+| Warp | survey | AGPL-3.0; Rust; terminal, desktop, web |
+| Aider · Gemini CLI | stub | terminal; source not yet read |
+
+### Execution environments
+
+Where the agent's actions actually land: your host, a git worktree, a
+devcontainer, a cloud microVM. For weeks I suspected this layer was just an
+*attribute* of the harness ("where does it attach?"), and the repo carried a
+pre-committed demotion rule for it. Then the first environment studied as a
+product in its own right — E2B, read from its open-source infrastructure —
+produced roughly
+[26 facts invisible from the SDK](../notes/03-execution-environments/e2b.md): every
 "create" is secretly a snapshot resume, the guest's memory compactor is disabled for
 the host's snapshot-diff economics, the credential-injection proxy doesn't exist in
 the open-source build. An interface that hides that much is a layer, not an attribute
 (decided 2026-08-16, [conclusion 9](../README.md#conclusions)).
+
+Products tracked so far:
+
+- **E2B** — cloud microVM sandboxes; the deep-dive whose ~26 SDK-invisible facts
+  settled this layer's status.
+- **Modal** — serverless containers; survey read.
+
+The forms you don't buy — the host, the worktree, the devcontainer — sit in the
+same layer, and [the environment-bindings matrix](../comparisons/environments.md)
+tracks which harnesses can run in which, and how each relates to its environment.
 
 ## The harness is a capability layer, not plumbing
 
@@ -76,7 +126,7 @@ barely matters ([the comparison](../notes/02-harnesses/index.md), 2026-07-28). N
 backs their position with a published eval. When the practitioners best placed to
 know can't agree, "the harness doesn't matter" is not a safe assumption.
 
-## The two interfaces
+## The two additional interfaces
 
 <figure>
   <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a layer you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, hooks, and memory. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
@@ -86,7 +136,9 @@ know can't agree, "the harness doesn't matter" is not a safe assumption.
 Between you and that triad sit two things that look like layers but behave like
 boundaries.
 
-**Extensions** — MCP servers, skills, rules files, hooks, memory stores: packaged capabilities
+### Extensions
+
+MCP servers, skills, rules files, hooks, memory stores: packaged capabilities
 that plug into a harness. Portability is not an intrinsic property of an extension —
 it's a status the ecosystem confers by adoption, and it has been conferred very
 unevenly across the kinds ([the taxonomy's bucket](../taxonomy.md) tracks
@@ -100,9 +152,19 @@ definitions, and memory stores remain harness-specific. "Write once, run anywher
 one extension kind and a polite fiction for the rest
 ([conclusion 3](../README.md#conclusions)).
 
-**Workflow frameworks** — spec-kit, GSD, and their cousins: processes that refine
-your intent into specs and subtasks going down, and carry research and verified
-evidence coming up. Their structural bind, visible in their git histories: they buy
+The one tracked as a product so far, from [the tool index](../comparisons/tools.md):
+
+- **ECC (everything-claude-code)** — a self-described "agent harness operating
+  system": 281 skills, 67 agents, rules packs, enforcement hooks, and a learning
+  loop, installed *into* a dozen-plus harnesses; the fastest-adopted tool in the
+  study (~236k stars at last check); deep-dive read
+  ([the ECC note](../notes/05-capability-extensions/ecc.md)).
+
+### Workflow frameworks
+
+Processes that refine your intent into specs and subtasks going down, and carry
+research and verified evidence coming up. Their structural bind, visible in
+their git histories: they buy
 cross-harness portability by being made of prompts, which means their runtime *is
 the model reading prose*. One framework fixed its hook execution twice by rewriting
 instructions "more forcefully" — enforcement by typography — and left its
@@ -113,6 +175,15 @@ escape hatches. Portability and enforcement power are the same tradeoff
 ([conclusion 7](../README.md#conclusions)) — a finding independently reproduced by a
 [six-framework academic study](../refs/from-prompt-to-process.md) using documentation
 analysis alone.
+
+The three tracked so far:
+
+- **spec-kit** (GitHub) — spec-driven development; 44 harness integrations at
+  the commit read; survey read.
+- **OpenSpec** (Fission AI) — 29 harness adapter modules in its command
+  generation; deep-dive read.
+- **GSD** (Open GSD) — an operating loop whose stated enemy is context bloat;
+  six harness targets; survey read.
 
 ## The stack is being eaten from the middle
 

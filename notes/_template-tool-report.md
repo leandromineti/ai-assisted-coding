@@ -4,14 +4,14 @@ layer: <1-5>
 # The next three fields are for layer-2 (harness) reports; omit where not meaningful.
 surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
 execution: <local | async-remote | both>        # how it runs
-environments: [<host | worktree | container | remote-sandbox>]  # layer-5 bindings (bleed) — only list what's verified
+environments: [<host | worktree | container | remote-sandbox>]  # layer-3 bindings (bleed) — only list what's verified
 # environment_relation: HOW the tool relates to the environment, not just which ones it
 # reaches. One of: bundle (ships its own sandbox, not separately selectable — Devin) ·
 # bind (attaches to independently-distributed environments — hermes' 8 backends) ·
 # internalize (sandbox compiled into the harness binary — codex) · inhabit (detects the
-# environment it is already inside — Warp). Defined in notes/05-execution-environments/.
+# environment it is already inside — Warp). Defined in notes/03-execution-environments/.
 # Set ONLY when verified, and **leave it unset if none of the four fits** — a harness that
-# just runs on the host has no relationship to layer 5, and that null case is data.
+# just runs on the host has no relationship to layer 3, and that null case is data.
 environment_relation: <bundle | bind | internalize | inhabit>
 vendor: <who maintains it>
 url: <repo or product URL>
@@ -32,7 +32,7 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
-# harness_targets: layer-4 (and layer-3) reports only — which harnesses the tool
+# harness_targets: layer-4 (and layer-5) reports only — which harnesses the tool
 # officially installs into. Same discipline as features: set ONLY when verified in
 # source or official docs; omitted means "not yet checked". Either a list of harness
 # names, or a short string for large sets (e.g. "44 integrations incl. …").
@@ -134,12 +134,12 @@ permission check happens *before* or *after* the model decides.
 
 Where the taxonomy's seams show up concretely. Is the model provider swappable, and at what
 cost? Is there an execution-environment abstraction, or does it shell out to the host? Can
-layer-3 extensions attach, and where?
+layer-5 extensions attach, and where?
 
 ## Bleed
 
 Which other taxonomy layers this tool reaches into, and how. See
-[`../../taxonomy.md`](../../taxonomy.md) — the bleed is signal, not noise.
+[`../../taxonomy.md`](../taxonomy.md) — the bleed is signal, not noise.
 
 ## Cost model
 

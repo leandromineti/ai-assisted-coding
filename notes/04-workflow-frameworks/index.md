@@ -63,7 +63,7 @@ it validates artifacts, not behavior (empirical grounding: absent, as predicted)
 Dogfooded at scale: 91 changes through its own pipeline over 36 living specs. 29
 harness adapters. 63k stars, MIT, 71% single-author.
 
-### ECC (everything-claude-code) — **moved to layer 3** (2026-07-30)
+### ECC (everything-claude-code) — **moved to layer 5** (2026-07-30)
 
 *(Added 2026-07-28 as a deliberate boundary case; resolved at deep-dive.)* The source
 read answered the question this entry was created to ask: **no process spine** — the
@@ -71,9 +71,9 @@ README's own guidance is "start with the workflow you need, not the full catalog
 workflow content is opt-in catalog items, and the multi-* orchestration commands
 require an external runtime (`ccg-workflow`). A config pack at scale with a real
 learning runtime, not an encoded methodology. Report now at
-[`../03-capability-extensions/ecc.md`](../03-capability-extensions/ecc.md). What it
+[`../05-capability-extensions/ecc.md`](../05-capability-extensions/ecc.md). What it
 contributed to *this* layer's questions: verification gates can arrive as installable
-Stop hooks (a layer-3 delivery vehicle for the mechanism exp-01 credited to layer 4),
+Stop hooks (a layer-5 delivery vehicle for the mechanism exp-01 credited to layer 4),
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
 outside layer 4 proper.
 
@@ -86,9 +86,9 @@ isn't re-derived later:
 |---|---|---|
 | BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if layer-4 scope expands; would make a good ceremony-pole test subject |
 | hermes-agent (`NousResearch`) | 222k | A layer-2 harness, not a framework (spec-kit installs *into* it). Queued on the layer-2 backlog: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) |
-| claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (layer-3 bleed dominant) |
+| claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (layer-5 bleed dominant) |
 | SuperClaude_Framework | 24k | Single-harness (Claude Code only) — fails the layer-4 portability test; useful as the boundary counterexample |
-| wshobson/agents | 38k | Multi-harness plugin *marketplace* — layer-3 distribution, no methodology |
+| wshobson/agents | 38k | Multi-harness plugin *marketplace* — layer-5 distribution, no methodology |
 | agent-os (`buildermethods`) | 5k | Too small, quieting since 2026-05 |
 | microsoft/amplifier | 3k | Too small; watchlist |
 | Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |

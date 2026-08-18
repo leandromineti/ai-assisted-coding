@@ -135,7 +135,7 @@ count.
 
 ## Bleed
 
-Layer 3 by distribution (generated skills/commands into 29 harnesses' convention
+Layer 5 by distribution (generated skills/commands into 29 harnesses' convention
 dirs) and layer 2 by architecture: the CLI is a genuine runtime (state, validation,
 merge), not an installer. But unlike spec-kit's `workflows/` engine or GSD's `gsd-pi`
 — escape hatches grown after prose enforcement failed — OpenSpec's engine *is* the

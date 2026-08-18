@@ -1,4 +1,4 @@
-# 3 — Extensions & protocols (cross-layer bucket)
+# 5 — Extensions & protocols (cross-layer bucket)
 
 > Renamed from "Portable artifacts" 2026-08-17: portability is not an intrinsic
 > property of an extension but a status the ecosystem confers by adoption — unevenly
@@ -45,10 +45,10 @@ which is tracked in [`../standards/`](../standards/index.md) rather than here.
 
 ## The distinction that matters
 
-- **Layer 3 governs reach** — what the agent can access.
+- **Layer 5 governs reach** — what the agent can access.
 - **Layer 4 governs process** — what it does with that access.
 
-A tool that adds a database connection is layer 3. A tool that says "write the spec before
+A tool that adds a database connection is layer 5. A tool that says "write the spec before
 you touch the database" is layer 4. ECC is the case that proved the distinction cuts
 cleanly even at 236k stars: enormous reach, deliberately no prescribed process — see the
 verdict section of [`ecc.md`](ecc.md).

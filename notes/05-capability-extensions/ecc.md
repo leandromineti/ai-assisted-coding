@@ -1,6 +1,6 @@
 ---
 name: ecc
-layer: 3   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
+layer: 5   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
 vendor: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT
@@ -59,7 +59,7 @@ warns about.
    a macOS Bash 3.2 incompatibility in the GAN path (#2674). This report made no OS
    claims, so this is added scope for a re-read, not a correction.
 
-**Unaffected:** the layer-3 verdict. Neither leg (no process spine; portability reduces
+**Unaffected:** the layer-5 verdict. Neither leg (no process spine; portability reduces
 to copy-with-adaptation into convention dirs) is touched by the drift, so the taxonomy
 revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
 
@@ -69,7 +69,7 @@ sampled rather than audited at the original read.
 
 ## The layer verdict (the question this read was preregistered to answer)
 
-**Layer 3.** The layer-4 test — an encoded methodology, a prescribed operating loop —
+**Layer 5.** The layer-4 test — an encoded methodology, a prescribed operating loop —
 fails on the source:
 
 - The README's own guidance is *"Start with the workflow you need, not the full
@@ -81,7 +81,7 @@ fails on the source:
   package) and doesn't run without it. The repo's own `workflows/` directory contains
   one file.
 - What ECC *does* ship everywhere is reach and reflexes: rules, agents, skills,
-  enforcement hooks, memory, learning. That's layer 3's territory — what the agent can
+  enforcement hooks, memory, learning. That's layer 5's territory — what the agent can
   see and touch — delivered at unprecedented scale, with real runtime components riding
   each harness's hook system.
 
@@ -156,7 +156,7 @@ state before compaction; `PreToolUse` dispatchers run consolidated Bash prefligh
 (quality, push-protection, "GateGuard") through a Node bootstrap that resolves the
 plugin root across five install layouts; **`Stop` hooks run blocking quality gates**
 (format/typecheck batch, console.log audit). Verification gates delivered as
-*installable layer-3 artifacts* — a third delivery vehicle alongside layer-4 prose
+*installable layer-5 artifacts* — a third delivery vehicle alongside layer-4 prose
 (GSD) and layer-2 native (hermes, codex).
 
 ### Portability: adapters, not a compiler
@@ -202,14 +202,14 @@ acknowledges the context-budget problem (design-principle X2).
 2. **The process spine genuinely isn't there** — and the repo knows it: the multi-*
    orchestration commands outsource to an external runtime rather than pretending
    prose can orchestrate. A 236k-star tool whose honest shape is "toolbox + reflexes"
-   is strong evidence about what adoption actually rewards at layer 3/4.
+   is strong evidence about what adoption actually rewards at layer 4/5.
 3. **Solo-author at 236k stars**, with `copilot-swe-agent[bot]` in the top-5
    committers — the most extreme adoption-to-maintainer ratio in the study, and the
    supply-chain concentration question (GSD's fork lesson, F6) applies with force:
    twelve harnesses' worth of installed hooks trace to one person's repo. The README's
    own malware warning about unofficial mirrors underlines the stakes.
 4. **Verification gates via installable hooks** — blocking Stop-hook quality gates as
-   layer-3 artifacts. The verification mechanism now exists at three delivery layers.
+   layer-5 artifacts. The verification mechanism now exists at three delivery layers.
 5. **SOUL.md at the repo root** — the identity-file convention converging across the
    set (hermes loads SOUL.md as primary identity; ECC ships one).
 6. **The learning unit is designed for exchange** — instinct import/export with

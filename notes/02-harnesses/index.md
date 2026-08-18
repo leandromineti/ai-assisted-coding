@@ -22,7 +22,7 @@ web-as-interface with remote-as-execution:
 
 | Harness | Maker | Surfaces | Execution | One-line |
 |---------|-------|----------|-----------|----------|
-| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's layer 3 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual layer-5 relation (binds worktrees locally, bundles cloud sandbox). |
+| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's layer 5 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual layer-3 relation (binds worktrees locally, bundles cloud sandbox). |
 | [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT). 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
 | [**Codex CLI**](codex.md) | OpenAI | terminal (+ desktop launcher) | local | Vendor-native; leads Terminal-Bench 2.1. The Rust bet is *security*, not speed: OS sandboxes compiled into the binary, pre-main process hardening, PTC in sandboxed V8. WorldState diff-append context. Cloud Codex is its async-remote sibling. Deep-dived 2026-07-30. |
 | [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
@@ -33,11 +33,11 @@ web-as-interface with remote-as-execution:
 | [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. |
 | [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. |
 | **GitHub Copilot** | GitHub/Microsoft | IDE · web | local + async (coding agent) | The incumbent; agent mode moved it from completion to loop. |
-| **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-5 bleed). |
+| **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-3 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
 | [**Warp**](warp.md) | Warp (warpdotdev) | terminal · desktop · web (wasm) | local + async (cloud runs) | A terminal that became a harness — and then an orchestrator of other harnesses: Claude Code, Codex, Gemini CLI, and OpenCode are selectable backends for its child agents. AGPL-3.0, source-opened 2026-04-28. The only indexed context assembly in the set (embedding chunkers, consent-gated). Surveyed 2026-08-11. |
-| [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-5 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
+| [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-3 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
 the GitHub API and dated (`stars_at`), never hand-kept here where they'd drift.
@@ -48,10 +48,10 @@ already do; Codex does via its cloud sibling). Convergence on "all surfaces, bot
 looks like the trajectory — the single-surface rows are either young, niche, or
 deliberately minimal.
 
-A harness's *environment bindings* — which layer-5 environments it can attach to (host,
+A harness's *environment bindings* — which layer-3 environments it can attach to (host,
 worktree, container, remote sandbox) — are recorded in each report's frontmatter as
 `environments`. That's bleed, not merger: the environments themselves stay independently
-distributed layer-5 entities (see the scope note in
+distributed layer-3 entities (see the scope note in
 [`../../taxonomy.md`](../../taxonomy.md)).
 
 ## What actually differentiates a harness
@@ -65,8 +65,8 @@ Feature lists mislead here. The axes that seem to matter:
    model-driven search — an outlier worth a deep-dive, since whether that index actually
    feeds the prompt is the difference between a genuine counter-position and a search tool.
 2. **Permission model** — how much it does without asking, and how that's configured.
-3. **Extension surface** — whether layer 3 and 4 can attach at all (hooks, skills, MCP).
-4. **Isolation story** — which layer-5 environment it assumes.
+3. **Extension surface** — whether layer 5 and 4 can attach at all (hooks, skills, MCP).
+4. **Isolation story** — which layer-3 environment it assumes.
 5. **Failure behavior** — what it does when it's wrong, which is where the real cost lives.
 6. **Cache economics as a design constraint** *(added 2026-07-30)* — whether prompt-cache
    discipline is an optimization or the architecture's governing rule. Evidence it
@@ -95,7 +95,7 @@ Feature lists mislead here. The axes that seem to matter:
 
 - Does the Cursor acquisition mean vertical integration (model tuned on harness telemetry)
   produces a durable advantage, or is it a one-off data moat?
-- Every harness listed supports MCP. Does that make layer 3 genuinely portable in practice,
+- Every harness listed supports MCP. Does that make layer 5 genuinely portable in practice,
   or only in principle?
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?

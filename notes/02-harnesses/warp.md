@@ -64,7 +64,7 @@ transcript formats to follow what its children are doing.
 The sharpest detail is in `driver/harness/codex.rs:50`: Warp installs **its own plugin hooks
 into Codex** and launches it with `--dangerously-bypass-hook-trust` so those hooks run without
 Codex's manual review step, then reads Codex's `SessionStart` hook event to know the session
-is live. A layer-2 product driving another layer-2 product through that product's layer-3
+is live. A layer-2 product driving another layer-2 product through that product's layer-5
 extension surface, deliberately bypassing its trust gate to do so.
 
 The wager: the model and the loop are commoditizing, so own the *surface* they all run on and
@@ -131,14 +131,14 @@ permission check precedes or follows the model's decision).
 
 ## Bleed
 
-- **→ layer 3 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
+- **→ layer 5 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
   inventing formats. Stronger: `app/src/terminal/view/init_project/mod.rs:50` defines
   `LINKABLE_FILES = [CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules,
   .windsurfrules, .github/copilot-instructions.md]` — seven *competitors'* rules files, which
   Warp offers to link into `WARP.md`. Direct evidence for the standards question: rules files
   have converged enough to be treated as an interoperable format by a rival implementation.
 - **→ layer 2 (other harnesses).** The novel one. See The distinguishing bet.
-- **→ layer 5 (environments), inverted.** `crates/isolation_platform/` does **not** launch
+- **→ layer 3 (environments), inverted.** `crates/isolation_platform/` does **not** launch
   sandboxes — it *detects the one Warp is already inside*: `IsolationPlatformType::{Docker,
   DockerSandbox, Kubernetes, Namespace}`, read from `WARP_ISOLATION_PLATFORM` and used to
   obtain a `WorkloadToken` for workload identity. So the vocabulary needs a fourth verb

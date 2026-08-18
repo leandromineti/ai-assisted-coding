@@ -1,6 +1,6 @@
 ---
 name: e2b
-layer: 5
+layer: 3
 vendor: FoundryLabs, Inc. (E2B)
 url: https://github.com/e2b-dev/E2B
 license: Apache-2.0   # root LICENSE on both repos; note the SDK package.json/pyproject declare MIT — unresolved mismatch, see What it is
@@ -24,8 +24,8 @@ depth: deep-dive   # for a non-harness: isolation mechanism, sandbox lifecycle, 
 
 # E2B
 
-The first layer-5 report, and the one commissioned to answer a specific question: **issue
-#11's gate.** The 2026-08-16 adjudication concluded layer 5 "survives as an analytic lens
+The first layer-3 report, and the one commissioned to answer a specific question: **issue
+#11's gate.** The 2026-08-16 adjudication concluded layer 3 "survives as an analytic lens
 and fails as a population" — real, but only ever seen as a *property of a layer-2 tool*,
 never studied as an entity. The gate to keep it a rung: read one agent-native environment
 as a product in its own right and see whether it yields findings that are **not**
@@ -97,7 +97,7 @@ Traced server-side, request to running VM. Spot-verified at the pin where flagge
    delivered via **MMDS carrying only a token *hash*** (`envd/internal/host/mmds.go:34-39`),
    never the token itself.
 
-## The five layer-5 axes
+## The five layer-3 axes
 
 **Blast radius.** Internet is **on by default** at both wire and SDK
 (`sandbox_api.py`/`sandboxApi.ts:1455`, `allow_internet_access ?? true`). Lateral movement
@@ -175,7 +175,7 @@ more honest open-core boundary than most, but a real one.
 
 ## Bleed
 
-Layer 5 is the whole subject, so "bleed" runs the other way — into what depends on E2B:
+Layer 3 is the whole subject, so "bleed" runs the other way — into what depends on E2B:
 
 - **← layer 2 (harnesses).** E2B is the concrete thing on the far side of hermes-agent's
   `bind` verb (hermes ships a `modal`/`daytona`/`vercel_sandbox` backend set; E2B is the same
@@ -190,7 +190,7 @@ Layer 5 is the whole subject, so "bleed" runs the other way — into what depend
 - **Independent-distribution: confirmed, strongly.** Zero AI-framework dependencies in either
   lockfile (`langchain|openai|anthropic|crewai|@ai-sdk` → 0); the wire protocol is generic
   Linux (`Process`/`Filesystem` services). The one real coupling is to E2B's own control
-  plane, not to any harness. This is exactly the layer-5 independence test, and E2B passes it
+  plane, not to any harness. This is exactly the layer-3 independence test, and E2B passes it
   cleanly — which is *why* it was a fair gate specimen.
 
 ## The gate verdict — issue #11
@@ -255,7 +255,7 @@ closed-source.
 ## Open questions
 
 - Does the gate result **generalize**, or is it E2B-specific? The honest test is a *second*
-  layer-5 read against a **closed** environment (Modal/Daytona/Cloudflare). If that yields only
+  layer-3 read against a **closed** environment (Modal/Daytona/Cloudflare). If that yields only
   testimony, the finding is "the layer is real but only legible when the environment is open"
   — a sharper and more useful claim than either current pole.
 - Production-build delta: does E2B's real orchestrator carry the CA-injecting egress proxy, the

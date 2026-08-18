@@ -142,7 +142,7 @@ harnesses._
 
 ## Bleed
 
-Reaches **down into layer 2** via `gsd-pi`, its own standalone CLI, and into **layer 3** via
+Reaches **down into layer 2** via `gsd-pi`, its own standalone CLI, and into **layer 5** via
 `gsd-browser`. Documented in [`index.md`](index.md) — it's the clearest case in the repo of a
 workflow framework growing into the runtime it was meant to sit on top of.
 
