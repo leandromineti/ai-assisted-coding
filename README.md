@@ -174,6 +174,22 @@ note. Revised when evidence moves._
    alone, where ours came from reading git history
    ([`refs/2026-from-prompt-to-process.md`](refs/2026-from-prompt-to-process.md)). Two methods, one
    shape. Its GSD scores are also where our *run* evidence contradicts a docs-only reading.
+   **Deepened by the 2026-08-18 deep-dives** (spec-kit + gsd-core, both traced in source):
+   the "escape hatch" framing was too coarse — the two frameworks diverged. spec-kit
+   *built* the engine (11 step types, a 14.5k-line test suite) and left it disconnected
+   from its methodology: it dispatches the prose by name, never reads it, and ships one
+   78-line workflow. GSD is *migrating enforcement out of prose* — three hard-blocking
+   harness hooks, a validator that structurally forbids LLM-verdict gates from blocking
+   ("non-deterministic checks may not halt the loop"), its own hook headers stating the
+   thesis: "a prose backstop cannot fix a prose defect." The tradeoff also acquired a
+   measured price: the portability ceiling is 3 lines of body diff between spec-kit's
+   richest and thinnest compiled targets, and the *thinnest* harness's 32,768-byte
+   instruction cap is reshaping GSD's core architecture (the fragment model) — the
+   constraint propagates upward into framework design, not just downward into weak
+   enforcement. Gate-enforcement grading formalized in the feature taxonomy
+   ([ADR-0011](adrs/0011-graded-gate-enforcement.md)): no framework yet has an
+   engine-graded measured or process gate. →
+   [`notes/04-workflow-frameworks/gsd-core.md`](notes/04-workflow-frameworks/gsd-core.md)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
    layer 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
