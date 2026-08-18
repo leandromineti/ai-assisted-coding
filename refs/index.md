@@ -56,6 +56,6 @@ Every source with a note, grouped by kind. Newest retrieved: `2026-08-18`.
 
 | Source | Year | Venue | Peer | read | Cites | Bears on | What it does to our claims |
 |---|---|---|---|---|---|---|---|
-| [2026-from-prompt-to-process](2026-from-prompt-to-process.md) | 2026 | arXiv preprint | ✗ | full | 0 (0 influential) | `conclusion-7`, `conclusion-6`, `taxonomy`, `gsd-core`, `spec-kit`, `openspec`, `methodology-8` | independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep |
+| [2026-from-prompt-to-process](2026-from-prompt-to-process.md) | 2026 | arXiv preprint | ✗ | full | 0 (0 influential) | `conclusion-7`, `conclusion-6`, `taxonomy`, `gsd-core`, `spec-kit`, `openspec`, `bmad-method`, `methodology-8` | independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep |
 
 **22 sources** — 11 full · 5 extract · 6 abstract.

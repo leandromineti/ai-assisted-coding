@@ -378,9 +378,12 @@ What today's deep-dives say to someone running GSD daily and eyeing the field:
   hard gate. On today's evidence that trade is backwards for a GSD user.
 - **Against OpenSpec**: the lean pole — delta specs, format gates, no fan-out, no
   measured gates. Complementary shape, smaller bet, weaker verification.
-- **Open alternatives worth watching, not switching to yet**: BMAD (survey pending —
-  right-sizing question open), spec-kitty (worktree factory, multi-maintainer), haft
-  (decision governance, likely layer 5).
+- **Open alternatives worth watching, not switching to yet**: BMAD *(deep-dived
+  2026-08-18 — right-sizing answered: real but prose-judged fork, all framework gates
+  prose; the enforcement lives in the separate bmad-loop orchestrator. Still not a
+  switch: the opposite bet from GSD's hook-enforced direction — [report](bmad-method.md))*,
+  spec-kitty (worktree factory, multi-maintainer), haft (decision governance, likely
+  layer 5).
 
 ## Open questions
 

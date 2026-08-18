@@ -13,7 +13,7 @@ kind: survey
 read_depth: full
 retrieved: 2026-07-31
 pdf: refs/pdf/2026-from-prompt-to-process.pdf
-bears_on: [conclusion-7, conclusion-6, taxonomy, gsd-core, spec-kit, openspec, methodology-8]
+bears_on: [conclusion-7, conclusion-6, taxonomy, gsd-core, spec-kit, openspec, bmad-method, methodology-8]
 verdict: "independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep"
 ---
 
@@ -66,6 +66,14 @@ nearly saturated and therefore discriminates little; **roles and validation are 
 polarised**, so they discriminate most. The most portable frameworks (Spec Kit, OpenSpec)
 sacrifice roles and validation; the deepest process (BMAD) gives up portability; the most
 context-centric (GSD) zeroes roles, validation *and* portability.
+
+*(2026-08-18, post BMAD deep-dive: the BMAD Port=1 score is the second place our source
+read contradicts this paper's docs-only reading — BMAD has the widest target list in the
+layer (47 platform codes), achieved by refusing translation entirely (byte-identical
+Agent Skills to every target). Its Valid=2 also deserves the ADR-0011 asterisk: every
+framework-side gate is prose; the engine-graded gates live in the separate bmad-loop
+orchestrator, outside the framework the paper scored —
+[report](../notes/04-workflow-frameworks/bmad-method.md).)*
 
 ## What it means for this repo
 

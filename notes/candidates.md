@@ -32,7 +32,7 @@ GitHub-API sweep, stars as of 2026-07-28; later rows are dated inline.)*
 
 | Candidate | Stars | Why not (yet) |
 |---|---|---|
-| BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if layer-4 scope expands; would make a good ceremony-pole test subject **→ promoted to [stub](04-workflow-frameworks/bmad-method.md) 2026-08-18** |
+| BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if layer-4 scope expands; would make a good ceremony-pole test subject **→ promoted to [stub](04-workflow-frameworks/bmad-method.md) 2026-08-18, deep-dived same day** (prediction half-falsified: build-first entry, ceremony being shed; half-confirmed: every framework gate prose — enforcement sold separately in bmad-loop) |
 | hermes-agent (`NousResearch`) | 222k | A layer-2 harness, not a framework (spec-kit installs *into* it). Queued on the layer-2 backlog: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) *(since ingested: [report](02-harnesses/hermes-agent.md), deep-dive)* |
 | claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (layer-5 bleed dominant) |
 | SuperClaude_Framework | 24k | Single-harness (Claude Code only) — fails the layer-4 portability test; useful as the boundary counterexample |
