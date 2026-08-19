@@ -330,20 +330,13 @@ def render_features(reports: list[dict]) -> str:
         "defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)",
         "(ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.",
         "",
-        "| Tool | " + " | ".join(k.replace("_", " ") for k in FEATURE_KEYS) + " |",
-        "|---|" + "---|" * len(FEATURE_KEYS),
     ]
-    unknown_keys: set[str] = set()
-    for r in reports:
-        if r.get("layer") == 1:
-            continue  # models have their own matrix (models.md); these columns are
-            # harness/artifact features and every cell would be a category error
-        if r.get("layer") == 4:
-            continue  # workflow frameworks have their own vocabulary — second table below
+
+    def _feature_row(r: dict, unknown: set) -> str:
         feats = r.get("features") or {}
         if not isinstance(feats, dict):
             feats = {}
-        unknown_keys.update(k for k in feats if k not in FEATURE_KEYS)
+        unknown.update(k for k in feats if k not in FEATURE_KEYS)
         cells = []
         for key in FEATURE_KEYS:
             v = feats.get(key)
@@ -358,7 +351,42 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
+        return f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |"
+
+    header_row = "| Tool | " + " | ".join(k.replace("_", " ") for k in FEATURE_KEYS) + " |"
+    divider = "|---|" + "---|" * len(FEATURE_KEYS)
+    unknown_keys: set[str] = set()
+
+    lines += [
+        "## Harnesses (layer 2)",
+        "",
+        header_row,
+        divider,
+    ]
+    for r in reports:
+        if r.get("layer") != 2:
+            continue
+        lines.append(_feature_row(r, unknown_keys))
+
+    lines += [
+        "",
+        "## Environments & extensions on the harness vocabulary (layers 3 & 5)",
+        "",
+        "Layer-3 and layer-5 reports may verify harness-vocabulary keys where the",
+        "characteristic genuinely applies (an extension shipping a learning loop, an",
+        "environment exposing session sharing). Same columns, same discipline; rows",
+        "here do NOT count toward the cross-layer table's demand side (that filter is",
+        "`applies_to`).",
+        "",
+        header_row,
+        divider,
+    ]
+    for r in reports:
+        if r.get("layer") not in (3, 5):
+            continue
+        lines.append(_feature_row(r, unknown_keys))
+    # layer 1 is excluded throughout: models have their own matrix (models.md);
+    # layer 4 has its own vocabulary — next section
     for k in sorted(unknown_keys):
         print(f"warn: feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 

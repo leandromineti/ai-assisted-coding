@@ -9,6 +9,8 @@ report's frontmatter when confirmed in source or official docs. Keys are
 defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)
 (ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
 
+## Harnesses (layer 2)
+
 | Tool | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | `hook` | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
@@ -20,6 +22,17 @@ defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.m
 | [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | · | ✓ | ✓ | ✗ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
 | [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+
+## Environments & extensions on the harness vocabulary (layers 3 & 5)
+
+Layer-3 and layer-5 reports may verify harness-vocabulary keys where the
+characteristic genuinely applies (an extension shipping a learning loop, an
+environment exposing session sharing). Same columns, same discipline; rows
+here do NOT count toward the cross-layer table's demand side (that filter is
+`applies_to`).
+
+| Tool | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
