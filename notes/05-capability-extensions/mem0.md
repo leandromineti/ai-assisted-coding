@@ -18,6 +18,17 @@ harness_targets: "in-repo at the pin: integrations/mem0-plugin targets Claude Co
 features:
   skills: true   # six skills in-repo (skills/mem0, mem0-cli, mem0-integrate, …); SKILL.md payloads verified by listing, behavior not read
   learning_loop: true   # background, via the in-repo harness plugin: Stop/PreCompact hooks capture session summaries with infer=True → the V3 LLM extraction write path runs without human approval; SessionStart/UserPromptSubmit inject recall. Verified at hooks.json + script-header + main.py level (script bodies not fully read). Fourth harness-independent instance
+memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey read at 001c2352 — not a re-read; script bodies unread caveat carries over
+  memory_store: vector           # vector store + lemmatized BM25 hybrid over it, per user/agent/session
+  capture_path: hook             # Stop/PreCompact hooks → infer=True → V3 ADD-only LLM extraction
+  recall_injection: auto         # SessionStart + UserPromptSubmit injection scripts (verified at header level)
+  memory_scope: [user, agent, session]
+  memory_tiers: true             # procedural_memory type alongside episodic default
+  hybrid_retrieval: true         # vector + BM25 + optional reranker, filter DSL
+  decay: true                    # per-memory expiration_date, show_expired, reference_date time-travel
+  # injection_trust_boundary deliberately unset: an explicit open question in this report, not a checked ✗
+  deployment_mode: both          # OSS BYO-store vs managed platform — and the plugin DEFAULTS to platform
+  harness_installer: true        # hooks.json bundle across 6 harnesses + MCP config
 ---
 
 # mem0

@@ -17,6 +17,15 @@ depth: survey   # read: README, cognee-mcp/src/server.py (tool surface + save_in
 harness_targets: "in-repo: cognee-mcp (MCP server, stdio/HTTP, agent-scoped datasets per client). Separate repos/packages, README-level: Claude Code marketplace plugin (cognee-integrations — hooks capture, prompt-submit injection, session-end graph sync; a Codex plugin shares its config), OpenClaw plugin (@cognee/cognee-openclaw on npm)"
 features:
   learning_loop: false   # checked and absent IN THIS REPO at the pin: the MCP write paths (save_interaction, remember, improve) are agent-invoked tools — heavy work runs as background asyncio tasks *after* invocation, but nothing fires without a model call; no hook receiver, no scheduler. The separate cognee-integrations Claude Code plugin automates invocation via lifecycle hooks (capture + session-end sync) — README-level, not source-verified, and it runs in API mode, where the coding-rule extraction path is explicitly skipped (server.py:517-531)
+memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey read at b948f88d4 — not a re-read; core pipeline unread, plugin claims README-level
+  memory_store: [graph, vector, rows]  # tripartite: knowledge graph + vector + relational
+  capture_path: agent-invoked    # remember/save_interaction/improve MCP tools; no hook receiver, no scheduler in-repo (the learning_loop: false pole)
+  recall_injection: pull-only    # recall/search MCP tools; prompt-submit injection exists only in the out-of-repo plugin (README-level)
+  memory_scope: [agent, session] # agent-scoped datasets from MCP client identity; session vs permanent split
+  memory_tiers: true             # session vs permanent, mirrored by forget
+  # decay deliberately unset: forget is deletion mirroring the session/permanent split (not a lifecycle), but the core pipeline is unread at survey depth — absence not checkable
+  deployment_mode: both          # direct (in-process) vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode (server.py:517-531)
+  rule_extraction: true          # coding_agent_rules NodeSet, direct mode only
 ---
 
 # cognee

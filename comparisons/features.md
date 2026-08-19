@@ -51,6 +51,23 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 | [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | ✓ | ✓ | · | ✓ | · | · | · | · | · |
 | [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
 
+## Memory extensions (layer 5, `kind: memory`)
+
+The per-kind slice of the feature taxonomy — `memory_features:` frontmatter
+(ADR-0013), assessed only on layer-5 reports with `kind: memory`. Values are
+descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
+of dots are stub-depth reports — unread, honestly unclaimed.
+
+| Tool | memory store | capture path | recall injection | memory scope | memory tiers | hybrid retrieval | decay | injection trust boundary | deployment mode | harness installer | rule extraction |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `both` | `project`, `user` | ✓ | ✓ | ✓ | ✓ | `self-host` | ✓ | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | `pull-only` | `agent`, `session` | ✓ | · | · | · | `both` | · | ✓ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `auto` | `user`, `agent`, `session` | ✓ | ✓ | ✓ | · | `both` | ✓ | · |
+| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `auto` | `session` | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
+| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · |
+
 ## Cross-layer features
 
 The bleed, quantified. **Demand** counts presence among reports of the

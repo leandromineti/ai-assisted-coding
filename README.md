@@ -322,7 +322,11 @@ note. Revised when evidence moves._
     The kind's verified substance is real — three distinct wagers (markdown wiki / RL
     policy database / knowledge graph), three consolidation postures (background cron /
     per-turn event cascade / agent-invoked), and cross-harness continuity as the one
-    bet no single harness can absorb (conclusion 8's counter-current). But every
+    bet no single harness can absorb (conclusion 8's counter-current). *(Structured
+    2026-08-19: the comparison is now an 11-key `memory_features` registry block and
+    generated matrix — [ADR-0013](adrs/0013-memory-features-block.md); first cut shows
+    the engineering axes converged, the identity axes split four ways, and the headline
+    continuity bet resting on one verified instance.)* But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
     **No coding-agent memory benchmark exists**, and the two vendor headline numbers

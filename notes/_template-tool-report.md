@@ -44,7 +44,7 @@ harness_targets: [<Harness>, <Harness>]
 # (omitted = not checked, false = checked and absent). A feature is a structural
 # PRESENCE-claim; whether it pays is the mechanism table's question. Definitions live
 # in the feature taxonomy — notes/cross-cutting/feature-taxonomy.md (ADR-0010), the
-# single source of valid keys; the generator rejects keys not registered there.
+# single source of valid keys; the generator warns on and drops keys not registered there.
 workflow_features:
   intent_pipeline: <true | false>
   deterministic_engine: <true | false>
@@ -55,6 +55,21 @@ workflow_features:
   parallel_orchestration: <true | false>
   state_store: <repo-files | database>
   retrospectives: <true | false>
+# memory_features: layer-5 `kind: memory` reports only — same verified-only discipline.
+# Values are descriptive enums (mechanism choices), NOT ADR-0011 grades. Definitions
+# live in the feature taxonomy (ADR-0013); the generator warns on unregistered keys.
+memory_features:
+  memory_store: <files-git | vector | graph | rows | [list, for, hybrids]>
+  capture_path: <hook | adapter | agent-invoked>
+  recall_injection: <auto | pull-only | both>
+  memory_scope: [<project | agent | user | session>]
+  memory_tiers: <true | false>
+  hybrid_retrieval: <true | false>
+  decay: <true | false>
+  injection_trust_boundary: <true | false>
+  deployment_mode: <self-host | cloud | both>
+  harness_installer: <true | false>
+  rule_extraction: <true | false>
 # features: set a key ONLY when verified in source or official docs — omitted means
 # "not yet checked", false means "checked and absent". Both are claims; only one is safe
 # to guess, and neither should be. Keep the vocabulary to this fixed set so the generated

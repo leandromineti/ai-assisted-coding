@@ -31,7 +31,34 @@ added 2026-08-18 so the bucket can be sliced by kind as it grows.
 | **Subagent definitions** | Named agents with their own prompt, tools, and model, spawned for isolated work. | Harness-specific format; the pattern is universal. |
 | **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../cross-cutting/standards.md). |
 | **Config packs** | Curated bundles of the other kinds at scale (skills + agents + rules + hooks), installed as a set. | Rides on the file conventions of what it bundles — ECC's ~13 install targets are the measured case. |
-| **Memory** | Persistent cross-session state fed by hooks/MCP and injected back at session start — the agent↔time edge as an installable product. *(Kind added 2026-08-18; seeds below.)* | Seven seeds, four read (2026-08-18 arc: ai-memory deep-dive; memos, cognee, mem0 surveys). Four distinct wagers verified — markdown wiki (ai-memory), RL policy database that mints skills (memos), knowledge graph over a tripartite store (cognee), LLM-extraction platform sold on benchmarks (mem0) — and four consolidation postures: background cron, per-turn event cascade, agent-invoked, hook-capture-to-platform. Zero shared formats (scoreboard row); each vendor pays the harness-fragmentation cost separately, in code. The SDK-facing shape earns membership only via its shims, and the shims are where the coding-agent behavior lives — up to and including mem0's plugin *blocking the harness's native memory writes* (the displacement finding, conclusion 8). |
+| **Memory** | Persistent cross-session state fed by hooks/MCP and injected back at session start — the agent↔time edge as an installable product. *(Kind added 2026-08-18; seeds below.)* | Seven seeds, four read (2026-08-18 arc: ai-memory deep-dive; memos, cognee, mem0 surveys). Four distinct wagers verified — markdown wiki (ai-memory), RL policy database that mints skills (memos), knowledge graph over a tripartite store (cognee), LLM-extraction platform sold on benchmarks (mem0) — and four consolidation postures: background cron, per-turn event cascade, agent-invoked, hook-capture-to-platform. Zero shared formats (scoreboard row); each vendor pays the harness-fragmentation cost separately, in code. The SDK-facing shape earns membership only via its shims, and the shims are where the coding-agent behavior lives — up to and including mem0's plugin *blocking the harness's native memory writes* (the displacement finding, conclusion 8). *(2026-08-19: the comparison is now structured — 11-key `memory_features` registry block + [generated matrix](../../comparisons/features.md#memory-extensions-layer-5-kind-memory), ADR-0013.)* |
+
+## The memory matrix — first cut (2026-08-19)
+
+The reading arc's prose comparison became a registry block
+([ADR-0013](../../adrs/0013-memory-features-block.md)): 11 keys, generated
+[matrix](../../comparisons/features.md#memory-extensions-layer-5-kind-memory), cells
+set only on the four read tools. What the first cut shows:
+
+- **Where the kind agrees** (4/4 among read tools): typed memory tiers; and 3/4 on
+  hybrid retrieval fusion, decay lifecycles, and shipping a harness installer — the
+  engineering table stakes have converged even though formats haven't.
+- **Where it splits** — the identity axes: store wager (`files-git` / `vector` /
+  `rows+vector` / `graph+vector+rows`, no two alike), capture path (hook / adapter /
+  agent-invoked), recall injection (auto / pull-only / both), and the trust boundary
+  (2✓, one explicit open question, one unchecked — the security axis is the least
+  converged, and memory injection is a prompt-injection vector).
+- **The asymmetry worth flagging**: every axis above has 2–4 verified instances, but
+  the kind's *headline* bet — cross-harness continuity as a working mechanism — has
+  exactly **one** (ai-memory's baton, and it is thin: first + last prompt + tool
+  names, no LLM). The category's sales pitch rests on its least-instantiated feature.
+  The [rig question](#open-questions) (capture a session, switch harness, measure what
+  the second agent actually knows) is what would test it.
+
+Single-instance bets stay out of the vocabulary by the two-instance rule but are the
+differentiators to watch: zero-LLM default (ai-memory), git-versioned store
+(ai-memory), native-memory displacement (mem0), competitor import (mem0), skill
+crystallization (memos), provenance audit (ai-memory).
 
 ## Why this is a layer and not a pile of harness features
 

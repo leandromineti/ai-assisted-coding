@@ -17,6 +17,16 @@ depth: survey   # read in full: top README, memos-local-plugin/ARCHITECTURE.md (
 harness_targets: "verified in-repo at the pin: OpenClaw (two plugins — MemOS-Cloud-OpenClaw-Plugin and memos-local-openclaw — plus an openclaw adapter in memos-local-plugin), DeepSeek Harness (in-process Cordis adapter), hermes-agent (out-of-process Python adapter over JSON-RPC), OpenWork (openwork-memos-integration)"
 features:
   learning_loop: true   # background, harness-independent — event-driven subscriber cascade (capture → reward → L2 policy induction → L3 world models → skill crystallization) in a per-session serial background queue; wiring spot-checked at core/pipeline/orchestrator.ts:138 + the flush chain at :1611, per-stage math read at ARCHITECTURE.md level only. Third harness-independent instance (after ECC, ai-memory)
+memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey read at 85532420 — not a re-read; per-stage math read at ARCHITECTURE.md level
+  memory_store: [rows, vector]   # SQLite rows + vectors: L1 traces / L2 policies / L3 world models / skills
+  capture_path: adapter          # in-process/JSON-RPC adapters feed a per-turn event cascade — no harness hook dependency
+  recall_injection: auto         # turn-start recall appended after the query in <memos_context>, ≤3000 ms foreground deadline
+  memory_scope: [session]        # per-session serial queue; sub-agent entry point
+  memory_tiers: true             # traces → policies → world models → crystallized skills
+  hybrid_retrieval: true         # RRF + MMR over 5 entry points, 3 tiers
+  decay: true                    # exponential time decay in reward backprop; candidate→active→retired with Beta(1,1) probation
+  injection_trust_boundary: true # <memos_context> system-prompted as untrusted historical data
+  harness_installer: true        # one-command installer + 4 adapters behind one MemoryCore
 ---
 
 # memos (MemOS)

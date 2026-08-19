@@ -62,10 +62,16 @@ def _load_feature_registry() -> list[dict]:
     entries = (data or {}).get("features")
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
+    known_blocks = {"features", "workflow_features", "memory_features"}
     for e in entries:
         for req in ("id", "block", "applies_to", "definition"):
             if req not in e:
                 sys.exit(f"feature taxonomy entry missing `{req}`: {e}")
+        if e["block"] not in known_blocks:
+            sys.exit(
+                f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
+                f"(known: {sorted(known_blocks)}) — a typo here silently empties a matrix"
+            )
     return entries
 
 
@@ -73,6 +79,9 @@ FEATURE_REGISTRY = _load_feature_registry()
 FEATURE_KEYS = [e["id"] for e in FEATURE_REGISTRY if e["block"] == "features"]
 WORKFLOW_FEATURE_KEYS = [
     e["id"] for e in FEATURE_REGISTRY if e["block"] == "workflow_features"
+]
+MEMORY_FEATURE_KEYS = [
+    e["id"] for e in FEATURE_REGISTRY if e["block"] == "memory_features"
 ]
 
 # Layer-1 API-feature keys (added 2026-08-17): the drift-prone, experiment-relevant
@@ -389,6 +398,44 @@ def render_features(reports: list[dict]) -> str:
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     for k in sorted(wf_unknown):
         print(f"warn: workflow feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
+
+    lines += [
+        "",
+        "## Memory extensions (layer 5, `kind: memory`)",
+        "",
+        "The per-kind slice of the feature taxonomy — `memory_features:` frontmatter",
+        "(ADR-0013), assessed only on layer-5 reports with `kind: memory`. Values are",
+        "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
+        "of dots are stub-depth reports — unread, honestly unclaimed.",
+        "",
+        "| Tool | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
+        "|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
+    ]
+    mem_unknown: set[str] = set()
+    for r in reports:
+        if r.get("layer") != 5 or r.get("kind") != "memory":
+            continue
+        feats = r.get("memory_features") or {}
+        if not isinstance(feats, dict):
+            feats = {}
+        mem_unknown.update(k for k in feats if k not in MEMORY_FEATURE_KEYS)
+        cells = []
+        for key in MEMORY_FEATURE_KEYS:
+            v = feats.get(key)
+            if v is True:
+                cells.append("✓")
+            elif v is False:
+                cells.append("✗")
+            elif isinstance(v, list):
+                cells.append(", ".join(f"`{x}`" for x in v))
+            elif v is None:
+                cells.append("·")
+            else:
+                cells.append(f"`{v}`")
+        rel = r["_path"].relative_to(ROOT)
+        lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
+    for k in sorted(mem_unknown):
+        print(f"warn: memory feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
     lines += _render_cross_layer(reports)
     lines.append("")

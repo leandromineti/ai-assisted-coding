@@ -17,6 +17,18 @@ depth: deep-dive   # capture→consolidate→handoff traced in source (hooks/, a
 harness_targets: "README support matrix at acd9c0b lists ~24 targets — Supported with MCP + lifecycle hooks: Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Devin CLI, Command Code, Kimi Code, Kiro CLI, OpenClaw, Antigravity CLI, Grok Build CLI, Zero, Pi, OMP; MCP-only: Claude Desktop, VS Code Copilot, Zed, Swival; community: Hermes. Counted from README; Claude Code verified in source (this read), others spot-checked at the event-table level in render_shared.rs"
 features:
   learning_loop: true   # SOURCE-TRACED this read: background, harness-independent — server-side scheduler (auto_improve_schedule.rs) reviews completed sessions via LLM, stages proposals, AUTO-APPROVES wiki edits by default (require_approval=false); plus a durable session-end LLM consolidation queue. Zero-LLM install has no loop; with a provider configured the loop is default-ON. Second verified harness-independent instance after ECC
+memory_features:   # ADR-0013 block, set 2026-08-19 from the existing deep-dive read at acd9c0b — not a re-read
+  memory_store: files-git        # git-versioned markdown wiki is the source of truth; SQLite/vectors are derived indexes (body: store section) — the kind's only files-git wager
+  capture_path: hook             # harness lifecycle hooks → closed 10-value ObservationKind → rule-based session pages, no LLM on the default path
+  recall_injection: both         # auto: thin cwd-matched handoff baton injected via per-harness envelopes; rich wiki is pull-only via 18 MCP tools
+  memory_scope: [project, user]  # .ai-memory.toml walk-up for project scoping; per-user slot namespaces
+  memory_tiers: true             # working/episodic/semantic/procedural
+  hybrid_retrieval: true         # RRF over FTS5 + entity index + link neighbors + optional vectors, optional reranker
+  decay: true                    # exponential-decay retention + forget sweep
+  injection_trust_boundary: true # untrusted-data delimiters on observations, wiki pages, proposals, AND injected handoffs
+  deployment_mode: self-host     # localhost-bound daemon, regex sanitizer at ingress, zero-LLM default
+  harness_installer: true        # install-hooks --apply mutates ~/.claude/settings.json (9 CC events)
+  rule_extraction: true          # _rules/ + procedures/ proposal paths, confidence-floored, audit-logged
 ---
 
 # ai-memory

@@ -45,3 +45,5 @@ living docs, the ADR trail is the decoder.
 | [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`notes/candidates.md`) | accepted |
 | [0010](0010-two-taxonomies.md) | 2026-08-18 | Two taxonomies: tool taxonomy + feature taxonomy (registry, cross-layer view) | accepted |
 | [0011](0011-graded-gate-enforcement.md) | 2026-08-18 | Graded enforcement values (engine/hook/script/prose) for the gate features | accepted |
+| [0012](0012-layer-2-feature-set.md) | 2026-08-18 | Layer-2 feature set: `ptc` + graded `turn_end_gates` | accepted |
+| [0013](0013-memory-features-block.md) | 2026-08-19 | Third registry block: `memory_features` for layer-5 memory tools | accepted |
