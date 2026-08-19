@@ -335,7 +335,16 @@ note. Revised when evidence moves._
     contains a 1,582-line remotely-scripted A/B upsell funnel (`notices.py`) — the
     benchmark-vs-product gap is not just marketing outside the repo, it is
     instrumentation inside it. →
-    [`notes/05-capability-extensions/mem0.md`](notes/05-capability-extensions/mem0.md) But every
+    [`notes/05-capability-extensions/mem0.md`](notes/05-capability-extensions/mem0.md)
+    **Third instance, inverted (2026-08-19, memos deep-dive):** the benchmark-vs-product
+    gap runs the other way — memos' machinery is real and golden-tested in source, but
+    the ten README numbers (five of them CODING benchmarks incl. SWE-Bench, all
+    attributed to a non-vendored external repo) describe the full-evolution
+    configuration, while the shipped default — verified in code, templates, and the
+    published npm artifact — runs with that machinery unmounted. The kind's pattern is
+    now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
+    benchmarks what the shipped default doesn't enable. →
+    [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md) But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
     **No coding-agent memory benchmark exists**, and the two vendor headline numbers

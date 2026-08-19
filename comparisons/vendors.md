@@ -29,7 +29,7 @@ One row per `vendor:` string, columns by layer. **This understates vendor span b
 | Mem0 (mem0ai, YC S24) | — | — | — | — | mem0 | **1** |
 | MemMachine | — | — | — | — | memmachine | **1** |
 | MemoriLabs | — | — | — | — | memori | **1** |
-| MemTensor | — | — | — | — | memos | **1** |
+| MemTensor (MemOS) | — | — | — | — | memos | **1** |
 | Modal Labs | — | — | modal | — | — | **1** |
 | Moonshot AI | kimi-k3 | — | — | — | — | **1** |
 | Nous Research | — | hermes-agent | — | — | — | **1** |

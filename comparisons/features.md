@@ -25,8 +25,8 @@ defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.m
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
 | [memos](../notes/05-capability-extensions/memos.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
@@ -62,8 +62,8 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
 | [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
+| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
 | [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
-| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `auto` | `session` | ✓ | ✓ | ✓ | `auto` | ✓ | · | ✓ | · |
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · |
