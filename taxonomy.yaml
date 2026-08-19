@@ -252,6 +252,12 @@ schema_renames:
       notes/_template-tool-report.md). This template also carries a
       `## The layer-1 axes` heading, which renames alongside its `layer:` key.
     executes_in: phase-3
+    # Dormancy switch (Phase 2 decision). `pending` = the OLD key is still the current
+    # schema: the lint accepts it and fails a premature NEW key, because renaming one side
+    # alone breaks the generator (ADR-0015 § Sequencing). Phase 3 flips this to `applied`
+    # in the same atomic commit that renames generator + template + report frontmatter,
+    # after which the lint fails any surviving OLD key as an unapplied decoder (LINT-05).
+    status: pending
     atomic: true
   - old: kind
     new: type
@@ -265,4 +271,5 @@ schema_renames:
       vocabulary in scripts/build-refs-index.py (source kind: paper/benchmark/
       blog-post), which is never renamed.
     executes_in: phase-3
+    status: pending
     atomic: true

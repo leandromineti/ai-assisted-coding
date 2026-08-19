@@ -22,6 +22,7 @@ end of this phase (LINT-07, partial).
 """
 from __future__ import annotations
 
+import copy
 import fnmatch
 import re
 import shutil
@@ -220,6 +221,24 @@ def split_frontmatter(text: str) -> tuple[list[tuple[int, str]], list[tuple[int,
             body_start = end + 1
     body_lines = [(i + 1, lines[i]) for i in range(body_start, len(lines))]
     return frontmatter_lines, body_lines
+
+
+def _raw_frontmatter_lines(text: str) -> list[tuple[int, str]]:
+    """The frontmatter block's lines UNSTRIPPED (unlike `split_frontmatter`, which
+    strips the leading `key:` token for prose scanning) — check_schema_renames needs
+    the actual key text to detect `old_key:` / `new_key:` at column 0."""
+    lines = text.splitlines()
+    result: list[tuple[int, str]] = []
+    if lines and lines[0] == "---":
+        end = None
+        for i in range(1, len(lines)):
+            if lines[i] == "---":
+                end = i
+                break
+        if end is not None:
+            for i in range(1, end):
+                result.append((i + 1, lines[i]))
+    return result
 
 
 def _deny_index(taxo: dict) -> tuple[re.Pattern | None, dict, list[str]]:
@@ -607,6 +626,100 @@ def check(taxo: dict, root: Path = ROOT) -> int:
     return problems
 
 
+# --- LINT-05: the unapplied-decoder check (ADR-0015's schema_renames) ---
+# The frontmatter-key half of the decoder is governed by `schema_renames[].status`,
+# not a CLI flag and not "prose only until Phase 3" — a status field keeps the state
+# in the recorded contract (where `executes_in: phase-3` already lives) rather than in
+# whoever typed the command. Two-sided so the rule is live in BOTH states, not dead
+# code waiting for Phase 3.
+_VALID_RENAME_STATUSES = {"pending", "applied"}
+
+
+def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
+    """`pending`: the OLD key is current; a premature NEW key fails (both land in one
+    Phase-3 atomic commit, ADR-0015 § Sequencing). `applied`: the NEW key is current;
+    a surviving OLD key fails as an unapplied decoder.
+
+    T-02-06 (Spoofing, mitigate): only the literals `pending`/`applied` are accepted —
+    any other value is a startup error, so a typo can't silently disable this check.
+
+    Scans FRONTMATTER only (via `_raw_frontmatter_lines`, not the prose-stripped
+    `split_frontmatter` lines) — this is deliberately disjoint from `check()`'s prose
+    scanner, which already excludes colon-suffixed deny entries like `kind:` from
+    prose at the regex-build step (`_deny_index`). That's what lets the recorded
+    false positive — `notes/05-capability-extensions/ai-memory.md:90`'s "Table stakes
+    in the kind: store + retrieve + MCP." (taxonomy.yaml, term `types`,
+    false_positive_notes) — pass without a per-site carve-out: prose "kind:" is never
+    even a candidate for this check, because this check never looks at body text.
+    """
+    problems = 0
+    renames = taxo.get("schema_renames", []) or []
+    for entry in renames:
+        status = entry.get("status")
+        if status not in _VALID_RENAME_STATUSES:
+            sys.exit(
+                f"taxonomy.yaml schema_renames[old={entry.get('old')!r}] has "
+                f"invalid status {status!r} — must be one of "
+                f"{sorted(_VALID_RENAME_STATUSES)}"
+            )
+
+    for path in walk(taxo, root=root):
+        rel = path.relative_to(root).as_posix()
+        if not rel.startswith("notes/"):
+            continue
+        text = path.read_text(encoding="utf-8")
+        raw_lines = _raw_frontmatter_lines(text)
+        if not raw_lines:
+            continue
+        fm = read_frontmatter(path)
+
+        for entry in renames:
+            old, new, status = entry["old"], entry["new"], entry["status"]
+            # kind -> type is scoped to category-5 reports plus the shared template
+            # (both explicitly listed in this entry's own `scope:`); layer -> category
+            # applies to every notes/ report and template, so no extra gate — refs/'s
+            # unrelated `kind:` vocabulary never reaches here at all (refs/* is
+            # exempt_paths.skip_entirely, so walk() never yields it).
+            if old == "kind":
+                in_scope = rel.endswith("_template-tool-report.md") or (
+                    isinstance(fm, dict) and fm.get("layer") in (5, "5")
+                )
+                if not in_scope:
+                    continue
+            old_re = re.compile(rf"^{re.escape(old)}:(\s|$)")
+            new_re = re.compile(rf"^{re.escape(new)}:(\s|$)")
+            for line_no, line_text in raw_lines:
+                if status == "pending" and new_re.match(line_text):
+                    print(
+                        f"ERROR: {rel}:{line_no} '{new}:' is a premature "
+                        f"'{new}:' key — status is pending; both '{old}:' and "
+                        f"'{new}:' land in one Phase-3 atomic commit (ADR-0015 "
+                        f"§ Sequencing)",
+                        file=sys.stderr,
+                    )
+                    problems += 1
+                elif status == "applied" and old_re.match(line_text):
+                    print(
+                        f"ERROR: {rel}:{line_no} superseded key '{old}:' — "
+                        f"ADR-0015's decoder is not fully applied; rename to "
+                        f"'{new}:'",
+                        file=sys.stderr,
+                    )
+                    problems += 1
+    return problems
+
+
+def _with_schema_renames_applied(taxo: dict) -> dict:
+    """A deep-copied taxo with every schema_renames[].status flipped to 'applied' —
+    used by the 'old-key-after-rename-applied' fixture to prove the dormant half of
+    check_schema_renames discriminates NOW, on demand, rather than only in Phase 3."""
+    patched = copy.deepcopy(taxo)
+    for entry in patched.get("schema_renames", []) or []:
+        entry["status"] = "applied"
+    patched.pop("_deny_index", None)  # cached on the original taxo; don't share it
+    return patched
+
+
 # --selftest fixtures: embedded drift, written into a fresh tempfile.mkdtemp() tree per
 # fixture, linted there, never inside ROOT (D-05 — permanent calibration, no repo state
 # required). Each dict: id, path (repo-relative-style, written under the temp root),
@@ -726,6 +839,44 @@ FIXTURES: list[dict] = [
         "why": "'mcp' genuinely exists in the feature taxonomy's `features` block "
         "(applies_to: [2]) — a real key must resolve cleanly.",
     },
+    {
+        "id": "old-key-while-pending",
+        "path": "notes/02-harnesses/fixture-old-key-pending.md",
+        "text": "---\nlayer: 2\n---\n\n# Fixture\n\nOld key usage, no drift.\n",
+        "expect": "pass",
+        "why": "status is pending — the old `layer:` key is still the current "
+        "schema and must pass (LINT-05).",
+    },
+    {
+        "id": "premature-renamed-key",
+        "path": "notes/02-harnesses/fixture-premature-key.md",
+        "text": "---\ncategory: 2\n---\n\n# Fixture\n\nPremature rename.\n",
+        "expect": "fail",
+        "why": "status is pending — the new `category:` key appearing before "
+        "Phase 3's atomic commit fails as premature (ADR-0015 § Sequencing).",
+    },
+    {
+        "id": "old-key-after-rename-applied",
+        "path": "notes/02-harnesses/fixture-old-key-applied.md",
+        "text": "---\nlayer: 2\n---\n\n# Fixture\n\nOld key survives after the rename "
+        "was supposedly applied.\n",
+        "expect": "fail",
+        "taxo_patch": _with_schema_renames_applied,
+        "why": "the fixture supplies its own taxo with status flipped to 'applied' "
+        "— proving the dormant half discriminates NOW, not only in Phase 3; the "
+        "surviving old `layer:` key fails as an unapplied decoder.",
+    },
+    {
+        "id": "kind-colon-in-prose",
+        "path": "notes/05-capability-extensions/fixture-kind-colon.md",
+        "text": "# Fixture\n\nTable stakes in the kind: store + retrieve + MCP.\n",
+        "expect": "pass",
+        "why": "'kind:' here is ordinary body prose (a list-introducing colon), not "
+        "a frontmatter key — check_schema_renames only scans frontmatter and never "
+        "sees this line; the deny-list scanner already excludes colon-suffixed "
+        "entries from prose. Mirrors the real false positive at "
+        "notes/05-capability-extensions/ai-memory.md:90.",
+    },
 ]
 
 
@@ -746,6 +897,7 @@ def run_all_checks(taxo: dict, root: Path = ROOT) -> int:
         check(taxo, root=root)
         + check_reference_formats(taxo, root=root)
         + check_feature_registry(taxo, root=root)
+        + check_schema_renames(taxo, root=root)
     )
 
 
