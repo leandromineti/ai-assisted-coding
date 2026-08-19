@@ -898,6 +898,25 @@ FIXTURES: list[dict] = [
         "real-repo line numbers.",
     },
     {
+        "id": "known-site-scoped-to-compound-span-memory-layer",
+        "path": "notes/05-capability-extensions/fixture-memory-layer-scope.md",
+        "text": "# Fixture\n\nThe memory layer is fine here, but the layer's "
+        "sharpest categories concept is not.\n",
+        "expect": "fail",
+        "taxo_patch": _with_extra_known_site(
+            "notes/05-capability-extensions/fixture-memory-layer-scope.md:3",
+            compound="memory layer",
+        ),
+        "why": "WR-02: calibrates one of the 7 compounds added in 60e9b97 (chosen "
+        "per WR-01, the riskiest of the seven since it is semantically adjacent to "
+        "this repo's own category 5) against the same span-scoping proof CR-01 "
+        "already established for 'enforcement ladder' — a known_sites entry "
+        "recorded for 'memory layer' at this exact file:line must only shield "
+        "matches falling inside that compound's own span; the independent, "
+        "genuinely deny-listed bare 'layer' match elsewhere on the same line is "
+        "unrelated and must still fail.",
+    },
+    {
         "id": "cross-cutting-not-cross-layer",
         "path": "notes/cross-cutting/fixture-cutting.md",
         "text": "# Fixture\n\nThis document uses cross-cutting concerns terminology "

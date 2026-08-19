@@ -117,6 +117,19 @@ terms:
           - "notes/05-capability-extensions/cognee.md:41"
           - "notes/05-capability-extensions/cognee.md:131"
           - "notes/05-capability-extensions/index.md:92"
+        near_miss_note: >-
+          Unlike the other six new "layer" compounds, this one is semantically
+          adjacent to the taxonomy's own division vocabulary: this repo's own
+          category 5 (Extensions) is the memory/capability-extensions category
+          (ADR-0013 "memory features block", notes/05-capability-extensions/), so a
+          future sentence describing category 5's place in the taxonomy as "the
+          memory layer" would be a genuine taxonomy-division mistake, not vendor-
+          tagline or architecture prose. Because deny_list_exempt_compounds shields
+          a registered compound "regardless of file or line"
+          (scripts/check-taxonomy.py:303-322), such a claim would be silently
+          exempted with no diagnostic. Writers describing category 5's own
+          placement in the taxonomy must use canonical vocabulary ("category 5" /
+          "the extensions category"), never "memory layer".
       - compound: "application layer"
         canonical_source: >-
           Software-architecture vocabulary (a codebase's application layer, as
