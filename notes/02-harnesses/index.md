@@ -1,6 +1,6 @@
 # Category 2 — Harnesses
 
-`checked: 2026-08-18`
+`checked: 2026-08-19`
 
 Loop + context assembly + permission model + UI. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -28,7 +28,7 @@ web-as-interface with remote-as-execution:
 | [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
 | [**Aider**](aider.md) | open source | terminal | local | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
 | **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
-| **Cursor** | Anysphere → **SpaceX/xAI** | IDE | local | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of category 1↔2 consolidation. |
+| **Cursor** | Anysphere → **SpaceX/xAI** | IDE · terminal (Cursor CLI) | local + async (Cloud Agent handoff) | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of category 1↔2 consolidation. *(2026-08-19, docs-route — closed source)* Cursor CLI widens the row on both axes: a terminal agent (Agent/Plan/Ask modes) with a non-interactive mode for scripts/CI and handoff of a running session to Cloud Agents — the vendor joins the all-surfaces-both-modes convergence below. |
 | **Windsurf** | — | IDE | local | IDE-embedded agent. |
 | [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. |
 | [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. |
@@ -38,6 +38,7 @@ web-as-interface with remote-as-execution:
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
 | [**Warp**](warp.md) | Warp (warpdotdev) | terminal · desktop · web (wasm) | local + async (cloud runs) | A terminal that became a harness — and then an orchestrator of other harnesses: Claude Code, Codex, Gemini CLI, and OpenCode are selectable backends for its child agents. AGPL-3.0, source-opened 2026-04-28. The only indexed context assembly in the set (embedding chunkers, consent-gated). Surveyed 2026-08-11. |
 | **DeepSeek Harness** (`dsh`) | DeepSeek | web (locally served UI) | local | Registered 2026-08-18, README level only — no report yet. Vendor-native, open source (MIT, TypeScript), in *developer preview*: "everything is a plugin" on the Cordis framework, launched as a local web UI (`npx @deepseek-ai/dsh web`). 159.6k stars in **five days** (created 2026-08-13; fetched 2026-08-18) — the fastest adoption ramp in the study. Already a memory-type install target (memos ships a `dsh` plugin with background capture + auto-recall, per its stub). Backlog: issue #19. |
+| **Pi** (`earendil-works/pi`) | Earendil Works | terminal (TUI) | local | Registered 2026-08-19, README + GitHub-API level — no report yet. Open source (MIT, TypeScript), created 2025-08-09; 93.8k stars *(fetched 2026-08-19)*. Both a harness and an SDK: the `pi-coding-agent` CLI sits on published packages (`pi-agent-core` runtime, `pi-ai` multi-provider client, `pi-tui`) — a "self-extensible coding agent" atop an agent toolkit. Distinctive position: **ships no built-in permission system**, recommending container isolation instead — axis 2 below deliberately collapsed into axis 4. Sighted four times as an integration target of tracked tools before ever being registered here: gsd-core install target, haft experimental adapter, ai-memory hooks+MCP support, mem0's dedicated `pi-agent-plugin` (all at those reports' pins in [`comparisons/tools.md`](../../comparisons/tools.md)). Backlog: issue #28. |
 | [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest category-3 bleed in the set (8 terminal backends). Category 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
