@@ -3,25 +3,25 @@
 `created: 2026-08-18` · decision record: [ADR-0010](../../adrs/0010-two-taxonomies.md)
 
 This repo carries **two taxonomies**. The [tool taxonomy](../../taxonomy.md) classifies
-what a tool *is* (the layers, plus sub-categories like layer 5's `kind` and layer 4's
+what a tool *is* (the categories, plus types like category 5's `type` and category 4's
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
-defined **once**, with an applicability map saying which layers it can occur in. The
+defined **once**, with an applicability map saying which categories it can occur in. The
 generator (`scripts/build-tool-index.py`) reads the YAML block below as its single
-source of truth for valid frontmatter keys — the per-layer (and per-kind) matrices in
-[`comparisons/features.md`](../../comparisons/features.md) and its cross-layer table
+source of truth for valid frontmatter keys — the per-category (and per-kind) matrices in
+[`comparisons/features.md`](../../comparisons/features.md) and its cross-category table
 are derived from here plus report frontmatter. **Do not add a key anywhere else.**
 
 Conventions:
 
 - A feature is a **presence-claim** verified in source or docs (omitted = not checked,
   `false` = checked and absent) — the same discipline as everywhere in this repo.
-  Whether a present feature *pays* is a mechanism question (see each layer's index).
+  Whether a present feature *pays* is a mechanism question (see each category's index).
 - New keys follow **issue #2's two-verified-instances rule**: a key enters the
   registry only after the characteristic is verified in at least two tools.
 - `block` names the frontmatter block that carries the key (`features` for harnesses,
-  `workflow_features` for layer 4, `memory_features` for layer-5 `kind: memory` reports
-  — ADR-0013, `model_features` for layer 1 — ADR-0014). `applies_to` lists
-  tool-taxonomy layers; per-kind blocks additionally scope by the report's `kind`.
+  `workflow_features` for category 4, `memory_features` for category-5 `type: memory` reports
+  — ADR-0013, `model_features` for category 1 — ADR-0014). `applies_to` lists
+  tool-taxonomy categories; per-kind blocks additionally scope by the report's `type`.
 - **What belongs where** (the placement test, recorded 2026-08-19): a fact with an
   external ground truth we transcribe (stars, license, context window, pricing) is a
   **top-level frontmatter field** — mechanically collected, dated, and at most
@@ -33,8 +33,8 @@ Conventions:
   transcription vs assessment: the first drifts when the world changes, the second
   only when someone reads again.
 - `kind_link` records the **demand↔supply correspondence**: a harness feature (demand
-  side) whose supply side is an installable layer-5 artifact kind. This is the bleed —
-  quantified in the generated cross-layer table.
+  side) whose supply side is an installable category-5 artifact kind. This is the bleed —
+  quantified in the generated cross-category table.
 - "Vocabulary" remains the mechanism phrase for this closed key list; the *concept* is
   the feature taxonomy (naming settled 2026-08-18, ADR-0010).
 
