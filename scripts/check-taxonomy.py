@@ -33,6 +33,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 TAXONOMY = ROOT / "taxonomy.yaml"
+FEATURE_REGISTRY_PATH = ROOT / "notes" / "cross-cutting" / "feature-taxonomy.md"
 
 # A file containing this marker is generated output (comparisons/*.md, refs/index.md)
 # and is never a lint target directly — its generator owns the vocabulary it emits
@@ -79,6 +80,89 @@ def read_frontmatter(path: Path) -> dict | None:
         return None
     data = yaml.safe_load(text[4:end])
     return data if isinstance(data, dict) else None
+
+
+def _load_feature_registry() -> list[dict]:
+    """Duplicated from build-tool-index.py's `_load_feature_registry` (~15 lines)
+    rather than imported: the two scripts must not couple, and the precedent is
+    already established by this script's own `read_frontmatter` duplication. Always
+    reads the REAL repo's registry (FEATURE_REGISTRY_PATH, fixed at ROOT) regardless
+    of which tree `check_feature_registry` is scanning — the registry is a stable
+    single source of truth, not something a --selftest fixture tree redefines.
+
+    T-02-05 (Tampering, mitigate): exits non-zero with a named diagnostic when the
+    yaml block is missing, unparsable, or an entry lacks `id`/`block` — mirroring the
+    generator's fail-fast rather than silently building an empty/partial key set.
+    """
+    try:
+        text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
+    except OSError as e:
+        sys.exit(f"feature taxonomy missing: {FEATURE_REGISTRY_PATH} ({e})")
+    m = re.search(r"```yaml\n(.*?)```", text, re.DOTALL)
+    if not m:
+        sys.exit(f"feature taxonomy has no ```yaml block: {FEATURE_REGISTRY_PATH}")
+    try:
+        data = yaml.safe_load(m.group(1))
+    except yaml.YAMLError as e:
+        sys.exit(f"feature taxonomy YAML unparsable: {e}")
+    entries = (data or {}).get("features")
+    if not isinstance(entries, list) or not entries:
+        sys.exit("feature taxonomy: `features:` must be a non-empty list")
+    known_blocks = {"features", "workflow_features", "memory_features", "model_features"}
+    for e in entries:
+        for req in ("id", "block"):
+            if req not in e:
+                sys.exit(f"feature taxonomy entry missing `{req}`: {e}")
+        if e["block"] not in known_blocks:
+            sys.exit(
+                f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
+                f"(known: {sorted(known_blocks)})"
+            )
+    return entries
+
+
+def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
+    """Frontmatter `features:` / `workflow_features:` / `memory_features:` /
+    `model_features:` keys must resolve against the feature registry (LINT-04a,
+    D-06a). Escalation is the point: build-tool-index.py's `render_features` /
+    `render_models` etc. only WARN on an unknown key and silently drop it from the
+    generated matrix — tolerable for a generator, not for a fail-hard lint, so this
+    check turns the same condition into an ERROR.
+
+    Not affected by the deny-list prose scanner's frontmatter-key stripping
+    (`split_frontmatter`) — that scanner reads prose; this reads parsed frontmatter
+    directly, a different thing entirely, and the two must not be merged.
+    """
+    problems = 0
+    registry = _load_feature_registry()
+    valid_by_block: dict[str, set[str]] = {}
+    for e in registry:
+        valid_by_block.setdefault(e["block"], set()).add(e["id"])
+    blocks = ("features", "workflow_features", "memory_features", "model_features")
+    for path in walk(taxo, root=root):
+        rel = path.relative_to(root).as_posix()
+        if not rel.startswith("notes/"):
+            continue
+        if path.name.startswith("_") or path.name == "index.md":
+            continue  # templates and layer indexes are not reports (mirrors collect())
+        fm = read_frontmatter(path)
+        if not fm:
+            continue
+        for block in blocks:
+            mapping = fm.get(block)
+            if not isinstance(mapping, dict):
+                continue
+            valid_keys = valid_by_block.get(block, set())
+            for key in mapping:
+                if key not in valid_keys:
+                    print(
+                        f"ERROR: {rel} '{key}' is unregistered in block "
+                        f"'{block}' — add it to notes/cross-cutting/"
+                        f"feature-taxonomy.md or fix the spelling",
+                        file=sys.stderr,
+                    )
+                    problems += 1
+    return problems
 
 
 def is_exempt(rel: str, taxo: dict) -> str | None:
@@ -624,13 +708,45 @@ FIXTURES: list[dict] = [
         "why": "line-initial 'Category' is orthographic capitalisation, not "
         "vocabulary drift — the documented exception to strict enforcement.",
     },
+    {
+        "id": "unregistered-feature-key",
+        "path": "notes/02-harnesses/fixture-bad-feature-key.md",
+        "text": "---\nname: fixture-tool\nfeatures:\n  totally_invented_key_xyz: true\n"
+        "---\n\n# Fixture\n\nBody text, clean.\n",
+        "expect": "fail",
+        "why": "'totally_invented_key_xyz' resolves against no entry in the feature "
+        "taxonomy's `features` block — LINT-04a.",
+    },
+    {
+        "id": "registered-feature-key",
+        "path": "notes/02-harnesses/fixture-good-feature-key.md",
+        "text": "---\nname: fixture-tool\nfeatures:\n  mcp: true\n---\n\n# Fixture\n\n"
+        "Body text, clean.\n",
+        "expect": "pass",
+        "why": "'mcp' genuinely exists in the feature taxonomy's `features` block "
+        "(applies_to: [2]) — a real key must resolve cleanly.",
+    },
 ]
+
+
+# LINT-04b (D-06, vocabulary leakage — prose half): the measurement vocabulary in
+# notes/cross-cutting/metrics.md is enforced through the SAME `terms[].deny_list`
+# mechanism `check()` already runs above — no separate function, no fuzzy matching,
+# LINT-03's model extended in scope only. Deliberately live-but-empty: no measurement
+# drift term ("trap score", "attention split", ...) has been observed misused, and
+# inventing a deny entry with no evidence behind it would violate methodology rule 4.
+# Growing this means adding a term to taxonomy.yaml's `terms:` list with NO code
+# change here — that property is what Phase 4 documents.
 
 
 def run_all_checks(taxo: dict, root: Path = ROOT) -> int:
     """Every drift-class checker, summed. The single dispatch point both `main()` and
     `selftest()` call, so a new checker is wired into both by adding one line here."""
-    return check(taxo, root=root) + check_reference_formats(taxo, root=root)
+    return (
+        check(taxo, root=root)
+        + check_reference_formats(taxo, root=root)
+        + check_feature_registry(taxo, root=root)
+    )
 
 
 def selftest(taxo: dict) -> tuple[int, int]:
