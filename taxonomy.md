@@ -240,10 +240,10 @@ ladder distorts them. Each gets a note of its own.
 
 ## Standards
 
-The stress test below surfaced a category that isn't a layer at all: **standards**. MCP,
+The stress test below surfaced something that doesn't fit any tool category: **standards**. MCP,
 the `AGENTS.md` convention, and the emerging agent-permission conventions are
 specifications, not installable things. A standard is recorded here, once, and referenced
-from the layers that implement it — never given a layer entry of its own.
+from the categories that implement it — never given a category entry of its own.
 
 - **MCP (Model Context Protocol)** — the protocol is a standard; the *servers* that speak
   it are layer 5.
