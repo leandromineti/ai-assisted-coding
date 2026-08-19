@@ -25,9 +25,9 @@ depth: survey
 
 Anthropic's mid-tier: "the best combination of speed and intelligence." In this repo's
 terms: **the standardized experiment model** — the deliberate cost/capability
-compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
+compromise chosen so category-4 comparisons measure frameworks, not model headroom.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -40,7 +40,7 @@ compromise chosen so layer-4 comparisons measure frameworks, not model headroom.
 ## Role in this repo's work
 
 - **The rig's pinned model** — exp-02's pre-run amendment names `claude-sonnet-5` the
-  *sole* model for all arms of all layer-4 comparisons
+  *sole* model for all arms of all category-4 comparisons
   ([`experiments/02-spec-kit-vs-plain/`](../../experiments/02-spec-kit-vs-plain/README.md),
   amendment §1; [`experiments/rig/`](../../experiments/rig/README.md) pins table).
 - The machine's standing subagent tier for lighter search/mechanical work (alongside

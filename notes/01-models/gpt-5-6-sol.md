@@ -30,11 +30,11 @@ three-tier family sharing one 1.05M-token window and one Feb 2026 cutoff: **Sol*
 celestial tiers — same structural move as Anthropic's capability ladder, made nominal.
 
 **GPT-5.5 status resolved (2026-07-31):** no longer on OpenAI's current models page —
-superseded by the 5.6 family. The Terminal-Bench 2.1 figures the layer index cites
+superseded by the 5.6 family. The Terminal-Bench 2.1 figures the category index cites
 (Codex CLI + GPT-5.5, 83.4%) now describe a *retired* model; the benchmark-staleness
 warning in the index applies to its own snapshot.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -42,11 +42,11 @@ warning in the index applies to its own snapshot.
 | Long-horizon coherence | · |
 | Usable context (vs advertised) | 1.05M advertised — the odd 50k over the round number suggests an exact power-of-two budget (2^20 ≈ 1.049M); unprobed |
 | Cost per completed task | · — the 25× Sol/Luna price spread within one family is the widest in the sweep; where each tier's per-task crossover sits is unmeasured |
-| Release mode & access routes (1b) | API-only; the models driving Codex CLI/cloud (layer-2 pairing) |
+| Release mode & access routes (1b) | API-only; the models driving Codex CLI/cloud (category-2 pairing) |
 
 ## Role in this repo's work
 
-None directly — appears as the benchmark counterpart in the layer-2 shelf (Codex CLI
+None directly — appears as the benchmark counterpart in the category-2 shelf (Codex CLI
 pairings) and as Kimi K3's claimed comparison target. No repo work has run on it.
 
 ## Surprises
@@ -59,7 +59,7 @@ pairings) and as Kimi K3's claimed comparison target. No repo work has run on it
    0.1×, write 1.25× — the same two numbers, differing only in TTL (one fixed 30m vs
    Anthropic's 5m/1h pair). The effort ladder (`none`→`max`, default `medium`) is also
    a six-step version of the same control Anthropic exposes as `effort`. Convergence at
-   the API-surface layer, whatever the models are doing underneath.
+   the API surface, whatever the models are doing underneath.
 
 ## Open questions
 

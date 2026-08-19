@@ -24,12 +24,12 @@ depth: stub
 # Grok 4.5
 
 xAI's recommended model "for code and chat" (released 2026-07-08 on the 1.5T-param V9
-base, per the 2026-07-28 verified sweep). The layer-1↔2 story attached to it is why it
+base, per the 2026-07-28 verified sweep). The category-1↔2 story attached to it is why it
 matters to this repo: **trained on real Cursor session data** — the sharpest instance
 of the harness-as-training-data-instrument pattern in the taxonomy's boundary-rule
 note. No EU availability at launch (2026-07-28 check; not re-verified today).
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -42,7 +42,7 @@ note. No EU availability at launch (2026-07-28 check; not re-verified today).
 ## Role in this repo's work
 
 None as a model. As a *case*, load-bearing: it anchors the taxonomy's vertical-
-integration story (Cursor acquisition → session data → Grok 4.5) and the layer-2
+integration story (Cursor acquisition → session data → Grok 4.5) and the category-2
 index's open question about whether telemetry-tuned models produce a durable
 advantage.
 
@@ -67,6 +67,6 @@ advantage.
 ## Open questions
 
 - Does Cursor-session training measurably improve performance *inside Cursor* vs
-  other harnesses — the cleanest possible test of the layer-1↔2 integration thesis,
+  other harnesses — the cleanest possible test of the category-1↔2 integration thesis,
   if anyone can run it?
 - EU availability since launch? (Unchecked since 2026-07-28.)

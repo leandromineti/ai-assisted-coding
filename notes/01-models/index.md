@@ -1,8 +1,8 @@
-# Layer 1 — Models
+# Category 1 — Models
 
 `checked: 2026-08-17`
 
-The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this layer is and how
+The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this category is and how
 it's judged.
 
 Per-model reports follow
@@ -23,7 +23,7 @@ report's evidence cells, not its depth field.
 |-------|--------|---------|----------|
 | [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive thinking; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
 | [**Opus 5**](claude-opus-5.md) | Anthropic | GA 2026-07-24 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |
-| [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | GA 2026-06-30 | Mid-tier; **the rig's pinned model for all layer-4 experiment arms.** Now measured in-repo: 18–20/21 on the tarpeek verifier (n=6 incl. Run A), $0.41/run. $2/$10 became the *standard* price on 2026-08-17 — the scheduled September increase was cancelled, so August ledgers are at list price. |
+| [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | GA 2026-06-30 | Mid-tier; **the rig's pinned model for all category-4 experiment arms.** Now measured in-repo: 18–20/21 on the tarpeek verifier (n=6 incl. Run A), $0.41/run. $2/$10 became the *standard* price on 2026-08-17 — the scheduled September increase was cancelled, so August ledgers are at list price. |
 | [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | GA 2025-10-15 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Now measured in-repo: uniform 17/21, one packaging DOA, $0.150/run — fully separated from Sonnet on the same instrument. Feb 2025 cutoff. $1/$5. |
 | [**GPT-5.6 Sol**](gpt-5-6-sol.md) | OpenAI | 2026-07-09 (stage ambiguous: 'preview' vs 'Released', vendor's two surfaces disagree) | Frontier tier of a three-tier family (Sol $5/$30 · Terra $2/$12 · Luna $0.20/$1.20), all 1.05M ctx, Feb 2026 cutoff. **GPT-5.5 is retired** — gone from the current models page (2026-07-31), so the Terminal-Bench row below cites a model you can't buy. |
 | [**Gemini 3.1 Pro**](gemini-3-1-pro.md) | Google | Preview since 2026-02-19, no GA plan stated | Still **Preview** while the Flash line is Stable. Tiered pricing doubles above 200k input tokens — taxing the long-context pitch. Window resolved 2026-08-17: 1,048,576 in / 65,536 out, from the per-model page. |
@@ -32,7 +32,7 @@ report's evidence cells, not its depth field.
 | [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 (vendor's words) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Repriced 2026-08-16 to peak/off-peak (off-peak = 50%); still the sweep's cheapest, cache hits near-free. |
 | [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | weights 2026-01-30 (HF commit); no stage stated | Row verified: 80B total / **3B activated**, 256K ctx, Apache-2.0 — the one genuinely self-hostable agent model in the sweep. Publishes its own modest Terminal-Bench 2.0 score (36.2). A "Qwen 4 Coder" successor is third-party rumor, unresolvable on the official org (2026-07-31). |
 
-## Sub-layer 1b — Model access
+## Type 1b — Model access
 
 | Route | One-line |
 |-------|----------|
@@ -41,14 +41,14 @@ report's evidence cells, not its depth field.
 | Cloud marketplaces | AWS Bedrock, GCP Vertex. Procurement and data-residency plays; feature lag is common. |
 | Local runtimes | Ollama, llama.cpp, vLLM. Only viable for open-weight models, and quantization changes behavior under the same model name. |
 
-**Why this sub-layer matters:** the same model name reached by different routes is not the
+**Why this type matters:** the same model name reached by different routes is not the
 same product. Prompt-caching support, quantization, rate limits, and silent context
 truncation all vary by route.
 
 ## Benchmark snapshot
 
 Terminal-Bench 2.1, as reported mid-2026 — note these pair a **model with a harness**, so
-they measure layers 1+2 together, never the model alone:
+they measure categories 1+2 together, never the model alone:
 
 | Harness + model | Score |
 |-----------------|-------|
@@ -98,7 +98,7 @@ calibration verdict, README conclusion 10.
   - Its headline finding — **structural completeness does not predict runtime
     correctness**: models produce complete-looking apps whose tests mock hallucinated
     library APIs, so the output scores well while not actually running. That's a
-    verification-layer insight as much as a model one; see
+    verification insight as much as a model one; see
     [`../cross-cutting/index.md`](../cross-cutting/index.md).
 
 ## Open questions

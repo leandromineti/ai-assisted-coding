@@ -36,7 +36,7 @@ the seed inventory attributed to the Qwen line, now with a concrete artifact.
 unverified rumor, the same discipline that kept DeepSeek's row honest through the R2
 cycle.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|

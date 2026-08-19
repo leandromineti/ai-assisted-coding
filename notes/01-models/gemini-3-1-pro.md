@@ -29,7 +29,7 @@ powerful agentic and vibe coding capabilities" — and, as of this check, still 
 Flash-Lite) are Stable. The lineup's shape is the finding: Google's *stable* tier is
 the fast/cheap line; the flagship Pro trails it in release status.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -41,7 +41,7 @@ the fast/cheap line; the flagship Pro trails it in release status.
 
 ## Role in this repo's work
 
-None. Appears in the layer-2 shelf only through Gemini CLI (whose Antigravity
+None. Appears in the category-2 shelf only through Gemini CLI (whose Antigravity
 transition deferred its own read) and the stale Terminal-Bench snapshot.
 
 ## Surprises

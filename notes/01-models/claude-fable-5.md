@@ -34,7 +34,7 @@ specs and pricing, invitation-only under Project Glasswing for defensive-cyberse
 work — the first case in this study of a frontier model gated by *use-domain* rather
 than by tier.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -63,6 +63,6 @@ when repo work actually runs on it with evidence worth recording.
 ## Open questions
 
 - Does the "long-running agents" positioning survive a measured long-horizon probe —
-  and what would that probe even be? (The layer-1 index's open question, now with a
+  and what would that probe even be? (The category-1 index's open question, now with a
   designated subject.)
 - Is 2× Opus pricing justified per completed task on this repo's task shapes?

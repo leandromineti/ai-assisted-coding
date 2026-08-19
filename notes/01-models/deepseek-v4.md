@@ -30,7 +30,7 @@ both with **384K max output** — 3× the largest Western max-output in this swe
 DSpark variants; per-model licenses unverified). Both modes ship thinking-by-default
 with a non-thinking toggle, JSON output, and tool calls.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|

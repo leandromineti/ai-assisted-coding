@@ -27,7 +27,7 @@ only current Claude model still on a dated model ID (`-20251001`), the only one 
 200k context, and the only one with legacy extended thinking instead of adaptive
 thinking — a generation seam running visibly through the lineup.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
@@ -69,7 +69,7 @@ network) — the first in-repo measurement where only the model varied:
   it, `pyproject.toml` never declares it — the agent pip-installed it by hand
   in-container, so its own tests passed while the shipped package cannot run from
   a fresh install. A concrete instance of conclusion 4 (structural completeness ≠
-  runtime correctness) at the packaging layer.
+  runtime correctness) in packaging.
 - **Discarded-candidate checks caught it where Sonnet never failed:** filter-to-empty
   crash 2/4, directory-path traceback 1/4 (Sonnet: 0 failures in 25 check-runs).
   Full tables: [`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md)

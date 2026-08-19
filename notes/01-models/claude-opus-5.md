@@ -28,7 +28,7 @@ tier below Fable 5 on capability and half its price; 1M context is **standard** 
 seed inventory's "ships a 1M variant" phrasing is stale — the docs list 1M as the base
 window, verified 2026-07-31).
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|

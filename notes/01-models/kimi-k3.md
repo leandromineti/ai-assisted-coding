@@ -25,16 +25,16 @@ depth: stub
 
 The largest open-weight model released as of mid-2026: **2.8T total parameters, 104B
 activated** (896 experts, 16 per token), on Kimi Delta Attention + Attention Residuals
-— 93 layers (69 KDA + 24 gated MLA), native vision, 1M context. Shipped **quantized by
+— 93 `layers` (69 KDA + 24 gated MLA), native vision, 1M context. Shipped **quantized by
 design**: MXFP4 weights / MXFP8 activations via quantization-aware training, so the
 published artifact *is* the low-precision model rather than a full-precision original
 that third parties quantize down. Released July 2026.
 
-## The layer-1 axes
+## The category-1 axes
 
 | Axis | Evidence here |
 |---|---|
-| Tool-call fidelity | Vendor-claimed strength ("agentic" benchmark family); the card claims **88.3 on Terminal-Bench 2.1** — above every harness+model row in this repo's stale benchmark snapshot, with harness unstated (the layer index's model+harness confound, from the other side) |
+| Tool-call fidelity | Vendor-claimed strength ("agentic" benchmark family); the card claims **88.3 on Terminal-Bench 2.1** — above every harness+model row in this repo's stale benchmark snapshot, with harness unstated (the category index's model+harness confound, from the other side) |
 | Long-horizon coherence | · |
 | Usable context (vs advertised) | 1,048,576 exactly (2^20) — same power-of-two budget as GPT-5.6's "1.05M" |
 | Cost per completed task | Weights free; the real cost is inference infrastructure (vLLM/SGLang on H100/H20-class GPUs) — the taxonomy's open question about whether 2.8T-scale open weights change anything *practical* for individuals stands |
@@ -42,7 +42,7 @@ that third parties quantize down. Released July 2026.
 
 ## Role in this repo's work
 
-Referenced, not run: the layer index's open-weight-parity question names it, and it
+Referenced, not run: the category index's open-weight-parity question names it, and it
 appears in llm-coding-benchmark's model roster (driven through opencode — the harness
 whose per-model dispatch this repo documented upstream).
 
