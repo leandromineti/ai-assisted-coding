@@ -18,7 +18,7 @@ retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the ge
 
 ---
 
-## The layer-2 program → [`layer-2-program.md`](layer-2-program.md)
+## The category-2 program → [`category-2-program.md`](category-2-program.md)
 
 **Where it lives:** the decision spans layers 1–4 — it is *about* which layer gets
 measured. Adopted 2026-08-18 at the exp-03 arc close: framework A/Bs on code outcomes

@@ -1,16 +1,16 @@
-# The layer-2 program — why framework A/Bs stopped and the bundle became the subject
+# The category-2 program — why framework A/Bs stopped and the bundle became the subject
 
 `created: 2026-08-18` · status: **adopted** (owner decision 2026-08-18, exp-03 arc
 close) · backlog: [issue #17](https://github.com/leandromineti/ai-assisted-coding/issues/17)
 
 ## The position
 
-This repo no longer benchmarks workflow frameworks (layer 4) on **code outcomes**.
+This repo no longer benchmarks workflow frameworks (category 4) on **code outcomes**.
 Three preregistered experiments measured framework-shaped interventions against plain
 baselines on hidden, fails-closed instruments, and the pattern is now consistent enough
-to act on: layer-4 effects on code ride on mechanisms the model+harness bundle absorbs
+to act on: category-4 effects on code ride on mechanisms the model+harness bundle absorbs
 tier by tier, atop run-to-run noise wider than most of the effects themselves. The
-measurable subject is the **bundle** — the model + harness system (layer 2 in
+measurable subject is the **bundle** — the model + harness system (category 2 in
 [`taxonomy.md`](../../taxonomy.md)) — plus framework value at the *artifact* level,
 where it demonstrably lives. Promoted as
 [README conclusion 12](../../README.md); this note is the assembled argument and the
@@ -36,18 +36,18 @@ discovering the corpus-only log format with no instruction (affordance beats
 instruction, amendment 1); then at tier 2, **plain Sonnet scored 8.3/9 on buried-trap
 discovery, matching Haiku-plus-grounding-instruction (8/9)** — one model tier absorbed
 the instruction's entire measured value, on a pre-declared interpretation rule
-([exp-03 README](../../experiments/03-minimal-harness/README.md) § tier 2). A layer-4
+([exp-03 README](../../experiments/03-minimal-harness/README.md) § tier 2). A category-4
 margin measured today is a claim about *current-tier* models with a built-in
 expiration date.
 
-**3. The published effect sizes live at layer 2.** With the model held fixed,
+**3. The published effect sizes live at category 2.** With the model held fixed,
 [swe-agent-2024](../../refs/2024-swe-agent.md) measured the agent-computer interface
 alone at **+64% relative** over a bare shell, priced both chokepoints separately
 (viewer window shape, history collapse, an edit-gating linter each worth points), and
 found a badly shaped search tool scoring **below no tool at all**.
 [agent-frameworks-eval](../../refs/2025-agent-frameworks-eval.md) traced repair gaps to
 patch *tooling*, not reasoning, and single-agent beat multi-agent on all its tasks.
-Meanwhile our own layer-2 baseline (Claude Code) has never been the varied factor in
+Meanwhile our own category-2 baseline (Claude Code) has never been the varied factor in
 any experiment here — we have been measuring the small lever while holding the big
 one constant, and the big one is uncharacterized.
 
@@ -82,9 +82,9 @@ Three measurement tracks and a standing rule (backlog detail in issue #17):
 
 **Standing rule:** workflow frameworks are measured at the **artifact level only**
 (requirements rubrics, documented-decision counts, attention-split). No more code-
-outcome A/Bs at layer 4.
+outcome A/Bs at category 4.
 
-## What would reopen layer-4 A/Bs
+## What would reopen category-4 A/Bs
 
 The position is a bet, so its falsifiers are stated: (a) a task class where a
 framework's code effect *exceeds* the measured band at the current model tier —

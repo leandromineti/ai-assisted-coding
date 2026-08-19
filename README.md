@@ -316,7 +316,7 @@ note. Revised when evidence moves._
     (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
     one check (t3c) went 0/20 with satisfiability unproven. →
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
-    [`notes/cross-cutting/layer-2-program.md`](notes/cross-cutting/layer-2-program.md)
+    [`notes/cross-cutting/category-2-program.md`](notes/cross-cutting/category-2-program.md)
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18,
     memory-kind reading arc: one deep-dive, two surveys, three instrument full-reads).
     The kind's verified substance is real — three distinct wagers (markdown wiki / RL
