@@ -24,8 +24,8 @@ defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.m
 | [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
 | [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
 | [memos](../notes/05-capability-extensions/memos.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
@@ -61,8 +61,8 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 | Tool | memory store | capture path | recall injection | memory scope | memory tiers | hybrid retrieval | decay | injection trust boundary | deployment mode | harness installer | rule extraction |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `both` | `project`, `user` | ✓ | ✓ | ✓ | ✓ | `self-host` | ✓ | ✓ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | ✗ | `both` | ✓ | · |
 | [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | `pull-only` | `agent`, `session` | ✓ | · | · | · | `both` | · | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `auto` | `user`, `agent`, `session` | ✓ | ✓ | ✓ | · | `both` | ✓ | · |
 | [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `auto` | `session` | ✓ | ✓ | ✓ | ✓ | · | ✓ | · |
 | [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · |

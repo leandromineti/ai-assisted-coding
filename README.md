@@ -326,7 +326,16 @@ note. Revised when evidence moves._
     2026-08-19: the comparison is now an 11-key `memory_features` registry block and
     generated matrix — [ADR-0013](adrs/0013-memory-features-block.md); first cut shows
     the engineering axes converged, the identity axes split four ways, and the headline
-    continuity bet resting on one verified instance.)* But every
+    continuity bet resting on one verified instance.)* **Deepened (2026-08-19, mem0
+    deep-dive — the kind's second):** the "converged engineering axes" partly dissolved
+    on source contact — two of mem0's four ✓s flipped (tiers: a metadata tag; decay:
+    OSS params that raise, platform-only), sharpening the conclusion's own point: the
+    coding-agent product is where the claims live, and reading client parameters as
+    capabilities inflates the open tier. New instance of the pattern: the OSS SDK
+    contains a 1,582-line remotely-scripted A/B upsell funnel (`notices.py`) — the
+    benchmark-vs-product gap is not just marketing outside the repo, it is
+    instrumentation inside it. →
+    [`notes/05-capability-extensions/mem0.md`](notes/05-capability-extensions/mem0.md) But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
     **No coding-agent memory benchmark exists**, and the two vendor headline numbers

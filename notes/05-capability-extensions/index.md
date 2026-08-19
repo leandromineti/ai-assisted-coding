@@ -40,14 +40,17 @@ The reading arc's prose comparison became a registry block
 [matrix](../../comparisons/features.md#memory-extensions-layer-5-kind-memory), cells
 set only on the four read tools. What the first cut shows:
 
-- **Where the kind agrees** (4/4 among read tools): typed memory tiers; and 3/4 on
-  hybrid retrieval fusion, decay lifecycles, and shipping a harness installer — the
-  engineering table stakes have converged even though formats haven't.
+- **Where the kind agrees** — *weakened by the mem0 deep-dive (2026-08-19), which
+  flipped two of its survey ✓s*: typed tiers are now 3/4 (mem0's "tier" is a metadata
+  tag), decay 2✓/1✗/1·, hybrid fusion and installers hold at 3/4. The survey-depth
+  "engineering table stakes converged" reading was partly an artifact of reading
+  client parameters as capabilities — the deep-dive found the params raise in OSS.
 - **Where it splits** — the identity axes: store wager (`files-git` / `vector` /
   `rows+vector` / `graph+vector+rows`, no two alike), capture path (hook / adapter /
   agent-invoked), recall injection (auto / pull-only / both), and the trust boundary
-  (2✓, one explicit open question, one unchecked — the security axis is the least
-  converged, and memory injection is a prompt-injection vector).
+  (2✓ / 1✗ / 1· — mem0's open question settled to a verified ✗ at deep-dive, with the
+  openclaw recall protocol actively inverting the boundary; the security axis is the
+  least converged, and memory injection is a prompt-injection vector).
 - **The asymmetry worth flagging**: every axis above has 2–4 verified instances, but
   the kind's *headline* bet — cross-harness continuity as a working mechanism — has
   exactly **one** (ai-memory's baton, and it is thin: first + last prompt + tool
@@ -76,7 +79,7 @@ which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than
 |---|---|---|
 | [**ECC** (everything-claude-code)](ecc.md) | deep-dive (2026-07-30) | 236k stars in ~6.5 months; reclassified here from provisional layer 4 — a config pack at scale (281 skills, 67 agents, rules, enforcement hooks) plus the set's only *harness-independent* autonomous learning loop (hook-observed "instincts", traced in source). Solo-author; commercial ring (Pro, GitHub App); `ecc2` Rust control plane growing toward layer 2. |
 | [**ai-memory**](ai-memory.md) | deep-dive (2026-08-18) | Cross-harness memory as one Rust daemon: hook capture (closed 10-kind vocabulary) → rule-based session pages in a git-versioned markdown wiki → heuristic handoff injected at next session start, any harness. Zero-LLM default path; with a provider, a **source-verified background learning loop** auto-approves its own wiki edits (`_rules/`, `procedures/`) — second harness-independent instance after ECC. Surprise: the continuity baton is first + last prompt + tool names, no LLM; the rich memory is pull-only via 18 MCP tools. |
-| [**mem0**](mem0.md) | survey (2026-08-18) | The kind's commercial pole (YC-backed platform + OSS SDK). Shipped write path ≠ the 553-citation paper: V3 is ADD-only extraction with linking, the paper's ADD/UPDATE/DELETE/NOOP phase is retired. In-repo plugin installs hook capture into six harnesses with a **background learning loop** (Stop-hook capture, `infer=True`) — fourth verified instance — plus the kind's most aggressive move: a PreToolUse gate that **blocks the harness's native MEMORY.md writes** and redirects to mem0's tool. Displacement, not just colonization. Vendor paper graded separately ([2025-mem0](../../refs/2025-mem0.md)): its own full-context baseline beats the memory system on quality. |
+| [**mem0**](mem0.md) | **deep-dive (2026-08-19)** | The kind's commercial pole (YC-backed platform + OSS SDK). Shipped write path ≠ the 553-citation paper: V3 is ADD-only extraction with linking, the paper's ADD/UPDATE/DELETE/NOOP phase is retired. In-repo plugin installs hook capture into six harnesses with a **background learning loop** (Stop-hook capture, `infer=True`) — fourth verified instance — plus the kind's most aggressive move: a PreToolUse gate that **blocks the harness's native MEMORY.md writes** and redirects to mem0's tool. Displacement, not just colonization. Vendor paper graded separately ([2025-mem0](../../refs/2025-mem0.md)): its own full-context baseline beats the memory system on quality. **Deep-dive 2026-08-19** (same pin): two matrix cells flipped (tiers, decay — both platform-only or tag-deep in OSS); trust boundary settled ✗ (openclaw protocol makes memories authoritative: "Rules override your defaults"); the displacement gate run-probed — narrow path glob, fails open without jq, broader on Cursor than Claude Code, prose carries the real intent; V3 removed graph from OSS in the commit that added it; and the SDK ships a 1,582-line remotely-scripted A/B upsell funnel (notices.py) with 5× the add-pipeline's test coverage. |
 | [**cognee**](cognee.md) | survey (2026-08-18) | The kind's incumbent (2023-08, 30.1k stars) and its knowledge-graph pole — at the price of a tripartite graph+vector+relational consistency surface. Membership verdict: the SDK sits in the bucket **via its shims**, and the shims are where the coding-agent product lives (agent-scoped datasets, session/permanent split, agent-invoked `improve` consolidation, coding-rule extraction). No autonomous loop in-repo (`learning_loop: false`); the marketplace plugin automates capture but runs in API mode, where rule extraction is explicitly skipped. ai-memory's opposition dossier spot-checked: both structural claims corroborated (LiteLLM/Instructor churn guard; the Ladybug fork's costs written into pyproject). |
 | [**memori**](memori.md) | stub (2026-08-18) | "Memory from what agents do, not just what they say" — Rust core with Python/Node bindings, BYODB or cloud, 16.1k stars in ~13 months. Action-capture framing, embeddable-engine shape. |
 | [**everos**](everos.md) | stub (2026-08-18) | EverMind's "Ever OS": durable writes + retrieval, Claude Code plugin shipped in-repo. Youngest seed (first commit 2026-06-05; 12.1k stars in ~10 weeks, on only 88 commits — read its numbers with that ratio in mind). |

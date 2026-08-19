@@ -12,148 +12,237 @@ commit: 001c2352
 first_commit: 2023-06-20
 stars: 63535
 stars_at: 2026-08-18
-read_at: 2026-08-18   # survey read, same day as the stub; vendor paper read separately at full depth (refs/2025-mem0.md)
-depth: survey   # read: mem0/memory/main.py (V3 add pipeline end-to-end, search/update entry points), configs/prompts.py (additive extraction prompt), integrations/mem0-plugin (README, hooks.json, script headers for on_stop / block_memory_write / import_competing_tools). NOT read: mem0-ts, server/, reranker internals, the openclaw and pi-agent integrations, cli/ bodies
-harness_targets: "in-repo at the pin: integrations/mem0-plugin targets Claude Code, Claude Cowork, Cursor, Codex, OpenCode, Antigravity (hooks.json + codex-hooks.json + cursor-hooks.json + a Kimi shim; MCP config bundled); also integrations/openclaw and pi-agent-plugin (unread), plus non-harness carriers (vercel-ai-sdk, zapier, n8n) and six in-repo SKILL.md skills"
+read_at: 2026-08-19   # deep-dive, same pin as the 2026-08-18 survey (zero upstream drift); vendor paper separately at full depth (refs/2025-mem0.md)
+depth: deep-dive   # 2026-08-19: three parallel readers at the pin (plugin/carrier script bodies; SDK write/read machinery incl. async + TS port; platform boundary/server/benchmark provenance), load-bearing claims spot-verified in main session; displacement gate RUN-probed with synthetic hook payloads (host + alpine/jq container)
+harness_targets: "in-repo at the pin: integrations/mem0-plugin targets Claude Code, Claude Cowork, Cursor, Codex, OpenCode, Antigravity (hooks.json + codex-hooks.json + cursor-hooks.json + a Kimi shim; MCP config bundled — all four MCP manifests point at the hosted mcp.mem0.ai, no stdio/localhost option); also integrations/openclaw (the only carrier with an OSS code path) and pi-agent-plugin, plus non-harness carriers (vercel-ai-sdk — which bypasses the SDK entirely, zapier, n8n) and 16 in-repo skills (survey's six-skill count was the pi-agent set)"
 features:
-  skills: true   # six skills in-repo (skills/mem0, mem0-cli, mem0-integrate, …); SKILL.md payloads verified by listing, behavior not read
-  learning_loop: true   # background, via the in-repo harness plugin: Stop/PreCompact hooks capture session summaries with infer=True → the V3 LLM extraction write path runs without human approval; SessionStart/UserPromptSubmit inject recall. Verified at hooks.json + script-header + main.py level (script bodies not fully read). Fourth harness-independent instance
-memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey read at 001c2352 — not a re-read; script bodies unread caveat carries over
-  memory_store: vector           # vector store + lemmatized BM25 hybrid over it, per user/agent/session
-  capture_path: hook             # Stop/PreCompact hooks → infer=True → V3 ADD-only LLM extraction
-  recall_injection: auto         # SessionStart + UserPromptSubmit injection scripts (verified at header level)
-  memory_scope: [user, agent, session]
-  memory_tiers: true             # procedural_memory type alongside episodic default
-  hybrid_retrieval: true         # vector + BM25 + optional reranker, filter DSL
-  decay: true                    # per-memory expiration_date, show_expired, reference_date time-travel
-  # injection_trust_boundary deliberately unset: an explicit open question in this report, not a checked ✗
-  deployment_mode: both          # OSS BYO-store vs managed platform — and the plugin DEFAULTS to platform
-  harness_installer: true        # hooks.json bundle across 6 harnesses + MCP config
+  skills: true   # 16 skill dirs in the Claude plugin (context-loader, dream, import, policy, remember, …) — survey's "six" corrected at deep-dive
+  learning_loop: true   # background, via the in-repo harness plugin: Stop/PreCompact hooks capture with infer=True → V3 LLM extraction, no human in loop; PLUS auto_capture every 3rd message uploading raw turns, and auto_import shipping CLAUDE.md/AGENTS.md/.cursorrules to the platform on session start with no consent step (deep-dive)
+memory_features:   # deep-dive 2026-08-19 — two survey cells FLIPPED (memory_tiers, decay), one settled (injection_trust_boundary)
+  memory_store: vector           # one shared collection + an entity store (second vector collection, spaCy-extracted, one-hop). GRAPH MEMORY REMOVED from OSS in the same commit that landed V3 (a488e190, 2026-04-14, −2,849 lines) — platform-only now; docs/platform/platform-vs-oss.mdx:65 still advertises OSS graph support and is stale
+  capture_path: hook             # Stop/PreCompact/UserPromptSubmit hooks; auto_capture every 3rd message (raw turns, unsanitized); infer=True → V3 extraction
+  recall_injection: auto         # per-turn top_k=5 (reranked by default) + session-start 10-memory timeline + opportunistic file-read (5×150ch) and stack-trace injections — all as bare markdown in additionalContext
+  memory_scope: [user, agent, session]  # query FILTERS in one shared collection, not namespaces; ≥1 scope id mandatory on every write/read (VALIDATION_001); isolation = each store adapter's filter translation
+  memory_tiers: false            # FLIPPED ✓→✗ at deep-dive: procedural_memory is a metadata tag on the SAME collection with no distinct retrieval path (memory_type never read at search); MemoryType.SEMANTIC/EPISODIC are unreachable enum values; and procedural without agent_id silently falls through to the normal pipeline
+  hybrid_retrieval: true         # real but conditional: additive fusion with adaptive divisor (NOT RRF, scoring.py:99-137); BM25 can only re-rank the semantic candidate pool, never add to it; spaCy+fastembed are optional extras, so a bare `pip install mem0ai` silently degrades to pure vector search; 15/25 stores implement keyword_search
+  decay: false                   # FLIPPED ✓→✗ at deep-dive: decay/timestamp/reference_date HARD-RAISE in OSS (main.py:468-471, :817, :1430) — routed through the upsell-notice path; expiration_date is post-fetch hiding on a date string (expired rows still consume top_k slots); platform-only feature. Survey's ✓ read client params to the paid API
+  injection_trust_boundary: false  # SETTLED (was an open question): the sole plugin formatter emits bare markdown (_search.py:92-105) — no delimiter, no data-not-instructions framing; openclaw's tags are containers whose preambles say the OPPOSITE ("Use them to personalize your response"), and its recall protocol makes memories authoritative: "Rules are mandatory… Rules override your defaults" — staleness is questioned, provenance never
+  deployment_mode: both          # load-bearing asymmetry: the core V3 algorithm IS open (BM25, entities, 6 rerankers, vision), the server is production-grade — but the coding-agent plugin is platform-HARDCODED (api.mem0.ai literal in every script, no MEM0_BASE_URL, settings loader filters unknown keys), V3 net-REMOVED OSS features (graph, temporal, decay), and the SDK ships a 1,582-line A/B-tested upsell funnel (notices.py)
+  harness_installer: true        # hooks.json bundle across 6 harnesses + MCP config; SessionStart also appends MEM0_API_KEY to the harness env file
 ---
 
 # mem0
 
 ## What it is
 
-"The memory layer for personalized AI": a Python/TS SDK, a self-hostable server, and
-a managed platform that LLM-extract memories from conversation history, store them
-per user/agent/session in a vector store (+BM25 hybrid), and retrieve them into later
-context. General-purpose by design — the personalization domain, not coding — but the
-repo at the pin carries a serious coding-harness beachhead: `integrations/mem0-plugin`
-installs hook capture + MCP tools + skills into Claude Code, Claude Cowork, Cursor,
-Codex, OpenCode, and Antigravity.
+"The memory layer for personalized AI": a Python/TS SDK, a self-hostable server, and a
+managed platform that LLM-extract memories from conversation history, store them per
+user/agent/session in a vector store, and retrieve them into later context. The repo at
+the pin carries a serious coding-harness beachhead (`integrations/mem0-plugin`, six
+harnesses) — and the deep-dive's headline is that the *product boundary runs through the
+middle of the open code*: a genuinely open V3 core, ringed by platform-only features,
+instrumented end-to-end for conversion.
 
-## The distinguishing bet
+## The write path, traced to its dead ends
 
-**Memory is an inference problem with a benchmark** — an LLM-scored extraction
-pipeline behind an API, sold on recall metrics and token efficiency; the opposite
-wager from ai-memory's zero-LLM grep-able wiki, and a managed-service bet (YC company)
-against local file artifacts. The vendor paper's honest version of the claim is an
-*efficiency frontier*, not accuracy — see [2025-mem0](../../refs/2025-mem0.md): its
-own full-context baseline beats the memory system on quality.
+The survey's V3-ADD-only finding is **confirmed structurally, not just behaviorally** —
+the machinery that could do anything else is dead code:
 
-## The shipped pipeline is not the paper's pipeline
+- The "anti-hallucination" integer→UUID mapping is built and never read: `uuid_mapping`
+  has exactly four occurrences in the SDK, all assignments (`main.py:935,937,2591,2593`).
+  No LLM-returned ID is ever resolved. Nothing the model says can touch an existing
+  memory.
+- `linked_memory_ids` — the mechanism the additive design offers *instead of* UPDATE —
+  is prompt theatre in OSS: three prompt passages and an output-schema field, parsed and
+  then discarded (the record loop reads only `text` and `attributed_to`,
+  `main.py:1024-1041`). The prompt even tells the model the IDs are UUIDs while the code
+  passes `"0"`, `"1"`. The platform client's docstring references "the v3
+  `linked_memory_ids` chain" as a real feature — real *there*, not here.
+- The prompt's `## Summary` and `## Recently Extracted Memories` sections are **always
+  empty**: the builder accepts them, both call sites pass neither (`main.py:948`), and no
+  summarizer exists in OSS. Observation Date — "your ONLY temporal anchor" per the
+  prompt — is always *now, UTC*; `add(timestamp=…)` raises. Roughly a third of the
+  described input contract is unfilled platform-port scaffolding.
+- Dedup (MD5 over extracted text alone) is checked only against the same top-10
+  neighbours the prompt saw, and only on the V3 path — `infer=False` and procedural
+  writes can duplicate freely.
+- Contradiction handling is the caller's job, confirmed: nothing in the SDK ever calls
+  `update()`/`delete()` automatically (the OpenAI-proxy wrapper calls only `add` and
+  `search`); a shifted preference is a *linking* trigger in the prompt, and the link is
+  discarded. The SQLite `history` audit table has UPDATE/DELETE event types that `add()`
+  never produces.
 
-The paper (2025-04) describes extraction + an LLM update phase choosing
-ADD/UPDATE/DELETE/NOOP per fact against similar memories. The code at the pin has
-replaced that: `_add_to_vector_store` (`mem0/memory/main.py:879`) is the "V3 phased
-batch pipeline" — **ADD-only**. One LLM call over (conversation summary, last-k
-messages, top-10 existing memories with integer anti-hallucination IDs) extracts
-self-contained facts; then MD5-hash dedup, batch embedding, batch persist, and batch
-entity linking. No LLM-mediated UPDATE/DELETE in the write path; relatedness is
-recorded as `linked_memory_ids`, contradiction handling shifts to retrieval
-(expiration dates, filters, optional reranker) and to an explicit `update()` API the
-*caller* must invoke. The prompt (`configs/prompts.py:464`, "Ported from
-platform/backend") enforces temporal grounding — every relative time reference must
-be resolved against an Observation Date, "'User went to Paris last week' is useless
-6 months later." This is the 2026 rewrite the README's 92.5/94.4 numbers refer to;
-neither the paper's architecture nor its scores describe what ships.
+The test suite pins almost none of this: no golden prompt, zero dedup tests, zero
+`uuid_mapping` tests, and the only structural guard is four `call_count == 1`
+assertions — while ~2,900 lines test the upsell-notice subsystem (~5× the add pipeline)
+and `tests/configs/test_prompts.py` still tests the *retired* ADD/UPDATE/DELETE prompt
+in full. Living tests for dead code, no tests for live code.
 
-## The harness carriers (where the kind's questions get answered)
+## The read path — hybrid, conditionally
 
-`integrations/mem0-plugin`, verified at hooks.json + script level:
+Fusion is real but it is **additive with an adaptive divisor, not RRF**
+(`scoring.py:99-137`): `min((semantic + bm25 + 0.5·entity) / max_possible, 1.0)`, with
+the divisor growing per signal present. Two structural limits: candidates come **only**
+from semantic search (BM25 re-ranks the pool, can never add to it), and `threshold`
+gates the semantic score *before* fusion, so a strong keyword match with weak embedding
+similarity is dropped. Both lemmatization/entities (spaCy, English-only
+`en_core_web_sm`, auto-downloads at first use) and BM25 encoding (fastembed) are
+optional extras — **a bare `pip install mem0ai` silently degrades to pure vector
+search** (the SDK warns only when the *store* lacks keyword search, not when the extras
+are missing). 15 of 25 stores implement `keyword_search`; only 4 of 25 implement the
+advanced filter DSL's `$or`/`$not`/`icontains` — the parser accepts what most backends
+then drop.
 
-- **Capture**: five Claude Code events (SessionStart, UserPromptSubmit, PreToolUse,
-  PostToolUse, Stop) with per-harness variants (codex-hooks.json, cursor `.sh`
-  twins, a Kimi shim). The Stop hook parses the transcript and stores a structured
-  session summary **with `infer=True`** — the V3 LLM extraction runs on it with no
-  human in the loop. Subagent sessions are skipped; dedup via marker file.
-- **Injection**: SessionStart and UserPromptSubmit scripts fetch and inject recall
-  (script headers read; bodies not).
-- **The kind's most aggressive move, source-verified**: `block_memory_write.sh` is a
-  PreToolUse gate on `Write|Edit` that **exits 2 to block the harness's own native
-  memory writes** (MEMORY.md, auto-memory files) and tells the model to use mem0's
-  `add_memory` MCP tool instead. Conclusion 8's counter-current escalated: not just
-  colonizing a harness that has native memory — actively suppressing the native
-  feature to displace it.
-- **Competitive import**: `import_competing_tools.py` migrates `.cursorrules`,
-  Copilot instructions, cline's memory-bank, and Continue rules into mem0 as
-  project-profile memories. Switching-cost engineering, in a plugin.
-- **Agent self-provisioning**: `mem0 init --agent --json` mints an evaluation API
-  key in seconds with no email or browser, "if you're an AI agent setting up Mem0
-  autonomously" — the owner can claim it later, memories transfer. The first
-  agent-first onboarding path seen in the study.
+## Graph memory: removed, not absent
 
-Membership verdict, sharpened from the stub: same as cognee — the SDK earns bucket
-membership via carriers — but unlike cognee, the carrier with the learning loop lives
-*in the same repo* and its capture path feeds the same V3 pipeline the SDK exposes.
+`a488e190` (2026-04-14) — the same commit that landed V3 in OSS — deleted the entire
+graph subsystem (9 files, 2,849 lines; no `graph_store` in `MemoryConfig`, no graph
+extra in pyproject). Docs say it moved to the platform as an always-on feature;
+`docs/platform/platform-vs-oss.mdx:65` still advertises OSS graph support (stale), and
+`examples/graph-db-demo/` ships 5 notebooks configuring a key the SDK no longer has.
+What replaced it in OSS is an *entity store*: a second vector collection of
+spaCy-extracted entities with one-hop links and a capped 0.5 retrieval boost — an
+association layer, not a graph.
 
-## Main features
+## The displacement gate, run-probed
 
-- Two-mode deployment: OSS SDK (BYO vector store + LLM; `infer=False` degrades to raw
-  message storage) or platform API; the plugin defaults to platform.
-- Hybrid retrieval: vector + lemmatized BM25, a full filter DSL (eq/ne/in/gt/…,
-  AND/OR/NOT, wildcards), optional reranker, per-memory `expiration_date`,
-  `show_expired` and `reference_date` for time-travel queries.
-- Session summaries and compact-summaries captured at PreCompact/Stop; procedural
-  memory writes for agent workflows (`memory_type="procedural_memory"`).
-- Six in-repo SKILL.md skills, MCP server config, and a CLI with agent-first init.
+The survey's headline ("blocks the harness's native memory writes") survives the probe
+**narrowed**. Measured with synthetic PreToolUse payloads (host + alpine/jq container):
 
-## Stack & repo shape
+| Path | Claude gate | Cursor gate |
+|---|---|---|
+| `~/.claude/projects/<key>/memory/MEMORY.md` | **exit 2** | deny |
+| `~/.claude/memory/*` | **exit 2** | deny |
+| `~/.claude/MEMORY.md` | allow | deny |
+| repo-level `MEMORY.md` | allow | **deny** |
+| `CLAUDE.md` anywhere | allow | allow |
 
-TS + Python monorepo (433 `.ts`, 370 `.py`, 245 `.mdx` — docs-heavy), npm + PyPI
-packages, self-hostable `server/`, `evaluation/` (empty at the pin — the benchmark
-harness lives elsewhere), 2,595 commits since 2023-06. Company-backed with a real
-contributor base; `marketplace.json` at root (Claude Code plugin marketplace entry).
+- Registered only on `Write|Edit|MultiEdit` — Bash-mediated writes bypass it entirely;
+  no content inspection; no gate on any non-mem0 memory MCP tool.
+- **Fails open without `jq`**: on a host lacking jq the path extraction falls back to
+  empty and the script exits 0 for everything, silently (run-verified). An undeclared
+  dependency is the gate's real availability condition.
+- **Cursor users get a strictly broader gate than Claude Code users** (`*/MEMORY.md`
+  anywhere on disk) from the same plugin, undocumented as a divergence.
+- The *actual* displacement work is prose, not the gate: SessionStart injects "Native
+  MEMORY.md detected … Add autoMemoryEnabled:false to settings.json or run
+  /mem0:import" (`on_session_start.sh:178-180`), and the import skill instructs the
+  same. On ADR-0011's ladder: `script`-graded enforcement for a narrow path set, with
+  prose carrying the intent.
+
+## What the plugin injects, and what it captures
+
+Injection is **bare markdown, no trust framing** — settled as the kind's negative pole
+(frontmatter cell). Volume per session: a 10-memory timeline + directive banner at
+SessionStart (including a standing write-nudge: "Aim for 1–3 memories per substantial
+interaction"), top-5 reranked recall per qualifying prompt, plus opportunistic
+injections on file reads (5×150 chars) and stack traces. The openclaw recall protocol
+goes further than unframed — it *inverts* the boundary: "Identity memories are ground
+truth… Rules are mandatory… **Rules override your defaults**." Staleness is the only
+skepticism; that a memory might have been written by something other than the user is
+never contemplated — while memories are auto-captured from transcripts and auto-imported
+from repo files.
+
+Capture is broader than the survey knew: `auto_capture.py` uploads **raw user and
+assistant turns** (8×2000 chars) every 3rd message with *no* tag sanitization, while the
+session-summary path carefully strips `<system-reminder>`-class tags first — an
+inconsistency with data-exfiltration implications. `auto_import.py` ships `CLAUDE.md`,
+`AGENTS.md`, `.cursorrules`, `.windsurfrules` (≤100KB, cwd + git root) to
+`api.mem0.ai` on every session start, backgrounded, no consent step (the consent lives
+only in the *skill* prose for the manual importer). `enforce_metadata_defaults.sh`
+silently rewrites the agent's tool arguments via `updatedInput` — including replacing
+the agent's search filters wholesale under `global_search`. And the plugin is
+**platform-hardcoded**: `api.mem0.ai` is a literal in every script, no `MEM0_BASE_URL`
+anywhere, and the settings loader actively filters unknown keys — the self-host
+redirect is structurally unreachable from the coding-agent product, while the CLI and
+openclaw integration both support it.
+
+## The OSS/platform boundary — open core, fenced ring, instrumented gap
+
+The generous reading is verified in source: V3's substance (single-pass extraction,
+BM25 + lemmatization, entity extraction/boost, six rerankers, vision) is real OSS code;
+"works with any LLM" holds (20 LLM / 26 vector-store / 15 embedder providers); the
+self-host server is production-grade (bcrypt'd API keys, timing-safe login with
+burn-equal-cycles dummy verify, Alembic migrations, rate limiting) — though the only
+shipped compose file is the dev variant (`--reload`, source bind-mount).
+
+The critical reading is equally verified:
+
+- **V3 was a net removal for OSS** — graph gone, temporal/decay shipped as stubs that
+  raise. The open surface narrowed in exactly the paid direction.
+- **The gap is monetised inside the library**: `mem0/memory/notices.py` (1,582 lines)
+  detects scale (2,000 memories), ambition (top_k>50), latency pain (>2s), and even
+  **temporal language in the user's own query strings** (regex on the success path,
+  `main.py:1441`), then serves remotely-controlled marketing copy fetched at runtime
+  from a PostHog feature flag — with `displayed`/`holdout` experiment arms and
+  `notice_displayed` telemetry. The copy is not in the source and cannot be reviewed at
+  any pin. Telemetry defaults ON (`telemetry.py:14`). The self-hosted dashboard
+  independently ships four paywalled pages with UTM-tagged "Talk to sales" CTAs over
+  blurred mockups.
+- **The carriers bypass the open code**: the Vercel AI provider has no `mem0ai`
+  dependency at all (raw fetch to `api.mem0.ai/v3/`); of all carriers only openclaw has
+  an OSS code path. The 30k-line TS OSS engine — a genuine full port, quirks and dead
+  code included — has one consumer.
+
+## Benchmark provenance
+
+The README's 92.5 (LoCoMo) / 94.4 (LongMemEval) are platform numbers, explicitly and
+unusually candidly disclaimed ("proprietary optimizations not available in the
+open-source SDK", README.md:54). The in-repo eval harness (1,993 lines incl. zep/
+langmem/RAG arms) was extracted to `mem0ai/memory-benchmarks` two months pre-pin;
+`evaluation/` is an **uninitialized submodule**, not an empty dir (survey corrected).
+Two contradictory number-sets coexist at the pin — 92.5/94.4 (README) vs 91.6/93.4
+(migration + changelog docs), same baseline, unreconciled, undated. The
+hardest-promoted benchmark (BEAM) is mem0's own — with candidly poor self-reported
+scores (48.6 overall at 10M). Nothing in this repo can reproduce any headline number.
 
 ## Surprises
 
-1. **The plugin blocks the harness's native memory.** A PreToolUse exit-2 gate on
-   MEMORY.md writes, redirecting the model to mem0's own tool — the absorption war
-   fought from the extension side, mechanically. No other seed in the kind does this.
-2. **The paper's signature mechanism is gone from the code.** The ADD/UPDATE/DELETE/
-   NOOP tool-call the paper is cited for (553 citations) no longer exists in the
-   shipped write path; V3 is ADD-only with linking. Anyone reasoning about mem0 from
-   the paper is reasoning about a retired architecture.
-3. **Agent-first onboarding.** `mem0 init --agent` provisions credentials for an
-   unattended agent in seconds, ownership claimable later — infrastructure explicitly
-   designed for agents that install their own memory.
-4. **Competitor-store import ships in the plugin** — cursorrules/copilot/cline/
-   continue migration as a first-class script.
-5. **The OSS pipeline is a downstream port of the platform** ("Ported from
-   platform/backend/shared/core/config/prompts.py") — the open code trails the paid
-   service, inverting the usual OSS-first story the README implies.
+1. **A 1,582-line, A/B-tested, remotely-scripted upsell funnel ships inside the OSS
+   SDK** — with ~5× the test coverage of the extraction pipeline it monitors.
+2. **The paper's replacement mechanism is dead code too.** The survey found the
+   ADD/UPDATE/DELETE phase retired; the deep-dive found its successor
+   (`linked_memory_ids`) built, prompted, parsed — and discarded. OSS mem0 has *no*
+   working memory-revision mechanism; the platform claims one.
+3. **The displacement gate fails open without jq** and diverges per harness (Cursor
+   blocks any `MEMORY.md` on disk; Claude Code only `.claude` paths) — run-verified.
+4. **Session-start exfiltration**: project instruction files uploaded to the platform
+   automatically, no consent; raw-turn capture skips the tag sanitization the summary
+   path applies.
+5. **Graph memory was traded for V3 in a single commit** — an OSS capability
+   regression, with the docs still advertising it in one place.
+6. **`capture_session_summary.py:180-183`** documents the exact role-confusion bug it
+   avoids ("role='user' here turns Claude's opinions into the human's stated
+   preferences") — and the pre-compact path still uses `role: "user"`.
+7. **Python `mem0ai` 2.0.18 and npm `mem0ai` 3.1.6** — same name, same repo, different
+   major versions, both documented as "v3".
+8. The header-vs-body lesson recurred: `on_stop.sh`'s header documents a marker-file
+   dedup its body doesn't implement (the survey had carried the header claim).
 
 ## Open questions
 
-- The plugin's recall injection (`on_session_start.sh`, `on_user_prompt.sh` bodies):
-  how much context per turn, and with what trust framing? memos wraps recall in
-  untrusted-data delimiters; does mem0? (Prompt-injection surface of a
-  platform-backed store is larger than a local one's.)
-- `integrations/openclaw/dream-gate.ts` — what gates what? (The openclaw integration
-  went unread.)
-- The README's LoCoMo 92.5 / LongMemEval 94.4 for this V3 rewrite: measured how, by
-  whom, on which item sets? The paper's scores don't transfer to an architecture it
-  doesn't describe ([2025-mem0](../../refs/2025-mem0.md) closes the paper side; the
-  rewrite's numbers remain vendor-asserted and unreconciled).
-- Does `block_memory_write.sh` fire in practice on Claude Code's memory-tool writes
-  (which may not go through Write/Edit), or only on file-path writes? A rig probe
-  would settle whether the displacement is real or symbolic.
+- Does `mem0ai/memory-benchmarks` (`--backend oss`) reproduce anything? An OSS-arm
+  number would quantify what README.md:54 leaves vague. Requires cloning the sibling
+  repo + paid spend for a cloud arm — preregister if pursued.
+- What does the PostHog notice copy actually say? Unreviewable at any pin; determining
+  it means running with telemetry on (a decision to preregister, since it transmits).
+- Is the `linked_memory_ids` drop a bug or deliberate OSS/platform split? No comment,
+  issue, or test decides it in-repo.
+- Agent-mode shadow-account TTL: no expiry exists in CLI source; server-side unknown.
+- Does the platform's `infer=True` extraction apply provenance/injection filtering
+  server-side? Outside this clone — and given `injection_trust_boundary: false` on the
+  client side, load-bearing for any real deployment.
 
 ## My take
 
-The kind's commercial pole, and the sharpest evidence that memory extensions see
-harness-native memory as a rival to *displace*, not a feature to complement. The
-gap between the cited paper and the shipped V3 pipeline is also the cleanest instance
-yet of why this repo pins commits and reads source: the architecture with 553
-citations is not the architecture in the repo.
+The deep-dive hardened both halves of the survey's verdict and added a third. The
+kind's commercial pole is *more* open at the core than the survey credited (BM25,
+entities, rerankers, vision — all real OSS) and *more* enclosed at the edges than it
+knew (V3 removed OSS capabilities; the plugin is platform-hardcoded; the carriers
+bypass the SDK). The new third finding is the instrumentation: mem0 is the only tool in
+this repo whose open-source artifact contains a live, remotely-controlled marketing
+experiment on its own users — the boundary between product and funnel runs *inside*
+`pip install mem0ai`. And the displacement story matured from a headline into a
+mechanism reading: a narrow, fail-open path gate whose real force is prose — which is,
+fittingly, the same enforcement grade this repo keeps finding everywhere prose is
+cheaper than code.

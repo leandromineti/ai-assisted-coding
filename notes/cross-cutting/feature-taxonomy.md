@@ -165,7 +165,7 @@ features:
     block: memory_features
     applies_to: [5]
     definition: typed memory tiers rather than one flat store (working/episodic/semantic, traces/policies, session/permanent)
-    note: "added 2026-08-19 per ADR-0013; instances: all four read tools — the one axis the kind agrees on"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos, cognee — WAS 'all four' until mem0's deep-dive (2026-08-19) flipped its cell: procedural_memory is a metadata tag on one collection, not a tier"
   - id: hybrid_retrieval
     block: memory_features
     applies_to: [5]
