@@ -344,7 +344,19 @@ note. Revised when evidence moves._
     published npm artifact — runs with that machinery unmounted. The kind's pattern is
     now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
     benchmarks what the shipped default doesn't enable. →
-    [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md) But every
+    [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
+14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19,
+    exp-04, n=1 per arm — a probe). The memory kind's headline bet, measured for the
+    only tool that ships a continuity mechanism (ai-memory, pin-built): the automatic
+    floor is **0/10** — the session-start baton carries the latest session's first/last
+    prompts, and mid-session conversational facts never reach it (out-of-box AND with
+    injection explicitly enabled) — while agent-initiated pull recovers **10/10
+    verbatim across the harness boundary** (Claude Code capture → opencode recall),
+    and same-harness scores identically: the harness boundary costs nothing on the
+    pull path. Continuity rests entirely on the receiving agent knowing to ask.
+    Incidental: the run was blocked by a live MCP-schema-vs-Anthropic-API interop seam
+    whose fix ships default-off — presence≠operative, measured blocking a real run. →
+    [`experiments/04-memory-continuity/`](experiments/04-memory-continuity/README.md) But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
     **No coding-agent memory benchmark exists**, and the two vendor headline numbers

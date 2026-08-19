@@ -56,8 +56,12 @@ set only on the four read tools. What the first cut shows:
   the kind's *headline* bet — cross-harness continuity as a working mechanism — has
   exactly **one** (ai-memory's baton, and it is thin: first + last prompt + tool
   names, no LLM). The category's sales pitch rests on its least-instantiated feature.
-  The [rig question](#open-questions) (capture a session, switch harness, measure what
-  the second agent actually knows) is what would test it.
+  ~~The rig question (capture a session, switch harness, measure what the second agent
+  actually knows) is what would test it.~~ **Measured 2026-08-19 (exp-04, n=1)**: the
+  automatic floor is 0/10, the pull ceiling 10/10 verbatim, and the harness boundary
+  costs nothing on the pull path — the bet is real and entirely **pull-shaped**
+  (conclusion 14). The kind's pitch says "your agent remembers"; the measurement says
+  "your agent can look it up, if it asks".
 
 Single-instance bets stay out of the vocabulary by the two-instance rule but are the
 differentiators to watch: zero-LLM default (ai-memory), git-versioned store

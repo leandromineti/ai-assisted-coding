@@ -270,3 +270,16 @@ with `max_sessions_per_tick = 1` is sized to stay cheap.
   orchestrator. Verify in source if the arc's cross-harness question stays live.
 - `docs/llm-provider-comparison.md` and `evals/` exist in-repo — does the vendor's own
   eval say anything falsifiable about consolidation quality?
+
+## Run probe — 2026-08-19 (exp-04; docs/source/run now all three views — rule 8)
+
+The deep-dive's central caveat, measured: **the baton buys nothing for mid-session
+facts (0/10, even with injection explicitly enabled), and pull recovers everything
+(10/10 verbatim, cross-harness = same-harness)** — continuity is real and entirely
+pull-shaped ([exp-04](../../experiments/04-memory-continuity/README.md), conclusion 14).
+Mechanics observed live: each headless `-p` turn is its own session; zero-LLM pages
+store ~80-char prompt prefixes; full text survives only in `observations_fts` (which
+is what pull reaches); the served briefing carries the untrusted-data boundary this
+report's trust cell claims. One interop scar: v1.28.1's `memory_read_page` schema
+(top-level `oneOf`) is rejected by the Anthropic API — fixed at this report's pin by
+`strip_root_combinators`, which ships **default-off**.

@@ -64,3 +64,11 @@
   PIN contains it. Building at the pin (docker rust, read-only clone) and re-running
   B2 with the pinned binary. A probe finding in its own right: MCP tool schemas vs
   schema-strict model APIs is a live interop seam.
+
+## 2026-08-19 — arms complete, arc closed
+
+B2 10/10 and A-control 10/10 (A-driver failed once on `claude -p` flag parsing —
+prompt swallowed, caught by artifact check, re-run via stdin, deviation recorded in
+results). Results appended below the untouched protocol; artifacts archived in-repo;
+conclusion 14 added; ai-memory report + bucket index updated. Daemon stopped after
+runs. Total metered spend ~ $1 (5 sonnet sessions + 2 haiku).
