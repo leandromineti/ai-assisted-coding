@@ -15,10 +15,11 @@ knowledge_cutoff: <vendor-stated>
 # API-feature keys (2026-08-17) — set ONLY when verified against `url`-linked vendor
 # docs on the `checked` date; omitted = not checked (models matrix renders ·).
 # Free-text values: the economics differ structurally across vendors.
-thinking: <adaptive | extended | none — generation + control style>
-effort_control: "<effort/reasoning-level parameter: default and surfaces, if offered>"
-prompt_caching: "<write/read economics + TTLs, in the vendor's own terms>"
-batch_discount: "<async batch pricing, if offered>"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: <adaptive | extended | none — generation + control style>
+  effort_control: "<effort/reasoning-level parameter: default and surfaces, if offered>"
+  prompt_caching: "<write/read economics + TTLs, in the vendor's own terms>"
+  batch_discount: "<async batch pricing, if offered>"
 checked: <YYYY-MM-DD — the date every spec above was verified against `url`>
 depth: <stub | survey>
 ---

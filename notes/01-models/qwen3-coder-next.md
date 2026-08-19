@@ -12,10 +12,11 @@ context_window: 262144
 max_output: 65536   # Model Studio context-limits table; max input 204800 of the 262144 window (verified 2026-08-17)
 pricing: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
 knowledge_cutoff: "not stated by Qwen — HF README (full read), Model Studio page, and launch blog all silent (checked 2026-08-17)"
-thinking: "none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)"
-effort_control: "n/a — no thinking mode, so Model Studio's thinking_budget/reasoning_effort surfaces are not offered for this model"
-prompt_caching: "unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash"
-batch_discount: "unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: "none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)"
+  effort_control: "n/a — no thinking mode, so Model Studio's thinking_budget/reasoning_effort surfaces are not offered for this model"
+  prompt_caching: "unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash"
+  batch_discount: "unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)"
 checked: 2026-08-17
 depth: stub
 ---

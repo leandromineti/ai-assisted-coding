@@ -12,9 +12,10 @@ context_window: 1000000
 max_output: 128000
 pricing: "$10 / $50 per MTok (verified 2026-08-17)"
 knowledge_cutoff: "Jan 2026 (reliable) — older than Opus 5's May 2026"
-thinking: "adaptive (always on)"
-prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
-batch_discount: "50% in+out ($5 / $25 per MTok)"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: "adaptive (always on)"
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
+  batch_discount: "50% in+out ($5 / $25 per MTok)"
 checked: 2026-08-17
 depth: stub
 ---

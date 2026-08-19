@@ -47,3 +47,4 @@ living docs, the ADR trail is the decoder.
 | [0011](0011-graded-gate-enforcement.md) | 2026-08-18 | Graded enforcement values (engine/hook/script/prose) for the gate features | accepted |
 | [0012](0012-layer-2-feature-set.md) | 2026-08-18 | Layer-2 feature set: `ptc` + graded `turn_end_gates` | accepted |
 | [0013](0013-memory-features-block.md) | 2026-08-19 | Third registry block: `memory_features` for layer-5 memory tools | accepted |
+| [0014](0014-model-features-into-registry.md) | 2026-08-19 | Model API-feature keys fold into the registry (`model_features` block) | accepted |

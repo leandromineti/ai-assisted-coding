@@ -12,9 +12,10 @@ context_window: 200000
 max_output: 64000
 pricing: "$1 / $5 per MTok (verified 2026-08-17)"
 knowledge_cutoff: "Feb 2025 (reliable); training data Jul 2025"
-thinking: "extended (budget_tokens) — the only current model without adaptive thinking"
-prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"
-batch_discount: "50% in+out ($0.50 / $2.50 per MTok)"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: "extended (budget_tokens) — the only current model without adaptive thinking"
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"
+  batch_discount: "50% in+out ($0.50 / $2.50 per MTok)"
 checked: 2026-08-17
 depth: survey
 ---

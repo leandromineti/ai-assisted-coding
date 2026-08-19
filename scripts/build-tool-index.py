@@ -62,7 +62,7 @@ def _load_feature_registry() -> list[dict]:
     entries = (data or {}).get("features")
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
-    known_blocks = {"features", "workflow_features", "memory_features"}
+    known_blocks = {"features", "workflow_features", "memory_features", "model_features"}
     for e in entries:
         for req in ("id", "block", "applies_to", "definition"):
             if req not in e:
@@ -84,16 +84,11 @@ MEMORY_FEATURE_KEYS = [
     e["id"] for e in FEATURE_REGISTRY if e["block"] == "memory_features"
 ]
 
-# Layer-1 API-feature keys (added 2026-08-17): the drift-prone, experiment-relevant
-# surface of a model's API. Same verified-only semantics as FEATURE_KEYS — a key is
-# set only when confirmed against the report's `url` on its `checked` date; omitted
-# renders as · (not checked, not a no). Free-text values, because the economics
-# differ structurally across vendors (multipliers vs absolute prices vs TTL tiers).
+# Layer-1 API-feature keys: registry-driven since ADR-0014 (definitions and
+# verified-only semantics live in the feature taxonomy; reports carry them in a
+# nested `model_features:` block).
 MODEL_FEATURE_KEYS = [
-    "thinking",         # adaptive | extended | none — generation + control style
-    "effort_control",   # effort/reasoning-level parameter: default and surfaces
-    "prompt_caching",   # write/read economics + TTLs, in the vendor's own terms
-    "batch_discount",   # async batch pricing, if offered
+    e["id"] for e in FEATURE_REGISTRY if e["block"] == "model_features"
 ]
 
 # Layer-1 lifecycle key (added 2026-08-17): first-availability date plus lifecycle
@@ -361,6 +356,32 @@ def render_features(reports: list[dict]) -> str:
     unknown_keys: set[str] = set()
 
     lines += [
+        "## Models (layer 1)",
+        "",
+        "The layer-1 slice — `model_features:` frontmatter (ADR-0014). Free-text",
+        "values in the vendor's own terms, verified against the report's `url` on its",
+        "`checked` date. Quantitative surface (context, pricing, cutoff, lifecycle)",
+        "stays in [models.md](models.md).",
+        "",
+        "| Model | license | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
+        "|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
+    ]
+    m_unknown: set[str] = set()
+    for r in reports:
+        if r.get("layer") != 1:
+            continue
+        feats = r.get("model_features") or {}
+        if not isinstance(feats, dict):
+            feats = {}
+        m_unknown.update(k for k in feats if k not in MODEL_FEATURE_KEYS)
+        cells = ["·" if feats.get(k) is None else f"`{feats.get(k)}`" for k in MODEL_FEATURE_KEYS]
+        rel = r["_path"].relative_to(ROOT)
+        lic = r.get("license") or "·"
+        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+    for k in sorted(m_unknown):
+        print(f"warn: model feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
+    lines += [
+        "",
         "## Harnesses (layer 2)",
         "",
         header_row,
@@ -505,8 +526,9 @@ def render_models(reports: list[dict]) -> str:
         if r.get("layer") != 1:
             continue
         cells = []
+        model_feats = r.get("model_features") or {}
         for c in cols:
-            v = r.get(c)
+            v = model_feats.get(c) if c in MODEL_FEATURE_KEYS else r.get(c)
             if v is None:
                 cells.append("·")
             elif c == "pricing":

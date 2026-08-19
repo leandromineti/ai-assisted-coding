@@ -95,6 +95,28 @@ features:
     definition: AUTONOMOUS agent-written memory/skills (background/spawned write path) — distinct from `skills` and from user-curated memory files
     kind_link: memory
     note: "added 2026-07-30 per issue #2's two-verified-instances rule (hermes, codex); note default-on vs default-off when setting"
+  # --- layer-1 block (`model_features:`), ADR-0014 — free-text values (vendor economics
+  # differ structurally); verified against the report's `url` on its `checked` date ---
+  - id: thinking
+    block: model_features
+    applies_to: [1]
+    definition: "reasoning generation + control style: adaptive | extended | none, in the vendor's terms"
+    note: "folded from the hardcoded MODEL_FEATURE_KEYS list 2026-08-19 (ADR-0014); keys added 2026-08-17"
+  - id: effort_control
+    block: model_features
+    applies_to: [1]
+    definition: effort/reasoning-level parameter — default and control surfaces
+    note: "folded 2026-08-19 (ADR-0014)"
+  - id: prompt_caching
+    block: model_features
+    applies_to: [1]
+    definition: write/read economics + TTLs, in the vendor's own terms
+    note: "folded 2026-08-19 (ADR-0014)"
+  - id: batch_discount
+    block: model_features
+    applies_to: [1]
+    definition: async batch pricing, if offered
+    note: "folded 2026-08-19 (ADR-0014)"
   # --- layer-4 block (`workflow_features:`) ---
   - id: intent_pipeline
     block: workflow_features

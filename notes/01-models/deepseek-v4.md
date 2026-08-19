@@ -12,10 +12,11 @@ context_window: 1000000
 max_output: 384000
 pricing: "peak/off-peak since 2026-08-16 16:00 UTC — off-peak is 50% of peak (peak 01:00–04:00 + 06:00–10:00 UTC): Pro $1.32 / $3.96 peak, $0.66 / $1.98 off-peak; Flash $0.44 / $1.32 peak, $0.22 / $0.66 off-peak per MTok (verified 2026-08-17; supersedes the flat launch rates recorded 2026-07-31)"
 knowledge_cutoff: "not disclosed by vendor — no cutoff on the HF model card or either launch/GA announcement (checked 2026-08-17); third-party 'April 2026' claims are ship-date inference"
-thinking: "on by default; toggled per-request via thinking.type enabled/disabled — one model id, a parameter, not a variant; thinking mode rejects temperature/top_p/penalties"
-effort_control: "reasoning_effort: low/high/max, default high; foreign values 'medium'/'xhigh' silently coerced to high; identical mapping Pro and Flash"
-prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
-batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: "on by default; toggled per-request via thinking.type enabled/disabled — one model id, a parameter, not a variant; thinking mode rejects temperature/top_p/penalties"
+  effort_control: "reasoning_effort: low/high/max, default high; foreign values 'medium'/'xhigh' silently coerced to high; identical mapping Pro and Flash"
+  prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
+  batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
 checked: 2026-08-17
 depth: stub
 ---

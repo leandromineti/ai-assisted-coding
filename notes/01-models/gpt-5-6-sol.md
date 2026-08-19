@@ -12,10 +12,11 @@ context_window: 1050000
 max_output: 128000
 pricing: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20; prompts >272k input tokens billed 2x in / 1.5x out for the whole request (verified 2026-08-17)"
 knowledge_cutoff: "Feb 16, 2026 (all three tiers)"
-thinking: "adaptive (docs: fewer tokens for simpler tasks); disable per-request via reasoning.effort: none"
-effort_control: "reasoning.effort: none/low/medium/high/xhigh/max, default medium — identical across tiers; no 'minimal' on the 5.6 family"
-prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
-batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: "adaptive (docs: fewer tokens for simpler tasks); disable per-request via reasoning.effort: none"
+  effort_control: "reasoning.effort: none/low/medium/high/xhigh/max, default medium — identical across tiers; no 'minimal' on the 5.6 family"
+  prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
+  batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
 checked: 2026-08-17
 depth: stub
 ---

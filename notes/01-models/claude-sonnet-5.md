@@ -12,10 +12,11 @@ context_window: 1000000
 max_output: 128000
 pricing: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
 knowledge_cutoff: "Jan 2026 (reliable); training data Jan 2026"
-thinking: adaptive
-effort_control: "effort param; defaults high on Claude API and Claude Code"
-prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
-batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
+model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
+  thinking: adaptive
+  effort_control: "effort param; defaults high on Claude API and Claude Code"
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
+  batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
 checked: 2026-08-17
 depth: survey
 ---
