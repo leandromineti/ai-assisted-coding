@@ -134,7 +134,7 @@ The survey's headline ("blocks the harness's native memory writes") survives the
 
 ## What the plugin injects, and what it captures
 
-Injection is **bare markdown, no trust framing** — settled as the kind's negative pole
+Injection is **bare markdown, no trust framing** — settled as the type's negative pole
 (frontmatter cell). Volume per session: a 10-memory timeline + directive banner at
 SessionStart (including a standing write-nudge: "Aim for 1–3 memories per substantial
 interaction"), top-5 reranked recall per qualifying prompt, plus opportunistic
@@ -238,7 +238,7 @@ scores (48.6 overall at 10M). Nothing in this repo can reproduce any headline nu
 ## My take
 
 The deep-dive hardened both halves of the survey's verdict and added a third. The
-kind's commercial pole is *more* open at the core than the survey credited (BM25,
+type's commercial pole is *more* open at the core than the survey credited (BM25,
 entities, rerankers, vision — all real OSS) and *more* enclosed at the edges than it
 knew (V3 removed OSS capabilities; the plugin is platform-hardcoded; the carriers
 bypass the SDK). The new third finding is the instrumentation: mem0 is the only tool in

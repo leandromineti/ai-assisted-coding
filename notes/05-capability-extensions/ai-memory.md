@@ -18,7 +18,7 @@ harness_targets: "README support matrix at acd9c0b lists ~24 targets — Support
 features:
   learning_loop: true   # SOURCE-TRACED this read: background, harness-independent — server-side scheduler (auto_improve_schedule.rs) reviews completed sessions via LLM, stages proposals, AUTO-APPROVES wiki edits by default (require_approval=false); plus a durable session-end LLM consolidation queue. Zero-LLM install has no loop; with a provider configured the loop is default-ON. Second verified harness-independent instance after ECC
 memory_features:   # ADR-0013 block, set 2026-08-19 from the existing deep-dive read at acd9c0b — not a re-read
-  memory_store: files-git        # git-versioned markdown wiki is the source of truth; SQLite/vectors are derived indexes (body: store section) — the kind's only files-git wager
+  memory_store: files-git        # git-versioned markdown wiki is the source of truth; SQLite/vectors are derived indexes (body: store section) — the type's only files-git wager
   capture_path: hook             # harness lifecycle hooks → closed 10-value ObservationKind → rule-based session pages, no LLM on the default path
   write_admission: evidence-gated  # MEASURED (exp-04 arm C, 2026-08-19): the auto-improve reviewer rejected all 12 conversational-fact candidates — "Offline decision acknowledged but not made or refined in session; no implementation evidence" — say-so does not earn autonomous storage; the explicit write-page path remains available for deliberate recording
   recall_injection: both         # auto: thin cwd-matched handoff baton injected via per-harness envelopes; rich wiki is pull-only via 18 MCP tools
@@ -62,7 +62,7 @@ Three, all now source-verified rather than README-claimed:
 3. **Zero-LLM default.** Carved as cross-cutting invariant 13 in `docs/ARCHITECTURE.md`:
    capture, rule-based session pages, handoffs, FTS5 retrieval, and decay all work with
    no provider configured. LLM is strictly additive (consolidation, auto-improvement,
-   rerank, prose briefings). None of the other six seeds in the kind makes this bet —
+   rerank, prose briefings). None of the other six seeds in the type makes this bet —
    mem0/cognee/memori put an LLM in the extraction path itself.
 
 ## Main features
@@ -261,7 +261,7 @@ with `max_sessions_per_tick = 1` is sized to stay cheap.
 - Does the thin heuristic handoff actually sustain "continue without re-explaining" in
   practice, or does real continuity depend on the agent proactively querying the wiki?
   Testable on the rig: capture a session, switch harness, diff what the second agent
-  knows. (Bears on the kind's central question — what the extension buys over native
+  knows. (Bears on the type's central question — what the extension buys over native
   loops.)
 - What do auto-approved `_rules/` pages look like after weeks of real use — convergent
   standing instructions or drift? The `page_feedback`/lint loop is the built-in check;

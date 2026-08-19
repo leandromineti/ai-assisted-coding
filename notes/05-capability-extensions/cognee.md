@@ -32,7 +32,7 @@ memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey rea
 
 ## What it is
 
-The memory kind's oldest seed (first commit 2023-08-16, predating the coding-agent
+The memory type's oldest seed (first commit 2023-08-16, predating the coding-agent
 wave) and its knowledge-graph pole: a Python platform that ingests arbitrary data,
 runs a "cognify" pipeline (entity/relation extraction, optional ontology grounding),
 and serves retrieval over a **tripartite store** — graph + vector + relational —
@@ -44,7 +44,7 @@ LLM path that extracts *coding rules* from saved interactions.
 
 ## The membership verdict (the arc's step-3 question)
 
-The kind's membership test — independent distribution *into harnesses* — survives the
+The type's membership test — independent distribution *into harnesses* — survives the
 SDK-facing shape, but only through carriers. `import cognee` is upstream
 infrastructure, not an installable extension; what earns bucket membership is the MCP
 server (in-repo), the Claude Code marketplace plugin (hooks + skills + agents, in the
@@ -114,7 +114,7 @@ here.
 ## Stack & repo shape
 
 Python-dominant (2,168 `.py`) monorepo with a TS frontend; 9,781 commits — the
-most-committed repo in the kind, with a real contributor base (unlike the kind's
+most-committed repo in the type, with a real contributor base (unlike the type's
 solo-author entries). `cognee-mcp/` is its own package (pyproject + uv.lock).
 `evals/` archives head-to-head HotpotQA runs against mem0, graphiti, and falkor
 (2025-04 vintage) and points to a current "BEAM" 100K/10M-context report. BEAM is
@@ -131,9 +131,9 @@ repeated — and the report itself flags the 10M figure (0.67) as in-sample/expl
    memory layer is *in* the MCP server, invisible from the SDK docs.
 2. **The learning path and the distribution path have diverged.** The
    marketplace-plugin deployment (API mode) cannot reach the rule-extraction path
-   (direct mode only). The feature the kind cares most about is disabled in the
+   (direct mode only). The feature the type cares most about is disabled in the
    install path most users will take.
-3. **Consolidation is agent-invoked.** `improve` inverts the kind's dominant posture:
+3. **Consolidation is agent-invoked.** `improve` inverts the type's dominant posture:
    where ai-memory and memos consolidate autonomously in the background, cognee makes
    the agent decide when to consolidate. With the plugin's hooks automating the calls,
    the trigger moves into the integration seam — the loop is assembled from parts
@@ -161,7 +161,7 @@ repeated — and the report itself flags the 10M figure (0.67) as in-sample/expl
 
 ## My take
 
-The kind's incumbent, and the clearest illustration of its central trade: the
+The type's incumbent, and the clearest illustration of its central trade: the
 knowledge-graph bet maximizes what memory *could* express and pays for it in a
 three-store consistency surface a solo-shaped rival (ai-memory) simply refuses to
 have. For coding harnesses specifically, the product is the MCP server plus

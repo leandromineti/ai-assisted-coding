@@ -23,16 +23,16 @@ harness_targets: "integrations/openclaw/ and a Strands integration in-repo (file
 
 "The open-source memory layer for AI agents" — persistent memory behind a
 five-lines-of-code SDK, Python packages (`packages/client`, `packages/common`) plus
-a REST client and integrations (OpenClaw, AWS Strands). Smallest of the memory-kind
+a REST client and integrations (OpenClaw, AWS Strands). Smallest of the memory-type
 seeds (3.2k stars, first commit 2025-08-15). (README + file listing at the pin;
 source unread.)
 
-## Notes for the kind comparison
+## Notes for the type comparison
 
 Same positioning sentence as mem0 ("the memory layer for AI agents") with the same
-SDK-facing shape — useful as the kind's commodity baseline: if the distinguishing
+SDK-facing shape — useful as the type's commodity baseline: if the distinguishing
 bets of the bigger tools (graph memory, action capture, wiki-not-vector-DB,
-OS-scope) don't measurably beat a plain store-and-retrieve SDK, the kind is
+OS-scope) don't measurably beat a plain store-and-retrieve SDK, the type is
 converging on a commodity.
 
 ## Stack & repo shape

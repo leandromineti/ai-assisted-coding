@@ -28,7 +28,7 @@ cloud product (`memori-cloud`; quickstart wants a `MEMORI_API_KEY`). In-repo
 `benchmarks/` tree. 16.1k stars in ~13 months. (README + file listing at the pin;
 source unread.)
 
-## Notes for the kind comparison
+## Notes for the type comparison
 
 The action-capture framing overlaps ai-memory's lifecycle-hook observation bet, but
 delivered as an embeddable engine rather than a harness installer — a middle point
