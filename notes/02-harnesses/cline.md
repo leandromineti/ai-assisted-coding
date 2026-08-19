@@ -109,8 +109,8 @@ explaining itself._
 
 ## Bleed
 
-_TODO_ — supports MCP (layer 5). The `evals/` directory is a cross-cutting verification
-concern living inside a layer-2 product, which is worth documenting.
+_TODO_ — supports MCP (category 5). The `evals/` directory is a cross-cutting verification
+concern living inside a category-2 product, which is worth documenting.
 
 ## Cost model
 

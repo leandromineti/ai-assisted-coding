@@ -68,7 +68,7 @@ in this set where a harness had to abstract its own UI._
 
 ## Bleed
 
-_TODO_ — supports MCP (layer 5). The `binary/` sidecar is arguably a layer-3 concern
+_TODO_ — supports MCP (category 5). The `binary/` sidecar is arguably a category-3 concern
 (process isolation) solved incidentally.
 
 ## Cost model
@@ -88,4 +88,4 @@ per-model-prompt debate, running in production.
 - What exactly lives in the shared core vs. the per-IDE extension? That boundary is the
   clearest available evidence of what a harness *is*, minus its UI.
 - Why a compiled binary sidecar rather than running in-process?
-- 21.5k commits and it's still a layer-2 tool — where did that volume go?
+- 21.5k commits and it's still a category-2 tool — where did that volume go?

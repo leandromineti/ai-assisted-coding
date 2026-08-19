@@ -23,7 +23,7 @@ Git-native terminal harness: it commits after each change and builds a "repo map
 what the model sees. The oldest project in the set — first commit 2023-04-03, predating the
 current harness generation by well over a year.
 
-Classified layer 2 despite having real opinions about process — see the stress test in
+Classified category 2 despite having real opinions about process — see the stress test in
 [`../../taxonomy.md`](../../taxonomy.md). Its methodology isn't installable on another
 harness, so it's a harness with strong defaults, not a workflow framework.
 

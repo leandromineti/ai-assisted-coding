@@ -66,7 +66,7 @@ transcript formats to follow what its children are doing.
 The sharpest detail is in `driver/harness/codex.rs:50`: Warp installs **its own plugin hooks
 into Codex** and launches it with `--dangerously-bypass-hook-trust` so those hooks run without
 Codex's manual review step, then reads Codex's `SessionStart` hook event to know the session
-is live. A layer-2 product driving another layer-2 product through that product's layer-5
+is live. A category-2 product driving another category-2 product through that product's category-5
 extension surface, deliberately bypassing its trust gate to do so.
 
 The wager: the model and the loop are commoditizing, so own the *surface* they all run on and
@@ -133,14 +133,14 @@ permission check precedes or follows the model's decision).
 
 ## Bleed
 
-- **→ layer 5 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
+- **→ category 5 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
   inventing formats. Stronger: `app/src/terminal/view/init_project/mod.rs:50` defines
   `LINKABLE_FILES = [CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules,
   .windsurfrules, .github/copilot-instructions.md]` — seven *competitors'* rules files, which
   Warp offers to link into `WARP.md`. Direct evidence for the standards question: rules files
   have converged enough to be treated as an interoperable format by a rival implementation.
-- **→ layer 2 (other harnesses).** The novel one. See The distinguishing bet.
-- **→ layer 3 (environments), inverted.** `crates/isolation_platform/` does **not** launch
+- **→ category 2 (other harnesses).** The novel one. See The distinguishing bet.
+- **→ category 3 (environments), inverted.** `crates/isolation_platform/` does **not** launch
   sandboxes — it *detects the one Warp is already inside*: `IsolationPlatformType::{Docker,
   DockerSandbox, Kubernetes, Namespace}`, read from `WARP_ISOLATION_PLATFORM` and used to
   obtain a `WorkloadToken` for workload identity. So the vocabulary needs a fourth verb
@@ -148,10 +148,10 @@ permission check precedes or follows the model's decision).
   as the payload inside a sandbox provisioned by its own cloud service, and introspects the
   container to prove who it is. `environments:` above is recorded on that basis, which is
   weaker than the other entries' — flagged rather than smoothed over.
-- **→ layer 1.** OpenAI is the "founding sponsor" of the open-source repo and the agentic
+- **→ category 1.** OpenAI is the "founding sponsor" of the open-source repo and the agentic
   management workflows are GPT-powered (README). This is *not* the ownership case
   (xAI/Cursor) or the maker-identity case (Nous/hermes), so it does not count as a third
-  instance of "who a harness's maker is at layer 1 predicts what the harness collects." It is
+  instance of "who a harness's maker is at category 1 predicts what the harness collects." It is
   the adjacent, weaker form — sponsorship — and is recorded so a second sponsorship instance
   has something to pair with.
 

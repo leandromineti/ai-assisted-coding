@@ -7,7 +7,7 @@ environments: [host]   # a `containers` package exists; its role unverified — 
 # environment_relation: deliberately UNSET. opencode runs on the host and does nothing
 # about isolation — it neither bundles, binds, internalizes, nor inhabits. None of the four
 # verbs fits, and forcing one would fabricate a relationship. The null case is evidence for
-# the layer-3 adjudication, not a gap in the frontmatter.
+# the category-3 adjudication, not a gap in the frontmatter.
 vendor: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT
@@ -155,7 +155,7 @@ is split; nobody's position is backed by a published eval.
 ## Stack & repo shape
 
 Bun 1.3.14 (`packageManager`), TypeScript, and **Effect** — the whole codebase is written in
-Effect-TS, with services, layers, and typed errors rather than plain async/await. UI is
+Effect-TS, with services, `Layer`-based dependency injection, and typed errors rather than plain async/await. UI is
 SolidJS with OpenTUI for the terminal; server is Hono; persistence is Drizzle + SQLite;
 model calls go through the Vercel AI SDK (`ai@6`).
 
@@ -272,14 +272,14 @@ model* — a disallowed tool is invisible, not refused. Then `Permission.ask` ga
 at call time. Hiding rather than refusing avoids spending turns on the model attempting
 something it will never be allowed to do.
 
-### Layer boundaries in the code
+### Category boundaries in the code
 
-- **Layer 1 (models):** cleanly abstracted behind `packages/llm` and the AI SDK — *except*
+- **category 1 (models):** cleanly abstracted behind `packages/llm` and the AI SDK — *except*
   the per-model prompts, which are a deliberate leak. The abstraction is over the API, not
   over model behavior.
-- **Layer 5 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
+- **category 5 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
   `agent/subagent-permissions.ts`.
-- **Layer 3 (execution):** a `containers` package exists, so isolation is a modeled concern
+- **category 3 (execution):** a `containers` package exists, so isolation is a modeled concern
   rather than an assumption of the host.
 
 `packages/llm/DESIGN.md` is a **proposed redesign**, not documentation of what's there — a
@@ -289,8 +289,8 @@ They're drawing a line between "call a model" and "run an agent."
 
 ## Bleed
 
-Layer 5 (ships an MCP client, plugin system, skills, subagents) and layer 3 (`containers`).
-Reaches upward into layer 4 too: plan mode with its own prompts (`prompt/plan-mode.txt`,
+Category 5 (ships an MCP client, plugin system, skills, subagents) and category 3 (`containers`).
+Reaches upward into category 4 too: plan mode with its own prompts (`prompt/plan-mode.txt`,
 `plan.txt`, `build-switch.txt`) is process methodology living inside a harness — the same
 absorption noted in [`../04-workflow-frameworks/index.md`](../04-workflow-frameworks/index.md).
 
@@ -338,4 +338,4 @@ you attach — which is itself the product's position.
   event-sourced session inputs, an Effect logging migration. A rewrite appears to be in
   progress; how much of what's described here is transitional?
 - The lazily-imported command handlers suggest startup time was a real problem. Was it Bun,
-  or the Effect layer graph?
+  or the Effect `Layer` graph?

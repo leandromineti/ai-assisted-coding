@@ -44,7 +44,7 @@ jobs unattended, and executes commands through eight terminal-backend implementa
 in this study by stars (see frontmatter; passed opencode during 2026 —
 [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
 
-The layer question the issue flagged is settled: **layer 2 confirmed**. spec-kit installs
+The category question the issue flagged is settled: **category 2 confirmed**. spec-kit installs
 *into* it (`~/.hermes/skills` in spec-kit's own integration tests — verified in
 `upstream/spec-kit/tests/test_extension_skills.py`), and the repo's `AGENTS.md`
 self-describes as a platform extended "through plugins and skills, not by growing the
@@ -153,7 +153,7 @@ coding is a *posture* the agent shifts into when it finds itself in a git repo
 |---|---|
 | Autonomous learning loop (review fork + curator + /learn) | **Unique in this set** |
 | One agent core across CLI/TUI/desktop/web/ACP + ~20 messaging platforms | **Unique at this breadth** |
-| 8 terminal-backend implementations incl. serverless (Modal, Daytona) | Distinctive — deepest layer-3 bleed in the set |
+| 8 terminal-backend implementations incl. serverless (Modal, Daytona) | Distinctive — deepest category-3 bleed in the set |
 | Programmatic tool calling (`execute_code`: model-written Python calls tools via RPC) | Distinctive |
 | 33 provider plugins, model-agnostic | Table stakes at this point; breadth notable |
 | MCP client, LSP, subagents, skills | Table stakes by mid-2026 |
@@ -217,7 +217,7 @@ never runs checks itself") nudges the model back up to 3 times when it tries to 
 right after editing code without fresh verification evidence, with an explicit
 suppression list for non-code extensions so a README edit "must never demand a /tmp
 verification script"; and a `pre_verify` plugin hook lets user policy inject one more
-turn. This is exp-01's "measured verification gate" mechanism living *inside a layer-2
+turn. This is exp-01's "measured verification gate" mechanism living *inside a category-2
 harness* — evidence-ledger-driven, though the evidence bar is "ran something", not a
 hidden verifier.
 
@@ -276,26 +276,26 @@ So on the template's question: the permission check is **after the model decides
 (check_fn) — availability-filtered, not permission-filtered, the inverse emphasis of
 opencode's `visibleTools`.
 
-### Layer boundaries in the code
+### Category boundaries in the code
 
-- **Layer 1 (models):** provider profiles are plugins (`plugins/model-providers/<name>/`,
+- **category 1 (models):** provider profiles are plugins (`plugins/model-providers/<name>/`,
   33 bundled) read by one registry (`providers/`); adapters in `agent/` normalize
   Anthropic, Gemini-native, Bedrock, Vertex, Codex-responses APIs. Model-agnostic, but
   *not* prompt-agnostic — see the per-family appendices in Surprises.
-- **Layer 5 (extensions):** first-class and the designated growth path — MCP client +
+- **category 5 (extensions):** first-class and the designated growth path — MCP client +
   OAuth manager, plugin system with lifecycle hooks, the skills standard
   (agentskills.io-compatible), LSP (`agent/lsp/`).
-- **Layer 4 (methodology):** absorbed in pieces: `/plan` as a bundled skill, todo tool,
+- **category 4 (methodology):** absorbed in pieces: `/plan` as a bundled skill, todo tool,
   verification-stop gates, kanban multi-agent coordination tools — process opinions
   shipped inside the harness, same absorption noted for opencode.
-- **Layer 3 (execution):** the deepest bleed in the set. `tools/environments/base.py`
+- **category 3 (execution):** the deepest bleed in the set. `tools/environments/base.py`
   is a real abstraction with 8 implementations, including serverless-persistent ones
   (Daytona/Modal hibernate between sessions). `execute_code` even has a file-based RPC
   transport so programmatic tool calling works *inside* remote backends.
 
 ## Bleed
 
-Layers 3, 4, and 5 as above — plus a bleed no other tool in the study has: **layer 1
+Categories 3, 4, and 5 as above — plus a bleed no other tool in the study has: **category 1
 training data**. `batch_runner.py`, `trajectory_compressor.py`, and
 `hermes trace upload` (exports sessions in Claude Code JSONL shape to Hugging Face,
 private by default, secret-redacted) exist "for training the next generation of
@@ -357,7 +357,7 @@ the eight backends exist specifically to solve it.
 
 - **Does the learning loop pay?** No eval in the repo measures skill/memory accumulation
   against a baseline. A natural experiment for this repo's rig: same task battery, fresh
-  Hermes vs one seeded with N sessions of use. (Large: park unless the layer-2 arc
+  Hermes vs one seeded with N sessions of use. (Large: park unless the category-2 arc
   continues.)
 - The issue asked what 221k stars in ~12 months represents vs ECC's 235k in 6. The
   authorship distribution (maintainer-dominated, ~7.3k commits from one person) says
