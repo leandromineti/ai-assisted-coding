@@ -2,14 +2,14 @@
 
 `checked: 2026-08-17`
 
-These are **not layers**. Each appears at several layers simultaneously, and forcing them
+These are **not categories**. Each appears at several categories simultaneously, and forcing them
 onto the stack distorts them. See [`../../taxonomy.md`](../../taxonomy.md).
 
 ---
 
 ## Benchmarks as instruments → [`benchmark-survey.md`](benchmark-survey.md)
 
-**Where it lives:** every layer at once — a benchmark score binds a model, a harness, and
+**Where it lives:** every category at once — a benchmark score binds a model, a harness, and
 an environment into one number (conclusion 2), and vendor span makes that binding
 structural. The survey's thesis: the field ships instruments with at most one of the
 three properties an instrument needs (headroom, validity, contamination control) and
@@ -20,21 +20,21 @@ retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the ge
 
 ## The category-2 program → [`category-2-program.md`](category-2-program.md)
 
-**Where it lives:** the decision spans layers 1–4 — it is *about* which layer gets
+**Where it lives:** the decision spans categories 1–4 — it is *about* which category gets
 measured. Adopted 2026-08-18 at the exp-03 arc close: framework A/Bs on code outcomes
 stop (bundle noise wider than the effects; mechanisms absorbed tier by tier; published
-effect sizes concentrated at layer 2; framework value demonstrably artifact-level).
+effect sizes concentrated at category 2; framework value demonstrably artifact-level).
 The note assembles the four evidence strands, defines the three measurement tracks
-(harness A/B, variance atlas, throughput), and states what would reopen layer-4 A/Bs.
+(harness A/B, variance atlas, throughput), and states what would reopen category-4 A/Bs.
 
 ---
 
 ## Standards → [`standards.md`](standards.md)
 
 **Where it lives:** wherever two vendors implement one specification — MCP on the
-harness↔world edge, `AGENTS.md`/`SKILL.md` conventions across harnesses. Not a layer:
+harness↔world edge, `AGENTS.md`/`SKILL.md` conventions across harnesses. Not a category:
 specifications, not installable things (the servers and files that *implement* them are
-layer-5 extensions). Folded into this folder 2026-08-18 (ADR-0008) — a standard is a
+category-5 extensions). Folded into this folder 2026-08-18 (ADR-0008) — a standard is a
 cross-cutting concern whose subject is interoperability. Carries the standardization
 scoreboard that gates the extensions bucket's re-promotion (ADR-0002's ~2027-01
 re-check).
@@ -43,9 +43,9 @@ re-check).
 
 ## Context engineering
 
-**Where it lives:** layer 2 (the harness decides what to load and when), layer 5 (rules
-files, skills, memory), layer 4 (frameworks impose context discipline as method). No single
-layer owns it — which is exactly why it's mis-taught as a prompting trick.
+**Where it lives:** category 2 (the harness decides what to load and when), category 5 (rules
+files, skills, memory), category 4 (frameworks impose context discipline as method). No single
+category owns it — which is exactly why it's mis-taught as a prompting trick.
 
 **The core tension:** more context is not better context. Every token of standing
 instruction competes with the tokens the model actually needs for the task, and irrelevant
@@ -75,9 +75,9 @@ Failure modes are the signal; success is too coarse to learn from.
 
 ## Verification & evaluation
 
-**Where it lives:** layer 5 (review-bot MCP servers), layer 4 (frameworks that build in
-verification gates — GSD's "evidence" principle), layer 3 (sandboxes that make failure
-cheap to observe), plus the whole external CI apparatus. **And, as of 2026-07-30, layer 2
+**Where it lives:** category 5 (review-bot MCP servers), category 4 (frameworks that build in
+verification gates — GSD's "evidence" principle), category 3 (sandboxes that make failure
+cheap to observe), plus the whole external CI apparatus. **And, as of 2026-07-30, category 2
 natively — two instances:** hermes-agent ships an evidence-ledger verification gate
 inside the harness — `verification_stop` nudges the model back (bounded, ≤3 times) when
 it tries to finish right after editing code without fresh verification evidence, plus a
@@ -85,19 +85,19 @@ it tries to finish right after editing code without fresh verification evidence,
 architectural slot with more teeth: a stop hook can **veto turn termination** and inject
 a continuation prompt (`session/turn.rs`, confirmed at the branch site same day). That's
 exp-01's "measured verification gate" mechanism — the one conclusion 6 credits with the
-layer-4 quality margin — living below layer 4, twice.
+category-4 quality margin — living below category 4, twice.
 *(2026-08-18: "twice" is now a measured floor, not a norm — the mechanism became the
 graded `turn_end_gates` matrix column (ADR-0012) and a probe of all seven
 feature-bearing harnesses found 3✓ / 3✗ / 1 undecidable, with hermes still the only
 always-on native policy; codex and claude-code carry it as hook surfaces, empty unless
 the user configures them. Full table:
-[layer-2 index, "What layer 2 has absorbed"](../02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses).)*
+[category-2 index, "What category 2 has absorbed"](../02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 
 **Implication for experiment 03 (recorded before its design):** if harnesses ship
-verification gates natively, the layer-4 margin can migrate down the stack. The
+verification gates natively, the category-4 margin can migrate down the stack. The
 minimal-harness protocol must inventory what the *harness* already enforces before
-attributing any gate effect to the framework layer — otherwise exp-03 risks crediting
-layer 4 for a mechanism the layer-2 baseline silently exercises. (Hermes' gate is
+attributing any gate effect to the framework category — otherwise exp-03 risks crediting
+category 4 for a mechanism the category-2 baseline silently exercises. (Hermes' gate is
 weaker than exp-01's: its evidence bar is "ran something fresh", not a hidden verifier —
 the distinction between *a* gate and a *measured* gate matters and should be scored,
 not blurred.)
@@ -147,8 +147,8 @@ but it's no longer anecdote, and the difference is the preregistration.
 
 ## Cost & economics
 
-**Where it lives:** layer 1 (token prices), 1b (route-dependent caching and rate limits),
-layer 2 (how efficiently the harness spends context), layer 3 (metered sandboxes).
+**Where it lives:** category 1 (token prices), 1b (route-dependent caching and rate limits),
+category 2 (how efficiently the harness spends context), category 3 (metered sandboxes).
 
 **The framing that matters:** per-token price is the least interesting form of cost. The
 ones that bite:
@@ -165,7 +165,7 @@ tier, and roughly half the *per-task* cost in Codex. Whether per-task savings su
 contact with harder tasks is the thing to check.
 
 One measured data point so far (2026-07-28, experiment 01, transcript-measured per
-methodology 5c): a layer-4 framework cost **~30–50× the plain-agent baseline** on a
+methodology 5c): a category-4 framework cost **~30–50× the plain-agent baseline** on a
 below-threshold task — and the orchestrator's cache reads, invisible to per-agent
 notification metadata, dominated the spend. Framework overhead is a real line item, and
 it hides in the aggregates.
@@ -184,4 +184,4 @@ disjoint, so there's no double-counting risk in doing so.
 
 Techniques with no tool attached: task decomposition, when to restart a context, review
 discipline, knowing when to stop and write the code yourself. Filed here rather than as a
-layer, because there's nothing to install.
+category, because there's nothing to install.

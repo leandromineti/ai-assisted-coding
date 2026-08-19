@@ -143,7 +143,7 @@ bet restated as a measurable claim, and exactly the P1/P2 dissociation exp-02
 preregistered. *(Closed 2026-08-18: exp-03 ran and the arc it belonged to closed with it —
 the don't-ask default held (zero clarifying questions in 20 runs, fixed oracle never
 exercised), and the discoverable-ambiguity variant of withholding proved tier-fragile:
-plain Sonnet resolved it unprompted. Layer-4 code-outcome A/Bs stop per issue #17;
+plain Sonnet resolved it unprompted. Category-4 code-outcome A/Bs stop per issue #17;
 this section stays as the map of the instruments' literature.)* The adjacent framework-comparison literature
 ([agent-frameworks-eval](../../refs/2025-agent-frameworks-eval.md), **full read
 2026-08-17**) compares frameworks *to each other* on success/efficiency/token-overhead
@@ -158,7 +158,7 @@ signals missing self-monitoring, not efficiency (GPTswarm/OWL: ~0 corrections *a
 3–10% repair rates). Its prose headlines contradict its own tables in places; cite
 tables only.
 
-## 6. The memory corner (what the layer-5 memory kind reports against)
+## 6. The memory corner (what the category-5 memory kind reports against)
 
 *(Added 2026-08-18, closing the memory-kind reading arc's instrument question — three
 full reads the same day.)* The instruments the memory vendors self-report on:
@@ -191,7 +191,7 @@ Three take-aways, each recorded in the refs notes:
    paper's 50 — "on LoCoMo" scores may not even share an item set.)*
 3. **The instruments converge on the mechanisms the vendors ship.** LongMemEval's
    indexing/retrieval/reading control points and BEAM's episodic/working/scratchpad
-   decomposition map onto ai-memory's tiers-and-slots and memos' trace layers almost
+   decomposition map onto ai-memory's tiers-and-slots and memos' trace categories almost
    term for term — academia and vendors building the same three memories under
    different names (rule-4 trace in each ref note's "what it means" section).
 
