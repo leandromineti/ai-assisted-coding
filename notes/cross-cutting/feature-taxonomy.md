@@ -20,8 +20,18 @@ Conventions:
   registry only after the characteristic is verified in at least two tools.
 - `block` names the frontmatter block that carries the key (`features` for harnesses,
   `workflow_features` for layer 4, `memory_features` for layer-5 `kind: memory` reports
-  — ADR-0013). `applies_to` lists tool-taxonomy layers; per-kind blocks additionally
-  scope by the report's `kind`.
+  — ADR-0013, `model_features` for layer 1 — ADR-0014). `applies_to` lists
+  tool-taxonomy layers; per-kind blocks additionally scope by the report's `kind`.
+- **What belongs where** (the placement test, recorded 2026-08-19): a fact with an
+  external ground truth we transcribe (stars, license, context window, pricing) is a
+  **top-level frontmatter field** — mechanically collected, dated, and at most
+  *rendered* into matrices as a column, never duplicated as a key. A capability we
+  **assessed by reading**, comparable across tools under one definition, is a
+  **registry key** and a cell (omitted = not checked, `false` = checked-absent — both
+  claims). A finding, mechanism, or single-instance differentiator stays in **body
+  prose** until issue #2's second instance lands. The load-bearing boundary is
+  transcription vs assessment: the first drifts when the world changes, the second
+  only when someone reads again.
 - `kind_link` records the **demand↔supply correspondence**: a harness feature (demand
   side) whose supply side is an installable layer-5 artifact kind. This is the bleed —
   quantified in the generated cross-layer table.
