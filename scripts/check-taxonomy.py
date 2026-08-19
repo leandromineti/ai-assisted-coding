@@ -205,6 +205,98 @@ def deny_matches(line_text: str, taxo: dict) -> list[tuple[int, int, str, dict |
     return matches
 
 
+def _matches_any(rel: str, taxo: dict, key: str) -> bool:
+    patterns = (taxo.get("exempt_paths", {}) or {}).get(key, []) or []
+    return any(fnmatch.fnmatch(rel, pat) for pat in patterns)
+
+
+H1_RE = re.compile(r"^#(?!#)")
+
+
+def _first_h1(body_lines: list[tuple[int, str]]) -> tuple[int, str] | None:
+    """The first line starting with a single `#` — an ADR's title line (D-04)."""
+    for line_no, text in body_lines:
+        if H1_RE.match(text):
+            return line_no, text
+    return None
+
+
+FENCE_RE = re.compile(r"^\s*```")
+
+
+def _line_in_fence_map(lines: list[str]) -> list[bool]:
+    """True for every line inside (or delimiting) a fenced ```code block```, tracking
+    fence state across lines — a single-line backtick count can't tell "inside a fence"
+    from "two separate inline spans"."""
+    in_fence = False
+    flags = []
+    for line in lines:
+        if FENCE_RE.match(line):
+            flags.append(True)  # the delimiter line itself is code context
+            in_fence = not in_fence
+        else:
+            flags.append(in_fence)
+    return flags
+
+
+INLINE_CODE_RE = re.compile(r"`[^`]+`")
+
+
+def _inline_code_spans(line: str) -> list[tuple[int, int]]:
+    """Single-backtick inline code spans on this line."""
+    return [(m.start(), m.end()) for m in INLINE_CODE_RE.finditer(line)]
+
+
+ADR_FILENAME_RE = re.compile(r"(?:adrs/)?\d{4}-[a-z0-9][a-z0-9-]*\.md")
+
+
+def _adr_filename_spans(line: str) -> list[tuple[int, int]]:
+    """Tokens that look like an ADR filename reference (adrs/NNNN-....md or a bare
+    NNNN-....md)."""
+    return [(m.start(), m.end()) for m in ADR_FILENAME_RE.finditer(line)]
+
+
+def _in_any_span(start: int, end: int, spans: list[tuple[int, int]]) -> bool:
+    return any(s <= start and end <= e for s, e in spans)
+
+
+# One predicate per taxonomy.yaml carve_outs[].id, dispatched by id so adding a
+# carve-out to the yaml has a single obvious landing site here. Each predicate takes
+# the match context dict built in check() and returns True to exempt that match.
+def _carveout_adr_filenames(ctx: dict) -> bool:
+    return _in_any_span(ctx["start"], ctx["end"], ctx["adr_spans"])
+
+
+def _carveout_inline_code(ctx: dict) -> bool:
+    return ctx["fence"] or _in_any_span(ctx["start"], ctx["end"], ctx["code_spans"])
+
+
+def _carveout_adr_body_prose(ctx: dict) -> bool:
+    return ctx["body_exempt_file"] and not ctx["is_title_line"]
+
+
+def _carveout_pre_sweep_material(ctx: dict) -> bool:
+    # Resolves to exempt_paths.skip_entirely/append_only, already applied in walk() —
+    # this predicate only exists so the id is not unimplemented. After Task 3's
+    # narrowing, this carve-out exempts no file that is not enumerated in exempt_paths.
+    return is_exempt(ctx["rel"], ctx["taxo"]) is not None
+
+
+CARVE_OUT_PREDICATES = {
+    "adr-filenames": _carveout_adr_filenames,
+    "inline-code": _carveout_inline_code,
+    "adr-body-prose": _carveout_adr_body_prose,
+    "pre-sweep-material": _carveout_pre_sweep_material,
+}
+
+
+def assert_carveouts_implemented(taxo: dict) -> None:
+    ids = [c["id"] for c in taxo.get("carve_outs", []) or []]
+    missing = [i for i in ids if i not in CARVE_OUT_PREDICATES]
+    if missing:
+        sys.exit(f"carve_outs in taxonomy.yaml with no predicate implemented: {missing}")
+
+
 def _known_sites(taxo: dict) -> set[str]:
     sites: set[str] = set()
     for term in taxo.get("terms", []) or []:
@@ -231,9 +323,40 @@ def check(taxo: dict, root: Path = ROOT) -> int:
         rel = path.relative_to(root).as_posix()
         text = path.read_text(encoding="utf-8")
         fm_lines, body_lines = split_frontmatter(text)
+
+        body_exempt_file = _matches_any(rel, taxo, "body_exempt")
+        title_exempt_file = _matches_any(rel, taxo, "adr_title_exempt")
+        title_line_no = None
+        if body_exempt_file and not title_exempt_file:
+            h1 = _first_h1(body_lines)
+            title_line_no = h1[0] if h1 else None
+
+        fence_flags = _line_in_fence_map([t for _, t in body_lines])
+        fence_by_line = {ln: fence_flags[i] for i, (ln, _t) in enumerate(body_lines)}
+
         for line_no, line_text in fm_lines + body_lines:
+            code_spans = _inline_code_spans(line_text)
+            adr_spans = _adr_filename_spans(line_text)
+            is_title_line = bool(body_exempt_file and line_no == title_line_no)
+            fence = fence_by_line.get(line_no, False)
             for start, end, matched, term in deny_matches(line_text, taxo):
                 if term is None:
+                    continue
+                ctx = {
+                    "rel": rel,
+                    "line_no": line_no,
+                    "line_text": line_text,
+                    "start": start,
+                    "end": end,
+                    "matched": matched,
+                    "taxo": taxo,
+                    "body_exempt_file": body_exempt_file,
+                    "is_title_line": is_title_line,
+                    "fence": fence,
+                    "code_spans": code_spans,
+                    "adr_spans": adr_spans,
+                }
+                if any(pred(ctx) for pred in CARVE_OUT_PREDICATES.values()):
                     continue
                 if f"{rel}:{line_no}" in known_sites:
                     continue
@@ -268,6 +391,60 @@ FIXTURES: list[dict] = [
         "expect": "pass",
         "why": "upstream/* matches exempt_paths.skip_entirely — the file is never walked.",
     },
+    {
+        "id": "inline-code-span",
+        "path": "notes/02-harnesses/fixture-code.md",
+        "text": "# Fixture\n\nThe old `layer` identifier appears here only inside code "
+        "formatting.\n",
+        "expect": "pass",
+        "why": "the match is inside a single-backtick inline code span — carve-out "
+        "inline-code.",
+    },
+    {
+        "id": "adr-filename-link",
+        "path": "notes/04-workflow-frameworks/fixture-link.md",
+        "text": "# Fixture\n\nSee [ADR-0003](../../adrs/0003-environments-stay-a-rung.md) "
+        "for background.\n",
+        "expect": "pass",
+        "why": "'rung' is inside an adrs/NNNN-....md filename token — carve-out "
+        "adr-filenames.",
+    },
+    {
+        "id": "adr-body-prose",
+        "path": "adrs/9999-fixture-decision.md",
+        "text": "# ADR-9999 — Fixture decision\n\n## Decision\n\nThis body discusses the "
+        "old layer terminology as historical record.\n",
+        "expect": "pass",
+        "why": "banned word is in an adrs/*.md BODY line, not the title — carve-out "
+        "adr-body-prose.",
+    },
+    {
+        "id": "adr-title-linted",
+        "path": "adrs/9998-fixture-title.md",
+        "text": "# ADR-9998 — The old layer decision\n\n## Decision\n\nBody text, clean, "
+        "no banned words here.\n",
+        "expect": "fail",
+        "why": "banned word is in the H1 TITLE line of an ADR path not listed in "
+        "adr_title_exempt — titles are still linted (D-04).",
+    },
+    {
+        "id": "exempt-compound-ladder",
+        "path": "notes/04-workflow-frameworks/fixture-ladder.md",
+        "text": "# Fixture\n\nHere the engagement ladder concept appears, not the "
+        "taxonomy's own top-level grouping.\n",
+        "expect": "pass",
+        "why": "'engagement ladder' is a deny_list_exempt_compounds phrase, at a line "
+        "not in known_sites — compound matching alone must hold.",
+    },
+    {
+        "id": "cross-cutting-not-cross-layer",
+        "path": "notes/cross-cutting/fixture-cutting.md",
+        "text": "# Fixture\n\nThis document uses cross-cutting concerns terminology "
+        "throughout, nothing else.\n",
+        "expect": "pass",
+        "why": "'cross-cutting' is a distinct compound from 'cross-layer' and carries "
+        "no banned word — the two must not be conflated.",
+    },
 ]
 
 
@@ -296,6 +473,7 @@ def selftest(taxo: dict) -> tuple[int, int]:
 
 def main() -> int:
     taxo = load_taxonomy()
+    assert_carveouts_implemented(taxo)
     args = sys.argv[1:]
     valid = {"--check", "--selftest"}
     if len(args) > 1 or (args and args[0] not in valid):
