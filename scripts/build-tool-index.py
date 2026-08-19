@@ -363,8 +363,8 @@ def render_features(reports: list[dict]) -> str:
         "`checked` date. Quantitative surface (context, pricing, cutoff, lifecycle)",
         "stays in [models.md](models.md).",
         "",
-        "| Model | license | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
-        "|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
+        "| Model | license | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
+        "|---|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
     ]
     m_unknown: set[str] = set()
     for r in reports:
@@ -377,7 +377,9 @@ def render_features(reports: list[dict]) -> str:
         cells = ["·" if feats.get(k) is None else f"`{feats.get(k)}`" for k in MODEL_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         lic = r.get("license") or "·"
-        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+        cw = r.get("context_window")
+        cw = f"{cw:,}" if isinstance(cw, int) else (cw or "·")
+        lines.append(f"| [{r['name']}](../{rel}) | {lic} | {cw} | " + " | ".join(cells) + " |")
     for k in sorted(m_unknown):
         print(f"warn: model feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
     lines += [
