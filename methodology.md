@@ -79,7 +79,7 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   "after every turn" review fork from `background_review.py`'s docstring; the call
   site (`turn_finalizer.py:653`) showed interval-gated, success-only, best-effort. The
   overstated version was the report's flagship claim and had already propagated to the
-  layer-2 index before a parity check caught it. Applied prospectively in the codex
+  category-2 index before a parity check caught it. Applied prospectively in the codex
   read same day (memory pipeline verified at `turn_processor.rs:594`; missing stuck-loop
   guard recorded as unverified absence).
 
@@ -204,7 +204,7 @@ Two sub-rules, both scarred in experiment 01:
 
 ## 6. Findings are promoted, not scattered
 
-The path is: run log → tool report / layer note (dated) → `README.md` Conclusions
+The path is: run log → tool report / category note (dated) → `README.md` Conclusions
 (numbered, dated, revisable, each linked to its evidence). A finding that changed no
 note is an anecdote; a conclusion without a linked note is an assertion.
 
