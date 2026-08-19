@@ -315,6 +315,158 @@ def _why(term: dict) -> str:
     return definition or str(term.get("term", ""))
 
 
+# --- LINT-02: stale category names/numbering, strict reference-format enforcement ---
+# Every rule below derives from taxonomy.yaml's `categories:` and `reference_formats:`
+# blocks — no vocabulary is invented here (methodology rule 4). `stack` is a
+# split_meaning_terms entry with lint_enforceable: false; this check never touches it
+# (nor does any other check in this script) — 'stack' is an accepted gap, caught by
+# readers, not a heuristic to attempt.
+
+MIDDLE_DOT = "·"  # U+00B7 MIDDLE DOT — reference_formats.table_index_note
+
+# Separator glyphs reference_formats.table_index_note names as wrong ("not a hyphen,
+# bullet, or other separator") plus the two dash variants and a colon. The period form
+# ("### N. Name", taxonomy.md's live section headings) is deliberately excluded — it is
+# canonical prose, not a table-index reference, and flagging it would be wrong.
+WRONG_SEPARATORS = "-–—•:"  # hyphen, en dash, em dash, bullet, colon
+
+
+def _category_name_alternation(taxo: dict) -> str:
+    names = [c["name"] for c in taxo.get("categories", []) or []]
+    return "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
+
+
+def _table_index_regexes(taxo: dict) -> tuple[re.Pattern, re.Pattern]:
+    """Both the wrong-separator and canonical-pairing regexes, over the canonical
+    category names taken from taxonomy.yaml (no hardcoded name list)."""
+    names_alt = _category_name_alternation(taxo)
+    wrong = re.compile(
+        rf"(?<!\d)(\d)\s*([{re.escape(WRONG_SEPARATORS)}])\s*({names_alt})\b"
+    )
+    canonical = re.compile(rf"(?<!\d)(\d) {MIDDLE_DOT} ({names_alt})\b")
+    return wrong, canonical
+
+
+# Prose/compound form: reference_formats.prose ("category N") / .compound
+# ("category-N"). Case-insensitive match so the check can also judge whether an
+# occurrence's actual case is canonical.
+CATEGORY_NUM_RE = re.compile(r"\b(category)([ \t-]*)(\d)", re.IGNORECASE)
+
+
+def _orthographic_capital_ok(line_text: str, start: int) -> bool:
+    """True if the match at `start` is line-, list-item-, heading-, or table-cell-
+    initial, or follows a sentence terminator — capitalised by English orthography,
+    not by vocabulary drift. This is the discretionary reading of `enforcement: strict`
+    02-CONTEXT.md reserves to the executor; disagree with it explicitly, don't guess."""
+    stripped = line_text[:start].strip()
+    if stripped == "":
+        return True  # line-initial (only leading whitespace before the match)
+    if re.fullmatch(r"[-*+]|\d+[.)]|#{1,6}|\|", stripped):
+        return True  # list-item-, heading-, or table-cell-initial leader
+    if stripped[-1] in ".!?":
+        return True  # follows a sentence terminator
+    return False
+
+
+def check_reference_formats(taxo: dict, root: Path = ROOT) -> int:
+    """Flag stale name/number pairings, non-canonical table-index separators, and
+    non-canonical prose/compound category references (LINT-02).
+
+    Table-index matching is restricted to markdown TABLE ROWS (a line that, once
+    stripped, starts with `|`) — the only in-repo occurrences of the "N <sep> Name"
+    shape are table cells (`| 2 · Harnesses |`); layer index.md files' H1 titles use
+    the same digit-dash-name shape for an unrelated purpose (e.g. "# Layer 5 —
+    Execution environments") and must not be double-counted as a table-index
+    violation — they are already flagged by the deny-list check for the word "Layer".
+    This scoping is Claude's Discretion per 02-CONTEXT.md ("how the strict
+    reference-format check distinguishes table cells from prose contexts").
+    """
+    problems = 0
+    name_to_num = {c["name"]: c["number"] for c in taxo.get("categories", []) or []}
+    wrong_re, canonical_re = _table_index_regexes(taxo)
+    for path in walk(taxo, root=root):
+        rel = path.relative_to(root).as_posix()
+        text = path.read_text(encoding="utf-8")
+        fm_lines, body_lines = split_frontmatter(text)
+
+        body_exempt_file = _matches_any(rel, taxo, "body_exempt")
+        title_exempt_file = _matches_any(rel, taxo, "adr_title_exempt")
+        title_line_no = None
+        if body_exempt_file and not title_exempt_file:
+            h1 = _first_h1(body_lines)
+            title_line_no = h1[0] if h1 else None
+
+        fence_flags = _line_in_fence_map([t for _, t in body_lines])
+        fence_by_line = {ln: fence_flags[i] for i, (ln, _t) in enumerate(body_lines)}
+
+        for line_no, line_text in fm_lines + body_lines:
+            code_spans = _inline_code_spans(line_text)
+            adr_spans = _adr_filename_spans(line_text)
+            is_title_line = bool(body_exempt_file and line_no == title_line_no)
+            fence = fence_by_line.get(line_no, False)
+
+            def _exempt(start: int, end: int) -> bool:
+                ctx = {
+                    "rel": rel,
+                    "taxo": taxo,
+                    "start": start,
+                    "end": end,
+                    "body_exempt_file": body_exempt_file,
+                    "is_title_line": is_title_line,
+                    "fence": fence,
+                    "code_spans": code_spans,
+                    "adr_spans": adr_spans,
+                }
+                return any(pred(ctx) for pred in CARVE_OUT_PREDICATES.values())
+
+            if line_text.lstrip().startswith("|"):
+                for m in wrong_re.finditer(line_text):
+                    if _exempt(*m.span()):
+                        continue
+                    num, sep, name = m.group(1), m.group(2), m.group(3)
+                    print(
+                        f"ERROR: {rel}:{line_no} '{m.group(0).strip()}' uses "
+                        f"separator '{sep}' — canonical table-index form is "
+                        f"'{num} {MIDDLE_DOT} {name}' (U+00B7, single space each "
+                        f"side, reference_formats.table_index)",
+                        file=sys.stderr,
+                    )
+                    problems += 1
+                for m in canonical_re.finditer(line_text):
+                    if _exempt(*m.span()):
+                        continue
+                    num, name = int(m.group(1)), m.group(2)
+                    canonical_num = name_to_num.get(name)
+                    if canonical_num is not None and num != canonical_num:
+                        print(
+                            f"ERROR: {rel}:{line_no} '{m.group(0)}' pairs a "
+                            f"category name with the pre-ADR-0007 number — "
+                            f"canonical is '{canonical_num} {MIDDLE_DOT} {name}'",
+                            file=sys.stderr,
+                        )
+                        problems += 1
+
+            for m in CATEGORY_NUM_RE.finditer(line_text):
+                start, end = m.start(1), m.end(3)
+                if _exempt(start, end):
+                    continue
+                word, sep, digit = m.group(1), m.group(2), m.group(3)
+                case_ok = word == "category" or (
+                    word == "Category" and _orthographic_capital_ok(line_text, start)
+                )
+                sep_ok = sep in (" ", "-")
+                if not (case_ok and sep_ok):
+                    print(
+                        f"ERROR: {rel}:{line_no} '{line_text[start:end]}' is not "
+                        f"the canonical category reference form — use "
+                        f"'category {digit}' (prose) or 'category-{digit}' "
+                        f"(compound); reference_formats, strict enforcement",
+                        file=sys.stderr,
+                    )
+                    problems += 1
+    return problems
+
+
 def check(taxo: dict, root: Path = ROOT) -> int:
     """Walk `root`, report every surviving deny-listed match, return the problem count."""
     problems = 0
@@ -445,7 +597,40 @@ FIXTURES: list[dict] = [
         "why": "'cross-cutting' is a distinct compound from 'cross-layer' and carries "
         "no banned word — the two must not be conflated.",
     },
+    {
+        "id": "stale-numbering-pairing",
+        "path": "notes/03-execution-environments/fixture-stale-numbering.md",
+        "text": "# Fixture\n\n| Idx | Note |\n|---|---|\n"
+        "| 5 · Execution environments | wrong pairing |\n",
+        "expect": "fail",
+        "why": "'5 · Execution environments' pairs the canonical name with the "
+        "pre-ADR-0007 number (canonical is 3) — LINT-02 pairing check.",
+    },
+    {
+        "id": "wrong-separator-table-index",
+        "path": "notes/02-harnesses/fixture-wrong-separator.md",
+        "text": "# Fixture\n\n| Idx | Note |\n|---|---|\n"
+        "| 2 - Harnesses | wrong separator |\n",
+        "expect": "fail",
+        "why": "a hyphen instead of U+00B7 fails reference_formats.table_index's "
+        "strict separator enforcement, even though the pairing (2, Harnesses) is "
+        "correct.",
+    },
+    {
+        "id": "sentence-initial-category-ok",
+        "path": "notes/04-workflow-frameworks/fixture-sentence-initial.md",
+        "text": "# Fixture\n\nCategory 2 covers harnesses tooling in this repo.\n",
+        "expect": "pass",
+        "why": "line-initial 'Category' is orthographic capitalisation, not "
+        "vocabulary drift — the documented exception to strict enforcement.",
+    },
 ]
+
+
+def run_all_checks(taxo: dict, root: Path = ROOT) -> int:
+    """Every drift-class checker, summed. The single dispatch point both `main()` and
+    `selftest()` call, so a new checker is wired into both by adding one line here."""
+    return check(taxo, root=root) + check_reference_formats(taxo, root=root)
 
 
 def selftest(taxo: dict) -> tuple[int, int]:
@@ -457,7 +642,8 @@ def selftest(taxo: dict) -> tuple[int, int]:
             target = tmp_root / fx["path"]
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(fx["text"], encoding="utf-8")
-            problems = check(taxo, root=tmp_root)
+            fx_taxo = fx["taxo_patch"](taxo) if "taxo_patch" in fx else taxo
+            problems = run_all_checks(fx_taxo, root=tmp_root)
             got = "fail" if problems else "pass"
             if got != fx["expect"]:
                 print(
@@ -485,7 +671,7 @@ def main() -> int:
         print(f"{count} fixtures run, {problems} problem(s)")
         return 1 if problems else 0
 
-    problems = check(taxo)
+    problems = run_all_checks(taxo)
     files_checked = sum(1 for _ in walk(taxo))
     print(f"{files_checked} files checked, {problems} problem(s)")
     return 1 if problems else 0
