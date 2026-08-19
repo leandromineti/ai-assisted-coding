@@ -57,14 +57,30 @@ docs — omitted means "not checked", `false` means "checked and absent", and bo
 ```sh
 python3 scripts/build-tool-index.py --check   # pinned commits still match clone HEADs
 python3 scripts/build-refs-index.py --check   # frontmatter, unread-but-cited, dangling links
+python3 scripts/check-taxonomy.py --check     # deny-listed synonyms, stale category names/numbering, unregistered vocabulary, unapplied ADR decoders
 ```
 
-`--check` distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
+For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
+distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
 commit no longer resolves — claims can't be checked against their source at all.
 **behind** is not a failure, but it is not noise either: it is a work queue. Ask whether
 the drift touches what the report claims and record the answer, dated, in the report —
 **without moving the pin** (methodology rule 4b). ECC's 16-commit drift contained the
 upstream bug fix that falsified a claim in its deep-dive.
+
+The taxonomy lint (`check-taxonomy.py`) has different semantics: it reads `taxonomy.yaml`
+and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately
+exempt); exit 0 prints a trailing `0 problem(s)`; exit 2 means a bad argument. Run
+`python3 scripts/check-taxonomy.py --selftest` after touching `taxonomy.yaml` or the
+lint itself — it is the lint's permanent calibration (methodology rule 5d). `--selftest`
+deliberately prints ERROR diagnostics from fixtures designed to fail, so its verdict is
+the trailing `0 problem(s)` line and the exit code, never the absence of ERROR output.
+
+Three green `--check` runs are not proof the repo's vocabulary is correct — the lint
+enforces only what `taxonomy.yaml` lists. `taxonomy.yaml`'s own `split_meaning_terms`
+records at least one sense (`stack`) no lint can judge, and a word inflection outside a
+`deny_list` entry is invisible to it (see the deny-list growth procedure below for a
+worked example of exactly this gap).
 
 ## The honesty columns
 
