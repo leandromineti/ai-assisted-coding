@@ -26,10 +26,10 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 2 · Harnesses | codex | terminal · local | Rust, TypeScript | Apache-2.0 | 102,646 | 2025-04-16 | — | `rusty-v8-v150.4.0-94-g413492cd6c` | deep-dive | [codex](../notes/02-harnesses/codex.md) |
 | 2 · Harnesses | hermes-agent | terminal + desktop + web + ide · both | Python, TypeScript | MIT | 222,863 | 2025-07-22 | — | `v2026.7.20-3084-g524ab5399` | deep-dive | [hermes-agent](../notes/02-harnesses/hermes-agent.md) |
 | 2 · Harnesses | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | MIT | 190,554 | 2025-03-21 | — | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../notes/02-harnesses/opencode.md) |
+| 2 · Harnesses | warp | terminal + desktop + web · both | Rust | AGPL-3.0 | 64,121 | 2026-04-28 | — | `tui-screenshots-app5029-227-g80a20347` | deep-dive | [warp](../notes/02-harnesses/warp.md) |
 | 2 · Harnesses | claude-code | terminal + desktop + web + ide · both | TypeScript, Node | proprietary | 141,660 | — | — | `closed source` | survey | [claude-code](../notes/02-harnesses/claude-code.md) |
 | 2 · Harnesses | cline | ide + terminal · local | TypeScript, React | Apache-2.0 | 65,138 | 2024-07-05 | — | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../notes/02-harnesses/cline.md) |
 | 2 · Harnesses | continue | ide · local | TypeScript, React | Apache-2.0 | 35,166 | 2023-05-23 | — | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../notes/02-harnesses/continue.md) |
-| 2 · Harnesses | warp | terminal + desktop + web · both | Rust | AGPL-3.0 | 64,121 | 2026-04-28 | — | `tui-screenshots-app5029-227-g80a20347` | survey | [warp](../notes/02-harnesses/warp.md) |
 | 2 · Harnesses | aider | terminal · local | Python | Apache-2.0 | 47,763 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../notes/02-harnesses/aider.md) |
 | 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | 106,225 | 2025-04-15 | — | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
 | 3 · Execution environments | e2b | — | Python, TypeScript, Go | Apache-2.0 | 13,423 | 2023-03-04 | — | `@e2b/python-sdk@2.39.1` | deep-dive | [e2b](../notes/03-execution-environments/e2b.md) |
@@ -52,4 +52,4 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 5 · Extensions | memmachine | — | Python | Apache-2.0 | 3,178 | 2025-08-15 | integrations/openclaw/ and a Strands integration in-repo (file listing at the pin); not verified per-target | `v0.3.9-20-g2d28c1c` | stub | [memmachine](../notes/05-capability-extensions/memmachine.md) |
 | 5 · Extensions | memori | — | Rust, Python, TypeScript | Apache-2.0 | 16,128 | 2025-07-24 | · | `v3.3.6-24-g538b61f` | stub | [memori](../notes/05-capability-extensions/memori.md) |
 
-**38 tools** — 12 deep-dive · 17 stub · 9 survey.
+**38 tools** — 13 deep-dive · 17 stub · 8 survey.
