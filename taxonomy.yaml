@@ -159,6 +159,42 @@ reference_formats:
     The lint enforces exact case, spacing, and separator character for every form
     above, not merely the absence of old (layer-based) forms.
 
+# Path patterns the lint uses to decide what is a current-state document (D-01, Phase 2).
+# Patterns are matched with Python's fnmatch against the repo-relative POSIX path, where
+# `*` crosses directory separators — so "upstream/*" covers the whole tree beneath it.
+# Anything NOT matched here is current-state and is linted. No per-file markers, no date
+# heuristics: this block is the single machine-readable exemption source.
+exempt_paths:
+  # Not lint targets at all.
+  skip_entirely:
+    - "upstream/*"      # other people's code — study clones, gitignored
+    - ".git/*"
+    - ".planning/*"     # planning docs discuss this vocabulary as the subject of decisions
+    - "refs/*"          # source quotes legitimately use their authors' vocabulary
+                        # (REQUIREMENTS.md "Out of Scope"); refs/ is not in SWEEP-01's list
+    - "comparisons/*"   # generated — their generators own the vocabulary (methodology rule 3)
+  # Append-only and preregistered records: immutable by methodology rule 5 (D-03).
+  # experiments/rig/** is deliberately NOT here — the rig README is a living doc and is linted.
+  append_only:
+    - "experiments/0*/log.md"       # appended live during runs, never reconstructed
+    - "experiments/0*/README.md"    # preregistered protocol text; results append below it
+    - "experiments/*/artifacts/*"   # run artifacts, dated records of what actually happened
+  # ADR bodies are exempt; the H1 title line of an ADR is still linted (D-04).
+  body_exempt:
+    - "adrs/*.md"
+  # ...except these eight, whose titles were accepted before ADR-0015 and are immutable
+  # per adrs/README.md — historical record, not fixable drift (enumerated 2026-08-19).
+  # A NEW ADR whose title carries a banned term fails, which is what D-04 is for.
+  adr_title_exempt:
+    - "adrs/0001-five-layer-taxonomy.md"
+    - "adrs/0002-extensions-demoted-to-bucket.md"
+    - "adrs/0003-environments-stay-a-rung.md"
+    - "adrs/0007-renumber-core-triad-first.md"
+    - "adrs/0009-candidates-ledger.md"
+    - "adrs/0012-layer-2-feature-set.md"
+    - "adrs/0013-memory-features-block.md"
+    - "adrs/0015-layers-become-categories.md"
+
 # Match exemptions that apply to every deny-list entry (ADR-0015 § "The decoder";
 # D-14). Named so Phase 2's lint can implement each one by id.
 carve_outs:
