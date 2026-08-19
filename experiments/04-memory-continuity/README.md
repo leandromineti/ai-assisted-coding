@@ -164,3 +164,37 @@ configuration exactly (opencode, plugin + `inject_on_session_start` marker, NO M
 **Falsification**: C > B1b → the floor is a zero-LLM artifact; conclusion 14 gains a
 configuration tier. C = 0 → the floor is a design property (baton shape), and
 "pull-shaped" hardens. Scored with the committed key, artifact-read, n=1 (probe).
+
+### Arm C results — 2026-08-19
+
+**C = 0/10, all UNKNOWN** — and the mechanism evidence is stronger than the score.
+With `llm_provider=anthropic` live (consolidation on claude-haiku-4-5, verified in the
+daemon log), the automatic path still carried nothing:
+
+1. **Session-end consolidation never fired on its own**: the scheduler interval is
+   3600s and the default gates (`min_observations=8`, `min_session_duration_secs=120`)
+   exclude short headless sessions anyway. (Time-compressed per the amendment: manual
+   `auto-improve` runs with `--min-observations 1 --min-session-duration-secs 0`.)
+2. **The LLM reviewer saw the facts and REJECTED them, with reasons.** Two runs, 4 and
+   8 rejected candidates, zero proposals. Verbatim rejection reason (from
+   `auto_improve_runs.rejected_candidates_json`): *"Offline decision acknowledged but
+   not made or refined in session; no implementation evidence or policy change
+   documented in session itself."* ai-memory's background loop applies an
+   evidence bar — acknowledged-but-not-implemented conversational facts are
+   deliberately not minted into wiki knowledge.
+
+**Answer to the amendment's question: the floor is a DESIGN PROPERTY at both tiers** —
+the zero-LLM path structurally cannot carry mid-session facts (prefix truncation,
+latest-handoff-only), and the LLM path deliberately will not (evidence bar).
+"Pull-shaped" hardens from a configuration observation into a design reading.
+
+**Correction (dated)**: the main results said each `-p` turn "registered as its own
+session (6 handoffs, not 1)". The handoff count is right; the session claim is not —
+the daemon's TTL-based mapping folds all six turns into ONE session row (34
+observations). Six handoffs, one session. The floor mechanism (latest-handoff-only
+injection) is unchanged.
+
+**Also hit and recorded**: appending TOML keys to config.toml lands them in the last
+`[section]` (first arm-C round silently ran zero-LLM; caught via the daemon's own
+"AI_MEMORY_LLM_PROVIDER unset" line — env vars are the reliable route). Additional
+capture round + reviewer runs ≈ $0.30; arm total ≈ $0.60.

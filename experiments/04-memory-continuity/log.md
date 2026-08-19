@@ -72,3 +72,14 @@ prompt swallowed, caught by artifact check, re-run via stdin, deviation recorded
 results). Results appended below the untouched protocol; artifacts archived in-repo;
 conclusion 14 added; ai-memory report + bucket index updated. Daemon stopped after
 runs. Total metered spend ~ $1 (5 sonnet sessions + 2 haiku).
+
+## 2026-08-19 — arm C complete
+
+Round-1 config append landed inside [auto_improve.eval] (TOML gotcha) → daemon ran
+zero-LLM; caught via "AI_MEMORY_LLM_PROVIDER unset" startup line; round 2 via env vars,
+"memory_consolidate + PreCompact LLM checkpointing enabled provider=anthropic
+model=claude-haiku-4-5" confirmed. Fresh capture (aimem-data-llm2). No automatic
+consolidation (3600s scheduler + duration/observation gates); manual auto-improve with
+gates lowered: 2 runs, 12 rejected candidates, 0 proposals — rejection reason quoted in
+results. Arm C quiz: 0/10. Session-count correction recorded (6 handoffs, 1 session).
+Daemon stopped. Arm spend ≈ $0.60.

@@ -355,7 +355,13 @@ note. Revised when evidence moves._
     and same-harness scores identically: the harness boundary costs nothing on the
     pull path. Continuity rests entirely on the receiving agent knowing to ask.
     Incidental: the run was blocked by a live MCP-schema-vs-Anthropic-API interop seam
-    whose fix ships default-off — presence≠operative, measured blocking a real run. →
+    whose fix ships default-off — presence≠operative, measured blocking a real run.
+    **Arm C (same day): the floor is a design property, not a zero-LLM artifact** — with
+    the LLM consolidation loop enabled and manually triggered, the reviewer surfaced the
+    facts as candidates and rejected every one on an articulated evidence bar
+    ("acknowledged but not made or refined in session; no implementation evidence") —
+    the memory system refuses to mint knowledge from conversational say-so, which is
+    exactly this repo's own rule 4 applied by a tool to its user. →
     [`experiments/04-memory-continuity/`](experiments/04-memory-continuity/README.md) But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
