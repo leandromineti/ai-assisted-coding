@@ -58,15 +58,15 @@ The per-kind slice of the feature taxonomy — `memory_features:` frontmatter
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
-| Tool | memory store | capture path | recall injection | memory scope | memory tiers | hybrid retrieval | decay | memory revision | injection trust boundary | deployment mode | harness installer | rule extraction |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
-| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
-| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | memory store | capture path | write admission | recall injection | memory scope | memory tiers | hybrid retrieval | decay | memory revision | injection trust boundary | deployment mode | harness installer | rule extraction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `evidence-gated` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `unfiltered` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
+| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `scored` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | · | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
+| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Cross-layer features
 

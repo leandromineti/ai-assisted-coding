@@ -151,6 +151,11 @@ features:
     applies_to: [5]
     definition: "how sessions become memory: hook | adapter | agent-invoked"
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory + mem0 (harness hooks), memos (in-process adapter cascade), cognee (agent-invoked MCP tools — the learning_loop: false pole)"
+  - id: write_admission
+    block: memory_features
+    applies_to: [5]
+    definition: "what earns AUTONOMOUS storage: evidence-gated (enactment/outcomes required) | scored (reward/confidence thresholds with probation) | unfiltered (assertion suffices)"
+    note: "added 2026-08-19 post exp-04 arm C (conclusion 14): the write-side half of the injection story injection_trust_boundary tells on the read side — unfiltered admission + authoritative recall = the injection-to-authority pipeline. Instances: ai-memory (evidence-gated — 12 verbatim rejections archived, 'no implementation evidence'), memos (scored — gain thresholds + probation, golden-tested), mem0 (unfiltered — ADD-only extraction from say-so, verified opposite pole). Explicit/deliberate write paths (write-page, add_memory) are NOT gated by this key — it classifies the autonomous path only"
   - id: recall_injection
     block: memory_features
     applies_to: [5]

@@ -61,6 +61,7 @@ workflow_features:
 memory_features:
   memory_store: <files-git | vector | graph | rows | [list, for, hybrids]>
   capture_path: <hook | adapter | agent-invoked>
+  write_admission: <evidence-gated | scored | unfiltered>
   recall_injection: <auto | pull-only | both>
   memory_scope: [<project | agent | user | session>]
   memory_tiers: <true | false>

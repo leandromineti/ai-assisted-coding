@@ -20,6 +20,7 @@ features:
 memory_features:   # ADR-0013 block, set 2026-08-19 from the existing deep-dive read at acd9c0b — not a re-read
   memory_store: files-git        # git-versioned markdown wiki is the source of truth; SQLite/vectors are derived indexes (body: store section) — the kind's only files-git wager
   capture_path: hook             # harness lifecycle hooks → closed 10-value ObservationKind → rule-based session pages, no LLM on the default path
+  write_admission: evidence-gated  # MEASURED (exp-04 arm C, 2026-08-19): the auto-improve reviewer rejected all 12 conversational-fact candidates — "Offline decision acknowledged but not made or refined in session; no implementation evidence" — say-so does not earn autonomous storage; the explicit write-page path remains available for deliberate recording
   recall_injection: both         # auto: thin cwd-matched handoff baton injected via per-harness envelopes; rich wiki is pull-only via 18 MCP tools
   memory_scope: [project, user]  # .ai-memory.toml walk-up for project scoping; per-user slot namespaces
   memory_tiers: true             # working/episodic/semantic/procedural
