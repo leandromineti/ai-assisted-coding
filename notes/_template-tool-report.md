@@ -32,7 +32,7 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
-# type: category-5 (extensions) reports only — one of the bucket's kind vocabulary:
+# type: category-5 (extensions) reports only — one of the bucket's type vocabulary:
 # mcp-server | skill | hook | subagent-def | rules-file | config-pack | memory
 type: <see comment>
 # harness_targets: category-4 (and category-5) reports only — which harnesses the tool

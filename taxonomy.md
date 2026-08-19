@@ -196,7 +196,7 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 
 What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
 rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
-packs at scale (ECC), memory extensions (persistent cross-session state — the kind
+packs at scale (ECC), memory extensions (persistent cross-session state — the type
 added 2026-08-18, seven seeds in the bucket index) — and the specifications they ride on (MCP the protocol, the
 `AGENTS.md` and `SKILL.md` conventions, tracked in the Standards section, which is this
 bucket's spec half).
@@ -207,7 +207,7 @@ A bucket, not one of the fundamentals ([ADR-0002](adrs/0002-extensions-demoted-t
 independent is **artifacts distributed on file conventions** — content plus specs, which
 is a bucket's shape, not a fundamental's. Named "Extensions" because portability is conferred
 by adoption, not intrinsic ([ADR-0005](adrs/0005-rename-to-extensions.md)); *how
-portable each kind is* is a dated, per-kind measurement (the Standards scoreboard), not
+portable each type is* is a dated, per-type measurement (the Standards scoreboard), not
 a name.
 
 The independent-distribution test still governs what belongs *in the bucket*: an MCP
@@ -339,7 +339,7 @@ taxonomy needs revision — not the case.
 
 | Case | Verdict | Reasoning |
 |------|---------|-----------|
-| **Cursor's agent mode** | category 2, IDE-embedded | The IDE is the UI; the agent loop underneath is a harness. "IDE feature" describes the surface, not the kind. Now bleeds into category 1 via xAI ownership. |
+| **Cursor's agent mode** | category 2, IDE-embedded | The IDE is the UI; the agent loop underneath is a harness. "IDE feature" describes the surface, not the type. Now bleeds into category 1 via xAI ownership. |
 | **Claude Code Skills** | category 5, bundled in category 2 | Independently authored, versioned, and portable in principle — that's the extensions-bucket test. Shipping inside a harness is distribution, not identity. |
 | **Devin** | category 2, bundles category 3 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ category identity. |
 | **Aider** | category 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |

@@ -7,7 +7,7 @@ what a tool *is* (the categories, plus types like category 5's `type` and catego
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
 defined **once**, with an applicability map saying which categories it can occur in. The
 generator (`scripts/build-tool-index.py`) reads the YAML block below as its single
-source of truth for valid frontmatter keys — the per-category (and per-kind) matrices in
+source of truth for valid frontmatter keys — the per-category (and per-type) matrices in
 [`comparisons/features.md`](../../comparisons/features.md) and its cross-category table
 are derived from here plus report frontmatter. **Do not add a key anywhere else.**
 
@@ -21,7 +21,7 @@ Conventions:
 - `block` names the frontmatter block that carries the key (`features` for harnesses,
   `workflow_features` for category 4, `memory_features` for category-5 `type: memory` reports
   — ADR-0013, `model_features` for category 1 — ADR-0014). `applies_to` lists
-  tool-taxonomy categories; per-kind blocks additionally scope by the report's `type`.
+  tool-taxonomy categories; per-type blocks additionally scope by the report's `type`.
 - **What belongs where** (the placement test, recorded 2026-08-19): a fact with an
   external ground truth we transcribe (stars, license, context window, pricing) is a
   **top-level frontmatter field** — mechanically collected, dated, and at most
@@ -33,7 +33,7 @@ Conventions:
   transcription vs assessment: the first drifts when the world changes, the second
   only when someone reads again.
 - `kind_link` records the **demand↔supply correspondence**: a harness feature (demand
-  side) whose supply side is an installable category-5 artifact kind. This is the bleed —
+  side) whose supply side is an installable category-5 artifact type. This is the bleed —
   quantified in the generated cross-category table.
 - "Vocabulary" remains the mechanism phrase for this closed key list; the *concept* is
   the feature taxonomy (naming settled 2026-08-18, ADR-0010).

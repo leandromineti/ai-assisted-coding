@@ -111,14 +111,14 @@ note. Revised when evidence moves._
    demonstrably buildable at personal scale for ~$3. →
    [`notes/01-models/index.md`](notes/01-models/index.md)
 3. **The extensions bucket (category 5) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
-   extension kinds, only MCP has fully standardized; rules files are converging on a
+   extension types, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
    *Revised same day:* skills moved — spec-kit's integration registry shows `SKILL.md`
    consumed by at least four harnesses (Claude Code, Codex, Kimi, Hermes), so skills are
    now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
    [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
-   **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging kinds
+   **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging types
    gained their best evidence yet, and it is a better *class* of evidence: a first-party
    implementation by a rival vendor rather than a third-party installer targeting the
    format. Warp parses `SKILL.md` natively (`crates/ai/src/skills/`, 13 bundled skills) —
@@ -232,7 +232,7 @@ note. Revised when evidence moves._
    it, one is on by default, one stable-but-off, one user-write-only. "Twice each" was
    never "always," and the `learning loop` column now has a verified ✗ to sit beside its
    ✓s. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
-   **Counter-current (2026-08-18, memory-kind reading arc).** Absorption predicts
+   **Counter-current (2026-08-18, memory-type reading arc).** Absorption predicts
    independent memory extensions get eaten by native loops; the arc found the opposite
    motion running concurrently. The extensions are growing *despite* native memory
    (ai-memory: 2.6k stars in 3 months sitting outside every harness), their verified
@@ -318,8 +318,8 @@ note. Revised when evidence moves._
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
     [`notes/cross-cutting/category-2-program.md`](notes/cross-cutting/category-2-program.md)
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18,
-    memory-kind reading arc: one deep-dive, two surveys, three instrument full-reads).
-    The kind's verified substance is real — three distinct wagers (markdown wiki / RL
+    memory-type reading arc: one deep-dive, two surveys, three instrument full-reads).
+    The type's verified substance is real — three distinct wagers (markdown wiki / RL
     policy database / knowledge graph), three consolidation postures (background cron /
     per-turn event cascade / agent-invoked), and cross-harness continuity as the one
     bet no single harness can absorb (conclusion 8's counter-current). *(Structured
@@ -327,7 +327,7 @@ note. Revised when evidence moves._
     generated matrix — [ADR-0013](adrs/0013-memory-features-block.md); first cut shows
     the engineering axes converged, the identity axes split four ways, and the headline
     continuity bet resting on one verified instance.)* **Deepened (2026-08-19, mem0
-    deep-dive — the kind's second):** the "converged engineering axes" partly dissolved
+    deep-dive — the type's second):** the "converged engineering axes" partly dissolved
     on source contact — two of mem0's four ✓s flipped (tiers: a metadata tag; decay:
     OSS params that raise, platform-only), sharpening the conclusion's own point: the
     coding-agent product is where the claims live, and reading client parameters as
@@ -341,12 +341,12 @@ note. Revised when evidence moves._
     the ten README numbers (five of them CODING benchmarks incl. SWE-Bench, all
     attributed to a non-vendored external repo) describe the full-evolution
     configuration, while the shipped default — verified in code, templates, and the
-    published npm artifact — runs with that machinery unmounted. The kind's pattern is
+    published npm artifact — runs with that machinery unmounted. The type's pattern is
     now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
     benchmarks what the shipped default doesn't enable. →
     [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19,
-    exp-04, n=1 per arm — a probe). The memory kind's headline bet, measured for the
+    exp-04, n=1 per arm — a probe). The memory type's headline bet, measured for the
     only tool that ships a continuity mechanism (ai-memory, pin-built): the automatic
     floor is **0/10** — the session-start baton carries the latest session's first/last
     prompts, and mid-session conversational facts never reach it (out-of-box AND with
@@ -368,7 +368,7 @@ note. Revised when evidence moves._
     **No coding-agent memory benchmark exists**, and the two vendor headline numbers
     checked exceed their instruments' own published scales (mem0's 92.5 vs LoCoMo's
     87.9 *human* baseline; cognee's 0.79 vs BEAM's ~0.36 best configs) — so the
-    kind's efficacy for coding is currently an unmeasured claim resting on
+    type's efficacy for coding is currently an unmeasured claim resting on
     conversational proxies. *Deepened same day by the mem0 vendor paper
     ([`refs/2025-mem0.md`](refs/2025-mem0.md), full read): mem0's own published
     comparison shows the no-memory full-context baseline beating its memory system

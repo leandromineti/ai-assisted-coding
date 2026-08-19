@@ -158,9 +158,9 @@ signals missing self-monitoring, not efficiency (GPTswarm/OWL: ~0 corrections *a
 3–10% repair rates). Its prose headlines contradict its own tables in places; cite
 tables only.
 
-## 6. The memory corner (what the category-5 memory kind reports against)
+## 6. The memory corner (what the category-5 memory type reports against)
 
-*(Added 2026-08-18, closing the memory-kind reading arc's instrument question — three
+*(Added 2026-08-18, closing the memory-type reading arc's instrument question — three
 full reads the same day.)* The instruments the memory vendors self-report on:
 
 | Benchmark | Construction | The result that matters here |
@@ -172,7 +172,7 @@ full reads the same day.)* The instruments the memory vendors self-report on:
 Three take-aways, each recorded in the refs notes:
 
 1. **No coding-agent memory benchmark exists.** All three measure personal
-   chat-assistant memory — no tool traces, no repo state, no code entities. The kind's
+   chat-assistant memory — no tool traces, no repo state, no code entities. The type's
    vendors benchmark on conversation and sell to coding harnesses; every transfer claim
    is unmeasured.
 2. **Vendor numbers exceed the instruments' own scales.** mem0's "LoCoMo 92.5" is above

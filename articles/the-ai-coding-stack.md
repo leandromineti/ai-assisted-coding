@@ -141,7 +141,7 @@ boundaries.
 MCP servers, skills, rules files, hooks, memory stores: packaged capabilities
 that plug into a harness. Portability is not an intrinsic property of an extension —
 it's a status the ecosystem confers by adoption, and it has been conferred very
-unevenly across the kinds ([the taxonomy's bucket](../taxonomy.md) tracks
+unevenly across the types ([the taxonomy's bucket](../taxonomy.md) tracks
 exactly this). As of my last scoreboard check, exactly
 one of these has fully standardized (MCP, with a spec and version negotiation). Two
 more — skills and rules files — are converging as *filename conventions* rather than
@@ -149,7 +149,7 @@ standards: `SKILL.md` is now consumed by at least five harnesses, and one vendor
 project-init flow offers to link seven *competitors'* rules files into its own
 ([the Warp evidence](../notes/02-harnesses/warp.md), 2026-08-11). Hooks, subagent
 definitions, and memory stores remain harness-specific. "Write once, run anywhere" is true for exactly
-one extension kind and a polite fiction for the rest
+one extension type and a polite fiction for the rest
 ([conclusion 3](../README.md#conclusions)).
 
 The one tracked as a product so far, from [the tool index](../comparisons/tools.md):
