@@ -69,7 +69,7 @@ installer's side, matching what Warp showed from the implementer's side. It also
 `globalSkillsDir` / shared-skill-target concept for home-directory skill targets. See
 [`../cross-cutting/standards.md`](../cross-cutting/standards.md).
 
-## The layer-4 questions, answered
+## The category-4 questions, answered
 
 **1. Is the delta→source-of-truth merge deterministic or model-run? Deterministic —
 and not as an afterthought.** `src/core/specs-apply.ts` (570 lines) is a compiler for
@@ -144,8 +144,8 @@ count.
 
 ## Bleed
 
-Layer 5 by distribution (generated skills/commands into 29 harnesses' convention
-dirs) and layer 2 by architecture: the CLI is a genuine runtime (state, validation,
+Category 5 by distribution (generated skills/commands into 29 harnesses' convention
+dirs) and category 2 by architecture: the CLI is a genuine runtime (state, validation,
 merge), not an installer. But unlike spec-kit's `workflows/` engine or GSD's `gsd-pi`
 — escape hatches grown after prose enforcement failed — OpenSpec's engine *is* the
 original design. The conclusion-7 pattern arrived here as a founding decision, not a
@@ -166,7 +166,7 @@ design is consistent with them.)
    from day one" has an existence proof.
 2. **The methodology is pluggable data** — a schema YAML with embedded instructions,
    interpreted by a DAG engine with filesystem-state completion detection. Closest
-   thing in the set to "workflow framework as declarative program," and the layer-4
+   thing in the set to "workflow framework as declarative program," and the category-4
    analog of codex's WorldState (state as typed, diffable structure).
 3. **Machine gates ≠ measured gates.** Fully deterministic validation that never
    touches the domain — sharpens the exp-03 vocabulary: *format* gates (OpenSpec),

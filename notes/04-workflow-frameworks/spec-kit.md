@@ -75,7 +75,7 @@ leverage is in forcing the "what" to be settled before the "how" begins. Compare
 shares the diagnosis but locates the failure in context management instead. Same disease,
 different organ.
 
-Source reading confirms the prediction from the layer-4 index: spec-kit's mechanism mix is
+Source reading confirms the prediction from the category-4 index: spec-kit's mechanism mix is
 **intent-capture-heavy** and almost empty on empirical grounding and context discipline —
 the profile section below is the detail.
 
@@ -136,7 +136,7 @@ files and writes the next:
 ## Stack & repo shape
 
 Python — 284 `.py` across 521 tracked files, the second-smallest repo here. 135 `.md` files
-are the command and template definitions, which is where a layer-4 tool's actual product
+are the command and template definitions, which is where a category-4 tool's actual product
 lives. Ships `presets/ARCHITECTURE.md` and `workflows/ARCHITECTURE.md`, plus 11 `.sh` and
 10 `.ps1` — cross-platform shell scaffolding.
 
@@ -189,7 +189,7 @@ model to read `.specify/extensions.yml`, filter enabled hooks, emit an
 
 The git history documents what that costs (see Surprises): hook dispatch has been
 strengthened twice by rewriting prose more forcefully, because there is no other
-enforcement mechanism available at this layer.
+enforcement mechanism available at this level.
 
 
 ### Deep-dive — 2026-08-18 (same pin; three-tract source read)
@@ -292,7 +292,7 @@ retreated (#3185: report re-injection "compounding overhead until the chat freez
 — native harness hook mechanisms are used by zero integrations; the only harness-native
 config spec-kit ever writes is Copilot's `.vscode/settings.json`.
 
-#### Layer boundaries in the code
+#### Category boundaries in the code
 
 An integration is a ~21-line config: 5 `config` keys + 4 `registrar_config` keys, four
 format families (18 skills, 16 markdown, 2 toml, 1 yaml), median zero methods
@@ -380,10 +380,10 @@ only other human touchpoint. Run details:
 
 ## Bleed
 
-Layer 5 — it installs slash commands and templates into whichever harness you point it at;
+Category 5 — it installs slash commands and templates into whichever harness you point it at;
 the `specify` CLI itself is a thin installer/compiler, not a harness.
 
-Layer 2 — the `workflows/` engine (`specify workflow run`) is a deterministic YAML
+Category 2 — the `workflows/` engine (`specify workflow run`) is a deterministic YAML
 orchestrator (11 step types, persisted run state) that can drive
 the whole pipeline non-interactively. Same pattern as GSD's `gsd-pi`: the framework
 growing its own runtime because prose-level control keeps slipping.
@@ -399,7 +399,7 @@ runs entirely in the main context (no subagent isolation), so long features accu
    2026-06-25): "tell agent to *run* mandatory hooks, not just emit the directive" — the
    model was printing the ceremony block and skipping the hook. #2713 (`7a7843b`):
    compliance was improved by *promoting the section to H2 and using directive language*.
-   Enforcement-by-typography is the honest signature of a layer with no deterministic
+   Enforcement-by-typography is the honest signature of a category with no deterministic
    runtime underneath it.
 2. **The constitution wasn't loaded during implementation until 2026-05** (#2460,
    `b4060d5`) — for eight months the governance document governed planning documents but

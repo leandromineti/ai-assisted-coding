@@ -22,7 +22,7 @@ workflow_features:   # deep-dive 2026-08-18; gates graded per ADR-0011
   process_gates: prose           # "ALWAYS halt at checkpoints and wait for human input" (bmad-build/workflow.md:80) + <frozen-after-approval> spec regions (spec-template.md:16); no hook, no blocker; bmad-build-auto deletes them wholesale
   context_isolation: true        # designed-in and mandatory-flavored — "Using subagents when instructed is mandatory. If you cannot, HALT" (build-auto/workflow.md:52); reviewer briefs insist "the independent context is the point" — but prose-only, no hook (contrast gsd-core's exit-2 guard)
   parallel_orchestration: false  # instructed same-turn fan-out for READ-ONLY work (reviews, research) only; no worktree machinery (the sole "worktree" occurrence is the ordinary git working-tree sense, bmad-build/customize.toml:157); implementation single-threaded; backgrounding explicitly banned (build-auto/workflow.md:54)
-  state_store: repo-files        # _bmad-output/implementation-artifacts/sprint-status.yaml is canonical; spec-{slug}.md frontmatter is a real 5-state machine (draft|ready-for-dev|in-progress|in-review|done, spec-template.md:5) that step dispatch routes on; four-layer TOML config; no database
+  state_store: repo-files        # _bmad-output/implementation-artifacts/sprint-status.yaml is canonical; spec-{slug}.md frontmatter is a real 5-state machine (draft|ready-for-dev|in-progress|in-review|done, spec-template.md:5) that step dispatch routes on; four-category TOML config; no database
   retrospectives: true           # script-fed (git_evidence.py; sprint_status.py detect-epic computes pending_stories), action items persisted by id in sprint-status.yaml, next retro checks follow-through by id (acceptance-verdict.md:23) — but the loop closes into TRACKING, not planning; the designed verdict consumer is the external bmad-loop module
 ---
 
@@ -33,7 +33,7 @@ into the user's harness via `npx bmad-method install`. 29 real skills plus
 20 deprecated shims (49 `SKILL.md` total; the source predicts fresh installs get 29 —
 `shim-policy.js:96` — but the run probe below observed all 49 installed), ~123k words of
 methodology prose (12,185 lines across 182 markdown files in `src/`), a ~2.6k-line Python
-script layer the skills call at runtime, and a 10.4k-line Node installer. 52k stars in
+`script layer` the skills call at runtime, and a 10.4k-line Node installer. 52k stars in
 ~16 months. MIT but trademarked (TRADEMARK.md, "BMad Code, LLC") — open method, protected
 brand.
 
@@ -52,7 +52,7 @@ funnel" prediction is falsified on the funnel half, confirmed on the enforcement
   implementation workflow" (`docs/reference/workflow-map.md:97`). Build runs fine on an
   empty planning directory.
 - **The fork is real and materially configured, not just narrated.** One-shot vs
-  plan-code-review is a genuine split: the full route ships three review layers
+  plan-code-review is a genuine split: the full route ships three review passes
   (`bmad-build/customize.toml:92,111,127`) and the one-shot route exactly one (`:143`);
   one-shot also skips planning, the approval checkpoint, and the present step — ~403
   lines of instruction prose vs ~810 for full build, ~3.9k for the full planned path
@@ -72,7 +72,7 @@ funnel" prediction is falsified on the funnel half, confirmed on the enforcement
 
 ## A runtime without authority
 
-This is the layer's fourth engine shape, and it extends [conclusion 7](../../README.md)'s
+This is the category's fourth engine shape, and it extends [conclusion 7](../../README.md)'s
 divergence pattern. BMAD ships real post-install code — Python installed into the user's
 project at `_bmad/scripts/` and per-skill `scripts/`, run via `uv run`: `sprint_plan.py`
 (697 lines; atomic writes with post-write validation that exits 1 on mismatch),
@@ -109,12 +109,12 @@ deliberately subordinates it to the model's judgment**. The scripts are advisors
 enforcers — "script-graded gates with an engine's build quality and a prose gate's
 authority."
 
-The price of that script layer is a universal dependency: `uv`/Python ≥3.11 is "a
+The price of that `script layer` is a universal dependency: `uv`/Python ≥3.11 is "a
 requirement, not a preference: the rendered skills … HALT on activation if `uv` is
 unavailable — there is no interpreter fallback" (`tools/installer/core/uv-check.js:9-11`)
 — identical on all 47 platforms, including any that have no shell to run it.
 
-## The persona layer — ceremony got cheap
+## Personas — ceremony got cheap
 
 The ledger predicted "role-playing agent teams." Mechanically, an "agent" here is a
 persona the main session *adopts* — nothing is spawned. There are exactly five (analyst
@@ -137,8 +137,8 @@ is being replaced.
 
 ## Portability — 47 destinations, one artifact, zero translation
 
-The layer test is portability by design, and BMAD's mechanism is unlike either
-neighbour: **there is no translation layer at all**. All 47 platforms are served by a
+The category test is portability by design, and BMAD's mechanism is unlike either
+neighbour: **there is no `translation layer` at all**. All 47 platforms are served by a
 single config-driven handler class; the transform is a verbatim recursive directory copy
 — "The source SKILL.md is used directly — no frontmatter transformation or file
 generation" (`tools/installer/ide/_config-driven.js:408-410`). What varies per platform
@@ -148,7 +148,7 @@ verified at the pin: 47 codes, **22 distinct target dirs, 26 of 47 sharing
 `.agents/skills/`**, 4 preferred, zero deprecated/suspended. The installer dedupes by
 directory: selecting Cursor + Codex + Warp writes one directory once.
 
-Compare the layer's three portability mechanisms: gsd-core models platform *capability*
+Compare the category's three portability mechanisms: gsd-core models platform *capability*
 (declarative `capability.json` per runtime, 18 targets); spec-kit *compiles* per-target
 dialects (37 integrations); BMAD *refuses to model platforms at all* and rides the
 emerging `.agents/skills/` cross-tool convention — Anthropic's Agent Skills format
@@ -236,14 +236,14 @@ repo initialized, no `uv`/python on PATH. Findings, read from artifacts:
 ## My take
 
 The most interesting thing about BMAD at this pin is that it is **mid-molt, and every
-layer of it shows the same molt**: FORBIDDEN-typography ceremony next to
+part of it shows the same molt**: FORBIDDEN-typography ceremony next to
 evidence-discipline prose; five theatrical personas reduced to 76-line wrappers around
 skill menus; a real script runtime denied any authority over control flow; the
 process-heavy funnel of its reputation demoted to an optional context supply behind a
 build-first entry point. The v4-era caricature the candidates ledger predicted is still
 visible in the tree, but it is the part being shed.
 
-Two design bets distinguish it from everything else in the layer. First, the
+Two design bets distinguish it from everything else in the category. First, the
 authority inversion: where GSD's thesis is "a prose backstop cannot fix a prose defect,"
 BMAD's is the opposite — deterministic tools should *serve* the model's judgment, never
 constrain it (every script failure ends in "deliver the same outcome by best judgment").
@@ -251,12 +251,12 @@ That makes BMAD the purest large-scale test of the model-trust position, and it 
 falsifiable: if exp-01's mechanism finding generalizes — self-enforced prose gates
 measure near zero — BMAD's entire gate structure rests on the model's goodwill, at
 whatever scale its 52k stars imply. Second, the anti-translation portability bet: shipping one byte-exact
-artifact to 47 destinations is either the cheapest portability in the layer or not
+artifact to 47 destinations is either the cheapest portability in the category or not
 portability at all, depending entirely on whether the `.agents/skills/` convention
 consolidates — a bet worth a dated re-check in six months.
 
 Not adopted for daily use; nothing here displaces GSD for a practitioner who wants
-enforcement. But as a specimen, it is the layer's best evidence that "ceremony pole" and
+enforcement. But as a specimen, it is the category's best evidence that "ceremony pole" and
 "prose pole" are separable axes — BMAD is simultaneously getting *less* ceremonial and
 staying *maximally* prose-governed.
 

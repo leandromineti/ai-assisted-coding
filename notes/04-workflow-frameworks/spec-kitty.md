@@ -36,16 +36,16 @@ optional local kanban dashboard. Explicitly positioned as "bright software facto
 not a black box" — humans hold intent/architecture/acceptance, agents implement in
 traceable worktrees. (README at the pin; source unread.)
 
-## Notes for the layer-4 comparison
+## Notes for the category-4 comparison
 
 The lineage is verifiable in the mechanical facts alone: `first_commit` 2025-08-21
 predates the repo's own GitHub creation (2025-10-09) — spec-kit's history was imported,
 and `src/specify_cli/` still carries spec-kit's CLI name. What it adds to the parent is
-orchestration: worktree isolation (layer-3 bleed), lifecycle lanes, merge governance.
+orchestration: worktree isolation (category-3 bleed), lifecycle lanes, merge governance.
 Dogfooding is visible in the tree — `kitty-specs/` mission artifacts and `kitty-ops/`
 are checked into the repo itself (8.6k markdown files of the 17k tracked). Genuinely
 multi-maintainer (two leads ~8k commits) and incorporated ("Spec Kitty, Inc.", 2026
-LICENSE) — the only layer-4 subject that is both.
+LICENSE) — the only category-4 subject that is both.
 
 ## Stack & repo shape
 

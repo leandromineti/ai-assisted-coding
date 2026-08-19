@@ -24,7 +24,7 @@ workflow_features:   # added 2026-08-18; stub — README-level claims only
 
 ## What it is
 
-A spec-driven operating layer for Claude Code and Codex: `/prd` (requirements) →
+A spec-driven operating shell for Claude Code and Codex: `/prd` (requirements) →
 `/spec` (plan, implement, verify with enforced TDD) → `/build` (autonomous judge loops
 until a criterion passes) → `/fix` (TDD bugfix lane with a complexity bail-out), plus
 quality hooks (lint/format/typecheck/tests as gates), persistent memory with team
@@ -33,13 +33,13 @@ compression ("RTK"), a background automation agent ("Pilot Bot"), and a local we
 dashboard. Claude Code is the primary target (full feature coverage); Codex gets all
 workflows with fewer platform features. (README at the pin; source unread.)
 
-## Notes for the layer-4 comparison
+## Notes for the category-4 comparison
 
 The open question from the candidates ledger stands: spine or catalog? The command
 pipeline is a real process spine, but the surface area around it (console, bot, search,
 graph, own `pilot` binary and launcher) is ECC-shaped, and ECC's deep-dive verdict
 ("config pack with a runtime, not an encoded methodology") is the live precedent. The
-licensing is itself a layer-4 datapoint: the only non-OSI subject in the layer — a
+licensing is itself a category-4 datapoint: the only non-OSI subject in the category — a
 source-available EULA (internal use and modification permitted per §2(c); redistribution
 and derivative distribution prohibited per §4) with an Enterprise source tier. Cloning
 for private research is within §2(c); the clone is gitignored regardless.

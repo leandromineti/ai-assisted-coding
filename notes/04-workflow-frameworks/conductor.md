@@ -31,14 +31,14 @@ treating context as a managed artifact alongside code. Installs as a standard ag
 plugin: `agy plugins install` for Antigravity, marketplace install for Claude Code
 (README installation sections; `plugin.json` names it "Conductor Agent Skills").
 
-## Notes for the layer-4 comparison
+## Notes for the category-4 comparison
 
-The smallest layer-4 subject by an order of magnitude: **28 tracked files, 22 of them
+The smallest category-4 subject by an order of magnitude: **28 tracked files, 22 of them
 markdown** — the entire framework is prose (rules/ + skills/) plus a 2-line
 `plugin.json`. That makes it the purest test subject available for the
 conclusion-7 question (prose-only methodology, zero deterministic engine): where
 OpenSpec is workflow-as-schema interpreted by a DAG engine, Conductor is
-workflow-as-instructions, full stop. Two verified harness targets — passes layer-4
+workflow-as-instructions, full stop. Two verified harness targets — passes category-4
 portability, but the narrowest pass in the set.
 
 ## Stack & repo shape

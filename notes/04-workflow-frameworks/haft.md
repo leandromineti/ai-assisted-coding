@@ -18,14 +18,14 @@ workflow_features:   # added 2026-08-18; stub — README-level claims only
   intent_pipeline: false         # governs decisions and evidence, not an implementation pipeline
   deterministic_engine: true     # Go runtime: ledger, migrations, MCP server
   format_gates: true             # typed records + parity enforcement
-  state_store: database          # project SQLite ledger — the only non-repo-files store in the layer
+  state_store: database          # project SQLite ledger — the only non-repo-files store in the category
 ---
 
 # haft
 
 ## What it is
 
-A local decision-governance layer for AI coding agents, implementing Levenchuk's First
+A local decision-governance system for AI coding agents, implementing Levenchuk's First
 Principles Framework (FPF): durable typed project records — what problem, which options
 compared, what the human decided, what evidence supports it, and **what has gone
 stale** (evidence decay), with parity enforcement across compared options. Small
@@ -34,9 +34,9 @@ records in a project SQLite ledger, served to agents over MCP (`haft serve`) wit
 per-harness skills and instruction sections installed by `haft init`. (README at the
 pin; source unread.)
 
-## Notes for the layer-4 comparison
+## Notes for the category-4 comparison
 
-Not SDD — a third pole for the layer's "where does failure live" question: not context
+Not SDD — a third pole for the category's "where does failure live" question: not context
 (GSD), not intent (spec-kit), but ungoverned decisions and stale evidence. The
 mechanism resonance with this repo's own methodology is direct: evidence decay is the
 `checked:`-dates discipline as a runtime mechanism; typed decision records are ADRs
@@ -50,7 +50,7 @@ center of gravity is a *governed datastore*, which cuts both ways.
 Substantial Go codebase — go(2085) of 2299 tracked files, plus a Rust `embed-sidecar/`
 (Cargo.toml) and TS test fixtures (`internal/codebase/testdata/typescript_parity/`).
 `spec/enabling-system/ARCHITECTURE.md` in-repo. 1597 commits since 2025-12,
-~100% single-author. By file count it is the *heaviest* runtime in layer 4 — the
+~100% single-author. By file count it is the *heaviest* runtime in category 4 — the
 opposite pole from Conductor's 22 markdown files, in the same month's intake.
 
 ## My take
