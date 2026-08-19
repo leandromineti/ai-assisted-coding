@@ -200,7 +200,7 @@ rides MCP; the two never mix transports. Server binds localhost by default; mult
 deployments get bearer auth, per-operator handoff ownership, and per-user slot
 namespaces framed explicitly as a prompt-injection boundary, not access control.
 
-### Layer boundaries in the code
+### Category boundaries in the code
 
 - **Model provider**: swappable behind `LlmProvider`/`Embedder` traits
   (`ai-memory-llm`), seven providers incl. openai-compat for local engines; provider
@@ -214,11 +214,11 @@ namespaces framed explicitly as a prompt-injection boundary, not access control.
 
 ## Bleed
 
-Reaches layer 2 (harness) twice: capture rides each harness's hook surface, and
+Reaches category 2 (harness) twice: capture rides each harness's hook surface, and
 injection rides each harness's context-injection contract — both catalogued per-harness
 in source. The managed-workstream mode (`ai-memory run`, docs-read only) goes further and
-*launches* harnesses, importing their native transcripts; that is layer-2 orchestration
-growing inside a layer-5 tool, the same direction of travel as ECC's `ecc2`. The 15
+*launches* harnesses, importing their native transcripts; that is category-2 orchestration
+growing inside a category-5 tool, the same direction of travel as ECC's `ecc2`. The 15
 cross-cutting invariants each cite a specific competitor bug (cognee #2717, agentmemory
 #456/#469, basic-memory #763/#783…) — the vendor read its rivals' issue trackers and
 wrote the findings into `docs/issues-*.md`; directly useful when this arc reaches cognee.
@@ -267,7 +267,7 @@ with `max_sessions_per_tick = 1` is sized to stay cheap.
   standing instructions or drift? The `page_feedback`/lint loop is the built-in check;
   no external account of it yet.
 - The managed-workstream loop (`ai-memory run`) was read at docs level only — it claims
-  transcript import and cross-harness event ledgers, which would make this a layer-2
+  transcript import and cross-harness event ledgers, which would make this a category-2
   orchestrator. Verify in source if the arc's cross-harness question stays live.
 - `docs/llm-provider-comparison.md` and `evals/` exist in-repo — does the vendor's own
   eval say anything falsifiable about consolidation quality?

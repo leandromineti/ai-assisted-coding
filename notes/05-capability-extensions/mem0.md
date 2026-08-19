@@ -104,7 +104,7 @@ extra in pyproject). Docs say it moved to the platform as an always-on feature;
 `examples/graph-db-demo/` ships 5 notebooks configuring a key the SDK no longer has.
 What replaced it in OSS is an *entity store*: a second vector collection of
 spaCy-extracted entities with one-hop links and a capped 0.5 retrieval boost — an
-association layer, not a graph.
+association mechanism, not a graph.
 
 ## The displacement gate, run-probed
 
@@ -129,7 +129,7 @@ The survey's headline ("blocks the harness's native memory writes") survives the
 - The *actual* displacement work is prose, not the gate: SessionStart injects "Native
   MEMORY.md detected … Add autoMemoryEnabled:false to settings.json or run
   /mem0:import" (`on_session_start.sh:178-180`), and the import skill instructs the
-  same. On ADR-0011's ladder: `script`-graded enforcement for a narrow path set, with
+  same. On ADR-0011's enforcement ladder: `script`-graded enforcement for a narrow path set, with
   prose carrying the intent.
 
 ## What the plugin injects, and what it captures

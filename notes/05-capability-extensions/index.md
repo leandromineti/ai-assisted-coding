@@ -1,4 +1,4 @@
-# 5 — Extensions & protocols (cross-layer bucket)
+# 5 — Extensions & protocols (cross-category bucket)
 
 > Renamed from "Portable artifacts" 2026-08-17: portability is not an intrinsic
 > property of an extension but a status the ecosystem confers by adoption — unevenly
@@ -7,14 +7,14 @@
 
 `checked: 2026-08-18`
 
-What the agent can **see and touch**, as distributable content. **A bucket, not a layer,
-since the 2026-07-30 taxonomy revision** (three core layers; trigger fired at the ECC
+What the agent can **see and touch**, as distributable content. **A bucket, not a category,
+since the 2026-07-30 taxonomy revision** (three core categories; trigger fired at the ECC
 deep-dive — see the executed-revision note in [`../../taxonomy.md`](../../taxonomy.md)).
 The membership test is unchanged: independent distribution — authored, versioned, and
 installed separately from any harness. The "3" is a storage key.
 
 This index covers the **installable things**. The specifications they implement — MCP the
-protocol, the `AGENTS.md` convention — are not layer entries; they live in
+protocol, the `AGENTS.md` convention — are not category entries; they live in
 [`../standards/`](../cross-cutting/standards.md).
 
 ## Kinds
@@ -68,21 +68,21 @@ differentiators to watch: zero-LLM default (ai-memory), git-versioned store
 (ai-memory), native-memory displacement (mem0), competitor import (mem0), skill
 crystallization (memos), provenance audit (ai-memory).
 
-## Why this is a layer and not a pile of harness features
+## Why this is a category and not a pile of harness features
 
 An MCP server is built once and consumed by every major harness. Nothing about it belongs
 to a particular agent loop. The same is *aspirationally* true of skills and rules files.
 
 The counter-argument worth holding: hooks and subagent definitions are harness-specific
-today, so this layer is only partly portable — arguably it's "MCP plus a pile of vendor
-features" wearing a layer's clothes. Whether that resolves depends on standards adoption,
+today, so this category is only partly portable — arguably it's "MCP plus a pile of vendor
+features" wearing a category's clothes. Whether that resolves depends on standards adoption,
 which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than here.
 
 ## Reports
 
 | Tool | Depth | One-line |
 |---|---|---|
-| [**ECC** (everything-claude-code)](ecc.md) | deep-dive (2026-07-30) | 236k stars in ~6.5 months; reclassified here from provisional layer 4 — a config pack at scale (281 skills, 67 agents, rules, enforcement hooks) plus the set's only *harness-independent* autonomous learning loop (hook-observed "instincts", traced in source). Solo-author; commercial ring (Pro, GitHub App); `ecc2` Rust control plane growing toward layer 2. |
+| [**ECC** (everything-claude-code)](ecc.md) | deep-dive (2026-07-30) | 236k stars in ~6.5 months; reclassified here from provisional category 4 — a config pack at scale (281 skills, 67 agents, rules, enforcement hooks) plus the set's only *harness-independent* autonomous learning loop (hook-observed "instincts", traced in source). Solo-author; commercial ring (Pro, GitHub App); `ecc2` Rust control plane growing toward category 2. |
 | [**ai-memory**](ai-memory.md) | deep-dive (2026-08-18) | Cross-harness memory as one Rust daemon: hook capture (closed 10-kind vocabulary) → rule-based session pages in a git-versioned markdown wiki → heuristic handoff injected at next session start, any harness. Zero-LLM default path; with a provider, a **source-verified background learning loop** auto-approves its own wiki edits (`_rules/`, `procedures/`) — second harness-independent instance after ECC. Surprise: the continuity baton is first + last prompt + tool names, no LLM; the rich memory is pull-only via 18 MCP tools. |
 | [**mem0**](mem0.md) | **deep-dive (2026-08-19)** | The kind's commercial pole (YC-backed platform + OSS SDK). Shipped write path ≠ the 553-citation paper: V3 is ADD-only extraction with linking, the paper's ADD/UPDATE/DELETE/NOOP phase is retired. In-repo plugin installs hook capture into six harnesses with a **background learning loop** (Stop-hook capture, `infer=True`) — fourth verified instance — plus the kind's most aggressive move: a PreToolUse gate that **blocks the harness's native MEMORY.md writes** and redirects to mem0's tool. Displacement, not just colonization. Vendor paper graded separately ([2025-mem0](../../refs/2025-mem0.md)): its own full-context baseline beats the memory system on quality. **Deep-dive 2026-08-19** (same pin): two matrix cells flipped (tiers, decay — both platform-only or tag-deep in OSS); trust boundary settled ✗ (openclaw protocol makes memories authoritative: "Rules override your defaults"); the displacement gate run-probed — narrow path glob, fails open without jq, broader on Cursor than Claude Code, prose carries the real intent; V3 removed graph from OSS in the commit that added it; and the SDK ships a 1,582-line remotely-scripted A/B upsell funnel (notices.py) with 5× the add-pipeline's test coverage. |
 | [**cognee**](cognee.md) | survey (2026-08-18) | The kind's incumbent (2023-08, 30.1k stars) and its knowledge-graph pole — at the price of a tripartite graph+vector+relational consistency surface. Membership verdict: the SDK sits in the bucket **via its shims**, and the shims are where the coding-agent product lives (agent-scoped datasets, session/permanent split, agent-invoked `improve` consolidation, coding-rule extraction). No autonomous loop in-repo (`learning_loop: false`); the marketplace plugin automates capture but runs in API mode, where rule extraction is explicitly skipped. ai-memory's opposition dossier spot-checked: both structural claims corroborated (LiteLLM/Instructor churn guard; the Ladybug fork's costs written into pyproject). |
@@ -93,11 +93,11 @@ which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than
 
 ## The distinction that matters
 
-- **Layer 5 governs reach** — what the agent can access.
-- **Layer 4 governs process** — what it does with that access.
+- **category 5 governs reach** — what the agent can access.
+- **category 4 governs process** — what it does with that access.
 
-A tool that adds a database connection is layer 5. A tool that says "write the spec before
-you touch the database" is layer 4. ECC is the case that proved the distinction cuts
+A tool that adds a database connection is category 5. A tool that says "write the spec before
+you touch the database" is category 4. ECC is the case that proved the distinction cuts
 cleanly even at 236k stars: enormous reach, deliberately no prescribed process — see the
 verdict section of [`ecc.md`](ecc.md).
 

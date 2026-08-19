@@ -1,6 +1,6 @@
 ---
 name: ecc
-category: 5   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
+category: 5   # RECLASSIFIED from provisional category 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The category verdict
 vendor: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT
@@ -59,7 +59,7 @@ warns about.
    a macOS Bash 3.2 incompatibility in the GAN path (#2674). This report made no OS
    claims, so this is added scope for a re-read, not a correction.
 
-**Unaffected:** the layer-5 verdict. Neither leg (no process spine; portability reduces
+**Unaffected:** the category-5 verdict. Neither leg (no process spine; portability reduces
 to copy-with-adaptation into convention dirs) is touched by the drift, so the taxonomy
 revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
 
@@ -67,9 +67,9 @@ revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
 antigravity exclusion are the three places to look, plus the 281-skill catalog that was
 sampled rather than audited at the original read.
 
-## The layer verdict (the question this read was preregistered to answer)
+## The category verdict (the question this read was preregistered to answer)
 
-**Layer 5.** The layer-4 test — an encoded methodology, a prescribed operating loop —
+**category 5.** The category-4 test — an encoded methodology, a prescribed operating loop —
 fails on the source:
 
 - The README's own guidance is *"Start with the workflow you need, not the full
@@ -81,7 +81,7 @@ fails on the source:
   package) and doesn't run without it. The repo's own `workflows/` directory contains
   one file.
 - What ECC *does* ship everywhere is reach and reflexes: rules, agents, skills,
-  enforcement hooks, memory, learning. That's layer 5's territory — what the agent can
+  enforcement hooks, memory, learning. That's category 5's territory — what the agent can
   see and touch — delivered at unprecedented scale, with real runtime components riding
   each harness's hook system.
 
@@ -98,7 +98,7 @@ Where hermes and codex build learning loops *into* their harnesses, ECC **retrof
 one onto any harness with hooks**: observation → background analysis → confidence-scored
 "instincts" → clustering into skills. The bet has two halves: (a) performance lives in
 accumulated configuration (rules, skills, learned behavior), not in following a
-prescribed process — the anti-spec-kit position; and (b) that accumulation layer should
+prescribed process — the anti-spec-kit position; and (b) that accumulation category should
 be harness-independent and *yours*, portable across the dozen harnesses you might use.
 235k stars in six months says the market wants at least one of those halves badly —
 and the solo-author + ready-made-catalog shape suggests it's mostly (a): people install
@@ -156,8 +156,8 @@ state before compaction; `PreToolUse` dispatchers run consolidated Bash prefligh
 (quality, push-protection, "GateGuard") through a Node bootstrap that resolves the
 plugin root across five install layouts; **`Stop` hooks run blocking quality gates**
 (format/typecheck batch, console.log audit). Verification gates delivered as
-*installable layer-5 artifacts* — a third delivery vehicle alongside layer-4 prose
-(GSD) and layer-2 native (hermes, codex).
+*installable category-5 artifacts* — a third delivery vehicle alongside category-4 prose
+(GSD) and category-2 native (hermes, codex).
 
 ### Portability: adapters, not a compiler
 
@@ -170,20 +170,20 @@ capability where hooks don't exist ("without pretending hooks or native skill di
 are available"). The payload is files in convention dirs; the runtime parts (Node hook
 scripts) ride each harness's own extension points.
 
-### ecc2 — the layer-2 bleed, confirmed
+### ecc2 — the category-2 bleed, confirmed
 
 The stub predicted a runtime being grown; `ecc2/` confirms: a Rust "control-plane
 scaffold" (alpha) — TUI dashboard, SQLite session store, background daemon,
-worktree-aware multi-session orchestration, risk scoring. The stated goal is "the layer
+worktree-aware multi-session orchestration, risk scoring. The stated goal is "the category
 above individual harness installs." Same structural trajectory as spec-kit's YAML
 engine and GSD's `gsd-pi` (README conclusion 7's escape-hatch pattern), aimed higher:
 not enforcing one methodology, but managing fleets of sessions.
 
 ## Bleed
 
-Layer 2 (ecc2 control plane; enforcement hooks shaping harness runtime behavior),
-layer 4 fragments (workflow skills, the external ccg-workflow family), and a hosted
-service arm (GitHub App, api.ecc.tools) that is neither layer — a product ring around
+Category 2 (ecc2 control plane; enforcement hooks shaping harness runtime behavior),
+category 4 fragments (workflow skills, the external ccg-workflow family), and a hosted
+service arm (GitHub App, api.ecc.tools) that is neither category — a product ring around
 the artifact bundle.
 
 ## Cost model
@@ -202,14 +202,14 @@ acknowledges the context-budget problem (design-principle X2).
 2. **The process spine genuinely isn't there** — and the repo knows it: the multi-*
    orchestration commands outsource to an external runtime rather than pretending
    prose can orchestrate. A 236k-star tool whose honest shape is "toolbox + reflexes"
-   is strong evidence about what adoption actually rewards at layer 4/5.
+   is strong evidence about what adoption actually rewards at category 4/5.
 3. **Solo-author at 236k stars**, with `copilot-swe-agent[bot]` in the top-5
    committers — the most extreme adoption-to-maintainer ratio in the study, and the
    supply-chain concentration question (GSD's fork lesson, F6) applies with force:
    twelve harnesses' worth of installed hooks trace to one person's repo. The README's
    own malware warning about unofficial mirrors underlines the stakes.
 4. **Verification gates via installable hooks** — blocking Stop-hook quality gates as
-   layer-5 artifacts. The verification mechanism now exists at three delivery layers.
+   category-5 artifacts. The verification mechanism now exists at three delivery categories.
 5. **SOUL.md at the repo root** — the identity-file convention converging across the
    set (hermes loads SOUL.md as primary identity; ECC ships one).
 6. **The learning unit is designed for exchange** — instinct import/export with
@@ -224,7 +224,7 @@ acknowledges the context-budget problem (design-principle X2).
 - What do the 281 skills actually contain at quality level — the catalog was sampled,
   not audited. A skills-quality pass against the hermes authoring standards would be a
   fair cross-tool instrument.
-- ecc2's trajectory: if the control plane ships, does ECC become a layer-2 product
+- ecc2's trajectory: if the control plane ships, does ECC become a category-2 product
   with a config catalog attached — the full reverse of its origin?
 - The GitHub App and api.ecc.tools: what leaves the machine? Same telemetry question
   as codex's `analytics`/`otel`, unanswered in both reads.

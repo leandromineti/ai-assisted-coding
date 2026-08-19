@@ -136,7 +136,7 @@ repeated — and the report itself flags the 10M figure (0.67) as in-sample/expl
 3. **Consolidation is agent-invoked.** `improve` inverts the kind's dominant posture:
    where ai-memory and memos consolidate autonomously in the background, cognee makes
    the agent decide when to consolidate. With the plugin's hooks automating the calls,
-   the trigger moves into the integration layer — the loop is assembled from parts
+   the trigger moves into the integration seam — the loop is assembled from parts
    that live in different repos.
 4. **A competitor's issue-tracker dossier held up.** Both spot-checked structural
    claims from ai-memory's opposition research were corroborated in cognee's own
