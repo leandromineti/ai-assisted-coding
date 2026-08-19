@@ -24,10 +24,10 @@ depth: deep-dive   # for a non-harness: isolation mechanism, sandbox lifecycle, 
 
 # E2B
 
-The first layer-3 report, and the one commissioned to answer a specific question: **issue
-#11's gate.** The 2026-08-16 adjudication concluded layer 3 "survives as an analytic lens
-and fails as a population" — real, but only ever seen as a *property of a layer-2 tool*,
-never studied as an entity. The gate to keep it a rung: read one agent-native environment
+The first category-3 report, and the one commissioned to answer a specific question: **issue
+#11's gate.** The 2026-08-16 adjudication concluded category 3 "survives as an analytic lens
+and fails as a population" — real, but only ever seen as a *property of a category-2 tool*,
+never studied as an entity. The gate to keep it a category: read one agent-native environment
 as a product in its own right and see whether it yields findings that are **not**
 restatements of "how a harness attaches to it." This is that read. **The gate passes**
 (verdict section below), which falsifies the pending verdict — the intended, recorded
@@ -44,7 +44,7 @@ network through a guest daemon (`envd`). Two open-source repos were read:
   `POST https://api.e2b.app/sandboxes` (`packages/python-sdk/e2b/sandbox_sync/sandbox_api.py:280`,
   URL derivation `connection_config.py:212-216`).
 - **`e2b-dev/infra`** (`fcc2edbc9`) — the isolation machinery: 1,720 Go files, the
-  orchestrator, the Firecracker integration, the network/firewall layer, Terraform for GCP
+  orchestrator, the Firecracker integration, network/firewall handling, Terraform for GCP
   and AWS. This is where the substance is.
 
 Licence is Apache-2.0 on both repo roots, but the SDK's `package.json`/`pyproject.toml`
@@ -97,7 +97,7 @@ Traced server-side, request to running VM. Spot-verified at the pin where flagge
    delivered via **MMDS carrying only a token *hash*** (`envd/internal/host/mmds.go:34-39`),
    never the token itself.
 
-## The five layer-3 axes
+## The five category-3 axes
 
 **Blast radius.** Internet is **on by default** at both wire and SDK
 (`sandbox_api.py`/`sandboxApi.ts:1455`, `allow_internet_access ?? true`). Lateral movement
@@ -175,9 +175,9 @@ more honest open-core boundary than most, but a real one.
 
 ## Bleed
 
-Layer 3 is the whole subject, so "bleed" runs the other way — into what depends on E2B:
+Category 3 is the whole subject, so "bleed" runs the other way — into what depends on E2B:
 
-- **← layer 2 (harnesses).** E2B is the concrete thing on the far side of hermes-agent's
+- **← category 2 (harnesses).** E2B is the concrete thing on the far side of hermes-agent's
   `bind` verb (hermes ships a `modal`/`daytona`/`vercel_sandbox` backend set; E2B is the same
   category). It is what `bundle` (Devin) hides and what `internalize` (codex) replaces with an
   in-process sandbox. This report is the first time the repo has looked at that far side
@@ -190,7 +190,7 @@ Layer 3 is the whole subject, so "bleed" runs the other way — into what depend
 - **Independent-distribution: confirmed, strongly.** Zero AI-framework dependencies in either
   lockfile (`langchain|openai|anthropic|crewai|@ai-sdk` → 0); the wire protocol is generic
   Linux (`Process`/`Filesystem` services). The one real coupling is to E2B's own control
-  plane, not to any harness. This is exactly the layer-3 independence test, and E2B passes it
+  plane, not to any harness. This is exactly the category-3 independence test, and E2B passes it
   cleanly — which is *why* it was a fair gate specimen.
 
 ## The gate verdict — issue #11
@@ -222,12 +222,12 @@ closed-source.
 
 1. The axes are **not equally productive.** Blast radius, fidelity, and credentials each
    produced multiple non-obvious findings; **parallelism and startup produced mostly numbers**
-   — real and citable, but closer to datasheet material. The layer's justification rests on
+   — real and citable, but closer to datasheet material. The category's justification rests on
    the first three, not on all five.
 2. **This is one instance, and an unusually favourable one.** E2B open-sources its
    infrastructure, which is what made the (a) list reachable at all. A closed environment
    (Modal, Daytona, Cloudflare Sandboxes) would yield mostly testimony, and the same gate run
-   against it could fail for reasons of *access* rather than *substance*. The layer's status
+   against it could fail for reasons of *access* rather than *substance*. The category's status
    should not be generalized from E2B alone — but E2B is sufficient to defeat the "fails as a
    population" verdict, because one genuine population member is all that claim needed to be
    wrong.
@@ -255,8 +255,8 @@ closed-source.
 ## Open questions
 
 - Does the gate result **generalize**, or is it E2B-specific? The honest test is a *second*
-  layer-3 read against a **closed** environment (Modal/Daytona/Cloudflare). If that yields only
-  testimony, the finding is "the layer is real but only legible when the environment is open"
+  category-3 read against a **closed** environment (Modal/Daytona/Cloudflare). If that yields only
+  testimony, the finding is "the category is real but only legible when the environment is open"
   — a sharper and more useful claim than either current pole.
 - Production-build delta: does E2B's real orchestrator carry the CA-injecting egress proxy, the
   BYOP dialer, the `iam` executor? Unverifiable from these repos; only the *absence* in the
