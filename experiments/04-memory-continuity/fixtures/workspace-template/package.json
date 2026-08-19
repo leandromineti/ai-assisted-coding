@@ -1,0 +1,8 @@
+{
+  "name": "rangekit",
+  "version": "1.4.2",
+  "description": "Tiny numeric range parsing and formatting helpers",
+  "main": "src/parseRange.ts",
+  "scripts": { "test": "node --test test/" },
+  "license": "MIT"
+}

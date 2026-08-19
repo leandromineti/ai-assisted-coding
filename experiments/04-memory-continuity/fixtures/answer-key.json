@@ -1,0 +1,12 @@
+{
+  "q1": "deno",
+  "q2": "base32|crockford",
+  "q3": "vendor",
+  "q4": "sept(ember)?[^0-9]*12|09[-/]12",
+  "q5": "migration",
+  "q6": "90",
+  "q7": "null",
+  "q8": "table",
+  "q9": "scope|fix\\(parser\\)",
+  "q10": "fastly"
+}

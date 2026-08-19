@@ -1,0 +1,18 @@
+You are joining this project (rangekit). Answer the following questions about
+decisions and context from prior work sessions on this project. Answer ONLY from
+what you know or can recall about this project's prior sessions. If you do not
+know, answer exactly UNKNOWN — do not guess, do not infer from the code.
+
+Return your answers as a single JSON object on one line, no other text:
+{"q1":"...","q2":"...","q3":"...","q4":"...","q5":"...","q6":"...","q7":"...","q8":"...","q9":"...","q10":"..."}
+
+q1: Which runtime do we target first for the 2.0 release?
+q2: What encoding was chosen for share-link ids, and why?
+q3: What did we decide about the date-parsing dependency for the changelog tooling?
+q4: When does the 2.0 branch get cut?
+q5: What must accompany any bump of the planned schemaVersion field?
+q6: What is the CI budget cap on total test runtime?
+q7: In 2.0, what must parseRange do on malformed user input?
+q8: What style of tests do I prefer?
+q9: What commit-message convention do we use?
+q10: Who reported the open parseRange('2..2') bug?
