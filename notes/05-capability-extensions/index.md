@@ -121,9 +121,11 @@ verdict section of [`ecc.md`](ecc.md).
   per-harness injection envelopes). Two qualifications keep it open: the *automatic*
   continuity floor is thin (ai-memory's baton is first + last prompt + tool names; the
   rich memory is pull-only), and absorption runs both ways — memos installs into hermes
-  alongside hermes' own loop (conclusion 8's counter-current). The falsifiable residue
+  alongside hermes' own loop (conclusion 8's counter-current). ~~The falsifiable residue
   is a rig question: capture a session, switch harness, measure what the second agent
-  actually knows.
+  actually knows.~~ **Ran 2026-08-19 as exp-04 (conclusion 14)**: floor 0/10, pull
+  ceiling 10/10, harness boundary free on the pull path — the bet holds as a pull
+  mechanism only; the "thin automatic floor" qualification is now a measurement.
 - ~~The memory-authorship fourth position~~ — resolved into design-principles
   (2026-08-18): independent storage *stacks* authorships rather than picking one; the
   sharpened question is who approves writes, not who makes them.

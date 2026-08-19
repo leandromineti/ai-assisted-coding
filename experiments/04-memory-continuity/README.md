@@ -1,10 +1,9 @@
 # Experiment 04 — cross-harness memory continuity: does the kind's headline bet survive contact?
 
-`preregistration drafted: 2026-08-19` · status: **DRAFT — not yet binding.** Rule 5
-makes a preregistration binding when committed *before any run*; this file has had no
-run against it, its fixtures are not yet written, and the scored arms have no spend
-sign-off. Owner review → sign-off (quoted verbatim in log.md) → fixture build →
-calibration arm → scored arms, in that order.
+`preregistration drafted: 2026-08-19` · status: **RUN COMPLETE 2026-08-19** *(status
+field updated at arc close — the only post-run edit; protocol body below is unedited.
+Binding from the sign-off quoted in log.md; the ordered chain — review → sign-off →
+fixtures → calibration → scored arms — was followed as written, see log.md.)*
 
 Protocol follows the template line of [`../03-minimal-harness/`](../03-minimal-harness/README.md);
 results append below the untouched protocol. `log.md` appended live during runs.
