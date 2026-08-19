@@ -37,7 +37,8 @@ added 2026-08-18 so the bucket can be sliced by type as it grows.
 a sample, not the bucket's shape. All seven were seeded on one day by the 2026-08-18
 memory-type reading arc ([issue #18](https://github.com/leandromineti/ai-assisted-coding/issues/18),
 closed); the other types' `0 tracked` in the generated supply table is *not-checked*, not
-checked-absent — the candidates ledger holds no category-5 rows of any type yet. A
+checked-absent — the [candidates ledger](../candidates.md)'s category-5 section (first
+five rows sighted 2026-08-19, all non-memory) is where that gap is being worked. A
 narrowing of the bucket to memory was considered and rejected on exactly this ground
 ([ADR-0016](../../adrs/0016-extensions-stay-broad.md)); the balance arc for sighting
 non-memory candidates is issue #30, and the recorded decision point for the bucket's
