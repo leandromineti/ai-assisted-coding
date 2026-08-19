@@ -27,7 +27,7 @@ evidence has touched in two read-cycles gets flagged stale.
 
 ---
 
-## Layer 2 — harness design
+## Category 2 — harness design
 
 **H1. Treat running out of context as a normal loop outcome, not an error.**
 *(convergent — 3 instances)* opencode models one provider turn as
@@ -74,12 +74,12 @@ availability (`check_fn`, TTL-cached) and gates dangerous commands at dispatch, 
 hard write-denials underneath that no approval can override. The emphases differ
 (permission-filtering vs availability-filtering) but the two-stage architecture is
 identical: **visibility shaping pre-decision, execution gating post-decision,
-invariants below both.** codex confirms and extends it to a third, compiled layer:
+invariants below both.** codex confirms and extends it to a third, compiled category:
 per-step advertised-tool finalization → `SafetyCheck` classification → execution
 *inside an in-process OS sandbox* (Seatbelt/Landlock/bwrap), where approval cannot
 grant what the sandbox denies ([codex](notes/02-harnesses/codex.md)). The revised
 statement: visibility, decision, **enforcement** — and the strongest designs make the
-third layer mechanical, not prose.
+third category mechanical, not prose.
 *Earliest measured evidence found (2026-08-17, [swe-agent-2024](refs/2024-swe-agent.md)
 full read):* the 2024 ACI ablations price both chokepoints separately, holding the
 model fixed — visibility shaping (100-line viewer window beats both 30 lines and
@@ -89,7 +89,7 @@ points, and a badly shaped tool (iterative search) scores *below having no tool 
 all* (−6.0 vs −2.3). The pattern this repo found convergent in 2026 harness source
 was measured at NeurIPS 2024.
 
-**H4. Prompts are versioned data, not string literals.** *(convergent, spans layers 2
+**H4. Prompts are versioned data, not string literals.** *(convergent, spans categories 2
 and 4)* opencode imports tool descriptions from `.txt` files; spec-kit's product *is*
 markdown templates, with 131 commits debugging them like code; GSD is 1,398 markdown
 files against 810 of code; hermes builds its skill index from `SKILL.md` frontmatter
@@ -143,9 +143,9 @@ the counter-motion to this principle. The tracked harnesses split on it: codex a
 turn-end gates as a hook SURFACE (waist-shaped — the mechanism is an extension point),
 hermes as always-on loop POLICY (core growth). Whether absorbed mechanisms arrive as
 surfaces or as core code may be H8's real test — see
-[the absorption table](notes/02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses).)*
+[the absorption table](notes/02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 
-## Layer 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
+## Category 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
 
 **E1. Blast radius sets the autonomy ceiling — buy autonomy with isolation, not model
 quality.** *(convergent; taxonomy scope-note position)* Every fully-autonomous product
@@ -154,7 +154,7 @@ implementations and its serverless pitch is an *economics* answer to keeping an
 always-on agent isolated. The same permission flag that is reckless on a host is sane
 in a container.
 
-**E2. Isolation without fidelity produces layer-2-looking failures — engineer the
+**E2. Isolation without fidelity produces category-2-looking failures — engineer the
 fidelity back explicitly.** *(convergent)* The worktree/gitignore trap
 ([`notes/03-execution-environments/`](notes/03-execution-environments/index.md)):
 isolation that hides `node_modules`/`.env`/plans breaks agents in ways misread as
@@ -174,12 +174,12 @@ does nothing about isolation, which is a choice rather than an omission. Defined
 rendered in [`comparisons/environments.md`](comparisons/environments.md).
 
 *Recorded with the principle, because it is the uncomfortable part:* all four verbs are
-properties of **layer-2 tools**, discovered inside layer-2 reads. The 2026-08-16
-adjudication first concluded from this that layer 3 fails as a population and proposed
-demotion to a layer-2 axis — **then the E2B read the same day overturned it** (README
-conclusion 9). E2B is a layer-3 entity that produces substantive facts *about the
+properties of **category-2 tools**, discovered inside category-2 reads. The 2026-08-16
+adjudication first concluded from this that category 3 fails as a population and proposed
+demotion to a category-2 axis — **then the E2B read the same day overturned it** (README
+conclusion 9). E2B is a category-3 entity that produces substantive facts *about the
 environment*, not about any harness's relationship to it (E4 below is one), so the verbs
-being harness-side does not make the layer harness-side. E1–E3 stand as layer-3 principles.
+being harness-side does not make the category harness-side. E1–E3 stand as category-3 principles.
 
 **E4. An execution environment's economics leak upward into kernel and scheduler choices
 that no harness can see.** *(single-instance — E2B, 2026-08-16; structurally argued)* Every
@@ -188,21 +188,21 @@ booting the template twice at build time and intersecting touched pages; guest `
 is disabled because host-side hugepage backing would dirty the snapshot diff; `discard` on
 the guest ext4 mount is a snapshot-*size* optimization, not a speed one. These are facts
 about the *environment as a product*, invisible from any SDK, and they are the concrete
-content that defeated the "layer 3 is just an axis of layer 2" verdict. Falsifiable and
+content that defeated the "category 3 is just an axis of category 2" verdict. Falsifiable and
 single-instance by construction: if a **closed** environment read (Modal/Daytona/Cloudflare)
 yields only testimony, E4 is real but legible only when the environment is open —
 [`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md), issue #11.
 
 ---
 
-## Layer 4 — workflow-framework design
+## Category 4 — workflow-framework design
 
 **F1. The methodology is prose, prose doesn't bind — plan the deterministic escape
 hatch from day one.** *(convergent — 3 instances, one an existence proof; strengthened
 2026-07-31)* Both frameworks first studied hit enforcement-by-typography limits
 (spec-kit fixed hook execution twice by rewriting instructions "more forcefully"; its
 constitution went eight months unenforced) and both grew deterministic engines
-(spec-kit's `workflows/` YAML runner, GSD's `gsd-pi`). Layer-4→2 bleed is the
+(spec-kit's `workflows/` YAML runner, GSD's `gsd-pi`). Category-4→2 bleed is the
 structural symptom. **OpenSpec is the existence proof for the "from day one" clause:**
 its deterministic engine (delta-merge compiler, DAG workflow engine over declarative
 schemas, machine validator) is the *founding architecture*, with prose shrunk to thin
@@ -244,7 +244,7 @@ sessions froze (#3185). Isolation pays when stage outputs are contracts (task gr
 verdicts), not transcripts.
 
 **F4. Budget human attention as an explicit, designed quantity.** *(convergent across
-layers)* spec-kit caps clarification markers at 3, clarify questions at 5, asks one at
+categories)* spec-kit caps clarification markers at 3, clarify questions at 5, asks one at
 a time, and attaches a recommended answer acceptable with "yes" — attention economics
 in the template grammar. hermes gates its self-improvement asks behind nudge intervals
 rather than firing per-turn. The anti-pattern is unbounded question streams; the
@@ -271,7 +271,7 @@ are independent axes; a gate can be fully deterministic and never touch behavior
 **F6. Installing a methodology means granting prose your harness's authority —
 maintainership is a security property.** *(single-instance, structural)* GSD's upstream
 went dark amid a token rug-pull association; the community fork explicitly states it
-cannot verify upstream security and forked for that reason. Layer-4 supply chain is
+cannot verify upstream security and forked for that reason. Category-4 supply chain is
 real: you are `curl | sh`-ing *instructions* that will run with everything your agent
 can touch.
 
@@ -323,6 +323,6 @@ Recorded as open decisions, not principles — with the positions documented:
 | Stuck-agent resolution | human-escalate (opencode) vs in-band (hermes) (H2) |
 | Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files vs — fourth position, **source-verified 2026-08-18** (memory-kind arc) — **agent-written but independently stored**. The arc's finding: independent storage doesn't pick one authorship, it *stacks* them — ai-memory's wiki is simultaneously rule-written (session pages), agent-written with auto-approval (`_rules/` via its scheduler, `require_approval=false` default), and user-edited (Obsidian/vim watcher reconciles); memos' policy DB is fully machine-authored with feedback-gated lifecycles *(confirmed in source at the 2026-08-19 deep-dive — and default-unmounted: lightweight mode ships the whole authoring cascade off)*; cognee splits the decision *across repos* (agent-invoked writes in the MCP server, automation added by the plugin). The open question sharpened: not who writes memory, but who approves it — and as of 2026-08-19 that axis is a matrix column: `memory_revision` (auto: ai-memory, memos · caller-only: mem0, whose deep-dive found no auto-supersession path at all — the linking mechanism is dead code). [Bucket index](notes/05-capability-extensions/index.md) |
 | Session-data posture | harness as training-data instrument (hermes, Cursor) vs stores-nothing (opencode) — taxonomy boundary-rule note |
-| Where verification lives | layer 4 gates (GSD), layer 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note. exp-03 (2026-08-18) measured the layer-4 pole: an instructed gate catches crash-visible failures only, and at Sonnet tier the bundle grounds/verifies unprompted — the live question is now layer-2-native vs external CI (issue #17) |
+| Where verification lives | category 4 gates (GSD), category 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note. exp-03 (2026-08-18) measured the category-4 pole: an instructed gate catches crash-visible failures only, and at Sonnet tier the bundle grounds/verifies unprompted — the live question is now category-2-native vs external CI (issue #17) |
 
 Verdicts on these belong to future experiments, not to this file.
