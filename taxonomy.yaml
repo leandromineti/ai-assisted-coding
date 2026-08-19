@@ -32,9 +32,9 @@ terms:
   - term: categories
     definition: >-
       The taxonomy's top-level divisions (see the `categories` list above).
-      Deliberately a non-stacking term — the owner's framing (ADR-0015 D-01):
-      "categories… a more general term that does not imply they are stacked
-      (necessarily)."
+      Deliberately a non-stacking term — the owner's framing (ADR-0015, Context §1
+      "The owner's driving argument"): "categories… a more general term that does
+      not imply they are stacked (necessarily)."
     deny_list:
       - layer
       - layers
@@ -42,6 +42,44 @@ terms:
       - rungs
       - ladder
       - cross-layer
+    deny_list_exempt_compounds:
+      - compound: "engagement ladder"
+        canonical_source: >-
+          ADR-0009's candidates ledger (candidate → stub → survey → deep-dive) — a
+          graded-progression scale, unrelated to the taxonomy's top-level divisions.
+        known_sites:
+          - "notes/candidates.md:5"
+          - "notes/04-workflow-frameworks/index.md:118"
+      - compound: "enforcement ladder"
+        canonical_source: >-
+          ADR-0011's graded gate enforcement scale (engine/hook/script/prose) —
+          unrelated to the taxonomy's top-level divisions.
+        known_sites:
+          - "notes/04-workflow-frameworks/gsd-core.md:191"
+          - "notes/04-workflow-frameworks/gsd-core.md:193"
+          - "notes/04-workflow-frameworks/gsd-core.md:375"
+          - "notes/04-workflow-frameworks/bmad-method.md:105"
+          - "notes/cross-cutting/feature-taxonomy.md:143"
+      - compound: "capability ladder"
+        canonical_source: >-
+          Model reasoning-tier vocabulary (Anthropic's capability tiers) — unrelated
+          to the taxonomy's top-level divisions.
+        known_sites:
+          - "notes/01-models/gpt-5-6-sol.md:30"
+      - compound: "effort ladder"
+        canonical_source: >-
+          Model reasoning-tier vocabulary (effort levels none→max) — unrelated to
+          the taxonomy's top-level divisions.
+        known_sites:
+          - "notes/01-models/gpt-5-6-sol.md:60"
+    deny_list_exempt_note: >-
+      Bare "rung"/"rungs"/"ladder" stay denied for the taxonomy-stacking sense (the
+      old "five-rung ladder" framing this decision replaces). The compounds in
+      deny_list_exempt_compounds name a different, already-canonical concept
+      (graded-progression scales, each backed by its own ADR) and must not be
+      flagged; known_sites lists every in-repo occurrence already verified against
+      this exemption (Phase 2's lint should treat a denied match at one of these
+      exact file:line sites, or matching one of these compound phrases, as exempt).
     false_positive_notes:
       - >-
         "cross-cutting" is untouched — it contains no banned word and is a distinct
@@ -64,6 +102,14 @@ terms:
         bare-token entry would guarantee false positives, which is exactly why the
         deny-list model was chosen over an allow-list. Only the frontmatter-key form
         `kind:` (with the colon) is banned.
+      - >-
+        The colon-qualified form `kind:` also has a known false positive:
+        `notes/05-capability-extensions/ai-memory.md:90` reads "Table stakes in the
+        kind: store + retrieve + MCP." — ordinary prose using "kind" followed by a
+        list-introducing colon, not the report frontmatter key, and not inside
+        backticks. Phase 2's lint must not flag this exact site; either scope the
+        `kind:` match to frontmatter position (start-of-line, YAML key) or carve out
+        this file:line explicitly.
   - term: bucket
     definition: >-
       Category 5's shape: a loose, cross-category collection, not a rung
@@ -93,9 +139,11 @@ split_meaning_terms:
       A lint cannot mechanically distinguish which sense a given occurrence of
       "stack" uses. Recorded as an accepted gap rather than a lint rule.
 
-# Strict canonical numbered-reference forms (D-15). The lint enforces exact case,
-# spacing, and separator — not merely denial of old forms; the owner explicitly chose
-# strict enforcement over deny-only.
+# Strict canonical numbered-reference forms. The lint enforces exact case, spacing,
+# and separator — not merely denial of old forms; strict enforcement was chosen over
+# deny-only for this file. Grounded in ADR-0015's Decision section, which fixes the
+# numbering (per ADR-0007) and the five divisions' names as unchanged — this file is
+# the source of truth for the exact reference syntax built on top of that.
 reference_formats:
   prose: "category N"
   prose_example: "category 2"
@@ -111,8 +159,8 @@ reference_formats:
     The lint enforces exact case, spacing, and separator character for every form
     above, not merely the absence of old (layer-based) forms.
 
-# Match exemptions that apply to every deny-list entry (D-11, D-14). Named so Phase
-# 2's lint can implement each one by id.
+# Match exemptions that apply to every deny-list entry (ADR-0015 § "The decoder";
+# D-14). Named so Phase 2's lint can implement each one by id.
 carve_outs:
   - id: adr-filenames
     description: >-
@@ -123,6 +171,23 @@ carve_outs:
     description: >-
       Matches inside inline code spans (single backticks) do not fail — literal
       code identifiers and old-scheme references quoted as code are not prose drift.
+  - id: adr-body-prose
+    description: >-
+      Matches inside adrs/*.md body text (including adrs/README.md's historical
+      index rows) do not fail — ADRs are immutable after acceptance (adrs/README.md)
+      and legitimately discuss banned terms as the subject of a rename decision, or
+      record prior decisions in their own period vocabulary. Grounded in ADR-0015
+      itself, whose own prose uses banned words in plain text (e.g. "not layers",
+      "a five-rung ladder", "sub-categories") and would otherwise fail its own lint.
+  - id: pre-sweep-material
+    description: >-
+      Git history, experiment protocols and logs (immutable by methodology rule 5),
+      published article snapshots, and old GitHub URLs predating the Phase-3 sweep
+      commit read under the old vocabulary and are not lint targets — this is
+      ADR-0015's own "The decoder" section, verbatim: "Git history, experiment
+      protocols and logs (immutable by methodology rule 5), published article
+      snapshots, and old GitHub URLs predating the sweep also read under the old
+      vocabulary, by the same boundary."
 
 # The D-02/D-03 frontmatter key renames as machine-readable data, so Phase 3 executes
 # a recorded contract rather than a memory. Both renames must land in one commit —
@@ -133,8 +198,16 @@ schema_renames:
     scope:
       - "report frontmatter key `layer:` (~38 tool reports)"
       - "notes/_template-tool-report.md"
+      - "notes/01-models/_template-model-report.md"
       - "scripts/build-tool-index.py"
-    note: "Values 1-5 are unchanged — purely a key rename (D-03)."
+    note: >-
+      Values 1-5 are unchanged — purely a key rename (D-03). 40 files under notes/
+      carry a `layer:` frontmatter key (ADR-0015 Sequencing), matching
+      `grep -rl "^layer:" notes/ | wc -l`; the 40th is
+      notes/01-models/_template-model-report.md, easy to miss because it is not
+      named in ADR-0015's Sequencing prose (which only mentions the singular
+      notes/_template-tool-report.md). This template also carries a
+      `## The layer-1 axes` heading, which renames alongside its `layer:` key.
     executes_in: phase-3
     atomic: true
   - old: kind
