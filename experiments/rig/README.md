@@ -1,4 +1,4 @@
-# The rig — standardized task + sandbox for layer-4 framework comparisons
+# The rig — standardized task + sandbox for category-4 framework comparisons
 
 `created: 2026-07-28` · status: **network condition enforced + probed 2026-07-31; image built 2026-07-30 (Docker 29.1.3, digests in the
 pins table); verifier proven fails-closed on the host 2026-07-28 (no-binary → 8/8 error;
