@@ -1,6 +1,6 @@
 ---
 name: spec-kitty
-layer: 4
+category: 4
 vendor: Spec Kitty, Inc. (Priivacy-ai)
 url: https://github.com/Priivacy-ai/spec-kitty
 license: MIT

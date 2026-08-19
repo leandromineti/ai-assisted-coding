@@ -1,6 +1,6 @@
 ---
 name: <model-slug>
-layer: 1
+category: 1
 vendor: <who trains it>
 url: <primary docs / model card URL — the page the facts below were verified against>
 license: proprietary            # or the weights license (Apache-2.0, MIT, Kimi K3's modified MIT…)
@@ -26,7 +26,7 @@ depth: <stub | survey>
 
 # <Model>
 
-> **Layer-1 depth mapping** (documented once here; the shared vocabulary is reused so
+> **The category-1 depth mapping** (documented once here; the shared vocabulary is reused so
 > the generated index stays comparable): **stub** = specs verified against the vendor
 > page, model not used · **survey** = used on real work in this repo's orbit, with the
 > evidence named. *Corrected 2026-08-17:* a third grade (deep-dive = "this repo's
@@ -43,7 +43,7 @@ depth: <stub | survey>
 One paragraph. The vendor's positioning in one clause, then what it's actually for in
 this repo's terms.
 
-## The layer-1 axes (taxonomy §1)
+## The category-1 axes (taxonomy §1)
 
 Judged on the five axes the taxonomy names — fill only what there's evidence for,
 mark the rest `·` (not-yet-checked):

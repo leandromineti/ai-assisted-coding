@@ -1,6 +1,6 @@
 ---
 name: gemini-cli
-layer: 2
+category: 2
 surfaces: [terminal]
 execution: local
 vendor: Google

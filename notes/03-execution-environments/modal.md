@@ -1,6 +1,6 @@
 ---
 name: modal
-layer: 3
+category: 3
 vendor: Modal Labs
 url: https://github.com/modal-labs/modal-client
 license: Apache-2.0   # the CLIENT only; the infrastructure is closed and has no public repo

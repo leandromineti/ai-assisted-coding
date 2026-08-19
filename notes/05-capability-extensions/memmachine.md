@@ -1,7 +1,7 @@
 ---
 name: memmachine
-layer: 5
-kind: memory
+category: 5
+type: memory
 vendor: MemMachine
 url: https://github.com/MemMachine/MemMachine
 license: Apache-2.0

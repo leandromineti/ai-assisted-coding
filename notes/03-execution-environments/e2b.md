@@ -1,6 +1,6 @@
 ---
 name: e2b
-layer: 3
+category: 3
 vendor: FoundryLabs, Inc. (E2B)
 url: https://github.com/e2b-dev/E2B
 license: Apache-2.0   # root LICENSE on both repos; note the SDK package.json/pyproject declare MIT — unresolved mismatch, see What it is

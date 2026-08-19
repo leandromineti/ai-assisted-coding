@@ -1,6 +1,6 @@
 ---
 name: cline
-layer: 2
+category: 2
 surfaces: [ide, terminal]   # started as a VS Code extension; the tree carries apps/cli/
 execution: local
 vendor: Cline

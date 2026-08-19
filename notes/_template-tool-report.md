@@ -1,17 +1,17 @@
 ---
 name: <tool>
-layer: <1-5>
-# The next three fields are for layer-2 (harness) reports; omit where not meaningful.
+category: <1-5>
+# The next three fields are for category-2 (harness) reports; omit where not meaningful.
 surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
 execution: <local | async-remote | both>        # how it runs
-environments: [<host | worktree | container | remote-sandbox>]  # layer-3 bindings (bleed) — only list what's verified
+environments: [<host | worktree | container | remote-sandbox>]  # category-3 bindings (bleed) — only list what's verified
 # environment_relation: HOW the tool relates to the environment, not just which ones it
 # reaches. One of: bundle (ships its own sandbox, not separately selectable — Devin) ·
 # bind (attaches to independently-distributed environments — hermes' 8 backends) ·
 # internalize (sandbox compiled into the harness binary — codex) · inhabit (detects the
 # environment it is already inside — Warp). Defined in notes/03-execution-environments/.
 # Set ONLY when verified, and **leave it unset if none of the four fits** — a harness that
-# just runs on the host has no relationship to layer 3, and that null case is data.
+# just runs on the host has no relationship to category 3, and that null case is data.
 environment_relation: <bundle | bind | internalize | inhabit>
 vendor: <who maintains it>
 url: <repo or product URL>
@@ -32,15 +32,15 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
-# kind: layer-5 (extensions) reports only — one of the bucket's kind vocabulary:
+# type: category-5 (extensions) reports only — one of the bucket's kind vocabulary:
 # mcp-server | skill | hook | subagent-def | rules-file | config-pack | memory
-kind: <see comment>
-# harness_targets: layer-4 (and layer-5) reports only — which harnesses the tool
+type: <see comment>
+# harness_targets: category-4 (and category-5) reports only — which harnesses the tool
 # officially installs into. Same discipline as features: set ONLY when verified in
 # source or official docs; omitted means "not yet checked". Either a list of harness
 # names, or a short string for large sets (e.g. "44 integrations incl. …").
 harness_targets: [<Harness>, <Harness>]
-# workflow_features: layer-4 reports only — same verified-only discipline as features:
+# workflow_features: category-4 reports only — same verified-only discipline as features:
 # (omitted = not checked, false = checked and absent). A feature is a structural
 # PRESENCE-claim; whether it pays is the mechanism table's question. Definitions live
 # in the feature taxonomy — notes/cross-cutting/feature-taxonomy.md (ADR-0010), the
@@ -55,7 +55,7 @@ workflow_features:
   parallel_orchestration: <true | false>
   state_store: <repo-files | database>
   retrospectives: <true | false>
-# memory_features: layer-5 `kind: memory` reports only — same verified-only discipline.
+# memory_features: category-5 `type: memory` reports only — same verified-only discipline.
 # Values are descriptive enums (mechanism choices), NOT ADR-0011 grades. Definitions
 # live in the feature taxonomy (ADR-0013); the generator warns on unregistered keys.
 memory_features:
@@ -167,15 +167,15 @@ structured so caching can work?
 How tools are defined and described to the model, how dispatch works, and whether the
 permission check happens *before* or *after* the model decides.
 
-### Layer boundaries in the code
+### Category boundaries in the code
 
 Where the taxonomy's seams show up concretely. Is the model provider swappable, and at what
 cost? Is there an execution-environment abstraction, or does it shell out to the host? Can
-layer-5 extensions attach, and where?
+category-5 extensions attach, and where?
 
 ## Bleed
 
-Which other taxonomy layers this tool reaches into, and how. See
+Which other taxonomy categories this tool reaches into, and how. See
 [`../../taxonomy.md`](../taxonomy.md) — the bleed is signal, not noise.
 
 ## Cost model

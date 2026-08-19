@@ -1,6 +1,6 @@
 ---
 name: grok-4-5
-layer: 1
+category: 1
 vendor: xAI
 url: https://docs.x.ai/docs/models
 license: proprietary

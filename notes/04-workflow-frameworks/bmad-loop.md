@@ -1,6 +1,6 @@
 ---
 name: bmad-loop
-layer: 4
+category: 4
 vendor: BMad Code, LLC
 url: https://github.com/bmad-code-org/bmad-loop
 license: MIT

@@ -1,6 +1,6 @@
 ---
 name: gpt-5-6-sol
-layer: 1
+category: 1
 vendor: OpenAI
 url: https://developers.openai.com/api/docs/models
 license: proprietary

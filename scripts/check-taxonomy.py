@@ -781,6 +781,21 @@ def _with_schema_renames_applied(taxo: dict) -> dict:
     return patched
 
 
+def _with_schema_renames_pending(taxo: dict) -> dict:
+    """A deep-copied taxo with every schema_renames[].status flipped to 'pending' —
+    the symmetric counterpart to `_with_schema_renames_applied`. Used by the
+    'old-key-while-pending' and 'premature-renamed-key' fixtures so they test the
+    pending branch of check_schema_renames on its own terms rather than relying on
+    the live taxonomy.yaml's status happening to still read 'pending' — a fixture
+    without this patch went silently inverted the moment Phase 3's atomic commit
+    flipped the real file to 'applied' (found executing plan 03-02, 2026-08-19)."""
+    patched = copy.deepcopy(taxo)
+    for entry in patched.get("schema_renames", []) or []:
+        entry["status"] = "pending"
+    patched.pop("_deny_index", None)  # cached on the original taxo; don't share it
+    return patched
+
+
 def _with_extra_known_site(site: str, compound: str = "enforcement ladder"):
     """A taxo_patch factory: a deep-copied taxo with `site` (an exact "file:line"
     string) appended to `compound`'s known_sites list — used by the
@@ -941,16 +956,22 @@ FIXTURES: list[dict] = [
         "path": "notes/02-harnesses/fixture-old-key-pending.md",
         "text": "---\nlayer: 2\n---\n\n# Fixture\n\nOld key usage, no drift.\n",
         "expect": "pass",
+        "taxo_patch": _with_schema_renames_pending,
         "why": "status is pending — the old `layer:` key is still the current "
-        "schema and must pass (LINT-05).",
+        "schema and must pass (LINT-05). The fixture supplies its own taxo with "
+        "status forced to 'pending' so this proves the pending branch on its own "
+        "terms, independent of the real taxonomy.yaml's status (which Phase 3's "
+        "atomic commit flips to 'applied').",
     },
     {
         "id": "premature-renamed-key",
         "path": "notes/02-harnesses/fixture-premature-key.md",
         "text": "---\ncategory: 2\n---\n\n# Fixture\n\nPremature rename.\n",
         "expect": "fail",
+        "taxo_patch": _with_schema_renames_pending,
         "why": "status is pending — the new `category:` key appearing before "
-        "Phase 3's atomic commit fails as premature (ADR-0015 § Sequencing).",
+        "Phase 3's atomic commit fails as premature (ADR-0015 § Sequencing). Same "
+        "forced-pending patch as 'old-key-while-pending', for the same reason.",
     },
     {
         "id": "old-key-after-rename-applied",

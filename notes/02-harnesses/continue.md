@@ -1,6 +1,6 @@
 ---
 name: continue
-layer: 2
+category: 2
 surfaces: [ide]   # VS Code + JetBrains over a shared core
 execution: local
 vendor: Continue

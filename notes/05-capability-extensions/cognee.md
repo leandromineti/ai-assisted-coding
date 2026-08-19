@@ -1,7 +1,7 @@
 ---
 name: cognee
-layer: 5
-kind: memory
+category: 5
+type: memory
 vendor: Topoteretes (topoteretes)
 url: https://github.com/topoteretes/cognee
 license: Apache-2.0

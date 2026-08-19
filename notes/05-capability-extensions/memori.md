@@ -1,7 +1,7 @@
 ---
 name: memori
-layer: 5
-kind: memory
+category: 5
+type: memory
 vendor: MemoriLabs
 url: https://github.com/MemoriLabs/Memori
 license: Apache-2.0

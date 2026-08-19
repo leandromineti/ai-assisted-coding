@@ -1,7 +1,7 @@
 ---
 name: memos
-layer: 5
-kind: memory
+category: 5
+type: memory
 vendor: MemTensor (MemOS)
 url: https://github.com/MemTensor/MemOS
 license: Apache-2.0

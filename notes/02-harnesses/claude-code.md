@@ -1,6 +1,6 @@
 ---
 name: claude-code
-layer: 2
+category: 2
 surfaces: [terminal, desktop, web, ide]   # in-product statement + docs; terminal OBSERVED directly (this report was written from inside one)
 execution: both   # local CLI observed; cloud sessions + claude.ai/code web are the async-remote side (the local client can list/message its own cloud sessions — observed in the session-management tool surface)
 environments: [host, worktree, remote-sandbox]   # host + worktree OBSERVED (worktrees are first-class: EnterWorktree/ExitWorktree tools, plus per-agent `isolation: worktree`); remote-sandbox = cloud sessions/web (bundle). Devcontainer support is docs testimony — left unclaimed

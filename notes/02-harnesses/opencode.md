@@ -1,6 +1,6 @@
 ---
 name: opencode
-layer: 2
+category: 2
 surfaces: [terminal, desktop, ide]
 execution: local
 environments: [host]   # a `containers` package exists; its role unverified — see Bleed

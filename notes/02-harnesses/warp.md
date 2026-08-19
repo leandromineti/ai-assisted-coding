@@ -1,6 +1,6 @@
 ---
 name: warp
-layer: 2
+category: 2
 surfaces: [terminal, desktop, web]   # native GPU app; crates/warp_tui (180 files) is the TUI; crates/serve-wasm compiles the client to wasm ("web-compiled Warp terminal", README)
 execution: both   # OrchestrationExecutionMode::{Local, Remote{environment_id, worker_host}}
 environments: [container, remote-sandbox]   # verified as *detected*, not launched — see Bleed

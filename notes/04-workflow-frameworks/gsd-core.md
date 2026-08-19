@@ -1,6 +1,6 @@
 ---
 name: gsd-core
-layer: 4
+category: 4
 vendor: Open GSD
 url: https://github.com/open-gsd/gsd-core
 license: MIT

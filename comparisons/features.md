@@ -9,9 +9,9 @@ report's frontmatter when confirmed in source or official docs. Keys are
 defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md)
 (ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
 
-## Models (layer 1)
+## Models (category 1)
 
-The layer-1 slice — `model_features:` frontmatter (ADR-0014). Free-text
+The category-1 slice — `model_features:` frontmatter (ADR-0014). Free-text
 values in the vendor's own terms, verified against the report's `url` on its
 `checked` date. Quantitative surface (context, pricing, cutoff, lifecycle)
 stays in [models.md](models.md).
@@ -29,7 +29,7 @@ stays in [models.md](models.md).
 | [kimi-k3](../notes/01-models/kimi-k3.md) | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | 1,048,576 | `always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)` | `reasoning_effort: low/high/max, default MAX — the only default-to-most-expensive in the sweep; reasoning tokens billed as output (first-party API)` | `automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)` | `checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)` |
 | [qwen3-coder-next](../notes/01-models/qwen3-coder-next.md) | Apache-2.0 | 262,144 | `none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)` | `n/a — no thinking mode, so Model Studio's thinking_budget/reasoning_effort surfaces are not offered for this model` | `unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash` | `unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)` |
 
-## Harnesses (layer 2)
+## Harnesses (category 2)
 
 | Tool | license | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -43,12 +43,12 @@ stays in [models.md](models.md).
 | [aider](../notes/02-harnesses/aider.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
-## Environments & extensions on the harness vocabulary (layers 3 & 5)
+## Environments & extensions on the harness vocabulary (categories 3 & 5)
 
-Layer-3 and layer-5 reports may verify harness-vocabulary keys where the
+Category-3 and category-5 reports may verify harness-vocabulary keys where the
 characteristic genuinely applies (an extension shipping a learning loop, an
 environment exposing session sharing). Same columns, same discipline; rows
-here do NOT count toward the cross-layer table's demand side (that filter is
+here do NOT count toward the cross-category table's demand side (that filter is
 `applies_to`).
 
 | Tool | license | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
@@ -64,9 +64,9 @@ here do NOT count toward the cross-layer table's demand side (that filter is
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
-## Workflow frameworks (layer 4)
+## Workflow frameworks (category 4)
 
-The layer-4 slice of the feature taxonomy — `workflow_features:` frontmatter,
+The category-4 slice of the feature taxonomy — `workflow_features:` frontmatter,
 defined in `notes/cross-cutting/feature-taxonomy.md`. Structural
 presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
@@ -84,10 +84,10 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 | [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | proprietary | ✓ | ✓ | · | ✓ | · | · | · | · | · |
 | [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | MIT | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
 
-## Memory extensions (layer 5, `kind: memory`)
+## Memory extensions (category 5, `type: memory`)
 
 The per-kind slice of the feature taxonomy — `memory_features:` frontmatter
-(ADR-0013), assessed only on layer-5 reports with `kind: memory`. Values are
+(ADR-0013), assessed only on category-5 reports with `type: memory`. Values are
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
@@ -101,15 +101,15 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
-## Cross-layer features
+## Cross-category features
 
 The bleed, quantified. **Demand** counts presence among reports of the
-feature's `applies_to` layers (✓ / checked); **supply** counts tracked
-layer-5 tools of the linked `kind`. Zeros are honest — no supply-side tool
+feature's `applies_to` categories (✓ / checked); **supply** counts tracked
+category-5 tools of the linked `kind`. Zeros are honest — no supply-side tool
 tracked yet. Definitions and links live in the
 [feature taxonomy](../notes/cross-cutting/feature-taxonomy.md).
 
-| Feature | Layer | Demand (✓/checked) | Supply (layer-5 kind) | Note |
+| Feature | Category | Demand (✓/checked) | Supply (category-5 kind) | Note |
 |---|---|---|---|---|
 | mcp | 2 | 7/7 | `mcp-server` · 0 tracked |  |
 | hooks | 2 | 4/5 | `hook` · 0 tracked | supply side also carries layer-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks |

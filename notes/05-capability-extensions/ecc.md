@@ -1,6 +1,6 @@
 ---
 name: ecc
-layer: 5   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
+category: 5   # RECLASSIFIED from provisional layer 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The layer verdict
 vendor: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT

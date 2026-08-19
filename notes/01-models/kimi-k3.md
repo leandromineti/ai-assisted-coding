@@ -1,6 +1,6 @@
 ---
 name: kimi-k3
-layer: 1
+category: 1
 vendor: Moonshot AI
 url: https://huggingface.co/moonshotai/Kimi-K3
 license: "Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here)"

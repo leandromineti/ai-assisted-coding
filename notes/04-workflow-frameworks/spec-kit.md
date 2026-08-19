@@ -1,6 +1,6 @@
 ---
 name: spec-kit
-layer: 4
+category: 4
 vendor: GitHub
 url: https://github.com/github/spec-kit
 license: MIT

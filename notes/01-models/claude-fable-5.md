@@ -1,6 +1,6 @@
 ---
 name: claude-fable-5
-layer: 1
+category: 1
 vendor: Anthropic
 url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary

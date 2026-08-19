@@ -1,6 +1,6 @@
 ---
 name: openspec
-layer: 4
+category: 4
 vendor: Fission AI
 url: https://github.com/Fission-AI/OpenSpec
 license: MIT

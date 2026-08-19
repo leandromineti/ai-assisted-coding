@@ -1,6 +1,6 @@
 ---
 name: aider
-layer: 2
+category: 2
 surfaces: [terminal]
 execution: local
 vendor: Aider-AI
