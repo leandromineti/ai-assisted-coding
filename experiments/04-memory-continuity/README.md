@@ -139,3 +139,28 @@ observations, so contamination surface is nil for the key.
 
 **Cost:** ~5 opencode sonnet-5 sessions + 1 haiku ping + 1 haiku smoke (metered,
 well under the $5 ceiling — realistically ~$1); capture + A-control on subscription.
+
+---
+
+## Post-run amendment — 2026-08-19: arm C (LLM-enabled capture), issue #27 arm 1
+
+*(Dated post-run amendment per rule 5; protocol and results above unedited. Sign-off:
+"Do 1" — Leandro, 2026-08-19, approving this arm with its ~$1 estimate.)*
+
+**Question**: is the 0/10 automatic floor a design property or a zero-LLM artifact?
+The deep-dive notes session-end LLM consolidation enriches pages/handoffs when a
+provider is configured (`llm_provider`; config.rs:131-144).
+
+**Design**: fresh data dir (`aimem-data-llm`) so consolidation artifacts are cleanly
+attributable; `llm_provider = "anthropic"` in config.toml, key via `ANTHROPIC_API_KEY`
+on the daemon process ONLY (the metered experiment key, read from opencode's auth
+store; never exported globally — rig credential-precedence hazard); same capture
+workspace path (cwd-matching), with `.mcp.json`/`opencode.json` removed first so the
+capture harness matches the original capture (no memory tools visible). Re-run the
+committed 6-turn capture script; verify consolidation actually ran (daemon log + fact
+tokens in wiki/handoff — the mechanical check); then **arm C** = the B1b quiz
+configuration exactly (opencode, plugin + `inject_on_session_start` marker, NO MCP).
+
+**Falsification**: C > B1b → the floor is a zero-LLM artifact; conclusion 14 gains a
+configuration tier. C = 0 → the floor is a design property (baton shape), and
+"pull-shaped" hardens. Scored with the committed key, artifact-read, n=1 (probe).
