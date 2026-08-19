@@ -1,11 +1,11 @@
-# Layer 4 — Workflow frameworks
+# Category 4 — Workflow frameworks
 
 `checked: 2026-08-18`
 
 An encoded **methodology** riding on top of a harness. Runtime is to framework as harness
 is to this. See [`../../taxonomy.md`](../../taxonomy.md).
 
-The layer test is **harness portability by design**: the methodology is defined once and
+The category test is **harness portability by design**: the methodology is defined once and
 targets many harnesses.
 
 ## Seed inventory
@@ -23,7 +23,7 @@ contexts** per unit of work, and **real verification** producing human-readable 
 
 Ships as several pieces, which is itself instructive:
 
-| Piece | What | Layer |
+| Piece | What | Category |
 |-------|------|-------|
 | `gsd-core` | The framework proper; 18 install targets @ fee72d55 (Gemini CLI removed upstream 2026-06-18 — July's list was stale at read time). | 4 |
 | `gsd-pi` | Standalone CLI for autonomous workflows. | **2 — bleed** |
@@ -33,7 +33,7 @@ Ships as several pieces, which is itself instructive:
 
 *(2026-08-18: the "already installed on this machine" advantage is gone — no gsd-*
 artifacts under `~/.claude` on this host, almost certainly lost in the 2026-08-06 server
-rebuild. Deep-dived 2026-08-18 at fee72d55 — the layer's third deep-dive:
+rebuild. Deep-dived 2026-08-18 at fee72d55 — the category's third deep-dive:
 [report](gsd-core.md).)*
 
 ### spec-kit — <https://github.com/github/spec-kit> · [report](spec-kit.md)
@@ -68,7 +68,7 @@ it validates artifacts, not behavior (empirical grounding: absent, as predicted)
 Dogfooded at scale: 91 changes through its own pipeline over 36 living specs. 29
 harness adapters. 63k stars, MIT, 71% single-author.
 
-### ECC (everything-claude-code) — **moved to layer 5** (2026-07-30)
+### ECC (everything-claude-code) — **moved to category 5** (2026-07-30)
 
 *(Added 2026-07-28 as a deliberate boundary case; resolved at deep-dive.)* The source
 read answered the question this entry was created to ask: **no process spine** — the
@@ -77,22 +77,22 @@ workflow content is opt-in catalog items, and the multi-* orchestration commands
 require an external runtime (`ccg-workflow`). A config pack at scale with a real
 learning runtime, not an encoded methodology. Report now at
 [`../05-capability-extensions/ecc.md`](../05-capability-extensions/ecc.md). What it
-contributed to *this* layer's questions: verification gates can arrive as installable
-Stop hooks (a layer-5 delivery vehicle for the mechanism exp-01 credited to layer 4),
+contributed to *this* category's questions: verification gates can arrive as installable
+Stop hooks (a category-5 delivery vehicle for the mechanism exp-01 credited to category 4),
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
-outside layer 4 proper.
+outside category 4 proper.
 
 ### BMAD-METHOD — <https://github.com/bmad-code-org/BMAD-METHOD> · [report](bmad-method.md)
 
-*(Stubbed and deep-dived 2026-08-18, same pin `86beb065` — the layer's fourth deep-dive.)*
+*(Stubbed and deep-dived 2026-08-18, same pin `86beb065` — the category's fourth deep-dive.)*
 The AiDD delivery loop, mid-molt: build-first entry (`bmad-build`, planning artifacts
 optional context — the "process-heavy funnel" prediction falsified), a real one-shot/full
 fork that is nonetheless one prose judgment biased heavy and deleted in the unattended
-variant. Ships the layer's fourth engine shape: ~2.6k lines of tested Python state
+variant. Ships the category's fourth engine shape: ~2.6k lines of tested Python state
 tooling with **no authority** — every script failure licenses the LLM to proceed by best
 judgment, zero hooks. Portability is anti-translation: byte-identical Agent Skills copied
 to 47 platform codes (22 distinct dirs, 26 sharing `.agents/skills/`) — no translation to
-degrade; the real price is a hand-forked 6-skill `web-bundles/`. The layer's purest
+degrade; the real price is a hand-forked 6-skill `web-bundles/`. The category's purest
 large-scale model-trust bet, falsifiable by exp-01's mechanism finding.
 Companion: [**bmad-loop**](bmad-loop.md) *(stubbed 2026-08-18)* — the ecosystem's
 enforcement, sold separately: a deterministic Python orchestrator ("No LLM in the
@@ -106,23 +106,23 @@ Five candidates ingested at stub depth in one sweep — mechanical facts plus RE
 skim, sources unread; each report says what a survey read should check first.
 *(BMAD-METHOD graduated from this list to a deep-dive the same day — entry above.)*
 
-- [**Conductor**](conductor.md) — Google-org SDD plugin; the smallest subject in the layer (22 markdown files *are* the framework) — purest prose-only pole for the conclusion-7 question.
+- [**Conductor**](conductor.md) — Google-org SDD plugin; the smallest subject in the category (22 markdown files *are* the framework) — purest prose-only pole for the conclusion-7 question.
 - [**pilot-shell**](pilot-shell.md) — spec spine (`/prd`→`/spec` TDD→`/build` judge loops) inside an ECC-shaped platform; only non-OSI subject (source-available EULA). Spine or catalog?
 - [**spec-kitty**](spec-kitty.md) — spec-kit fork grown into a worktree-parallel "governed software factory"; imported parent history verifiable in `first_commit`. What did the fork change in the parent's pipeline?
-- [**haft**](haft.md) — decision-governance pole (FPF: typed records, evidence decay); heaviest runtime in the layer (2k+ Go files). Encoded methodology or memory extension?
+- [**haft**](haft.md) — decision-governance pole (FPF: typed records, evidence decay); heaviest runtime in the category (2k+ Go files). Encoded methodology or memory extension?
 
 ## Candidates
 
-The "Considered, not added (2026-07-28)" table moved to the cross-layer
+The "Considered, not added (2026-07-28)" table moved to the cross-category
 [candidates ledger](../candidates.md) on 2026-08-18 ([ADR-0009](../../adrs/0009-candidates-ledger.md)) —
-candidate is now the named pre-report rung of the engagement ladder, one ledger for
-all layers.
+candidate is now the named pre-report step of the engagement ladder, one ledger for
+all categories.
 
 ## Spec-Driven Development (SDD)
 
 *(Added 2026-08-18 — the term was already load-bearing in the reports but defined nowhere.)*
 
-**SDD** names the layer-4 sub-family whose organizing artifact is the **specification**:
+**SDD** names the category-4 sub-family whose organizing artifact is the **specification**:
 written first, machine-validated, and treated as the *generator* of the implementation
 rather than documentation that guides it. The term is vendor-coined — it is
 [spec-kit's own branding](spec-kit.md) — but third-party usage has settled on a
@@ -132,7 +132,7 @@ OpenSpec (the ceremony and lean poles respectively) deep-dived first, and BMAD
 deep-dived 2026-08-18 — whose read complicates the pole labels: v6 is shedding ceremony
 while remaining the most prose-governed of the trio ([report](bmad-method.md)).
 
-SDD is a sub-family, not the layer: **GSD is layer 4 without being SDD** — its organizing
+SDD is a sub-family, not the category: **GSD is category 4 without being SDD** — its organizing
 artifact is the task graph and its enemy is context bloat, not under-specified intent.
 That is the same split "the shared bet" below describes without naming: where a framework
 locates the failure (intent vs. context) determines whether it is SDD.
@@ -150,7 +150,7 @@ First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-pla
 
 ## Feature taxonomy (2026-08-18)
 
-The layer now carries the layer-4 slice of the repo's **feature taxonomy** —
+The category now carries the category-4 slice of the repo's **feature taxonomy** —
 `workflow_features:` in report frontmatter, with every key defined once in
 [`notes/cross-cutting/feature-taxonomy.md`](../cross-cutting/feature-taxonomy.md)
 ([ADR-0010](../../adrs/0010-two-taxonomies.md)), rendered in
@@ -176,7 +176,7 @@ its source is read.
 
 ## Mechanisms — the unit of value
 
-*(Added 2026-07-28 after experiment 01. "GSD is a layer-4 tool" proved true and nearly
+*(Added 2026-07-28 after experiment 01. "GSD is a category-4 tool" proved true and nearly
 useless as an analytical claim: the value variance was inside the tool. The tool is the
 unit of **distribution**; the mechanism is the unit of **value**. Compare frameworks
 mechanism-by-mechanism, not brand-by-brand.)*
@@ -225,13 +225,13 @@ spec-kit" as brands was the wrong comparison — this table is the real one.
   forks, code-level hooks, and context isolation are structurally unavailable. Behavioral
   equivalence across harnesses remains untested.
 - ~~Claude Code ships plan mode natively. Where's the line between a harness's built-in
-  process features and an installed framework — and is layer 4 being absorbed into layer 2?~~
+  process features and an installed framework — and is category 4 being absorbed into category 2?~~
   **Answered 2026-08-18** — systematized against the feature registry: 6 of the 9
-  layer-4 keys have ≥2 verified harness-native instances, at `engine`/`hook` grades the
+  category-4 keys have ≥2 verified harness-native instances, at `engine`/`hook` grades the
   frameworks themselves never reach; the unabsorbed remainder is exactly the SDD spine
   (intent pipeline, format gates, workflow-scoped state). The line, on current evidence:
   harnesses absorb *mechanisms*, methodology stays here. →
-  [layer-2 index, "What layer 2 has absorbed"](../02-harnesses/index.md#what-layer-2-has-absorbed--the-layer-4-feature-set-checked-against-harnesses)
+  [category-2 index, "What category 2 has absorbed"](../02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses)
 - ~~Neither is easy to A/B test, since you can't run the same task twice cleanly. What
   would a fair comparison even look like?~~ **Working answer 2026-07-28:** preregister
   the protocol and falsification criteria, run the contaminated arm second with fresh

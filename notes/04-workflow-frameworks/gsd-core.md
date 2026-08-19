@@ -19,7 +19,7 @@ harness_targets: "18 install targets @ fee72d55 (bin/install.js:647): claude, co
 workflow_features:   # survey 2026-07-28 + exp-01; completed & re-verified at the 2026-08-18 deep-dive
   intent_pipeline: true          # structured task graphs from requirements
   deterministic_engine: true     # far beyond bookkeeping: 96k-line TS runtime (src/*.cts) behind a one-arm dispatcher; Kahn's-algorithm wave computation; engineered locking
-  format_gates: engine           # ADR-0011 graded: plan schema hard-errors in the runtime (src/verify.cts:846-900, 1063-1235); the layer's only engine-graded format gate alongside OpenSpec's validator
+  format_gates: engine           # ADR-0011 graded: plan schema hard-errors in the runtime (src/verify.cts:846-900, 1063-1235); the category's only engine-graded format gate alongside OpenSpec's validator
   measured_gates: prose          # ADR-0011 graded: measurement enforced in code one level up (#1478-1480 live-measurement, provenance rules) but the VERDICT is an LLM invocation — <verify> bodies never machine-read
   process_gates: prose           # ADR-0011 graded: checkpoints honored by the orchestrator LLM; the codified boundary (agentVerdict may not block) is engine-enforced but is a meta-rule, not the gate itself
   context_isolation: true        # founding principle, now hook-ENFORCED: gsd-agent-isolation-guard blocks (exit 2) executor dispatch missing its isolation flag
@@ -98,7 +98,7 @@ product's true start (the history migrated intact), but `stars: 7,336` measures 
 fork era — the original carries **64,799 stars**, stranded on the archive. GSD's actual
 reach is closer to the old number; the two can't be added (overlapping audiences).
 
-It's also the set's live example of **layer-4 supply-chain risk**: this is a tool that
+It's also the set's live example of **category-4 supply-chain risk**: this is a tool that
 injects prose and hooks into your harness, whose upstream went dark in ambiguous
 circumstances — the fork itself states it cannot verify upstream security and forked
 precisely for that reason. "Who maintains the methodology you install" is a real
@@ -144,7 +144,7 @@ Observed in a full run (new-project → plan → execute → verify ×2 phases; 
 ## Stack & repo shape
 
 **Majority markdown: 1398 `.md` against 810 `.cjs`** across 2636 tracked files. This is the
-single most informative fact in the bootstrap pass — a layer-4 framework is mostly *prose*,
+single most informative fact in the bootstrap pass — a category-4 framework is mostly *prose*,
 because the methodology is the product and the code is delivery machinery. Runtime is
 CommonJS Node (`.cjs` plus 177 `.cts`).
 
@@ -164,7 +164,7 @@ Citation caveat: `gsd-core/bin/lib/*.cjs` are gitignored build artifacts — onl
 files exist there at the pin; a fresh clone cannot run until `npm run build:lib`. Cite
 `src/*.cts`.*
 
-### The shape: four layers, one of them real
+### The shape: four categories, one of them real
 
 `commands/gsd/*.md` (68) and `skills/gsd-*/SKILL.md` (71) are ~5-line-different shims —
 one surface counted twice. Both point into `gsd-core/workflows/*.md` (the actual
@@ -188,9 +188,9 @@ field matching can't fold the Kelvin sign), guarded by genuinely engineered lock
 (pid-liveness with EPERM-as-alive, deadman ceilings against pid reuse, atomic
 rename-steal, Docker/NFS errno retry sets).
 
-### The enforcement ladder — the layer's sharpest answer to "who enforces?"
+### The enforcement ladder — the category's sharpest answer to "who enforces?"
 
-After spec-kit (15/19 gates prose), GSD's classification runs four rungs:
+After spec-kit (15/19 gates prose), GSD's classification runs four grades:
 
 1. **Code that hard-errors**: plan schema (8 required frontmatter fields), checkpoint/
    `autonomous` consistency, dependency **cycles** (`src/verify.cts:846-900`,
@@ -209,7 +209,7 @@ After spec-kit (15/19 gates prose), GSD's classification runs four rungs:
    write-guard (catastrophic `.planning/` shrink), worktree-path-guard, and
    **agent-isolation-guard**, whose header is the thesis: *"A prose backstop cannot
    fix a prose defect — it is the same class of artifact the model may equally skip.
-   This hook enforces the invariant at the tooling layer instead."*
+   This hook enforces the invariant at the tooling `layer` instead."*
 
 The `<verify>` bodies exp-01 credited are **never machine-read** — the runtime checks
 presence only (`verify.cts:744`, missing = warning at `:817`); executor and verifier
@@ -255,7 +255,7 @@ rated confidence was measured in this project and found weak"), and the repo's o
 machine-canon CONTEXT.md (409 single-line predicates; "if you can't compress a
 session's lesson into a predicate, the lesson isn't sharp enough yet").
 
-The most distinctive artifact in the layer: **GSD ships negative empirical results
+The most distinctive artifact in the category: **GSD ships negative empirical results
 about itself.** `references/honest-verifier.md`: the verifier "does not know that it
 does not know" — ~100% confident false-pass on blind-spot checks (~0.93 confidence);
 "are you sure?" barely moves it (so there deliberately is no such prompt; exogenous
@@ -293,7 +293,7 @@ issue numbers, mass-rewrote 174 URLs onto its own tracker, and its live counter
 
 ## Bleed
 
-Reaches **down into layer 2** via `gsd-pi`, its own standalone CLI, and into **layer 5** via
+Reaches **down into category 2** via `gsd-pi`, its own standalone CLI, and into **category 5** via
 `gsd-browser`. Documented in [`index.md`](index.md) — it's the clearest case in the repo of a
 workflow framework growing into the runtime it was meant to sit on top of.
 
@@ -306,7 +306,7 @@ question worth measuring.
 ## Surprises
 
 1. **The markdown-to-code ratio.** 1398 `.md` vs 810 `.cjs` is close to a proof of the
-   layer-4 definition: if the artifact is mostly prose, the thing being distributed
+   category-4 definition: if the artifact is mostly prose, the thing being distributed
    really is a methodology rather than a program. Recorded before reading a line of
    source.
 2. **The value concentrates in two places** (from the experiment): empirical research
@@ -318,10 +318,10 @@ question worth measuring.
    minute 40; ~1.47M subagent tokens and ~3,750 planning-doc lines for 763 product LOC.
    Yet the result genuinely was more robust — a real crash-class difference plus four
    latent-defect classes over the unstructured baseline (see the experiment's results).
-4. **Cross-layer frictions observed live:** a harness subagent guard (Write refusing
+4. **Cross-category frictions observed live:** a harness subagent guard (Write refusing
    "report files") collided with the framework's file-on-disk requirement — the agent
    self-healed via Bash heredoc; and a deterministic validator false-positived on an
-   external-source citation. Layer-4-on-layer-2 bleed producing real failure modes.
+   external-source citation. Category-4-on-category-2 bleed producing real failure modes.
 5. **Research caches are cwd-keyed and can leak.** A researcher's digest cache
    (`.planning/research/.cache/*.json`) materialized in the *orchestrating* repo's root
    rather than the target project, because the orchestrator's shell cwd differed from
@@ -339,7 +339,7 @@ question worth measuring.
    checkable form. A workflow framework explicitly demoting its own medium.
 2. **It ships negative empirical results about its own verifier** and designs against
    them — including refusing to add an "are you sure?" prompt because confidence was
-   measured to be uninformative. No other tool in the layer publishes evidence against
+   measured to be uninformative. No other tool in the category publishes evidence against
    itself.
 3. **Prompt-as-control-flow has no compiler, demonstrated.** The empirical-grounding
    probes were unreachable dead prose for seven weeks — four "Jump to Step 6"
@@ -361,15 +361,15 @@ question worth measuring.
 
 What today's deep-dives say to someone running GSD daily and eyeing the field:
 
-- **What GSD has that nothing else in the layer has**: hard-blocking harness hooks
+- **What GSD has that nothing else in the category has**: hard-blocking harness hooks
   (spec-kit: zero), the codified rule that only deterministic checks may block,
   filesystem isolation (worktrees) on top of context isolation, in-repo negative
   results steering the design, and a measured estimate-calibration loop. Its
   verification *substrate* (DAG waves, plan schema errors, artifact/key-link checks)
-  is the most machine-enforced in the layer.
+  is the most machine-enforced in the category.
 - **What the deep-dive deflates**: `<verify>` bodies are LLM-enforced (the hooks guard
   files and dispatch, not verification verdicts); default-config wave parallelism on
-  Claude Code is partially blocked with the fix in BETA; the four-layer surface is one
+  Claude Code is partially blocked with the fix in BETA; the four-category surface is one
   methodology counted several times; bus factor ≈ 1.
 - **Against spec-kit**: opposite architecture on every axis that matters — files vs
   conversation, enforcement ladder vs prose gates, engine driving the methodology vs
@@ -383,7 +383,7 @@ What today's deep-dives say to someone running GSD daily and eyeing the field:
   prose; the enforcement lives in the separate bmad-loop orchestrator. Still not a
   switch: the opposite bet from GSD's hook-enforced direction — [report](bmad-method.md))*,
   spec-kitty (worktree factory, multi-maintainer), haft (decision governance, likely
-  layer 5).
+  category 5).
 
 ## Open questions
 
