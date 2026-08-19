@@ -1,0 +1,3 @@
+All info found in prior session memory. Here's the answer:
+
+{"q1":"Deno","q2":"Crockford base32, chosen because of case-insensitive filesystems","q3":"Vendor the date parser for the changelog tooling instead of depending on luxon","q4":"September 12","q5":"A migration note added to MIGRATIONS.md","q6":"90 seconds","q7":"It must return null instead of throwing","q8":"Table-driven tests over one-assertion-per-test","q9":"Conventional-commit prefixes with a scope, e.g. fix(parser):","q10":"The Fastly team"}

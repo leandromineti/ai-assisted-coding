@@ -1,0 +1,48 @@
+{
+  "arm": "A-control",
+  "scored_at": "2026-08-19T10:46:54.450516+00:00",
+  "per_question": {
+    "q1": {
+      "answer": "Deno (target Deno first, not Node)",
+      "hit": true
+    },
+    "q2": {
+      "answer": "Crockford base32, because of case-insensitive filesystems",
+      "hit": true
+    },
+    "q3": {
+      "answer": "Vendor the date parser for the changelog tooling instead of depending on luxon",
+      "hit": true
+    },
+    "q4": {
+      "answer": "September 12",
+      "hit": true
+    },
+    "q5": {
+      "answer": "A migration note added to MIGRATIONS.md",
+      "hit": true
+    },
+    "q6": {
+      "answer": "90 seconds",
+      "hit": true
+    },
+    "q7": {
+      "answer": "Never throw on user input \u2014 return null instead of throwing",
+      "hit": true
+    },
+    "q8": {
+      "answer": "Table-driven tests (preferred over one-assertion-per-test)",
+      "hit": true
+    },
+    "q9": {
+      "answer": "Conventional-commit prefixes with a scope, like fix(parser):",
+      "hit": true
+    },
+    "q10": {
+      "answer": "The Fastly team",
+      "hit": true
+    }
+  },
+  "score": 10,
+  "answered": 10
+}

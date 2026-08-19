@@ -1,0 +1,48 @@
+{
+  "arm": "B1b",
+  "scored_at": "2026-08-19T10:28:50.191182+00:00",
+  "per_question": {
+    "q1": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q2": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q3": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q4": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q5": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q6": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q7": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q8": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q9": {
+      "answer": "UNKNOWN",
+      "hit": false
+    },
+    "q10": {
+      "answer": "UNKNOWN",
+      "hit": false
+    }
+  },
+  "score": 0,
+  "answered": 0
+}

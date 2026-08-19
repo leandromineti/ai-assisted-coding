@@ -84,3 +84,59 @@ boundaries specifically, i.e. the cross-harness claim is the weak link.
   in `log.md`, B0 calibration passing its gate.
 - Amendments: dated, appended, labelled pre-/post-run; protocol text above never
   edited (rule 5).
+
+---
+
+## Results — 2026-08-19 (all arms complete; protocol above unedited)
+
+**Scoreboard** (fails-closed binary key, n=1 per arm — a probe, and it says so):
+
+| Arm | Harness | Memory | Score | Non-UNKNOWN answers |
+|---|---|---|---|---|
+| smoke (5e) | opencode/haiku | none | 0/10 | 0 — honest UNKNOWNs, driver validated |
+| **B0 calibration** | opencode/sonnet-5 | none | **0/10** | 0 — **gate PASS**, instrument discriminates |
+| **B1 baton-only** | opencode/sonnet-5 | hooks, out-of-box | **0/10** | 0 |
+| **B1b** *(dated pre-B2 amendment)* | opencode/sonnet-5 | hooks + `inject_on_session_start=true` | **0/10** | 0 |
+| **B2 baton+pull** | opencode/sonnet-5 | hooks + MCP | **10/10** | 10 — every fact verbatim |
+| **A-control** | Claude Code | hooks + MCP | **10/10** | 10 |
+
+**Reading, per the preregistered falsification map:** B1 ≈ B0 and B2 ≫ B1 —
+**continuity is real and entirely pull-shaped.** The automatic floor is zero: the
+handoff baton injected at session start is the *latest* session's first/last prompts,
+and mid-session conversational facts never reach it (ground-truthed in the DB: all 10
+facts sit in exactly one handoff each, none in the latest). The ceiling is perfect:
+`memory_search` over `observations_fts` — where full prompt text survives — recovered
+all 10 facts across the harness boundary, verbatim. And A-control = B2: **the harness
+boundary costs nothing on the pull path**. The kind's headline bet survives contact,
+but it rests entirely on the receiving agent knowing to ask — corroborating the
+ai-memory deep-dive's "the baton is thin by design; rich memory is pull-only" from
+source-read to measured.
+
+**Capture-side mechanics behind the floor** (recorded for the report): each headless
+`claude -p --continue` turn registered as its own session (6 handoffs, not 1); the
+zero-LLM session page stores ~80-char prompt prefixes (facts truncated mid-sentence);
+assistant acknowledgments are not captured (double-opt-in `--capture-assistant`).
+
+**Incidental findings:**
+1. **MCP schema strictness is a live interop seam**: the Anthropic API rejected
+   v1.28.1's `memory_read_page` schema (top-level `oneOf`); the fix
+   (`strip_root_combinators`) landed in the 16 commits between release and pin, is
+   **default-off**, and needed `AI_MEMORY_STRIP_ROOT_COMBINATORS=true` — a
+   presence≠operative echo, observed blocking a real run. B2 ran on the pin-built
+   binary (docker rust, read-only clone) with the toggle enabled.
+2. The opencode plugin requests the session-start briefing only when a per-project
+   `.ai-memory.toml` sets `inject_on_session_start` — out-of-box, injection is not
+   even attempted (B1 vs B1b: same score, different mechanism — not-requested vs
+   requested-but-factless).
+3. The served briefing carries an explicit untrusted-data security boundary — the
+   `injection_trust_boundary: true` cell observed live in a real payload.
+
+**Deviations, dated:** B1b added pre-B2 as a labelled amendment (arm plan, not
+protocol text). A-control's first invocation failed on `claude -p` flag parsing
+(prompt swallowed; the A-driver variant had not been smoke-tested — a 5e gap, caught
+by the artifact check not exit status) and was re-run via stdin. Quiz arms each
+appended their own (factless) handoffs before later arms; answers exist only in
+observations, so contamination surface is nil for the key.
+
+**Cost:** ~5 opencode sonnet-5 sessions + 1 haiku ping + 1 haiku smoke (metered,
+well under the $5 ceiling — realistically ~$1); capture + A-control on subscription.
