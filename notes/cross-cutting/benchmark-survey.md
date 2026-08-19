@@ -183,7 +183,11 @@ Three take-aways, each recorded in the refs notes:
    LLM-judge on LoCoMo-minus-adversarial, the paper's own best J is 68.44 — still far
    below the README's 92.5 — and the paper's no-memory full-context baseline scores
    J 72.90, beating the memory system on quality. The measured claim is efficiency,
-   not accuracy. It also documents that released LoCoMo = 10 conversations, not the
+   not accuracy. Deepened at the 2026-08-19 deep-dive: the 92.5 is one of TWO
+   number-sets coexisting at the same pin (README 92.5/94.4 vs migration docs
+   91.6/93.4, same baseline, unreconciled), the eval harness was extracted to a
+   sibling repo two months pre-pin, and the numbers are explicitly disclaimed as
+   platform-only — unreproducible from the OSS tree at any pin. It also documents that released LoCoMo = 10 conversations, not the
    paper's 50 — "on LoCoMo" scores may not even share an item set.)*
 3. **The instruments converge on the mechanisms the vendors ship.** LongMemEval's
    indexing/retrieval/reading control points and BEAM's episodic/working/scratchpad
