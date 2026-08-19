@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-18`
+`checked: 2026-08-19`
 
 The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
 vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
@@ -14,6 +14,8 @@ the **feature taxonomy**
 once with per-layer applicability, from which the comparison matrices are generated.
 Layers may carry **sub-categories** (layer 5's `kind`; layer 4's SDD /
 context-discipline / decision-governance poles) — those live in the layer indexes.
+Canonical terms and their deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this
+document is prose, linted against it.
 
 This document always describes the **current** taxonomy. How it got this shape — the
 bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
@@ -22,7 +24,7 @@ record each. Anything dated before 2026-08-18 (git history, old URLs, experiment
 uses the pre-renumbering scheme; [ADR-0007](adrs/0007-renumber-core-triad-first.md)
 carries the mapping.
 
-## The stack
+## Tool categories
 
 **The core triad and its two interfaces**
 ([ADR-0004](adrs/0004-core-triad-reframing.md), numbering per

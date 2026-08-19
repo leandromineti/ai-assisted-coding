@@ -1,0 +1,152 @@
+# taxonomy.yaml — the sole machine-readable source of truth for this repo's taxonomy
+# vocabulary. taxonomy.md is prose, linted against this file; Phase 2's lint reads this
+# file directly. Do not duplicate vocabulary data (canonical terms, deny-lists,
+# reference formats, carve-outs) anywhere else in the repo.
+#
+# decision_record below is the dated, immutable ADR that decided this vocabulary — if
+# this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
+# wrong; they must not diverge.
+
+checked: 2026-08-19
+decision_record: adrs/0015-layers-become-categories.md
+canonical_top_level_term: categories
+
+categories:
+  - number: 1
+    name: Models
+  - number: 2
+    name: Harnesses
+  - number: 3
+    name: Execution environments
+  - number: 4
+    name: Workflow frameworks
+  - number: 5
+    name: Extensions
+
+# Canonical terms, each with a definition and a deny_list of banned synonyms (empty
+# where nothing is banned). false_positive_notes records match forms that must NOT
+# fail, with the live in-repo example — this is where "we already know this would
+# misfire" knowledge lives, so Phase 2 builds the lint against it instead of
+# rediscovering it.
+terms:
+  - term: categories
+    definition: >-
+      The taxonomy's top-level divisions (see the `categories` list above).
+      Deliberately a non-stacking term — the owner's framing (ADR-0015 D-01):
+      "categories… a more general term that does not imply they are stacked
+      (necessarily)."
+    deny_list:
+      - layer
+      - layers
+      - rung
+      - rungs
+      - ladder
+      - cross-layer
+    false_positive_notes:
+      - >-
+        "cross-cutting" is untouched — it contains no banned word and is a distinct
+        compound from "cross-layer" (which becomes "cross-category"); the two must
+        not be conflated by the lint.
+  - term: types
+    definition: >-
+      Category-5's sub-classification: the report frontmatter key `type:` (formerly
+      `kind:`), and the concept previously also called "sub-category" elsewhere in
+      taxonomy.md. Both old spellings fold into this one new term (ADR-0015 D-02).
+    deny_list:
+      - sub-category
+      - sub-categories
+      - "kind:"
+    false_positive_notes:
+      - >-
+        The bare token `kind` (no colon) is deliberately NOT deny-listed — taxonomy.md
+        alone carries three legitimate ordinary-English uses: line 6 "the same kind of
+        thing", line 98 "the same kind of thing", line 346 "classifies by *kind*". A
+        bare-token entry would guarantee false positives, which is exactly why the
+        deny-list model was chosen over an allow-list. Only the frontmatter-key form
+        `kind:` (with the colon) is banned.
+  - term: bucket
+    definition: >-
+      Category 5's shape: a loose, cross-category collection, not a rung
+      (ADR-0002). Canonical vocabulary, not drift.
+    deny_list: []
+    false_positive_notes:
+      - >-
+        `bucket` is not a synonym for `categories` and must not be swept toward
+        "category" — the two terms name different things (a category's shape vs.
+        the taxonomy's top-level divisions) and both stay in use.
+
+# Words with one canonical sense and one drift sense that a lint cannot mechanically
+# distinguish. Recorded here as an accepted gap: future misuse is caught by readers,
+# not by the lint.
+split_meaning_terms:
+  - term: stack
+    canonical_meaning: >-
+      The running composed system: model + harness + environment (e.g. "human⇄stack
+      boundary", "spanned stack").
+    drift_meaning: >-
+      Any classification use of "stack" — e.g. as a stand-in for the taxonomy's
+      top-level divisions (the old `## The stack` heading, renamed to
+      `## Tool categories` under this decision). This sense is drift, rewritten in
+      the Phase 3 sweep.
+    lint_enforceable: false
+    reason: >-
+      A lint cannot mechanically distinguish which sense a given occurrence of
+      "stack" uses. Recorded as an accepted gap rather than a lint rule.
+
+# Strict canonical numbered-reference forms (D-15). The lint enforces exact case,
+# spacing, and separator — not merely denial of old forms; the owner explicitly chose
+# strict enforcement over deny-only.
+reference_formats:
+  prose: "category N"
+  prose_example: "category 2"
+  compound: "category-N"
+  compound_example: "a category-2 problem"
+  table_index: "N · Name"
+  table_index_example: "2 · Harnesses"
+  table_index_note: >-
+    U+00B7 MIDDLE DOT with a single space on each side — not a hyphen, bullet, or
+    other separator.
+  enforcement: strict
+  enforcement_note: >-
+    The lint enforces exact case, spacing, and separator character for every form
+    above, not merely the absence of old (layer-based) forms.
+
+# Match exemptions that apply to every deny-list entry (D-11, D-14). Named so Phase
+# 2's lint can implement each one by id.
+carve_outs:
+  - id: adr-filenames
+    description: >-
+      Matches inside references to immutable ADR filenames do not fail — e.g.
+      `0003-environments-stay-a-rung.md` legitimately contains "rung"; the filename
+      is historically fixed, not prose drift.
+  - id: inline-code
+    description: >-
+      Matches inside inline code spans (single backticks) do not fail — literal
+      code identifiers and old-scheme references quoted as code are not prose drift.
+
+# The D-02/D-03 frontmatter key renames as machine-readable data, so Phase 3 executes
+# a recorded contract rather than a memory. Both renames must land in one commit —
+# renaming either side alone (generator vs. report frontmatter) breaks the generator.
+schema_renames:
+  - old: layer
+    new: category
+    scope:
+      - "report frontmatter key `layer:` (~38 tool reports)"
+      - "notes/_template-tool-report.md"
+      - "scripts/build-tool-index.py"
+    note: "Values 1-5 are unchanged — purely a key rename (D-03)."
+    executes_in: phase-3
+    atomic: true
+  - old: kind
+    new: type
+    scope:
+      - "report frontmatter key `kind:` in category-5 reports"
+      - "notes/_template-tool-report.md"
+      - "scripts/build-tool-index.py"
+    note: >-
+      Category-5 sub-classification values are unchanged — purely a key rename
+      (D-02). Scoped to tool reports only; distinct from refs' own unrelated `kind:`
+      vocabulary in scripts/build-refs-index.py (source kind: paper/benchmark/
+      blog-post), which is never renamed.
+    executes_in: phase-3
+    atomic: true
