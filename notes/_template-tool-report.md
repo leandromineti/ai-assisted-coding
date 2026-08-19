@@ -66,6 +66,7 @@ memory_features:
   memory_tiers: <true | false>
   hybrid_retrieval: <true | false>
   decay: <true | false>
+  memory_revision: <auto | proposed | caller-only>
   injection_trust_boundary: <true | false>
   deployment_mode: <self-host | cloud | both>
   harness_installer: <true | false>

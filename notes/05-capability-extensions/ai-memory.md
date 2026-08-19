@@ -24,6 +24,7 @@ memory_features:   # ADR-0013 block, set 2026-08-19 from the existing deep-dive 
   memory_scope: [project, user]  # .ai-memory.toml walk-up for project scoping; per-user slot namespaces
   memory_tiers: true             # working/episodic/semantic/procedural
   hybrid_retrieval: true         # RRF over FTS5 + entity index + link neighbors + optional vectors, optional reranker
+  memory_revision: auto          # background consolidation auto-approves its own wiki edits by default (require_approval=false, deep-dive); rules/procedures go through proposals — mixed, but the default write path is auto
   decay: true                    # exponential-decay retention + forget sweep
   injection_trust_boundary: true # untrusted-data delimiters on observations, wiki pages, proposals, AND injected handoffs
   deployment_mode: self-host     # localhost-bound daemon, regex sanitizer at ingress, zero-LLM default

@@ -170,17 +170,22 @@ features:
     block: memory_features
     applies_to: [5]
     definition: multi-stream retrieval fusion (RRF/MMR/reranker over lexical+vector+structural)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (vector+BM25+reranker)"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓"
   - id: decay
     block: memory_features
     applies_to: [5]
     definition: expiry/forgetting/retirement lifecycle on stored memories
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (exponential retention + forget sweep), mem0 (expiration_date), memos (time-decayed value, candidate→active→retired)"
+  - id: memory_revision
+    block: memory_features
+    applies_to: [5]
+    definition: "who can change an existing memory once stored: auto (the system revises/supersedes/retires on its own) | proposed (system proposes, human approves) | caller-only (only explicit API calls)"
+    note: "added 2026-08-19 from the mem0 deep-dive's central finding; instances: ai-memory (auto — background consolidation auto-approves wiki edits, require_approval=false), memos (auto — reward backprop demotes, candidate→active→retired), mem0 (caller-only — no auto-supersession anywhere; the prompt's linking mechanism is parsed and discarded). The kind's sharpest trust axis: what happens when a memory is WRONG"
   - id: injection_trust_boundary
     block: memory_features
     applies_to: [5]
     definition: injected memory is delimited/framed as untrusted data, not instructions
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos. mem0 is an explicit open question in its report — omitted there, not ✗. Security-relevant: memory injection is a prompt-injection vector"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos. mem0 SETTLED ✗ at its 2026-08-19 deep-dive — bare-markdown injection, and its openclaw recall protocol actively inverts the boundary (memories as authoritative rules). Security-relevant: memory injection is a prompt-injection vector"
   - id: deployment_mode
     block: memory_features
     applies_to: [5]

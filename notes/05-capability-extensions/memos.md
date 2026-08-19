@@ -24,6 +24,7 @@ memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey rea
   memory_scope: [session]        # per-session serial queue; sub-agent entry point
   memory_tiers: true             # traces → policies → world models → crystallized skills
   hybrid_retrieval: true         # RRF + MMR over 5 entry points, 3 tiers
+  memory_revision: auto          # reward backprop demotes/retires policies (candidate→active→retired); the store revises itself per turn
   decay: true                    # exponential time decay in reward backprop; candidate→active→retired with Beta(1,1) probation
   injection_trust_boundary: true # <memos_context> system-prompted as untrusted historical data
   harness_installer: true        # one-command installer + 4 adapters behind one MemoryCore
