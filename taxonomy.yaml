@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-19
+checked: 2026-08-19  # bumped 2026-08-19 (Phase 4 CLAUDE.md integration: known_sites re-derivation, D-03 inflection note)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -81,7 +81,7 @@ terms:
           rather than reworded to satisfy the lint.
         known_sites:
           - "methodology.md:229"
-          - "CLAUDE.md:97"
+          - "CLAUDE.md:142"
       - compound: "network layer"
         canonical_source: >-
           Networking vocabulary (the OSI/network stratum an `--internal` Docker
@@ -173,6 +173,22 @@ terms:
         "cross-cutting" is untouched — it contains no banned word and is a distinct
         compound from "cross-layer" (which becomes "cross-category"); the two must
         not be conflated by the lint.
+      - >-
+        The `layered`/`layering` inflection is deliberately NOT deny-listed. The
+        lint's word-boundary matching means a `layer` entry cannot match inside a
+        longer word, so a `deny_list` entry would not catch this inflection anyway
+        without a dedicated pattern — and adding one would flag three surviving
+        in-repo uses that are non-taxonomy senses, not the taxonomy-division sense
+        this decision replaces: notes/02-harnesses/codex.md:234 ("The permission
+        architecture is three-layered"), notes/05-capability-extensions/memos.md:95
+        ("The trust boundary is real and two-layered"), and
+        notes/04-workflow-frameworks/spec-kit.md:226 ("layered on top", ordinary
+        English). Denying the inflection would guarantee false positives at all
+        three sites — the same reasoning already recorded above for the bare `kind`
+        token in the `types` term. The one genuine taxonomy-sense use of this
+        inflection, CLAUDE.md's own opening sentence ("layered taxonomy"), was
+        fixed in Phase 4 by rewording rather than by a lint rule, so the lint
+        neither catches this class of drift nor is expected to.
   - term: types
     definition: >-
       Category-5's sub-classification: the report frontmatter key `type:` (formerly

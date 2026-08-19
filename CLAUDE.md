@@ -2,9 +2,9 @@
 
 `created: 2026-07-31`
 
-A survey of AI-assisted coding tooling, organised as a **layered taxonomy** with **dated,
-evidence-linked** findings. The point is not to ship a product; it is to know things that are
-true, and to be able to show why.
+A survey of AI-assisted coding tooling, organised as a **taxonomy of tool categories** with
+**dated, evidence-linked** findings. The point is not to ship a product; it is to know things
+that are true, and to be able to show why.
 
 Read these three first. They are the constitution, and they outrank anything in this file:
 
@@ -31,7 +31,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 | `experiments/rig/` | the pinned container + hidden verifier both arms run against | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |
 | `refs/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
-| `scripts/` | the generators. `build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh` | yes |
+| `scripts/` | the generators (`build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh`) plus the taxonomy lint (`check-taxonomy.py`) — it checks; it writes nothing | yes |
 | `adrs/` | dated, immutable decision records for taxonomy/structure decisions. Living docs always speak the current state; ADRs hold how it was reached and the old→new decoders. Never edit an accepted ADR except `superseded-by`. See [`adrs/README.md`](adrs/README.md) | yes |
 | `articles/` | public-facing drafts, one file per article, site-schema frontmatter. Drafted here so claims keep repo-relative links (rule 4 for prose); published to the personal site as a downstream copy. See [`articles/README.md`](articles/README.md) | yes |
 
