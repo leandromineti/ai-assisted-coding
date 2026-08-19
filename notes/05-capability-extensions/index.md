@@ -5,7 +5,7 @@
 > across the types below (see the Standards scoreboard and the dated rename note in
 > [`../../taxonomy.md`](../../taxonomy.md) §3).
 
-`checked: 2026-08-18`
+`checked: 2026-08-19`
 
 What the agent can **see and touch**, as distributable content. **A bucket, not a category,
 since the 2026-07-30 taxonomy revision** (three core categories; trigger fired at the ECC
@@ -32,6 +32,16 @@ added 2026-08-18 so the bucket can be sliced by type as it grows.
 | **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../cross-cutting/standards.md). |
 | **Config packs** | Curated bundles of the other types at scale (skills + agents + rules + hooks), installed as a set. | Rides on the file conventions of what it bundles — ECC's ~13 install targets are the measured case. |
 | **Memory** | Persistent cross-session state fed by hooks/MCP and injected back at session start — the agent↔time edge as an installable product. *(Type added 2026-08-18; seeds below.)* | Seven seeds, four read (2026-08-18 arc: ai-memory deep-dive; memos, cognee surveys; mem0 survey → deep-dive 2026-08-19). Four distinct wagers verified — markdown wiki (ai-memory), RL policy database that mints skills (memos), knowledge graph over a tripartite store (cognee), LLM-extraction platform sold on benchmarks (mem0) — and four consolidation postures: background cron, per-turn event cascade, agent-invoked, hook-capture-to-platform. Zero shared formats (scoreboard row); each vendor pays the harness-fragmentation cost separately, in code. The SDK-facing shape earns membership only via its shims, and the shims are where the coding-agent behavior lives — up to and including mem0's plugin *blocking the harness's native memory writes* (the displacement finding, conclusion 8). *(2026-08-19: the comparison is now structured — 11-key `memory_features` registry block + [generated matrix](../../comparisons/features.md#memory-extensions-category-5-type-memory), ADR-0013.)* |
+
+**Coverage note (2026-08-19).** 7 of this bucket's 8 reports are `type: memory` — that is
+a sample, not the bucket's shape. All seven were seeded on one day by the 2026-08-18
+memory-type reading arc ([issue #18](https://github.com/leandromineti/ai-assisted-coding/issues/18),
+closed); the other types' `0 tracked` in the generated supply table is *not-checked*, not
+checked-absent — the candidates ledger holds no category-5 rows of any type yet. A
+narrowing of the bucket to memory was considered and rejected on exactly this ground
+([ADR-0016](../../adrs/0016-extensions-stay-broad.md)); the balance arc for sighting
+non-memory candidates is issue #30, and the recorded decision point for the bucket's
+shape stays the ~2027-01 [standards re-check](../cross-cutting/standards.md).
 
 ## The memory matrix — first cut (2026-08-19)
 

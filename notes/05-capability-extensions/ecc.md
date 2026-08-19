@@ -1,6 +1,7 @@
 ---
 name: ecc
 category: 5   # RECLASSIFIED from provisional category 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The category verdict
+type: config-pack   # set 2026-08-19 per ADR-0016 — the classification the deep-dive already made in prose ("a config pack at scale, with a learning runtime", The category verdict); was the bucket's only report with no type key
 vendor: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT
