@@ -13,7 +13,7 @@ Every week ships a new AI coding tool, and every announcement uses the same word
 agent, context, autonomous, 10x. If you try to reason about "AI coding tools" as one
 category, you end up comparing a frontier model to a YAML workflow runner to a
 Firecracker microVM vendor — and the comparison produces noise, because those are not
-three competitors. They are three *layers* of one stack.
+three competitors. They are three *categories* of one stack.
 
 Since late July 2026 I've been keeping a small public research repo,
 [ai-assisted-coding](../README.md), with one rule: claims come from reading source
@@ -33,7 +33,7 @@ Strip any working coding agent to the parts it cannot lack and three things rema
 
 ### Models
 
-The weights, and the API surface around them. This layer drifts fastest: pricing,
+The weights, and the API surface around them. This category drifts fastest: pricing,
 caching economics, effort controls, and lifecycle stages change monthly (one
 vendor repriced its entire API to time-of-day billing the day before I checked
 [its row](../notes/01-models/deepseek-v4.md)). The part nobody advertises: vendors
@@ -62,7 +62,7 @@ verified 2026-08-17):
 ### Harnesses
 
 The software that turns a model into an agent: the loop that assembles context,
-offers tools, executes actions, and decides when to stop. This is the layer most
+offers tools, executes actions, and decides when to stop. This is the category most
 discourse treats as plumbing. It isn't, and there's now good evidence it isn't —
 more below.
 
@@ -85,7 +85,7 @@ assembly were actually traced in source, **survey** means used or skimmed,
 ### Execution environments
 
 Where the agent's actions actually land: your host, a git worktree, a
-devcontainer, a cloud microVM. For weeks I suspected this layer was just an
+devcontainer, a cloud microVM. For weeks I suspected this category was just an
 *attribute* of the harness ("where does it attach?"), and the repo carried a
 pre-committed demotion rule for it. Then the first environment studied as a
 product in its own right — E2B, read from its open-source infrastructure —
@@ -93,20 +93,20 @@ produced roughly
 [26 facts invisible from the SDK](../notes/03-execution-environments/e2b.md): every
 "create" is secretly a snapshot resume, the guest's memory compactor is disabled for
 the host's snapshot-diff economics, the credential-injection proxy doesn't exist in
-the open-source build. An interface that hides that much is a layer, not an attribute
+the open-source build. An interface that hides that much is a category, not an attribute
 (decided 2026-08-16, [conclusion 9](../README.md#conclusions)).
 
 Products tracked so far:
 
 - **E2B** — cloud microVM sandboxes; the deep-dive whose ~26 SDK-invisible facts
-  settled this layer's status.
+  settled this category's status.
 - **Modal** — serverless containers; survey read.
 
 The forms you don't buy — the host, the worktree, the devcontainer — sit in the
-same layer, and [the environment-bindings matrix](../comparisons/environments.md)
+same category, and [the environment-bindings matrix](../comparisons/environments.md)
 tracks which harnesses can run in which, and how each relates to its environment.
 
-## The harness is a capability layer, not plumbing
+## The harness is a capability category, not plumbing
 
 The cleanest evidence predates the current tool wave. The SWE-agent paper (NeurIPS
 2024) held the model fixed and redesigned only the *interface* the agent works
@@ -129,11 +129,11 @@ know can't agree, "the harness doesn't matter" is not a safe assumption.
 ## The two additional interfaces
 
 <figure>
-  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a layer you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, hooks, and memory. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
-  <figcaption>The full stack is the triad plus two additions: a process layer between you and the harness, and extensions seated inside it alongside the model.</figcaption>
+  <img src="img/the-ai-coding-stack.svg" alt="The same triad diagram with exactly two additions. Between the centered You figure and the Harness, a dashed harness-width box labeled Workflow framework now intercepts the vertical arrow — a category you may put between yourself and the harness, its connection to the harness implied by touching distance. Inside the harness, below the accent-colored Model slab, a second mounted slab labeled Extensions lists MCP, skills, rules, hooks, and memory. The actions/feedback loop between harness and environment is unchanged from the first diagram." />
+  <figcaption>The full stack is the triad plus two additions: a process category between you and the harness, and extensions seated inside it alongside the model.</figcaption>
 </figure>
 
-Between you and that triad sit two things that look like layers but behave like
+Between you and that triad sit two things that look like categories but behave like
 boundaries.
 
 ### Extensions
@@ -188,22 +188,22 @@ The three tracked so far:
 
 ## The stack is being eaten from the middle
 
-The reason this map needs dates on it: the layers don't respect each other's
-territory. Mechanisms that adjacent layers sell keep turning up *natively in
+The reason this map needs dates on it: the categories don't respect each other's
+territory. Mechanisms that adjacent categories sell keep turning up *natively in
 harnesses* — turn-end verification gates, autonomous memory loops, programmatic tool
 calling, plan modes ([conclusion 8](../README.md#conclusions), from the
 [hermes](../notes/02-harnesses/hermes-agent.md) and
 [codex](../notes/02-harnesses/codex.md) deep-dives). One harness now treats *rival
 harnesses* as swappable execution backends for its own multi-agent orchestration —
-absorption sideways, not just up and down. Any claim that "you need layer X for
+absorption sideways, not just up and down. Any claim that "you need category X for
 capability Y" has a shelf life, and any measured margin for a workflow framework has
 to be re-baselined against what the harness underneath already does.
 
 ## Why bother with a map
 
-Because the alternative is reasoning from benchmarks that can't see layer boundaries.
+Because the alternative is reasoning from benchmarks that can't see category boundaries.
 Public leaderboards score *pairings* — "Codex CLI + GPT-5.5" — so nobody knows which
-layer they're praising. The one benchmark I found that fixes the harness to isolate
+category they're praising. The one benchmark I found that fixes the harness to isolate
 the model turned out to inherit that harness's per-model prompt dispatch: a confound
 its own maintainer didn't know about until
 [I reported it upstream](../notes/01-models/index.md)

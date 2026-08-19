@@ -10,7 +10,7 @@ seriesOrder: 2
 ---
 
 The [first article in this series](the-ai-coding-stack.md) ended on an accusation:
-public leaderboards score model+harness *pairings*, so nobody knows which layer
+public leaderboards score model+harness *pairings*, so nobody knows which category
 they're praising. The one benchmark I found that fixes the harness turned out to
 route each model through a different system prompt — a confound its own maintainer
 didn't know about until [I reported it](../notes/01-models/index.md), which became
