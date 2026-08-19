@@ -79,8 +79,37 @@ the trailing `0 problem(s)` line and the exit code, never the absence of ERROR o
 Three green `--check` runs are not proof the repo's vocabulary is correct — the lint
 enforces only what `taxonomy.yaml` lists. `taxonomy.yaml`'s own `split_meaning_terms`
 records at least one sense (`stack`) no lint can judge, and a word inflection outside a
-`deny_list` entry is invisible to it (see the deny-list growth procedure below for a
+deny-listed entry is invisible to it (see the deny-list growth procedure below for a
 worked example of exactly this gap).
+
+**Growing the deny-list.** When you discover a new drift term:
+
+1. Decide it's drift before denying anything. A word with legitimate non-taxonomy uses is
+   not a deny-list candidate — record it instead as a `false_positive_notes` entry under
+   the relevant term in `taxonomy.yaml`. Precedent: the bare `kind` token is deliberately
+   not denied (only the frontmatter-key form `` `kind:` `` is) because a bare-token entry
+   would guarantee false positives — the reason this repo chose a deny-list over an
+   allow-list in the first place.
+2. To deny it: add the term as a string under the matching `terms[].deny_list` in
+   `taxonomy.yaml`. That is the only file to edit — no Python change is required. Two
+   mechanics to get right: matching is whole-token and case-insensitive with no stemming,
+   so list every inflected form you mean to catch, and a longer word that merely contains
+   an entry does not match; and position within the list doesn't matter, because the lint
+   sorts entries longest-first when it builds its match pattern.
+3. A legitimate compound use of a newly denied word goes under the same term's
+   `deny_list_exempt_compounds`, each entry carrying `compound`, a `canonical_source`
+   naming which already-canonical concept it refers to, and `known_sites`. `known_sites`
+   file:line entries are re-derived by running the check, never hand-typed — the same
+   discipline that forbids hand-typed stars and first-commit dates elsewhere in this file.
+4. Re-run `python3 scripts/check-taxonomy.py --selftest`, then `--check`. New red findings
+   are a work queue: fix the prose first, exempt only second and only with a written
+   `canonical_source` — exemption is the cheapest way to turn a finding green and the
+   easiest way to hollow the lint out.
+5. Bump `checked:` in `taxonomy.yaml` (dates on everything).
+6. The one case that needs code: a genuinely new sort of exemption — a new
+   `carve_outs[].id` — needs a matching predicate in `scripts/check-taxonomy.py`, or the
+   lint refuses to run and says so. Deny-list entries, exempt compounds, and exempt paths
+   never need code.
 
 ## The honesty columns
 
