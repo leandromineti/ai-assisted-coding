@@ -8,10 +8,10 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 ## Start here
 
 **[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. A **core triad** — models,
-harnesses, execution environments (layers 1–3), the three things a running agent cannot
+harnesses, execution environments (categories 1–3), the three things a running agent cannot
 lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack boundary:
 intent refined into specs and subtasks going down, research and verified evidence coming
-up) and extensions (5 — a cross-layer bucket parameterizing the triad's edges;
+up) and extensions (5 — a cross-category bucket parameterizing the triad's edges;
 portability is conferred by adoption, not intrinsic, so the name doesn't claim it). How
 the taxonomy reached this shape — demotions, adjudications, the 2026-08-18
 renumbering — is one dated decision record each in [`adrs/`](adrs/README.md).
@@ -24,12 +24,12 @@ rule earned its place by catching a real mistake; the anti-goal section keeps it
 growing rigor for rigor's sake.
 
 **[`design-principles.md`](design-principles.md)** — the synthesis layer: design
-principles derived from the documented tools, per taxonomy layer, each carrying a
+principles derived from the documented tools, per taxonomy category, each carrying a
 confidence marker (convergent / single-instance / contested) and its evidence citations.
 Hypotheses under revision, not best practices — every new deep-dive or experiment must
 confirm, contradict, or note silence.
 
-| Layer | Index | Examples |
+| Category | Index | Examples |
 |-------|-------|----------|
 | 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
 | 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
@@ -43,10 +43,10 @@ confirm, contradict, or note silence.
 | Path | Holds |
 |------|-------|
 | `CLAUDE.md` | How the repo works: where things go, the ingest/lint operations, the honesty columns |
-| `taxonomy.md` | The layer definitions and boundary rule — the canonical reference |
+| `taxonomy.md` | The category definitions and boundary rule — the canonical reference |
 | `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
-| `design-principles.md` | Design principles derived from the reports, per layer, confidence-marked |
-| `notes/` | One index per layer, plus one file per tool, written while using it |
+| `design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
+| `notes/` | One index per category, plus one file per tool, written while using it |
 | `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
@@ -54,10 +54,10 @@ confirm, contradict, or note silence.
 | `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` and `build-refs-index.py` (regenerate the indexes) |
 | `articles/` | Public-facing writing drawn from the findings — drafted next to the evidence, every claim linked and dated. See [`articles/README.md`](articles/README.md) |
 
-**[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-layer index of every
+**[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-category index of every
 tool with a report, **[`comparisons/features.md`](comparisons/features.md)** the
 harness feature matrix, and **[`comparisons/models.md`](comparisons/models.md)** the
-layer-1 matrix (thinking control, caching economics, batch pricing — the API surface
+category-1 matrix (thinking control, caching economics, batch pricing — the API surface
 that drifts fastest) — all generated from the reports' frontmatter, never hand-edited,
 so they can't drift from them. In the matrices, `·` means *not yet checked*, which is
 deliberately distinct from ✗ *verified absent*.
@@ -65,7 +65,7 @@ deliberately distinct from ✗ *verified absent*.
 Tools queued for assessment but not yet cloned live as **GitHub issues on this repo**
 ([issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) is the
 pattern) — candidates already weighed and passed over are recorded in the relevant
-layer index's "considered, not added" table instead.
+category index's "considered, not added" table instead.
 
 One report per tool, following
 [`notes/_template-tool-report.md`](notes/_template-tool-report.md). Its **"distinguishing
@@ -110,7 +110,7 @@ note. Revised when evidence moves._
    stands unchanged; what changed is that the isolation the field lacks is
    demonstrably buildable at personal scale for ~$3. →
    [`notes/01-models/index.md`](notes/01-models/index.md)
-3. **The extensions bucket (layer 5) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
+3. **The extensions bucket (category 5) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension kinds, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
    *Revised same day:* skills moved — spec-kit's integration registry shows `SKILL.md`
@@ -156,7 +156,7 @@ note. Revised when evidence moves._
    is recorded with both candidate attributions (instrument, base model). Conclusion 6's
    emphasis stands as written — with exp-03's tier caveat: at Sonnet tier the plain bundle
    grounds unprompted, so the split matters most where models are weak.
-7. **A layer-4 framework's portability and its enforcement power are the same tradeoff**
+7. **A category-4 framework's portability and its enforcement power are the same tradeoff**
    (2026-07-28, spec-kit source read). Cross-harness portability is cheap because every
    harness converged on "slash command = prompt file" — but that lowest common
    denominator means the framework's runtime *is* the model reading prose. spec-kit's git
@@ -165,7 +165,7 @@ note. Revised when evidence moves._
    constitution went eight months unenforced during implementation (#2460), and the one
    attempt at real context isolation was reverted after compounding-context freezes
    (#3185). Both frameworks studied grew deterministic engines (spec-kit's `workflows/`
-   YAML runner, GSD's `gsd-pi`) as the escape hatch — layer-2 bleed as a structural
+   YAML runner, GSD's `gsd-pi`) as the escape hatch — category-2 bleed as a structural
    symptom, not a coincidence. →
    [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md)
    **Independently corroborated (2026-07-31):** a six-framework taxonomy study covering the
@@ -202,27 +202,27 @@ note. Revised when evidence moves._
    price surfaces instead as a hand-forked, runtime-stripped 6-of-29-skill
    `web-bundles/` for chat platforms, quarantined outside the mechanism. The
    same-day [bmad-loop stub](notes/04-workflow-frameworks/bmad-loop.md) completes the
-   shape: the ecosystem's companion orchestrator holds the tracked layer's first
+   shape: the ecosystem's companion orchestrator holds the tracked category's first
    **engine-graded measured and process gates** ("No LLM in the control loop") — so
    "no framework yet has an engine-graded measured or process gate" stays true
    precisely because BMAD ships those gates outside the framework, in the escape
    hatch productized. →
    [`notes/04-workflow-frameworks/bmad-method.md`](notes/04-workflow-frameworks/bmad-method.md)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
-   codex deep-dives). The mechanisms adjacent layers sell are turning up *natively in
-   layer 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
+   codex deep-dives). The mechanisms adjacent categories sell are turning up *natively in
+   category 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
    codex's stop hooks that veto termination — the mechanism conclusion 6 credits with
-   layer 4's quality margin), autonomous memory loops (hermes on-by-default, codex
+   category 4's quality margin), autonomous memory loops (hermes on-by-default, codex
    stable-but-off — now the `learning loop` matrix column), programmatic tool calling
    (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
-   Consequence for the experiment arc: a layer-4 framework's measured margin must be
+   Consequence for the experiment arc: a category-4 framework's measured margin must be
    re-baselined against what the harness already does — recorded as a design rider on
    exp-03 in [`notes/cross-cutting/`](notes/cross-cutting/index.md). →
    [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md),
    [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md)
    **Third instance, and a counter-instance (2026-08-11, Warp survey — weaker evidence
    than the two deep-dives above; the loop was not traced).** Extended: Warp absorbs
-   layer-4-shaped *orchestration* — multi-agent fan-out where the harness running each
+   category-4-shaped *orchestration* — multi-agent fan-out where the harness running each
    child is a selectable field (`enum Harness { Oz, Claude, OpenCode, Gemini, Codex }`),
    with drivers and transcript parsers for its competitors. Absorption is not only
    downward and upward but *sideways*: a harness that treats rival harnesses as
@@ -250,16 +250,16 @@ note. Revised when evidence moves._
    contact with use is an open rig question. →
    [`notes/05-capability-extensions/ai-memory.md`](notes/05-capability-extensions/ai-memory.md),
    [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
-9. **The environments layer (3) is a real rung, not an axis of the harness layer —
+9. **The environments category (3) is a real category, not an axis of the harness category —
    decided by its own falsifier** (2026-08-16, decision record
    [ADR-0003](adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to
    demoting execution-environments unless study showed an environment fact that isn't
    just a restatement of how a harness attaches to one. For three weeks every
    environment finding *was* a harness property (the four relationship verbs —
-   bundle/bind/internalize/inhabit — all live in layer-2 frontmatter),
-   and a gated demotion to "an axis of layer 2" was written and scheduled. The first
+   bundle/bind/internalize/inhabit — all live in category-2 frontmatter),
+   and a gated demotion to "an axis of category 2" was written and scheduled. The first
    environment studied as a product in its own right — **E2B**, read from its open-source
-   infra — fired the keep-it-a-rung arm the same day: ~26 environment-facts to 6
+   infra — fired the keep-it-a-category arm the same day: ~26 environment-facts to 6
    attachment-restatements, **every one of the 26 invisible from the SDK** (Firecracker with
    no jailer running as root; every "create" secretly a snapshot resume with no warm pool;
    the credential-injection proxy absent from the open-source build; guest `kcompactd`
@@ -298,7 +298,7 @@ note. Revised when evidence moves._
     its second framework: the quality margin lives in grounding + gates, not
     ceremony — and exp-03 now proceeds against a confirmed baseline. →
     [`experiments/02-spec-kit-vs-plain/`](experiments/02-spec-kit-vs-plain/README.md)
-12. **A model tier absorbed a workflow mechanism whole — and the layer-4 A/B arc closes
+12. **A model tier absorbed a workflow mechanism whole — and the category-4 A/B arc closes
     on it** (2026-08-18, exp-03, preregistered two-tier ablation, saturation branch
     pre-declared). On a buried-trap corpus, a one-file "measure the domain first"
     instruction lifted Haiku's trap discovery from 4.0/9 (plain band, n=5) to 8/9 —
@@ -310,7 +310,7 @@ note. Revised when evidence moves._
     recorded with both candidate attributions (instrument, model). Then tier 2: **plain
     Sonnet discovered 8.3/9 unprompted** — one model tier absorbed the instruction's
     entire measured value (P5's shrink-with-capability prediction, in the limit).
-    Consequence, decided with the owner: layer-4 code-outcome A/Bs stop; the
+    Consequence, decided with the owner: category-4 code-outcome A/Bs stop; the
     measurable subjects are the model+harness **bundle** (whose 7–14/23 run-to-run
     band is wider than most framework effects) and **artifact-level** framework value
     (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
