@@ -24,7 +24,7 @@ features:
   subagents: true        # OBSERVED: Agent tool with named types (general-purpose, Explore, Plan, custom .claude/agents/*.md definitions), per-agent model/tool overrides, worktree isolation
   plan_mode: true        # OBSERVED: an actual MODE with enforced read-only state + plan-file workflow + user approval gate — not a prompt convention
   rules_files: [CLAUDE.md]   # OBSERVED: global ~/.claude/CLAUDE.md + project CLAUDE.md, both loaded; the convention the whole field's rules-file story descends from
-  model_agnostic: false  # checked and absent BY DESIGN: Anthropic models only (opus/sonnet/haiku/fable). Multi-provider transport exists (API/Bedrock/Vertex) but that is model ACCESS (layer 1b), not model agnosticism
+  model_agnostic: false  # checked and absent BY DESIGN: Anthropic models only (opus/sonnet/haiku/fable). Multi-provider transport exists (API/Bedrock/Vertex) but that is model ACCESS (type 1b), not model agnosticism
   session_sharing: true  # OBSERVED: claude.ai/code session URLs; sessions resumable/shareable across surfaces
   learning_loop: true    # OBSERVED — but a THIRD mechanism shape the matrix column doesn't name: agent-written persistent memory (memory/ dir + MEMORY.md index), harness-prompted, written IN-LOOP by the main agent — not hermes' background fork, not codex's spawned pipeline, not Warp's manual-only store. See Surprises 1
 ---
@@ -53,7 +53,7 @@ distribution point, not source.
 ## The distinguishing bet
 
 **That the harness is a platform, and the extension surface is the product.** Every
-layer-5 and layer-4 mechanism this repo tracks as a separate category ships *natively and
+category-5 and category-4 mechanism this repo tracks as a separate category ships *natively and
 first-party* here — and most of the field's conventions for them descend from this
 product's:
 
@@ -64,12 +64,12 @@ product's:
   and OpenSpec calls "canonical" originated here.
 - **Hooks**: deterministic lifecycle hooks the *harness* executes (OBSERVED: configured
   in `settings.json`, explicitly not model-interpreted) — the mechanism conclusion 7
-  found layer-4 frameworks failing to replicate in prose.
+  found category-4 frameworks failing to replicate in prose.
 - **Subagents**: first-class, with named types, per-agent model/tool/isolation overrides,
   and user-defined agents as frontmatter markdown files (OBSERVED).
 - **Plan mode**: an enforced *mode* — read-only state, a plan file, an explicit user
   approval gate — not a prompt asking the model to plan (OBSERVED). This is the
-  layer-4-mechanism-as-harness-feature case the taxonomy's boundary rule cites.
+  category-4-mechanism-as-harness-feature case the taxonomy's boundary rule cites.
 
 The wager, stated against its rivals: opencode bets on model-agnosticism, codex bets on
 compiled security, Warp bets on owning the surface — Claude Code bets that **a
@@ -80,7 +80,7 @@ half is below.
 
 ## Main features (grade per claim)
 
-- **Context assembly** — the one load-bearing area that stays dark. The layer-2 index
+- **Context assembly** — the one load-bearing area that stays dark. The category-2 index
   repeats the claim that Claude Code's edge is "loading less but using it better";
   OBSERVED behavior is consistent (rules files + on-demand skill loading + tool-search
   deferral of MCP schemas + compaction on long sessions), but the assembly itself is
@@ -110,25 +110,25 @@ half is below.
 
 The heaviest bleed profile in the tracked set — which is the point of the entry:
 
-- **→ layer 5**: ships skills, hooks, subagent definitions, MCP client, plugins — and
-  *originated* the file conventions (CLAUDE.md, SKILL.md) that layer 5's independence
+- **→ category 5**: ships skills, hooks, subagent definitions, MCP client, plugins — and
+  *originated* the file conventions (CLAUDE.md, SKILL.md) that category 5's independence
   story is measured against. When conclusion 3 says "MCP plus vendor features," the
   vendor is, mostly, this product.
-- **→ layer 4**: plan mode as an enforced harness mode — the strongest form of the
-  layer-4-absorption pattern (conclusion 8), stronger than prose frameworks can build
+- **→ category 4**: plan mode as an enforced harness mode — the strongest form of the
+  category-4-absorption pattern (conclusion 8), stronger than prose frameworks can build
   (conclusion 7's enforcement-by-exit-code vs -typography distinction, settled at the
   harness level).
-- **→ layer 3**: dual relation. Locally it **binds** worktrees as a native operation;
+- **→ category 3**: dual relation. Locally it **binds** worktrees as a native operation;
   the web/cloud side **bundles** a vendor sandbox. One product exhibiting two of the four
   relationship verbs is itself vocabulary evidence.
 - **→ vendor span (the reason this report exists)**: Anthropic now shows tracked
-  coverage at layers 1 (four model reports) **and 2** (this report), with layer-5
-  conventions and the bundled layer-3 sandbox as bleed. The generated floor
+  coverage at categories 1 (four model reports) **and 2** (this report), with category-5
+  conventions and the bundled category-3 sandbox as bleed. The generated floor
   (`comparisons/vendors.md`) narrows against the taxonomy's hand-kept table accordingly:
   the span is co-designed — the harness is tuned to the models and the models to the
   harness (TESTIMONY: Anthropic's own model-migration guidance ships Claude-Code-derived
   prompt patterns) — which is exactly the co-variance the vendor-span section warns
-  layer-choice reasoning about.
+  category-choice reasoning about.
 
 ## Cost model
 
@@ -147,9 +147,9 @@ every token. Cloud sessions bill separately from local API use.
    `learning_loop` column now spans three mechanism shapes plus one absence; per issue
    #2's own rule, that heterogeneity is approaching the point where the column needs a
    vocabulary (background / in-loop / manual), not a boolean.
-2. **The first verified `worktree` cell in the environments matrix.** The layer-3 index
+2. **The first verified `worktree` cell in the environments matrix.** The category-3 index
    asks why nobody had verified worktree support anywhere despite the worktree/gitignore
-   trap being the layer's founding scar. First answer, and it's ironic: the harness with
+   trap being the category's founding scar. First answer, and it's ironic: the harness with
    native worktree operations is the *closed* one — observed from product surface, not
    source. The trap and the first-class support belong to the same ecosystem.
 3. **The distribution repo out-stars every tracked tool.** 141,660 stars on a repo that

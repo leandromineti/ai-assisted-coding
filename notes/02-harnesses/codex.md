@@ -64,7 +64,7 @@ now counts as a verified counter-instance rather than a silence.
 
 **2. Corroborated — all three claims other notes cite.** The stop-hook veto that
 conclusion 8 rests on is intact (`run_turn_stop_hooks` → `should_block` at
-`session/turn.rs:467–474`). H3's decision layer is intact (`SafetyCheck::{Reject,
+`session/turn.rs:467–474`). H3's decision category is intact (`SafetyCheck::{Reject,
 AskUser, AutoApprove}`, `core/src/safety.rs:20+`). Conclusion 1's per-model-slug data
 point survives: `ModelInstructionsState` and `get_model_instructions(personality)` are
 present in `session/world_state.rs` at **both** the pin and HEAD.
@@ -82,8 +82,8 @@ a duplicated approval-policy field from `TurnContext` because "thread settings c
 the approval policy after a turn context is created… tool approval checks [could use] the
 previous policy." Policy is now resolved through the turn's current configuration
 everywhere it is needed — tool execution, Guardian routing, MCP handling, permission
-requests. This is concrete support for H3's third layer rather than a contradiction: an
-enforcement layer that reads a stale snapshot of policy is not an enforcement layer, and
+requests. This is concrete support for H3's third category rather than a contradiction: an
+enforcement category that reads a stale snapshot of policy is not an enforcement category, and
 the fix is upstream discovering exactly that.
 
 **What a re-read should cost:** moderate. The permission and tool-namespace subsystems
@@ -182,7 +182,7 @@ tools. Termination (`turn.rs:430–560`, verified at the branch sites):
 - **Stop hooks can veto the stop**: `run_turn_stop_hooks` may return `should_block`,
   which injects a continuation prompt and loops again — user-policy gates at turn end,
   the same architectural slot as hermes' `verification_stop`/`pre_verify` (second
-  layer-2-native instance for the cross-cutting verification note).
+  category-2-native instance for the cross-cutting verification note).
 - **Compaction is a loop outcome** (third convergent instance of design-principle H1):
   `token_limit_reached` → `run_auto_compact(…, CompactionPhase::MidTurn)` → `continue`.
   There's also *pre-sampling* compaction before the turn starts, and the model itself
@@ -247,26 +247,26 @@ The permission architecture is **three-layered**, extending the two-chokepoint p
 The harness asks the human *while holding the model inside a cage it built itself* —
 the approval prompt is a UX courtesy on top of enforcement, not the enforcement.
 
-### Layer boundaries in the code
+### Category boundaries in the code
 
-- **Layer 1:** OpenAI-native (Responses API, `responses-api-proxy`), but
+- **category 1:** OpenAI-native (Responses API, `responses-api-proxy`), but
   `model-provider`, `ollama`, `lmstudio`, `aws-auth` make BYO real. Notably
   model-*conditioned*: instructions swap per model slug inside WorldState — a fifth
   data point for the per-model-prompt question (the vendor-native pole: one vendor,
   many of its own models, instructions per model).
-- **Layer 5:** MCP client *and* server; skills; hooks; plugins with an install-request
-  tool. `external-agent-migration` imports competitors' state — layer-5 interop as a
+- **category 5:** MCP client *and* server; skills; hooks; plugins with an install-request
+  tool. `external-agent-migration` imports competitors' state — category-5 interop as a
   product feature.
-- **Layer 4:** plan tool, collaboration-mode templates, `guardian` review reminders —
+- **category 4:** plan tool, collaboration-mode templates, `guardian` review reminders —
   the usual absorption.
-- **Layer 3:** **internalized, not bundled** — the taxonomy's "harness binds to
+- **category 3:** **internalized, not bundled** — the taxonomy's "harness binds to
   environments" framing inverts here; see Surprises 1.
 
 ## Bleed
 
-Layers 3 and 4 as above. The layer-3 relationship is the notable one: not a binding to
-external environments but an *absorption of the environment layer into the harness
-binary* (in-process OS sandboxes + embedded sandboxed V8). Layer 1 bleed runs in both
+Categories 3 and 4 as above. The category-3 relationship is the notable one: not a binding to
+external environments but an *absorption of the environment category into the harness
+binary* (in-process OS sandboxes + embedded sandboxed V8). Category 1 bleed runs in both
 directions: vendor-native models, and telemetry crates (`otel`, `analytics`) feeding
 the maker — same pattern class as the taxonomy's training-data-instrument note, though
 what's actually collected wasn't traced in this read.
@@ -279,7 +279,7 @@ the zero-marginal-cost end real. The cloud sibling meters separately.
 
 ## Surprises
 
-1. **Layer 3 lives inside the binary.** The taxonomy models execution environments as
+1. **category 3 lives inside the binary.** The taxonomy models execution environments as
    external products a harness *binds to*; codex compiles Seatbelt policies, Landlock,
    bwrap, and a Windows sandbox into the harness and hardens its own process pre-main.
    That's a stress-test-worthy case: not bundling (Devin), not binding (hermes) —

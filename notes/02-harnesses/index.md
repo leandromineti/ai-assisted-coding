@@ -1,4 +1,4 @@
-# Layer 2 — Harnesses
+# Category 2 — Harnesses
 
 `checked: 2026-08-18`
 
@@ -22,23 +22,23 @@ web-as-interface with remote-as-execution:
 
 | Harness | Maker | Surfaces | Execution | One-line |
 |---------|-------|----------|-----------|----------|
-| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's layer 5 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual layer-3 relation (binds worktrees locally, bundles cloud sandbox). |
+| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's category 5 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual category-3 relation (binds worktrees locally, bundles cloud sandbox). |
 | [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT). 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
 | [**Codex CLI**](codex.md) | OpenAI | terminal (+ desktop launcher) | local | Vendor-native; leads Terminal-Bench 2.1. The Rust bet is *security*, not speed: OS sandboxes compiled into the binary, pre-main process hardening, PTC in sandboxed V8. WorldState diff-append context. Cloud Codex is its async-remote sibling. Deep-dived 2026-07-30. |
 | [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
 | [**Aider**](aider.md) | open source | terminal | local | Git-native: commits per change, repo-map context. Opinionated, but the opinions aren't portable — see the stress test. |
 | **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
-| **Cursor** | Anysphere → **SpaceX/xAI** | IDE | local | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of layer 1↔2 consolidation. |
+| **Cursor** | Anysphere → **SpaceX/xAI** | IDE | local | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of category 1↔2 consolidation. |
 | **Windsurf** | — | IDE | local | IDE-embedded agent. |
 | [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. |
 | [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. |
 | **GitHub Copilot** | GitHub/Microsoft | IDE · web | local + async (coding agent) | The incumbent; agent mode moved it from completion to loop. |
-| **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (layer-3 bleed). |
+| **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (category-3 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |
 | **Cloud Codex** | OpenAI | web | async-remote | Hosted counterpart to the CLI. |
 | [**Warp**](warp.md) | Warp (warpdotdev) | terminal · desktop · web (wasm) | local + async (cloud runs) | A terminal that became a harness — and then an orchestrator of other harnesses: Claude Code, Codex, Gemini CLI, and OpenCode are selectable backends for its child agents. AGPL-3.0, source-opened 2026-04-28. The only indexed context assembly in the set (embedding chunkers, consent-gated). Surveyed 2026-08-11. |
 | **DeepSeek Harness** (`dsh`) | DeepSeek | web (locally served UI) | local | Registered 2026-08-18, README level only — no report yet. Vendor-native, open source (MIT, TypeScript), in *developer preview*: "everything is a plugin" on the Cordis framework, launched as a local web UI (`npx @deepseek-ai/dsh web`). 159.6k stars in **five days** (created 2026-08-13; fetched 2026-08-18) — the fastest adoption ramp in the study. Already a memory-kind install target (memos ships a `dsh` plugin with background capture + auto-recall, per its stub). Backlog: issue #19. |
-| [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest layer-3 bleed in the set (8 terminal backends). Layer 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
+| [**hermes-agent**](hermes-agent.md) | Nous Research | terminal · desktop · web · IDE (ACP) · ~20 messaging platforms | local + async (gateway daemon, cron, serverless backends) | Personal agent with a coding *posture*, not a coding harness. Autonomous learning loop (interval-gated review fork + idle curator). Deepest category-3 bleed in the set (8 terminal backends). Category 2 confirmed at read time (spec-kit installs into `~/.hermes/skills`). |
 
 Star counts live in [`comparisons/tools.md`](../../comparisons/tools.md) — measured via
 the GitHub API and dated (`stars_at`), never hand-kept here where they'd drift.
@@ -49,15 +49,15 @@ already do; Codex does via its cloud sibling). Convergence on "all surfaces, bot
 looks like the trajectory — the single-surface rows are either young, niche, or
 deliberately minimal.
 
-A harness's *environment bindings* — which layer-3 environments it can attach to (host,
+A harness's *environment bindings* — which category-3 environments it can attach to (host,
 worktree, container, remote sandbox) — are recorded in each report's frontmatter as
 `environments`. That's bleed, not merger: the environments themselves stay independently
-distributed layer-3 entities (see the scope note in
+distributed category-3 entities (see the scope note in
 [`../../taxonomy.md`](../../taxonomy.md)).
 
 ## Candidates
 
-Sighted-but-not-ingested harnesses live in the cross-layer
+Sighted-but-not-ingested harnesses live in the cross-category
 [candidates ledger](../candidates.md) (first entry: qwen-code, 2026-08-18).
 
 ## What actually differentiates a harness
@@ -71,8 +71,8 @@ Feature lists mislead here. The axes that seem to matter:
    model-driven search — an outlier worth a deep-dive, since whether that index actually
    feeds the prompt is the difference between a genuine counter-position and a search tool.
 2. **Permission model** — how much it does without asking, and how that's configured.
-3. **Extension surface** — whether layer 5 and 4 can attach at all (hooks, skills, MCP).
-4. **Isolation story** — which layer-3 environment it assumes.
+3. **Extension surface** — whether category 5 and 4 can attach at all (hooks, skills, MCP).
+4. **Isolation story** — which category-3 environment it assumes.
 5. **Failure behavior** — what it does when it's wrong, which is where the real cost lives.
 6. **Cache economics as a design constraint** *(added 2026-07-30)* — whether prompt-cache
    discipline is an optimization or the architecture's governing rule. Evidence it
@@ -97,37 +97,37 @@ Feature lists mislead here. The axes that seem to matter:
    of every tool on this axis, not a hermes quirk.
    [`hermes-agent.md`](hermes-agent.md).
 
-## What layer 2 has absorbed — the layer-4 feature set, checked against harnesses
+## What category 2 has absorbed — the category-4 feature set, checked against harnesses
 
 *(Added 2026-08-18, systematizing [conclusion 8](../../README.md). This is a mechanism
 table, not a checkbox grid — the "feature lists mislead here" warning above applies to
-itself. Vocabulary: the nine layer-4 `workflow_features` keys from the
+itself. Vocabulary: the nine category-4 `workflow_features` keys from the
 [feature taxonomy](../cross-cutting/feature-taxonomy.md); grades per
 [ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md).)*
 
-For each mechanism the workflow-framework layer sells, what do tracked harnesses
+For each mechanism the workflow-framework category sells, what do tracked harnesses
 already do natively — and who enforces it?
 
-| Layer-4 key | Harness-native instances (verified) | Grade of the native form |
+| Category-4 key | Harness-native instances (verified) | Grade of the native form |
 |---|---|---|
 | `measured_gates` | **3✓ / 3✗ / 1 undecidable** after the 2026-08-18 probe pass of the graded `turn_end_gates` column (ADR-0012): hermes `verification_stop` (native policy, `engine`); codex stop-hook veto (`hook`); claude-code Stop-hook exit-2 (`hook` — a user-configured surface, empty by default); verified absent in opencode (4-trigger surface, none at stop), cline, continue; Warp undecidable (loop server-side) | `engine` / `hook` — but these are *gates*, not *measured* gates: the evidence bar is "ran something fresh", not a hidden verifier ([cross-cutting](../cross-cutting/index.md)). And the probe shows the leg does NOT generalize: native default-on policy exists in exactly one tracked harness |
 | `process_gates` | **≥3** — permission approval at tool dispatch is universal machinery: hermes `tools/approval.py`, codex `SafetyCheck::AskUser` inside an OS sandbox, opencode `Permission.ask`, claude-code's plan-approval gate | `engine` — compiled chokepoints, above every tracked framework's `prose` |
 | `context_isolation` | **6/6** checked harnesses ship `subagents: true`; claude-code adds per-subagent worktree isolation; hermes budgets subagents separately (50 iterations) | native machinery; frameworks can only instruct or hook it (GSD's exit-2 guard is the strongest framework-side form) |
-| `parallel_orchestration` | **3** — hermes `delegate_task` parallel batch; codex `tools/parallel.rs` + `agent-graph-store`; Warp's fan-out with *rival harnesses as selectable backends* | native; the layer's frameworks either lack it (BMAD: banned; spec-kit: reverted) or drive it from outside the loop (bmad-loop, gsd) |
+| `parallel_orchestration` | **3** — hermes `delegate_task` parallel batch; codex `tools/parallel.rs` + `agent-graph-store`; Warp's fan-out with *rival harnesses as selectable backends* | native; the category's frameworks either lack it (BMAD: banned; spec-kit: reverted) or drive it from outside the loop (bmad-loop, gsd) |
 | `retrospectives` | **3✓ / 1✗** as the `learning_loop` column — hermes on-by-default background fork, codex stable-but-off pipeline, claude-code in-loop memory, Warp verified manual-only | mechanism shapes diverge; enum promotion tracked in issue #13 |
 | `state_store` | universal at **session** scope — codex rollout + WorldState replay, hermes FTS5 session store, opencode event-sourced inputs, Warp versioned memory store | native, but session-scoped: no harness ships *workflow*-scoped state (sprint boards, epic ledgers) — that remains framework territory |
-| `intent_pipeline` | **thin** — plan artifacts exist (codex collaboration-mode templates, claude-code plan files with an approval gate) but no staged requirements→implementation pipeline | **not absorbed** — the SDD spine remains layer 4's own |
+| `intent_pipeline` | **thin** — plan artifacts exist (codex collaboration-mode templates, claude-code plan files with an approval gate) but no staged requirements→implementation pipeline | **not absorbed** — the SDD spine remains category 4's own |
 | `format_gates` | **1** — codex `apply_patch` with a formal grammar; below the two-instance bar | **not absorbed** (yet) |
-| `deterministic_engine` | trivially true of every harness — the loop *is* a program | non-discriminating at layer 2; the key only separates tools within layer 4 |
+| `deterministic_engine` | trivially true of every harness — the loop *is* a program | non-discriminating at category 2; the key only separates tools within category 4 |
 
 Three readings of the table:
 
-- **The enforcement inversion.** The layer-4 arc's headline question was "who enforces
+- **The enforcement inversion.** The category-4 arc's headline question was "who enforces
   the gate?", and its answer was: almost always the model ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md) —
   every tracked framework's gates grade `prose` or `script`; the only `engine`-graded
   measured/process gates live in bmad-loop, *outside* its framework). The harness rows
-  above grade `engine`/`hook` natively. The framework layer's hardest problem is the
-  harness layer's default posture.
+  above grade `engine`/`hook` natively. The framework category's hardest problem is the
+  harness category's default posture.
 - **What is NOT absorbed is a coherent remainder, not a lag.** The three unabsorbed
   keys are exactly the SDD spine — staged intent artifacts, artifact-structure gates,
   workflow-scoped state machines. Harnesses absorb *mechanisms* (gates, isolation,
@@ -141,17 +141,17 @@ Three readings of the table:
   the mechanism is an extension point) while hermes ships `verification_stop` as *loop
   policy* (core growth). Whether absorbed mechanisms arrive as extension surfaces or as
   core code may be the next differentiation axis this list needs — it is the same
-  engine-vs-prose fork, one layer down.
+  engine-vs-prose fork, one category down.
 
 Baseline duty (issue #17): any harness-vs-harness A/B must inventory these rows for
-both arms before attributing an effect — the exp-03 rider ("net of what the layer-2
+both arms before attributing an effect — the exp-03 rider ("net of what the category-2
 harness already does") generalized from gates to the full table.
 
 ## Open questions
 
 - Does the Cursor acquisition mean vertical integration (model tuned on harness telemetry)
   produces a durable advantage, or is it a one-off data moat?
-- Every harness listed supports MCP. Does that make layer 5 genuinely portable in practice,
+- Every harness listed supports MCP. Does that make category 5 genuinely portable in practice,
   or only in principle?
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?
