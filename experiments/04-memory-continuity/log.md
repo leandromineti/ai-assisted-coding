@@ -25,3 +25,15 @@
 - **Network condition (8a)**: host network, ai-memory daemon loopback-bound, Anthropic
   egress open, no egress enforcement — as declared in the protocol; identical across
   all arms. This is a probe, not a rig comparison.
+
+## 2026-08-19 — smoke (5e) + B0 calibration
+
+- **Smoke** (~10:30 UTC): full driver end-to-end, empty memory, opencode +
+  claude-haiku-4-5-20251001 (cheap model — driver validation only). Exit 0 AND
+  artifact-verified: smoke.scored.json with all 10 questions evaluated; 0/10 hits,
+  0/10 non-UNKNOWN — the model honestly declines to guess. Driver validated.
+- **B0 calibration** (scored, arm model anthropic/claude-sonnet-5): **0/10 hits,
+  0/10 non-UNKNOWN. GATE PASS (≤2/10).** The instrument discriminates — no fact is
+  derivable from the workspace; the quiz's no-guessing instruction holds at Sonnet
+  tier. Artifacts: scratchpad exp04/{smoke,B0}/ (raw output + scored JSON), copied
+  into artifacts/ at arc end.
