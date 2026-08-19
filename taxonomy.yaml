@@ -176,9 +176,9 @@ exempt_paths:
   # Append-only and preregistered records: immutable by methodology rule 5 (D-03).
   # experiments/rig/** is deliberately NOT here — the rig README is a living doc and is linted.
   append_only:
-    - "experiments/0*/log.md"       # appended live during runs, never reconstructed
-    - "experiments/0*/README.md"    # preregistered protocol text; results append below it
-    - "experiments/*/artifacts/*"   # run artifacts, dated records of what actually happened
+    - "experiments/[0-9]*/log.md"       # appended live during runs, never reconstructed
+    - "experiments/[0-9]*/README.md"    # preregistered protocol text; results append below it
+    - "experiments/*/artifacts/*"       # run artifacts, dated records of what actually happened
   # ADR bodies are exempt; the H1 title line of an ADR is still linted (D-04).
   body_exempt:
     - "adrs/*.md"

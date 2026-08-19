@@ -288,6 +288,18 @@ def _deny_index(taxo: dict) -> tuple[re.Pattern | None, dict, list[str]]:
     return result
 
 
+def _phrase_spans(line_text: str, phrases: list[str]) -> list[tuple[int, int]]:
+    """Spans of each phrase's (case-insensitive) occurrences on this line. Shared by
+    `deny_matches` (all deny_list_exempt_compounds, unconditionally) and `check`
+    (only the specific compound(s) recorded as a known_sites entry at this exact
+    file:line — CR-01) so both exemptions use the same span-containment logic."""
+    spans: list[tuple[int, int]] = []
+    for phrase in phrases:
+        for m in re.finditer(re.escape(phrase), line_text, re.IGNORECASE):
+            spans.append((m.start(), m.end()))
+    return spans
+
+
 def deny_matches(line_text: str, taxo: dict) -> list[tuple[int, int, str, dict | None]]:
     """Find deny-listed terms in one line of prose.
 
@@ -299,10 +311,7 @@ def deny_matches(line_text: str, taxo: dict) -> list[tuple[int, int, str, dict |
     pattern, lookup, compounds = _deny_index(taxo)
     if pattern is None:
         return []
-    compound_spans: list[tuple[int, int]] = []
-    for phrase in compounds:
-        for m in re.finditer(re.escape(phrase), line_text, re.IGNORECASE):
-            compound_spans.append((m.start(), m.end()))
+    compound_spans = _phrase_spans(line_text, compounds)
     matches = []
     for m in pattern.finditer(line_text):
         start, end = m.start(1), m.end(1)
@@ -405,12 +414,22 @@ def assert_carveouts_implemented(taxo: dict) -> None:
         sys.exit(f"carve_outs in taxonomy.yaml with no predicate implemented: {missing}")
 
 
-def _known_sites(taxo: dict) -> set[str]:
-    sites: set[str] = set()
+def _known_sites(taxo: dict) -> dict[str, list[str]]:
+    """Map "file:line" -> the compound phrase(s) recorded as known at that site.
+
+    CR-01: a known_sites entry only vouches for the SPAN of the compound it was
+    recorded for (e.g. "enforcement ladder"), not the whole line — check() uses
+    this mapping together with `_phrase_spans` to compute that compound's actual
+    span on the file's real line text before treating a match as exempt. An
+    unrelated deny-listed word matched elsewhere on the same line (e.g. a bare
+    "layer") must still flag; it was never the compound this site documents.
+    """
+    sites: dict[str, list[str]] = {}
     for term in taxo.get("terms", []) or []:
         for c in term.get("deny_list_exempt_compounds", []) or []:
+            compound = c.get("compound")
             for site in c.get("known_sites", []) or []:
-                sites.add(site)
+                sites.setdefault(site, []).append(compound)
     return sites
 
 
@@ -575,6 +594,31 @@ def check_reference_formats(taxo: dict, root: Path = ROOT) -> int:
     return problems
 
 
+def check_unreadable_files(taxo: dict, root: Path = ROOT) -> int:
+    """WR-03: a file that fails to decode (bad encoding, permissions, etc.) is
+    silently dropped by `walk()`'s `except (OSError, UnicodeDecodeError): continue`
+    — invisible to every checker AND to `files_checked`, with zero diagnostic. That
+    directly contradicts this lint's own fail-hard framing. Runs its own scan
+    (mirroring `walk()`'s exemption logic, not `walk()` itself) so a coverage gap is
+    reported — and counted — exactly once per run rather than once per checker that
+    happens to call `walk()`.
+    """
+    problems = 0
+    for path in sorted(root.rglob("*.md")):
+        rel = path.relative_to(root).as_posix()
+        if is_exempt(rel, taxo):
+            continue
+        try:
+            path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as e:
+            print(
+                f"ERROR: {rel} unreadable, excluded from lint coverage: {e}",
+                file=sys.stderr,
+            )
+            problems += 1
+    return problems
+
+
 def check(taxo: dict, root: Path = ROOT) -> int:
     """Walk `root`, report every surviving deny-listed match, return the problem count."""
     problems = 0
@@ -618,7 +662,10 @@ def check(taxo: dict, root: Path = ROOT) -> int:
                 }
                 if any(pred(ctx) for pred in CARVE_OUT_PREDICATES.values()):
                     continue
-                if f"{rel}:{line_no}" in known_sites:
+                known_compounds_here = known_sites.get(f"{rel}:{line_no}", [])
+                if known_compounds_here and _in_any_span(
+                    start, end, _phrase_spans(line_text, known_compounds_here)
+                ):
                     continue
                 canonical = term.get("term")
                 why = _why(term)
@@ -686,8 +733,17 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
             # unrelated `kind:` vocabulary never reaches here at all (refs/* is
             # exempt_paths.skip_entirely, so walk() never yields it).
             if old == "kind":
-                in_scope = rel.endswith("_template-tool-report.md") or (
-                    isinstance(fm, dict) and fm.get("layer") in (5, "5")
+                # WR-01: read whichever category key is CURRENTLY active, not the
+                # pre-rename name specifically — once layer->category lands (both
+                # renames land in the same Phase-3 atomic commit), fm.get("layer")
+                # alone would return None for every real report and this gate
+                # would go silently blind to the applied-branch check below.
+                category_value = (
+                    (fm.get("category") or fm.get("layer")) if isinstance(fm, dict) else None
+                )
+                in_scope = rel.endswith("_template-tool-report.md") or category_value in (
+                    5,
+                    "5",
                 )
                 if not in_scope:
                     continue
@@ -723,6 +779,25 @@ def _with_schema_renames_applied(taxo: dict) -> dict:
         entry["status"] = "applied"
     patched.pop("_deny_index", None)  # cached on the original taxo; don't share it
     return patched
+
+
+def _with_extra_known_site(site: str, compound: str = "enforcement ladder"):
+    """A taxo_patch factory: a deep-copied taxo with `site` (an exact "file:line"
+    string) appended to `compound`'s known_sites list — used by the
+    'known-site-scoped-to-compound-span' fixture (CR-01) to reproduce the real
+    gsd-core.md:191 shape (a known-site compound sharing a line with an unrelated,
+    genuinely deny-listed word) without depending on real-repo line numbers."""
+
+    def patch(taxo: dict) -> dict:
+        patched = copy.deepcopy(taxo)
+        for term in patched.get("terms", []) or []:
+            for c in term.get("deny_list_exempt_compounds", []) or []:
+                if c.get("compound") == compound:
+                    c.setdefault("known_sites", []).append(site)
+        patched.pop("_deny_index", None)  # cached on the original taxo; don't share it
+        return patched
+
+    return patch
 
 
 # --selftest fixtures: embedded drift, written into a fresh tempfile.mkdtemp() tree per
@@ -789,6 +864,23 @@ FIXTURES: list[dict] = [
         "expect": "pass",
         "why": "'engagement ladder' is a deny_list_exempt_compounds phrase, at a line "
         "not in known_sites — compound matching alone must hold.",
+    },
+    {
+        "id": "known-site-scoped-to-compound-span",
+        "path": "notes/04-workflow-frameworks/fixture-known-site-scope.md",
+        "text": "# Fixture\n\nThe enforcement ladder is fine here, but the layer's "
+        "sharpest categories concept is not.\n",
+        "expect": "fail",
+        "taxo_patch": _with_extra_known_site(
+            "notes/04-workflow-frameworks/fixture-known-site-scope.md:3"
+        ),
+        "why": "CR-01: a known_sites entry recorded for the 'enforcement ladder' "
+        "compound at this exact file:line must only shield matches falling inside "
+        "that compound's own span — the independent, genuinely deny-listed 'layer' "
+        "match elsewhere on the same line is unrelated and must still fail. "
+        "Reproduces the real notes/04-workflow-frameworks/gsd-core.md:191 shape "
+        "(compound + unrelated violation sharing a line) without depending on "
+        "real-repo line numbers.",
     },
     {
         "id": "cross-cutting-not-cross-layer",
@@ -872,6 +964,20 @@ FIXTURES: list[dict] = [
         "surviving old `layer:` key fails as an unapplied decoder.",
     },
     {
+        "id": "kind-gate-survives-rename-applied",
+        "path": "notes/05-capability-extensions/fixture-kind-gate-applied.md",
+        "text": "---\ncategory: 5\nkind: agent\n---\n\n# Fixture\n\nBoth renames "
+        "applied; stale kind: key must still be caught.\n",
+        "expect": "fail",
+        "taxo_patch": _with_schema_renames_applied,
+        "why": "WR-01/CR-02: after both schema_renames flip to 'applied', a real "
+        "category-5 report's frontmatter carries `category:` (post-rename), not "
+        "`layer:` — the kind->type scope gate must read whichever key is "
+        "currently active (`category` OR `layer`) to still recognize this file "
+        "as in-scope and flag the surviving `kind:` key as an unapplied decoder; "
+        "a gate hardcoded to `layer` would go silently blind here.",
+    },
+    {
         "id": "kind-colon-in-prose",
         "path": "notes/05-capability-extensions/fixture-kind-colon.md",
         "text": "# Fixture\n\nTable stakes in the kind: store + retrieve + MCP.\n",
@@ -900,15 +1006,25 @@ FIXTURES: list[dict] = [
         "text": "# Log\n\nOld layer terminology appears here, appended live during a "
         "run.\n",
         "expect": "pass",
-        "why": "'experiments/0*/log.md' matches exempt_paths.append_only — never "
-        "walked at all (D-03, append-only run records).",
+        "why": "'experiments/[0-9]*/log.md' matches exempt_paths.append_only — "
+        "never walked at all (D-03, append-only run records).",
+    },
+    {
+        "id": "double-digit-experiment-log-skipped",
+        "path": "experiments/10-fixture-experiment/log.md",
+        "text": "# Log\n\nOld layer terminology appears here, in a double-digit-"
+        "numbered experiment's log.\n",
+        "expect": "pass",
+        "why": "WR-02: 'experiments/[0-9]*/log.md' must exempt double-digit "
+        "experiment numbers too, not just the literal '0' prefix that only "
+        "covers 01-09 — the digit-class anchor generalizes past experiment 09.",
     },
     {
         "id": "experiment-protocol-skipped",
         "path": "experiments/01-fixture-experiment/README.md",
         "text": "# Protocol\n\nOld layer terminology, preregistered before the run.\n",
         "expect": "pass",
-        "why": "'experiments/0*/README.md' matches exempt_paths.append_only — "
+        "why": "'experiments/[0-9]*/README.md' matches exempt_paths.append_only — "
         "preregistered protocol text is immutable by methodology rule 5 (D-03).",
     },
     {
@@ -917,8 +1033,9 @@ FIXTURES: list[dict] = [
         "text": "# Fixture rig README\n\nStill describes the old layer terminology as "
         "current, since this is a living doc.\n",
         "expect": "fail",
-        "why": "experiments/rig/README.md does NOT match 'experiments/0*/README.md' "
-        "(no numbered-experiment prefix) — it is a living doc and D-03 deliberately "
+        "why": "experiments/rig/README.md does NOT match "
+        "'experiments/[0-9]*/README.md' (no numbered-experiment prefix) — it is a "
+        "living doc and D-03 deliberately "
         "keeps it linted like any current-state document, unlike a preregistered "
         "protocol.",
     },
@@ -962,6 +1079,7 @@ def run_all_checks(taxo: dict, root: Path = ROOT) -> int:
         + check_reference_formats(taxo, root=root)
         + check_feature_registry(taxo, root=root)
         + check_schema_renames(taxo, root=root)
+        + check_unreadable_files(taxo, root=root)
     )
 
 
