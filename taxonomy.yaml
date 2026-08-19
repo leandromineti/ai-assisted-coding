@@ -217,11 +217,18 @@ carve_outs:
       "a five-rung ladder", "sub-categories") and would otherwise fail its own lint.
   - id: pre-sweep-material
     description: >-
-      Git history, experiment protocols and logs (immutable by methodology rule 5),
-      published article snapshots, and old GitHub URLs predating the Phase-3 sweep
-      commit read under the old vocabulary and are not lint targets — this is
-      ADR-0015's own "The decoder" section, verbatim: "Git history, experiment
-      protocols and logs (immutable by methodology rule 5), published article
+      Material OUTSIDE this repo's current-state documents that predates the Phase-3
+      sweep commit reads under the old vocabulary and is not a lint target: git history,
+      preregistered experiment protocol text and log.md entries (immutable by methodology
+      rule 5), article copies already published downstream, and old GitHub URLs. Narrowed
+      2026-08-19 (Phase 2, D-02): "published article snapshots" means the downstream
+      published copies only — the drafts in this repo's articles/ are current-state
+      documents, linted and swept like any other (SWEEP-01). This carve-out never exempts
+      a file merely because it was written before the sweep; the exempt file paths are
+      enumerated in exempt_paths above and nothing else is exempt — a carve-out that
+      exempted everything pre-dated would leave the sweep nothing to fix. ADR-0015's own
+      "The decoder" section states the boundary in its words, verbatim: "Git history,
+      experiment protocols and logs (immutable by methodology rule 5), published article
       snapshots, and old GitHub URLs predating the sweep also read under the old
       vocabulary, by the same boundary."
 
