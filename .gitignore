@@ -4,6 +4,10 @@ upstream/*
 !upstream/README.md
 !upstream/repos.txt
 
+# GSD planning workspace — session-local codebase maps and planning state,
+# regenerable via /gsd-map-codebase; not part of the repo's public record.
+.planning/
+
 # OS / editor noise
 .DS_Store
 Thumbs.db
