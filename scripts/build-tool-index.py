@@ -351,10 +351,13 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        return f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |"
+        lic = r.get("license") or "·"
+        return f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |"
 
-    header_row = "| Tool | " + " | ".join(k.replace("_", " ") for k in FEATURE_KEYS) + " |"
-    divider = "|---|" + "---|" * len(FEATURE_KEYS)
+    # license is rendered from the reports' existing top-level frontmatter field
+    # (single source of truth; NOT a registry key — it is a tool-taxonomy fact)
+    header_row = "| Tool | license | " + " | ".join(k.replace("_", " ") for k in FEATURE_KEYS) + " |"
+    divider = "|---|---|" + "---|" * len(FEATURE_KEYS)
     unknown_keys: set[str] = set()
 
     lines += [
@@ -400,8 +403,8 @@ def render_features(reports: list[dict]) -> str:
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
         "mechanism table's job, notes/04-workflow-frameworks/index.md).",
         "",
-        "| Tool | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
-        "|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
+        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
+        "|---|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
     ]
     wf_unknown: set[str] = set()
     for r in reports:
@@ -423,7 +426,8 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
+        lic = r.get("license") or "·"
+        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
     for k in sorted(wf_unknown):
         print(f"warn: workflow feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
@@ -436,8 +440,8 @@ def render_features(reports: list[dict]) -> str:
         "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
         "of dots are stub-depth reports — unread, honestly unclaimed.",
         "",
-        "| Tool | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
-        "|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
+        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
+        "|---|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
     ]
     mem_unknown: set[str] = set()
     for r in reports:
@@ -461,7 +465,8 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
+        lic = r.get("license") or "·"
+        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
     for k in sorted(mem_unknown):
         print(f"warn: memory feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 

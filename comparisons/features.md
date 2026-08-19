@@ -11,17 +11,17 @@ defined once in the [feature taxonomy](../notes/cross-cutting/feature-taxonomy.m
 
 ## Harnesses (layer 2)
 
-| Tool | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [codex](../notes/02-harnesses/codex.md) | ✓ | ✗ | ✓ | `hook` | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
-| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | ✓ | ✓ | ✓ | `engine` | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
-| [opencode](../notes/02-harnesses/opencode.md) | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
-| [claude-code](../notes/02-harnesses/claude-code.md) | ✓ | · | ✓ | `hook` | ✓ | ✓ | ✗ | ✓ | `CLAUDE.md` | ✗ | ✓ | · | ✓ |
-| [cline](../notes/02-harnesses/cline.md) | ✓ | · | · | ✗ | · | ✓ | ✗ | ✓ | ✓ | ✓ | · | ✓ | · |
-| [continue](../notes/02-harnesses/continue.md) | ✓ | · | · | ✗ | · | · | ✗ | ✓ | ✓ | ✓ | · | · | · |
-| [warp](../notes/02-harnesses/warp.md) | ✓ | ✓ | ✗ | · | ✓ | ✓ | ✗ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
-| [aider](../notes/02-harnesses/aider.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | license | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [codex](../notes/02-harnesses/codex.md) | Apache-2.0 | ✓ | ✗ | ✓ | `hook` | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | · | · | ✓ |
+| [hermes-agent](../notes/02-harnesses/hermes-agent.md) | MIT | ✓ | ✓ | ✓ | `engine` | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../notes/02-harnesses/opencode.md) | MIT | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✓ | ✓ | · | · |
+| [claude-code](../notes/02-harnesses/claude-code.md) | proprietary | ✓ | · | ✓ | `hook` | ✓ | ✓ | ✗ | ✓ | `CLAUDE.md` | ✗ | ✓ | · | ✓ |
+| [cline](../notes/02-harnesses/cline.md) | Apache-2.0 | ✓ | · | · | ✗ | · | ✓ | ✗ | ✓ | ✓ | ✓ | · | ✓ | · |
+| [continue](../notes/02-harnesses/continue.md) | Apache-2.0 | ✓ | · | · | ✗ | · | · | ✗ | ✓ | ✓ | ✓ | · | · | · |
+| [warp](../notes/02-harnesses/warp.md) | AGPL-3.0 | ✓ | ✓ | ✗ | · | ✓ | ✓ | ✗ | · | `WARP.md`, `AGENTS.md` | ✓ | ✓ | ✗ | ✗ |
+| [aider](../notes/02-harnesses/aider.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [gemini-cli](../notes/02-harnesses/gemini-cli.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Environments & extensions on the harness vocabulary (layers 3 & 5)
 
@@ -31,18 +31,18 @@ environment exposing session sharing). Same columns, same discipline; rows
 here do NOT count toward the cross-layer table's demand side (that filter is
 `applies_to`).
 
-| Tool | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [e2b](../notes/03-execution-environments/e2b.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [modal](../notes/03-execution-environments/modal.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [ecc](../notes/05-capability-extensions/ecc.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
-| [memos](../notes/05-capability-extensions/memos.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
-| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | license | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [ecc](../notes/05-capability-extensions/ecc.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | Apache-2.0 | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
+| [memos](../notes/05-capability-extensions/memos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
+| [everos](../notes/05-capability-extensions/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Workflow frameworks (layer 4)
 
@@ -52,17 +52,17 @@ presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
 mechanism table's job, notes/04-workflow-frameworks/index.md).
 
-| Tool | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
-|---|---|---|---|---|---|---|---|---|---|
-| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | ✓ | ✓ | `script` | `prose` | `prose` | ✓ | ✗ | `repo-files` | ✓ |
-| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | ✓ | ✓ | `engine` | `prose` | `prose` | ✓ | ✓ | `repo-files` | ✓ |
-| [openspec](../notes/04-workflow-frameworks/openspec.md) | ✓ | ✓ | `engine` | ✗ | · | ✗ | ✗ | `repo-files` | ✗ |
-| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | ✓ | ✓ | ✗ | ✗ | `prose` | ✗ | ✗ | `repo-files` | ✗ |
-| [bmad-loop](../notes/04-workflow-frameworks/bmad-loop.md) | · | ✓ | `engine` | `engine` | `engine` | ✓ | · | `repo-files` | ✗ |
-| [conductor](../notes/04-workflow-frameworks/conductor.md) | ✓ | ✗ | ✗ | · | · | · | · | `repo-files` | · |
-| [haft](../notes/04-workflow-frameworks/haft.md) | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |
-| [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | ✓ | ✓ | · | ✓ | · | · | · | · | · |
-| [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
+| Tool | license | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
+|---|---|---|---|---|---|---|---|---|---|---|
+| [bmad-method](../notes/04-workflow-frameworks/bmad-method.md) | MIT | ✓ | ✓ | `script` | `prose` | `prose` | ✓ | ✗ | `repo-files` | ✓ |
+| [gsd-core](../notes/04-workflow-frameworks/gsd-core.md) | MIT | ✓ | ✓ | `engine` | `prose` | `prose` | ✓ | ✓ | `repo-files` | ✓ |
+| [openspec](../notes/04-workflow-frameworks/openspec.md) | MIT | ✓ | ✓ | `engine` | ✗ | · | ✗ | ✗ | `repo-files` | ✗ |
+| [spec-kit](../notes/04-workflow-frameworks/spec-kit.md) | MIT | ✓ | ✓ | ✗ | ✗ | `prose` | ✗ | ✗ | `repo-files` | ✗ |
+| [bmad-loop](../notes/04-workflow-frameworks/bmad-loop.md) | MIT | · | ✓ | `engine` | `engine` | `engine` | ✓ | · | `repo-files` | ✗ |
+| [conductor](../notes/04-workflow-frameworks/conductor.md) | Apache-2.0 | ✓ | ✗ | ✗ | · | · | · | · | `repo-files` | · |
+| [haft](../notes/04-workflow-frameworks/haft.md) | MIT | ✗ | ✓ | ✓ | · | · | · | · | `database` | · |
+| [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | proprietary | ✓ | ✓ | · | ✓ | · | · | · | · | · |
+| [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | MIT | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
 
 ## Memory extensions (layer 5, `kind: memory`)
 
@@ -71,15 +71,15 @@ The per-kind slice of the feature taxonomy — `memory_features:` frontmatter
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
-| Tool | memory store | capture path | write admission | recall injection | memory scope | memory tiers | hybrid retrieval | decay | memory revision | injection trust boundary | deployment mode | harness installer | rule extraction |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | `files-git` | `hook` | `evidence-gated` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | `vector` | `hook` | `unfiltered` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
-| [memos](../notes/05-capability-extensions/memos.md) | `rows`, `vector` | `adapter` | `scored` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | `graph`, `vector`, `rows` | `agent-invoked` | · | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
-| [everos](../notes/05-capability-extensions/everos.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | license | memory store | capture path | write admission | recall injection | memory scope | memory tiers | hybrid retrieval | decay | memory revision | injection trust boundary | deployment mode | harness installer | rule extraction |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | MIT | `files-git` | `hook` | `evidence-gated` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
+| [mem0](../notes/05-capability-extensions/mem0.md) | Apache-2.0 | `vector` | `hook` | `unfiltered` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
+| [memos](../notes/05-capability-extensions/memos.md) | Apache-2.0 | `rows`, `vector` | `adapter` | `scored` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
+| [cognee](../notes/05-capability-extensions/cognee.md) | Apache-2.0 | `graph`, `vector`, `rows` | `agent-invoked` | · | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
+| [everos](../notes/05-capability-extensions/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Cross-layer features
 
