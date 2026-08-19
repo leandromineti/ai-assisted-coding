@@ -72,14 +72,89 @@ terms:
           the taxonomy's top-level divisions.
         known_sites:
           - "notes/01-models/gpt-5-6-sol.md:60"
+      - compound: "egress layer"
+        canonical_source: >-
+          Networking vocabulary — the point where traffic actually leaves the
+          sandbox, per methodology rule 8a's own wording — unrelated to the
+          taxonomy's top-level divisions. Owner decision, phase-3 wave-1 checkpoint
+          (2026-08-19): kept identical wherever rule 8a's sentence is restated,
+          rather than reworded to satisfy the lint.
+        known_sites:
+          - "methodology.md:229"
+          - "CLAUDE.md:97"
+      - compound: "network layer"
+        canonical_source: >-
+          Networking vocabulary (the OSI/network stratum an `--internal` Docker
+          network blocks egress at) — unrelated to the taxonomy's top-level
+          divisions. Same phase-3 wave-1 owner decision as "egress layer".
+        known_sites:
+          - "experiments/rig/README.md:106"
+      - compound: "tool-layer"
+        canonical_source: >-
+          Networking vocabulary — a tool-permission boundary (e.g. denying the
+          `WebFetch`/`WebSearch` tools in `settings.json`), explicitly contrasted
+          in this repo's own prose with an actual network policy — unrelated to the
+          taxonomy's top-level divisions. Same phase-3 wave-1 owner decision as
+          "egress layer".
+        known_sites:
+          - "experiments/rig/README.md:74"
+          - "experiments/rig/README.md:158"
+          - "articles/measuring-ai-coding-frameworks.md:44"
+      - compound: "memory layer"
+        canonical_source: >-
+          Vendor product-positioning vocabulary (mem0's and peers' taglines, e.g.
+          "the memory layer for AI agents") plus this repo's own prose describing
+          where a memory mechanism sits in a harness — unrelated to the taxonomy's
+          top-level divisions. Quoted taglines stay verbatim per methodology rule 4;
+          the repo's own prose using the same phrase is exempted identically rather
+          than split into two treatments. Owner decision, phase-3 wave-1 checkpoint
+          (2026-08-19).
+        known_sites:
+          - "notes/05-capability-extensions/mem0.md:40"
+          - "notes/05-capability-extensions/memmachine.md:24"
+          - "notes/05-capability-extensions/memmachine.md:32"
+          - "notes/05-capability-extensions/everos.md:34"
+          - "notes/05-capability-extensions/cognee.md:41"
+          - "notes/05-capability-extensions/cognee.md:131"
+          - "notes/05-capability-extensions/index.md:92"
+      - compound: "application layer"
+        canonical_source: >-
+          Software-architecture vocabulary (a codebase's application layer, as
+          opencode's own internal architecture is described) — unrelated to the
+          taxonomy's top-level divisions. Same phase-3 wave-1 owner decision as
+          "memory layer".
+        known_sites:
+          - "notes/02-harnesses/opencode.md:337"
+      - compound: "system-prompt layer"
+        canonical_source: >-
+          Software-architecture vocabulary (where in an LLM request a wrapper
+          instruction is injected) — unrelated to the taxonomy's top-level
+          divisions. Same phase-3 wave-1 owner decision as "memory layer".
+        known_sites:
+          - "notes/05-capability-extensions/memos.md:99"
+      - compound: "synthesis layer"
+        canonical_source: >-
+          Software-architecture vocabulary (design-principles.md's own synthesis
+          stage, describing itself as "the synthesis layer") — unrelated to the
+          taxonomy's top-level divisions. Same phase-3 wave-1 owner decision as
+          "memory layer".
+        known_sites:
+          - "README.md:26"
     deny_list_exempt_note: >-
       Bare "rung"/"rungs"/"ladder" stay denied for the taxonomy-stacking sense (the
-      old "five-rung ladder" framing this decision replaces). The compounds in
-      deny_list_exempt_compounds name a different, already-canonical concept
-      (graded-progression scales, each backed by its own ADR) and must not be
-      flagged; known_sites lists every in-repo occurrence already verified against
-      this exemption (Phase 2's lint should treat a denied match at one of these
-      exact file:line sites, or matching one of these compound phrases, as exempt).
+      old "five-rung ladder" framing this decision replaces). Bare "layer"/"layers"
+      stay denied for the taxonomy-division sense this decision replaces with
+      "category"/"categories". The compounds in deny_list_exempt_compounds name
+      different, already-canonical concepts — graded-progression scales (each
+      backed by its own ADR), networking strata, software-architecture strata, and
+      verbatim vendor taglines — and must not be flagged; known_sites lists every
+      in-repo occurrence already verified against this exemption (Phase 2's lint
+      should treat a denied match at one of these exact file:line sites, or
+      matching one of these compound phrases, as exempt). The seven "layer"
+      compounds (egress/network/tool-layer/memory/application/system-prompt/
+      synthesis layer) record the phase-3 wave-1 owner decision (2026-08-19,
+      option-a): exempt the compounds rather than reword methodology rule 8a's own
+      wording or turn a quoted vendor tagline into a code span.
     false_positive_notes:
       - >-
         "cross-cutting" is untouched — it contains no banned word and is a distinct
