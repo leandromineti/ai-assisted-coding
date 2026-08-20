@@ -112,7 +112,7 @@ checked, honestly unclaimed.
 
 | Tool | license | isolation primitive | egress default | egress controls | credential model | snapshot model | self host | warm pool | filesystem sync |
 |---|---|---|---|---|---|---|---|---|---|
-| [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
+| [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | `hardware-virt (testimony)` | `open (testimony)` | `allow-biased (testimony)` | `plain-env-var (source)` | `explicit-backup:squashfs-r2-overlay (source)` | `partial` | ✓ | `clone` |
 | [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | `hardware-virt:firecracker-microvm` | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `partial` | ✗ | `clone` |
 | [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | `userspace-kernel:gvisor-runsc (source)` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `none (source)` | `OPAQUE` | `upload (source)` |
 
