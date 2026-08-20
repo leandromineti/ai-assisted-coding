@@ -17,7 +17,7 @@ The most-ignored category, because it's invisible until it fails.
 | **Docker** | General container isolation, hand-rolled. | Process + filesystem + network | Medium |
 | **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The category's first and (so far) only report. | Full microVM/remote | Low, metered |
 | **[Modal](modal.md)** | Serverless compute used as an agent sandbox; **gVisor `runsc`**, not a VM. **Read 2026-08-16** as the closed-environment control — client open, infra closed. | gVisor container | Low, metered |
-| **Cloudflare Sandbox SDK** | Sandboxed execution on Workers; preview URLs, code interpreter. | Full remote | Low, metered |
+| **[Cloudflare Sandbox SDK](cloudflare-sandbox-sdk.md)** | Sandboxed execution on Workers; preview URLs, code interpreter. **Deep-dived 2026-08-20** — SDK+container open, isolation substrate testimony-only (bare `hardware-virt`, no mechanism named); Dynamic Workers is a sibling V8-isolate binding, not an SDK tier. | Full remote, substrate undisclosed | Low, metered — SDK triples upstream cold-start timeouts |
 | **Bundled (Devin, cloud Codex, Claude Code web)** | The harness ships its own sandbox; not separately selectable. | Vendor-defined | None — and no choice |
 
 ## The trap worth documenting first
@@ -255,6 +255,35 @@ audit-grade facts.* n=2 for the category; n=1 for "closed but disclosure-rich." 
 closed environment — thin uncommented client, no engineering blog — is still untested, and is
 the live question on issue #11.
 
+### Successor question — a split case (2026-08-20, Cloudflare Sandbox SDK)
+
+[`cloudflare-sandbox-sdk.md`](cloudflare-sandbox-sdk.md) is a third, structurally different
+instance: the client and the in-container agent are open, but the isolation substrate they
+depend on is not merely closed — it is not even vendored (`@cloudflare/containers`, the one
+dependency that could name a mechanism, is pinned but absent from the blobless clone). Unlike
+Modal's leaky proto, nothing here names a hypervisor, VMM, or kernel; the only substrate claim
+reachable at any grade is the bare family "VM," stated three times in vendor prose and never
+mechanised. This is the **closer approach yet to the "maximally closed" test** the successor
+question named: source is open, but the fact that would answer COV-01's per-tier question is
+architecturally outside what any source read of this repo can reach — closer to Modal's
+disclosure floor than E2B's, but thinner than Modal's own leaky-proto disclosure.
+
+**The refined law survives, sharpened rather than broken.** Legibility here did not collapse to
+zero — the SDK and container source still yielded source-verified facts about egress,
+credentials, and fidelity seams (E2, strongly confirmed; see the report). What collapsed
+specifically is the *isolation-mechanism* fact E4 names, exactly as E4's own falsification clause
+anticipated by name (`design-principles.md`, E4). One genuine refinement the Cloudflare read adds:
+where the substrate is closed, its economics still leak — not downward into kernel/scheduler
+facts (unreachable here), but *sideways* into user-space compensating machinery the SDK's own
+authors had to write blind (a warm pool whose own comment admits it "auto-learns" the real
+concurrency ceiling reactively from platform errors). Flagged as a candidate second legibility
+channel for E4, not yet adopted into the principle text (see the report's E1-E4 section; plan
+08-04 collects verdicts).
+
+**Legibility-law count, updated:** n=3 for the category (E2B, Modal, Cloudflare Sandbox SDK);
+n=1 for "closed but disclosure-rich" (Modal only — Cloudflare's substrate disclosure is thinner,
+not richer, so it does not add to that count).
+
 ## Axes that matter
 
 - **Blast radius** — what can it destroy? Files, the repo, the machine, production?
@@ -269,8 +298,12 @@ the live question on issue #11.
   attachment?~~ **Answered 2026-08-16: yes (E2B). Category 3 holds.**
 - ~~Does that hold for a **closed** environment?~~ **First evidence 2026-08-16 (Modal): yes,
   but only to audit-grade where the infra is open — closed caps the grade at declared/cited.**
-  See the successor-question section above. Remaining: a **maximally** closed environment
-  (thin client, no engineering disclosure) — untested. Issue #11.
+  **Sharpened 2026-08-20 (Cloudflare Sandbox SDK):** an open client over an unnamed substrate —
+  the isolation mechanism itself is undisclosed even in vendor testimony, the thinnest
+  disclosure yet seen — and the refined law still holds (source facts survive elsewhere in the
+  report; only the mechanism fact collapses, as E4 predicted by name). See both
+  successor-question sections above. Remaining: a wholly closed environment with no open client
+  at all — still untested. Issue #11.
 - ~~Why has nobody verified `worktree` support for any harness?~~ **First cell filled
   2026-08-17: Claude Code, observed** — native enter/exit-worktree operations plus
   per-subagent worktree isolation ([`../02-harnesses/claude-code.md`](../02-harnesses/claude-code.md)).

@@ -53,6 +53,7 @@ here do NOT count toward the cross-category table's demand side (that filter is
 
 | Tool | license | mcp | lsp | hooks | turn end gates | skills | subagents | ptc | plan mode | rules files | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [ai-memory](../notes/05-capability-extensions/ai-memory.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
@@ -111,6 +112,7 @@ checked, honestly unclaimed.
 
 | Tool | license | isolation primitive | egress default | egress controls | credential model | snapshot model | self host | warm pool | filesystem sync |
 |---|---|---|---|---|---|---|---|---|---|
+| [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
 | [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | `hardware-virt:firecracker-microvm` | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `partial` | ✗ | `clone` |
 | [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | `userspace-kernel:gvisor-runsc (source)` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `none (source)` | `OPAQUE` | `upload (source)` |
 

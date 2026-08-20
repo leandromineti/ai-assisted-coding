@@ -46,6 +46,14 @@
 # is closed — so the environment-facts that made E2B pass exist here only as
 # vendor testimony (docs/blogs), which is exactly the variable under test.
 3|modal|https://github.com/modal-labs/modal-client
+# cloudflare-sandbox-sdk, added 2026-08-20 as phase 8's third category-3 read — sighted
+# via candidates.md as the third remote runtime after e2b and modal. Two repos cloned:
+# cloudflare-sandbox-sdk is the container-runtime API the report's pin is checked
+# against; artifact-fs is Cloudflare's separate filesystem-sync primitive (git-backed
+# working-directory sync), prose-recorded as a second pin only if the SDK's own
+# filesystem story leads there (D-14, e2b's two-pin idiom).
+3|cloudflare-sandbox-sdk|https://github.com/cloudflare/sandbox-sdk
+3|artifact-fs|https://github.com/cloudflare/artifact-fs
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot

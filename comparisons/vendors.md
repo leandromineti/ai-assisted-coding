@@ -16,6 +16,7 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Anomaly | — | opencode | — | — | — | **1** |
 | BMad Code, LLC | — | — | — | bmad-method, bmad-loop | — | **1** |
 | Cline | — | cline | — | — | — | **1** |
+| Cloudflare, Inc. | — | — | cloudflare-sandbox-sdk | — | — | **1** |
 | Continue | — | continue | — | — | — | **1** |
 | DeepSeek | deepseek-v4 | — | — | — | — | **1** |
 | EverMind AI (EverMind-AI) | — | — | — | — | everos | **1** |
@@ -39,4 +40,4 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Warp (warpdotdev) | — | warp | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | **1** |
 
-**31 vendors** across 38 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**32 vendors** across 39 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
