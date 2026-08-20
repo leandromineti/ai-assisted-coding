@@ -11,6 +11,16 @@ commit: f5d702a5   # the e2b SDK/CLI clone; this is what build-tool-index --chec
 # SECOND PIN, prose-recorded (a report carries one machine-checked commit): the isolation
 # machinery lives in e2b-dev/infra @ fcc2edbc9 (read 2026-08-16). Every server-side claim
 # below is dated to that pin. Re-check drift with: repo-facts.sh e2b-infra
+# Drift check 2026-08-20: current e2b-infra HEAD 7c417f485, 48 commits ahead of fcc2edbc9
+# (297 files changed). Assessment: drift touches cell-bearing claims. packages/orchestrator/
+# pkg/sandbox/sandbox.go and .../fc/process.go (isolation_primitive) both changed; the uffd/
+# subtree (uffd.go, memory_backend.go, userfaultfd/) plus new snapshot_template handlers in
+# packages/api and packages/db (snapshot_model) changed heavily; packages/orchestrator/pkg/
+# proxy/, packages/orchestrator/pkg/tcpfirewall/, and packages/shared/pkg/sandbox-network/
+# firewall.go (egress_default, egress_controls) also changed. No spiffe/jwt-named path
+# changed (credential_model's SPIFFE JWT-SVID claim unaffected by name). iac/ and
+# docs/ARCHITECTURE.md changed too. Per D-07 the cells are set from pin-state prose anyway;
+# a dated drift caveat is attached at the affected cells in plan 07-02.
 first_commit: 2023-03-04   # e2b SDK repo; the infra repo's 2019 root is an imported fossil — see History
 stars: 13423
 stars_at: 2026-08-16
