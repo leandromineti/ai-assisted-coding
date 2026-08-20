@@ -17,3 +17,4 @@ Thumbs.db
 # Copyright belongs to the publishers; refetchable from each note's arxiv/doi frontmatter.
 refs/pdf/*
 !refs/pdf/.gitkeep
+__pycache__/
