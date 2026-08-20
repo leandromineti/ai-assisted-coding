@@ -109,10 +109,10 @@ grammar: evidence-grade suffixes, a `family:specific` colon tag on three keys,
 and lists that mean conjunction only — see the ADR. Rows of dots are not yet
 checked, honestly unclaimed.
 
-| Tool | license | isolation primitive |
-|---|---|---|
-| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · |
-| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · |
+| Tool | license | isolation primitive | egress default | egress controls | credential model | snapshot model | self host | warm pool | filesystem sync |
+|---|---|---|---|---|---|---|---|---|---|
+| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
+| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
 
 ## Cross-category features
 

@@ -247,4 +247,39 @@ features:
     applies_to: [3]
     definition: "the mechanism the sandbox's isolation boundary rests on; open-descriptive family:specific tag, family closed: hardware-virt | userspace-kernel | shared-kernel | os-native; specific half open-descriptive, optional per cell"
     note: "added 2026-08-20 per ADR-0017; instances: e2b (hardware-virt:firecracker-microvm), modal (userspace-kernel:gvisor-runsc)"
+  - id: egress_default
+    block: environment_features
+    applies_to: [3]
+    definition: "the network posture in effect with no explicit configuration; closed lattice: open | restricted | tier-gated"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b open (internet on by default), modal open (egress OPEN by default)"
+  - id: egress_controls
+    block: environment_features
+    applies_to: [3]
+    definition: "how an explicit allow/deny rule resolves against the default; closed lattice: allow-biased | deny-wins | none-native"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b allow-biased (an allow entry beats a deny, including beating allowInternetAccess:false), modal OPAQUE — the interface (block_network, CIDR/domain allowlists) is verified, but no source states whether an allow entry can override a block, the axis E2B's finding turns on"
+  - id: credential_model
+    block: environment_features
+    applies_to: [3]
+    definition: "how a third-party credential reaches, or is kept from, the sandboxed process; open-descriptive family:specific tag, family closed: broker-relayed | split-plane | plain-env-var; specific half open-descriptive, optional per cell"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b broker-relayed:spiffe-jwt-svid (egress-proxy-brokered SPIFFE JWT-SVID), modal split-plane (long-lived MODAL_TOKEN_ID/SECRET control-plane only; short-lived JWT to the worker)"
+  - id: snapshot_model
+    block: environment_features
+    applies_to: [3]
+    definition: "the mechanism by which sandbox state is paused/resumed; open-descriptive family:specific tag, family closed: create-is-resume | checkpoint-restore | explicit-backup | none; specific half open-descriptive, optional per cell"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b create-is-resume:uffd-lazy-paging, modal checkpoint-restore (bare family — the gVisor-internals specific mechanism is Modal's own testimony, not source-verified)"
+  - id: self_host
+    block: environment_features
+    applies_to: [3]
+    definition: "whether the environment is genuinely operable outside the vendor's own cloud; closed lattice: full | partial | none"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b partial (named closed components: the egress proxy, belt), modal none (no infra repo; SaaS-only)"
+  - id: warm_pool
+    block: environment_features
+    applies_to: [3]
+    definition: "whether a pool of pre-started instances exists to cut cold-start latency; boolean presence-claim outside both enum regimes (omitted = not checked, false = checked and absent)"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b false (verified absent — grep for prewarm/warm-pool patterns over packages/, iac/, docs/), modal OPAQUE"
+  - id: filesystem_sync
+    block: environment_features
+    applies_to: [3]
+    definition: "how the working anchor gets its content into the sandbox; closed lattice, plain enum: mount | clone | upload"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b clone (Task 1 probe, dated 2026-08-20, at the unmoved pin f5d702a5 — a first-class Sandbox.git.clone() API in both Python SDKs and the JS SDK, run through the sandbox's own command runner rather than a dedicated envd wire RPC), modal upload (no local execution mode; image builds stream a remote build context — ImageJoinStreaming, _image.py:433-441)"
 ```
