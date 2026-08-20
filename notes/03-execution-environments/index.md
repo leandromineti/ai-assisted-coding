@@ -103,7 +103,7 @@ category-2 discipline spent where the category-3 default made it most needed.
 
 ## The relationship vocabulary
 
-`checked: 2026-08-20`
+`checked: 2026-08-16`   <!-- inhabit re-confirmed 2026-08-19 at the Warp deep-dive; the other verbs not re-checked since -->
 
 This is the category's own analytic contribution, and it was produced the hard way — one verb
 per deep-dive, each arriving as a surprise that the existing words couldn't describe. It
