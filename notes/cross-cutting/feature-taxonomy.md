@@ -20,8 +20,13 @@ Conventions:
   registry only after the characteristic is verified in at least two tools.
 - `block` names the frontmatter block that carries the key (`features` for harnesses,
   `workflow_features` for category 4, `memory_features` for category-5 `type: memory` reports
-  — ADR-0013, `model_features` for category 1 — ADR-0014). `applies_to` lists
-  tool-taxonomy categories; per-type blocks additionally scope by the report's `type`.
+  — ADR-0013, `model_features` for category 1 — ADR-0014, `environment_features` for
+  category 3 — ADR-0017). `applies_to` lists tool-taxonomy categories; per-type blocks
+  additionally scope by the report's `type`.
+- The `environment_features` block's cells carry a grammar the other four blocks
+  don't: evidence-grade suffixes inside the cell value, a `family:specific` colon tag
+  on three of its eight keys, and lists that mean conjunction only — see
+  [ADR-0017](../../adrs/0017-environment-features-block.md) for the full grammar.
 - **What belongs where** (the placement test, recorded 2026-08-19): a fact with an
   external ground truth we transcribe (stars, license, context window, pricing) is a
   **top-level frontmatter field** — mechanically collected, dated, and at most
