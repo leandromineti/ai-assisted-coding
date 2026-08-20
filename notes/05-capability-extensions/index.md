@@ -11,7 +11,9 @@ What the agent can **see and touch**, as distributable content. **A bucket, not 
 since the 2026-07-30 taxonomy revision** (three core categories; trigger fired at the ECC
 deep-dive — see the executed-revision note in [`../../taxonomy.md`](../../taxonomy.md)).
 The membership test is unchanged: independent distribution — authored, versioned, and
-installed separately from any harness. The "3" is a storage key.
+installed separately from any harness. The "5" is a storage key (renumbered from 3 by
+[ADR-0007](../../adrs/0007-renumber-core-triad-first.md); this sentence had carried the
+old number until 2026-08-20).
 
 This index covers the **installable things**. The specifications they implement — MCP the
 protocol, the `AGENTS.md` convention — are not category entries; they live in
