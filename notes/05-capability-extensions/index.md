@@ -5,7 +5,7 @@
 > across the types below (see the Standards scoreboard and the dated rename note in
 > [`../../taxonomy.md`](../../taxonomy.md) §3).
 
-`checked: 2026-08-19`
+`checked: 2026-08-20`
 
 What the agent can **see and touch**, as distributable content. **A bucket, not a category,
 since the 2026-07-30 taxonomy revision** (three core categories; trigger fired at the ECC
@@ -43,6 +43,84 @@ narrowing of the bucket to memory was considered and rejected on exactly this gr
 ([ADR-0016](../../adrs/0016-extensions-stay-broad.md)); the balance arc for sighting
 non-memory candidates is issue #30, and the recorded decision point for the bucket's
 shape stays the ~2027-01 [standards re-check](../cross-cutting/standards.md).
+
+## The bucket's boundary — discussion state (2026-08-19/20, pre-decision)
+
+*(A running record of a live taxonomy discussion, checkpointed 2026-08-20 mid-stream —
+deliberately **not** an ADR: nothing below is decided until it is. ADR-0016 is the only
+decision taken so far in this thread. The proposed successor is sketched at the end.)*
+
+The thread started as "should the bucket narrow to memory?" (rejected as arc-sample
+bias, [ADR-0016](../../adrs/0016-extensions-stay-broad.md)) and has since produced three
+sharper cuts, each surviving a test the previous one failed:
+
+**1. Configure vs reach — the world-side bound.** The membership test ("can you install
+it?") under-specifies: ripgrep is authored, versioned, and installed independently of any
+harness, and obviously isn't stack. Having a shell doesn't make every CLI tool stack;
+having a web client doesn't make every website stack; **having an MCP client doesn't make
+every MCP server stack**. The population reachable through a generic channel (shell,
+browser, MCP) is the world. What survives: artifacts that **configure** the agent
+(context-side or loop-side — remove one and the agent behaves differently on the same
+task) are stack; things the agent merely **reaches** through an unchanged interface are
+world. Wrinkle worth keeping: MCP servers are partially authored in prompt-space (tool
+descriptions are instructions to a model, responses shaped for context windows) — they're
+*agent-native world*, which explains why they feel stack-adjacent and makes the census
+temptation stronger, not more legitimate. Consequence: reach-side entries are capped at
+**exemplars** read to answer registered questions (the live one: conclusion 3 rests on
+"MCP settled" and no server has ever been read), never censuses. The 2026-08-19
+candidates rows are those designated exemplars, not the start of coverage.
+
+**2. Mechanism vs content — inside the configure side.** Proposed 2026-08-20: maybe
+memory tools are the only extensions that add a *harness-native mechanism*, which would
+explain why exactly they are being absorbed natively (the `learning_loop` column).
+Tested against the tracked set: skills, rules files, subagent defs, MCP servers are all
+**slot-fillers** — content for loaders the harness already ships. Memory extensions are
+**mechanism-adders** — they add write paths, consolidation loops, cross-session state
+(the displacement finding is mechanism-level competition: mem0's plugin blocks the
+harness's native memory writes). **The "only memory" version is falsified by one case,
+which sharpens rather than kills it**: ECC ships a learning pipeline (third verified
+`learning_loop` instance) and enforcement gates ("gates can arrive as installable Stop
+hooks" — the registry's ECC finding), so the mechanism-adder stratum is memory + gate/
+learning runtimes, and **hooks are the generic port mechanisms arrive through** (the
+memory tools themselves install via hooks).
+
+**3. The absorption hypothesis (registered as a falsifiable bet, not yet a conclusion).**
+Harnesses absorb *mechanisms* (gates, memory — both now verified native in multiple
+harnesses), *bundle* content (Warp ships 13 skills; the loader was always category 2),
+and never absorb reach. Independent mechanism extensions survive absorption on the one
+bet a single harness cannot absorb — cross-harness continuity (conclusion 8's
+counter-current). Predictions that would falsify the frame: a harness absorbing a
+slot-filler *as a mechanism*; a mechanism-adder thriving long-term on a single-harness
+bet; a reach-side artifact being absorbed rather than bundled.
+
+**ECC re-tested against the new cuts (2026-08-20).** The question "isn't ECC a workflow
+framework?" re-asked; the preregistered category verdict holds and the new vocabulary
+strengthens it: ECC ships mechanisms (instinct pipeline, gates) and content (the
+catalog); a category-4 member ships *methodology* — a prescribed spine — which is
+exactly what the source lacks (opt-in catalog, `workflows/` with one file, orchestration
+outsourced to the external `ccg-workflow` runtime). Same knife as conclusion 8's
+boundary: mechanisms get absorbed, methodology stays category 4's own. The open lead:
+**`ccg-workflow` is the bmad-loop shape** — the process spine sold separately — and
+deserves its own category-4 candidates row if it has a real spine.
+
+**Proposed but NOT decided — ADR-0017, "coverage strata for category 5":** three
+coverage grades inside the unchanged seven-type bucket — *mechanism extensions*
+(memory, gate/learning runtimes): tool-grade reports, feature blocks, reading arcs;
+*content types* (skills, rules files, subagent defs): formats tracked in
+[standards](../cross-cutting/standards.md), exemplar reads only; *reach-side* (MCP
+servers): exemplars only, world otherwise. Plus the absorption bet registered with a
+re-check date. Compatible with ADR-0016 (the type list doesn't change; what changes is
+coverage semantics per type).
+
+**Open threads for the next dig:** does `ccg-workflow` have a spine (category-4
+sighting)? · the playwright-mcp exemplar read with adapter-vs-capability as its headline
+question (if even the strongest capability-server specimen turns out shim-like, the
+deflationary view sweeps the type) · do subagent-def packs that encode *process*
+(wshobson-style role teams) leak across the mechanism/content line? · are hook packs a
+type at all, or only the port other mechanisms ride (the 2026-08-19 sighting found no
+large installable pack — the absence is dated in the [candidates ledger](../candidates.md))? ·
+does the absorption bet belong in [design-principles](../../design-principles.md) once
+ADR-0017 lands?
 
 ## The memory matrix — first cut (2026-08-19)
 
