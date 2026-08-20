@@ -50,3 +50,4 @@ living docs, the ADR trail is the decoder.
 | [0014](0014-model-features-into-registry.md) | 2026-08-19 | Model API-feature keys fold into the registry (`model_features` block) | accepted |
 | [0015](0015-layers-become-categories.md) | 2026-08-19 | Layers become categories: canonical top-level term rename, encoded in `taxonomy.yaml` | accepted |
 | [0016](0016-extensions-stay-broad.md) | 2026-08-19 | Extensions stay broad: memory is a type, not the category (narrowing considered, rejected as arc-sample bias) | accepted |
+| [0017](0017-environment-features-block.md) | 2026-08-20 | Fifth registry block: `environment_features` for category-3 environments | accepted |
