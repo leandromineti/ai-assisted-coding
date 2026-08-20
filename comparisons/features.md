@@ -101,6 +101,19 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 | [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
+## Execution environments (category 3)
+
+The category-3 slice of the feature taxonomy — `environment_features:`
+frontmatter (ADR-0017), assessed on every category-3 report. Cells carry a
+grammar: evidence-grade suffixes, a `family:specific` colon tag on three keys,
+and lists that mean conjunction only — see the ADR. Rows of dots are not yet
+checked, honestly unclaimed.
+
+| Tool | license | isolation primitive |
+|---|---|---|
+| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · |
+| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · |
+
 ## Cross-category features
 
 The bleed, quantified. **Demand** counts presence among reports of the

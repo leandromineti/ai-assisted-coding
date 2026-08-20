@@ -62,7 +62,13 @@ def _load_feature_registry() -> list[dict]:
     entries = (data or {}).get("features")
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
-    known_blocks = {"features", "workflow_features", "memory_features", "model_features"}
+    known_blocks = {
+        "features",
+        "workflow_features",
+        "memory_features",
+        "model_features",
+        "environment_features",
+    }
     for e in entries:
         for req in ("id", "block", "applies_to", "definition"):
             if req not in e:
@@ -89,6 +95,13 @@ MEMORY_FEATURE_KEYS = [
 # nested `model_features:` block).
 MODEL_FEATURE_KEYS = [
     e["id"] for e in FEATURE_REGISTRY if e["block"] == "model_features"
+]
+
+# Category-3 execution-environment keys: registry-driven since ADR-0017 (definitions,
+# enum regimes, and provenance live in the feature taxonomy; reports carry them in a
+# nested `environment_features:` block). Order is inherited from registry entry order.
+ENVIRONMENT_FEATURE_KEYS = [
+    e["id"] for e in FEATURE_REGISTRY if e["block"] == "environment_features"
 ]
 
 # Category-1 lifecycle key (added 2026-08-17): first-availability date plus lifecycle
@@ -492,6 +505,46 @@ def render_features(reports: list[dict]) -> str:
         lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
     for k in sorted(mem_unknown):
         print(f"warn: memory feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
+
+    lines += [
+        "",
+        "## Execution environments (category 3)",
+        "",
+        "The category-3 slice of the feature taxonomy — `environment_features:`",
+        "frontmatter (ADR-0017), assessed on every category-3 report. Cells carry a",
+        "grammar: evidence-grade suffixes, a `family:specific` colon tag on three keys,",
+        "and lists that mean conjunction only — see the ADR. Rows of dots are not yet",
+        "checked, honestly unclaimed.",
+        "",
+        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in ENVIRONMENT_FEATURE_KEYS) + " |",
+        "|---|---|" + "---|" * len(ENVIRONMENT_FEATURE_KEYS),
+    ]
+    env_unknown: set[str] = set()
+    for r in reports:
+        if r.get("category") != 3:
+            continue
+        feats = r.get("environment_features") or {}
+        if not isinstance(feats, dict):
+            feats = {}
+        env_unknown.update(k for k in feats if k not in ENVIRONMENT_FEATURE_KEYS)
+        cells = []
+        for key in ENVIRONMENT_FEATURE_KEYS:
+            v = feats.get(key)
+            if v is True:
+                cells.append("✓")
+            elif v is False:
+                cells.append("✗")
+            elif isinstance(v, list):
+                cells.append(", ".join(f"`{x}`" for x in v))
+            elif v is None:
+                cells.append("·")
+            else:
+                cells.append(f"`{v}`")
+        rel = r["_path"].relative_to(ROOT)
+        lic = r.get("license") or "·"
+        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+    for k in sorted(env_unknown):
+        print(f"warn: environment feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
     lines += _render_cross_category(reports)
     lines.append("")

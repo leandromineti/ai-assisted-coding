@@ -114,7 +114,13 @@ def _load_feature_registry() -> list[dict]:
     entries = (data or {}).get("features")
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
-    known_blocks = {"features", "workflow_features", "memory_features", "model_features"}
+    known_blocks = {
+        "features",
+        "workflow_features",
+        "memory_features",
+        "model_features",
+        "environment_features",
+    }
     for e in entries:
         for req in ("id", "block"):
             if req not in e:
@@ -144,7 +150,13 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
     valid_by_block: dict[str, set[str]] = {}
     for e in registry:
         valid_by_block.setdefault(e["block"], set()).add(e["id"])
-    blocks = ("features", "workflow_features", "memory_features", "model_features")
+    blocks = (
+        "features",
+        "workflow_features",
+        "memory_features",
+        "model_features",
+        "environment_features",
+    )
     for path in walk(taxo, root=root):
         rel = path.relative_to(root).as_posix()
         if not rel.startswith("notes/"):

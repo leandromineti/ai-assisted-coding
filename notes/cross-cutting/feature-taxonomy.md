@@ -238,4 +238,13 @@ features:
     applies_to: [5]
     definition: synthesizes standing instructions/rules from sessions (memory that mints layer-5 artifacts of another kind)
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts"
+  # --- category-3 environment block (`environment_features:`), category == 3 only (ADR-0017) ---
+  # Mechanism choices, not ADR-0011 enforcement grades — contrast explicit per ADR-0017
+  # scoping rule 2. No kind_link on these entries by design: category-3 demand-side
+  # linkage lives at bucket granularity in comparisons/environments.md, not here.
+  - id: isolation_primitive
+    block: environment_features
+    applies_to: [3]
+    definition: "the mechanism the sandbox's isolation boundary rests on; open-descriptive family:specific tag, family closed: hardware-virt | userspace-kernel | shared-kernel | os-native; specific half open-descriptive, optional per cell"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b (hardware-virt:firecracker-microvm), modal (userspace-kernel:gvisor-runsc)"
 ```
