@@ -1,6 +1,6 @@
 # Category 3 — Execution environments
 
-`checked: 2026-08-16`
+`checked: 2026-08-20`
 
 Where the agent's code actually runs, and what it can damage. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -52,9 +52,58 @@ Two caveats found the hard way on fix 2 (personal experience, mid-2026):
 This is the clearest evidence I have that the category is real: nothing about the harness or
 the model was broken.
 
+## The component vocabulary
+
+`added: 2026-08-20` *(from the category-5 boundary discussion — see the
+[discussion-state note](../05-capability-extensions/index.md) — via the question "what
+is the default environment?"; tested against this index's seed inventory and the codex,
+Warp, and E2B deep-dives before recording)*
+
+An execution environment is three components:
+
+- **host** — machine + OS + installed toolchain + **network position** (network is
+  declared here, not homeless: the rig's methodology 8a treats egress as an environment
+  property, and this is where it lives).
+- **principal** — the effective identity of the agent's process: OS permissions,
+  ambient credentials (`~/.ssh`, keychains, dotfiles), inherited env vars. "User" in the
+  default case, but the general term earns its keep: codex's internalized sandboxes
+  restrict *only this component*, per tool call, without a new host or cwd; Warp's
+  `inhabit` is the principal being *supplied by* the environment (workload-identity
+  token from the detected container) rather than inherited.
+- **working directory** — the anchor: where discovery walks from, what `pwd` context
+  names, the unit the fidelity question attaches to.
+
+**The default every harness runs in is {your machine, you, cwd} — full ambient
+authority anchored at a folder.** The folder is what the agent is *pointed at*; host ×
+principal is what it can *touch*; the category exists because of the gap between those
+two, and every tool in the seed inventory is a device for narrowing it:
+
+| Environment | Δ vs default |
+|---|---|
+| Host machine | none — the default itself |
+| git worktrees | Δcwd only (the Isolation column's "same machine, same network, same credentials" said this in prose) |
+| Devcontainers / Docker | Δhost + Δprincipal; cwd mounted |
+| E2B / Modal / Cloudflare | Δ all three (new machine, synthetic principal, uploaded anchor) |
+| Bundled (Devin, cloud Codex) | all three vendor-fixed — no choice per component |
+| codex internalize | Δprincipal only, **per tool call** — the midpoint of the substitution axis below |
+
+The three recorded category questions map one-to-one: **blast radius** = host ×
+principal · **fidelity** = host toolchain + cwd completeness (the worktree trap is a
+cwd incomplete relative to the toolchain) · **parallelism** = the cost of multiplying
+cwd (worktrees) vs hosts (sandboxes).
+
+**The substitution axis** (the lens this vocabulary hands back to category 2):
+permission models and environments are substitutes for restricting the principal —
+category-2 gates do it per action in software the model flows through; codex
+internalize per action in the OS; containers structurally; pi (registered 2026-08-19,
+category-2 index) ships *no permission system* and recommends containers — the fully
+structural end. Warp is the cautionary specimen: a six-level chain for its own
+principal on the host, then child harnesses launched with every gate bypassed —
+category-2 discipline spent where the category-3 default made it most needed.
+
 ## The relationship vocabulary
 
-`checked: 2026-08-16`
+`checked: 2026-08-20`
 
 This is the category's own analytic contribution, and it was produced the hard way — one verb
 per deep-dive, each arriving as a surprise that the existing words couldn't describe. It
@@ -82,7 +131,7 @@ Rendered from frontmatter in
 
 ## Adjudication — does this category survive its own falsifier?
 
-`checked: 2026-08-16`
+`checked: 2026-08-20`
 
 The taxonomy pre-committed to a test: *"if sustained study never shows a category-3 fact
 changing a tool choice or explaining a failure, demote this category to a cross-cutting
