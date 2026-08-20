@@ -111,8 +111,8 @@ checked, honestly unclaimed.
 
 | Tool | license | isolation primitive | egress default | egress controls | credential model | snapshot model | self host | warm pool | filesystem sync |
 |---|---|---|---|---|---|---|---|---|---|
-| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
-| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
+| [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | `hardware-virt:firecracker-microvm` | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `partial` | ✗ | `clone` |
+| [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | `userspace-kernel:gvisor-runsc (source)` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `none (source)` | `OPAQUE` | `upload (source)` |
 
 ## Cross-category features
 

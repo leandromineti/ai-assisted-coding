@@ -26,6 +26,15 @@ stars: 13423
 stars_at: 2026-08-16
 read_at: 2026-08-16
 depth: deep-dive   # for a non-harness: isolation mechanism, sandbox lifecycle, and multi-tenancy traced in source across both repos (three parallel Opus reads), 10 load-bearing claims spot-verified at the pins by the main session. NOT run — no sandbox created; wire-level claims are strong code inference, labelled where they are not demonstrated
+environment_features:   # ADR-0017 block, set 2026-08-20 from the existing deep-dive read at f5d702a5 (and e2b-infra @ fcc2edbc9) — not a re-read
+  isolation_primitive: hardware-virt:firecracker-microvm   # each sandbox is a Firecracker microVM (What it is); no jailer/chroot/uid-drop, fc/process.go:196 — drift 2026-08-20: sandbox.go/fc/process.go changed since fcc2edbc9; cell set from pin-state prose per D-07
+  egress_default: open   # internet on by default at wire+SDK (Blast radius; sandbox_api.py/sandboxApi.ts:1455) — drift 2026-08-20: proxy/tcpfirewall/firewall.go changed since fcc2edbc9; cell set from pin-state prose per D-07
+  egress_controls: allow-biased   # an allow entry beats a deny, incl. allowInternetAccess:false (Blast radius; tcpfirewall/handlers.go:152-196) — drift 2026-08-20: tcpfirewall/ changed since fcc2edbc9; cell set from pin-state prose per D-07
+  credential_model: broker-relayed:spiffe-jwt-svid   # guest never holds the credential; SPIFFE JWT-SVID brokered at the egress proxy (Credential exposure; js-sdk/src/sandbox/iam.ts:41-50)
+  snapshot_model: create-is-resume:uffd-lazy-paging   # every create dispatches to Resume/RebootSandbox (sandboxes.go:242,255); uffd lazy paging + prefetch (sandbox.go:885) — drift 2026-08-20: uffd/ subtree + snapshot_template handlers changed since fcc2edbc9; cell set from pin-state prose per D-07
+  self_host: partial   # closed components: the credential-injecting egress proxy, belt (Self-hosting reality & the open-core seam)
+  warm_pool: false   # verified absent — grep -rniE "prewarm|warm.?pool" over packages/, iac/, docs/ (The distinguishing bet)
+  filesystem_sync: clone   # ADR-0017 probe record, 2026-08-20 — first-class Sandbox.git.clone(url, opts) wired into Sandbox, both Python SDKs + JS SDK (no anchor in e2b.md's own prose)
 # environments: / environment_relation: DELIBERATELY UNSET. Those keys describe how a
 # *harness* relates to an environment; E2B *is* the environment — the thing on the far side
 # of hermes' `bind`. It has no relation-to-an-environment of its own, so it does not appear

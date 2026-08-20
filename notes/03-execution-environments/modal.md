@@ -13,6 +13,15 @@ stars: 502   # the client repo only — not a measure of the product's reach
 stars_at: 2026-08-16
 read_at: 2026-08-16
 depth: survey   # client source (proto + shipped container agent) read closely; the ENVIRONMENT ITSELF is closed and characterized from (a) the wire contract and (b) dated vendor testimony — NOT from infra source. That grade cap IS the finding. Not run.
+environment_features:   # ADR-0017 block, set 2026-08-20 from the existing survey read at 59e6e618 — not a re-read
+  isolation_primitive: userspace-kernel:gvisor-runsc (source)   # proto runtime override "runc"/"gvisor" — modal_proto/api.proto:1908, 2641, 3434
+  egress_default: open (source)   # egress OPEN by default, open/blocked/allowlist model mutable at runtime — sandbox.py:248, api.proto:2983-2993
+  egress_controls: OPAQUE   # interface verified (block_network, outbound_cidr_allowlist, outbound_domain_allowlist); allow-vs-block precedence unstated
+  credential_model: split-plane (source)   # long-lived MODAL_TOKEN_ID/SECRET control-plane only (client.py:51-57); short-lived JWT to worker
+  snapshot_model: checkpoint-restore (testimony)   # bare family — gVisor-internals specific mechanism is Modal's own blog testimony, not source-verified
+  self_host: none (source)   # no infra repo; SaaS-only is the report's founding premise
+  warm_pool: OPAQUE   # pool sizes and per-account caps are server-side; client shows primitives, never limits
+  filesystem_sync: upload (source)   # no local execution mode; image builds stream a remote build context — ImageJoinStreaming, _image.py:433-441
 # environments: / environment_relation: DELIBERATELY UNSET — same as e2b. Modal IS the
 # environment, not a harness that relates to one, so it does not appear in the
 # environments matrix.
