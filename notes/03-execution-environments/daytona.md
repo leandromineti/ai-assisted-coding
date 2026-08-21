@@ -8,6 +8,7 @@ open_source: false   # describes the product's state TODAY: public and AGPL-3.0-
 stack: [TypeScript, Go, Python]   # apps/api is TS; apps/cli + apps/daemon are Go; broad Python surface too — see repo-facts.sh extensions (ts:1385, go:820, py:808, java:733, rb:386, tsx:362)
 version: v0.189.0-9-g4ee2c6365
 commit: 4ee2c6365   # the FREEZE PIN, derived via: git -C upstream/daytona rev-list -1 --before=2026-06-23 origin/main — NOT the branch tip. Cross-checked against planning's 2026-08-20 GitHub API observation (4ee2c6365) — match, no discrepancy. The clone is checked out --detach at this SHA and must stay there for build-tool-index.py --check to stay green; do not fast-forward it via sync-upstream.sh.
+closed_source_pin_note: pre-closure pin   # 2026-08-21, CR-01 fix: `open_source: false` above describes the product's state TODAY, not an absence of pinnable source — this field tells build-tool-index.py to render `commit` (as "4ee2c6365 (pre-closure pin)") in comparisons/tools.md's Version read column instead of the generic `closed source` literal used for genuinely unpinnable proprietary products. Opt-in and Daytona-specific by design; do not copy onto modal.md or pilot-shell.md without the same "closure event" narrative reason
 first_commit: 2024-02-06
 stars: 71943
 stars_at: 2026-08-21   # TODAY, post-closure — describes the repository now, not at the freeze pin. `commit:` above describes the freeze pin; `stars`/`stars_at` describe the repository today. Two different dates on one frontmatter block, which is the whole shape of this report.

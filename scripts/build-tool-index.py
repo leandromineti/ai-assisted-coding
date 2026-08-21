@@ -249,7 +249,21 @@ def render(reports: list[dict]) -> str:
         link = f"[{r['name']}](../{rel})"
         version = r.get("version") or "—"
         if not r.get("open_source", True):
-            version = "closed source"
+            # `open_source: false` usually means "no source to pin against" and the
+            # cell should say so plainly. The one exception: a report that sets
+            # `closed_source_pin_note` alongside a real `commit` (Daytona's
+            # before/after read — `open_source: false` there marks the product's
+            # CURRENT post-closure state for narrative purposes, not an absence of
+            # pinned source; see daytona.md's frontmatter comment). Opt-in via an
+            # explicit field, not inferred from version/commit presence alone, so
+            # this stays a one-report exception rather than silently changing
+            # every other closed report that happens to carry a version pin
+            # (modal, pilot-shell) — CR-01.
+            pin_note = r.get("closed_source_pin_note")
+            if pin_note and r.get("commit"):
+                version = f"{r['commit']} ({pin_note})"
+            else:
+                version = "closed source"
         surfaces = r.get("surfaces") or []
         if surfaces:
             shape = " + ".join(surfaces)

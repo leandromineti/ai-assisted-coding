@@ -33,7 +33,7 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 2 · Harnesses | aider | terminal · local | Python | Apache-2.0 | 47,763 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../notes/02-harnesses/aider.md) |
 | 2 · Harnesses | gemini-cli | terminal · local | TypeScript, Node, Ink | Apache-2.0 | 106,225 | 2025-04-15 | — | `v0.49.0-preview.0-49-gbef611950` | stub | [gemini-cli](../notes/02-harnesses/gemini-cli.md) |
 | 3 · Execution environments | cloudflare-sandbox-sdk | — | TypeScript, Cloudflare Workers | Apache-2.0 | 1,108 | 2025-06-22 | — | `@cloudflare/sandbox@0.12.7-2-g6abf639` | deep-dive | [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) |
-| 3 · Execution environments | daytona | — | TypeScript, Go, Python | AGPL-3.0 | 71,943 | 2024-02-06 | — | `closed source` | deep-dive | [daytona](../notes/03-execution-environments/daytona.md) |
+| 3 · Execution environments | daytona | — | TypeScript, Go, Python | AGPL-3.0 | 71,943 | 2024-02-06 | — | `4ee2c6365 (pre-closure pin)` | deep-dive | [daytona](../notes/03-execution-environments/daytona.md) |
 | 3 · Execution environments | e2b | — | Python, TypeScript, Go | Apache-2.0 | 13,423 | 2023-03-04 | — | `@e2b/python-sdk@2.39.1` | deep-dive | [e2b](../notes/03-execution-environments/e2b.md) |
 | 3 · Execution environments | microsandbox | — | Rust, TypeScript, Python, Go | Apache-2.0 | 7,829 | 2024-10-03 | — | `v0.6.12-3-g0191b03` | deep-dive | [microsandbox](../notes/03-execution-environments/microsandbox.md) |
 | 3 · Execution environments | modal | — | Python, Go, TypeScript | Apache-2.0 | 502 | 2021-07-09 | — | `closed source` | survey | [modal](../notes/03-execution-environments/modal.md) |
