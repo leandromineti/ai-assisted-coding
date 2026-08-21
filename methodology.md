@@ -59,6 +59,25 @@ observation into a false claim about current code. A lint whose only cheap remed
 worse than no lint. Drift is now reported with magnitude (commits ahead, files changed) so a
 human can decide whether a re-read is warranted; that decision is judgement, not a lint pass.
 
+- **3a. A count, ordinal, or "only" about this repo's own files is a claim that rots.**
+  Rule 1 dates claims about tools; rule 3 generates claims that are indexes. A hand-written
+  sentence about the corpus itself — "the category's only report", "the third deep-dive",
+  "that column is empty in every row" — sits between them: no generator keeps it true and
+  no lint can see it. Either derive the number at edit time and date it ("n=5 as of
+  2026-08-21"), or phrase it as the dated event it records ("first read, 2026-08-16") —
+  never as a standing present-tense fact.
+
+  *Why it earned its place:* three instances shipped in v2.0's Phase 8 (2026-08-20/21) and
+  were caught only by post-phase review: the category-3 index still called E2B "the
+  category's first and (so far) only report" while sitting directly above four newer linked
+  reports; "third/fourth/fifth read" ordinals disagreed between two reports and the index;
+  and the index's Adjudication section asserted a matrix column empty that the same file's
+  Open-questions section recorded as filled three days earlier. The sentence that failed
+  hardest was *true when written* (2026-08-16) — it rotted precisely because it was phrased
+  as a standing fact rather than a dated observation. v1.0 left the same class of scar (a
+  stale hand-recorded `known_sites` line reference; an incomplete `scripts/` table), so
+  this is a repeat offender, not a one-off.
+
 ## 4. Source claims are traceable or they're opinions
 
 Architecture claims name a file, a line, and a pinned commit
