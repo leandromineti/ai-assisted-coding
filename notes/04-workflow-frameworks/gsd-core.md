@@ -6,21 +6,22 @@ url: https://github.com/open-gsd/gsd-core
 license: MIT
 open_source: true
 stack: [Markdown, Node]
-version: v1.9.1-148-gfee72d55
-commit: fee72d55
-# PIN MOVED d04592de → fee72d55 at the 2026-08-18 deep-dive re-read (rule 4b: a pin moves
-# only with a re-read; this was one). exp-01 artifacts keep their own pin (d04592de).
+version: v1.11.0
+commit: 182f60b4
+# PIN MOVED d04592de → fee72d55 at the 2026-08-18 deep-dive re-read, and fee72d55 → 182f60b4
+# (= tag v1.11.0) at the 2026-08-21 release re-read (rule 4b: a pin moves only with a
+# re-read; both were). exp-01 artifacts keep their own pin (d04592de).
 first_commit: 2025-12-14
-stars: 8420
-stars_at: 2026-08-18
-read_at: 2026-08-18   # deep-dive; survey read 2026-07-28 @ d04592de, drift-checked 2026-08-16, exp-01 run late July
-depth: deep-dive   # 2026-08-18: runtime traced in source by three parallel readers (gsd-tools dispatcher + src/*.cts state/verify machinery; workflow architecture + isolation; drift + platform surface), load-bearing claims spot-verified in main session at the pin
-harness_targets: "18 install targets @ fee72d55 (bin/install.js:647): claude, codex, copilot, cursor, windsurf, cline, opencode, antigravity, kimi, kimi-code, kilo, pi, trae, qwen, hermes, codebuddy, zcode, augment (+ vscode extension). Gemini CLI removed upstream 2026-06-18 (sunset) — July's list was wrong at read time"
+stars: 8540
+stars_at: 2026-08-21
+read_at: 2026-08-21   # v1.11.0 release re-read; deep-dive 2026-08-18 @ fee72d55, survey 2026-07-28 @ d04592de, exp-01 late July
+depth: deep-dive   # 2026-08-18: runtime traced in source by three parallel readers, load-bearing claims spot-verified at the pin. 2026-08-21: same method over the fee72d55→v1.11.0 window (release substance; per-claim confrontation; provenance re-measurement)
+harness_targets: "18 install targets @ 182f60b4 (bin/install.js:838): claude, codex, copilot, cursor, windsurf, cline, opencode, antigravity, kimi, kimi-code, kilo, pi, trae, qwen, hermes, codebuddy, zcode, augment (+ vscode extension). List byte-identical fee72d55→v1.11.0; growth redirected to the out-of-tree EoS Registry (see 2026-08-21 assessment). Gemini CLI removed upstream 2026-06-18 (sunset)"
 workflow_features:   # survey 2026-07-28 + exp-01; completed & re-verified at the 2026-08-18 deep-dive
   intent_pipeline: true          # structured task graphs from requirements
-  deterministic_engine: true     # far beyond bookkeeping: 96k-line TS runtime (src/*.cts) behind a one-arm dispatcher; Kahn's-algorithm wave computation; engineered locking
-  format_gates: engine           # ADR-0011 graded: plan schema hard-errors in the runtime (src/verify.cts:846-900, 1063-1235); the category's only engine-graded format gate alongside OpenSpec's validator
-  measured_gates: prose          # ADR-0011 graded: measurement enforced in code one level up (#1478-1480 live-measurement, provenance rules) but the VERDICT is an LLM invocation — <verify> bodies never machine-read
+  deterministic_engine: true     # far beyond bookkeeping: 121k-line TS runtime (215 src/*.cts @ v1.11.0; 96.8k lines @ fee72d55) behind a one-arm dispatcher; Kahn's-algorithm wave computation; engineered locking
+  format_gates: engine           # ADR-0011 graded: plan schema hard-errors in the runtime (v1.11.0: src/verify.cts:867-870 fields, :1093-1145 artifacts, :1189-1330 key_links — now compiled under a vendored RE2 engine that refuses rather than guesses); the category's only engine-graded format gate alongside OpenSpec's validator
+  measured_gates: prose          # ADR-0011 graded: measurement enforced in code one level up (#1478-1480 live-measurement, provenance rules; v1.11.0: agents/gsd-plan-checker.md:718-733) but the VERDICT is an LLM invocation — <verify> bodies never machine-read
   process_gates: prose           # ADR-0011 graded: checkpoints honored by the orchestrator LLM; the codified boundary (agentVerdict may not block) is engine-enforced but is a meta-rule, not the gate itself
   context_isolation: true        # founding principle, now hook-ENFORCED: gsd-agent-isolation-guard blocks (exit 2) executor dispatch missing its isolation flag
   parallel_orchestration: true   # DAG waves computed in code + worktree machinery; dispatch itself is prose (model emits Agent() calls); Claude Workflow backend is default-off BETA
@@ -35,7 +36,7 @@ scope drift. Three principles: explicit plans as **structured task graphs**, **c
 execution contexts** per unit of work, and **real verification** producing human-readable
 evidence.
 
-Installs into **18 harnesses** (`bin/install.js:647`) via declarative per-runtime
+Installs into **18 harnesses** (`bin/install.js:838` @ v1.11.0; was `:647` @ fee72d55) via declarative per-runtime
 descriptors in `capabilities/*/capability.json` — not hand-written adapters. *(Corrected
 at deep-dive: July's six-harness list was wrong at read time — Gemini CLI had been
 removed 2026-06-18 after Google sunset it, surviving only as a cross-AI reviewer lane;
@@ -152,7 +153,10 @@ CommonJS Node (`.cjs` plus 177 `.cts`).
 localization investment nothing else in the set makes.
 
 4788 commits since **2025-12-14** — barely seven months old, the youngest project here by
-first-commit date, at roughly 680 commits/month.
+first-commit date, at roughly 680 commits/month. *(2026-08-21: that 4788 was a clone-state
+artifact — the same commit recounts as 4995 once all refs are fetched; 5364 at v1.11.0.
+Ratio at v1.11.0: 1442 `.md` vs 1006 `.cjs` — still majority prose, but the code half is
+growing faster; see the release assessment.)*
 
 ## Architecture — deep-dive 2026-08-18 (pin fee72d55; three-tract source read)
 
@@ -166,7 +170,8 @@ files exist there at the pin; a fresh clone cannot run until `npm run build:lib`
 
 ### The shape: four categories, one of them real
 
-`commands/gsd/*.md` (68) and `skills/gsd-*/SKILL.md` (71) are ~5-line-different shims —
+`commands/gsd/*.md` (68 *(2026-08-21: miscounted — 71 at this same pin)*) and
+`skills/gsd-*/SKILL.md` (71) are ~5-line-different shims —
 one surface counted twice. Both point into `gsd-core/workflows/*.md` (the actual
 methodology, 110 files), which lazy-loads `references/` (103 files) and per-workflow
 `steps/` fragments under a section manifest. Agents (34) auto-load via `subagent_type`.
@@ -210,6 +215,10 @@ After spec-kit (15/19 gates prose), GSD's classification runs four grades:
    **agent-isolation-guard**, whose header is the thesis: *"A prose backstop cannot
    fix a prose defect — it is the same class of artifact the model may equally skip.
    This hook enforces the invariant at the tooling `layer` instead."*
+   *(2026-08-21: "three" was a curated subset presented as a total — a lexical exit-2
+   grep matches 8 hook files at this same pin, including workflow-guard's force-`git
+   add` block and the two Windsurf pre-hooks. The trio above remains the right list
+   for the `.planning`/worktree/isolation invariants specifically.)*
 
 The `<verify>` bodies exp-01 credited are **never machine-read** — the runtime checks
 presence only (`verify.cts:744`, missing = warning at `:817`); executor and verifier
@@ -221,7 +230,9 @@ confer VERIFIED — a slopsquatted package also passes `npm view`").
 
 ### Context discipline: conversation is for humans, files are for agents
 
-Every producer step spawns a fresh-context subagent (7 dispatch sites); the ONE step
+Every producer step spawns a fresh-context subagent (7 dispatch sites *(2026-08-21:
+the "7" reproduces under no measure tried — counts range 5–39 depending on definition;
+the zero-for-discuss half is solid and stable at both pins)*); the ONE step
 with zero `Agent()` calls is `discuss-phase` — exactly where the human is. Handoffs are
 paths-not-content ("executors read files themselves with their fresh context window"),
 completion is detected by **filesystem spot-checks, not the return channel** ("never
@@ -290,6 +301,167 @@ sharp hazard for THIS repo's citation discipline: the fork inherited its predece
 issue numbers, mass-rewrote 174 URLs onto its own tracker, and its live counter
 (#3122) is ~18 days from colliding with inherited archive references (#3828 ceiling) —
 **cite commit hashes, not issue numbers, for anything pre-fork (before 2026-05-22)**.
+
+## Release assessment — v1.11.0 (2026-08-21; pin fee72d55 → 182f60b4)
+
+*Method: same three-tract pattern as the deep-dive, scaled to the release window —
+release substance, per-claim confrontation of every citation above against the v1.11.0
+tree, provenance re-measurement — with load-bearing findings spot-verified in the main
+session. Window: fee72d55 (2026-08-06) → 182f60b4 (= tag v1.11.0, 2026-08-19), 369
+commits / 1191 files; `main` is 1 commit past the tag, so this assesses current HEAD
+too. The v1.10.0 tag (68a04ccf, 2026-08-08) sits inside the window via a `next`-branch
+release flow, but only its 31-commit tail is new here — 92% of the window is v1.11.0,
+and v1.10.0's headline substance (write-guard, isolation guard, fragment model,
+verification ledger) was already in fee72d55 and is already covered above.*
+
+### Character: a hardening release that hunts its own dead prose
+
+fix:feat = 168:15 (11:1); 63.7% of all changed lines are `tests/`; the instruction surface
+(workflows + references + agents + capabilities) took **1.4%** of insertions and
+`gsd-core/workflows/` is net −73 lines. The largest new-code category after tests is
+**meta-enforcement**: 22 new `scripts/lint-*.cjs` drift guards plus 8 new eslint rules,
+including `lint-unreachable-guard-drift.cjs` — a guard against dead guards — several
+promoted directly from the repo's CONTEXT.md defect-predicate registry (bcf7b048).
+A framework spending its release on keeping its own prose and code from diverging is
+the closest thing to a category-4 tool adopting this repo's rule 3.
+
+### The headline: the "green-but-inert" epidemic, confirmed and systemic
+
+Deep-dive surprise #3 (dead prose no compiler can see) turns out to be a *class*, not
+an incident. Four independent instances found and fixed in this one window:
+
+- **46 spawn blocks across 24 workflows never delivered their required-reading
+  instruction** — spawners emitted `<files_to_read>` while agents gate on
+  `<required_reading>`; "you MUST Read every listed file" never fired (71180983; now
+  pinned by a build-time vocabulary lint).
+- **Four `execute-plan` steps silently never ran** — dispatch prompts listed companion
+  files as raw `@`-includes, which Claude Code does not expand inside an `Agent()`
+  prompt string (5452f1a7; now build-time embedded, size pinned by test).
+- **The 40,931-byte `verify-phase.md` workflow shipped to every runtime and was loaded
+  by nothing.** Deleted; its live gates moved to `references/verifier-phase-gates.md`,
+  eagerly loaded via the verifier's `<required_reading>` (d30c99bc).
+- **The verifier's abstention rule pointed at a definition that resolved nowhere** —
+  "explicit evidence" was defined only in `honest-verifier.md`, behind a `references/`
+  cite dead from every install location, so the term fell back to exactly the
+  symbol-presence notion the abstention protocol exists to refuse (285cd41b; definition
+  now inline in the agent). Part of a systemic sweep: 43 dead `references/` cites
+  across 19 shipped files, now gated at build time.
+
+`honest-verifier.md`, `edge-probe.md`, and `verification-patterns.md` are byte-identical
+across the window (verified: zero diff) — but the first should be read as *bypassed*,
+not stable: the fix moved its load-bearing definition into the agent rather than repair
+the file's role. Same pattern in bulk elsewhere: three shell guards that could never
+fire, ESLint silently skipping 56 source files (all of `hooks/`) while exiting 0, all
+ten `.githooks/pre-commit` guards inert, 25 test suites running (and passing) twice.
+The window's recurring failure mode is *green-but-inert*, not *wrong* — and it is the
+strongest evidence yet gathered here on the reliability floor of prose-graded enforcement.
+
+### Movements on the enforcement ladder: everything moved up, nothing moved down
+
+- **Completion became a disk-strict predicate** (e201cde7; `src/verification.cts:740-769`,
+  five consumers): phase-complete = `verification.status === 'passed'` on disk,
+  unconditionally — "A ROADMAP checkbox has no machine authority and is never
+  consulted." Retires the tolerance where missing/stale verdicts counted as
+  non-failing, so a project that never runs the verifier now reports incomplete, and
+  deleting a VERIFICATION.md *lowers* completion (the #3016 fix, generalized).
+  Completion is now falsifiable-by-artifact rather than assertable-by-checkbox.
+- **Untrusted plan regexes moved to a vendored RE2 engine** (`src/pattern.cts:127`,
+  6,480-line vendored `re2js` — a supply-chain posture choice over an npm dep).
+  `key_links[].pattern` is plan frontmatter, i.e. untrusted input the verifier
+  compiles: previously `(a+)+$` hung verify-phase and a malformed pattern was
+  neutralized into a match-almost-anything literal yielding false `verified: true`.
+  Now linear-time by construction, and unsupported patterns are *refused*
+  (`pattern_neutralized`, link left unverified) — a gate learning to refuse rather
+  than guess. Cost: backreferences/look-around silently degrade to unverified.
+- **A new bottom step on the enforcement ladder, below the agent altogether**: an
+  opt-in `.git/hooks/pre-commit` guard for `commit_docs`
+  (`src/commands.cts:2491-2660`) — the first GSD gate binding inside git itself,
+  stopping a raw `git commit` no agent ever touched. Off by default,
+  wired by no install path (verified) — it raises GSD's ceiling, not its default
+  posture. It exists because the prose grade demonstrably leaked (workflow steps were
+  staging `.planning/` with raw `git add`).
+- **The hardest stop in the autonomous loop is still prose, now honestly so**:
+  auto-mode was synthesizing "approved" for unmet `blocking-human` preconditions and
+  the blocker loop retried forever; both fixed (8fc88f66) — but the gate spans two
+  markdown artifacts and nothing in `src/` enforces it. The sharpest illustration yet
+  of where GSD's enforcement ladder tops out.
+
+No gate was demoted from code to prose. One deliberate non-promotion, stated with
+limits in-tree: the verifier's new coincidental-reliance classification is advisory,
+endogenous, "measurably weaker than the exogenous backstop tag", precision unmeasured.
+
+### Claim confrontation: the architecture section survives the pin move
+
+Everything load-bearing above holds at 182f60b4, with citations refreshed: one-arm
+dispatcher (`gsd-tools.cjs:4343-4345`, still zero non-default cases); plan-schema
+hard-errors (`src/verify.cts:867-870`, `src/phase.cts:898-903`); presence-only
+`<verify>` (`verify.cts:761`, warning at `:834`); live-measurement dimensions
+#1478-1480 (`agents/gsd-plan-checker.md:718-733`, text unchanged); provenance rules
+(`agents/gsd-phase-researcher.md:28-37`); 10 capability gates, 6 blocking / 4
+advisory, exit-0 verdicts with the halt in prose; the agentVerdict-may-not-block
+boundary (`capability-validator.cjs:2803-2806`); 18 install targets byte-identical
+(`bin/install.js:838`); isolation three-valued and fail-closed; claude-orchestration
+**still default-off BETA**, its manifest still stating the plan-checker and verifier
+"remain inline until separately wired". One footnote earned: `verify.cts` does
+lexically *parse* `<verify>` bodies into text for a warn-only cross-task ban scan —
+"never machine-read" is precisely "never machine-executed".
+
+### Provenance: the bus factor sharpens, and the collision prediction lands
+
+- **First external-fork PRs**: 0xdhx landed 54 commits (15.4% of the window) via two
+  fork merges (e705652b, 8f437cfb) — test-environment hermeticity plus verifier
+  fixes — and seven more non-maintainer identities squash-landed 11 commits. The
+  deep-dive's "no external-fork PRs" is now dated to its window.
+- **But concentration effectively rose**: 202 of the top author's 210 window commits
+  carry `Co-authored-by: sim <sim@local>` — a no-GitHub-identity, maintainer-side
+  address (paired agent or automation). Top author + sim = **80.1%** of the window.
+  Read bus factor as one effective owner at 80%, not two at 60/20. 12% of window
+  commits carry explicit Claude co-author trailers (a floor; trailer discipline is
+  inconsistent).
+- **Release regime matured**: zero rc tags since v1.7.0-rc.6 (07-12), zero patch
+  releases since v1.9.1 (07-31); minors every 7–11 days. Release frequency roughly
+  halved while release size grew — the June patch-storm era is over.
+- **The issue-counter collision happened on schedule.** The deep-dive predicted ~18
+  days to ceiling #3828; measured counter rate was ~39-41/day and the counter entered
+  the inherited band (floor **#3668**, measured ceiling actually **#3857**) on
+  ~2026-08-19 — the forecast was accurate at its stated ceiling but understated the
+  hazard by quoting the band's ceiling rather than its floor. Full traversal
+  completes ~08-24/25, after which every `#NNNN` below 3857 in-tree is permanently
+  ambiguous between live and pre-fork. **The pre-fork cite-by-hash rule is no longer
+  precautionary; it is mandatory.**
+
+### Platform: the surface froze on purpose
+
+The 18-runtime list is byte-identical across the window; the one new host (Reasonix)
+was explicitly *refused* an in-tree runtime ("build the extension for it" —
+`.out-of-scope/eos-registry-not-in-tree-runtime.md`) and landed as the third entry in
+the out-of-tree **EoS Registry** (Embeddable Orchestration System — a non-endorsing
+catalog for hosts embedding GSD via the Host-Integration Interface). Growth redirected,
+not stalled. The fragment model is unchanged (48 `steps/` fragments, +1; the 32,768-byte
+Codex anchor intact in all three places). The Node floor moved 22→24 in `package.json`
+`engines` — but nothing in the install path enforces it, no `engine-strict` exists, and
+the same release shipped a `RegExp.escape` fallback because the build itself broke on
+the Node 22 lane: **the declared floor and the buildable floor now differ**, and the
+in-tree claim that a seam test prevents exactly this divergence is stale.
+
+### Warts worth remembering
+
+A 134 MB STATE.md: frontmatter escaping doubled backslashes on every read-modify-write
+(2ⁿ−1 growth; OOM after 26 writes) — GSD's state file is a hand-parsed YAML/markdown
+hybrid, and this window carries ~20 separate frontmatter-preservation fixes around it.
+Repo hygiene: a zero-byte `pwned_cmdsub` (a shell-injection fix's own proof-of-execution
+artifact) and two `.pr-body-*.md` files sit at the repo root at v1.11.0 — none ship
+(`package.json` `files` allowlist), but all three landed via security/hardening PRs.
+
+### For the daily user (delta to the 2026-08-18 verdict)
+
+Nothing here argues for a switch; most of it argues the opposite. The release closes
+the gap between believed and actual enforcement — the direction this report said
+mattered — and the deflations stand unchanged: `<verify>` verdicts are still LLM-run,
+wave parallelism on Claude Code is still BETA-gated, and the bus factor is effectively
+one person at 80% with an agent co-author. The new watch-items are the Node-floor
+ambiguity (declared 24, builds on 22) and the now-live issue-number ambiguity for
+anything below #3857.
 
 ## Bleed
 
