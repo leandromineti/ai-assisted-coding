@@ -15,7 +15,7 @@ stars: 35166
 stars_at: 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
-features:
+harness_features:
   mcp: true
   turn_end_gates: false  # 2026-08-18 targeted probe at pin 5522c6f44: no stop-hook/should_block/turn-end machinery in core/
   ptc: false             # 2026-08-18 targeted probe at pin: no PTC mechanism in core/ (only vendored-model noise matched)          # core/context/mcp/MCPConnection.ts

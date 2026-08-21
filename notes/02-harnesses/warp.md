@@ -17,7 +17,7 @@ stars: 64121
 stars_at: 2026-08-11
 read_at: 2026-08-19   # deep-dive; survey was 2026-08-11 at the same pin. Upstream drifted 98 commits between the reads — dated drift answer in Drift, pin unmoved (rule 4b)
 depth: deep-dive   # 2026-08-19, three parallel readers: loop, context assembly, orchestration+permissions; load-bearing claims spot-verified at the pin. No run probe — GUI-first Rust monorepo, a build alone exceeds any reasonable probe budget, and no in-scope claim depends on runtime behavior
-features:
+harness_features:
   mcp: true            # crates/mcp (runtime.rs, oauth.rs, sse_transport/); TemplatableMCPServerManager
   lsp: true            # crates/lsp (manager.rs, install.rs); language-server selection is an onboarding step
   skills: true         # crates/ai/src/skills — SKILL.md format, WARP_SKILL_DIRS env, SkillScope precedence, 13 bundled skills

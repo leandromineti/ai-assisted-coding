@@ -115,7 +115,7 @@ def _load_feature_registry() -> list[dict]:
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
     known_blocks = {
-        "features",
+        "harness_features",
         "workflow_features",
         "memory_features",
         "model_features",
@@ -134,7 +134,7 @@ def _load_feature_registry() -> list[dict]:
 
 
 def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
-    """Frontmatter `features:` / `workflow_features:` / `memory_features:` /
+    """Frontmatter `harness_features:` / `workflow_features:` / `memory_features:` /
     `model_features:` keys must resolve against the feature registry (LINT-04a,
     D-06a). Escalation is the point: build-tool-index.py's `render_features` /
     `render_models` etc. only WARN on an unknown key and silently drop it from the
@@ -151,7 +151,7 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
     for e in registry:
         valid_by_block.setdefault(e["block"], set()).add(e["id"])
     blocks = (
-        "features",
+        "harness_features",
         "workflow_features",
         "memory_features",
         "model_features",
@@ -967,7 +967,7 @@ FIXTURES: list[dict] = [
     {
         "id": "unregistered-feature-key",
         "path": "notes/02-harnesses/fixture-bad-feature-key.md",
-        "text": "---\nname: fixture-tool\nfeatures:\n  totally_invented_key_xyz: true\n"
+        "text": "---\nname: fixture-tool\nharness_features:\n  totally_invented_key_xyz: true\n"
         "---\n\n# Fixture\n\nBody text, clean.\n",
         "expect": "fail",
         "why": "'totally_invented_key_xyz' resolves against no entry in the feature "
@@ -976,7 +976,7 @@ FIXTURES: list[dict] = [
     {
         "id": "registered-feature-key",
         "path": "notes/02-harnesses/fixture-good-feature-key.md",
-        "text": "---\nname: fixture-tool\nfeatures:\n  mcp: true\n---\n\n# Fixture\n\n"
+        "text": "---\nname: fixture-tool\nharness_features:\n  mcp: true\n---\n\n# Fixture\n\n"
         "Body text, clean.\n",
         "expect": "pass",
         "why": "'mcp' genuinely exists in the feature taxonomy's `features` block "

@@ -20,7 +20,7 @@ stars: 190554
 stars_at: 2026-07-28
 read_at: 2026-07-28   # drift-checked 2026-08-16 at 03bff6500 without re-reading (rule 4b) — cited surface nearly frozen (7 of 123 commits, 5 of them release syncs); all claims corroborated; pin deliberately not moved
 depth: deep-dive
-features:
+harness_features:
   mcp: true              # src/mcp/
   lsp: true              # src/lsp/
   hooks: true            # plugin lifecycle triggers, e.g. plugin.trigger("experimental.chat.messages.transform") in prompt.ts

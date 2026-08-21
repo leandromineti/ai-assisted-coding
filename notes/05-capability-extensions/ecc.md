@@ -15,7 +15,7 @@ stars_at: 2026-07-30
 read_at: 2026-07-30   # drift-checked 2026-08-11 at 623f2c02 without re-reading — see "Drift check"; one claim corrected, pin deliberately not moved
 depth: deep-dive   # ECC has no agent loop of its own; its runtime analogs were traced in source — learning pipeline (hooks/observe.sh → agents/observer-loop.sh → scripts/instinct-cli.py), enforcement lifecycle (hooks/hooks.json + memory-persistence contract), install/portability surface. The 281-skill catalog was sampled, not read; ecc2 read at README level
 harness_targets: "23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check"
-features:
+harness_features:
   learning_loop: true    # third verified instance — hook-observed sessions → background Haiku analysis → confidence-scored instinct files; traced at the scripts, not just SKILL.md (see Architecture)
 ---
 

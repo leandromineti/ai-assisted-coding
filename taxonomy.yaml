@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-21  # bumped 2026-08-21 (enforcement-ladder known_sites re-derived after gsd-core v1.11.0 release assessment shifted lines and added sites)
+checked: 2026-08-21  # bumped 2026-08-21 (known_sites re-derivation post gsd-core v1.11.0 assessment; ADR-0018 features->harness_features schema_renames entry)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -364,6 +364,23 @@ schema_renames:
     # alone breaks the generator (ADR-0015 § Sequencing). Phase 3 flips this to `applied`
     # in the same atomic commit that renames generator + template + report frontmatter,
     # after which the lint fails any surviving OLD key as an unapplied decoder (LINT-05).
+    status: applied
+    atomic: true
+  - old: features
+    new: harness_features
+    scope:
+      - "report frontmatter block `features:` (7 category-2 + 5 category-5 reports)"
+      - "notes/_template-tool-report.md"
+      - "notes/cross-cutting/feature-taxonomy.md (13 `block: features` registry entries)"
+      - "scripts/build-tool-index.py"
+    note: >-
+      ADR-0018: the original ADR-0010 block takes the <category>_features naming
+      pattern every later block used. Keys, definitions, kind_links and cell values
+      unchanged — purely a block-name rename. The registry's own top-level
+      `features:` list key inside feature-taxonomy.md's fenced YAML block is NOT
+      renamed (it names the registry entries, lives in body text, and LINT-05 scans
+      frontmatter only).
+    executes_in: same-day
     status: applied
     atomic: true
   - old: kind

@@ -36,11 +36,11 @@ depth: <stub | survey | deep-dive>
 # mcp-server | skill | hook | subagent-def | rules-file | config-pack | memory
 type: <see comment>
 # harness_targets: category-4 (and category-5) reports only — which harnesses the tool
-# officially installs into. Same discipline as features: set ONLY when verified in
+# officially installs into. Same discipline as harness_features: set ONLY when verified in
 # source or official docs; omitted means "not yet checked". Either a list of harness
 # names, or a short string for large sets (e.g. "44 integrations incl. …").
 harness_targets: [<Harness>, <Harness>]
-# workflow_features: category-4 reports only — same verified-only discipline as features:
+# workflow_features: category-4 reports only — same verified-only discipline as harness_features:
 # (omitted = not checked, false = checked and absent). A feature is a structural
 # PRESENCE-claim; whether it pays is the mechanism table's question. Definitions live
 # in the feature taxonomy — notes/cross-cutting/feature-taxonomy.md (ADR-0010), the
@@ -72,11 +72,11 @@ memory_features:
   deployment_mode: <self-host | cloud | both>
   harness_installer: <true | false>
   rule_extraction: <true | false>
-# features: set a key ONLY when verified in source or official docs — omitted means
+# harness_features: set a key ONLY when verified in source or official docs — omitted means
 # "not yet checked", false means "checked and absent". Both are claims; only one is safe
 # to guess, and neither should be. Keep the vocabulary to this fixed set so the generated
 # matrix stays comparable — don't add vendor pet names:
-features:
+harness_features:
   mcp: <true | false>              # MCP client support
   lsp: <true | false>              # language-server integration
   hooks: <true | false>            # deterministic lifecycle hooks / plugin triggers

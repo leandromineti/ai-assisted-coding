@@ -15,7 +15,7 @@ stars_at: 2026-08-18
 read_at: 2026-08-18   # survey read, same day as the stub
 depth: survey   # read: README, cognee-mcp/src/server.py (tool surface + save_interaction + improve + tool modes), codingagents/coding_rule_associations.py (top), pyproject dependency spec, evals/README. Cross-examined against ai-memory's docs/issues-cognee.md (competitor testimony, 2026-05-21) with two structural claims spot-checked in source at the pin. NOT read: the core pipeline internals (cognify tasks, retrievers), the frontend, the separate cognee-integrations repo (README via GitHub API only)
 harness_targets: "in-repo: cognee-mcp (MCP server, stdio/HTTP, agent-scoped datasets per client). Separate repos/packages, README-level: Claude Code marketplace plugin (cognee-integrations — hooks capture, prompt-submit injection, session-end graph sync; a Codex plugin shares its config), OpenClaw plugin (@cognee/cognee-openclaw on npm)"
-features:
+harness_features:
   learning_loop: false   # checked and absent IN THIS REPO at the pin: the MCP write paths (save_interaction, remember, improve) are agent-invoked tools — heavy work runs as background asyncio tasks *after* invocation, but nothing fires without a model call; no hook receiver, no scheduler. The separate cognee-integrations Claude Code plugin automates invocation via lifecycle hooks (capture + session-end sync) — README-level, not source-verified, and it runs in API mode, where the coding-rule extraction path is explicitly skipped (server.py:517-531)
 memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey read at b948f88d4 — not a re-read; core pipeline unread, plugin claims README-level
   memory_store: [graph, vector, rows]  # tripartite: knowledge graph + vector + relational

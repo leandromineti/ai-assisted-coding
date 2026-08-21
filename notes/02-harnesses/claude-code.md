@@ -15,7 +15,7 @@ stars: 141660
 stars_at: 2026-08-17   # of the issues/distribution repo — measures community gravity, not source adoption
 read_at: 2026-08-17
 depth: survey   # OBSERVATION-ONLY (issue #12): daily use + live-session instrumentation of v2.1.233 + platform docs. There is no source; every architecture claim below is behavior, config-surface, or testimony — graded inline. This can never honestly reach deep-dive: the loop and context assembly are not readable
-features:
+harness_features:
   mcp: true              # OBSERVED: .mcp.json convention, mcp__<server>__<tool> namespacing, MCP server management in-product
   hooks: true            # OBSERVED: deterministic lifecycle hooks configured in settings.json (the harness executes them, not the model)
   turn_end_gates: hook   # OBSERVED in official hooks docs (retrieved 2026-08-18): Stop hook exit-2 "prevents Claude from stopping, continues the conversation" — a turn-end veto at hook grade. NOTE: a user-configured SURFACE, empty by default (exp-03 rig verified no gates configured), unlike hermes' always-on loop policy

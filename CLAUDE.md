@@ -49,7 +49,7 @@ source actually touches, append a line to `refs/log.md`, and re-run
 
 **Ingest a tool.** Clone into `upstream/`, run `scripts/repo-facts.sh` for the mechanical facts
 (never hand-type stars or first-commit dates), write the report, re-run
-`python3 scripts/build-tool-index.py`. Set a `features:` key **only** when verified in source or
+`python3 scripts/build-tool-index.py`. Set a `harness_features:` key **only** when verified in source or
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
 
 **Lint.** Before committing:

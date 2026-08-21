@@ -18,7 +18,8 @@ Conventions:
   Whether a present feature *pays* is a mechanism question (see each category's index).
 - New keys follow **issue #2's two-verified-instances rule**: a key enters the
   registry only after the characteristic is verified in at least two tools.
-- `block` names the frontmatter block that carries the key (`features` for harnesses,
+- `block` names the frontmatter block that carries the key (`harness_features` for
+  category 2 — renamed from the original bare `features` 2026-08-21, ADR-0018,
   `workflow_features` for category 4, `memory_features` for category-5 `type: memory` reports
   — ADR-0013, `model_features` for category 1 — ADR-0014, `environment_features` for
   category 3 — ADR-0017). `applies_to` lists tool-taxonomy categories; per-type blocks
@@ -45,67 +46,67 @@ Conventions:
 
 ```yaml
 features:
-  # --- harness block (`features:`), applies to layer 2 ---
+  # --- harness block (`harness_features:`), applies to layer 2 ---
   - id: mcp
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: MCP client support
     kind_link: mcp-server
   - id: lsp
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: language-server integration
   - id: hooks
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: deterministic lifecycle hooks / plugin triggers
     kind_link: hook
     note: "supply side also carries layer-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks"
   - id: turn_end_gates
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: "native turn-end verification/stop gate — the harness can veto or re-prompt the model's attempt to end its turn; GRADED per ADR-0011/0012: engine | hook | script | prose | true | false"
     kind_link: hook
     note: "added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
   - id: skills
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: on-demand packaged instructions
     kind_link: skill
   - id: subagents
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: spawnable isolated agents
     kind_link: subagent-def
   - id: ptc
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: programmatic tool calling — model-emitted code drives tools in a sandboxed runtime instead of chat-loop tool calls
     note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it?"
   - id: plan_mode
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: built-in plan/act split
     note: "shape diverges across verified instances — enforced MODE (claude-code, opencode, cline) · tool (codex) · bundled skill (hermes) · per-query FLAG (warp, 2026-08-19: /plan sets UserQueryMode::Plan on that one submission, no sticky state, planning_enabled always on server-side) — but only `mode` has ≥2 instances, so the enum promotion is deferred (ADR-0012, tracked with issue #13)"
   - id: rules_files
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: standing-instruction files (value may list filenames)
     kind_link: rules-file
   - id: model_agnostic
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: bring-your-own-model by design
   - id: session_sharing
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: shareable session links/artifacts
   - id: evals
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: ships its own evaluation suite
   - id: learning_loop
-    block: features
+    block: harness_features
     applies_to: [2]
     definition: AUTONOMOUS agent-written memory/skills (background/spawned write path) — distinct from `skills` and from user-curated memory files
     kind_link: memory

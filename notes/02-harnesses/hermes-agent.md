@@ -17,7 +17,7 @@ stars: 222863
 stars_at: 2026-07-30
 read_at: 2026-07-30   # drift-checked 2026-08-12 at 0957277f2 without re-reading (rule 4b) — one claim overtaken since the pin, three corroborated; pin deliberately not moved
 depth: deep-dive
-features:
+harness_features:
   mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/)
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks

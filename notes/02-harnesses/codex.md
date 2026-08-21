@@ -17,7 +17,7 @@ stars: 102646
 stars_at: 2026-07-30
 read_at: 2026-07-30   # drift-checked 2026-08-16 at 57f42a8113 without re-reading (rule 4b) — three claims corroborated, two refined, the stuck-loop absence settled; pin deliberately not moved
 depth: deep-dive
-features:
+harness_features:
   mcp: true              # codex-mcp, mcp-server, rmcp-client crates; MCP prewarm in the turn loop
   lsp: false             # no LSP crate in the 94-crate workspace (crate list checked 2026-07-30); file-search is its own crate
   hooks: true            # hooks crate + hook_runtime.rs; stop hooks can veto turn termination (session/turn.rs)

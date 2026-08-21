@@ -15,7 +15,7 @@ stars: 65138
 stars_at: 2026-07-28
 read_at: 2026-07-28   # drift-checked 2026-08-16 at 574b8eb45 without re-reading (rule 4b) — all claims corroborated; upstream deleted the vestigial classifier this report flagged; pin deliberately not moved
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
-features:
+harness_features:
   mcp: true            # apps/vscode MCP configuration UI, McpPromptRow
   turn_end_gates: false  # 2026-08-18 targeted probe at pin dc175c73a: no stop-hook/should_block/turn-end machinery anywhere in src; attempt_completion's feedback loop is a HUMAN gate (process), not a native verification veto
   ptc: false             # 2026-08-18 targeted probe at pin: no execute_code/code-mode/programmatic mechanism in src
