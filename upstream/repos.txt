@@ -62,6 +62,15 @@
 # canonical repository reached via two paths, not two repos to compare. The
 # manifest URL below is the resolved slug.
 3|microsandbox|https://github.com/superradcompany/microsandbox
+# daytona, added 2026-08-21 as phase 8's fifth category-3 read and issue #11's
+# before/after study — the only environment in the category observable on both sides
+# of a closure event. The clone is deliberately checked out **detached** at a freeze
+# pin (pre-2026-06-23, mechanically derived via `git rev-list -1 --before=2026-06-23
+# origin/main`), not at the branch tip: the frozen source is one instrument, current
+# vendor documentation (post-closure) is the other, and the two are kept at distinct
+# evidence grades throughout the report (D-06). Do not fast-forward this clone via
+# sync-upstream.sh — that would move HEAD off the freeze pin.
+3|daytona|https://github.com/daytonaio/daytona
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot

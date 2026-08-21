@@ -19,6 +19,7 @@ The most-ignored category, because it's invisible until it fails.
 | **[Modal](modal.md)** | Serverless compute used as an agent sandbox; **gVisor `runsc`**, not a VM. **Read 2026-08-16** as the closed-environment control — client open, infra closed. | gVisor container | Low, metered |
 | **[Cloudflare Sandbox SDK](cloudflare-sandbox-sdk.md)** | Sandboxed execution on Workers; preview URLs, code interpreter. **Deep-dived 2026-08-20** — SDK+container open, isolation substrate testimony-only (bare `hardware-virt`, no mechanism named); Dynamic Workers is a sibling V8-isolate binding, not an SDK tier. | Full remote, substrate undisclosed | Low, metered — SDK triples upstream cold-start timeouts |
 | **[microsandbox](microsandbox.md)** | Local-first, embeddable microVM library — a caller's own process spawns the VM as a child, no server, no daemon. **Deep-dived 2026-08-21** — fills the local-VM-grade slot: full hardware-virt isolation with zero remote control plane, no default working anchor at all. | Full microVM, local process, no default mount | Low, self-hosted — no metering, cold boot every start |
+| **[Daytona](daytona.md)** | Docker-container sandboxes for agent code, read as a before/after study across the vendor's own 2026-06-11 closure event. **Read 2026-08-21** at a mechanically derived pre-closure freeze pin plus the post-closure docs route — privileged-by-default containers, a real warm pool via container-ownership transfer, tier-gated egress already documented before closure. | Shared-kernel container, privileged by default | Low, metered — real warm pool, priced-by-tier egress |
 | **Bundled (Devin, cloud Codex, Claude Code web)** | The harness ships its own sandbox; not separately selectable. | Vendor-defined | None — and no choice |
 
 ## The trap worth documenting first
@@ -308,6 +309,34 @@ total absence of any host path until the caller explicitly wires one in — reco
 than the originally-guessed Δ-vs-default row, because the guess and the evidence disagreed and
 the evidence wins.
 
+### A before/after instance (2026-08-21, Daytona)
+
+[`daytona.md`](daytona.md) is the category's fifth read and a structurally different kind of
+instance from the four before it: not a fresh subject at one pin, but the same product read
+twice — the frozen public source at a mechanically derived pre-closure freeze pin
+(`4ee2c6365`, 2026-06-19) and the current product through the documentation route two months
+after the vendor's own 2026-06-11 closure announcement. It does not fill the maximally-closed
+slot the previous successor-question sections left open (Daytona's post-closure client contract
+and trust surface are moderate, not thin), but holding one product on both sides of a real
+closure boundary produced a result no single-sided read could: **closure does not primarily
+remove facts, it removes the ability to convict a claim.** Plain capability findings mostly
+survive closure, because a vendor keeps re-documenting what it sells (a fully-specified warm
+pool and a materially richer credentials model are both documented today with no counterpart at
+the pin). Findings that were **contradictions between two instruments held at once** — docs
+asserting an isolation mechanism the code never configured, a code default disagreeing with the
+same product's own docs and its own shipped deployment, a public API declaring a feature its
+runner stubs — survive at a measured zero rate, because each required the source and the docs
+simultaneously and closure removed one of the two permanently. One of those frozen-source
+contradictions (privileged-by-default with no user-namespace configuration) is, word for word,
+still assertable by the vendor today — just no longer checkable by anyone who isn't the vendor.
+
+**Legibility-law count, updated:** the "closed" (n=3) and "closed but disclosure-rich" (n=1,
+Modal only) counts from the 2026-08-20 Cloudflare Sandbox SDK read are untouched — Daytona is a
+before/after instance, not a new closed instance, and does not cleanly fit either bucket without
+redefining them. New count this read introduces: **n=0 for "maximally closed"** — no report in
+this category has yet read a subject with a thin uncommented client, no trust center, and no
+advisories at all; that slot stays open on issue #11 after five reads.
+
 ## Axes that matter
 
 - **Blast radius** — what can it destroy? Files, the repo, the machine, production?
@@ -325,9 +354,13 @@ the evidence wins.
   **Sharpened 2026-08-20 (Cloudflare Sandbox SDK):** an open client over an unnamed substrate —
   the isolation mechanism itself is undisclosed even in vendor testimony, the thinnest
   disclosure yet seen — and the refined law still holds (source facts survive elsewhere in the
-  report; only the mechanism fact collapses, as E4 predicted by name). See both
-  successor-question sections above. Remaining: a wholly closed environment with no open client
-  at all — still untested. Issue #11.
+  report; only the mechanism fact collapses, as E4 predicted by name). ~~Remaining: a wholly
+  closed environment with no open client at all — still untested.~~ **Assessed 2026-08-21
+  (Daytona, before/after): not filled by this read** — Daytona's client contract and trust
+  surface (public SDKs, a trust center, a CVE advisory) are moderate, not thin, so the slot
+  stays genuinely open. What the before/after read adds instead: closure caps refutation
+  capacity, not fact coverage — see the dated subsection above. **A wholly closed environment
+  with no open client, no trust center, and no advisories at all is still untested. Issue #11.**
 - ~~Why has nobody verified `worktree` support for any harness?~~ **First cell filled
   2026-08-17: Claude Code, observed** — native enter/exit-worktree operations plus
   per-subagent worktree isolation ([`../02-harnesses/claude-code.md`](../02-harnesses/claude-code.md)).
