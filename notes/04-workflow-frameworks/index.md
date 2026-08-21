@@ -25,7 +25,7 @@ Ships as several pieces, which is itself instructive:
 
 | Piece | What | Category |
 |-------|------|-------|
-| `gsd-core` | The framework proper; 18 install targets @ fee72d55 (Gemini CLI removed upstream 2026-06-18 — July's list was stale at read time). | 4 |
+| `gsd-core` | The framework proper; 18 install targets @ 182f60b4/v1.11.0, list byte-identical since fee72d55 — growth redirected to the out-of-tree EoS Registry (Gemini CLI removed upstream 2026-06-18 — July's list was stale at read time). | 4 |
 | `gsd-pi` | Standalone CLI for autonomous workflows. | **2 — bleed** |
 | `gsd-browser` | Deterministic Chrome control with recording and assertions. | **3 — bleed** |
 | `gsd-workbench` | Desktop workspace. Announced, not shipped at check date. | 2 |
@@ -33,7 +33,8 @@ Ships as several pieces, which is itself instructive:
 
 *(2026-08-18: the "already installed on this machine" advantage is gone — no gsd-*
 artifacts under `~/.claude` on this host, almost certainly lost in the 2026-08-06 server
-rebuild. Deep-dived 2026-08-18 at fee72d55 — the category's third deep-dive:
+rebuild. Deep-dived 2026-08-18 at fee72d55 — the category's third deep-dive; release
+re-read 2026-08-21 at v1.11.0 (182f60b4), pin moved per rule 4b:
 [report](gsd-core.md).)*
 
 ### spec-kit — <https://github.com/github/spec-kit> · [report](spec-kit.md)

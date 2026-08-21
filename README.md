@@ -208,6 +208,16 @@ note. Revised when evidence moves._
    precisely because BMAD ships those gates outside the framework, in the escape
    hatch productized. →
    [`notes/04-workflow-frameworks/bmad-method.md`](notes/04-workflow-frameworks/bmad-method.md)
+   **Reinforced (2026-08-21, gsd-core v1.11.0 release re-read):** the migration
+   direction held under a 369-commit window — every enforcement movement went
+   prose→code (disk-strict completion predicate, vendored RE2 for untrusted plan
+   regexes, an opt-in git-hook guard below the agent altogether), none the other way, and
+   the window's recurring defect class was *believed-live prose found inert* (four
+   independent cases, incl. a 40KB workflow loaded by nothing) — the strongest
+   evidence yet on the reliability floor of prose-graded gates. One count corrected:
+   "three hard-blocking hooks" was a curated subset — a lexical exit-2 grep matches 8
+   hook files at both pins. →
+   [release assessment](notes/04-workflow-frameworks/gsd-core.md#release-assessment--v1110-2026-08-21-pin-fee72d55--182f60b4)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent categories sell are turning up *natively in
    category 2*, twice each: turn-end verification gates (hermes' `verification_stop`,

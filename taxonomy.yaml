@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-19  # bumped 2026-08-19 (Phase 4 CLAUDE.md integration: known_sites re-derivation, D-03 inflection note)
+checked: 2026-08-21  # bumped 2026-08-21 (enforcement-ladder known_sites re-derived after gsd-core v1.11.0 release assessment shifted lines and added sites)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -55,11 +55,14 @@ terms:
           ADR-0011's graded gate enforcement scale (engine/hook/script/prose) —
           unrelated to the taxonomy's top-level divisions.
         known_sites:
-          - "notes/04-workflow-frameworks/gsd-core.md:191"
-          - "notes/04-workflow-frameworks/gsd-core.md:193"
-          - "notes/04-workflow-frameworks/gsd-core.md:375"
+          - "notes/04-workflow-frameworks/gsd-core.md:196"
+          - "notes/04-workflow-frameworks/gsd-core.md:359"
+          - "notes/04-workflow-frameworks/gsd-core.md:376"
+          - "notes/04-workflow-frameworks/gsd-core.md:387"
+          - "notes/04-workflow-frameworks/gsd-core.md:547"
           - "notes/04-workflow-frameworks/bmad-method.md:105"
-          - "notes/cross-cutting/feature-taxonomy.md:143"
+          - "notes/cross-cutting/feature-taxonomy.md:148"
+          - "notes/05-capability-extensions/mem0.md:132"
       - compound: "capability ladder"
         canonical_source: >-
           Model reasoning-tier vocabulary (Anthropic's capability tiers) — unrelated
