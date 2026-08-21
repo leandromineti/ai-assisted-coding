@@ -36,8 +36,9 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Nous Research | — | hermes-agent | — | — | — | **1** |
 | Open GSD | — | — | — | gsd-core | — | **1** |
 | Spec Kitty, Inc. (Priivacy-ai) | — | — | — | spec-kitty | — | **1** |
+| superradcompany (open-source project; formerly at microsandbox/microsandbox, which now redirects here — checked 2026-08-21 via `gh api repos/microsandbox/microsandbox --jq .full_name`, one canonical repository reached via two slugs, not two repos) | — | — | microsandbox | — | — | **1** |
 | Topoteretes (topoteretes) | — | — | — | — | cognee | **1** |
 | Warp (warpdotdev) | — | warp | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | **1** |
 
-**32 vendors** across 39 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**33 vendors** across 40 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

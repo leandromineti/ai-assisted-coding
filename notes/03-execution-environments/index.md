@@ -18,6 +18,7 @@ The most-ignored category, because it's invisible until it fails.
 | **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The category's first and (so far) only report. | Full microVM/remote | Low, metered |
 | **[Modal](modal.md)** | Serverless compute used as an agent sandbox; **gVisor `runsc`**, not a VM. **Read 2026-08-16** as the closed-environment control — client open, infra closed. | gVisor container | Low, metered |
 | **[Cloudflare Sandbox SDK](cloudflare-sandbox-sdk.md)** | Sandboxed execution on Workers; preview URLs, code interpreter. **Deep-dived 2026-08-20** — SDK+container open, isolation substrate testimony-only (bare `hardware-virt`, no mechanism named); Dynamic Workers is a sibling V8-isolate binding, not an SDK tier. | Full remote, substrate undisclosed | Low, metered — SDK triples upstream cold-start timeouts |
+| **[microsandbox](microsandbox.md)** | Local-first, embeddable microVM library — a caller's own process spawns the VM as a child, no server, no daemon. **Deep-dived 2026-08-21** — fills the local-VM-grade slot: full hardware-virt isolation with zero remote control plane, no default working anchor at all. | Full microVM, local process, no default mount | Low, self-hosted — no metering, cold boot every start |
 | **Bundled (Devin, cloud Codex, Claude Code web)** | The harness ships its own sandbox; not separately selectable. | Vendor-defined | None — and no choice |
 
 ## The trap worth documenting first
@@ -283,6 +284,29 @@ channel for E4, not yet adopted into the principle text (see the report's E1-E4 
 **Legibility-law count, updated:** n=3 for the category (E2B, Modal, Cloudflare Sandbox SDK);
 n=1 for "closed but disclosure-rich" (Modal only — Cloudflare's substrate disclosure is thinner,
 not richer, so it does not add to that count).
+
+### Local-VM-grade slot filled (2026-08-21, microsandbox)
+
+[`microsandbox.md`](microsandbox.md) is the category's fourth deep-dive and the first
+instance in the seed inventory that is neither a remote metered service nor borrowed
+container infrastructure: an embeddable Rust microVM library, linked into the caller's own
+process, with no server and no daemon anywhere in the local path. It is a fourth open-source
+data point for the legibility law rather than a new closure test — nothing here caps the
+report's grade below SOURCE, so it does not move the "closed" or "closed but disclosure-rich"
+counts. What it does add: the four verified instances now span the full range from
+fully-remote-and-metered (E2B) to fully-local-and-embedded (microsandbox), with the same
+`hardware-virt` isolation-mechanism family reachable at both ends of that range.
+
+The component vocabulary's *working directory* element gets its sharpest specimen yet.
+Planning had hypothesized a local microVM might change host and principal while keeping the
+default working directory — the one combination no existing row expressed. The read does not
+support that reading: microsandbox mounts nothing from the host into the guest by default at
+all (no `current_dir()` on any mount path in the SDK or CLI spawn code), so there is no
+default working anchor to keep. That is a stronger, more total version of the worktree
+gitignore trap this index documents at the top — not a partial absence of some files, but a
+total absence of any host path until the caller explicitly wires one in — recorded here rather
+than the originally-guessed Δ-vs-default row, because the guess and the evidence disagreed and
+the evidence wins.
 
 ## Axes that matter
 

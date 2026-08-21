@@ -54,6 +54,14 @@
 # filesystem story leads there (D-14, e2b's two-pin idiom).
 3|cloudflare-sandbox-sdk|https://github.com/cloudflare/sandbox-sdk
 3|artifact-fs|https://github.com/cloudflare/artifact-fs
+# microsandbox, added 2026-08-21 as phase 8's fourth category-3 read and the first
+# local-VM-grade one — a libkrun-backed microVM runtime and library, neither
+# remote-metered nor container-only. The obvious slug `microsandbox/microsandbox`
+# is a GitHub redirect: `gh api repos/microsandbox/microsandbox --jq .full_name`
+# returns `superradcompany/microsandbox` directly (checked 2026-08-21) — one
+# canonical repository reached via two paths, not two repos to compare. The
+# manifest URL below is the resolved slug.
+3|microsandbox|https://github.com/superradcompany/microsandbox
 
 # Not clonable — closed source. Study by observation only:
 #   Claude Code, Cursor, Windsurf, Devin, Copilot
