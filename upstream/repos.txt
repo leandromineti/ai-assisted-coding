@@ -95,3 +95,7 @@
 5|everos|https://github.com/EverMind-AI/EverOS
 5|memos|https://github.com/MemTensor/MemOS
 5|memmachine|https://github.com/MemMachine/MemMachine
+# OpenViking, added 2026-08-21 on owner request — ByteDance/Volcengine's entry into the
+# memory kind, sighted via its GitHub repo. Ingested straight to stub (no candidates row:
+# the ask was ingestion, not a sighting).
+5|openviking|https://github.com/volcengine/OpenViking

@@ -54,5 +54,6 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 5 · Extensions | everos | — | Python | Apache-2.0 | 12,126 | 2026-06-05 | use-cases/claude-code-plugin/ exists in-repo (file listing at the pin) — a Claude Code plugin as a shipped use case; other harness targets not checked | `v1.2.3-5-gd07cddc` | stub | [everos](../notes/05-capability-extensions/everos.md) |
 | 5 · Extensions | memmachine | — | Python | Apache-2.0 | 3,178 | 2025-08-15 | integrations/openclaw/ and a Strands integration in-repo (file listing at the pin); not verified per-target | `v0.3.9-20-g2d28c1c` | stub | [memmachine](../notes/05-capability-extensions/memmachine.md) |
 | 5 · Extensions | memori | — | Rust, Python, TypeScript | Apache-2.0 | 16,128 | 2025-07-24 | · | `v3.3.6-24-g538b61f` | stub | [memori](../notes/05-capability-extensions/memori.md) |
+| 5 · Extensions | openviking | — | Python, TypeScript, Rust | AGPL-3.0 | 31,583 | 2026-01-29 | · | `v0.4.16-7-g2af48624` | stub | [openviking](../notes/05-capability-extensions/openviking.md) |
 
-**41 tools** — 16 deep-dive · 17 stub · 8 survey.
+**42 tools** — 16 deep-dive · 18 stub · 8 survey.
