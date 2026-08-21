@@ -182,7 +182,8 @@ environment*, not about any harness's relationship to it (E4 below is one), so t
 being harness-side does not make the category harness-side. E1–E3 stand as category-3 principles.
 
 **E4. An execution environment's economics leak upward into kernel and scheduler choices
-that no harness can see.** *(single-instance — E2B, 2026-08-16; structurally argued)* Every
+that no harness can see.** *(convergent — E2B, cloudflare-sandbox-sdk, Daytona, 2026-08-21;
+microsandbox a bounded exception — see the 2026-08-21 confrontation below)* Every
 "create" is a snapshot **resume** with no warm pool; the resume working-set is computed by
 booting the template twice at build time and intersecting touched pages; guest `kcompactd`
 is disabled because host-side hugepage backing would dirty the snapshot diff; `discard` on
@@ -192,6 +193,59 @@ content that defeated the "category 3 is just an axis of category 2" verdict. Fa
 single-instance by construction: if a **closed** environment read (Modal/Daytona/Cloudflare)
 yields only testimony, E4 is real but legible only when the environment is open —
 [`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md), issue #11.
+
+*Confronted 2026-08-21 (Phase 8 — cloudflare-sandbox-sdk, microsandbox, Daytona reads; full
+verdicts in `08-04-SUMMARY.md`):*
+
+**E1.** CONFIRMS, three times over. cloudflare-sandbox-sdk: the security module's own header
+states "trust container isolation, only protect SDK control plane" as an explicit design
+position — the same ceiling-not-model logic, stated by the vendor rather than inferred.
+microsandbox: the logic sharpens with isolation fully decoupled from any service —
+hardware-virt with no vendor, no control plane, no daemon; the cost that buys autonomy moves
+entirely to the host (a KVM/HVF/WHP-capable machine) and to latency (no warm pool to hide a
+cold boot behind). Daytona: a new mechanism — the autonomy ceiling is priced by billing tier,
+$500 of lifetime spend converting a restricted network posture into open internet reach with
+no code change involved.
+
+**E2.** CONFIRMS, three times over, each the sharpest fit the category has produced so far in
+its own report. cloudflare-sandbox-sdk: a FUSE overlay mount in production silently becomes an
+`unsquashfs` extraction locally — same API, different persistence semantics, with an in-source
+error hint that exists only because the mismatch once looked like nothing at all. microsandbox:
+the purest form yet — not a partial absence (the worktree/gitignore trap this principle names)
+but a total one; no `current_dir()` on any mount path anywhere in the SDK or CLI, so a bare
+`Sandbox::start()` finds an empty machine. Daytona: the same principle running in the opposite
+direction — where E2B spends isolation to protect its boundary, Daytona spends its boundary to
+buy fidelity (privileged-by-default containers, `/dev/kvm` passthrough for Android emulation,
+GPU passthrough), engineering fidelity back in by giving isolation up rather than by
+re-injecting what isolation hid.
+
+**E3.** Silent, matching precedent exactly — all three reads confirm what e2b.md and modal.md
+already established: the read subject *is* the environment a harness relates to, not a harness
+itself, so `environments:`/`environment_relation:` frontmatter stays unset on all five
+category-3 reports. No new evidence for or against E3's own claim (the four verbs live in
+category-2 tools); category 3's silence on E3 is now five-for-five.
+
+**E4.** CONFIRMS on two of three, upgraded to convergent; genuinely CONTRADICTS as literally
+stated on the third, which sharpens rather than breaks the principle. cloudflare-sandbox-sdk
+*is* E4's own named falsification test, run for real: the closed isolation substrate yields
+testimony only, a bare family with no source-nameable mechanism reachable at any grade —
+exactly as the falsifiability clause predicted. Daytona confirms with a second convergent
+instance: E2B and Daytona face the identical "make create cheap" pressure and solve it with
+opposite mechanisms (snapshot-resume vs. a warm pool that rewrites ownership of an
+already-running container) — economics leaking upward twice, independently, in different
+products. Daytona also amends the falsifiability clause itself: economics that land in tier,
+quota, or lifecycle policy are disclosure-forced and survive closure (the tier-gated egress
+policy was already documented in Daytona's own frozen-source docs, months before closure);
+economics that land in kernel, scheduler, or tenancy internals are removed completely by
+closure (the warm-pool ownership-transfer mechanism has no post-closure analog reachable at
+any grade). microsandbox contradicts the principle exactly as worded — there is no vendor at
+all in the local-first path, so no vendor economics exist to leak — but the underlying
+mechanism generalizes past the word "vendor": host-resource constraints (not billing) drive
+the same kind of pressure into a dirty-page writeback credit pool and a CPU placement-lease
+arbitration scheme shared fairly across every VM on one host. The refined form: *an execution
+environment's resource economics — vendor-priced where a vendor exists, host-priced where none
+does — leak upward into kernel, scheduler, and policy choices no harness can see; policy-level
+leaks are disclosure-forced and survive closure, internals-level leaks do not.*
 
 ---
 

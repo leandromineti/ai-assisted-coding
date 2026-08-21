@@ -269,10 +269,23 @@ note. Revised when evidence moves._
    no jailer running as root; every "create" secretly a snapshot resume with no warm pool;
    the credential-injection proxy absent from the open-source build; guest `kcompactd`
    disabled for host snapshot-diff economics). One genuine population member falsifies "fails
-   as a population." *Live caveat:* the result may be an artifact of E2B being open — a
-   closed environment (Modal/Daytona/Cloudflare) might yield only testimony, which
-   [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) exists to test.
+   as a population." *Caveat refined 2026-08-21, after three more category-3 reads
+   (cloudflare-sandbox-sdk, microsandbox, Daytona):* partly confirmed, partly sharpened, not
+   fully closed. cloudflare-sandbox-sdk's closed isolation substrate reproduced the fear
+   exactly — testimony only, no source-nameable mechanism reachable at any grade. Daytona
+   (closed, but disclosure-richer than Cloudflare) split the caveat by kind: economics that
+   land in tier, quota, or lifecycle policy survive closure fully documented; economics that
+   land in kernel, scheduler, or tenancy internals do not survive at all. microsandbox,
+   genuinely open but with no vendor in its local-first path, showed the underlying mechanism
+   generalizes past vendor billing to host-resource scarcity. None of the three is the
+   maximally closed case
+   [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) actually asked
+   about — a thin, uncommented client with no trust center and no advisories at all — so that
+   test remains open after five reads.
    → [`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md),
+   [`notes/03-execution-environments/cloudflare-sandbox-sdk.md`](notes/03-execution-environments/cloudflare-sandbox-sdk.md),
+   [`notes/03-execution-environments/microsandbox.md`](notes/03-execution-environments/microsandbox.md),
+   [`notes/03-execution-environments/daytona.md`](notes/03-execution-environments/daytona.md),
    [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md)
 10. **A task-level trap instrument that cannot rank same-tier runs still separates model
     tiers — and its items are not monotone in capability** (2026-08-17, measured). exp-02's

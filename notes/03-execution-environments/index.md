@@ -1,6 +1,6 @@
 # Category 3 — Execution environments
 
-`checked: 2026-08-20`
+`checked: 2026-08-21`
 
 Where the agent's code actually runs, and what it can damage. See
 [`../../taxonomy.md`](../../taxonomy.md).
@@ -336,6 +336,19 @@ before/after instance, not a new closed instance, and does not cleanly fit eithe
 redefining them. New count this read introduces: **n=0 for "maximally closed"** — no report in
 this category has yet read a subject with a thin uncommented client, no trust center, and no
 advisories at all; that slot stays open on issue #11 after five reads.
+
+### Population-level synthesis (2026-08-21, five reads)
+
+No single read states this; it only becomes visible with all five rows in
+[`comparisons/features.md`](../../comparisons/features.md) § Execution environments read
+together. `isolation_primitive` now attests three of ADR-0017's four closed families:
+`hardware-virt` three times over (e2b, cloudflare-sandbox-sdk, microsandbox),
+`userspace-kernel` once (modal), `shared-kernel` once (daytona). `os-native` remains entirely
+unattested in this category. Hardware-virt is not a disclosure-gated choice reserved for
+well-documented vendors — it spans the population's full disclosure range, from e2b's and
+microsandbox's fully open source to cloudflare-sandbox-sdk's testimony-only substrate — so
+disclosure and isolation strength vary independently of each other in this population, not
+together.
 
 ## Axes that matter
 
