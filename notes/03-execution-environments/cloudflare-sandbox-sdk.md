@@ -16,7 +16,7 @@ first_commit: 2025-06-22
 stars: 1108
 stars_at: 2026-08-20
 read_at: 2026-08-20
-depth: deep-dive   # category 3's third deep-dive; three-tract source read (D-15), load-bearing claims spot-verified at the pin by the main session before writing (08-01-PLAN.md Task 2)
+depth: deep-dive   # category 3's second deep-dive (2026-08-21 correction, WR-02: counting only deep-dive-depth category-3 reports in read order — e2b 1st, this 2nd; modal is depth: survey and does not count); three-tract source read (D-15), load-bearing claims spot-verified at the pin by the main session before writing (08-01-PLAN.md Task 2)
 environment_features:   # ADR-0017 block, set 2026-08-20 from the deep-dive read at 6abf639 (and artifact-fs @ 2b87a48 for filesystem_sync) — Task 3 gate outcome: no lattice extension needed (see 08-01-SUMMARY.md); Dynamic Workers is a sibling platform binding with zero SDK surface and gets no cell (D-01's two-instance bar unmet by one sighting)
   isolation_primitive: hardware-virt (testimony)   # bare family — vendor states "its own VM" three times, no hypervisor/VMM named anywhere reachable (COV-01; What it is / Isolation mechanism); @cloudflare/containers pinned but not vendored in this clone
   egress_default: open (testimony)   # SDK assigns no default (enableInternet read-only in packages/sandbox/src, zero assignments — sandbox.ts:242,7807,7882); base-class default per vendor docs, retrieved 2026-08-20 (Blast radius)
@@ -34,7 +34,9 @@ environment_features:   # ADR-0017 block, set 2026-08-20 from the deep-dive read
 
 # Cloudflare Sandbox SDK
 
-The third category-3 deep-dive, and the first read against a **split-openness** subject: the
+The second category-3 deep-dive (2026-08-21 correction, WR-02 — counting only deep-dive-depth
+reports: e2b 1st, this 2nd; modal is `depth: survey` and does not count), and the first read
+against a **split-openness** subject: the
 client-and-container half is open (`cloudflare/sandbox-sdk`), the substrate that actually
 enforces isolation is not readable from any artifact this repo can reach — a stronger closure
 than Modal's, whose leaky proto at least named a runtime string. Read via a three-tract split

@@ -39,7 +39,10 @@ environment_features:   # ADR-0017 block, set 2026-08-21, hybrid-sourced per key
 
 # Daytona
 
-The third category-3 report, and a different kind of read than E2B or Modal: not a single
+The fifth category-3 report (2026-08-21 correction, WR-03 — cloudflare-sandbox-sdk and
+microsandbox both predate this read and are also category-3 reports), and the first structured
+as a before/after study across a vendor's own closure event — a different kind of read than
+E2B or Modal, the category's two prior closed/open-comparison studies: not a single
 snapshot of one product, but the same product read twice across a real closure event. On
 2026-06-11 Daytona announced its production codebase was moving private, citing security —
 "AI can now be pointed at an open source repository and systematically search it for

@@ -15,7 +15,7 @@ The most-ignored category, because it's invisible until it fails.
 | **git worktrees** | Parallel checkouts of one repo; lets several agents work without collision. | Filesystem only — same machine, same network, same credentials | Low |
 | **Devcontainers** | Declarative dev environment in a container; reproducible toolchain. | Process + filesystem | Medium |
 | **Docker** | General container isolation, hand-rolled. | Process + filesystem + network | Medium |
-| **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The category's first and (so far) only report. | Full microVM/remote | Low, metered |
+| **[E2B](e2b.md)** | Remote sandboxes purpose-built for agent code execution. **Deep-dived 2026-08-16** — Firecracker microVMs, no jailer, create-is-resume. The category's first report (2026-08-21 correction, methodology 3a: four more have followed since — Modal, Cloudflare Sandbox SDK, microsandbox, Daytona). | Full microVM/remote | Low, metered |
 | **[Modal](modal.md)** | Serverless compute used as an agent sandbox; **gVisor `runsc`**, not a VM. **Read 2026-08-16** as the closed-environment control — client open, infra closed. | gVisor container | Low, metered |
 | **[Cloudflare Sandbox SDK](cloudflare-sandbox-sdk.md)** | Sandboxed execution on Workers; preview URLs, code interpreter. **Deep-dived 2026-08-20** — SDK+container open, isolation substrate testimony-only (bare `hardware-virt`, no mechanism named); Dynamic Workers is a sibling V8-isolate binding, not an SDK tier. | Full remote, substrate undisclosed | Low, metered — SDK triples upstream cold-start timeouts |
 | **[microsandbox](microsandbox.md)** | Local-first, embeddable microVM library — a caller's own process spawns the VM as a child, no server, no daemon. **Deep-dived 2026-08-21** — fills the local-VM-grade slot: full hardware-virt isolation with zero remote control plane, no default working anchor at all. | Full microVM, local process, no default mount | Low, self-hosted — no metering, cold boot every start |
@@ -162,9 +162,9 @@ fact about an environment:
   from studying an environment on its own.**
 - The generated matrix has **zero category-3 rows** — 4 of 22 reports declare `environments:`,
   and all four are harnesses.
-- The `worktree` column is **empty across every row**, despite the worktree trap being this
-  category's founding scar. The one environment with a real war story here has no verified
-  support data anywhere.
+- The `worktree` column was **empty across every row as of 2026-08-16**, despite the worktree
+  trap being this category's founding scar — superseded 2026-08-17, see Open questions below:
+  the first cell (Claude Code) was filled the next day.
 - The taxonomy's own scope note concedes the members are "borrowed infrastructure" that
   "earn no survey of their own here" — the category is defined such that its entities don't
   merit study. A category whose members nobody is meant to study.
@@ -288,7 +288,9 @@ not richer, so it does not add to that count).
 
 ### Local-VM-grade slot filled (2026-08-21, microsandbox)
 
-[`microsandbox.md`](microsandbox.md) is the category's fourth deep-dive and the first
+[`microsandbox.md`](microsandbox.md) is the category's third deep-dive (2026-08-21 correction,
+WR-02 — counting only deep-dive-depth reports: e2b, cloudflare-sandbox-sdk, this one; modal is
+`depth: survey` and does not count) and the first
 instance in the seed inventory that is neither a remote metered service nor borrowed
 container infrastructure: an embeddable Rust microVM library, linked into the caller's own
 process, with no server and no daemon anywhere in the local path. It is a fourth open-source
