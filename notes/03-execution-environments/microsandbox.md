@@ -14,7 +14,16 @@ first_commit: 2024-10-03
 stars: 7829
 stars_at: 2026-08-21
 read_at: 2026-08-21
-depth: deep-dive   # isolation mechanism, network defaults, and filesystem/credential model traced in source (three parallel Opus reads, orchestrator-dispatched; load-bearing claims independently spot-verified at the pin by this executor session and flagged [✓]). NOT run — /dev/kvm absent on this host 2026-08-21; every behavioural claim is static-source-derived, never OBSERVED. Cell block lands in the next commit per this repo's two-commit-per-tool convention.
+depth: deep-dive   # isolation mechanism, network defaults, and filesystem/credential model traced in source (three parallel Opus reads, orchestrator-dispatched; load-bearing claims independently spot-verified at the pin by this executor session and flagged [✓]). NOT run — /dev/kvm absent on this host 2026-08-21; every behavioural claim is static-source-derived, never OBSERVED.
+environment_features:   # ADR-0017 block, set 2026-08-21 from the deep-dive read at 0191b03 — not a re-read
+  isolation_primitive: hardware-virt:msb-krun-vmm   # Isolation mechanism — the spine, step 9 + lattice verdict; KVM/HVF/WHP fail-closed on all 3 host OSes, no C libkrun FFI (0 hits repo-wide), VMM is the project's own Rust crate msb_krun (Cargo.toml:91, =0.1.31 exact pin)
+  egress_default: open   # Blast radius section; crates/network/lib/policy/types.rs:724-727 (from_profiles([Public])) + config/types.rs:171-177 (enabled: true) — carve-out: metadata/private/loopback/multicast/host denied by the same default, destination.rs:35-124
+  egress_controls: allow-biased   # Blast radius section; policy/types.rs:453 (first-match-wins, not deny-overrides — a caveat this cell can't hold, see report prose)
+  credential_model: broker-relayed:tls-proxy-placeholder-substitution   # Credential exposure section; crates/network/lib/network.rs:406-408,446-449 (guest holds "$MSB_<VAR>", real value substituted only at the host TLS proxy for allow-listed hosts) — coined specific value, no existing registry precedent for this mechanism
+  snapshot_model: explicit-backup:sparse-upper-copy   # Cell notes section; sdk/rust/lib/snapshot/create.rs:200-205 (scope: SnapshotScope::Disk, sparse-aware copy of the writable upper.ext4) — user-invoked `msb snapshot save`, not automatic; Resumable variant reserved in the schema (manifest.rs:77-82) but constructed only in tests
+  self_host: full   # No open-core seam section; crates/utils/lib/lib.rs:19,156-172 (everything under one operator-controlled $MSB_HOME, no daemon, no telemetry beacon)
+  warm_pool: false   # Cell notes section — verified absent, zero hits across three independent pattern sets (prewarm/prestart/preboot/prespawn/standby over crates/; "warm pool"/"vm pool"/"sandbox pool" over docs/; warm.?pool/pre.?warm over sdk/ packages/); idle sandboxes are torn down, not parked (crates/runtime/lib/vm.rs:1223,1251)
+  filesystem_sync: [mount, upload]   # Cell notes section — conjunction: both genuinely first-class (mount: 4 types across CLI+all SDKs, crates/cli/lib/commands/common.rs:131,135; upload: sdk/rust/lib/sandbox/fs.rs:466 copy_from_host over the command channel); no default anchor either way — nothing is mounted unless the caller explicitly asks (current_dir() absent from every mount-path grep scope); no `clone` (git-clone) surface exists anywhere in this codebase
 # environments: / environment_relation: DELIBERATELY UNSET. Those keys describe how a
 # *harness* relates to an environment; microsandbox *is* the environment — the thing on
 # the far side of a caller's `bind`, same reasoning as e2b.md. It has no relation-to-an-
@@ -295,10 +304,11 @@ optionally bundled fully offline (`msb snapshot save --with-image`,
 and `agentd` binaries from GitHub Releases (`crates/utils/lib/lib.rs:195-228`) — neither is
 per-sandbox runtime coupling to a vendor.
 
-## Cell notes (for the next commit's ADR-0017 cell block)
+## Cell notes (transcribed into the frontmatter's ADR-0017 block above)
 
-Not the cells themselves — D-03's audit order puts those in the next commit — but the
-report-side anchors that commit will point at, so the reasoning is visible in one place:
+D-03's audit order keeps this reasoning in report prose, transcribed into the frontmatter's
+`environment_features:` block in the same commit as this section — the anchor comments on
+each cell point back here:
 
 - **`isolation_primitive`** — `hardware-virt`, well-evidenced on all three host platforms; see
   the lattice verdict above. No tier falls outside the four ADR-0017 families.
@@ -311,10 +321,9 @@ report-side anchors that commit will point at, so the reasoning is visible in on
 - **`credential_model`** — the guest holds a placeholder, never the value; substitution
   happens at the host's own TLS-intercepting proxy for allow-listed hosts only. This is a
   broker sitting between the guest and the real credential, structurally closer to e2b's
-  `broker-relayed` family than to `plain-env-var` or `split-plane` — but the specific
-  mechanism (host-proxy placeholder substitution under TLS interception) has no existing
-  specific-half precedent in the registry and is not coined here; that is the next commit's
-  decision to make against the report's own evidence.
+  `broker-relayed` family than to `plain-env-var` or `split-plane`. The specific mechanism
+  (host-proxy placeholder substitution under TLS interception) has no existing specific-half
+  precedent in the registry; the cell coins `tls-proxy-placeholder-substitution` for it.
 - **`snapshot_model`** — creation is hardcoded to disk scope at the one construction site
   (`sdk/rust/lib/snapshot/create.rs:205` — `scope: SnapshotScope::Disk` **[✓]**); the schema
   separately *reserves* a `Resumable` variant "Disk, memory, and device state that can resume
@@ -347,11 +356,12 @@ report-side anchors that commit will point at, so the reasoning is visible in on
   (`sb.fs().copy_from_host(...)`, `sdk/rust/lib/sandbox/fs.rs:466`) that the same docs rank
   explicitly second for bulk transfer. No `clone` (repo-cloning) surface exists anywhere in
   this codebase — the one grep hit for `clone` in this codebase means reflink/copy-on-write
-  file cloning, never `git clone`. Whether the cell records `mount` alone or the conjunction
-  `[mount, upload]` is the next commit's call against ADR-0017's list-means-conjunction rule;
-  either way, the honest prose point is that **no mount is ever implicit** — this environment
-  has no notion of a default working directory at all, the sharpest specimen of the
-  component vocabulary's "working directory" element this category has produced.
+  file cloning, never `git clone`. The cell records the conjunction `[mount, upload]` — ADR-0017's
+  list-means-conjunction rule applies cleanly, since both are genuinely, independently offered,
+  not alternate uncertain readings of one capability. The honest prose point either way: **no
+  mount is ever implicit** — this environment has no notion of a default working directory at
+  all, the sharpest specimen of the component vocabulary's "working directory" element this
+  category has produced.
 
 ## Bleed
 

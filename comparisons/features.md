@@ -115,7 +115,7 @@ checked, honestly unclaimed.
 |---|---|---|---|---|---|---|---|---|---|
 | [cloudflare-sandbox-sdk](../notes/03-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | `hardware-virt (testimony)` | `open (testimony)` | `allow-biased (testimony)` | `plain-env-var (source)` | `explicit-backup:squashfs-r2-overlay (source)` | `partial` | ✓ | `clone` |
 | [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | `hardware-virt:firecracker-microvm` | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `partial` | ✗ | `clone` |
-| [microsandbox](../notes/03-execution-environments/microsandbox.md) | Apache-2.0 | · | · | · | · | · | · | · | · |
+| [microsandbox](../notes/03-execution-environments/microsandbox.md) | Apache-2.0 | `hardware-virt:msb-krun-vmm` | `open` | `allow-biased` | `broker-relayed:tls-proxy-placeholder-substitution` | `explicit-backup:sparse-upper-copy` | `full` | ✗ | `mount`, `upload` |
 | [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | `userspace-kernel:gvisor-runsc (source)` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `none (source)` | `OPAQUE` | `upload (source)` |
 
 ## Cross-category features
