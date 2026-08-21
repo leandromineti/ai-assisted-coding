@@ -12,6 +12,11 @@
 2|hermes-agent|https://github.com/NousResearch/hermes-agent
 2|warp|https://github.com/warpdotdev/warp
 
+# Not clonable — closed source. Study by observation only:
+#   Claude Code, Cursor, Windsurf, Devin, Copilot
+# (2026-08-21, WR-05: moved here from the tail of this file, where it sat immediately above
+# an unrelated category-5 memory-kind block — these are harnesses, not extensions.)
+
 # --- Layer 4: workflow frameworks ---
 4|spec-kit|https://github.com/github/spec-kit
 4|gsd-core|https://github.com/open-gsd/gsd-core
@@ -24,14 +29,20 @@
 4|spec-kitty|https://github.com/Priivacy-ai/spec-kitty
 4|haft|https://github.com/m0n0x41d/haft
 
-# --- Layer 3: portable artifacts (the cross-layer bucket) ---
+# --- Category 5: portable artifacts / extensions bucket --- (2026-08-21 correction, WR-04:
+# this header said "Layer 3" while the one data line below it has always used prefix 5,
+# matching the current taxonomy's "5 · Extensions (bucket)" — a leftover from before
+# category 3/5 were renumbered per ADR-0007/ADR-0015, never updated when the data line was)
 # ECC was ingested 2026-07-28 as provisional layer 4 and reclassified to 3 at the
 # 2026-07-30 deep-dive (no process spine). The manifest kept saying 4 until
 # 2026-08-11 — and repo-facts.sh reads `layer:` from here, so it was emitting a
 # value the report had already contradicted.
 5|ecc|https://github.com/affaan-m/ECC
 
-# --- Layer 5: execution environments ---
+# --- Category 3: execution environments --- (2026-08-21 correction, WR-04: this header said
+# "Layer 5" while every data line below it has always used prefix 3, matching the current
+# taxonomy's "3 · Execution environments" — a leftover from before category 3/5 were
+# renumbered per ADR-0007/ADR-0015, never updated when the data lines were)
 # First layer-5 entries, added 2026-08-16 as the gate test for issue #11: does an
 # agent-native environment studied as a product yield findings that are NOT
 # restatements of some harness's relationship to it? e2b is the SDK/CLI monorepo;
@@ -72,8 +83,11 @@
 # sync-upstream.sh — that would move HEAD off the freeze pin.
 3|daytona|https://github.com/daytonaio/daytona
 
-# Not clonable — closed source. Study by observation only:
-#   Claude Code, Cursor, Windsurf, Devin, Copilot
+# --- Category 5: capability extensions, memory kind — added 2026-08-18 (2026-08-21, WR-05:
+# this block had no dated rationale comment, breaking the file's own convention that every
+# addition block explains why and when. ai-memory and mem0 seeded the memory kind vocabulary;
+# cognee, memori, everos, memos, and memmachine followed as five more same-day seeds — see
+# notes/05-capability-extensions/index.md for the kind discussion) ---
 5|ai-memory|https://github.com/akitaonrails/ai-memory
 5|mem0|https://github.com/mem0ai/mem0
 5|cognee|https://github.com/topoteretes/cognee
