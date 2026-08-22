@@ -15,14 +15,13 @@ poles), which live in the category indexes, and the canonical terms with their
 deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this document is prose, linted
 against it.
 
-It always describes the **current** taxonomy. How it got this shape — the bucket
-demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
-renumbering — lives in [`adrs/`](adrs/README.md), one dated, immutable decision
-record each, and two decoders translate older material: anything dated before
-2026-08-18 (git history, old URLs, experiment logs) uses the pre-renumbering scheme,
-mapped by the renumbering record[^adr-0007]; anything dated before 2026-08-22 says
-"category 5" for both memory and the extensions bucket, decoded by the split
-record[^adr-0020] (memory → 5, everything else → 6).
+How the taxonomy got this shape lives in [`adrs/`](adrs/README.md), one dated,
+immutable decision record each — and because immutable text is never rewritten, older
+dated material (ADR bodies, experiment protocols, git history, old URLs) still speaks
+in superseded numbers: pre-2026-08-18 material uses the old numbering, mapped by the
+renumbering record[^adr-0007], and pre-2026-08-22 material says "category 5" for both
+memory and the extensions bucket, decoded by the split record[^adr-0020] (memory → 5,
+everything else → 6).
 
 ## Tool categories
 
