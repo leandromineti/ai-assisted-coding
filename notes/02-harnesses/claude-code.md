@@ -53,7 +53,7 @@ distribution point, not source.
 ## The distinguishing bet
 
 **That the harness is a platform, and the extension surface is the product.** Every
-category-5 and category-4 mechanism this repo tracks as a separate category ships *natively and
+category-4, category-5, and category-6 mechanism this repo tracks separately ships *natively and
 first-party* here — and most of the field's conventions for them descend from this
 product's:
 
@@ -110,8 +110,8 @@ half is below.
 
 The heaviest bleed profile in the tracked set — which is the point of the entry:
 
-- **→ category 5**: ships skills, hooks, subagent definitions, MCP client, plugins — and
-  *originated* the file conventions (CLAUDE.md, SKILL.md) that category 5's independence
+- **→ category 6**: ships skills, hooks, subagent definitions, MCP client, plugins — and
+  *originated* the file conventions (CLAUDE.md, SKILL.md) that category 6's independence
   story is measured against. When conclusion 3 says "MCP plus vendor features," the
   vendor is, mostly, this product.
 - **→ category 4**: plan mode as an enforced harness mode — the strongest form of the
@@ -122,7 +122,7 @@ The heaviest bleed profile in the tracked set — which is the point of the entr
   the web/cloud side **bundles** a vendor sandbox. One product exhibiting two of the four
   relationship verbs is itself vocabulary evidence.
 - **→ vendor span (the reason this report exists)**: Anthropic now shows tracked
-  coverage at categories 1 (four model reports) **and 2** (this report), with category-5
+  coverage at categories 1 (four model reports) **and 2** (this report), with category-6
   conventions and the bundled category-3 sandbox as bleed. The generated floor
   (`comparisons/vendors.md`) narrows against the taxonomy's hand-kept table accordingly:
   the span is co-designed — the harness is tuned to the models and the models to the

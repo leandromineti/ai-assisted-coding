@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-19`
+`checked: 2026-08-22`
 
 The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
 vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
@@ -12,7 +12,7 @@ the **feature taxonomy**
 ([`notes/cross-cutting/feature-taxonomy.md`](notes/cross-cutting/feature-taxonomy.md),
 [ADR-0010](adrs/0010-two-taxonomies.md)): the characteristics assessed on tools, defined
 once with per-category applicability, from which the comparison matrices are generated.
-Categories may carry **types** (category 5's `type`; category 4's SDD /
+Categories may carry **types** (category 6's `type`; category 4's SDD /
 context-discipline / decision-governance poles) — those live in the category indexes.
 Canonical terms and their deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this
 document is prose, linted against it.
@@ -22,7 +22,9 @@ bucket demotion, the environments adjudication, the core-triad reframing, the 20
 renumbering — is recorded in [`adrs/`](adrs/README.md), one dated, immutable decision
 record each. Anything dated before 2026-08-18 (git history, old URLs, experiment logs)
 uses the pre-renumbering scheme; [ADR-0007](adrs/0007-renumber-core-triad-first.md)
-carries the mapping.
+carries the mapping. Anything dated before 2026-08-22 says "category 5" for both memory
+and the extensions bucket; [ADR-0020](adrs/0020-memory-category-extensions-renumbered.md)
+carries that decoder (memory → 5, everything else → 6).
 
 ## Tool categories
 
@@ -44,13 +46,16 @@ the environment degenerates to the host. Much of the field is the project of mak
 two degenerate forms non-degenerate — harness sophistication is the contested ground of
 2026, and every fully-autonomous product to date bought its autonomy at the environment.
 
-The two non-fundamentals are **interfaces**:
+The three non-fundamentals are **interfaces**:
 
 - **Workflow frameworks (4)** sit on the **human⇄stack boundary** — see section 4 for
   the four-function decomposition (intent flows down, evidence flows up).
-- **Extensions (5 — the cross-category bucket)** parameterize the **edges of the
-  triad**: rules files and per-model prompts sit on the model↔harness edge, MCP on the
-  harness↔world edge, memory on the agent↔time edge, and the four environment
+- **Memory (5)** sits on the **agent↔time edge** — persistent cross-session state as an
+  installable product. A full category since the 2026-08-22 split
+  ([ADR-0020](adrs/0020-memory-category-extensions-renumbered.md)).
+- **Extensions (6 — the cross-category bucket)** parameterize the **remaining edges of
+  the triad**: rules files and per-model prompts sit on the model↔harness edge, MCP on
+  the harness↔world edge, and the four environment
   relationship verbs (*bundle/bind/internalize/inhabit*) are the topology options of the
   harness↔environment edge. This is not incidental — the repo's strongest findings are
   *edge* findings (conclusion 1's per-model prompts; hermes' cache-vs-self-modification
@@ -192,14 +197,33 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 `workflows/` YAML runner) as the escape hatch from prose-level control. Evidence:
 [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md).
 
-### 5. Extensions & protocols — a cross-category bucket, not one of the fundamentals
+### 5. Memory
+
+Persistent cross-session state as an installable product — **the agent↔time edge**. Fed
+by hooks/MCP during a session, consolidated between sessions, injected back at the next
+session start, on any harness. Reports carry the 13-key `memory_features` block
+([ADR-0013](adrs/0013-memory-features-block.md)); the category's survival bet is the one
+thing a single harness cannot absorb — cross-harness continuity — measured pull-shaped
+in exp-04 (conclusion 14).
+
+A full category since the 2026-08-22 split
+([ADR-0020](adrs/0020-memory-category-extensions-renumbered.md)): born 2026-08-18 as the
+extensions bucket's `memory` type, promoted by owner decision — the sample-bias caution
+ADR-0016 recorded still applies to the category's nine-report roster, and is carried as
+calibration, not erased. Reports keep `type: memory` as residual data.
+
+Distinct from category 6: memory governs **what survives the session**; extensions
+govern **what the agent can reach**. Distinct from category 2's native memory loops
+(conclusion 8's absorption): the extension's bet is continuity *across* harnesses.
+
+### 6. Extensions & protocols — a cross-category bucket, not one of the fundamentals
 
 What the agent can **see and touch**, as *distributable content*: MCP servers, skills,
 rules files (`CLAUDE.md`, `AGENTS.md`), hook configs, subagent definitions, config
-packs at scale (ECC), memory extensions (persistent cross-session state — the type
-added 2026-08-18, seven seeds in the bucket index) — and the specifications they ride on (MCP the protocol, the
+packs at scale (ECC) — and the specifications they ride on (MCP the protocol, the
 `AGENTS.md` and `SKILL.md` conventions, tracked in the Standards section, which is this
-bucket's spec half).
+bucket's spec half). Renumbered 5 → 6 at the 2026-08-22 split (ADR-0020), which moved
+the memory type out to category 5.
 
 A bucket, not one of the fundamentals ([ADR-0002](adrs/0002-extensions-demoted-to-bucket.md)): the
 *runtimes* (MCP clients, skills loaders, hook engines) were always category-2 features, the
@@ -214,13 +238,13 @@ The independent-distribution test still governs what belongs *in the bucket*: an
 server is authored, versioned, and installed separately from any harness, and the same
 one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and Devin.
 
-*How deeply each type is studied* is a separate, decided question — the **coverage
-strata** ([ADR-0019](adrs/0019-category-5-coverage-strata.md), 2026-08-22): *mechanism
-extensions* (memory; gate/learning runtimes) get tool-grade coverage; *content types*
-(skills, rules files, subagent defs) get Standards tracking plus exemplar reads;
-*reach-side* (MCP servers) gets capped exemplars only, because the population reachable
-through an unchanged interface is world, not stack — a census of it would be as
-illegitimate as a census of CLI tools because agents have shells.
+*How deeply each type is studied* follows the surviving coverage strata
+([ADR-0019](adrs/0019-category-5-coverage-strata.md), carried forward by ADR-0020):
+*content types* (skills, rules files, subagent defs) get Standards tracking plus
+exemplar reads; *reach-side* (MCP servers) gets capped exemplars only, because the
+population reachable through an unchanged interface is world, not stack — a census of
+it would be as illegitimate as a census of CLI tools because agents have shells;
+`config-pack` is graded by payload (ECC: mechanism-grade).
 
 Distinct from category 4: capability extensions govern **what the agent can reach**;
 workflow frameworks govern **what process it follows**.
@@ -230,14 +254,14 @@ ecosystem is product-grade — ECC is a 236k-star business built entirely on ind
 distributed capability artifacts, and its instinct import/export design points at a
 *new* exchangeable artifact class. If instinct-like formats standardize across vendors
 (the ~2027-01 standards re-check remains scheduled), the bucket may deserve re-promotion
-to a category — the door swings both ways.
+to a fundamental — the door swings both ways.
 
 ## Cross-cutting concerns
 
 These are **not categories**. They appear at several categories at once, and forcing them into a
 single category distorts them. Each gets a note of its own.
 
-- **Context engineering** — lives in the harness (category 2), the rules files (category 5), and
+- **Context engineering** — lives in the harness (category 2), the rules files (category 6), and
   the workflow framework (category 4) simultaneously. Probably the highest-leverage topic in
   the repo.
 - **Verification & evaluation** — tests, CI gates, review bots, agent-run observability,
@@ -254,8 +278,8 @@ specifications, not installable things. A standard is recorded here, once, and r
 from the categories that implement it — never given a category entry of its own.
 
 - **MCP (Model Context Protocol)** — the protocol is a standard; the *servers* that speak
-  it are category 5.
-- **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are category-5 artifacts.
+  it are category 6.
+- **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are category-6 artifacts.
 - **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
 
 Written up in [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
@@ -268,7 +292,7 @@ did, or stay vendor features — which decides whether the extensions bucket is 
 
 **The categories are analytic, not physical.** Real products bundle across them constantly:
 
-- Claude Code ships skills and hooks (category 5) and plan mode (category 4) inside the harness.
+- Claude Code ships skills and hooks (category 6) and plan mode (category 4) inside the harness.
 - GSD is distributed *as* Claude Code skills, but also ships `gsd-pi`, its own CLI — so it
   reaches down into category 2.
 - Devin bundles its own sandbox (category 3) with its harness (category 2).
@@ -309,7 +333,7 @@ its reader about before they treat a category choice as free.
 
 Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation-only, closed):
 
-| Vendor | 1 · Model | 2 · Harness | 3 · Environment | 5 · Artifacts |
+| Vendor | 1 · Model | 2 · Harness | 3 · Environment | 6 · Artifacts |
 |---|---|---|---|---|
 | **OpenAI** | gpt-5-6-sol ✓ | Codex CLI ✓ · cloud Codex ○ | Codex's *internalized* OS sandbox ✓ · cloud Codex microVM ○ *(bundle)* | — |
 | **Anthropic** | opus/sonnet/fable/haiku ✓ | Claude Code ✓ *(observation-only, 2026-08-17)* | Managed Agents / code-exec container ○ *(bundle)* | skills, MCP ○ |
@@ -348,11 +372,11 @@ taxonomy needs revision — not the case.
 | Case | Verdict | Reasoning |
 |------|---------|-----------|
 | **Cursor's agent mode** | category 2, IDE-embedded | The IDE is the UI; the agent loop underneath is a harness. "IDE feature" describes the surface, not the type. Now bleeds into category 1 via xAI ownership. |
-| **Claude Code Skills** | category 5, bundled in category 2 | Independently authored, versioned, and portable in principle — that's the extensions-bucket test. Shipping inside a harness is distribution, not identity. |
+| **Claude Code Skills** | category 6, bundled in category 2 | Independently authored, versioned, and portable in principle — that's the extensions-bucket test. Shipping inside a harness is distribution, not identity. |
 | **Devin** | category 2, bundles category 3 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ category identity. |
 | **Aider** | category 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
-| **MCP itself** | Not a category — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are category 5. |
-| **ECC (everything-claude-code)** | **Resolved: category 5, extensions** (was category-4 provisional) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion** — [ADR-0002](adrs/0002-extensions-demoted-to-bucket.md). [`notes/05-capability-extensions/ecc.md`](notes/05-capability-extensions/ecc.md). |
+| **MCP itself** | Not a category — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are category 6. |
+| **ECC (everything-claude-code)** | **Resolved: category 6, extensions** (was category-4 provisional; resolved as category 5 pre-split, renumbered 2026-08-22 per ADR-0020) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion** — [ADR-0002](adrs/0002-extensions-demoted-to-bucket.md). [`notes/06-extensions/ecc.md`](notes/06-extensions/ecc.md). |
 | **hermes-agent** | category 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both category-2 axes — see the execution-axis note above. Kept at category 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md). |
 | **Warp** | category 2 — that runs *other* category-2 harnesses | Added 2026-08-11 at survey. The classification is not in doubt (own loop, embedding-indexed context assembly, execution-profile permissions, owns the UI), but two of its bleeds are new shapes. **Harness-over-harness:** `enum Harness { Oz, Claude, OpenCode, Gemini, Codex }` makes Warp's own agent one selectable backend among five for a spawned child agent, with per-harness drivers and transcript parsers (`app/src/ai/agent_sdk/driver/harness/`); the Codex driver installs Warp's plugin hooks into Codex and passes `--dangerously-bypass-hook-trust` so they run unreviewed. Orchestrating peers is category-4-shaped behaviour, but it fails the category-4 test — the process is not portable off Warp, it *is* Warp — so this is a harness with an orchestration tier, not a framework. **A fourth environment verb:** after bundle (Devin), bind (hermes), and internalize (codex), Warp **inhabits** — `crates/isolation_platform/` detects the container Warp is *already running inside* (`Docker`/`DockerSandbox`/`Kubernetes`/`Namespace`) to obtain a workload-identity token, rather than launching anything. [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md). |
 | **Codex CLI's in-process sandboxing** | category 2 that *internalized* category 3 | Added 2026-07-30 at deep-dive. The environment relationship vocabulary had two verbs — *bundle* (Devin ships a sandbox product alongside) and *bind* (hermes attaches to Docker/SSH/Modal). codex is a third: Seatbelt policies, Landlock, bwrap, and a Windows sandbox are **compiled into the harness binary** and invoked per tool call, plus pre-main process hardening. Still category 2 — the sandbox is not independently distributed, so it fails the category test — but the scope note's prediction ("as autonomy rises, the environment question becomes more central") gains a data point: the environment became a *harness subsystem*. [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md). |
@@ -374,7 +398,8 @@ taxonomy needs revision — not the case.
 | 2 · Harnesses | [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md) |
 | 3 · Execution environments | [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md) |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/index.md`](notes/04-workflow-frameworks/index.md) |
-| 5 · Extensions (bucket) | [`notes/05-capability-extensions/index.md`](notes/05-capability-extensions/index.md) |
+| 5 · Memory | [`notes/05-memory/index.md`](notes/05-memory/index.md) |
+| 6 · Extensions (bucket) | [`notes/06-extensions/index.md`](notes/06-extensions/index.md) |
 | ✕ Cross-cutting (incl. standards) | [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md) |
 
 Per-tool reports use [`notes/_template-tool-report.md`](notes/_template-tool-report.md) and

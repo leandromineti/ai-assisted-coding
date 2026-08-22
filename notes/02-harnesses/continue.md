@@ -68,7 +68,7 @@ in this set where a harness had to abstract its own UI._
 
 ## Bleed
 
-_TODO_ — supports MCP (category 5). The `binary/` sidecar is arguably a category-3 concern
+_TODO_ — supports MCP (category 6). The `binary/` sidecar is arguably a category-3 concern
 (process isolation) solved incidentally.
 
 ## Cost model

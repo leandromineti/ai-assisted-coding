@@ -79,7 +79,7 @@ transcript formats to follow what its children are doing.
 The sharpest detail is in `driver/harness/codex.rs:52`: Warp installs **its own plugin hooks
 into Codex** and launches it with `--dangerously-bypass-hook-trust` so those hooks run without
 Codex's manual review step, then reads Codex's `SessionStart` hook event to know the session
-is live. A category-2 product driving another category-2 product through that product's category-5
+is live. A category-2 product driving another category-2 product through that product's category-6
 extension surface, deliberately bypassing its trust gate to do so.
 
 The wager: the model and the loop are commoditizing, so own the *surface* they all run on and
@@ -334,7 +334,7 @@ deliberately half-supported.
 
 ## Bleed
 
-- **→ category 5 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
+- **→ category 6 (artifacts).** Consumes `AGENTS.md` and the `SKILL.md` convention rather than
   inventing formats. Stronger: `app/src/terminal/view/init_project/mod.rs:50` defines
   `LINKABLE_FILES = [CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules,
   .windsurfrules, .github/copilot-instructions.md]` — seven *competitors'* rules files, which

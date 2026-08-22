@@ -1,6 +1,7 @@
 # ADR-0016 — Extensions stay broad: memory is a type, not the category
 
-`decided: 2026-08-19` · `recorded: 2026-08-19` · status: **accepted**
+`decided: 2026-08-19` · `recorded: 2026-08-19` · status: **superseded by
+[ADR-0020](0020-memory-category-extensions-renumbered.md) (2026-08-22)**
 
 ## Decision
 

@@ -34,7 +34,7 @@ The note assembles the four evidence strands, defines the three measurement trac
 **Where it lives:** wherever two vendors implement one specification — MCP on the
 harness↔world edge, `AGENTS.md`/`SKILL.md` conventions across harnesses. Not a category:
 specifications, not installable things (the servers and files that *implement* them are
-category-5 extensions). Folded into this folder 2026-08-18 (ADR-0008) — a standard is a
+category-6 extensions). Folded into this folder 2026-08-18 (ADR-0008) — a standard is a
 cross-cutting concern whose subject is interoperability. Carries the standardization
 scoreboard that gates the extensions bucket's re-promotion (ADR-0002's ~2027-01
 re-check).
@@ -43,7 +43,7 @@ re-check).
 
 ## Context engineering
 
-**Where it lives:** category 2 (the harness decides what to load and when), category 5 (rules
+**Where it lives:** category 2 (the harness decides what to load and when), category 6 (rules
 files, skills, memory), category 4 (frameworks impose context discipline as method). No single
 category owns it — which is exactly why it's mis-taught as a prompting trick.
 
@@ -75,7 +75,7 @@ Failure modes are the signal; success is too coarse to learn from.
 
 ## Verification & evaluation
 
-**Where it lives:** category 5 (review-bot MCP servers), category 4 (frameworks that build in
+**Where it lives:** category 6 (review-bot MCP servers), category 4 (frameworks that build in
 verification gates — GSD's "evidence" principle), category 3 (sandboxes that make failure
 cheap to observe), plus the whole external CI apparatus. **And, as of 2026-07-30, category 2
 natively — two instances:** hermes-agent ships an evidence-ledger verification gate

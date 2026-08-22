@@ -22,7 +22,7 @@ web-as-interface with remote-as-execution:
 
 | Harness | Maker | Surfaces | Execution | One-line |
 |---------|-------|----------|-----------|----------|
-| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's category 5 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual category-3 relation (binds worktrees locally, bundles cloud sandbox). |
+| [**Claude Code**](claude-code.md) | Anthropic | terminal · desktop · web · IDE | local + async (web) | Deep extension surface (skills, hooks, subagents, plan mode) — the conventions the field's category 6 descends from. **Observation-only report 2026-08-17** (closed; no source): third learning-loop mechanism shape (in-loop agent-written memory), first verified worktree cell, dual category-3 relation (binds worktrees locally, bundles cloud sandbox). |
 | [**OpenCode**](opencode.md) | Anomaly | terminal · desktop · IDE | local | Open source (MIT). 75+ providers, LSP-aware, stores no code or context. Nine per-model prompts. |
 | [**Codex CLI**](codex.md) | OpenAI | terminal (+ desktop launcher) | local | Vendor-native; leads Terminal-Bench 2.1. The Rust bet is *security*, not speed: OS sandboxes compiled into the binary, pre-main process hardening, PTC in sandboxed V8. WorldState diff-append context. Cloud Codex is its async-remote sibling. Deep-dived 2026-07-30. |
 | [**Gemini CLI → Antigravity CLI**](gemini-cli.md) | Google | terminal | local | Individual free tier ended 2026-06-18 during the Antigravity transition. |
@@ -77,7 +77,7 @@ Feature lists mislead here. The axes that seem to matter:
    position**; the axis's most sophisticated retrieval machinery sits on the grep side of
    its own line. [`warp.md`](warp.md).
 2. **Permission model** — how much it does without asking, and how that's configured.
-3. **Extension surface** — whether category 5 and 4 can attach at all (hooks, skills, MCP).
+3. **Extension surface** — whether categories 4, 5, and 6 can attach at all (hooks, skills, MCP).
 4. **Isolation story** — which category-3 environment it assumes.
 5. **Failure behavior** — what it does when it's wrong, which is where the real cost lives.
 6. **Cache economics as a design constraint** *(added 2026-07-30)* — whether prompt-cache
@@ -157,7 +157,7 @@ harness already does") generalized from gates to the full table.
 
 - Does the Cursor acquisition mean vertical integration (model tuned on harness telemetry)
   produces a durable advantage, or is it a one-off data moat?
-- Every harness listed supports MCP. Does that make category 5 genuinely portable in practice,
+- Every harness listed supports MCP. Does that make category 6 genuinely portable in practice,
   or only in principle?
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?

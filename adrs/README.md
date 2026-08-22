@@ -34,7 +34,7 @@ living docs, the ADR trail is the decoder.
 
 | ADR | Decided | Decision | Status |
 |---|---|---|---|
-| [0001](0001-five-layer-taxonomy.md) | 2026-07-28 | Five-layer taxonomy: models, harnesses, extensions, frameworks, environments | superseded by 0007 (numbering) |
+| [0001](0001-five-layer-taxonomy.md) | 2026-07-28 | Five-layer taxonomy: models, harnesses, extensions, frameworks, environments | superseded by 0007 (numbering) + 0020 (split) |
 | [0002](0002-extensions-demoted-to-bucket.md) | 2026-07-30 | Extensions demoted from rung to cross-layer bucket | accepted |
 | [0003](0003-environments-stay-a-rung.md) | 2026-08-16 | Execution environments stay a rung (adjudicated, reversed same day by E2B evidence) | accepted |
 | [0004](0004-core-triad-reframing.md) | 2026-08-17 | Core-triad reframing; numbers kept as storage keys | storage-keys rule superseded by 0007 |
@@ -49,7 +49,8 @@ living docs, the ADR trail is the decoder.
 | [0013](0013-memory-features-block.md) | 2026-08-19 | Third registry block: `memory_features` for layer-5 memory tools | accepted |
 | [0014](0014-model-features-into-registry.md) | 2026-08-19 | Model API-feature keys fold into the registry (`model_features` block) | accepted |
 | [0015](0015-layers-become-categories.md) | 2026-08-19 | Layers become categories: canonical top-level term rename, encoded in `taxonomy.yaml` | accepted |
-| [0016](0016-extensions-stay-broad.md) | 2026-08-19 | Extensions stay broad: memory is a type, not the category (narrowing considered, rejected as arc-sample bias) | accepted |
+| [0016](0016-extensions-stay-broad.md) | 2026-08-19 | Extensions stay broad: memory is a type, not the category (narrowing considered, rejected as arc-sample bias) | superseded by 0020 |
 | [0017](0017-environment-features-block.md) | 2026-08-20 | Fifth registry block: `environment_features` for category-3 environments | accepted |
 | [0018](0018-harness-features-block-rename.md) | 2026-08-21 | The harness block renames: `features:` → `harness_features:` (schema_renames decoder) | accepted |
-| [0019](0019-category-5-coverage-strata.md) | 2026-08-22 | Coverage strata for category 5: mechanism / content / reach inside the unchanged seven-type bucket | accepted |
+| [0019](0019-category-5-coverage-strata.md) | 2026-08-22 | Coverage strata for category 5: mechanism / content / reach inside the unchanged seven-type bucket | superseded in part by 0020 |
+| [0020](0020-memory-category-extensions-renumbered.md) | 2026-08-22 | Memory becomes category 5; Extensions becomes category 6 (owner decision, supersedes 0016 and part of 0019) | accepted |

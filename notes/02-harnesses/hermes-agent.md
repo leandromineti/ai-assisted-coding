@@ -282,7 +282,7 @@ opencode's `visibleTools`.
   33 bundled) read by one registry (`providers/`); adapters in `agent/` normalize
   Anthropic, Gemini-native, Bedrock, Vertex, Codex-responses APIs. Model-agnostic, but
   *not* prompt-agnostic — see the per-family appendices in Surprises.
-- **category 5 (extensions):** first-class and the designated growth path — MCP client +
+- **category 6 (extensions):** first-class and the designated growth path — MCP client +
   OAuth manager, plugin system with lifecycle hooks, the skills standard
   (agentskills.io-compatible), LSP (`agent/lsp/`).
 - **category 4 (methodology):** absorbed in pieces: `/plan` as a bundled skill, todo tool,

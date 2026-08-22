@@ -329,7 +329,7 @@ cannot verify upstream security and forked for that reason. Category-4 supply ch
 real: you are `curl | sh`-ing *instructions* that will run with everything your agent
 can touch.
 
-## The extensions bucket (5) — extension design *(two principles; bucket status per ADR-0002, renumbered per ADR-0007)*
+## The extensions bucket (6) — extension design *(three principles; bucket status per ADR-0002, renumbered per ADR-0007 and again per ADR-0020)*
 
 **X1. Design for the waist everything converged on: a prompt file in a directory.**
 *(convergent, structural)* spec-kit compiles one definition to 44 harnesses precisely
@@ -350,7 +350,7 @@ and the *content* just-in-time.
 reach.** *(registered bet, 2026-08-22 — falsifiable predictions, not yet a principle;
 re-check rides the ~2027-01 standards re-check; registered per
 [ADR-0019](adrs/0019-category-5-coverage-strata.md) from the
-[bucket boundary discussion](notes/05-capability-extensions/index.md))* Harnesses absorb
+[bucket boundary discussion](notes/05-memory/index.md))* Harnesses absorb
 *mechanisms* (gates, memory — both now verified native in multiple harnesses), *bundle*
 content (Warp ships 13 skills; the loader was always category 2), and never absorb
 reach. Independent mechanism extensions survive absorption on the one bet a single
@@ -388,7 +388,7 @@ Recorded as open decisions, not principles — with the positions documented:
 |---|---|
 | Per-model prompting | five incompatible answers, none eval-backed (H7) |
 | Stuck-agent resolution | human-escalate (opencode) vs in-band (hermes) (H2) |
-| Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files vs — fourth position, **source-verified 2026-08-18** (memory-type arc) — **agent-written but independently stored**. The arc's finding: independent storage doesn't pick one authorship, it *stacks* them — ai-memory's wiki is simultaneously rule-written (session pages), agent-written with auto-approval (`_rules/` via its scheduler, `require_approval=false` default), and user-edited (Obsidian/vim watcher reconciles); memos' policy DB is fully machine-authored with feedback-gated lifecycles *(confirmed in source at the 2026-08-19 deep-dive — and default-unmounted: lightweight mode ships the whole authoring cascade off)*; cognee splits the decision *across repos* (agent-invoked writes in the MCP server, automation added by the plugin). The open question sharpened: not who writes memory, but who approves it — and as of 2026-08-19 that axis is a matrix column: `memory_revision` (auto: ai-memory, memos · caller-only: mem0, whose deep-dive found no auto-supersession path at all — the linking mechanism is dead code). [Bucket index](notes/05-capability-extensions/index.md) |
+| Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files vs — fourth position, **source-verified 2026-08-18** (memory-type arc) — **agent-written but independently stored**. The arc's finding: independent storage doesn't pick one authorship, it *stacks* them — ai-memory's wiki is simultaneously rule-written (session pages), agent-written with auto-approval (`_rules/` via its scheduler, `require_approval=false` default), and user-edited (Obsidian/vim watcher reconciles); memos' policy DB is fully machine-authored with feedback-gated lifecycles *(confirmed in source at the 2026-08-19 deep-dive — and default-unmounted: lightweight mode ships the whole authoring cascade off)*; cognee splits the decision *across repos* (agent-invoked writes in the MCP server, automation added by the plugin). The open question sharpened: not who writes memory, but who approves it — and as of 2026-08-19 that axis is a matrix column: `memory_revision` (auto: ai-memory, memos · caller-only: mem0, whose deep-dive found no auto-supersession path at all — the linking mechanism is dead code). [Bucket index](notes/05-memory/index.md) |
 | Session-data posture | harness as training-data instrument (hermes, Cursor) vs stores-nothing (opencode) — taxonomy boundary-rule note |
 | Where verification lives | category 4 gates (GSD), category 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note. exp-03 (2026-08-18) measured the category-4 pole: an instructed gate catches crash-visible failures only, and at Sonnet tier the bundle grounds/verifies unprompted — the live question is now category-2-native vs external CI (issue #17) |
 

@@ -277,7 +277,7 @@ something it will never be allowed to do.
 - **category 1 (models):** cleanly abstracted behind `packages/llm` and the AI SDK — *except*
   the per-model prompts, which are a deliberate leak. The abstraction is over the API, not
   over model behavior.
-- **category 5 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
+- **category 6 (extensions):** first-class. `src/mcp/`, `src/plugin/`, `tool/skill.ts`,
   `agent/subagent-permissions.ts`.
 - **category 3 (execution):** a `containers` package exists, so isolation is a modeled concern
   rather than an assumption of the host.

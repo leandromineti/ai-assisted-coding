@@ -5,42 +5,42 @@
 
 One row per `vendor:` string, columns by category. **This understates vendor span by construction**: it can only show tools that have reports, and the largest spanners' flagship products are closed with no report (Claude Code, cloud Codex, Cursor, Managed Agents). The authoritative span picture — including observation-only products — is the hand-kept table in [`../taxonomy.md`](../taxonomy.md) → *Vendor span*; this file is its generated, tracked-only floor.
 
-| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Artifacts | Categories |
-|---|---|---|---|---|---|---|
-| Anthropic | claude-haiku-4-5, claude-opus-5, claude-sonnet-5, claude-fable-5 | claude-code | — | — | — | **2** |
-| Google | gemini-3-1-pro | gemini-cli | — | — | — | **2** |
-| OpenAI | gpt-5-6-sol | codex | — | — | — | **2** |
-| Affaan Mustafa (affaan-m) | — | — | — | — | ecc | **1** |
-| Aider-AI | — | aider | — | — | — | **1** |
-| Alibaba (Qwen team) | qwen3-coder-next | — | — | — | — | **1** |
-| Anomaly | — | opencode | — | — | — | **1** |
-| BMad Code, LLC | — | — | — | bmad-method, bmad-loop | — | **1** |
-| Cline | — | cline | — | — | — | **1** |
-| Cloudflare, Inc. | — | — | cloudflare-sandbox-sdk | — | — | **1** |
-| Continue | — | continue | — | — | — | **1** |
-| Daytona Platforms, Inc. | — | — | daytona | — | — | **1** |
-| DeepSeek | deepseek-v4 | — | — | — | — | **1** |
-| EverMind AI (EverMind-AI) | — | — | — | — | everos | **1** |
-| Fabio Akita (akitaonrails) | — | — | — | — | ai-memory | **1** |
-| Fission AI | — | — | — | openspec | — | **1** |
-| FoundryLabs, Inc. (E2B) | — | — | e2b | — | — | **1** |
-| GitHub | — | — | — | spec-kit | — | **1** |
-| Google (gemini-cli-extensions org) | — | — | — | conductor | — | **1** |
-| Ivan Zakutnii (m0n0x41d) | — | — | — | haft | — | **1** |
-| Max Ritter | — | — | — | pilot-shell | — | **1** |
-| Mem0 (mem0ai, YC S24) | — | — | — | — | mem0 | **1** |
-| MemMachine | — | — | — | — | memmachine | **1** |
-| MemoriLabs | — | — | — | — | memori | **1** |
-| MemTensor (MemOS) | — | — | — | — | memos | **1** |
-| Modal Labs | — | — | modal | — | — | **1** |
-| Moonshot AI | kimi-k3 | — | — | — | — | **1** |
-| Nous Research | — | hermes-agent | — | — | — | **1** |
-| Open GSD | — | — | — | gsd-core | — | **1** |
-| Spec Kitty, Inc. (Priivacy-ai) | — | — | — | spec-kitty | — | **1** |
-| superradcompany (open-source project; formerly at microsandbox/microsandbox, which now redirects here — checked 2026-08-21 via `gh api repos/microsandbox/microsandbox --jq .full_name`, one canonical repository reached via two slugs, not two repos) | — | — | microsandbox | — | — | **1** |
-| Topoteretes (topoteretes) | — | — | — | — | cognee | **1** |
-| Volcengine (ByteDance) | — | — | — | — | openviking | **1** |
-| Warp (warpdotdev) | — | warp | — | — | — | **1** |
-| xAI | grok-4-5 | — | — | — | — | **1** |
+| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Memory | 6 · Extensions | Categories |
+|---|---|---|---|---|---|---|---|
+| Anthropic | claude-haiku-4-5, claude-opus-5, claude-sonnet-5, claude-fable-5 | claude-code | — | — | — | — | **2** |
+| Google | gemini-3-1-pro | gemini-cli | — | — | — | — | **2** |
+| OpenAI | gpt-5-6-sol | codex | — | — | — | — | **2** |
+| Affaan Mustafa (affaan-m) | — | — | — | — | — | ecc | **1** |
+| Aider-AI | — | aider | — | — | — | — | **1** |
+| Alibaba (Qwen team) | qwen3-coder-next | — | — | — | — | — | **1** |
+| Anomaly | — | opencode | — | — | — | — | **1** |
+| BMad Code, LLC | — | — | — | bmad-method, bmad-loop | — | — | **1** |
+| Cline | — | cline | — | — | — | — | **1** |
+| Cloudflare, Inc. | — | — | cloudflare-sandbox-sdk | — | — | — | **1** |
+| Continue | — | continue | — | — | — | — | **1** |
+| Daytona Platforms, Inc. | — | — | daytona | — | — | — | **1** |
+| DeepSeek | deepseek-v4 | — | — | — | — | — | **1** |
+| EverMind AI (EverMind-AI) | — | — | — | — | everos | — | **1** |
+| Fabio Akita (akitaonrails) | — | — | — | — | ai-memory | — | **1** |
+| Fission AI | — | — | — | openspec | — | — | **1** |
+| FoundryLabs, Inc. (E2B) | — | — | e2b | — | — | — | **1** |
+| GitHub | — | — | — | spec-kit | — | — | **1** |
+| Google (gemini-cli-extensions org) | — | — | — | conductor | — | — | **1** |
+| Ivan Zakutnii (m0n0x41d) | — | — | — | haft | — | — | **1** |
+| Max Ritter | — | — | — | pilot-shell | — | — | **1** |
+| Mem0 (mem0ai, YC S24) | — | — | — | — | mem0 | — | **1** |
+| MemMachine | — | — | — | — | memmachine | — | **1** |
+| MemoriLabs | — | — | — | — | memori | — | **1** |
+| MemTensor (MemOS) | — | — | — | — | memos | — | **1** |
+| Modal Labs | — | — | modal | — | — | — | **1** |
+| Moonshot AI | kimi-k3 | — | — | — | — | — | **1** |
+| Nous Research | — | hermes-agent | — | — | — | — | **1** |
+| Open GSD | — | — | — | gsd-core | — | — | **1** |
+| Spec Kitty, Inc. (Priivacy-ai) | — | — | — | spec-kitty | — | — | **1** |
+| superradcompany (open-source project; formerly at microsandbox/microsandbox, which now redirects here — checked 2026-08-21 via `gh api repos/microsandbox/microsandbox --jq .full_name`, one canonical repository reached via two slugs, not two repos) | — | — | microsandbox | — | — | — | **1** |
+| Topoteretes (topoteretes) | — | — | — | — | cognee | — | **1** |
+| Volcengine (ByteDance) | — | — | — | — | openviking | — | **1** |
+| Warp (warpdotdev) | — | warp | — | — | — | — | **1** |
+| xAI | grok-4-5 | — | — | — | — | — | **1** |
 
 **35 vendors** across 42 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

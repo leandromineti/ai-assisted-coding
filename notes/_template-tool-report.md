@@ -1,6 +1,6 @@
 ---
 name: <tool>
-category: <1-5>
+category: <1-6>
 # The next three fields are for category-2 (harness) reports; omit where not meaningful.
 surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
 execution: <local | async-remote | both>        # how it runs
@@ -32,10 +32,11 @@ stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
-# type: category-5 (extensions) reports only — one of the bucket's type vocabulary:
-# mcp-server | skill | hook | subagent-def | rules-file | config-pack | memory
+# type: category-6 (extensions) reports only — one of the bucket's type vocabulary:
+# mcp-server | skill | hook | subagent-def | rules-file | config-pack. Category-5
+# (memory) reports keep a residual `type: memory` as data (ADR-0020, 2026-08-22).
 type: <see comment>
-# harness_targets: category-4 (and category-5) reports only — which harnesses the tool
+# harness_targets: category-4 (and category-5/6) reports only — which harnesses the tool
 # officially installs into. Same discipline as harness_features: set ONLY when verified in
 # source or official docs; omitted means "not yet checked". Either a list of harness
 # names, or a short string for large sets (e.g. "44 integrations incl. …").
@@ -171,7 +172,7 @@ permission check happens *before* or *after* the model decides.
 
 Where the taxonomy's seams show up concretely. Is the model provider swappable, and at what
 cost? Is there an execution-environment abstraction, or does it shell out to the host? Can
-category-5 extensions attach, and where?
+category-5/6 extensions attach, and where?
 
 ## Bleed
 

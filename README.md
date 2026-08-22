@@ -11,10 +11,12 @@ This is a learning repo. The deliverable is notes and conclusions, not a product
 harnesses, execution environments (categories 1–3), the three things a running agent cannot
 lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack boundary:
 intent refined into specs and subtasks going down, research and verified evidence coming
-up) and extensions (5 — a cross-category bucket parameterizing the triad's edges;
-portability is conferred by adoption, not intrinsic, so the name doesn't claim it). How
-the taxonomy reached this shape — demotions, adjudications, the 2026-08-18
-renumbering — is one dated decision record each in [`adrs/`](adrs/README.md).
+up), memory (5 — persistent cross-session state on the agent↔time edge, a full
+category since the 2026-08-22 split), and extensions (6 — a cross-category bucket
+parameterizing the triad's remaining edges; portability is conferred by adoption, not
+intrinsic, so the name doesn't claim it). How the taxonomy reached this shape —
+demotions, adjudications, the 2026-08-18 renumbering, the 2026-08-22 split — is one
+dated decision record each in [`adrs/`](adrs/README.md).
 With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
 tools that straddle the divisions. Everything else in the repo declares where it belongs.
 
@@ -35,7 +37,8 @@ confirm, contradict, or note silence.
 | 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
 | 3 · Execution environments | [`notes/03-execution-environments/`](notes/03-execution-environments/index.md) | worktrees, devcontainers, E2B |
 | 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
-| 5 · Extensions (bucket) | [`notes/05-capability-extensions/`](notes/05-capability-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
+| 5 · Memory | [`notes/05-memory/`](notes/05-memory/index.md) | ai-memory, mem0, MemOS, cognee |
+| 6 · Extensions (bucket) | [`notes/06-extensions/`](notes/06-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
 | ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
@@ -110,7 +113,7 @@ note. Revised when evidence moves._
    stands unchanged; what changed is that the isolation the field lacks is
    demonstrably buildable at personal scale for ~$3. →
    [`notes/01-models/index.md`](notes/01-models/index.md)
-3. **The extensions bucket (category 5) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
+3. **The extensions bucket (category 6; numbered 5 until the 2026-08-22 split) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension types, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
    *Revised same day:* skills moved — spec-kit's integration registry shows `SKILL.md`
@@ -263,8 +266,8 @@ note. Revised when evidence moves._
    arc: the continuity mechanism is real but its automatic floor is thin (ai-memory's
    baton is first + last prompt + tool names, no LLM) — whether the bet survives
    contact with use is an open rig question. →
-   [`notes/05-capability-extensions/ai-memory.md`](notes/05-capability-extensions/ai-memory.md),
-   [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
+   [`notes/05-memory/ai-memory.md`](notes/05-memory/ai-memory.md),
+   [`notes/05-memory/memos.md`](notes/05-memory/memos.md)
 9. **The environments category (3) is a real category, not an axis of the harness category —
    decided by its own falsifier** (2026-08-16, decision record
    [ADR-0003](adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to
@@ -363,7 +366,7 @@ note. Revised when evidence moves._
     contains a 1,582-line remotely-scripted A/B upsell funnel (`notices.py`) — the
     benchmark-vs-product gap is not just marketing outside the repo, it is
     instrumentation inside it. →
-    [`notes/05-capability-extensions/mem0.md`](notes/05-capability-extensions/mem0.md)
+    [`notes/05-memory/mem0.md`](notes/05-memory/mem0.md)
     **Third instance, inverted (2026-08-19, memos deep-dive):** the benchmark-vs-product
     gap runs the other way — memos' machinery is real and golden-tested in source, but
     the ten README numbers (five of them CODING benchmarks incl. SWE-Bench, all
@@ -372,7 +375,7 @@ note. Revised when evidence moves._
     published npm artifact — runs with that machinery unmounted. The type's pattern is
     now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
     benchmarks what the shipped default doesn't enable. →
-    [`notes/05-capability-extensions/memos.md`](notes/05-capability-extensions/memos.md)
+    [`notes/05-memory/memos.md`](notes/05-memory/memos.md)
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19,
     exp-04, n=1 per arm — a probe). The memory type's headline bet, measured for the
     only tool that ships a continuity mechanism (ai-memory, pin-built): the automatic
@@ -404,7 +407,7 @@ note. Revised when evidence moves._
     and the 92.5 belongs to a later rewrite whose architecture the paper doesn't
     describe.* →
     [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md) §6 ·
-    [`notes/05-capability-extensions/index.md`](notes/05-capability-extensions/index.md)
+    [`notes/05-memory/index.md`](notes/05-memory/index.md)
 
 ## License
 

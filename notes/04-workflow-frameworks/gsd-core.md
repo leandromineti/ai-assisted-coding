@@ -465,7 +465,7 @@ anything below #3857.
 
 ## Bleed
 
-Reaches **down into category 2** via `gsd-pi`, its own standalone CLI, and into **category 5** via
+Reaches **down into category 2** via `gsd-pi`, its own standalone CLI, and into **category 6** via
 `gsd-browser`. Documented in [`index.md`](index.md) — it's the clearest case in the repo of a
 workflow framework growing into the runtime it was meant to sit on top of.
 
@@ -555,7 +555,7 @@ What today's deep-dives say to someone running GSD daily and eyeing the field:
   prose; the enforcement lives in the separate bmad-loop orchestrator. Still not a
   switch: the opposite bet from GSD's hook-enforced direction — [report](bmad-method.md))*,
   spec-kitty (worktree factory, multi-maintainer), haft (decision governance, likely
-  category 5).
+  category 6).
 
 ## Open questions
 

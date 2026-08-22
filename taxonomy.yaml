@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-21  # bumped 2026-08-21 (known_sites re-derivation post gsd-core v1.11.0 assessment; ADR-0018 features->harness_features schema_renames entry)
+checked: 2026-08-22  # bumped 2026-08-22 (ADR-0020 split: 5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -21,6 +21,8 @@ categories:
   - number: 4
     name: Workflow frameworks
   - number: 5
+    name: Memory
+  - number: 6
     name: Extensions
 
 # Canonical terms, each with a definition and a deny_list of banned synonyms (empty
@@ -62,7 +64,7 @@ terms:
           - "notes/04-workflow-frameworks/gsd-core.md:547"
           - "notes/04-workflow-frameworks/bmad-method.md:105"
           - "notes/cross-cutting/feature-taxonomy.md:148"
-          - "notes/05-capability-extensions/mem0.md:132"
+          - "notes/05-memory/mem0.md:132"
       - compound: "capability ladder"
         canonical_source: >-
           Model reasoning-tier vocabulary (Anthropic's capability tiers) — unrelated
@@ -113,26 +115,25 @@ terms:
           than split into two treatments. Owner decision, phase-3 wave-1 checkpoint
           (2026-08-19).
         known_sites:
-          - "notes/05-capability-extensions/mem0.md:40"
-          - "notes/05-capability-extensions/memmachine.md:24"
-          - "notes/05-capability-extensions/memmachine.md:32"
-          - "notes/05-capability-extensions/everos.md:34"
-          - "notes/05-capability-extensions/cognee.md:41"
-          - "notes/05-capability-extensions/cognee.md:131"
-          - "notes/05-capability-extensions/index.md:92"
+          - "notes/05-memory/mem0.md:40"
+          - "notes/05-memory/memmachine.md:24"
+          - "notes/05-memory/memmachine.md:32"
+          - "notes/05-memory/everos.md:34"
+          - "notes/05-memory/cognee.md:41"
+          - "notes/05-memory/cognee.md:131"
+          - "notes/05-memory/index.md:92"
         near_miss_note: >-
-          Unlike the other six new "layer" compounds, this one is semantically
-          adjacent to the taxonomy's own division vocabulary: this repo's own
-          category 5 (Extensions) is the memory/capability-extensions category
-          (ADR-0013 "memory features block", notes/05-capability-extensions/), so a
-          future sentence describing category 5's place in the taxonomy as "the
-          memory layer" would be a genuine taxonomy-division mistake, not vendor-
-          tagline or architecture prose. Because deny_list_exempt_compounds shields
-          a registered compound "regardless of file or line"
-          (scripts/check-taxonomy.py:303-322), such a claim would be silently
-          exempted with no diagnostic. Writers describing category 5's own
-          placement in the taxonomy must use canonical vocabulary ("category 5" /
-          "the extensions category"), never "memory layer".
+          Sharpened 2026-08-22 (ADR-0020): category 5 is now NAMED Memory, so "the
+          memory layer" is no longer merely adjacent to a division name — it is a
+          division name under a banned synonym. The compound exemption above stays,
+          because vendor taglines ("the memory layer for AI agents") are quoted
+          verbatim per methodology rule 4 and harness-architecture prose is
+          legitimate — but deny_list_exempt_compounds shields the compound
+          "regardless of file or line" (scripts/check-taxonomy.py), so a sentence
+          describing category 5 itself as "the memory layer" is silently exempted
+          with no diagnostic. Writers describing category 5's own place in the
+          taxonomy must use canonical vocabulary ("category 5" / "the memory
+          category"), never "memory layer"; readers, not the lint, catch this.
       - compound: "application layer"
         canonical_source: >-
           Software-architecture vocabulary (a codebase's application layer, as
@@ -147,7 +148,7 @@ terms:
           instruction is injected) — unrelated to the taxonomy's top-level
           divisions. Same phase-3 wave-1 owner decision as "memory layer".
         known_sites:
-          - "notes/05-capability-extensions/memos.md:99"
+          - "notes/05-memory/memos.md:99"
       - compound: "synthesis layer"
         canonical_source: >-
           Software-architecture vocabulary (design-principles.md's own synthesis
@@ -183,7 +184,7 @@ terms:
         without a dedicated pattern — and adding one would flag three surviving
         in-repo uses that are non-taxonomy senses, not the taxonomy-division sense
         this decision replaces: notes/02-harnesses/codex.md:234 ("The permission
-        architecture is three-layered"), notes/05-capability-extensions/memos.md:95
+        architecture is three-layered"), notes/05-memory/memos.md:95
         ("The trust boundary is real and two-layered"), and
         notes/04-workflow-frameworks/spec-kit.md:226 ("layered on top", ordinary
         English). Denying the inflection would guarantee false positives at all
@@ -194,9 +195,11 @@ terms:
         neither catches this class of drift nor is expected to.
   - term: types
     definition: >-
-      Category-5's sub-classification: the report frontmatter key `type:` (formerly
-      `kind:`), and the concept previously also called "sub-category" elsewhere in
-      taxonomy.md. Both old spellings fold into this one new term (ADR-0015 D-02).
+      Category-6's sub-classification (category-5's until the 2026-08-22 split,
+      ADR-0020): the report frontmatter key `type:` (formerly `kind:`), and the
+      concept previously also called "sub-category" elsewhere in taxonomy.md. Both
+      old spellings fold into this one new term (ADR-0015 D-02). Category-5 memory
+      reports keep a residual `type: memory` key as data (ADR-0020).
     deny_list:
       - sub-category
       - sub-categories
@@ -211,7 +214,7 @@ terms:
         `kind:` (with the colon) is banned.
       - >-
         The colon-qualified form `kind:` also has a known false positive:
-        `notes/05-capability-extensions/ai-memory.md:90` reads "Table stakes in the
+        `notes/05-memory/ai-memory.md:90` reads "Table stakes in the
         kind: store + retrieve + MCP." — ordinary prose using "kind" followed by a
         list-introducing colon, not the report frontmatter key, and not inside
         backticks. Phase 2's lint must not flag this exact site; either scope the
@@ -219,8 +222,9 @@ terms:
         this file:line explicitly.
   - term: bucket
     definition: >-
-      Category 5's shape: a loose, cross-category collection, not a rung
-      (ADR-0002). Canonical vocabulary, not drift.
+      Category 6's shape (category 5's until the 2026-08-22 split, ADR-0020): a
+      loose, cross-category collection, not a rung (ADR-0002). Canonical
+      vocabulary, not drift.
     deny_list: []
     false_positive_notes:
       - >-
@@ -249,7 +253,7 @@ split_meaning_terms:
 # Strict canonical numbered-reference forms. The lint enforces exact case, spacing,
 # and separator — not merely denial of old forms; strict enforcement was chosen over
 # deny-only for this file. Grounded in ADR-0015's Decision section, which fixes the
-# numbering (per ADR-0007) and the five divisions' names as unchanged — this file is
+# numbering (per ADR-0007, six divisions since the 2026-08-22 split, ADR-0020) — this file is
 # the source of truth for the exact reference syntax built on top of that.
 reference_formats:
   prose: "category N"
@@ -386,12 +390,12 @@ schema_renames:
   - old: kind
     new: type
     scope:
-      - "report frontmatter key `kind:` in category-5 reports"
+      - "report frontmatter key `kind:` in category-5 and category-6 reports (5-only until the 2026-08-22 split, ADR-0020)"
       - "notes/_template-tool-report.md"
       - "scripts/build-tool-index.py"
     note: >-
-      Category-5 sub-classification values are unchanged — purely a key rename
-      (D-02). Scoped to tool reports only; distinct from refs' own unrelated `kind:`
+      Sub-classification values are unchanged — purely a key rename
+      (D-02). Gate widened to categories 5 and 6 at the ADR-0020 split. Scoped to tool reports only; distinct from refs' own unrelated `kind:`
       vocabulary in scripts/build-refs-index.py (source kind: paper/benchmark/
       blog-post), which is never renamed.
     executes_in: phase-3

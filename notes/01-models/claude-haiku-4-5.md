@@ -41,7 +41,7 @@ thinking — a generation seam running visibly through the lineup.
 
 None pinned. Notably, the tools *studied* here use it where this repo doesn't: **ECC's
 instinct pipeline runs its background analysis on Haiku**
-([`../05-capability-extensions/ecc.md`](../05-capability-extensions/ecc.md)), and
+([`../06-extensions/ecc.md`](../06-extensions/ecc.md)), and
 hermes routes auxiliary/compression work to cheap models of this class. The small tier's
 real niche in mid-2026 practice appears to be *background cognition inside other
 tools* — continuous, low-stakes, volume-priced — rather than interactive work.

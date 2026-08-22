@@ -369,7 +369,7 @@ each cell point back here:
   `bind` backends (see `notes/03-execution-environments/index.md`'s relationship vocabulary)
   — the same category as e2b, modal, and cloudflare-sandbox-sdk in that vocabulary, reached
   by a harness that binds to it rather than bundling or internalizing it.
-- **→ category 5 (extensions).** An MCP server package (`microsandbox-mcp`) is referenced as a
+- **→ category 6 (extensions).** An MCP server package (`microsandbox-mcp`) is referenced as a
   Git submodule but is **uninitialized and empty at this pin** (`.gitmodules`) — this clone
   cannot answer anything about its auth posture or design; a separate clone would be needed.
 - **Independent-distribution: confirmed.** The local path has zero coupling to any AI

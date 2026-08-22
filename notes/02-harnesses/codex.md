@@ -254,8 +254,8 @@ the approval prompt is a UX courtesy on top of enforcement, not the enforcement.
   model-*conditioned*: instructions swap per model slug inside WorldState — a fifth
   data point for the per-model-prompt question (the vendor-native pole: one vendor,
   many of its own models, instructions per model).
-- **category 5:** MCP client *and* server; skills; hooks; plugins with an install-request
-  tool. `external-agent-migration` imports competitors' state — category-5 interop as a
+- **category 6:** MCP client *and* server; skills; hooks; plugins with an install-request
+  tool. `external-agent-migration` imports competitors' state — category-6 interop as a
   product feature.
 - **category 4:** plan tool, collaboration-mode templates, `guardian` review reminders —
   the usual absorption.

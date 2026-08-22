@@ -69,7 +69,7 @@ it validates artifacts, not behavior (empirical grounding: absent, as predicted)
 Dogfooded at scale: 91 changes through its own pipeline over 36 living specs. 29
 harness adapters. 63k stars, MIT, 71% single-author.
 
-### ECC (everything-claude-code) — **moved to category 5** (2026-07-30)
+### ECC (everything-claude-code) — **moved to the extensions bucket** (2026-07-30; category 5 then, 6 since the 2026-08-22 split)
 
 *(Added 2026-07-28 as a deliberate boundary case; resolved at deep-dive.)* The source
 read answered the question this entry was created to ask: **no process spine** — the
@@ -77,9 +77,9 @@ README's own guidance is "start with the workflow you need, not the full catalog
 workflow content is opt-in catalog items, and the multi-* orchestration commands
 require an external runtime (`ccg-workflow`). A config pack at scale with a real
 learning runtime, not an encoded methodology. Report now at
-[`../05-capability-extensions/ecc.md`](../05-capability-extensions/ecc.md). What it
+[`../06-extensions/ecc.md`](../06-extensions/ecc.md). What it
 contributed to *this* category's questions: verification gates can arrive as installable
-Stop hooks (a category-5 delivery vehicle for the mechanism exp-01 credited to category 4),
+Stop hooks (a category-6 delivery vehicle for the mechanism exp-01 credited to category 4),
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
 outside category 4 proper.
 

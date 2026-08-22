@@ -3,7 +3,7 @@
 `created: 2026-08-18` · decision record: [ADR-0010](../../adrs/0010-two-taxonomies.md)
 
 This repo carries **two taxonomies**. The [tool taxonomy](../../taxonomy.md) classifies
-what a tool *is* (the categories, plus types like category 5's `type` and category 4's
+what a tool *is* (the categories, plus types like category 6's `type` and category 4's
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
 defined **once**, with an applicability map saying which categories it can occur in. The
 generator (`scripts/build-tool-index.py`) reads the YAML block below as its single
@@ -39,7 +39,9 @@ Conventions:
   transcription vs assessment: the first drifts when the world changes, the second
   only when someone reads again.
 - `kind_link` records the **demand↔supply correspondence**: a harness feature (demand
-  side) whose supply side is an installable category-5 artifact type. This is the bleed —
+  side) whose supply side is an installable artifact: the `memory` kind supplies from
+  category 5 (Memory), every other kind from category 6 (Extensions) — the ADR-0020
+  split. This is the bleed —
   quantified in the generated cross-category table.
 - "Vocabulary" remains the mechanism phrase for this closed key list; the *concept* is
   the feature taxonomy (naming settled 2026-08-18, ADR-0010).

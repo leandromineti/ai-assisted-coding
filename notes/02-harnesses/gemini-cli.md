@@ -63,7 +63,7 @@ _TODO — source unread._
 
 ## Bleed
 
-_TODO_ — supports MCP (category 5).
+_TODO_ — supports MCP (category 6).
 
 ## Cost model
 

@@ -8,7 +8,7 @@ here once and referenced from the categories that implement it. See
 
 This category exists because the taxonomy's stress test broke on MCP: it has no defensible
 home in the stack, because *the protocol* and *the servers that speak it* are different
-kinds of object. The servers are category 5. The protocol is this.
+kinds of object. The servers are category 6. The protocol is this.
 
 **The general test:** can you install it? If yes, it's a category entry. If it's a document
 that other people implement, it belongs here.
@@ -33,9 +33,9 @@ SaaS) to agents as callable tools.
 **Implemented by:** Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, OpenCode, and
 Devin — i.e. every major harness. One server, set up once, works across all of them.
 
-**Why it matters structurally:** MCP is the only part of category 5 that has fully cleared the
+**Why it matters structurally:** MCP is the only part of category 6 that has fully cleared the
 independent-distribution bar. It's the existence proof that capability extensions can be a
-real category rather than a bag of per-harness features. Everything else in category 5 is
+real category rather than a bag of per-harness features. Everything else in category 6 is
 measured against how close it gets to this.
 
 **Open questions**
@@ -58,7 +58,7 @@ there's no schema to conform to and no way to be non-compliant. `AGENTS.md` appe
 converging into the cross-harness spelling, with `CLAUDE.md` and `.cursorrules` as
 vendor-specific predecessors.
 
-The *files* are category 5 artifacts; the *convention* is what lives here.
+The *files* are category 6 artifacts; the *convention* is what lives here.
 
 **Rival-implementation evidence (2026-08-11, Warp @ `80a20347`).** The strongest signal yet
 that this is a real convention rather than one vendor's habit: Warp reads `WARP.md` *and*
@@ -96,20 +96,30 @@ visible.
 
 This is the prediction the standards category is really for, and it's testable:
 
-> If skills and rules files converge on standards the way MCP did, category 5 solidifies as a
+> If skills and rules files converge on standards the way MCP did, category 6 solidifies as a
 > genuine category. If they don't, part of it collapses back into category 2 as per-harness
 > features.
 
 Current state of the evidence:
 
-| Category-5 type | Standardized? | Trend |
+| Category-6 type | Standardized? | Trend |
 |---|---|---|
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
 | Skills | **Emerging** — `SKILL.md` consumed by ≥5 harnesses (2026-07-28 evidence below; Warp added 2026-08-11) | Converging |
 | Hooks | No — harness-specific. Best fragmentation evidence to date: ai-memory deep-dive (2026-08-18), a vendor that must consume ~15 harnesses' hook surfaces — event vocabularies differ per harness (Devin ships PostCompaction not PreCompact; Zero execs without a shell), lifecycle coverage differs (Codex and Antigravity lack a true session-end; Antigravity lacks SessionStart), and *semantics* differ for the same event (Kimi Code discards SessionStart stdout and fires PostToolUse only on success; Claude Code wants JSON stdout). Each quirk is worked around in per-harness installer code | No sign of movement |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
-| Memory | **No — seven vendors, zero shared formats** (2026-08-18, type seeded at stub depth): each of ai-memory/mem0/cognee/memori/everos/memos/memmachine defines its own store, capture path, and injection mechanism; the only shared surfaces are the carriers (MCP, hooks, `SKILL.md`). Sharpened at the ai-memory deep-dive (2026-08-18): no interchange convention in source either — the closest thing is vendor-*internal* normalization (ai-memory's closed 10-value `ObservationKind` enum, into which ~15 harness hook vocabularies are mapped by ~7.8k lines of per-harness installer code), plus an `extension=<namespace>` ingress seam explicitly not a plugin API. The fragmentation cost is being paid per-vendor, in code. The only cross-vendor data flow found in four reads is **one-way competitive import** — mem0's plugin ships a script migrating `.cursorrules` / Copilot instructions / cline memory-bank / Continue rules *into* mem0 (2026-08-18) — which is the opposite of interchange: an acquisition funnel | Watch — a memory-interchange convention would be the next MCP-shaped event |
+
+**Memory watch note (row moved 2026-08-22, ADR-0020 — memory is now category 5, not a
+type of this bucket; the standards question follows it unchanged):** seven vendors,
+zero shared formats (2026-08-18): each of ai-memory/mem0/cognee/memori/everos/memos/
+memmachine defines its own store, capture path, and injection mechanism; the only
+shared surfaces are the carriers (MCP, hooks, `SKILL.md`). The fragmentation cost is
+paid per-vendor in code (~7.8k lines of per-harness installer in ai-memory alone), and
+the only cross-vendor data flow found in four reads is one-way competitive import
+(mem0's migration script) — an acquisition funnel, not interchange. **A
+memory-interchange convention would be the next MCP-shaped event** — watched from here,
+reported in [category 5](../05-memory/index.md).
 
 **Skills evidence (2026-07-28, from spec-kit's integration registry @ `655a3cb`):** a
 third party that must *install into* every harness is a good witness for what harnesses
@@ -139,5 +149,5 @@ installer targeting it. [`../02-harnesses/warp.md`](../02-harnesses/warp.md).
 
 Two and a half of five have moved (the half being skills, at 2026-07-28). That's the
 number to re-check in six months: if hooks are still harness-specific and skills stall at
-convention level, category 5 is really "MCP plus a pile of vendor features," and the
+convention level, category 6 is really "MCP plus a pile of vendor features," and the
 taxonomy should say so.

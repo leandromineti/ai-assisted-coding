@@ -275,7 +275,7 @@ def _deny_index(taxo: dict) -> tuple[re.Pattern | None, dict, list[str]]:
             if d.endswith(":"):
                 # Frontmatter-key entries (e.g. "kind:") are schema, not prose — Plan
                 # 02's schema-rename check owns these. Known false positive this
-                # exclusion prevents: notes/05-capability-extensions/ai-memory.md:90
+                # exclusion prevents: notes/05-memory/ai-memory.md:90
                 # ("Table stakes in the kind: store + retrieve + MCP.") — ordinary
                 # prose, not the report frontmatter key.
                 continue
@@ -711,7 +711,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
     `split_frontmatter` lines) — this is deliberately disjoint from `check()`'s prose
     scanner, which already excludes colon-suffixed deny entries like `kind:` from
     prose at the regex-build step (`_deny_index`). That's what lets the recorded
-    false positive — `notes/05-capability-extensions/ai-memory.md:90`'s "Table stakes
+    false positive — `notes/05-memory/ai-memory.md:90`'s "Table stakes
     in the kind: store + retrieve + MCP." (taxonomy.yaml, term `types`,
     false_positive_notes) — pass without a per-site carve-out: prose "kind:" is never
     even a candidate for this check, because this check never looks at body text.
@@ -753,9 +753,12 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
                 category_value = (
                     (fm.get("category") or fm.get("layer")) if isinstance(fm, dict) else None
                 )
+                # ADR-0020 (2026-08-22): the type-carrying categories are 5 and 6
                 in_scope = rel.endswith("_template-tool-report.md") or category_value in (
                     5,
                     "5",
+                    6,
+                    "6",
                 )
                 if not in_scope:
                     continue
@@ -911,12 +914,12 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "known-site-scoped-to-compound-span-memory-layer",
-        "path": "notes/05-capability-extensions/fixture-memory-layer-scope.md",
+        "path": "notes/05-memory/fixture-memory-layer-scope.md",
         "text": "# Fixture\n\nThe memory layer is fine here, but the layer's "
         "sharpest categories concept is not.\n",
         "expect": "fail",
         "taxo_patch": _with_extra_known_site(
-            "notes/05-capability-extensions/fixture-memory-layer-scope.md:3",
+            "notes/05-memory/fixture-memory-layer-scope.md:3",
             compound="memory layer",
         ),
         "why": "WR-02: calibrates one of the 7 compounds added in 60e9b97 (chosen "
@@ -1017,7 +1020,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "kind-gate-survives-rename-applied",
-        "path": "notes/05-capability-extensions/fixture-kind-gate-applied.md",
+        "path": "notes/05-memory/fixture-kind-gate-applied.md",
         "text": "---\ncategory: 5\nkind: agent\n---\n\n# Fixture\n\nBoth renames "
         "applied; stale kind: key must still be caught.\n",
         "expect": "fail",
@@ -1030,15 +1033,27 @@ FIXTURES: list[dict] = [
         "a gate hardcoded to `layer` would go silently blind here.",
     },
     {
+        "id": "kind-gate-fires-at-category-6",
+        "path": "notes/06-extensions/fixture-kind-gate-cat6.md",
+        "text": "---\ncategory: 6\nkind: agent\n---\n\n# Fixture\n\nADR-0020 "
+        "split: a category-6 report with a stale kind: key must still be caught.\n",
+        "expect": "fail",
+        "taxo_patch": _with_schema_renames_applied,
+        "why": "ADR-0020: the kind->type gate widened to categories 5 and 6 at the "
+        "split; without this fixture, --selftest would stay green while the gate "
+        "was silently blind to every category-6 report (the WR-01 failure class "
+        "at a new number).",
+    },
+    {
         "id": "kind-colon-in-prose",
-        "path": "notes/05-capability-extensions/fixture-kind-colon.md",
+        "path": "notes/05-memory/fixture-kind-colon.md",
         "text": "# Fixture\n\nTable stakes in the kind: store + retrieve + MCP.\n",
         "expect": "pass",
         "why": "'kind:' here is ordinary body prose (a list-introducing colon), not "
         "a frontmatter key — check_schema_renames only scans frontmatter and never "
         "sees this line; the deny-list scanner already excludes colon-suffixed "
         "entries from prose. Mirrors the real false positive at "
-        "notes/05-capability-extensions/ai-memory.md:90.",
+        "notes/05-memory/ai-memory.md:90.",
     },
     {
         "id": "generated-file-skipped",

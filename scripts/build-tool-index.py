@@ -120,7 +120,8 @@ CATEGORY_NAMES = {
     2: "Harnesses",
     3: "Execution environments",
     4: "Workflow frameworks",
-    5: "Extensions",  # bucket, not a category; renamed from "Portable artifacts" 2026-08-17; renumbered 3->5 per ADR-0007 (2026-08-19)
+    5: "Memory",  # full category since the 2026-08-22 split (ADR-0020); was "Extensions"
+    6: "Extensions",  # the residual bucket, renumbered 5->6 per ADR-0020 (2026-08-22); bucket status per ADR-0002; renamed from "Portable artifacts" 2026-08-17
 }
 
 
@@ -281,7 +282,7 @@ def render(reports: list[dict]) -> str:
         elif targets is not None:
             targets = str(targets)
         else:
-            targets = "·" if r["category"] in (4, 5) else "—"
+            targets = "·" if r["category"] in (4, 5, 6) else "—"
         lines.append(
             f"| {r['category']} · {CATEGORY_NAMES.get(r['category'], '?')} | {r['name']} | {shape} | "
             f"{stack or '—'} | {r.get('license') or '—'} | {stars} | {since} | {targets} | "
@@ -330,8 +331,11 @@ def _render_cross_category(reports: list[dict]) -> list[str]:
                 present += 1
         kind = e.get("kind_link")
         if kind:
+            # supply split per ADR-0020: the memory kind supplies from category 5
+            # (Memory); every other artifact kind supplies from category 6 (Extensions)
+            supply_cat = 5 if kind == "memory" else 6
             supply_n = sum(1 for r in reports
-                           if r.get("category") == 5 and r.get("type") == kind)
+                           if r.get("category") == supply_cat and r.get("type") == kind)
             supply = f"`{kind}` · {supply_n} tracked"
         else:
             supply = "—"
@@ -427,9 +431,9 @@ def render_features(reports: list[dict]) -> str:
 
     lines += [
         "",
-        "## Environments & extensions on the harness vocabulary (categories 3 & 5)",
+        "## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)",
         "",
-        "Category-3 and category-5 reports may verify harness-vocabulary keys where the",
+        "Category-3, category-5, and category-6 reports may verify harness-vocabulary keys where the",
         "characteristic genuinely applies (an extension shipping a learning loop, an",
         "environment exposing session sharing). Same columns, same discipline; rows",
         "here do NOT count toward the cross-category table's demand side (that filter is",
@@ -439,7 +443,7 @@ def render_features(reports: list[dict]) -> str:
         divider,
     ]
     for r in reports:
-        if r.get("category") not in (3, 5):
+        if r.get("category") not in (3, 5, 6):
             continue
         lines.append(_feature_row(r, unknown_keys))
     # category 1 is excluded throughout: models have their own matrix (models.md);
@@ -487,10 +491,10 @@ def render_features(reports: list[dict]) -> str:
 
     lines += [
         "",
-        "## Memory extensions (category 5, `type: memory`)",
+        "## Memory (category 5)",
         "",
-        "The per-kind slice of the feature taxonomy — `memory_features:` frontmatter",
-        "(ADR-0013), assessed only on category-5 reports with `type: memory`. Values are",
+        "The category-5 slice of the feature taxonomy — `memory_features:` frontmatter",
+        "(ADR-0013; a full category since ADR-0020). Values are",
         "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
         "of dots are stub-depth reports — unread, honestly unclaimed.",
         "",
@@ -694,8 +698,8 @@ def render_vendors(reports: list[dict]) -> str:
         "[`../taxonomy.md`](../taxonomy.md) → *Vendor span*; this file is its generated, "
         "tracked-only floor.",
         "",
-        "| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Artifacts | Categories |",
-        "|---|---|---|---|---|---|---|",
+        "| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Memory | 6 · Extensions | Categories |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     def cell(rs: list[dict], category: int) -> str:
         names = [r["name"] for r in rs if r["category"] == category]
@@ -709,7 +713,7 @@ def render_vendors(reports: list[dict]) -> str:
         span = len({r["category"] for r in rs})
         lines.append(
             f"| {vendor} | {cell(rs, 1)} | {cell(rs, 2)} | {cell(rs, 3)} | "
-            f"{cell(rs, 4)} | {cell(rs, 5)} | **{span}** |"
+            f"{cell(rs, 4)} | {cell(rs, 5)} | {cell(rs, 6)} | **{span}** |"
         )
     spanners = [v for v, rs in by_vendor.items() if len({r['category'] for r in rs}) >= 2]
     lines += [

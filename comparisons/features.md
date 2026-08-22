@@ -43,9 +43,9 @@ stays in [models.md](models.md).
 | [aider](../notes/02-harnesses/aider.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [gemini-cli](../notes/02-harnesses/gemini-cli.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
-## Environments & extensions on the harness vocabulary (categories 3 & 5)
+## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)
 
-Category-3 and category-5 reports may verify harness-vocabulary keys where the
+Category-3, category-5, and category-6 reports may verify harness-vocabulary keys where the
 characteristic genuinely applies (an extension shipping a learning loop, an
 environment exposing session sharing). Same columns, same discipline; rows
 here do NOT count toward the cross-category table's demand side (that filter is
@@ -58,15 +58,15 @@ here do NOT count toward the cross-category table's demand side (that filter is
 | [e2b](../notes/03-execution-environments/e2b.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [microsandbox](../notes/03-execution-environments/microsandbox.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [modal](../notes/03-execution-environments/modal.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [ecc](../notes/05-capability-extensions/ecc.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | Apache-2.0 | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
-| [memos](../notes/05-capability-extensions/memos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
-| [everos](../notes/05-capability-extensions/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../notes/05-capability-extensions/openviking.md) | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../notes/05-memory/ai-memory.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [mem0](../notes/05-memory/mem0.md) | Apache-2.0 | · | · | · | · | ✓ | · | · | · | · | · | · | · | ✓ |
+| [memos](../notes/05-memory/memos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../notes/05-memory/cognee.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
+| [everos](../notes/05-memory/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-memory/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-memory/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../notes/05-memory/openviking.md) | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../notes/06-extensions/ecc.md) | MIT | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 
 ## Workflow frameworks (category 4)
 
@@ -88,23 +88,23 @@ mechanism table's job, notes/04-workflow-frameworks/index.md).
 | [pilot-shell](../notes/04-workflow-frameworks/pilot-shell.md) | proprietary | ✓ | ✓ | · | ✓ | · | · | · | · | · |
 | [spec-kitty](../notes/04-workflow-frameworks/spec-kitty.md) | MIT | ✓ | ✓ | · | · | ✓ | · | ✓ | `repo-files` | ✓ |
 
-## Memory extensions (category 5, `type: memory`)
+## Memory (category 5)
 
-The per-kind slice of the feature taxonomy — `memory_features:` frontmatter
-(ADR-0013), assessed only on category-5 reports with `type: memory`. Values are
+The category-5 slice of the feature taxonomy — `memory_features:` frontmatter
+(ADR-0013; a full category since ADR-0020). Values are
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
 | Tool | license | memory store | capture path | write admission | recall injection | memory scope | memory tiers | hybrid retrieval | decay | memory revision | injection trust boundary | deployment mode | harness installer | rule extraction |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ai-memory](../notes/05-capability-extensions/ai-memory.md) | MIT | `files-git` | `hook` | `evidence-gated` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
-| [mem0](../notes/05-capability-extensions/mem0.md) | Apache-2.0 | `vector` | `hook` | `unfiltered` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
-| [memos](../notes/05-capability-extensions/memos.md) | Apache-2.0 | `rows`, `vector` | `adapter` | `scored` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
-| [cognee](../notes/05-capability-extensions/cognee.md) | Apache-2.0 | `graph`, `vector`, `rows` | `agent-invoked` | · | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
-| [everos](../notes/05-capability-extensions/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../notes/05-capability-extensions/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../notes/05-capability-extensions/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../notes/05-capability-extensions/openviking.md) | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../notes/05-memory/ai-memory.md) | MIT | `files-git` | `hook` | `evidence-gated` | `both` | `project`, `user` | ✓ | ✓ | ✓ | `auto` | ✓ | `self-host` | ✓ | ✓ |
+| [mem0](../notes/05-memory/mem0.md) | Apache-2.0 | `vector` | `hook` | `unfiltered` | `auto` | `user`, `agent`, `session` | ✗ | ✓ | ✗ | `caller-only` | ✗ | `both` | ✓ | · |
+| [memos](../notes/05-memory/memos.md) | Apache-2.0 | `rows`, `vector` | `adapter` | `scored` | `auto` | `agent`, `project`, `session` | ✓ | ✓ | ✓ | `auto` | ✓ | `both` | ✓ | ✓ |
+| [cognee](../notes/05-memory/cognee.md) | Apache-2.0 | `graph`, `vector`, `rows` | `agent-invoked` | · | `pull-only` | `agent`, `session` | ✓ | · | · | · | · | `both` | · | ✓ |
+| [everos](../notes/05-memory/everos.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../notes/05-memory/memmachine.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../notes/05-memory/memori.md) | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../notes/05-memory/openviking.md) | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Execution environments (category 3)
 

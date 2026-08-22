@@ -198,3 +198,11 @@ injection) is unchanged.
 `[section]` (first arm-C round silently ran zero-LLM; caught via the daemon's own
 "AI_MEMORY_LLM_PROVIDER unset" line — env vars are the reliable route). Additional
 capture round + reviewer runs ≈ $0.30; arm total ≈ $0.60.
+
+## Post-run amendment — 2026-08-22: path decode (no protocol change)
+
+*(Dated post-run amendment; protocol and results above unedited.)* The ai-memory report
+this protocol links at line 19 moved with the ADR-0020 category split:
+`notes/05-capability-extensions/ai-memory.md` → `notes/05-memory/ai-memory.md`. The
+in-protocol link is left as written (protocol text is never edited); decode via
+ADR-0020's path table.

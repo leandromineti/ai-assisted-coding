@@ -158,7 +158,7 @@ The one tracked as a product so far, from [the tool index](../comparisons/tools.
   system": 281 skills, 67 agents, rules packs, enforcement hooks, and a learning
   loop, installed *into* a dozen-plus harnesses; the fastest-adopted tool in the
   study (~236k stars at last check); deep-dive read
-  ([the ECC note](../notes/05-capability-extensions/ecc.md)).
+  ([the ECC note](../notes/06-extensions/ecc.md)).
 
 ### Workflow frameworks
 

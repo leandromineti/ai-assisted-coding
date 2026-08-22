@@ -1,6 +1,9 @@
 # ADR-0019 — Coverage strata for category 5
 
-`decided: 2026-08-22` · status: **accepted**
+`decided: 2026-08-22` · status: **superseded in part by
+[ADR-0020](0020-memory-category-extensions-renumbered.md) (2026-08-22): the mechanism
+stratum is promoted to category 5 (Memory); the content/reach strata carry forward as
+category-6 coverage semantics**
 
 ## Decision
 

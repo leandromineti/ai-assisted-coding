@@ -1,6 +1,6 @@
 ---
 name: ecc
-category: 5   # RECLASSIFIED from provisional category 4 at read time (2026-07-30) — the boundary test resolved: no process spine; see The category verdict
+category: 6   # 4 (provisional) -> 5 at read time 2026-07-30 (no process spine; see The category verdict) -> 6 at the 2026-08-22 split (ADR-0020: Extensions renumbered 5->6; the verdict itself is unchanged)
 type: config-pack   # set 2026-08-19 per ADR-0016 — the classification the deep-dive already made in prose ("a config pack at scale, with a learning runtime", The category verdict); was the bucket's only report with no type key
 vendor: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
@@ -60,7 +60,7 @@ warns about.
    a macOS Bash 3.2 incompatibility in the GAN path (#2674). This report made no OS
    claims, so this is added scope for a re-read, not a correction.
 
-**Unaffected:** the category-5 verdict. Neither leg (no process spine; portability reduces
+**Unaffected:** the category verdict (5-at-the-time, 6 since the ADR-0020 renumber). Neither leg (no process spine; portability reduces
 to copy-with-adaptation into convention dirs) is touched by the drift, so the taxonomy
 revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
 
@@ -70,7 +70,7 @@ sampled rather than audited at the original read.
 
 ## The category verdict (the question this read was preregistered to answer)
 
-**category 5.** The category-4 test — an encoded methodology, a prescribed operating loop —
+**category 5 — the extensions bucket** *(renumbered to **6** at the 2026-08-22 split, ADR-0020; the verdict itself is unchanged)*. The category-4 test — an encoded methodology, a prescribed operating loop —
 fails on the source:
 
 - The README's own guidance is *"Start with the workflow you need, not the full
@@ -82,7 +82,7 @@ fails on the source:
   package) and doesn't run without it. The repo's own `workflows/` directory contains
   one file.
 - What ECC *does* ship everywhere is reach and reflexes: rules, agents, skills,
-  enforcement hooks, memory, learning. That's category 5's territory — what the agent can
+  enforcement hooks, memory, learning. That's the extensions bucket's territory — what the agent can
   see and touch — delivered at unprecedented scale, with real runtime components riding
   each harness's hook system.
 
@@ -157,7 +157,7 @@ state before compaction; `PreToolUse` dispatchers run consolidated Bash prefligh
 (quality, push-protection, "GateGuard") through a Node bootstrap that resolves the
 plugin root across five install layouts; **`Stop` hooks run blocking quality gates**
 (format/typecheck batch, console.log audit). Verification gates delivered as
-*installable category-5 artifacts* — a third delivery vehicle alongside category-4 prose
+*installable extension artifacts (category 6)* — a third delivery vehicle alongside category-4 prose
 (GSD) and category-2 native (hermes, codex).
 
 ### Portability: adapters, not a compiler
@@ -210,7 +210,7 @@ acknowledges the context-budget problem (design-principle X2).
    twelve harnesses' worth of installed hooks trace to one person's repo. The README's
    own malware warning about unofficial mirrors underlines the stakes.
 4. **Verification gates via installable hooks** — blocking Stop-hook quality gates as
-   category-5 artifacts. The verification mechanism now exists at three delivery categories.
+   category-6 artifacts. The verification mechanism now exists at three delivery categories.
 5. **SOUL.md at the repo root** — the identity-file convention converging across the
    set (hermes loads SOUL.md as primary identity; ECC ships one).
 6. **The learning unit is designed for exchange** — instinct import/export with

@@ -158,7 +158,7 @@ signals missing self-monitoring, not efficiency (GPTswarm/OWL: ~0 corrections *a
 3–10% repair rates). Its prose headlines contradict its own tables in places; cite
 tables only.
 
-## 6. The memory corner (what the category-5 memory type reports against)
+## 6. The memory corner (what category 5 — Memory — reports against)
 
 *(Added 2026-08-18, closing the memory-type reading arc's instrument question — three
 full reads the same day.)* The instruments the memory vendors self-report on:
