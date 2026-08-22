@@ -20,14 +20,15 @@ This document always describes the **current** taxonomy. How it got this shape �
 bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
 renumbering — is recorded in [`adrs/`](adrs/README.md), one dated, immutable decision
 record each. Anything dated before 2026-08-18 (git history, old URLs, experiment logs)
-uses the pre-renumbering scheme; ADR-0007[^adr-0007] carries the mapping. Anything
-dated before 2026-08-22 says "category 5" for both memory and the extensions bucket;
-ADR-0020[^adr-0020] carries that decoder (memory → 5, everything else → 6).
+uses the pre-renumbering scheme; the renumbering record[^adr-0007] carries the
+mapping. Anything dated before 2026-08-22 says "category 5" for both memory and the
+extensions bucket; the split record[^adr-0020] carries that decoder (memory → 5,
+everything else → 6).
 
 ## Tool categories
 
-**The core triad and its three interfaces**[^adr-0004] (numbering per
-ADR-0007[^adr-0007]). A running agent system requires
+**The core triad and its three interfaces**[^adr-0004][^adr-0007]. A running agent
+system requires
 exactly three things; everything else in this repo either parameterizes them or mediates
 between them and the human:
 
@@ -59,7 +60,7 @@ The three non-fundamentals are **interfaces**:
   tension; E2B's egress credential substitution), which is the empirical case that the
   interactions deserve first-class vocabulary.
 
-**Live falsifiers on the frame** (recorded at reframing time, ADR-0004[^adr-0004]): (a) the
+**Live falsifiers on the frame** (recorded at reframing time[^adr-0004]): (a) the
 instinct-exchange re-check (~2027-01) can still force extension artifacts back from
 "interface detail" to a category — the bucket's re-promotion trigger. (b) Warp shows the
 mediation role *nests* (a harness driving other harnesses), so "harness" names a
@@ -250,8 +251,8 @@ thing a single harness cannot absorb — cross-harness continuity — measured p
 in exp-04 (conclusion 14).
 
 A full category since the 2026-08-22 split[^adr-0020]: born 2026-08-18 as the
-extensions bucket's `memory` type, promoted by owner decision — the sample-bias caution
-ADR-0016[^adr-0016] recorded still applies to the category's eight-report roster, and is carried as
+extensions bucket's `memory` type, promoted by owner decision — the earlier
+sample-bias caution[^adr-0016] still applies to the category's eight-report roster, and is carried as
 calibration, not erased. Reports keep `type: memory` as residual data.
 
 Distinct from category 6: memory governs **what survives the session**; extensions
@@ -281,7 +282,7 @@ server is authored, versioned, and installed separately from any harness, and th
 one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and Devin.
 
 *How deeply each type is studied* follows the surviving coverage
-strata[^adr-0019] (carried forward by ADR-0020[^adr-0020]):
+strata[^adr-0019] (carried forward at the split[^adr-0020]):
 *content types* (skills, rules files, subagent defs) get Standards tracking plus
 exemplar reads; *reach-side* (MCP servers) gets capped exemplars only, because the
 population reachable through an unchanged interface is world, not stack — a census of
@@ -291,7 +292,7 @@ it would be as illegitimate as a census of CLI tools because agents have shells;
 Distinct from category 4: capability extensions govern **what the agent can reach**;
 workflow frameworks govern **what process it follows**.
 
-**Live re-promotion trigger** (recorded at the demotion, ADR-0002[^adr-0002]): the artifact
+**Live re-promotion trigger** (recorded at the demotion[^adr-0002]): the artifact
 ecosystem is product-grade — ECC is a 236k-star business built entirely on independently
 distributed capability artifacts, and its instinct import/export design points at a
 *new* exchangeable artifact class. If instinct-like formats standardize across vendors
@@ -418,7 +419,7 @@ taxonomy needs revision — not the case.
 | **Devin** | category 2, bundles category 3 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ category identity. |
 | **Aider** | category 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
 | **MCP itself** | Not a category — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are category 6. |
-| **ECC (everything-claude-code)** | **Resolved: category 6, extensions** (was category-4 provisional; resolved as category 5 pre-split, renumbered 2026-08-22 per ADR-0020[^adr-0020]) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion**[^adr-0002]. [`notes/06-extensions/ecc.md`](notes/06-extensions/ecc.md). |
+| **ECC (everything-claude-code)** | **Resolved: category 6, extensions** (was category-4 provisional; resolved as category 5 pre-split, renumbered 2026-08-22 at the split[^adr-0020]) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion**[^adr-0002]. [`notes/06-extensions/ecc.md`](notes/06-extensions/ecc.md). |
 | **hermes-agent** | category 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both category-2 axes — see the execution-axis note above. Kept at category 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md). |
 | **Warp** | category 2 — that runs *other* category-2 harnesses | Added 2026-08-11 at survey. The classification is not in doubt (own loop, embedding-indexed context assembly, execution-profile permissions, owns the UI), but two of its bleeds are new shapes. **Harness-over-harness:** `enum Harness { Oz, Claude, OpenCode, Gemini, Codex }` makes Warp's own agent one selectable backend among five for a spawned child agent, with per-harness drivers and transcript parsers (`app/src/ai/agent_sdk/driver/harness/`); the Codex driver installs Warp's plugin hooks into Codex and passes `--dangerously-bypass-hook-trust` so they run unreviewed. Orchestrating peers is category-4-shaped behaviour, but it fails the category-4 test — the process is not portable off Warp, it *is* Warp — so this is a harness with an orchestration tier, not a framework. **A fourth environment verb:** after bundle (Devin), bind (hermes), and internalize (codex), Warp **inhabits** — `crates/isolation_platform/` detects the container Warp is *already running inside* (`Docker`/`DockerSandbox`/`Kubernetes`/`Namespace`) to obtain a workload-identity token, rather than launching anything. [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md). |
 | **Codex CLI's in-process sandboxing** | category 2 that *internalized* category 3 | Added 2026-07-30 at deep-dive. The environment relationship vocabulary had two verbs — *bundle* (Devin ships a sandbox product alongside) and *bind* (hermes attaches to Docker/SSH/Modal). codex is a third: Seatbelt policies, Landlock, bwrap, and a Windows sandbox are **compiled into the harness binary** and invoked per tool call, plus pre-main process hardening. Still category 2 — the sandbox is not independently distributed, so it fails the category test — but the scope note's prediction ("as autonomy rises, the environment question becomes more central") gains a data point: the environment became a *harness subsystem*. [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md). |
