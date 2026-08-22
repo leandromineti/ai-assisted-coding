@@ -52,6 +52,19 @@ source actually touches, append a line to `refs/log.md`, and re-run
 `python3 scripts/build-tool-index.py`. Set a `harness_features:` key **only** when verified in source or
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
 
+Two report-writing disciplines, both scars from the gsd-core v1.11.0 re-read (2026-08-21):
+
+- **A count carries its measure.** At the re-read, three of four corrections to the deep-dive
+  held *at its own pin* — a curated subset stated as a total, a figure no definition reproduced
+  (candidate measures ranged 5–39), a total that depended on clone state. State the command or
+  definition a count came from, or the next re-read cannot confront it — the enumerable cousin
+  of "a citation is what makes a claim re-checkable".
+- **Forward-looking claims are dated, falsifiable predictions.** The deep-dive's issue-counter
+  forecast carried a number and a date, so the re-read could *score* it (landed within a day;
+  ceiling mis-chosen). Write predictions that way on purpose, and score them at the next
+  re-read — a free calibration instrument, the same epistemics this repo credits in tools
+  that publish negative results about themselves.
+
 **Lint.** Before committing:
 
 ```sh
