@@ -17,14 +17,17 @@ facts_for() {
 
   [[ -d "$dir/.git" ]] || { echo "not cloned: $name (run scripts/sync-upstream.sh)" >&2; return 1; }
 
-  # Layer and URL come from the manifest so there is one source of truth.
+  # Category and URL come from the manifest so there is one source of truth.
+  # (Emitted as `category:` since 2026-08-22 — this script was missed by ADR-0015's
+  # layer->category scope list, so it kept emitting the superseded `layer:` key that
+  # LINT-05 rejects when pasted into report frontmatter.)
   local layer url
   layer=$(awk -F'|' -v n="$name" '$2==n {print $1}' "$manifest" | head -1)
   url=$(awk -F'|' -v n="$name" '$2==n {print $3}' "$manifest" | head -1)
 
   echo "# --- $name ---"
   echo "name: $name"
-  echo "layer: ${layer:-UNKNOWN}"
+  echo "category: ${layer:-UNKNOWN}"
   echo "url: ${url:-UNKNOWN}"
   echo "version: $(git -C "$dir" describe --tags --always 2>/dev/null || echo unknown)"
   echo "commit: $(git -C "$dir" rev-parse --short HEAD)"
