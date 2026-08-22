@@ -8,10 +8,9 @@ Every note and comparison in this repo declares which category its subject occup
 comparisons stay like-for-like.
 
 This is the repo's **tool taxonomy** — it classifies what a tool *is*. Its companion is
-the **feature taxonomy**
-([`notes/cross-cutting/feature-taxonomy.md`](notes/cross-cutting/feature-taxonomy.md),
-[ADR-0010](adrs/0010-two-taxonomies.md)): the characteristics assessed on tools, defined
-once with per-category applicability, from which the comparison matrices are generated.
+the [**feature taxonomy**](notes/cross-cutting/feature-taxonomy.md)[^feature-taxonomy]:
+the characteristics assessed on tools, defined once with per-category applicability,
+from which the comparison matrices are generated.
 Categories may carry **types** (category 6's `type`; category 4's SDD /
 context-discipline / decision-governance poles) — those live in the category indexes.
 Canonical terms and their deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this
@@ -453,3 +452,5 @@ taxonomy needs revision — not the case.
 
 Per-tool reports use [`notes/_template-tool-report.md`](notes/_template-tool-report.md) and
 are indexed flat, across categories, in [`comparisons/tools.md`](comparisons/tools.md).
+
+[^feature-taxonomy]: Decision record for the two-taxonomy split: [ADR-0010](adrs/0010-two-taxonomies.md) (2026-08-18).
