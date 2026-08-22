@@ -257,7 +257,7 @@ in exp-04 (conclusion 14).
 A full category since the 2026-08-22 split
 ([ADR-0020](adrs/0020-memory-category-extensions-renumbered.md)): born 2026-08-18 as the
 extensions bucket's `memory` type, promoted by owner decision — the sample-bias caution
-ADR-0016 recorded still applies to the category's nine-report roster, and is carried as
+ADR-0016 recorded still applies to the category's eight-report roster, and is carried as
 calibration, not erased. Reports keep `type: memory` as residual data.
 
 Distinct from category 6: memory governs **what survives the session**; extensions
