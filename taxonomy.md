@@ -35,8 +35,9 @@ exactly three things; everything else in this repo either parameterizes them or 
 between them and the human:
 
 - **Model (1)** — cognition. The weights.
-- **Harness (2)** — mediation. Runs the loop, assembles context, gates permissions,
-  fronts the user, reaches tools and files.
+- **Harness (2)** — mediation. Runs the loop (which reaches tools and files),
+  assembles context, gates permissions — §2's three components — and fronts the user
+  across §2's descriptive axes.
 - **Environment (3)** — situation. Where execution lands and what it can damage; the
   autonomy ceiling lives here (principle E1), not in the model.
 
@@ -91,10 +92,49 @@ model name stays the same.
 
 ### 2. Harnesses
 
-The program that runs the agent loop. Concretely: **loop + context assembly + permission
-model + UI**.
+The program that runs the agent loop. **Three components** (decomposition recorded
+2026-08-22, [ADR-0021](adrs/0021-harness-three-component-decomposition.md)), each an
+agent-shaped question anchored by a finding traced in source — this category's cousin
+of category 3's blast-radius/fidelity/parallelism questions, with a different job:
+those are an ingestion lens for borrowed infrastructure, these are a tracing
+discipline (a deep-dive should say which of the three it actually traced) and the
+sorting frame for the `harness_features` vocabulary:
 
-Described by two axes, recorded separately because products increasingly span both:
+1. **The loop** — *who can stop or steer a turn, and with what authority?* The turn
+   engine: iteration, tool dispatch, stop conditions, subagent fan-out, plan-mode
+   checkpoints. Tools-and-files reach lives here as the loop's dispatch table — MCP
+   extends it, the gate checkpoints it. Anchor: the enforcement inversion — native
+   `engine`/`hook` turn gates vs frameworks' `prose`
+   ([ADR-0011](adrs/0011-graded-gate-enforcement.md)/[0012](adrs/0012-layer-2-feature-set.md)).
+   *Strain (2026-08-22):* §6 gives MCP its own harness↔world edge, which reserves a
+   seat for reach as a component; not promoted because reach doesn't currently
+   discriminate (the `mcp` column is a uniform ✓; invocation shape — `ptc` — is what
+   splits). Trigger: the first reach-shaped finding that isn't loop-shaped — an
+   edit-format study, or verified MCP-client divergence (aider's matrix row, unread
+   today, is the likeliest source).
+2. **Context assembly** — *what reaches the prompt, who wrote it, and where does the
+   agent's own output land?* Rules-file and skill injection, memory write-back,
+   compaction, cache discipline. Anchor: the hermes cache-tension finding
+   ([category index](notes/02-harnesses/index.md)), which asks this component's
+   question verbatim. This is the harness sophistication the lead-in calls the
+   contested ground of 2026, and what the `deep-dive` depth is defined as tracing.
+3. **The permission gate** — *what may the agent attempt without a human, and can the
+   model influence that decision?* The harness's end of the harness↔environment edge:
+   in-process policy, verified `engine`-grade in five tracked harnesses — distinct
+   from the environment's *bounds* (blast radius, category 3). Boundary test: if the
+   model can influence it or a child process can escape it, it's the gate (category
+   2); if it holds regardless of what the software does, it's the bounds (category
+   3). Anchor: Warp's `AgentDecided` crack — a model-authored `is_risky: false`
+   self-authorizes ([warp report](notes/02-harnesses/warp.md)). Autonomy is the
+   product of gate policy × environment bounds (principle E1).
+
+The five kind-linked `harness_features` keys are the components' **apertures** — the
+pluggable form of each: hooks and subagent-defs extend the loop, MCP its dispatch,
+skills and rules files feed context assembly.
+
+Beside the components, two **descriptive axes** — transcription facts readable off
+product docs, not traced mechanisms — recorded separately because products
+increasingly span both:
 
 - **Surfaces** — where you interact: terminal, IDE, desktop, web. **Multi-valued.** An
   earlier version of this taxonomy used a single surface bucket; that forced converged
@@ -112,6 +152,15 @@ Described by two axes, recorded separately because products increasingly span bo
   a third value on one instance — recorded here so the second instance triggers the
   revision. Same read strained **surfaces**: messaging platforms don't fit the four-value
   vocabulary and are recorded as an annotation, not a fifth value.
+
+A **human front** is deliberately not a fourth component
+([ADR-0021](adrs/0021-harness-three-component-decomposition.md)): its
+assessment-grade fragments already belong to the components (approval UI to the gate,
+plan-mode checkpoints to the loop), the axes above carry its classification facts,
+and the human⇄stack boundary is category 4's. Trigger to re-open: a deep-dive
+mechanism finding that fits none of the three — likeliest the async-remote
+report-back path (what evidence does the agent assemble for a human who wasn't
+watching?), untraced in any current read.
 
 Which category-3 *environments* a harness can bind to (host, worktree, container, remote
 sandbox) is recorded on the harness entry as its bleed — not as harness configuration.
