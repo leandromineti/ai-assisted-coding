@@ -2,28 +2,27 @@
 
 `checked: 2026-08-22`
 
-The point of this document is a **shared vocabulary**. Without one, "Claude Code vs. GSD
-vs. Opus 5" is a category error — three things that aren't the same kind of thing at all.
-Every note and comparison in this repo declares which category its subject occupies, so that
-comparisons stay like-for-like.
+The point of this document is a **shared vocabulary**: without one, "Claude Code vs.
+GSD vs. Opus 5" is a category error — three things that aren't the same kind of thing
+at all — so every note and comparison in this repo declares which category its subject
+occupies, and comparisons stay like-for-like. This is the repo's **tool taxonomy**,
+the half that classifies what a tool *is*; its companion, the
+[**feature taxonomy**](notes/cross-cutting/feature-taxonomy.md)[^adr-0010], defines
+the characteristics assessed on tools — once, with per-category applicability — and
+the comparison matrices are generated from it. Categories may carry **types**
+(category 6's `type`; category 4's SDD / context-discipline / decision-governance
+poles), which live in the category indexes, and the canonical terms with their
+deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this document is prose, linted
+against it.
 
-This is the repo's **tool taxonomy** — it classifies what a tool *is*. Its companion is
-the [**feature taxonomy**](notes/cross-cutting/feature-taxonomy.md)[^adr-0010]:
-the characteristics assessed on tools, defined once with per-category applicability,
-from which the comparison matrices are generated.
-Categories may carry **types** (category 6's `type`; category 4's SDD /
-context-discipline / decision-governance poles) — those live in the category indexes.
-Canonical terms and their deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this
-document is prose, linted against it.
-
-This document always describes the **current** taxonomy. How it got this shape — the
-bucket demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
-renumbering — is recorded in [`adrs/`](adrs/README.md), one dated, immutable decision
-record each. Anything dated before 2026-08-18 (git history, old URLs, experiment logs)
-uses the pre-renumbering scheme; the renumbering record[^adr-0007] carries the
-mapping. Anything dated before 2026-08-22 says "category 5" for both memory and the
-extensions bucket; the split record[^adr-0020] carries that decoder (memory → 5,
-everything else → 6).
+It always describes the **current** taxonomy. How it got this shape — the bucket
+demotion, the environments adjudication, the core-triad reframing, the 2026-08-18
+renumbering — lives in [`adrs/`](adrs/README.md), one dated, immutable decision
+record each, and two decoders translate older material: anything dated before
+2026-08-18 (git history, old URLs, experiment logs) uses the pre-renumbering scheme,
+mapped by the renumbering record[^adr-0007]; anything dated before 2026-08-22 says
+"category 5" for both memory and the extensions bucket, decoded by the split
+record[^adr-0020] (memory → 5, everything else → 6).
 
 ## Tool categories
 
