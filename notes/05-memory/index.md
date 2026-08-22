@@ -10,7 +10,11 @@ as the extensions bucket's `memory` type (the bucket is now
 [category 6](../06-extensions/index.md)). Reports keep `type: memory` in frontmatter as
 residual data; the category's feature vocabulary is the 13-key `memory_features` block
 ([ADR-0013](../../adrs/0013-memory-features-block.md)) with its
-[generated matrix](../../comparisons/features.md).
+[generated matrix](../../comparisons/features.md). Roster count (2026-08-22): **eight**
+reports carry `category: 5` — the eight rows in the generated
+[tools matrix](../../comparisons/tools.md). ADR-0020's "all nine reports stay" counted
+the pre-split bucket's nine files, which included ecc — moved to category 6 by the same
+ADR; the immutable ADR body stays as written, this note is the correction.
 
 What the category's seeds wager, in one line each: markdown wiki (ai-memory), RL policy
 database that mints skills (memos), knowledge graph over a tripartite store (cognee),
@@ -26,7 +30,9 @@ writes* (the displacement finding, conclusion 8).
 ## The memory matrix — first cut (2026-08-19)
 
 The reading arc's prose comparison became a registry block
-([ADR-0013](../../adrs/0013-memory-features-block.md)): 11 keys, generated
+([ADR-0013](../../adrs/0013-memory-features-block.md)): 11 keys at the first cut
+(13 since, same day: `memory_revision` after the mem0 deep-dive, `write_admission`
+after exp-04 arm C), generated
 [matrix](../../comparisons/features.md), cells
 set only on the four read tools. What the first cut shows:
 

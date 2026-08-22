@@ -28,7 +28,7 @@ carries that decoder (memory → 5, everything else → 6).
 
 ## Tool categories
 
-**The core triad and its two interfaces**
+**The core triad and its three interfaces**
 ([ADR-0004](adrs/0004-core-triad-reframing.md), numbering per
 [ADR-0007](adrs/0007-renumber-core-triad-first.md)). A running agent system requires
 exactly three things; everything else in this repo either parameterizes them or mediates
