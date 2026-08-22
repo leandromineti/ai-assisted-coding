@@ -346,6 +346,19 @@ routes" — and loads skill bodies only on invocation. The general form: every i
 extension competes for the same standing-context budget, so the *index* must be cheap
 and the *content* just-in-time.
 
+**X3. The absorption bet: harnesses absorb mechanisms, bundle content, never absorb
+reach.** *(registered bet, 2026-08-22 — falsifiable predictions, not yet a principle;
+re-check rides the ~2027-01 standards re-check; registered per
+[ADR-0019](adrs/0019-category-5-coverage-strata.md) from the
+[bucket boundary discussion](notes/05-capability-extensions/index.md))* Harnesses absorb
+*mechanisms* (gates, memory — both now verified native in multiple harnesses), *bundle*
+content (Warp ships 13 skills; the loader was always category 2), and never absorb
+reach. Independent mechanism extensions survive absorption on the one bet a single
+harness cannot absorb — cross-harness continuity (conclusion 8's counter-current).
+Predictions that would falsify the frame: a harness absorbing a slot-filler *as a
+mechanism*; a mechanism-adder thriving long-term on a single-harness bet; a reach-side
+artifact being absorbed rather than bundled.
+
 ## The composite architecture (what the evidence points at, assembled)
 
 No single tool implements all of this; each clause is held by at least one documented

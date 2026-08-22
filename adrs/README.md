@@ -52,3 +52,4 @@ living docs, the ADR trail is the decoder.
 | [0016](0016-extensions-stay-broad.md) | 2026-08-19 | Extensions stay broad: memory is a type, not the category (narrowing considered, rejected as arc-sample bias) | accepted |
 | [0017](0017-environment-features-block.md) | 2026-08-20 | Fifth registry block: `environment_features` for category-3 environments | accepted |
 | [0018](0018-harness-features-block-rename.md) | 2026-08-21 | The harness block renames: `features:` → `harness_features:` (schema_renames decoder) | accepted |
+| [0019](0019-category-5-coverage-strata.md) | 2026-08-22 | Coverage strata for category 5: mechanism / content / reach inside the unchanged seven-type bucket | accepted |

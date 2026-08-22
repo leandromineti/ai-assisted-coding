@@ -214,6 +214,14 @@ The independent-distribution test still governs what belongs *in the bucket*: an
 server is authored, versioned, and installed separately from any harness, and the same
 one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and Devin.
 
+*How deeply each type is studied* is a separate, decided question — the **coverage
+strata** ([ADR-0019](adrs/0019-category-5-coverage-strata.md), 2026-08-22): *mechanism
+extensions* (memory; gate/learning runtimes) get tool-grade coverage; *content types*
+(skills, rules files, subagent defs) get Standards tracking plus exemplar reads;
+*reach-side* (MCP servers) gets capped exemplars only, because the population reachable
+through an unchanged interface is world, not stack — a census of it would be as
+illegitimate as a census of CLI tools because agents have shells.
+
 Distinct from category 4: capability extensions govern **what the agent can reach**;
 workflow frameworks govern **what process it follows**.
 

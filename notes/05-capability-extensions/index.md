@@ -42,15 +42,20 @@ closed); the other types' `0 tracked` in the generated supply table is *not-chec
 checked-absent — the [candidates ledger](../candidates.md)'s category-5 section (first
 five rows sighted 2026-08-19, all non-memory) is where that gap is being worked. A
 narrowing of the bucket to memory was considered and rejected on exactly this ground
-([ADR-0016](../../adrs/0016-extensions-stay-broad.md)); the balance arc for sighting
-non-memory candidates is issue #30, and the recorded decision point for the bucket's
-shape stays the ~2027-01 [standards re-check](../cross-cutting/standards.md).
+([ADR-0016](../../adrs/0016-extensions-stay-broad.md)), and engagement depth per type is
+governed by the coverage strata — mechanism / content / reach —
+([ADR-0019](../../adrs/0019-category-5-coverage-strata.md), 2026-08-22); the balance arc
+for sighting non-memory candidates is issue #30, and the recorded decision point for the
+bucket's shape stays the ~2027-01 [standards re-check](../cross-cutting/standards.md).
 
-## The bucket's boundary — discussion state (2026-08-19/20, pre-decision)
+## The bucket's boundary — discussion record (2026-08-19/20; decided 2026-08-22)
 
-*(A running record of a live taxonomy discussion, checkpointed 2026-08-20 mid-stream —
-deliberately **not** an ADR: nothing below is decided until it is. ADR-0016 is the only
-decision taken so far in this thread. The proposed successor is sketched at the end.)*
+*(A running record of a live taxonomy discussion, checkpointed 2026-08-20 mid-stream.
+The thread closed 2026-08-22: cuts 1–2 and the coverage strata sketched at the end are
+now decided as [ADR-0019](../../adrs/0019-category-5-coverage-strata.md), and cut 3 —
+the absorption bet — is registered as principle X3 in
+[design-principles.md](../../design-principles.md). The cuts' text below stays as the
+primary record the ADR condenses.)*
 
 The thread started as "should the bucket narrow to memory?" (rejected as arc-sample
 bias, [ADR-0016](../../adrs/0016-extensions-stay-broad.md)) and has since produced three
@@ -105,7 +110,8 @@ boundary: mechanisms get absorbed, methodology stays category 4's own. The open 
 **`ccg-workflow` is the bmad-loop shape** — the process spine sold separately — and
 deserves its own category-4 candidates row if it has a real spine.
 
-**Proposed but NOT decided — ADR-0017, "coverage strata for category 5":** three
+**Decided 2026-08-22 as [ADR-0019](../../adrs/0019-category-5-coverage-strata.md)**
+*(the sketch below predates the number — 0017 went to environment-features)*: three
 coverage grades inside the unchanged seven-type bucket — *mechanism extensions*
 (memory, gate/learning runtimes): tool-grade reports, feature blocks, reading arcs;
 *content types* (skills, rules files, subagent defs): formats tracked in
@@ -121,8 +127,9 @@ deflationary view sweeps the type) · do subagent-def packs that encode *process
 (wshobson-style role teams) leak across the mechanism/content line? · are hook packs a
 type at all, or only the port other mechanisms ride (the 2026-08-19 sighting found no
 large installable pack — the absence is dated in the [candidates ledger](../candidates.md))? ·
-does the absorption bet belong in [design-principles](../../design-principles.md) once
-ADR-0017 lands?
+~~does the absorption bet belong in [design-principles](../../design-principles.md) once
+the strata ADR lands?~~ *(resolved 2026-08-22: yes — registered as X3 alongside
+ADR-0019)*
 
 ## The memory matrix — first cut (2026-08-19)
 
