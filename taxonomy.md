@@ -15,14 +15,6 @@ poles), which live in the category indexes, and the canonical terms with their
 deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this document is prose, linted
 against it.
 
-How the taxonomy got this shape lives in [`adrs/`](adrs/README.md), one dated,
-immutable decision record each — and because immutable text is never rewritten, older
-dated material (ADR bodies, experiment protocols, git history, old URLs) still speaks
-in superseded numbers: pre-2026-08-18 material uses the old numbering, mapped by the
-renumbering record[^adr-0007], and pre-2026-08-22 material says "category 5" for both
-memory and the extensions bucket, decoded by the split record[^adr-0020] (memory → 5,
-everything else → 6).
-
 ## Tool categories
 
 **The core triad and its three interfaces**[^adr-0004][^adr-0007]. A running agent
@@ -447,6 +439,9 @@ Per-tool reports use [`notes/_template-tool-report.md`](notes/_template-tool-rep
 are indexed flat, across categories, in [`comparisons/tools.md`](comparisons/tools.md).
 
 ## Decision records cited
+
+One dated, immutable record per decision; immutable material predating a rename still
+reads in superseded vocabulary — [`adrs/`](adrs/README.md) carries the decoders.
 
 [^adr-0002]: [ADR-0002 — Extensions demoted to a cross-category bucket](adrs/0002-extensions-demoted-to-bucket.md), decided 2026-07-30.
 [^adr-0003]: [ADR-0003 — execution environments stay a full category (adjudicated)](adrs/0003-environments-stay-a-rung.md), decided 2026-08-16.

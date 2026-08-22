@@ -10,6 +10,14 @@ it superseded — lives here. When a dated document elsewhere (an experiment log
 conclusion's original wording, git history, an old GitHub URL) seems to contradict the
 living docs, the ADR trail is the decoder.
 
+**The two standing decoders** (relocated here from taxonomy.md's lead-in, 2026-08-22,
+[ADR-0022](0022-refs-repo-voice-sweepable.md)): anything dated before **2026-08-18**
+(git history, old URLs, experiment logs) uses the pre-renumbering scheme —
+[ADR-0007](0007-renumber-core-triad-first.md) carries the mapping. Anything dated
+before **2026-08-22** says "category 5" for both memory and the extensions bucket —
+[ADR-0020](0020-memory-category-extensions-renumbered.md) carries that decoder
+(memory → 5, everything else → 6).
+
 **Rules:**
 
 - An ADR is written when a structural decision is made, and **never edited after
