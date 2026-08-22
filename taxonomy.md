@@ -18,14 +18,12 @@ against it.
 ## Tool categories
 
 **The core triad and its three interfaces**[^adr-0004][^adr-0007]. A running agent
-system requires
-exactly three things; everything else in this repo either parameterizes them or mediates
-between them and the human:
+system requires exactly three things — the triad; everything else in this repo either
+parameterizes the triad or mediates between it and the human:
 
 - **Model (1)** — cognition. The weights.
-- **Harness (2)** — mediation. Runs the loop (which reaches tools and files),
-  assembles context, gates permissions — §2's three components — and fronts the user
-  across §2's descriptive axes.
+- **Harness (2)** — mediation. Runs the loop, assembles context, gates permissions
+  (§2's three components), and fronts the user.
 - **Environment (3)** — situation. Where execution lands and what it can damage; the
   autonomy ceiling lives here (principle E1), not in the model.
 
