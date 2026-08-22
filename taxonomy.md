@@ -21,7 +21,8 @@ against it.
 system requires exactly three things — the triad; everything else in this repo either
 parameterizes the triad or mediates between it and the human:
 
-- **Model (1)** — cognition. The weights.
+- **Model (1)** — cognition. The weights, and the vendor surface that prices and
+  meters them.
 - **Harness (2)** — mediation. Runs the loop, assembles context, gates permissions
   (§2's three components), and fronts the user.
 - **Environment (3)** — situation. Where execution lands and what it can damage; the
@@ -60,7 +61,9 @@ the frame survived its first test.
 
 ### 1. Models
 
-The weights themselves. The foundation everything else sits on.
+The weights, and the first-party API surface around them — the foundation everything
+else sits on. The weights are the irreducible part (the asymmetry above); the surface
+is where the drift lives.
 
 Judged for *this* field on: tool-call fidelity, long-horizon coherence (staying on task
 across hundreds of steps — the property that separates an agentic model from a good chat
