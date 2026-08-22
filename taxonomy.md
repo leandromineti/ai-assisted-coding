@@ -69,13 +69,10 @@ across hundreds of steps — the property that separates an agentic model from a
 model), usable context, cost per **completed task** rather than per token, and release
 mode (API-only vs. open weights).
 
-#### 1b. Model access
-
-How you actually reach the weights: first-party APIs, aggregators/routers, cloud
-marketplaces, and local runtimes. A type within category 1 rather than a category of its own, but it earns
-mention because it silently explains a lot of "why did it get worse" — prompt-caching
-support, quantization, rate limits, and context truncation all differ by route while the
-model name stays the same.
+How you actually reach the weights is a type of its own (**1b — model access**, four
+routes, in [the category index](notes/01-models/index.md)): the same model by a
+different route is a different product — it silently explains a lot of "why did it get
+worse".
 
 ### 2. Harnesses
 
