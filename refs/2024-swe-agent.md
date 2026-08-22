@@ -14,7 +14,7 @@ read_depth: full   # main body + appendices A–B end to end; C (prompt listings
 retrieved: 2026-08-17
 pdf: refs/pdf/2024-swe-agent.pdf
 bears_on: [conclusion-8, exp-03, taxonomy, metrics, design-principles]
-verdict: "the academic origin of this repo's layer-2 premise — the interface between agent and computer is a measurable capability layer, worth +64% relative over a bare shell with the SAME model; its ablation table is the earliest measured H3 evidence we hold (visibility shaping and execution gating each buy points), and its iterative-search result proves interfaces can SUBTRACT (worse than no tool at all); peer-reviewed, 2,294-instance scale"
+verdict: "the academic origin of this repo's category-2 premise — the interface between agent and computer is a measurable capability layer, worth +64% relative over a bare shell with the SAME model; its ablation table is the earliest measured H3 evidence we hold (visibility shaping and execution gating each buy points), and its iterative-search result proves interfaces can SUBTRACT (worse than no tool at all); peer-reviewed, 2,294-instance scale"
 ---
 
 # SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
@@ -99,7 +99,7 @@ for error recovery (§2).
   feature matrix: a ✓ can be negative.
 - **A format gate with measured value** (folded into the cross-cutting gate
   vocabulary): exp-01 credited *measured* gates and found format/prose gates cheap;
-  SWE-agent shows a deterministic format gate (linting) buying +3.0pp at layer 2 —
+  SWE-agent shows a deterministic format gate (linting) buying +3.0pp at category 2 —
   the gate-vocabulary axes (deterministic?, domain-contact?) now have a priced
   instance in the no-domain-contact quadrant.
 - **The failure-cascade result rhymes with exp-02's:** Haiku's blanket `rc=1` never

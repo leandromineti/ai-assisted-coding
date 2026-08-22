@@ -55,3 +55,4 @@ living docs, the ADR trail is the decoder.
 | [0019](0019-category-5-coverage-strata.md) | 2026-08-22 | Coverage strata for category 5: mechanism / content / reach inside the unchanged seven-type bucket | superseded in part by 0020 |
 | [0020](0020-memory-category-extensions-renumbered.md) | 2026-08-22 | Memory becomes category 5; Extensions becomes category 6 (owner decision, supersedes 0016 and part of 0019) | accepted |
 | [0021](0021-harness-three-component-decomposition.md) | 2026-08-22 | Harness decomposition: three components (loop, context assembly, permission gate) + two descriptive axes | accepted |
+| [0022](0022-refs-repo-voice-sweepable.md) | 2026-08-22 | Repo-voice prose in `refs/` is sweepable (quotes stay period); decoders relocate to this index | accepted |

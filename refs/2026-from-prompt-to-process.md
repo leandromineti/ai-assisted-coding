@@ -27,7 +27,7 @@ verdict: "independent convergence on conclusion 7 from docs only — and its GSD
 Proposes a **six-dimension process taxonomy** for frameworks that run *over* a coding agent —
 specification, context, roles, execution, validation, portability (§4, Table 4) — turns it
 into a 0/1/2 scoring rubric, and applies it to six frameworks selected by an explicit
-inclusion + traction filter. Same subject as this repo's layer 4, arrived at independently.
+inclusion + traction filter. Same subject as this repo's category 4, arrived at independently.
 
 ## Design
 

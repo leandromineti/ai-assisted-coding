@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-22  # bumped 2026-08-22 (ADR-0020 split: 5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed)
+checked: 2026-08-22  # bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -282,7 +282,10 @@ exempt_paths:
     - ".git/*"
     - ".planning/*"     # planning docs discuss this vocabulary as the subject of decisions
     - "refs/*"          # source quotes legitimately use their authors' vocabulary
-                        # (REQUIREMENTS.md "Out of Scope"); refs/ is not in SWEEP-01's list
+                        # (REQUIREMENTS.md "Out of Scope"); refs/ is not in SWEEP-01's list.
+                        # ADR-0022 (2026-08-22): repo-voice prose in refs IS sweepable and
+                        # was swept manually that day; the path stays exempt because no
+                        # mechanical check can split quote from repo voice
     - "comparisons/*"   # generated — their generators own the vocabulary (methodology rule 3)
   # Append-only and preregistered records: immutable by methodology rule 5 (D-03).
   # experiments/rig/** is deliberately NOT here — the rig README is a living doc and is linted.

@@ -60,7 +60,7 @@ incompleteness, singly and pairwise — into **762 variants**, then measures whe
 
 The don't-ask default is quantified at scale: models overwhelmingly answer broken specs
 with code. That is the behavior exp-02's P1 rubric (R4: ambiguities surfaced) probes per
-arm, and spec-kit's `/clarify` is a layer-4 mechanism aimed at exactly this — so
+arm, and spec-kit's `/clarify` is a category-4 mechanism aimed at exactly this — so
 HumanEvalComm gives the field-scale prior for what an unaided arm should do (not ask).
 Apparatus caveat that transfers directly: the question-answering proxy *sees the original
 problem* — the same oracle-knows-the-answer shape whose sensitivity τ-bench measured at
