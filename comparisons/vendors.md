@@ -8,6 +8,7 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Memory | 6 · Extensions | Categories |
 |---|---|---|---|---|---|---|---|
 | Anthropic | claude-haiku-4-5, claude-opus-5, claude-sonnet-5, claude-fable-5 | claude-code | — | — | — | — | **2** |
+| DeepSeek | deepseek-v4 | dsh | — | — | — | — | **2** |
 | Google | gemini-3-1-pro | gemini-cli | — | — | — | — | **2** |
 | OpenAI | gpt-5-6-sol | codex | — | — | — | — | **2** |
 | Affaan Mustafa (affaan-m) | — | — | — | — | — | ecc | **1** |
@@ -19,7 +20,6 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Cloudflare, Inc. | — | — | cloudflare-sandbox-sdk | — | — | — | **1** |
 | Continue | — | continue | — | — | — | — | **1** |
 | Daytona Platforms, Inc. | — | — | daytona | — | — | — | **1** |
-| DeepSeek | deepseek-v4 | — | — | — | — | — | **1** |
 | EverMind AI (EverMind-AI) | — | — | — | — | everos | — | **1** |
 | Fabio Akita (akitaonrails) | — | — | — | — | ai-memory | — | **1** |
 | Fission AI | — | — | — | openspec | — | — | **1** |
@@ -43,4 +43,4 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Warp (warpdotdev) | — | warp | — | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | — | **1** |
 
-**35 vendors** across 42 tracked tools; **3 span ≥2 categories among tracked tools** (Anthropic, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**35 vendors** across 43 tracked tools; **4 span ≥2 categories among tracked tools** (Anthropic, DeepSeek, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

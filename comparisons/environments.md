@@ -12,9 +12,10 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | Tool | Category | host | worktree | container | remote-sandbox | Relation |
 |---|---|---|---|---|---|---|
 | [codex](../notes/02-harnesses/codex.md) | 2 | ✓ | · | · | · | **internalize** |
+| [dsh](../notes/02-harnesses/dsh.md) | 2 | ✓ | · | · | ✓ | **internalize** |
 | [hermes-agent](../notes/02-harnesses/hermes-agent.md) | 2 | ✓ | · | ✓ | ✓ | **bind** |
 | [opencode](../notes/02-harnesses/opencode.md) | 2 | ✓ | · | · | · | · |
 | [warp](../notes/02-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 | [claude-code](../notes/02-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 
-**5 of 42 reports declare `environments:`.**
+**6 of 43 reports declare `environments:`.**

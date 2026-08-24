@@ -99,3 +99,5 @@
 # memory kind, sighted via its GitHub repo. Ingested straight to stub (no candidates row:
 # the ask was ingestion, not a sighting).
 5|openviking|https://github.com/volcengine/OpenViking
+# DeepSeek Harness (dsh), added 2026-08-24 — issue #19 ingest, taken to deep-dive on owner request.
+2|dsh|https://github.com/deepseek-ai/deepseek-harness
