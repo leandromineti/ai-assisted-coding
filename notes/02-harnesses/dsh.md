@@ -260,10 +260,25 @@ separately killable).
 ## Run probe — 2026-08-24
 
 Probe target: the published npm artifact `@deepseek-ai/dsh@0.1.1-rc.2` — the version
-string exactly matches the pinned tag, so probing the release probes the pin. Launch:
-`npx -y @deepseek-ai/dsh@0.1.1-rc.2 web --no-open` on Node v22.23.2 (engines:
-`^22.19.0 || >=24`), success read from the served page, not exit status (5e).
-*In progress at write time; result appended below when the boot completes.*
+string exactly matches the pinned tag, so probing the release probes the pin. Node
+v22.23.2 (engines: `^22.19.0 || >=24`); success read from the served page, not exit
+status (5e).
+
+**Result: boots and serves.** `node_modules/.bin/dsh web --no-open` printed
+`dsh web: http://127.0.0.1:3080` within 45 s of launch; `curl` returned HTTP 200 with
+14,556 bytes of the web client's HTML (`<!doctype html>…__ModuleLoader__` bootstrap).
+Loopback binding confirmed as read (`ss`: `127.0.0.1:3080`, not `0.0.0.0`).
+
+**The install itself was the probe's finding.** The documented `npx` launch path
+**OOM'd on this 8 GB host**: `npm exec` died in V8
+(`FatalProcessOutOfMemory` during dependency resolution, ~2.4 GB VSZ at death) before
+dsh ever ran, and a raised-heap plain `npm install` then needed **>10 minutes** to
+finish (completed on a resumed run; `NODE_OPTIONS=--max-old-space-size=5120`). Final
+footprint: 296 MB across 187 top-level `node_modules` entries — the entry package is
+120 KB; the closure is where the cost lives. So the one-line install pitch
+(`npx @deepseek-ai/dsh web`) carries an undocumented resource floor that a default
+npm heap on a mid-size VPS does not clear. Dated 2026-08-24; worth re-probing at the
+next drift check — a preview-stage packaging behavior, likely to change.
 
 ## Bleed
 
