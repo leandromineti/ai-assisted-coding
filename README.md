@@ -74,7 +74,7 @@ One report per tool, following
 [`notes/_template-tool-report.md`](notes/_template-tool-report.md). Its **"distinguishing
 bet"** field is the one that matters — what does this tool believe that its competitors
 don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
-`survey` (used or skimmed), `deep-dive` (agent loop and context assembly actually traced).
+`survey` (used or skimmed), `deep-dive` (the three harness components — loop, context assembly, permission gate — traced, the report saying which; pre-2026-08-25 deep-dives read under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in
