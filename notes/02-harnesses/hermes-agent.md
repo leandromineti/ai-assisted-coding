@@ -22,6 +22,7 @@ harness_features:
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks
   turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤3 re-prompts when the model finishes without fresh verification evidence (body §termination); set 2026-08-18 from the existing deep-dive read, no re-read
+  tool_approval: true    # tools/approval.py — approval at tool dispatch; set 2026-08-25 transcribing the category-2 index absorption table's verified instance at this pin, no re-read
   skills: true           # 70 bundled + 111 optional SKILL.md dirs; agentskills.io-compatible
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
   ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; set 2026-08-18 from the existing deep-dive read)

@@ -70,6 +70,11 @@ features:
     definition: "native turn-end verification/stop gate — the harness can veto or re-prompt the model's attempt to end its turn; GRADED per ADR-0011/0012: engine | hook | script | prose | true | false"
     kind_link: hook
     note: "added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
+  - id: tool_approval
+    block: harness_features
+    applies_to: [2]
+    definition: "per-tool human approval at dispatch — the harness can ask before executing a tool call; distinct from sandbox bounds (the environment_relation field) and from turn gates (turn_end_gates)"
+    note: "added 2026-08-25 after the dsh deep-dive supplied the first verified absent (its tools/pre-execute default is allow; the sole prompt in a stock run is a model-initiated sandbox escalation) — the axis discriminates: 5 present / 1 absent at admission, all transcribed from the category-2 index's absorption table at their pins. Warp's present carries the AgentDecided caveat (a model-authored is_risky:false self-authorizes)"
   - id: skills
     block: harness_features
     applies_to: [2]
@@ -102,11 +107,13 @@ features:
   - id: session_sharing
     block: harness_features
     applies_to: [2]
-    definition: shareable session links/artifacts
+    definition: "a session leaves the machine as a shareable link (implies a hosted surface) or a portable exported artifact — the report's cell comment says which form"
+    note: "definition sharpened 2026-08-25 — dsh forced the call (ZIP export + resume present, share links verified absent); the old 'links/artifacts' disjunction hid exactly that distinction"
   - id: evals
     block: harness_features
     applies_to: [2]
-    definition: ships its own evaluation suite
+    definition: "ships its own model/agent evaluation harness — task-success or output-quality scoring; software test suites and coverage gates do not count"
+    note: "sharpened 2026-08-25 — the dsh near-misfire: 872 unit specs and per-file 100% coverage but zero model evals; the old wording did not exclude software tests"
   - id: learning_loop
     block: harness_features
     applies_to: [2]

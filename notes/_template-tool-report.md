@@ -82,6 +82,7 @@ harness_features:
   lsp: <true | false>              # language-server integration
   hooks: <true | false>            # deterministic lifecycle hooks / plugin triggers
   turn_end_gates: <engine | hook | script | prose | true | false>  # native turn-end stop/verification gate, GRADED (ADR-0012)
+  tool_approval: <true | false>    # per-tool human approval at dispatch — distinct from sandbox bounds (environment_relation) and turn gates (added 2026-08-25)
   skills: <true | false>           # on-demand packaged instructions
   subagents: <true | false>        # spawnable isolated agents
   ptc: <true | false>              # programmatic tool calling in a sandboxed runtime (ADR-0012)
