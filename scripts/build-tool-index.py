@@ -229,8 +229,8 @@ def render(reports: list[dict]) -> str:
         "",
         "`depth` is the honesty column: **stub** means facts were collected mechanically but "
         "nobody read the source; **survey** means it was used or skimmed; **deep-dive** means "
-        "the three harness components (loop, context assembly, permission gate) were actually "
-        "traced, the report saying which (pre-2026-08-25 deep-dives read under the earlier "
+        "the category's component decomposition (defined in taxonomy.md) was actually traced, "
+        "the report saying which components (pre-2026-08-25 deep-dives read under the earlier "
         "loop+context definition).",
         "",
         "`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; "

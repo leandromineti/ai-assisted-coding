@@ -5,7 +5,7 @@
 
 Every tool with a report, flattened across categories for comparison. Newest read: `2026-08-24`.
 
-`depth` is the honesty column: **stub** means facts were collected mechanically but nobody read the source; **survey** means it was used or skimmed; **deep-dive** means the three harness components (loop, context assembly, permission gate) were actually traced, the report saying which (pre-2026-08-25 deep-dives read under the earlier loop+context definition).
+`depth` is the honesty column: **stub** means facts were collected mechanically but nobody read the source; **survey** means it was used or skimmed; **deep-dive** means the category's component decomposition (defined in taxonomy.md) was actually traced, the report saying which components (pre-2026-08-25 deep-dives read under the earlier loop+context definition).
 
 `Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the *public* history's start, which for open-sourced-later tools postdates the product. Both columns describe the *current* repo only: a fork or org move strands the predecessor's stars while keeping its history — see each report's provenance notes (gsd-core is the live case).
 

@@ -130,9 +130,10 @@ Two fields carry more weight than anything else here, and both exist because a c
 claim turned out to rest on nothing:
 
 - **`depth`** on a tool report — `stub` (facts collected mechanically, nobody read the source) ·
-  `survey` (used or skimmed) · `deep-dive` (the three harness components — loop, context
-  assembly, permission gate — actually traced, and the report declares which; per
-  ADR-0021's tracing discipline, applied since 2026-08-25 — earlier deep-dives read
+  `survey` (used or skimmed) · `deep-dive` (the category's component decomposition
+  actually traced, the report declaring which components — taxonomy.md defines them for
+  categories 2, 4, and 5; category 3's three questions serve the same role; tracing
+  discipline per ADR-0021/0023, applied since 2026-08-25 — earlier deep-dives read
   under the two-part loop+context definition).
 - **`read_depth`** on a ref note — `full` · `extract` (a tool answered questions against it) ·
   `abstract` · `unread`. **An `unread` source may not be cited anywhere outside `refs/`**, and
