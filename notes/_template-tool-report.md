@@ -104,7 +104,8 @@ harness_features:
 > **survey** = used it or skimmed it · **deep-dive** = the category's component
 > decomposition was actually traced, and the report says which components (taxonomy.md
 > defines them: §2 loop / context assembly / permission gate, §4 the four functions,
-> §5 capture / consolidation / recall; §3's three questions serve the same role —
+> §5 capture / consolidation / recall; §3's — host / principal / working directory —
+> live in the category-3 index, its three questions the lens over them —
 > ADR-0021/0023; definition applied since 2026-08-25, earlier deep-dives read under
 > the two-part loop+context form). Never raise it out of optimism. Closed subjects cap at `survey`
 > and grade every claim inline per methodology rule 1a: SOURCE · OBSERVED · TESTIMONY ·

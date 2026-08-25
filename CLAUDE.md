@@ -132,7 +132,8 @@ claim turned out to rest on nothing:
 - **`depth`** on a tool report — `stub` (facts collected mechanically, nobody read the source) ·
   `survey` (used or skimmed) · `deep-dive` (the category's component decomposition
   actually traced, the report declaring which components — taxonomy.md defines them for
-  categories 2, 4, and 5; category 3's three questions serve the same role; tracing
+  categories 2, 4, and 5, and category 3's (host · principal · working directory)
+  live in its index with the three questions as the lens over them; tracing
   discipline per ADR-0021/0023, applied since 2026-08-25 — earlier deep-dives read
   under the two-part loop+context definition).
 - **`read_depth`** on a ref note — `full` · `extract` (a tool answered questions against it) ·

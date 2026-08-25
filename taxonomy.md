@@ -192,9 +192,16 @@ question is [issue #11](https://github.com/leandromineti/ai-assisted-coding/issu
 does the E4 fact class survive a closed environment, or is it legible only when the
 environment is open source?)
 
+**The components** — an execution environment is **host · principal · working
+directory** — are defined once in
+[`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md),
+where every seed is classified by which components it changes against the default
+{your machine, you, cwd}. The three questions above are the lens over them: blast
+radius = host × principal, fidelity = host toolchain + cwd completeness, parallelism =
+the cost of multiplying cwd vs hosts.
+
 **The relationship vocabulary** (*bundle* · *bind* · *internalize* · *inhabit*, plus the
-null case) is defined once in
-[`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md).
+null case) is defined once in the same index.
 The stress-test rows below record where each verb was *discovered*; the index is where the
 vocabulary lives.
 
