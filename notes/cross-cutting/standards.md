@@ -1,6 +1,6 @@
 # Standards — not a category
 
-`checked: 2026-08-16`
+`checked: 2026-08-25`
 
 Specifications, not installable things. A standard has no category of its own; it is recorded
 here once and referenced from the categories that implement it. See
@@ -107,7 +107,7 @@ Current state of the evidence:
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
 | Skills | **Emerging** — `SKILL.md` consumed by ≥5 harnesses (2026-07-28 evidence below; Warp added 2026-08-11) | Converging |
-| Hooks | No — harness-specific. Best fragmentation evidence to date: ai-memory deep-dive (2026-08-18), a vendor that must consume ~15 harnesses' hook surfaces — event vocabularies differ per harness (Devin ships PostCompaction not PreCompact; Zero execs without a shell), lifecycle coverage differs (Codex and Antigravity lack a true session-end; Antigravity lacks SessionStart), and *semantics* differ for the same event (Kimi Code discards SessionStart stdout and fires PostToolUse only on success; Claude Code wants JSON stdout). Each quirk is worked around in per-harness installer code | No sign of movement |
+| Hooks | No — harness-specific. Best fragmentation evidence to date: ai-memory deep-dive (2026-08-18), a vendor that must consume ~15 harnesses' hook surfaces — event vocabularies differ per harness (Devin ships PostCompaction not PreCompact; Zero execs without a shell), lifecycle coverage differs (Codex and Antigravity lack a true session-end; Antigravity lacks SessionStart), and *semantics* differ for the same event (Kimi Code discards SessionStart stdout and fires PostToolUse only on success; Claude Code wants JSON stdout). Each quirk is worked around in per-harness installer code | **First movement, 2026-08-24 — and it is bridging, not standardization**: dsh executes *unmodified* Claude Code `hooks.json` (7 events, matchers, `${CLAUDE_PLUGIN_ROOT}` substitution) and Codex's snake_case dialect via bridge plugins (`packages/hooks/hooks-{claude-code,codex}`, shipped but mounted in no bundle) — the first cross-vendor consumer of a hooks format ([dsh deep-dive](../02-harnesses/dsh.md)). Adoption of one vendor's format by a rival is how `AGENTS.md` started; watch whether a second consumer follows |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
 
 **Memory watch note (row moved 2026-08-22, ADR-0020 — memory is now category 5, not a
