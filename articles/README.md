@@ -41,7 +41,7 @@ matures.
 
 | Article | Series order | Status | Site slug | Last synced |
 |---|---|---|---|---|
-| [The AI-Coding Stack](the-ai-coding-stack.md) | 1 | draft | `the-ai-coding-stack` | 2026-08-22 |
+| [The AI-Coding Stack](https://mineti.dev/articles/the-ai-coding-stack/) | 1 | **published 2026-08-25** — source lives in mineti-dev | `the-ai-coding-stack` | 2026-08-25 |
 | [Measuring AI-Coding Frameworks](measuring-ai-coding-frameworks.md) | 2 | draft | `measuring-ai-coding-frameworks` | — |
 
 Series: **"AI-Assisted Coding, Measured"** — room for part 3+ as experiments land

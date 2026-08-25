@@ -4,6 +4,9 @@ A personal sandbox for understanding the AI-assisted-coding tooling landscape â€
 first-hand trial rather than from marketing pages.
 
 This is a learning repo. The deliverable is notes and conclusions, not a product.
+The map that survived the first month of it is published as an article:
+[The AI-coding stack: a map for a landscape that won't sit
+still](https://mineti.dev/articles/the-ai-coding-stack/).
 
 ## Start here
 
