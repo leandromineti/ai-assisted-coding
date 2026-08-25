@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-22`
+`checked: 2026-08-25`
 
 The point of this document is a **shared vocabulary**: without one, "Claude Code vs.
 GSD vs. Opus 5" is a category error — three things that aren't the same kind of thing
@@ -212,18 +212,18 @@ something the triad can execute, and turns what the triad did into something a p
 trust. Four functions, each observed in the studied frameworks *(decomposition recorded
 2026-08-17)*:
 
-1. **Refine intent into specs** — *does the framework test the English before anything
-   executes?* spec-kit's `/specify` + `/clarify` with budgeted
+1. **Intent refinement** — refine intent into specs. *Does the framework test the
+   English before anything executes?* spec-kit's `/specify` + `/clarify` with budgeted
    `[NEEDS CLARIFICATION]` markers; OpenSpec's proposal → delta-spec grammar.
-2. **Decompose work into concrete subtasks** — *does work arrive at the triad in
-   verifiable units?* spec-kit's `tasks.md` task grammar
+2. **Work decomposition** — decompose work into concrete subtasks. *Does work arrive
+   at the triad in verifiable units?* spec-kit's `tasks.md` task grammar
    (`T001 [P] [US1]` + file path, phases by user story); GSD's structured task graphs.
-3. **Flag gaps that need research** — *does the framework measure the domain, or trust
-   training data?* GSD's empirical research agents (fixture repos,
+3. **Gap research** — flag gaps that need research, and dispatch it. *Does the
+   framework measure the domain, or trust training data?* GSD's empirical research agents (fixture repos,
    crafted commits — the machinery conclusion 6 credits with nearly all of GSD's measured
    margin); spec-kit's Phase-0 `research.md` dispatch per unknown.
-4. **Set up verification that converts progress into evidence** — *who checks the
-   claim of "done", and with what authority?* GSD's verifiers with
+4. **Verification** — set up verification that converts progress into evidence. *Who
+   checks the claim of "done", and with what authority?* GSD's verifiers with
    *measured* expected values and `human_needed` abstention; OpenSpec's validator
    (enforcement by exit code); spec-kit's checklists and `/analyze`.
 
