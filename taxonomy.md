@@ -70,6 +70,16 @@ across hundreds of steps — the property that separates an agentic model from a
 model), usable context, cost per **completed task** rather than per token, and release
 mode (API-only vs. open weights).
 
+This category deliberately has **no component decomposition** (recorded 2026-08-25):
+components are tracing units, and the weights are untraceable at this repo's level of
+analysis regardless of release mode — an open checkpoint yields transcribable
+architecture facts, not a traceable mechanism, and closed subjects cap at `survey`
+under methodology rule 1a anyway. The judged-on axes above are the category's
+assessment lens instead — behavioral, fillable by model-isolated measurement (the
+rig's comparisons; conclusion 2) — with the `model_features` block covering the
+observable surface and 1b covering the route. Minting model components would claim
+tracing access the repo does not have.
+
 How you actually reach the weights is a type of its own (**1b — model access**, four
 routes, in [the category index](notes/01-models/index.md)): the same model by a
 different route is a different product — it silently explains a lot of "why did it get
