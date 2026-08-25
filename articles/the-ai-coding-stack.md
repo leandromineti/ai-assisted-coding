@@ -64,8 +64,17 @@ offers tools, executes actions, and decides when to stop.
 [Claude Code](https://github.com/anthropics/claude-code),
 [Codex CLI](https://github.com/openai/codex),
 [OpenCode](https://github.com/anomalyco/opencode). This is the category most
-discourse treats as plumbing. It isn't, and there's now good evidence it isn't —
-more below.
+discourse treats as plumbing. It isn't.
+
+The cleanest evidence predates the current tool wave. The SWE-agent paper
+(NeurIPS 2024) held the model fixed and redesigned only the *interface* the
+agent works through — and moved SWE-bench Lite from 11.0% (bare Linux shell)
+to 18.0%, a +64% relative improvement from interface design alone
+([full read notes](../refs/2024-swe-agent.md)). The same paper contains my
+favorite negative result in the field: a search tool faithfully copied from
+*human* UI patterns scored **below having no search tool at all**. Tool
+existence is not tool value; a checkmark on a feature matrix can be
+negative.
 
 Feature lists mislead here — the repo's own warning at the top of its
 harness notes. The axes that actually differentiate harnesses, out of the
@@ -108,26 +117,6 @@ deliberate abstention. [The environment-bindings
 matrix](../comparisons/environments.md) tracks the products, the forms you
 don't buy (host, worktree, devcontainer), and which harness holds which
 position.
-
-## The harness is a capability category, not plumbing
-
-The cleanest evidence predates the current tool wave. The SWE-agent paper (NeurIPS
-2024) held the model fixed and redesigned only the *interface* the agent works
-through — and moved SWE-bench Lite from 11.0% (bare Linux shell) to 18.0%, a +64%
-relative improvement from interface design alone
-([full read notes](../refs/2024-swe-agent.md)). The same paper contains my favorite
-negative result in the field: a search tool faithfully copied from *human* UI
-patterns scored **below having no search tool at all**. Tool existence is not tool
-value; a checkmark on a feature matrix can be negative.
-
-The people building harnesses know all this and disagree with each other about what
-follows. On the question of whether models have "converged" enough to share one
-prompt, the three major portable harnesses answer three different ways: one maintains
-nine bespoke per-model prompts sharing zero substantive lines, one built that
-architecture and then dismantled it, and one runs ~15 lines and bets the prompt
-barely matters ([the comparison](../notes/02-harnesses/index.md), 2026-07-28). Nobody
-backs their position with a published eval. When the practitioners best placed to
-know can't agree, "the harness doesn't matter" is not a safe assumption.
 
 ## The two additional interfaces
 
@@ -203,7 +192,44 @@ four at deep-dive depth ([the tool index](../comparisons/tools.md)).
 The reason this map needs dates on it: the categories don't respect each
 other's territory. Mechanisms that adjacent categories sell keep turning up
 *natively in harnesses* ([conclusion 8](../README.md#conclusions)) — and the
-pattern looks different on each edge.
+pattern looks different on each edge, starting with the one where nothing is
+being eaten at all.
+
+### Harness ↔ model
+
+This may be the map's best-defined frontier: harnesses are not trying to
+bite anything off the model category. No tracked harness ships or trains its
+own weights, and the repo's absorption findings never name the model as a
+target — the model stays the swappable slab in the diagram. Where the
+frontier is crossed, the movement runs the other way: model vendors treating
+harnesses as data instruments — xAI's acquisition of Cursor, followed by
+training Grok 4.5 on that harness's session data, and hermes shipping
+trajectory-export tooling openly labeled for training its maker's next
+models ([the vendor-span section](../taxonomy.md)).
+
+Well-defined does not mean uneventful. Every harness is forced to take a
+position on whether models have "converged" enough to share one prompt, and
+the five documented positions are incompatible: nine bespoke per-model
+prompts sharing zero substantive lines (opencode), a per-family prompt
+registry built and then dismantled (cline), ~15 lines betting the prompt
+barely matters (continue), one shared prompt plus per-family appendices
+covering every major family except Anthropic's (hermes), and a vendor
+swapping instructions per model slug within its own family (codex)
+([the five positions](../notes/02-harnesses/index.md), 2026-07-30). None of
+the five is backed by a published eval. When the practitioners best placed
+to know can't agree, "the harness doesn't matter" is not a safe assumption.
+
+And yet in public reporting the frontier barely exists. Leaderboards score
+*pairings* — "Codex CLI + GPT-5.5" — and publish them as model results, so
+nobody knows which category they're praising. The one benchmark I found
+that fixes the harness to isolate the model turned out to inherit that
+harness's per-model prompt dispatch: a confound its own maintainer didn't
+know about until [I reported it upstream](../notes/01-models/index.md)
+([conclusion 2](../README.md#conclusions)). And for the vendors that span
+both categories, attribution is confounded by construction — the model and
+the harness were never built to separate ([the taxonomy](../taxonomy.md)).
+That isolation is buildable — the repo's own rig does it at personal scale
+for a few dollars — which is where the next article in this series picks up.
 
 ### Harness ↔ environment
 
@@ -270,28 +296,14 @@ the next tier up, which grounded unprompted
 workflow framework is a claim about current-tier models, with a built-in
 expiration date.
 
-## Why bother with a map
+## Where the map ends
 
-Because the alternative is reasoning from benchmarks that can't see category boundaries.
-Public leaderboards score *pairings* — "Codex CLI + GPT-5.5" — so nobody knows which
-category they're praising. The one benchmark I found that fixes the harness to isolate
-the model turned out to inherit that harness's per-model prompt dispatch: a confound
-its own maintainer didn't know about until
-[I reported it upstream](../notes/01-models/index.md)
-([conclusion 2](../README.md#conclusions)).
-
-The map also stops at five categories on purpose. The repo tracks a sixth
+The map stops at five categories on purpose. The repo tracks a sixth
 bucket that cuts across them — MCP servers, skills, rules files, hooks, and
 config packs like ECC ([the extensions bucket](../taxonomy.md)):
 distributable content that parameterizes the triad's edges rather than
 standing as a category of its own
 ([conclusion 3](../README.md#conclusions)).
-
-The frustrating part is that the isolation the field lacks is *buildable* — at
-personal scale, for about $3 in API spend. That's what the next article in this
-series is about: a pinned container, a hidden verifier, an enforced network
-condition, and what a preregistered A/B actually said about whether workflow
-frameworks buy code quality.
 
 ---
 
