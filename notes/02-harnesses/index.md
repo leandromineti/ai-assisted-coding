@@ -148,6 +148,18 @@ Three readings of the table:
   policy* (core growth). Whether absorbed mechanisms arrive as extension surfaces or as
   core code may be the next differentiation axis this list needs — it is the same
   engine-vs-prose fork, one category down.
+- **The model edge is the frontier where nothing is eaten** *(added 2026-08-25,
+  backfilling a synthesis first stated in the published article so it is confrontable
+  at re-read)*. No tracked harness ships or trains its own weights, and no absorption
+  finding in this index or conclusion 8 names the model as a target — the model stays
+  the swappable component. Where the frontier is crossed, the traffic runs the other
+  way: model vendors treating harnesses as **data instruments** (xAI's acquisition of
+  Cursor followed by Grok 4.5 training on its session data —
+  [grok-4-5 report](../01-models/grok-4-5.md); hermes' trajectory-export tooling
+  openly labeled for training its maker's next models —
+  [hermes report](hermes-agent.md)). Falsifier: a tracked harness shipping or
+  fine-tuning its own weights would end the asymmetry — the vendor-native harnesses
+  (codex, dsh, gemini-cli) are where to watch for it at drift checks.
 
 Baseline duty (issue #17): any harness-vs-harness A/B must inventory these rows for
 both arms before attributing an effect — the exp-03 rider ("net of what the category-2

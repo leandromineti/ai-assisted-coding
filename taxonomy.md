@@ -87,7 +87,13 @@ worse".
 
 ### 2. Harnesses
 
-The program that runs the agent loop. **Three components**[^adr-0021] (decomposition
+The program that runs the agent loop. Formally, a harness implements an
+**agent-computer interface**: it treats the language model as a new category of end
+user and supplies everything that user touches — the commands it can issue, the shape
+of the feedback it reads, the management of its context window
+([the SWE-agent read](refs/2024-swe-agent.md), the academic origin of this category's
+premise; formulation adopted from the published article, 2026-08-25).
+**Three components**[^adr-0021] (decomposition
 recorded 2026-08-22), each an
 agent-shaped question anchored by a finding traced in source — this category's cousin
 of category 3's blast-radius/fidelity/parallelism questions, with a different job:
@@ -248,7 +254,13 @@ ground.
 The analogy: if the harness is the runtime, this is the framework. Node is to Next.js as
 Claude Code is to GSD.
 
-The category test is **harness portability by design**: both GSD and spec-kit target many
+Two boundary tests, an identity test and a membership test. **Identity**: a framework
+sits *over* an agent you already run while being neither the agent itself nor a kit
+for building one — the delimitation the independent six-framework study arrived at
+([the from-prompt-to-process read](refs/2026-from-prompt-to-process.md)), which is
+also what separates this category from harnesses on one side and the excluded agent
+SDKs on the other (formulation adopted from the published article, 2026-08-25).
+**Membership**: **harness portability by design** — both GSD and spec-kit target many
 harnesses from one definition. A tool that only makes sense inside one harness's loop is
 probably that harness's feature, not a framework.
 
