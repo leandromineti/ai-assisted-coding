@@ -101,8 +101,12 @@ harness_features:
 > silently invalidates every architecture claim below it.
 >
 > `depth` is a promise to your future self: **stub** = facts collected, source unread ·
-> **survey** = used it or skimmed it · **deep-dive** = the agent loop and context assembly
-> were actually traced. Never raise it out of optimism. Closed subjects cap at `survey`
+> **survey** = used it or skimmed it · **deep-dive** = the three components of taxonomy §2
+> — loop, context assembly, permission gate — were actually traced, and the report says
+> which (ADR-0021's tracing discipline; definition applied since 2026-08-25, earlier
+> deep-dives read under the two-part loop+context form). For non-harness categories the
+> components translate to the category's own tracing frame (a memory tool: capture,
+> store, recall). Never raise it out of optimism. Closed subjects cap at `survey`
 > and grade every claim inline per methodology rule 1a: SOURCE · OBSERVED · TESTIMONY ·
 > INFERENCE (strictly ordered; only SOURCE supports architecture claims).
 >
