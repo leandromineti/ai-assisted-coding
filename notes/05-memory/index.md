@@ -27,6 +27,13 @@ shapes earn membership via their shims, and the shims are where the coding-agent
 behavior lives — up to and including mem0's plugin *blocking the harness's native memory
 writes* (the displacement finding, conclusion 8).
 
+Since 2026-08-25 the category has an explicit component decomposition —
+**capture · consolidation · recall**, each with a trust sub-question
+([taxonomy §5](../../taxonomy.md), ADR-0023); the first-cut axes below read as views
+of those components (capture path → capture; store wager → consolidation; recall
+injection and trust boundary → recall), and `harness_installer` is the aperture, not
+a pipeline stage.
+
 ## The memory matrix — first cut (2026-08-19)
 
 The reading arc's prose comparison became a registry block

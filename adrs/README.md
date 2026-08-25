@@ -64,3 +64,4 @@ before **2026-08-22** says "category 5" for both memory and the extensions bucke
 | [0020](0020-memory-category-extensions-renumbered.md) | 2026-08-22 | Memory becomes category 5; Extensions becomes category 6 (owner decision, supersedes 0016 and part of 0019) | accepted |
 | [0021](0021-harness-three-component-decomposition.md) | 2026-08-22 | Harness decomposition: three components (loop, context assembly, permission gate) + two descriptive axes | accepted |
 | [0022](0022-refs-repo-voice-sweepable.md) | 2026-08-22 | Repo-voice prose in `refs/` is sweepable (quotes stay period); decoders relocate to this index | accepted |
+| [0023](0023-category-4-5-components.md) | 2026-08-25 | Components for categories 4 (four functions + substrate finding) and 5 (capture · consolidation · recall); tracing discipline category-generic | accepted |

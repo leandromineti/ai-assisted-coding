@@ -195,14 +195,18 @@ something the triad can execute, and turns what the triad did into something a p
 trust. Four functions, each observed in the studied frameworks *(decomposition recorded
 2026-08-17)*:
 
-1. **Refine intent into specs** — spec-kit's `/specify` + `/clarify` with budgeted
+1. **Refine intent into specs** — *does the framework test the English before anything
+   executes?* spec-kit's `/specify` + `/clarify` with budgeted
    `[NEEDS CLARIFICATION]` markers; OpenSpec's proposal → delta-spec grammar.
-2. **Decompose work into concrete subtasks** — spec-kit's `tasks.md` task grammar
+2. **Decompose work into concrete subtasks** — *does work arrive at the triad in
+   verifiable units?* spec-kit's `tasks.md` task grammar
    (`T001 [P] [US1]` + file path, phases by user story); GSD's structured task graphs.
-3. **Flag gaps that need research** — GSD's empirical research agents (fixture repos,
+3. **Flag gaps that need research** — *does the framework measure the domain, or trust
+   training data?* GSD's empirical research agents (fixture repos,
    crafted commits — the machinery conclusion 6 credits with nearly all of GSD's measured
    margin); spec-kit's Phase-0 `research.md` dispatch per unknown.
-4. **Set up verification that converts progress into evidence** — GSD's verifiers with
+4. **Set up verification that converts progress into evidence** — *who checks the
+   claim of "done", and with what authority?* GSD's verifiers with
    *measured* expected values and `human_needed` abstention; OpenSpec's validator
    (enforcement by exit code); spec-kit's checklists and `/analyze`.
 
@@ -211,6 +215,18 @@ experiments located nearly all of the measured value in **3 and 4** and almost n
 1–2's ceremony (conclusion 6 — its decomposition tested and upheld, with a
 model-tier caveat, by exp-03; issue #8 resolved 2026-08-18) — so when reasoning about a
 framework, weigh its grounding and verification machinery over its spec ceremony.
+
+The four functions are this category's **components**[^adr-0023] (the same tracing
+discipline as §2: a category-4 deep-dive declares which functions it traced), and
+sorting the nine `workflow_features` keys under them yields a finding rather than a
+clean partition: `intent_pipeline` sorts to functions 1–2, the gate keys to 4 and the
+boundary, `retrospectives` beside 3 — but `context_isolation`,
+`parallel_orchestration`, and `state_store` sit on an **execution substrate outside
+the four functions**, and that substrate is exactly what harnesses absorb natively
+(conclusion 8; the [category-2 absorption table](notes/02-harnesses/index.md)), while
+what stays unabsorbed is the function-1/2 artifact spine. The decomposition predicts
+the absorption boundary: frameworks own the translation; the substrate is borrowed
+ground.
 
 The analogy: if the harness is the runtime, this is the framework. Node is to Next.js as
 Claude Code is to GSD.
@@ -237,6 +253,34 @@ session start, on any harness. Reports carry the 13-key `memory_features`
 block[^adr-0013]; the category's survival bet is the one
 thing a single harness cannot absorb — cross-harness continuity — measured pull-shaped
 in exp-04 (conclusion 14).
+
+**Three components**[^adr-0023], lifted from the definition sentence above — the
+pipeline a deep-dive traces (declaring which components, per §2's discipline), each
+carrying its own trust sub-question:
+
+1. **Capture** — *what enters the store, and who admitted it?* The write path:
+   hook / adapter / agent-invoked (no two vendors alike), admission policy
+   (`write_admission`), and the write-side trust boundary. Anchor: mem0's plugin
+   *blocking the harness's native memory writes* to redirect them — the displacement
+   finding (conclusion 8's counter-current;
+   [category index](notes/05-memory/index.md)).
+2. **Consolidation** — *what happens to it between sessions, and does that run by
+   default?* The store wager (files-git / vector / rows+vector / graph+vector+rows —
+   the identity axis), tiers, decay, revision authority. Anchor: memos'
+   presence≠operative finding — the entire evolution half verified in source and
+   shipped dark behind a default-off flag
+   ([memos report](notes/05-memory/memos.md)).
+3. **Recall** — *what reaches the next session's prompt — pushed or pulled, framed as
+   data or as authority?* Injection mode, retrieval fusion, and the read-side trust
+   boundary (memory injection is a prompt-injection vector). Anchor: exp-04's
+   measurement — the automatic floor is 0/10, the pull ceiling 10/10, and the harness
+   boundary costs nothing on the pull path; the category's pitch says "your agent
+   remembers", the measurement says "your agent can look it up, if it asks"
+   (conclusion 14; [experiment 04](experiments/04-memory-continuity/README.md)).
+
+The `harness_installer` key is the components' **aperture** — the shim/installer is to
+a memory product what the kind-linked keys are to the harness: the pluggable seam
+where the coding-agent behavior lives, not a pipeline stage.
 
 A full category since the 2026-08-22 split[^adr-0020]: born 2026-08-18 as the
 extensions bucket's `memory` type, promoted by owner decision — the earlier
@@ -455,3 +499,5 @@ reads in superseded vocabulary — [`adrs/`](adrs/README.md) carries the decoder
 [^adr-0019]: [ADR-0019 — coverage strata for category 5](adrs/0019-category-5-coverage-strata.md), decided 2026-08-22; superseded in part by ADR-0020.
 [^adr-0020]: [ADR-0020 — Memory becomes category 5; Extensions becomes category 6](adrs/0020-memory-category-extensions-renumbered.md), decided 2026-08-22.
 [^adr-0021]: [ADR-0021 — harness decomposition: three components, two descriptive axes](adrs/0021-harness-three-component-decomposition.md), decided 2026-08-22.
+[^adr-0022]: [ADR-0022 — repo-voice prose in refs is sweepable; decoders relocate to the ADR index](adrs/0022-refs-repo-voice-sweepable.md), decided 2026-08-22.
+[^adr-0023]: [ADR-0023 — components for categories 4 and 5; tracing discipline goes category-generic](adrs/0023-category-4-5-components.md), decided 2026-08-25.
