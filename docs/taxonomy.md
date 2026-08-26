@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-25`
+`checked: 2026-08-26`
 
 The point of this document is a **shared vocabulary**: without one, "Claude Code vs.
 GSD vs. Opus 5" is a category error — three things that aren't the same kind of thing
@@ -341,6 +341,21 @@ a name.
 The independent-distribution test still governs what belongs *in the bucket*: an MCP
 server is authored, versioned, and installed separately from any harness, and the same
 one works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, and Devin.
+
+*Strain (2026-08-26):* this bucket is **residual in origin but positive in test** — it is
+what remained once the runtimes and the write paths were absorbed into category
+2[^adr-0002], while what belongs in it is decided by the independent-distribution test
+just stated. The gap between those two exerts a pull: a newly sighted subject that fits
+none of categories 1–5 drifts toward 6 *because* 6 is where the leftovers went, even when
+it fails that test — and [`candidates.md`](../tools/candidates.md) is a holding pen for
+unclassified *tools* only, with nothing equivalent for a shape the vocabulary cannot yet
+name. The pull has been resisted once on the record: the orchestrator-above-harnesses
+shape (orca, sighted 2026-08-20) was filed at category 2 as the least-wrong primary rather
+than swept in here. Trigger: the first subject filed at 6 that fails the
+independent-distribution test, or a second sighted shape with no home in categories 1–6 —
+either forces the question of whether the taxonomy needs an explicit place for the
+not-yet-classifiable, which is a different thing from this bucket and must not be
+smuggled into it by treating 6 as a synonym for "unsorted".
 
 *How deeply each type is studied* follows the surviving coverage
 strata[^adr-0019] (carried forward at the split[^adr-0020]):

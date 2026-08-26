@@ -82,3 +82,4 @@ the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); genera
 | [0026](0026-constitution-into-docs.md) | 2026-08-26 | The constitution (`taxonomy.md`, `methodology.md`, `design-principles.md`, `taxonomy.yaml`) moves root → `docs/`; `docs/` rechartered in two halves | accepted |
 | [0027](0027-index-front-doors-become-readme.md) | 2026-08-26 | Hand-kept front doors are `README.md` (seven renamed); `index.md` means a generated listing (`refs/index.md`) | accepted |
 | [0028](0028-conclusions-out-of-readme.md) | 2026-08-26 | Conclusions move to `docs/conclusions.md`; README keeps the headline index, numbers unchanged | accepted |
+| [0029](0029-category-6-keeps-its-name.md) | 2026-08-26 | "Extensions" stays the name of category 6 (rename to "Stranger Things" declined); the residual-pull strain recorded in §6 instead | accepted |
