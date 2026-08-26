@@ -43,7 +43,11 @@ Conventions:
   claims). A finding, mechanism, or single-instance differentiator stays in **body
   prose** until issue #2's second instance lands. The load-bearing boundary is
   transcription vs assessment: the first drifts when the world changes, the second
-  only when someone reads again.
+  only when someone reads again. *Since 2026-08-26 the transcription half is
+  enumerated too* — the `transcription_fields:` list in the YAML block below — so the
+  whole assessment surface renders in one place and the generator can refuse an id
+  that appears in both lists. An extension within ADR-0010's design, not a revision:
+  the registry of assessed keys remains `features:`, and the enumeration adds no keys.
 - `kind_link` records the **demand↔supply correspondence**: a harness feature (demand
   side) whose supply side is an installable artifact: the `memory` kind supplies from
   category 5 (Memory), every other kind from category 6 (Extensions) — the ADR-0020
@@ -303,4 +307,113 @@ features:
     applies_to: [3]
     definition: "how the working anchor gets its content into the sandbox; closed lattice, plain enum: mount | clone | upload"
     note: "added 2026-08-20 per ADR-0017; instances: e2b clone (Task 1 probe, dated 2026-08-20, at the unmoved pin f5d702a5 — a first-class Sandbox.git.clone() API in both Python SDKs and the JS SDK, run through the sandbox's own command runner rather than a dedicated envd wire RPC), modal upload (no local execution mode; image builds stream a remote build context — ImageJoinStreaming, _image.py:433-441)"
+# --- transcription fields (added 2026-08-26) — the OTHER half of the placement test ---
+# Facts with an external ground truth, transcribed and dated: top-level frontmatter
+# fields, never duplicated as registry keys. Enumerated here so the whole assessment
+# surface is visible in one place (rendered in comparisons/feature-registry.md); an id
+# appearing in both this list and features[] is a generator ERROR — the placement test,
+# enforced. Verification vocabulary: dated-docs (verified against the report's url on
+# its checked date — for vendor-defined facts like a price or a context window the docs
+# ARE the ground truth, the one place rule 1a's source-beats-testimony ordering
+# inverts) · mechanical (script-collected — repo-facts.sh / GitHub API — never
+# hand-typed) · source-or-docs (read in the pinned clone or official docs, the same
+# discipline as feature cells). Honesty/meta columns (depth, checked, read_at) and
+# tool-taxonomy classification fields (category, type) are deliberately absent: rule 2
+# and taxonomy.md govern those, and they are not facts about the subject.
+transcription_fields:
+  - id: vendor
+    applies_to: [1, 2, 3, 4, 5, 6]
+    definition: "who maintains (or trains) it; the exact string is the grouping key for vendors.md, so spelling drift splits a vendor's row"
+    verification: source-or-docs
+    rendered_in: [tools.md, vendors.md]
+  - id: license
+    applies_to: [1, 2, 3, 4, 5, 6]
+    definition: "SPDX id or 'proprietary'; for category 1 the WEIGHTS license — unverifiable until weights are published, and recorded as such rather than assumed from a predecessor"
+    verification: source-or-docs
+    rendered_in: [tools.md, features.md]
+  - id: stars
+    applies_to: [2, 3, 4, 5, 6]
+    definition: "GitHub stars via the API, carrying their own stars_at date (stars drift daily); describes the CURRENT repo only — a fork or org move strands the predecessor's stars"
+    verification: mechanical
+    rendered_in: [tools.md]
+  - id: first_commit
+    applies_to: [2, 3, 4, 5, 6]
+    definition: "the public repo's first commit date — the public history's start, which postdates the product where a tool open-sourced later"
+    verification: mechanical
+    rendered_in: [tools.md]
+  - id: version
+    applies_to: [2, 3, 4, 5, 6]
+    definition: "git describe --tags --always of the clone at read time; omitted for closed source"
+    verification: mechanical
+    rendered_in: [tools.md]
+  - id: commit
+    applies_to: [2, 3, 4, 5, 6]
+    definition: "the ONE machine-checked pin per report — build-tool-index --check verifies it still resolves in upstream/<name>; secondary pins are prose-recorded (see the tool template)"
+    verification: mechanical
+    rendered_in: []
+  - id: stack
+    applies_to: [2, 3, 4, 5, 6]
+    definition: "[Language, Runtime/Framework] of the subject"
+    verification: source-or-docs
+    rendered_in: [tools.md]
+  - id: surfaces
+    applies_to: [2]
+    definition: "where you interact — terminal | ide | desktop | web (multi-valued)"
+    verification: source-or-docs
+    rendered_in: [tools.md]
+  - id: execution
+    applies_to: [2]
+    definition: "how it runs — local | async-remote | both"
+    verification: source-or-docs
+    rendered_in: [tools.md]
+  - id: environments
+    applies_to: [2]
+    definition: "category-3 bindings (the bleed): which environments the tool can run its agent in — list only what is verified"
+    verification: source-or-docs
+    rendered_in: [environments.md]
+  - id: environment_relation
+    applies_to: [2]
+    definition: "HOW the tool relates to the environment — bundle | bind | internalize | inhabit; left unset when none of the four fits, and that null case is data"
+    verification: source-or-docs
+    rendered_in: [environments.md]
+  - id: harness_targets
+    applies_to: [4, 5, 6]
+    definition: "which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets"
+    verification: source-or-docs
+    rendered_in: [tools.md]
+  - id: model_id
+    applies_to: [1]
+    definition: "exact API model id / HF repo id — the purchasable name, which routes and aggregators may not preserve"
+    verification: dated-docs
+    rendered_in: []
+  - id: release_mode
+    applies_to: [1]
+    definition: "api-only | open-weights | both — verified on both surfaces before 'both' is claimed"
+    verification: dated-docs
+    rendered_in: []
+  - id: released
+    applies_to: [1]
+    definition: "first-availability date PLUS lifecycle stage in the vendor's own vocabulary (GA / Preview / beta) — stages don't align across vendors, so the stage word is part of the fact"
+    verification: dated-docs
+    rendered_in: [models.md]
+  - id: context_window
+    applies_to: [1]
+    definition: "advertised input tokens; usable-vs-advertised is a category-1 axis, measured in report evidence cells, not here"
+    verification: dated-docs
+    rendered_in: [models.md, features.md]
+  - id: max_output
+    applies_to: [1]
+    definition: "maximum output tokens, with vendor caveats carried in the value (defaults vs settable ceilings, visible-output-only counts)"
+    verification: dated-docs
+    rendered_in: [models.md]
+  - id: pricing
+    applies_to: [1]
+    definition: "$in / $out per MTok, with any time-limited or tiered pricing dated and its tier boundaries stated"
+    verification: dated-docs
+    rendered_in: [models.md]
+  - id: knowledge_cutoff
+    applies_to: [1]
+    definition: "vendor-stated only; absence is recorded as 'not stated', dated — third-party ship-date inference is not a cutoff"
+    verification: dated-docs
+    rendered_in: [models.md]
 ```

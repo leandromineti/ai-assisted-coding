@@ -48,7 +48,7 @@ ENV_RELATIONS = ["bundle", "bind", "internalize", "inhabit"]
 FEATURE_REGISTRY_PATH = ROOT / "notes" / "cross-cutting" / "feature-taxonomy.md"
 
 
-def _load_feature_registry() -> list[dict]:
+def _load_feature_registry() -> tuple[list[dict], list[dict]]:
     try:
         text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
     except OSError as e:
@@ -63,6 +63,22 @@ def _load_feature_registry() -> list[dict]:
     entries = (data or {}).get("features")
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
+    t_fields = (data or {}).get("transcription_fields") or []
+    feature_ids = {e.get("id") for e in entries}
+    for t in t_fields:
+        for req in ("id", "applies_to", "definition", "verification"):
+            if req not in t:
+                sys.exit(f"transcription field missing `{req}`: {t}")
+        if t["verification"] not in {"dated-docs", "mechanical", "source-or-docs"}:
+            sys.exit(
+                f"transcription field `{t['id']}` has unknown verification "
+                f"`{t['verification']}` (known: dated-docs, mechanical, source-or-docs)"
+            )
+        if t["id"] in feature_ids:
+            sys.exit(
+                f"`{t['id']}` is both a transcription field and a registry key — "
+                "the placement test forbids giving the same fact two homes"
+            )
     known_blocks = {
         "harness_features",
         "workflow_features",
@@ -79,10 +95,10 @@ def _load_feature_registry() -> list[dict]:
                 f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
                 f"(known: {sorted(known_blocks)}) — a typo here silently empties a matrix"
             )
-    return entries
+    return entries, t_fields
 
 
-FEATURE_REGISTRY = _load_feature_registry()
+FEATURE_REGISTRY, TRANSCRIPTION_FIELDS = _load_feature_registry()
 HARNESS_FEATURE_KEYS = [
     e["id"] for e in FEATURE_REGISTRY if e["block"] == "harness_features"
 ]
@@ -685,7 +701,9 @@ def render_feature_registry() -> str:
         "supplies the feature — `memory` from category 5, every other kind from",
         "category 6 (ADR-0020). **Provenance** is carried verbatim from the registry's",
         "`note:` fields: when a key entered, which verified instances earned it, and the",
-        "calibration lessons attached to it.",
+        "calibration lessons attached to it. Assessed keys are half the assessment",
+        "surface — the [transcription fields](#transcription-fields--the-other-half-of-the-placement-test)",
+        "at the bottom are the other half.",
         "",
     ]
     # Sections follow the repo's category order (taxonomy.md, 1→6), not the YAML's
@@ -714,8 +732,37 @@ def render_feature_registry() -> str:
                 f"{esc(e.get('note', '')) or '—'} |"
             )
         lines.append("")
+    if TRANSCRIPTION_FIELDS:
+        lines += [
+            "## Transcription fields — the other half of the placement test",
+            "",
+            "Facts with an **external ground truth**, transcribed and dated — top-level",
+            "frontmatter fields, never duplicated as registry keys (the placement test,",
+            "enforced: the generator refuses an id that appears in both lists).",
+            "Verification: **dated-docs** — verified against the report's `url` on its",
+            "`checked` date; for vendor-defined facts (a price, a context window) the docs",
+            "*are* the ground truth, the one place rule 1a's source-beats-testimony",
+            "ordering inverts · **mechanical** — script-collected (`repo-facts.sh`, GitHub",
+            "API), never hand-typed · **source-or-docs** — read in the pinned clone or",
+            "official docs, the same discipline as feature cells. Honesty/meta columns",
+            "(`depth`, `checked`, `read_at`) and tool-taxonomy classification fields",
+            "(`category`, `type`) are deliberately absent — they are not facts about the",
+            "subject.",
+            "",
+            "| Field | Categories | Definition | Verification | Rendered in |",
+            "|---|---|---|---|---|",
+        ]
+        for t in TRANSCRIPTION_FIELDS:
+            cats = "+".join(str(c) for c in t["applies_to"])
+            rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
+            lines.append(
+                f"| `{t['id']}` | {cats} | {esc(t['definition'])} | "
+                f"`{t['verification']}` | {rendered or 'frontmatter only'} |"
+            )
+        lines.append("")
     lines += [
-        f"**{len(FEATURE_REGISTRY)} keys across {len(block_order)} blocks.**",
+        f"**{len(FEATURE_REGISTRY)} assessed keys across {len(block_order)} blocks · "
+        f"{len(TRANSCRIPTION_FIELDS)} transcription fields.**",
         "",
     ]
     return "\n".join(lines)

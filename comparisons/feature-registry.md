@@ -13,7 +13,9 @@ names the demand↔supply correspondence: the installable artifact kind that
 supplies the feature — `memory` from category 5, every other kind from
 category 6 (ADR-0020). **Provenance** is carried verbatim from the registry's
 `note:` fields: when a key entered, which verified instances earned it, and the
-calibration lessons attached to it.
+calibration lessons attached to it. Assessed keys are half the assessment
+surface — the [transcription fields](#transcription-fields--the-other-half-of-the-placement-test)
+at the bottom are the other half.
 
 ## Models — `model_features:` (category 1)
 
@@ -98,4 +100,41 @@ Descriptive enums — mechanism choices, not ADR-0011 enforcement grades (ADR-00
 | `harness_installer` | ships an installer that mutates the harness's own config (settings/hooks) rather than only offering an MCP endpoint | — | added 2026-08-19 per ADR-0013; instances: ai-memory (install-hooks --apply rewrites settings.json), mem0 (hooks.json bundle, 6 harnesses), memos (one-command installer + adapters) |
 | `rule_extraction` | synthesizes standing instructions/rules from sessions (memory that mints category-6 artifacts of another kind) | — | added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts |
 
-**48 keys across 5 blocks.**
+## Transcription fields — the other half of the placement test
+
+Facts with an **external ground truth**, transcribed and dated — top-level
+frontmatter fields, never duplicated as registry keys (the placement test,
+enforced: the generator refuses an id that appears in both lists).
+Verification: **dated-docs** — verified against the report's `url` on its
+`checked` date; for vendor-defined facts (a price, a context window) the docs
+*are* the ground truth, the one place rule 1a's source-beats-testimony
+ordering inverts · **mechanical** — script-collected (`repo-facts.sh`, GitHub
+API), never hand-typed · **source-or-docs** — read in the pinned clone or
+official docs, the same discipline as feature cells. Honesty/meta columns
+(`depth`, `checked`, `read_at`) and tool-taxonomy classification fields
+(`category`, `type`) are deliberately absent — they are not facts about the
+subject.
+
+| Field | Categories | Definition | Verification | Rendered in |
+|---|---|---|---|---|
+| `vendor` | 1+2+3+4+5+6 | who maintains (or trains) it; the exact string is the grouping key for vendors.md, so spelling drift splits a vendor's row | `source-or-docs` | [tools.md](tools.md), [vendors.md](vendors.md) |
+| `license` | 1+2+3+4+5+6 | SPDX id or 'proprietary'; for category 1 the WEIGHTS license — unverifiable until weights are published, and recorded as such rather than assumed from a predecessor | `source-or-docs` | [tools.md](tools.md), [features.md](features.md) |
+| `stars` | 2+3+4+5+6 | GitHub stars via the API, carrying their own stars_at date (stars drift daily); describes the CURRENT repo only — a fork or org move strands the predecessor's stars | `mechanical` | [tools.md](tools.md) |
+| `first_commit` | 2+3+4+5+6 | the public repo's first commit date — the public history's start, which postdates the product where a tool open-sourced later | `mechanical` | [tools.md](tools.md) |
+| `version` | 2+3+4+5+6 | git describe --tags --always of the clone at read time; omitted for closed source | `mechanical` | [tools.md](tools.md) |
+| `commit` | 2+3+4+5+6 | the ONE machine-checked pin per report — build-tool-index --check verifies it still resolves in upstream/<name>; secondary pins are prose-recorded (see the tool template) | `mechanical` | frontmatter only |
+| `stack` | 2+3+4+5+6 | [Language, Runtime/Framework] of the subject | `source-or-docs` | [tools.md](tools.md) |
+| `surfaces` | 2 | where you interact — terminal \| ide \| desktop \| web (multi-valued) | `source-or-docs` | [tools.md](tools.md) |
+| `execution` | 2 | how it runs — local \| async-remote \| both | `source-or-docs` | [tools.md](tools.md) |
+| `environments` | 2 | category-3 bindings (the bleed): which environments the tool can run its agent in — list only what is verified | `source-or-docs` | [environments.md](environments.md) |
+| `environment_relation` | 2 | HOW the tool relates to the environment — bundle \| bind \| internalize \| inhabit; left unset when none of the four fits, and that null case is data | `source-or-docs` | [environments.md](environments.md) |
+| `harness_targets` | 4+5+6 | which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets | `source-or-docs` | [tools.md](tools.md) |
+| `model_id` | 1 | exact API model id / HF repo id — the purchasable name, which routes and aggregators may not preserve | `dated-docs` | frontmatter only |
+| `release_mode` | 1 | api-only \| open-weights \| both — verified on both surfaces before 'both' is claimed | `dated-docs` | frontmatter only |
+| `released` | 1 | first-availability date PLUS lifecycle stage in the vendor's own vocabulary (GA / Preview / beta) — stages don't align across vendors, so the stage word is part of the fact | `dated-docs` | [models.md](models.md) |
+| `context_window` | 1 | advertised input tokens; usable-vs-advertised is a category-1 axis, measured in report evidence cells, not here | `dated-docs` | [models.md](models.md), [features.md](features.md) |
+| `max_output` | 1 | maximum output tokens, with vendor caveats carried in the value (defaults vs settable ceilings, visible-output-only counts) | `dated-docs` | [models.md](models.md) |
+| `pricing` | 1 | $in / $out per MTok, with any time-limited or tiered pricing dated and its tier boundaries stated | `dated-docs` | [models.md](models.md) |
+| `knowledge_cutoff` | 1 | vendor-stated only; absence is recorded as 'not stated', dated — third-party ship-date inference is not a cutoff | `dated-docs` | [models.md](models.md) |
+
+**48 assessed keys across 5 blocks · 19 transcription fields.**
