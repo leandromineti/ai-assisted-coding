@@ -521,8 +521,13 @@ taxonomy needs revision — not the case.
 | 6 · Extensions (bucket) | [`tools/6-extensions/README.md`](../tools/6-extensions/README.md) |
 | ✕ Cross-cutting (incl. standards) | [`docs/README.md`](README.md) |
 
-Per-tool reports use [`tools/_template-tool-report.md`](../tools/_template-tool-report.md) and
-are indexed flat, across categories, in [`comparisons/tools.md`](../comparisons/tools.md).
+Per-tool reports use [`tools/_template-tool-report.md`](../tools/_template-tool-report.md) — with
+one exception: category 1 uses
+[`tools/1-models/_template-model-report.md`](../tools/1-models/_template-model-report.md), because
+that template's repo-shaped spine (pinned commit, mechanically collected repo facts, traced
+architecture, drift check) has no subject when the thing being reported on is weights behind an
+API. All of them are indexed flat, across categories, in
+[`comparisons/tools.md`](../comparisons/tools.md).
 
 ## Decision records cited
 

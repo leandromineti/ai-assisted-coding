@@ -105,7 +105,9 @@ pattern) — candidates already weighed and passed over are recorded in the rele
 category index's "considered, not added" table instead.
 
 One report per tool, following
-[`tools/_template-tool-report.md`](tools/_template-tool-report.md). Its **"distinguishing
+[`tools/_template-tool-report.md`](tools/_template-tool-report.md) — or, for category 1,
+[`tools/1-models/_template-model-report.md`](tools/1-models/_template-model-report.md), since
+weights have no repository to pin or trace. Its **"distinguishing
 bet"** field is the one that matters — what does this tool believe that its competitors
 don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
 `survey` (used or skimmed), `deep-dive` (the category's components traced — defined in

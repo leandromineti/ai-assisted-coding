@@ -1,6 +1,9 @@
 ---
+# Categories 2–6. A category-1 (model) report uses 1-models/_template-model-report.md
+# instead: weights have no clone to pin, no source to trace, and no drift to re-check, so
+# the commit/stars/first_commit fields and the repo-shaped sections below have no subject.
 name: <tool>
-category: <1-6>
+category: <2-6>
 # The next three fields are for category-2 (harness) reports; omit where not meaningful.
 surfaces: [<terminal | ide | desktop | web>]   # where you interact — multi-valued
 execution: <local | async-remote | both>        # how it runs
