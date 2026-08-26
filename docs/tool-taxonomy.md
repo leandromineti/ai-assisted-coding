@@ -458,6 +458,16 @@ Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation
 | **Anthropic** | opus/sonnet/fable/haiku ✓ | Claude Code ✓ *(observation-only, 2026-08-17)* | Managed Agents / code-exec container ○ *(bundle)* | skills, MCP ○ |
 | **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
 | **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
+| **DeepSeek** | deepseek-v4 ✓ | dsh ✓ | — | — |
+| **Alibaba (Qwen)** | qwen3-coder-next ✓ | qwen-code ○ *(candidate, not ingested — a gemini-cli fork)* | — | — |
+
+**The direction is one-way, and that is the finding** *(2026-08-26)*: every vendor here
+spans **from** category 1 **into** category 2. A model maker ships a harness for its own
+weights; no harness maker in the set has trained a model and moved the other way. Six of
+the eight vendors with a tracked model report now have a harness — the two that don't,
+Moonshot and Z.ai, are the sweep's most recent model entries, which reads more like *not
+yet* than *not the pattern*. Treat "this vendor has no harness" as a dated observation
+with a short shelf life, not a stable fact about the vendor.
 
 Two consequences a reasoner must carry:
 
@@ -475,11 +485,15 @@ Two consequences a reasoner must carry:
 **Why this table is hand-kept, not generated** (and it is the one deliberate exception to
 rule 3 in this repo): the sharpest spanners are *closed* — Claude Code, cloud Codex, and
 Managed Agents have no report files — so a frontmatter-generated matrix would **understate
-vendor span precisely for the vendors that have the most of it.** The generated half does
-exist: [`comparisons/vendors.md`](../comparisons/vendors.md) derives vendor coverage from
-`vendor:` frontmatter and is the tracked-only **floor** (2026-08-17: it finds 2 spanners
-where this table shows 4 — that gap *is* the closed-product blind spot, quantified). This
-table deliberately admits observation-only (○) products to show the real shape, and is
+vendor span precisely for the vendors that have the most of it.** A generated half used to
+exist alongside it (`comparisons/vendors.md`, removed 2026-08-26,
+[ADR-0041](../adrs/0041-vendors-matrix-removed.md)): it grouped every report by `vendor:`
+string and was billed as the tracked-only **floor**, its distance from this table
+quantifying the closed-product blind spot. The measurement decayed — by removal day both
+surfaces read "4 spanners" over *non-identical* sets, so the gap it existed to show had
+become a coincidence that looked like agreement. The claim it was carrying is one
+sentence, and it is stated above. This table deliberately admits observation-only (○)
+products to show the real shape, and is
 illustrative, not an index — re-date it when a spanner's coverage changes rather than
 trusting it to stay current on its own.
 

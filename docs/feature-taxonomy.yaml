@@ -331,9 +331,9 @@ transcription_fields:
   - id: vendor
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: string
-    definition: "who maintains (or trains) it; the exact string is the grouping key for vendors.md, so spelling drift splits a vendor's row"
+    definition: "who maintains (or trains) it; exact-string identity matters — spelling drift makes one maker read as two when vendor span is reasoned about (tool-taxonomy.md § Vendor span)"
     verification: source-or-docs
-    rendered_in: [tools.md, vendors.md]
+    rendered_in: [tools.md]
   - id: license
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: string

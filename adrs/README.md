@@ -107,3 +107,4 @@ either direction, so an old cell's prose does not map onto one new cell; each re
 | [0038](0038-cutoff-single-date.md) | 2026-08-26 | One cutoff date, meaning the training-data limit; the finer vendor figure moves to `note` | accepted |
 | [0039](0039-value-type-types-the-fact.md) | 2026-08-26 | `value_type` types the fact: `knowledge_cutoff` is `date`; `structured` means plural facts; `renders_note` marks matrix-visible prose | accepted |
 | [0040](0040-reasoning-replaces-thinking.md) | 2026-08-26 | `thinking` + `effort_control` → `reasoning` (presence) + `reasoning_type` (toggleability enum) + `reasoning_effort` (`family:specific` dial); repo voice says *reasoning*, vendor words stay quoted; fourth cell-value check | accepted |
+| [0041](0041-vendors-matrix-removed.md) | 2026-08-26 | `comparisons/vendors.md` removed (33 of 37 rows were single-tool; its gap metric had decayed to a false zero); vendor span is single-sourced in `tool-taxonomy.md` | accepted |
