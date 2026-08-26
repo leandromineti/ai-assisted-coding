@@ -20,6 +20,7 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Cloudflare, Inc. | — | — | cloudflare-sandbox-sdk | — | — | — | **1** |
 | Continue | — | continue | — | — | — | — | **1** |
 | Daytona Platforms, Inc. | — | — | daytona | — | — | — | **1** |
+| Earendil Works | — | pi | — | — | — | — | **1** |
 | EverMind AI (EverMind-AI) | — | — | — | — | everos | — | **1** |
 | Fabio Akita (akitaonrails) | — | — | — | — | ai-memory | — | **1** |
 | Fission AI | — | — | — | openspec | — | — | **1** |
@@ -43,4 +44,4 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Warp (warpdotdev) | — | warp | — | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | — | **1** |
 
-**35 vendors** across 43 tracked tools; **4 span ≥2 categories among tracked tools** (Anthropic, DeepSeek, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**36 vendors** across 44 tracked tools; **4 span ≥2 categories among tracked tools** (Anthropic, DeepSeek, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
