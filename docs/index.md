@@ -1,16 +1,34 @@
-# Docs — notes that span the survey
+# Docs — the constitution, and the notes that span the survey
 
 `checked: 2026-08-26`
 
-General notes about the repository's structure, methodology, and ideas — material
-that belongs to no single category (the constitution itself stays at root:
-[`methodology.md`](../methodology.md), [`taxonomy.md`](../taxonomy.md),
-[`design-principles.md`](../design-principles.md)). Renamed from
-`tools/cross-cutting/` on 2026-08-26 (ADR-0025); the cross-category notes below are
-its founding contents. They are **not categories**: each appears at several
-categories simultaneously, and forcing them onto the stack distorts them.
+Everything in this repo that is not a tool report, a source note, or an experiment.
+Two halves: the **constitution** — the rules the whole repo answers to — and the
+**cross-category notes**, general material about the repository's structure,
+methodology, and ideas that belongs to no single category. Renamed from
+`tools/cross-cutting/` on 2026-08-26 (ADR-0025); the constitution joined it from root
+the same day (ADR-0026).
 
 ---
+
+## The constitution
+
+Read these three first. They outrank every other document in the repo, including
+`CLAUDE.md`.
+
+| File | What it governs |
+|---|---|
+| [`methodology.md`](methodology.md) | the rules — nine numbered, each scarred by a specific failure |
+| [`taxonomy.md`](taxonomy.md) | the categories, and what a category *test* is. Its machine-readable half is [`taxonomy.yaml`](taxonomy.yaml), the vocabulary lint's sole source of truth |
+| [`design-principles.md`](design-principles.md) | the hypotheses, and the rule for revising them |
+
+---
+
+## Notes that span the survey
+
+The cross-category notes — ADR-0025's founding contents. They are **not categories**:
+each appears at several categories simultaneously, and forcing them onto the stack
+distorts them.
 
 ## Benchmarks as instruments → [`benchmark-survey.md`](benchmark-survey.md)
 

@@ -7,7 +7,7 @@ Cells: **✓** verified present · **✗** verified absent · **·** not yet che
 The dot is load-bearing — it is *not* a no. A feature key is only set in a
 report's frontmatter when confirmed in source or official docs. Keys are
 defined once in the [feature taxonomy](../docs/feature-taxonomy.md)
-(ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
+(ADR-0010); the [tool taxonomy](../docs/taxonomy.md) classifies the tools themselves.
 
 ## Models (category 1)
 

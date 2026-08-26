@@ -2,7 +2,7 @@
 
 `checked: 2026-08-26`
 
-The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this category is and how
+The weights. See [`../../docs/taxonomy.md`](../../docs/taxonomy.md) for what this category is and how
 it's judged.
 
 Per-model reports follow

@@ -3,7 +3,7 @@
 `checked: 2026-08-26`
 
 Loop + context assembly + permission model + UI. See
-[`../../taxonomy.md`](../../taxonomy.md).
+[`../../docs/taxonomy.md`](../../docs/taxonomy.md).
 
 The prevailing mid-2026 read: the frontier models have converged enough that **the harness
 now decides most of the day-to-day experience**. That claim is worth testing here rather
@@ -54,7 +54,7 @@ A harness's *environment bindings* — which category-3 environments it can atta
 worktree, container, remote sandbox) — are recorded in each report's frontmatter as
 `environments`. That's bleed, not merger: the environments themselves stay independently
 distributed category-3 entities (see the scope note in
-[`../../taxonomy.md`](../../taxonomy.md)).
+[`../../docs/taxonomy.md`](../../docs/taxonomy.md)).
 
 ## Candidates
 
@@ -146,7 +146,7 @@ Three readings of the table:
   memory, fan-out) and leave *methodology* (what artifact comes next and why) alone.
   Conclusion 8 claimed the four absorbed legs and never these — the table confirms the
   boundary sits where the prose said it did.
-- **The H8 tension, previously unremarked.** [Design principle H8](../../design-principles.md)
+- **The H8 tension, previously unremarked.** [Design principle H8](../../docs/design-principles.md)
   says a good harness keeps its core a narrow waist and ships capability at the edges
   as data. Absorption is the counter-motion: every mechanism above is core growth. The
   tracked harnesses split visibly — codex ships gates as *hook surface* (waist-shaped:

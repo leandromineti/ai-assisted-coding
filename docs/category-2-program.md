@@ -11,7 +11,7 @@ baselines on hidden, fails-closed instruments, and the pattern is now consistent
 to act on: category-4 effects on code ride on mechanisms the model+harness bundle absorbs
 tier by tier, atop run-to-run noise wider than most of the effects themselves. The
 measurable subject is the **bundle** — the model + harness system (category 2 in
-[`taxonomy.md`](../taxonomy.md)) — plus framework value at the *artifact* level,
+[`taxonomy.md`](taxonomy.md)) — plus framework value at the *artifact* level,
 where it demonstrably lives. Promoted as
 [README conclusion 12](../README.md); this note is the assembled argument and the
 program definition.
@@ -94,5 +94,5 @@ framework whose enforcement is deterministic rather than prose
 ([OpenSpec](../tools/4-workflow-frameworks/openspec.md)-style engines), where the
 intervention is code the bundle cannot silently absorb; (c) a bundle regression —
 if a future harness/model pairing stops grounding unprompted, the tier-condition in
-[design-principles F2](../design-principles.md) cuts the other way. Any of these
+[design-principles F2](design-principles.md) cuts the other way. Any of these
 earns a new preregistration; nothing else does.

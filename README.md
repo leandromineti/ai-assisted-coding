@@ -10,7 +10,7 @@ still](https://mineti.dev/articles/the-ai-coding-stack/).
 
 ## Start here
 
-**[`taxonomy.md`](taxonomy.md)** — the shared vocabulary. A **core triad** — models,
+**[`docs/taxonomy.md`](docs/taxonomy.md)** — the shared vocabulary. A **core triad** — models,
 harnesses, execution environments (categories 1–3), the three things a running agent cannot
 lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack boundary:
 intent refined into specs and subtasks going down, research and verified evidence coming
@@ -23,12 +23,12 @@ dated decision record each in [`adrs/`](adrs/README.md).
 With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
 tools that straddle the divisions. Everything else in the repo declares where it belongs.
 
-**[`methodology.md`](methodology.md)** — how work is done here: verification and honesty
+**[`docs/methodology.md`](docs/methodology.md)** — how work is done here: verification and honesty
 rules, generated indexes, preregistered experiments, the upstream-reporting gate. Every
 rule earned its place by catching a real mistake; the anti-goal section keeps it from
 growing rigor for rigor's sake.
 
-**[`design-principles.md`](design-principles.md)** — the synthesis layer: design
+**[`docs/design-principles.md`](docs/design-principles.md)** — the synthesis layer: design
 principles derived from the documented tools, per taxonomy category, each carrying a
 confidence marker (convergent / single-instance / contested) and its evidence citations.
 Hypotheses under revision, not best practices — every new deep-dive or experiment must
@@ -49,9 +49,10 @@ confirm, contradict, or note silence.
 | Path | Holds |
 |------|-------|
 | `CLAUDE.md` | How the repo works: where things go, the ingest/lint operations, the honesty columns |
-| `taxonomy.md` | The category definitions and boundary rule — the canonical reference |
-| `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
-| `design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
+| `docs/taxonomy.md` | The category definitions and boundary rule — the canonical reference. `docs/taxonomy.yaml` is its machine-readable half, read by the vocabulary lint |
+| `docs/methodology.md` | The working rules — verification, honesty markers, experiment protocol |
+| `docs/design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
+| `docs/` | Those three — the constitution — plus the notes that span categories (benchmarks, metrics, standards, the feature registry). See [`docs/index.md`](docs/index.md) |
 | `tools/` | One index per category, plus one file per tool, written while using it |
 | `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
@@ -78,7 +79,7 @@ One report per tool, following
 bet"** field is the one that matters — what does this tool believe that its competitors
 don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
 `survey` (used or skimmed), `deep-dive` (the category's components traced — defined in
-[`taxonomy.md`](taxonomy.md) — the report saying which; pre-2026-08-25 deep-dives read
+[`docs/taxonomy.md`](docs/taxonomy.md) — the report saying which; pre-2026-08-25 deep-dives read
 under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead

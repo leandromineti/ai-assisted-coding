@@ -1,6 +1,9 @@
 # ADR-0025 — `tools/cross-cutting/` moves to root as `docs/`
 
-`decided: 2026-08-26` · status: **accepted**
+`decided: 2026-08-26` · status: **superseded in part by
+[ADR-0026](0026-constitution-into-docs.md) (2026-08-26): the placement clause only — the
+constitution moved into `docs/` too, and the rules-vs-notes distinction now lives as
+`docs/index.md`'s two-part structure. Everything else here stands**
 
 ## Decision
 

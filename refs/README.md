@@ -15,8 +15,8 @@ repo's published conclusions — one of them a 128-run ablation pointing somewhe
 experiment does not. That knowledge had nowhere to live. Without a library, the next session
 either rediscovers it or, worse, keeps citing conclusions the literature has already refined.
 
-Methodology [rule 1](../methodology.md) (verify against primary sources, date every claim)
-and [rule 4](../methodology.md) (traceable or it's an opinion) apply to papers exactly as
+Methodology [rule 1](../docs/methodology.md) (verify against primary sources, date every claim)
+and [rule 4](../docs/methodology.md) (traceable or it's an opinion) apply to papers exactly as
 they apply to source code. This is where that happens.
 
 ## Layout

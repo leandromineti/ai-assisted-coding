@@ -3,7 +3,7 @@
 > Renamed from "Portable artifacts" 2026-08-17: portability is not an intrinsic
 > property of an extension but a status the ecosystem confers by adoption — unevenly
 > across the types below (see the Standards scoreboard and the dated rename note in
-> [`../../taxonomy.md`](../../taxonomy.md)). Renumbered 5 → 6 at the 2026-08-22 split
+> [`../../docs/taxonomy.md`](../../docs/taxonomy.md)). Renumbered 5 → 6 at the 2026-08-22 split
 > ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)): the memory
 > type left this bucket to become category 5 — [Memory](../5-memory/index.md).
 
@@ -12,7 +12,7 @@
 What the agent can **see and touch**, as distributable content. **A bucket, not a
 category-of-fundamentals, since the 2026-07-30 taxonomy revision** (trigger fired at the
 ECC deep-dive — see the executed-revision note in
-[`../../taxonomy.md`](../../taxonomy.md)). The membership test is unchanged: independent
+[`../../docs/taxonomy.md`](../../docs/taxonomy.md)). The membership test is unchanged: independent
 distribution — authored, versioned, and installed separately from any harness. The "6"
 is a storage key (3 → 5 by [ADR-0007](../../adrs/0007-renumber-core-triad-first.md),
 5 → 6 by ADR-0020).
@@ -58,7 +58,7 @@ decided as [ADR-0019](../../adrs/0019-category-5-coverage-strata.md); the same d
 owner decided [ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md),
 promoting the mechanism stratum's core — the memory type — to category 5 and
 renumbering this bucket to 6. Cut 3, the absorption bet, is registered as principle X3
-in [design-principles.md](../../design-principles.md). The cuts' text below stays as
+in [design-principles.md](../../docs/design-principles.md). The cuts' text below stays as
 the primary record both ADRs condense; it predates the split, so "category 5" below
 reads as "this bucket".)*
 

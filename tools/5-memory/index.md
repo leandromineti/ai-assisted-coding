@@ -29,7 +29,7 @@ writes* (the displacement finding, conclusion 8).
 
 Since 2026-08-25 the category has an explicit component decomposition —
 **capture · consolidation · recall**, each with a trust sub-question
-([taxonomy §5](../../taxonomy.md), ADR-0023); the first-cut axes below read as views
+([taxonomy §5](../../docs/taxonomy.md), ADR-0023); the first-cut axes below read as views
 of those components (capture path → capture; store wager → consolidation; recall
 injection and trust boundary → recall), and `harness_installer` is the aperture, not
 a pipeline stage.

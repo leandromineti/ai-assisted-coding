@@ -10,9 +10,9 @@ Read these three first. They are the constitution, and they outrank anything in 
 
 | File | What it governs |
 |---|---|
-| [`methodology.md`](methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
-| [`taxonomy.md`](taxonomy.md) | the categories, and what a category *test* is |
-| [`design-principles.md`](design-principles.md) | the hypotheses, and the rule for revising them |
+| [`docs/methodology.md`](docs/methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
+| [`docs/taxonomy.md`](docs/taxonomy.md) | the categories, and what a category *test* is |
+| [`docs/design-principles.md`](docs/design-principles.md) | the hypotheses, and the rule for revising them |
 
 `README.md` holds the numbered **Conclusions** — the repo's actual output. A conclusion without a
 linked note is an assertion; a finding that changed no note is an anecdote (rule 6).
@@ -24,7 +24,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 | `tools/N-*/` | one report per tool, by taxonomy category. Template: `tools/_template-tool-report.md` | yes |
 | `tools/N-*/index.md` | narrative front door per category: what the category *is*, seed inventory | yes |
 | `tools/candidates.md` | cross-category ledger of sighted-but-not-ingested tools — the pre-`stub` stage (candidate → stub → survey → deep-dive). Dated hand-typed stars are its documented exception | yes |
-| `docs/` | general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry the feature matrices generate from (ADR-0010–0014); add feature keys there, nowhere else | yes |
+| `docs/` | the constitution (the three files above, moved from root 2026-08-26 by ADR-0026) plus general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry the feature matrices generate from (ADR-0010–0014); add feature keys there, nowhere else | yes |
 | `refs/` | one note per **source read** (papers, benchmarks). See [`refs/README.md`](refs/README.md) | notes yes, index no |
 | `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `vendors.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables) | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |
@@ -81,8 +81,8 @@ the drift touches what the report claims and record the answer, dated, in the re
 **without moving the pin** (methodology rule 4b). ECC's 16-commit drift contained the
 upstream bug fix that falsified a claim in its deep-dive.
 
-The taxonomy lint (`check-taxonomy.py`) has different semantics: it reads `taxonomy.yaml`
-and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately
+The taxonomy lint (`check-taxonomy.py`) has different semantics: it reads
+`docs/taxonomy.yaml` and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately
 exempt); exit 0 prints a trailing `0 problem(s)`; exit 2 means a bad argument. Run
 `python3 scripts/check-taxonomy.py --selftest` after touching `taxonomy.yaml` or the
 lint itself — it is the lint's permanent calibration (methodology rule 5d). `--selftest`
@@ -104,7 +104,7 @@ worked example of exactly this gap).
    would guarantee false positives — the reason this repo chose a deny-list over an
    allow-list in the first place.
 2. To deny it: add the term as a string under the matching `terms[].deny_list` in
-   `taxonomy.yaml`. That is the only file to edit — no Python change is required. Two
+   `docs/taxonomy.yaml`. That is the only file to edit — no Python change is required. Two
    mechanics to get right: matching is whole-token and case-insensitive with no stemming,
    so list every inflected form you mean to catch, and a longer word that merely contains
    an entry does not match; and position within the list doesn't matter, because the lint

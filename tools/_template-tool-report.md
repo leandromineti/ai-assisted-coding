@@ -183,7 +183,7 @@ category-5/6 extensions attach, and where?
 ## Bleed
 
 Which other taxonomy categories this tool reaches into, and how. See
-[`../../taxonomy.md`](../taxonomy.md) — the bleed is signal, not noise.
+[`../../docs/taxonomy.md`](../docs/taxonomy.md) — the bleed is signal, not noise.
 
 ## Cost model
 

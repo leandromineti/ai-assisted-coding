@@ -3,7 +3,7 @@
 `checked: 2026-08-21`
 
 Where the agent's code actually runs, and what it can damage. See
-[`../../taxonomy.md`](../../taxonomy.md).
+[`../../docs/taxonomy.md`](../../docs/taxonomy.md).
 
 The most-ignored category, because it's invisible until it fails.
 

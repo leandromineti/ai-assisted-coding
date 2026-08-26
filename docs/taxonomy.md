@@ -7,7 +7,7 @@ GSD vs. Opus 5" is a category error — three things that aren't the same kind o
 at all — so every note and comparison in this repo declares which category its subject
 occupies, and comparisons stay like-for-like. This is the repo's **tool taxonomy**,
 the half that classifies what a tool *is*; its companion, the
-[**feature taxonomy**](docs/feature-taxonomy.md)[^adr-0010], defines
+[**feature taxonomy**](feature-taxonomy.md)[^adr-0010], defines
 the characteristics assessed on tools — once, with per-category applicability — and
 the comparison matrices are generated from it. Categories may carry **types**
 (category 6's `type`; category 4's SDD / context-discipline / decision-governance
@@ -81,7 +81,7 @@ observable surface and 1b covering the route. Minting model components would cla
 tracing access the repo does not have.
 
 How you actually reach the weights is a type of its own (**1b — model access**, four
-routes, in [the category index](tools/1-models/index.md)): the same model by a
+routes, in [the category index](../tools/1-models/index.md)): the same model by a
 different route is a different product — it silently explains a lot of "why did it get
 worse".
 
@@ -91,7 +91,7 @@ The program that runs the agent loop. Formally, a harness implements an
 **agent-computer interface**: it treats the language model as a new category of end
 user and supplies everything that user touches — the commands it can issue, the shape
 of the feedback it reads, the management of its context window
-([the SWE-agent read](refs/2024-swe-agent.md), the academic origin of this category's
+([the SWE-agent read](../refs/2024-swe-agent.md), the academic origin of this category's
 premise; formulation adopted from the published article, 2026-08-25).
 **Three components**[^adr-0021] (decomposition
 recorded 2026-08-22), each an
@@ -115,7 +115,7 @@ sorting frame for the `harness_features` vocabulary:
 2. **Context assembly** — *what reaches the prompt, who wrote it, and where does the
    agent's own output land?* Rules-file and skill injection, memory write-back,
    compaction, cache discipline. Anchor: the hermes cache-tension finding
-   ([category index](tools/2-harnesses/index.md)), which asks this component's
+   ([category index](../tools/2-harnesses/index.md)), which asks this component's
    question verbatim. This is the harness sophistication the lead-in calls the
    contested ground of 2026, and what the `deep-dive` depth is defined as tracing.
 3. **The permission gate** — *what may the agent attempt without a human, and can the
@@ -125,7 +125,7 @@ sorting frame for the `harness_features` vocabulary:
    model can influence it or a child process can escape it, it's the gate (category
    2); if it holds regardless of what the software does, it's the bounds (category
    3). Anchor: Warp's `AgentDecided` crack — a model-authored `is_risky: false`
-   self-authorizes ([warp report](tools/2-harnesses/warp.md)). Autonomy is the
+   self-authorizes ([warp report](../tools/2-harnesses/warp.md)). Autonomy is the
    product of gate policy × environment bounds (principle E1).
 
 The five kind-linked `harness_features` keys are the components' **apertures** — the
@@ -178,7 +178,7 @@ The **third fundamental of the core triad**.
 
 Easy to overlook until it bites. Isolation that hides the files the agent needs is a
 category-3 problem routinely misread as a category-2 bug — the worktree/gitignore trap written
-up in [`tools/3-execution-environments/`](tools/3-execution-environments/index.md) is
+up in [`tools/3-execution-environments/`](../tools/3-execution-environments/index.md) is
 the case that convinced me this category is real.
 
 **Scope note.** This category is in scope only through the lens of agents. Most of its
@@ -200,7 +200,7 @@ environment is open source?)
 
 **The components** — an execution environment is **host · principal · working
 directory** — are defined once in
-[`tools/3-execution-environments/index.md`](tools/3-execution-environments/index.md),
+[`tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md),
 where every seed is classified by which components it changes against the default
 {your machine, you, cwd}. The three questions above are the lens over them: blast
 radius = host × principal, fidelity = host toolchain + cwd completeness, parallelism =
@@ -246,7 +246,7 @@ clean partition: `intent_pipeline` sorts to functions 1–2, the gate keys to 4 
 boundary, `retrospectives` beside 3 — but `context_isolation`,
 `parallel_orchestration`, and `state_store` sit on an **execution substrate outside
 the four functions**, and that substrate is exactly what harnesses absorb natively
-(conclusion 8; the [category-2 absorption table](tools/2-harnesses/index.md)), while
+(conclusion 8; the [category-2 absorption table](../tools/2-harnesses/index.md)), while
 what stays unabsorbed is the function-1/2 artifact spine. The decomposition predicts
 the absorption boundary: frameworks own the translation; the substrate is borrowed
 ground.
@@ -257,7 +257,7 @@ Claude Code is to GSD.
 Two boundary tests, an identity test and a membership test. **Identity**: a framework
 sits *over* an agent you already run while being neither the agent itself nor a kit
 for building one — the delimitation the independent six-framework study arrived at
-([the from-prompt-to-process read](refs/2026-from-prompt-to-process.md)), which is
+([the from-prompt-to-process read](../refs/2026-from-prompt-to-process.md)), which is
 also what separates this category from harnesses on one side and the excluded agent
 SDKs on the other (formulation adopted from the published article, 2026-08-25).
 **Membership**: **harness portability by design** — both GSD and spec-kit target many
@@ -272,7 +272,7 @@ is the model reading instructions**, so enforcement is only as strong as the pro
 (README conclusion 7). Corollary: category-4→2 bleed is a *structural symptom*, not vendor
 ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`, spec-kit's
 `workflows/` YAML runner) as the escape hatch from prose-level control. Evidence:
-[`tools/4-workflow-frameworks/spec-kit.md`](tools/4-workflow-frameworks/spec-kit.md).
+[`tools/4-workflow-frameworks/spec-kit.md`](../tools/4-workflow-frameworks/spec-kit.md).
 
 ### 5. Memory
 
@@ -292,20 +292,20 @@ carrying its own trust sub-question:
    (`write_admission`), and the write-side trust boundary. Anchor: mem0's plugin
    *blocking the harness's native memory writes* to redirect them — the displacement
    finding (conclusion 8's counter-current;
-   [category index](tools/5-memory/index.md)).
+   [category index](../tools/5-memory/index.md)).
 2. **Consolidation** — *what happens to it between sessions, and does that run by
    default?* The store wager (files-git / vector / rows+vector / graph+vector+rows —
    the identity axis), tiers, decay, revision authority. Anchor: memos'
    presence≠operative finding — the entire evolution half verified in source and
    shipped dark behind a default-off flag
-   ([memos report](tools/5-memory/memos.md)).
+   ([memos report](../tools/5-memory/memos.md)).
 3. **Recall** — *what reaches the next session's prompt — pushed or pulled, framed as
    data or as authority?* Injection mode, retrieval fusion, and the read-side trust
    boundary (memory injection is a prompt-injection vector). Anchor: exp-04's
    measurement — the automatic floor is 0/10, the pull ceiling 10/10, and the harness
    boundary costs nothing on the pull path; the category's pitch says "your agent
    remembers", the measurement says "your agent can look it up, if it asks"
-   (conclusion 14; [experiment 04](experiments/04-memory-continuity/README.md)).
+   (conclusion 14; [experiment 04](../experiments/04-memory-continuity/README.md)).
 
 The `harness_installer` key is the components' **aperture** — the shim/installer is to
 a memory product what the kind-linked keys are to the harness: the pluggable seam
@@ -386,7 +386,7 @@ from the categories that implement it — never given a category entry of its ow
 - **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are category-6 artifacts.
 - **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
 
-Written up in [`docs/standards.md`](docs/standards.md)
+Written up in [`docs/standards.md`](standards.md)
 (one of the cross-cutting notes since 2026-08-18[^adr-0008]),
 which also tracks the
 question this category exists to answer: whether skills and hooks standardize the way MCP
@@ -461,7 +461,7 @@ Two consequences a reasoner must carry:
 rule 3 in this repo): the sharpest spanners are *closed* — Claude Code, cloud Codex, and
 Managed Agents have no report files — so a frontmatter-generated matrix would **understate
 vendor span precisely for the vendors that have the most of it.** The generated half does
-exist: [`comparisons/vendors.md`](comparisons/vendors.md) derives vendor coverage from
+exist: [`comparisons/vendors.md`](../comparisons/vendors.md) derives vendor coverage from
 `vendor:` frontmatter and is the tracked-only **floor** (2026-08-17: it finds 2 spanners
 where this table shows 4 — that gap *is* the closed-product blind spot, quantified). This
 table deliberately admits observation-only (○) products to show the real shape, and is
@@ -480,10 +480,10 @@ taxonomy needs revision — not the case.
 | **Devin** | category 2, bundles category 3 | A harness that happens to ship its own sandbox. You can't adopt one without the other, but bundling ≠ category identity. |
 | **Aider** | category 2, opinionated | It *has* a methodology (commit per change, repo map), but you can't install that methodology on top of a different harness. Not portable → harness with strong defaults, not a framework. |
 | **MCP itself** | Not a category — a standard | Forced the "Standards" section above. The protocol is a spec; its servers are category 6. |
-| **ECC (everything-claude-code)** | **Resolved: category 6, extensions** (was category-4 provisional; resolved as category 5 pre-split, renumbered 2026-08-22 at the split[^adr-0020]) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion**[^adr-0002]. [`tools/6-extensions/ecc.md`](tools/6-extensions/ecc.md). |
-| **hermes-agent** | category 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both category-2 axes — see the execution-axis note above. Kept at category 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`tools/2-harnesses/hermes-agent.md`](tools/2-harnesses/hermes-agent.md). |
-| **Warp** | category 2 — that runs *other* category-2 harnesses | Added 2026-08-11 at survey. The classification is not in doubt (own loop, embedding-indexed context assembly, execution-profile permissions, owns the UI), but two of its bleeds are new shapes. **Harness-over-harness:** `enum Harness { Oz, Claude, OpenCode, Gemini, Codex }` makes Warp's own agent one selectable backend among five for a spawned child agent, with per-harness drivers and transcript parsers (`app/src/ai/agent_sdk/driver/harness/`); the Codex driver installs Warp's plugin hooks into Codex and passes `--dangerously-bypass-hook-trust` so they run unreviewed. Orchestrating peers is category-4-shaped behaviour, but it fails the category-4 test — the process is not portable off Warp, it *is* Warp — so this is a harness with an orchestration tier, not a framework. **A fourth environment verb:** after bundle (Devin), bind (hermes), and internalize (codex), Warp **inhabits** — `crates/isolation_platform/` detects the container Warp is *already running inside* (`Docker`/`DockerSandbox`/`Kubernetes`/`Namespace`) to obtain a workload-identity token, rather than launching anything. [`tools/2-harnesses/warp.md`](tools/2-harnesses/warp.md). |
-| **Codex CLI's in-process sandboxing** | category 2 that *internalized* category 3 | Added 2026-07-30 at deep-dive. The environment relationship vocabulary had two verbs — *bundle* (Devin ships a sandbox product alongside) and *bind* (hermes attaches to Docker/SSH/Modal). codex is a third: Seatbelt policies, Landlock, bwrap, and a Windows sandbox are **compiled into the harness binary** and invoked per tool call, plus pre-main process hardening. Still category 2 — the sandbox is not independently distributed, so it fails the category test — but the scope note's prediction ("as autonomy rises, the environment question becomes more central") gains a data point: the environment became a *harness subsystem*. [`tools/2-harnesses/codex.md`](tools/2-harnesses/codex.md). |
+| **ECC (everything-claude-code)** | **Resolved: category 6, extensions** (was category-4 provisional; resolved as category 5 pre-split, renumbered 2026-08-22 at the split[^adr-0020]) | Added 2026-07-28 as the live case; resolved 2026-07-30 at deep-dive. No process spine: workflow content is opt-in catalog items ("start with the workflow you need, not the full catalog"), and the multi-* orchestration commands outsource to an external runtime. A config pack at scale with a harness-independent learning runtime. The resolution **fired trigger (a) of the bucket demotion**[^adr-0002]. [`tools/6-extensions/ecc.md`](../tools/6-extensions/ecc.md). |
+| **hermes-agent** | category 2 confirmed — with recorded strain | Resolved 2026-07-30 at deep-dive. The classification test worked: other things install *into* it (spec-kit → `~/.hermes/skills`), which is the harness signature. But it's a personal agent with a coding *posture* (a runtime mode entered inside a git repo), and it strains both category-2 axes — see the execution-axis note above. Kept at category 2 because the taxonomy classifies by *kind* (it runs the loop, assembles context, gates permissions, owns the UI), not by how much of the product is about coding. [`tools/2-harnesses/hermes-agent.md`](../tools/2-harnesses/hermes-agent.md). |
+| **Warp** | category 2 — that runs *other* category-2 harnesses | Added 2026-08-11 at survey. The classification is not in doubt (own loop, embedding-indexed context assembly, execution-profile permissions, owns the UI), but two of its bleeds are new shapes. **Harness-over-harness:** `enum Harness { Oz, Claude, OpenCode, Gemini, Codex }` makes Warp's own agent one selectable backend among five for a spawned child agent, with per-harness drivers and transcript parsers (`app/src/ai/agent_sdk/driver/harness/`); the Codex driver installs Warp's plugin hooks into Codex and passes `--dangerously-bypass-hook-trust` so they run unreviewed. Orchestrating peers is category-4-shaped behaviour, but it fails the category-4 test — the process is not portable off Warp, it *is* Warp — so this is a harness with an orchestration tier, not a framework. **A fourth environment verb:** after bundle (Devin), bind (hermes), and internalize (codex), Warp **inhabits** — `crates/isolation_platform/` detects the container Warp is *already running inside* (`Docker`/`DockerSandbox`/`Kubernetes`/`Namespace`) to obtain a workload-identity token, rather than launching anything. [`tools/2-harnesses/warp.md`](../tools/2-harnesses/warp.md). |
+| **Codex CLI's in-process sandboxing** | category 2 that *internalized* category 3 | Added 2026-07-30 at deep-dive. The environment relationship vocabulary had two verbs — *bundle* (Devin ships a sandbox product alongside) and *bind* (hermes attaches to Docker/SSH/Modal). codex is a third: Seatbelt policies, Landlock, bwrap, and a Windows sandbox are **compiled into the harness binary** and invoked per tool call, plus pre-main process hardening. Still category 2 — the sandbox is not independently distributed, so it fails the category test — but the scope note's prediction ("as autonomy rises, the environment question becomes more central") gains a data point: the environment became a *harness subsystem*. [`tools/2-harnesses/codex.md`](../tools/2-harnesses/codex.md). |
 
 ## Deliberate exclusions
 
@@ -498,35 +498,35 @@ taxonomy needs revision — not the case.
 
 | Category | Index |
 |-------|-------|
-| 1 · Models | [`tools/1-models/index.md`](tools/1-models/index.md) |
-| 2 · Harnesses | [`tools/2-harnesses/index.md`](tools/2-harnesses/index.md) |
-| 3 · Execution environments | [`tools/3-execution-environments/index.md`](tools/3-execution-environments/index.md) |
-| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/index.md`](tools/4-workflow-frameworks/index.md) |
-| 5 · Memory | [`tools/5-memory/index.md`](tools/5-memory/index.md) |
-| 6 · Extensions (bucket) | [`tools/6-extensions/index.md`](tools/6-extensions/index.md) |
-| ✕ Cross-cutting (incl. standards) | [`docs/index.md`](docs/index.md) |
+| 1 · Models | [`tools/1-models/index.md`](../tools/1-models/index.md) |
+| 2 · Harnesses | [`tools/2-harnesses/index.md`](../tools/2-harnesses/index.md) |
+| 3 · Execution environments | [`tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md) |
+| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/index.md`](../tools/4-workflow-frameworks/index.md) |
+| 5 · Memory | [`tools/5-memory/index.md`](../tools/5-memory/index.md) |
+| 6 · Extensions (bucket) | [`tools/6-extensions/index.md`](../tools/6-extensions/index.md) |
+| ✕ Cross-cutting (incl. standards) | [`docs/index.md`](index.md) |
 
-Per-tool reports use [`tools/_template-tool-report.md`](tools/_template-tool-report.md) and
-are indexed flat, across categories, in [`comparisons/tools.md`](comparisons/tools.md).
+Per-tool reports use [`tools/_template-tool-report.md`](../tools/_template-tool-report.md) and
+are indexed flat, across categories, in [`comparisons/tools.md`](../comparisons/tools.md).
 
 ## Decision records cited
 
 One dated, immutable record per decision; immutable material predating a rename still
-reads in superseded vocabulary — [`adrs/`](adrs/README.md) carries the decoders.
+reads in superseded vocabulary — [`adrs/`](../adrs/README.md) carries the decoders.
 
-[^adr-0002]: [ADR-0002 — Extensions demoted to a cross-category bucket](adrs/0002-extensions-demoted-to-bucket.md), decided 2026-07-30.
-[^adr-0003]: [ADR-0003 — execution environments stay a full category (adjudicated)](adrs/0003-environments-stay-a-rung.md), decided 2026-08-16.
-[^adr-0004]: [ADR-0004 — core-triad reframing](adrs/0004-core-triad-reframing.md), decided 2026-08-17.
-[^adr-0005]: [ADR-0005 — rename "portable artifacts" → "Extensions"](adrs/0005-rename-to-extensions.md), decided 2026-08-17.
-[^adr-0007]: [ADR-0007 — renumber: core triad 1–3, frameworks 4, extensions 5](adrs/0007-renumber-core-triad-first.md), decided 2026-08-18.
-[^adr-0008]: [ADR-0008 — Standards folded into cross-cutting](adrs/0008-standards-into-cross-cutting.md), decided 2026-08-18.
-[^adr-0010]: [ADR-0010 — two taxonomies: tool taxonomy + feature taxonomy](adrs/0010-two-taxonomies.md), decided 2026-08-18.
-[^adr-0011]: [ADR-0011 — graded gate-enforcement values (engine/hook/script/prose)](adrs/0011-graded-gate-enforcement.md), decided 2026-08-18.
-[^adr-0012]: [ADR-0012 — the category-2 feature set: `ptc` + graded `turn_end_gates`](adrs/0012-layer-2-feature-set.md), decided 2026-08-18.
-[^adr-0013]: [ADR-0013 — the `memory_features` registry block](adrs/0013-memory-features-block.md), decided 2026-08-19.
-[^adr-0016]: [ADR-0016 — extensions stay broad](adrs/0016-extensions-stay-broad.md), decided 2026-08-19; superseded by ADR-0020.
-[^adr-0019]: [ADR-0019 — coverage strata for category 5](adrs/0019-category-5-coverage-strata.md), decided 2026-08-22; superseded in part by ADR-0020.
-[^adr-0020]: [ADR-0020 — Memory becomes category 5; Extensions becomes category 6](adrs/0020-memory-category-extensions-renumbered.md), decided 2026-08-22.
-[^adr-0021]: [ADR-0021 — harness decomposition: three components, two descriptive axes](adrs/0021-harness-three-component-decomposition.md), decided 2026-08-22.
-[^adr-0022]: [ADR-0022 — repo-voice prose in refs is sweepable; decoders relocate to the ADR index](adrs/0022-refs-repo-voice-sweepable.md), decided 2026-08-22.
-[^adr-0023]: [ADR-0023 — components for categories 4 and 5; tracing discipline goes category-generic](adrs/0023-category-4-5-components.md), decided 2026-08-25.
+[^adr-0002]: [ADR-0002 — Extensions demoted to a cross-category bucket](../adrs/0002-extensions-demoted-to-bucket.md), decided 2026-07-30.
+[^adr-0003]: [ADR-0003 — execution environments stay a full category (adjudicated)](../adrs/0003-environments-stay-a-rung.md), decided 2026-08-16.
+[^adr-0004]: [ADR-0004 — core-triad reframing](../adrs/0004-core-triad-reframing.md), decided 2026-08-17.
+[^adr-0005]: [ADR-0005 — rename "portable artifacts" → "Extensions"](../adrs/0005-rename-to-extensions.md), decided 2026-08-17.
+[^adr-0007]: [ADR-0007 — renumber: core triad 1–3, frameworks 4, extensions 5](../adrs/0007-renumber-core-triad-first.md), decided 2026-08-18.
+[^adr-0008]: [ADR-0008 — Standards folded into cross-cutting](../adrs/0008-standards-into-cross-cutting.md), decided 2026-08-18.
+[^adr-0010]: [ADR-0010 — two taxonomies: tool taxonomy + feature taxonomy](../adrs/0010-two-taxonomies.md), decided 2026-08-18.
+[^adr-0011]: [ADR-0011 — graded gate-enforcement values (engine/hook/script/prose)](../adrs/0011-graded-gate-enforcement.md), decided 2026-08-18.
+[^adr-0012]: [ADR-0012 — the category-2 feature set: `ptc` + graded `turn_end_gates`](../adrs/0012-layer-2-feature-set.md), decided 2026-08-18.
+[^adr-0013]: [ADR-0013 — the `memory_features` registry block](../adrs/0013-memory-features-block.md), decided 2026-08-19.
+[^adr-0016]: [ADR-0016 — extensions stay broad](../adrs/0016-extensions-stay-broad.md), decided 2026-08-19; superseded by ADR-0020.
+[^adr-0019]: [ADR-0019 — coverage strata for category 5](../adrs/0019-category-5-coverage-strata.md), decided 2026-08-22; superseded in part by ADR-0020.
+[^adr-0020]: [ADR-0020 — Memory becomes category 5; Extensions becomes category 6](../adrs/0020-memory-category-extensions-renumbered.md), decided 2026-08-22.
+[^adr-0021]: [ADR-0021 — harness decomposition: three components, two descriptive axes](../adrs/0021-harness-three-component-decomposition.md), decided 2026-08-22.
+[^adr-0022]: [ADR-0022 — repo-voice prose in refs is sweepable; decoders relocate to the ADR index](../adrs/0022-refs-repo-voice-sweepable.md), decided 2026-08-22.
+[^adr-0023]: [ADR-0023 — components for categories 4 and 5; tracing discipline goes category-generic](../adrs/0023-category-4-5-components.md), decided 2026-08-25.

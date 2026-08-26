@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Fail-hard lint for this repo's taxonomy vocabulary — reads taxonomy.yaml as the sole
-source of truth and flags drift in current-state documents, extending the fail-hard
+"""Fail-hard lint for this repo's taxonomy vocabulary — reads docs/taxonomy.yaml as the
+sole source of truth and flags drift in current-state documents, extending the fail-hard
 rule-3/rule-4 pattern the other two `--check` generators already enforce (methodology.md):
 a hand-kept vocabulary drifts from what the ADRs actually decided, and you find out when
 it's already wrong; a claim about which term is canonical is only as good as the check
@@ -38,7 +38,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-TAXONOMY = ROOT / "taxonomy.yaml"
+TAXONOMY = ROOT / "docs" / "taxonomy.yaml"
 FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
 
 # A file containing this marker is generated output (comparisons/*.md, refs/index.md)

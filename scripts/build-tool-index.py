@@ -386,7 +386,7 @@ def render_features(reports: list[dict]) -> str:
         "The dot is load-bearing — it is *not* a no. A feature key is only set in a",
         "report's frontmatter when confirmed in source or official docs. Keys are",
         "defined once in the [feature taxonomy](../docs/feature-taxonomy.md)",
-        "(ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.",
+        "(ADR-0010); the [tool taxonomy](../docs/taxonomy.md) classifies the tools themselves.",
         "",
     ]
 
@@ -867,7 +867,7 @@ def render_vendors(reports: list[dict]) -> str:
         "spanners' flagship products are closed with no report (Claude Code, cloud Codex, "
         "Cursor, Managed Agents). The authoritative span picture — including "
         "observation-only products — is the hand-kept table in "
-        "[`../taxonomy.md`](../taxonomy.md) → *Vendor span*; this file is its generated, "
+        "[`../docs/taxonomy.md`](../docs/taxonomy.md) → *Vendor span*; this file is its generated, "
         "tracked-only floor.",
         "",
         "| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Memory | 6 · Extensions | Categories |",

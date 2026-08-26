@@ -2,7 +2,7 @@
 
 `created: 2026-08-18` · decision record: [ADR-0010](../adrs/0010-two-taxonomies.md)
 
-This repo carries **two taxonomies**. The [tool taxonomy](../taxonomy.md) classifies
+This repo carries **two taxonomies**. The [tool taxonomy](taxonomy.md) classifies
 what a tool *is* (the categories, plus types like category 6's `type` and category 4's
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
 defined **once**, with an applicability map saying which categories it can occur in. The
