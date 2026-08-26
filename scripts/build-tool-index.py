@@ -688,11 +688,13 @@ def render_feature_registry() -> str:
         "calibration lessons attached to it.",
         "",
     ]
-    # Preserve the registry's own block order (first appearance wins).
-    block_order: list[str] = []
+    # Sections follow the repo's category order (taxonomy.md, 1→6), not the YAML's
+    # internal block order — each block's category is the min of its entries' applies_to.
+    block_cat: dict[str, int] = {}
     for e in FEATURE_REGISTRY:
-        if e["block"] not in block_order:
-            block_order.append(e["block"])
+        cat = min(e["applies_to"])
+        block_cat[e["block"]] = min(block_cat.get(e["block"], cat), cat)
+    block_order = sorted(block_cat, key=block_cat.get)
     for block in block_order:
         title, framing = block_meta.get(block, (f"`{block}:`", ""))
         entries = [e for e in FEATURE_REGISTRY if e["block"] == block]
