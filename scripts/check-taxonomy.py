@@ -39,7 +39,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 TAXONOMY = ROOT / "docs" / "tool-taxonomy.yaml"
-FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
+FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.yaml"
 
 # A file containing this marker is generated output (comparisons/*.md, references/index.md)
 # and is never a lint target directly — its generator owns the vocabulary it emits
@@ -104,11 +104,8 @@ def _load_feature_registry() -> list[dict]:
         text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
     except OSError as e:
         sys.exit(f"feature taxonomy missing: {FEATURE_REGISTRY_PATH} ({e})")
-    m = re.search(r"```yaml\n(.*?)```", text, re.DOTALL)
-    if not m:
-        sys.exit(f"feature taxonomy has no ```yaml block: {FEATURE_REGISTRY_PATH}")
     try:
-        data = yaml.safe_load(m.group(1))
+        data = yaml.safe_load(text)
     except yaml.YAMLError as e:
         sys.exit(f"feature taxonomy YAML unparsable: {e}")
     entries = (data or {}).get("features")

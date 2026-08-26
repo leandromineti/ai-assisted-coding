@@ -33,13 +33,11 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 DB = ROOT / "comparisons" / "repo.db"
 
-BLOCKS = (
-    "harness_features",
-    "workflow_features",
-    "memory_features",
-    "model_features",
-    "environment_features",
-)
+# Derived, never listed: a sixth block added to the registry tomorrow becomes a column
+# here without touching this script. Hardcoding it was this script's one unguarded copy of
+# the schema — the other consumers at least exit on an unknown block (ADR-0036).
+REGISTRY = yaml.safe_load((ROOT / "docs" / "feature-taxonomy.yaml").read_text())
+BLOCKS = tuple(dict.fromkeys(e["block"] for e in REGISTRY["features"]))
 # Scalar frontmatter carried as real columns. Everything else lands in `extra` as JSON,
 # so a field added to a report tomorrow is queryable today without touching this script.
 SCALARS = (
