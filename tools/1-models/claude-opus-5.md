@@ -6,8 +6,10 @@ url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
 access: closed-source
 model_id: claude-opus-5
-release_mode: api-only
-released: "GA 2026-07-24, no preview stage — 'available today' across all surfaces (verified 2026-08-17)"
+release_date:
+  date: 2026-07-24
+  stage: GA
+  note: "no preview stage — 'available today' across all surfaces (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
 pricing:

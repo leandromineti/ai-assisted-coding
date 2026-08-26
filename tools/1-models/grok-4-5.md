@@ -6,8 +6,10 @@ url: https://docs.x.ai/docs/models
 license: proprietary
 access: closed-source
 model_id: grok-4.5
-release_mode: api-only
-released: "July 2026, no stage vocabulary ('now available on the xAI API') — month-level only from the first-party release notes; the day this repo carries (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"
+release_date:
+  date: 2026-07
+  stage: not-stated
+  note: "MONTH-LEVEL, which is why the date carries no day: the first-party release notes say only 'now available on the xAI API' with no stage word. The day this report carries elsewhere (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"
 context_window: 500000
 max_output: "no model-specific figure published; generic max_completion_tokens defaults to 128000, visible-output only (checked 2026-08-17)"
 pricing:

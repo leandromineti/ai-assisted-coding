@@ -6,8 +6,10 @@ url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
 access: closed-source
 model_id: claude-fable-5
-release_mode: api-only
-released: "GA 2026-06-09, no preview stage — then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01): the sweep's only GA interruption (verified 2026-08-17)"
+release_date:
+  date: 2026-06-09
+  stage: GA
+  note: "no preview stage; then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01) — the sweep's only GA interruption (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
 pricing:

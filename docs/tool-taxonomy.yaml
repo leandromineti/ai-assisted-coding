@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-26  # bumped 2026-08-26 an eighth time: ADR-0044 renamed the `open_source:` boolean to the `access:` enum (open-source | closed-source | open-weights) across all 45 reports + both templates and registered it in feature-taxonomy.yaml as a transcription field — the ONLY schema_renames entry whose values change too, not just the key. Seventh time: ADR-0042 renamed the `vendor:` frontmatter key to `maker:` across all 45 reports + both templates (schema_renames decoder; references/cards keep `vendor:`, and references/* is skip_entirely so no gate is needed). Sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-26  # bumped 2026-08-26 a ninth time: ADR-0046 renamed `released:` to `release_date:` and restructured it as a mapping (date + stage + note, the fact typed as a date), and RETIRED `release_mode:` outright — no decoder for a removal, and the two rows it was already wrong on are recorded in the ADR. Eighth time: ADR-0044 renamed the `open_source:` boolean to the `access:` enum (open-source | closed-source | open-weights) across all 45 reports + both templates and registered it in feature-taxonomy.yaml as a transcription field — the ONLY schema_renames entry whose values change too, not just the key. Seventh time: ADR-0042 renamed the `vendor:` frontmatter key to `maker:` across all 45 reports + both templates (schema_renames decoder; references/cards keep `vendor:`, and references/* is skip_entirely so no gate is needed). Sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -416,6 +416,29 @@ schema_renames:
       per-entry gate is needed. Prose uses of the English word "vendor" for actual
       commercial vendors (§ Vendor span, `vendor-stated` cutoff basis, "vendor-native")
       are also untouched and correct.
+    executes_in: same-day
+    status: applied
+    atomic: true
+  - old: released
+    new: release_date
+    scope:
+      - "report frontmatter key `released:` (11 category-1 reports)"
+      - "tools/1-models/_template-model-report.md"
+      - "docs/feature-taxonomy.yaml (the transcription field)"
+      - "scripts/build-tool-index.py (MODEL_LIFECYCLE_KEYS, the models.md cell)"
+      - "scripts/build-db.py (the reports table column)"
+    note: >-
+      ADR-0046, and like ADR-0044 this is NOT a pure key rename: the free-text value becomes
+      a mapping (`date` + `stage` + `note`) whose typed fact is a date, per the
+      knowledge_cutoff precedent (ADR-0037/0039). The old name `released` was chosen
+      2026-08-17 to replace `ga_date` precisely because the value is not always a date —
+      three of eleven have no first-party day (one has none at all, one has two, one is
+      month-level). Structuring the cell is what lets the name promise a date honestly:
+      the date is FIRST availability or null, the vendor's own stage word sits beside it,
+      and the note carries everything neither can hold. The same commit RETIRES
+      `release_mode:` outright — no decoder, because there is nothing to translate it to:
+      it was isomorphic to `access:` once corrected, and its correction is recorded in the
+      ADR rather than smuggled into a field that then disappears.
     executes_in: same-day
     status: applied
     atomic: true

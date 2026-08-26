@@ -67,10 +67,10 @@ Conventions:
   the `#` comment beside the key and the report body. The one thing a comment cannot do is
   reach a generated matrix: `safe_load` drops comments, so a field whose *rendered* cell
   must carry prose — an absence needing its search scope, a qualifier that changes what a
-  number means — writes that prose into the value and sets **`renders_note: true`**. Two
-  fields qualify today (`pricing`, `knowledge_cutoff`) and the test is deliberately narrow:
-  `context_window`, `stars`, and `released` all have caveats worth recording and none that
-  the matrix must show, so they stay plain types with comments. A key that is
+  number means — writes that prose into the value and sets **`renders_note: true`**. Three
+  fields qualify today (`pricing`, `knowledge_cutoff`, `release_date`) and the test is
+  deliberately narrow: `context_window` and `stars` have caveats worth recording and none
+  that the matrix must show, so they stay plain types with comments. A key that is
   scalar but accepts a list of named instances where naming them is informative
   (`rules_files`, `memory_store`) keeps its scalar type and says so in its definition —
   list-ness is a property of an instance, not a second type. Unknown values are a

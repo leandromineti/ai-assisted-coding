@@ -6,8 +6,10 @@ url: https://ai.google.dev/gemini-api/docs/models
 license: proprietary
 access: closed-source
 model_id: gemini-3.1-pro (Preview)
-release_mode: api-only
-released: "Preview since 2026-02-19 (API changelog: 'Released Gemini 3.1 Pro Preview'); no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"
+release_date:
+  date: 2026-02-19
+  stage: Preview
+  note: "API changelog: 'Released Gemini 3.1 Pro Preview'; no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"
 context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap)
 max_output: 65536
 pricing:
@@ -115,4 +117,4 @@ transition deferred its own read) and the stale Terminal-Bench snapshot.
   surface here. A first-party page naming 3.1 Pro and a cutoff in one sentence would
   still be better evidence —
   [`deepmind.google/models/model-cards/gemini-3-1-pro/`](https://deepmind.google/models/model-cards/gemini-3-1-pro/)
-  and whatever Google publishes at GA (still Preview at six months, per `released`).
+  and whatever Google publishes at GA (still Preview at six months, per `release_date`).

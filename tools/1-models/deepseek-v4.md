@@ -6,8 +6,10 @@ url: https://api-docs.deepseek.com/quick_start/pricing
 license: "unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over)"
 access: open-weights
 model_id: deepseek-v4-pro / deepseek-v4-flash (API); deepseek-ai/DeepSeek-V4-Pro, DeepSeek-V4-Flash (+ -Base, -DSpark variants) on HF
-release_mode: both   # first-party API and published weights, verified on both surfaces 2026-07-31
-released: "Preview 2026-04-24 ('DeepSeek-V4 Preview is officially live & open-sourced') → GA 2026-08-13 (vendor's own title: 'GA Release') — the sweep's only explicit preview→GA arc, 3.5 months (verified 2026-08-17)"
+release_date:
+  date: 2026-04-24
+  stage: Preview
+  note: "FIRST availability is the preview ('DeepSeek-V4 Preview is officially live & open-sourced'); GA followed 2026-08-13 under the vendor's own title 'GA Release' — the sweep's only explicit preview→GA arc, 3.5 months (verified 2026-08-17)"
 context_window: 1000000
 max_output: 384000
 pricing:

@@ -6,8 +6,10 @@ url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
 access: closed-source
 model_id: claude-haiku-4-5-20251001
-release_mode: api-only
-released: "GA 2025-10-15, no preview stage — the model-id snapshot suffix (20251001) predates the announced date by two weeks; the announcement text is the source (verified 2026-08-17)"
+release_date:
+  date: 2025-10-15
+  stage: GA
+  note: "no preview stage; the model-id snapshot suffix (20251001) predates the announced date by two weeks — the announcement text is the source (verified 2026-08-17)"
 context_window: 200000
 max_output: 64000
 pricing:

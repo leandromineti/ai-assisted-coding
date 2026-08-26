@@ -4,10 +4,12 @@ category: 1
 maker: Z.ai (Zhipu AI)
 url: https://docs.z.ai/guides/llm/glm-5.3
 license: "unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over"
-access: closed-source   # today; weights announced for after a "two-week safety evaluation" — see release_mode comment
+access: closed-source   # today; weights announced for after a "two-week safety evaluation" — see the dated prediction below, which scores this cell flipping to open-weights
 model_id: glm-5.3 (API); the announced HF repo does not exist yet — zai-org lists GLM-5, GLM-5.1, GLM-5.2 (+ FP8 variants) and no 5.3 (HF API `author=zai-org&search=GLM-5`, checked 2026-08-26)
-release_mode: api-only   # weights-delayed, not weights-never: prediction below says both by 2026-08-31
-released: "API 2026-08-14, no stage vocabulary ('GLM-5.3 is now available to all GLM Coding Plan users') — day third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell); open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26)"
+release_date:
+  date: 2026-08-14
+  stage: not-stated
+  note: "no stage vocabulary at all ('GLM-5.3 is now available to all GLM Coding Plan users'); the day is third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell). Open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26)"
 context_window: 1000000
 max_output: 128000
 pricing:
@@ -52,8 +54,10 @@ post-training.
 
 **Prediction (dated, falsifiable):** a `zai-org/GLM-5.3` repo appears on Hugging Face
 by **2026-08-31** (the announced two-week hold from 2026-08-14 ends ~08-28; +3 days
-slack). Score this at the next re-read; if it lands, flip `release_mode` to `both`
-and read the license before any "open" claim stronger than "downloadable".
+slack). Score this at the next re-read; if it lands, flip `access` to `open-weights`
+and read the license before any "open" claim stronger than "downloadable". (Restated
+2026-08-26: the prediction was written against `release_mode: both`, retired by
+ADR-0046 — the claim, the date and the falsifier are unchanged.)
 
 ## Reasoning surface
 

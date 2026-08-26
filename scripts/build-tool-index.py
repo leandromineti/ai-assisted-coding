@@ -89,6 +89,10 @@ REASONING_EFFORT_FAMILIES = {"levels", "budget"}
 # REQUIRED on every report in every category: the field it replaced (`open_source:`) was
 # already universal, and a missing openness cell would read as "closed" to any eye.
 ACCESS_VALUES = {"open-source", "closed-source", "open-weights"}
+# `release_date.stage` is the vendor's OWN word (GA, Preview, beta) — free by design,
+# because stages don't align across vendors. These two are the controlled exceptions
+# (ADR-0046): the vendor used no stage vocabulary at all, or its own surfaces disagreed.
+STAGE_MARKERS = {"not-stated", "ambiguous"}
 
 
 def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
@@ -206,7 +210,7 @@ ENVIRONMENT_FEATURE_KEYS = [
 # don't align across vendors (Google ships flagships as Preview; DeepSeek previews
 # then GAs; xAI documents no stage at all). Free text, verified-only like the rest:
 # a date needs a primary source, and "GA" vs "preview" is a claim, not a default.
-MODEL_LIFECYCLE_KEYS = ["released"]
+MODEL_LIFECYCLE_KEYS = ["release_date"]
 
 REQUIRED = ("name", "category", "depth")
 DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
@@ -392,6 +396,39 @@ def check_access(reports: list[dict]) -> None:
             sys.exit(
                 f"{rel}: `access: open-weights` outside category 1 — weights are a "
                 "model's artifact; a tool's is its source"
+            )
+
+
+def check_release_date(reports: list[dict]) -> None:
+    """Validate `release_date:` on every category-1 report (ADR-0046).
+
+    Sixth cell-value check. The one asymmetric rule: a null date is only honest beside a
+    stage the vendor did not settle, so `date: null` requires `stage` to be `not-stated`
+    or `ambiguous` — a null date beside a confident "GA" would be a report claiming the
+    vendor announced a general release on no day at all.
+    """
+    for r in reports:
+        if r.get("category") != 1:
+            continue
+        rel = r["_path"].relative_to(ROOT)
+        v = r.get("release_date")
+        if v is None:
+            continue  # omitted = not checked, same discipline as every other field
+        if not isinstance(v, dict):
+            sys.exit(f"{rel}: `release_date:` must be a mapping since ADR-0046")
+        d = v.get("date")
+        if d is not None and not DATE_RE.match(str(d)):
+            sys.exit(f"{rel}: `release_date.date` must be YYYY-MM or YYYY-MM-DD, got {d!r}")
+        if not v.get("stage"):
+            sys.exit(f"{rel}: `release_date.stage` is required — the vendor's own word, "
+                     f"or one of {sorted(STAGE_MARKERS)}")
+        if not v.get("note"):
+            sys.exit(f"{rel}: `release_date.note` is required — it carries the surface "
+                     "checked, and anything the date and stage cannot hold")
+        if d is None and v["stage"] not in STAGE_MARKERS:
+            sys.exit(
+                f"{rel}: `release_date.date` is null while stage is {v['stage']!r} — "
+                f"a null date is only honest beside {sorted(STAGE_MARKERS)}"
             )
 
 
@@ -858,9 +895,12 @@ def render_models(reports: list[dict]) -> str:
         "reasoning — a level set the model spends against (`levels:<set>@<default>`) or a",
         "budget the caller allocates (`budget:<unit>`). The caching and batch keys stay",
         "free-text because the economics differ structurally across vendors.",
-        "`released` carries first-availability date **plus lifecycle stage** in the",
-        "vendor's own vocabulary (GA / Preview / beta) — stages don't align across",
-        "vendors, so the stage word is part of the fact, same verified-only rule.",
+        "`release date` is FIRST availability on a first-party surface, with the",
+        "vendor's own stage word beside it — stages don't align across vendors, so the",
+        "stage is part of the fact (ADR-0046). `not-stated` means the vendor uses no",
+        "stage vocabulary at all; `ambiguous` means its own surfaces disagree. A null",
+        "date means the vendor published none — third-party ship-date inference is",
+        "never the date, and the note says what was checked.",
         "",
         "| Model | " + " | ".join(c.replace("_", " ") for c in cols) + " |",
         "|---|" + "---|" * len(cols),
@@ -878,6 +918,8 @@ def render_models(reports: list[dict]) -> str:
                 cells.append(fmt_pricing(v))
             elif c == "knowledge_cutoff":
                 cells.append(fmt_cutoff(v))
+            elif c == "release_date":
+                cells.append(fmt_release_date(v))
             else:
                 cells.append(
                     fmt_feature_cell(v) if c in MODEL_FEATURE_KEYS else str(v)
@@ -915,6 +957,17 @@ def fmt_cutoff(c) -> str:
     head = f"**{c['date']}**" if c.get("date") else "**—**"
     head += f" · `{c.get('basis')}`"
     return f"{head} — {c['note']}" if c.get("note") else head
+
+
+def fmt_release_date(r) -> str:
+    """Date first so the column sorts by eye, then the vendor's stage word, then the
+    prose neither can hold (ADR-0046) — the same shape as fmt_cutoff, because it is the
+    same problem: a typed fact whose absences and caveats need somewhere to live."""
+    if not isinstance(r, dict):
+        return str(r)
+    head = f"**{r['date']}**" if r.get("date") else "**—**"
+    head += f" · `{r.get('stage')}`"
+    return f"{head} — {r['note']}" if r.get("note") else head
 
 
 def fmt_pricing(p) -> str:
@@ -1199,6 +1252,7 @@ def main() -> int:
     check_cutoff(reports)
     check_reasoning(reports)
     check_access(reports)
+    check_release_date(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

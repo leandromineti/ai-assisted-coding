@@ -6,8 +6,10 @@ url: <primary docs / model card URL — the page the facts below were verified a
 license: proprietary            # or the weights license (Apache-2.0, MIT, Kimi K3's modified MIT…)
 access: <open-weights | closed-source>   # open-weights only once the weights are actually published; `open-source` is reserved for a model whose TRAINING SOURCE is public (none read yet). Terms live in `license:` above
 model_id: <exact API model ID / HF repo id>
-release_mode: api-only          # api-only | open-weights | both
-released: "<lifecycle: date + stage in the vendor's OWN vocabulary — 'GA YYYY-MM-DD, no preview stage' / 'Preview since YYYY-MM-DD, no GA date' / 'weights YYYY-MM-DD, first-party API YYYY-MM-DD'. Stages don't align across vendors, so the stage word is part of the fact (replaced ga_date 2026-08-17)>"
+release_date:                    # FIRST availability on a first-party surface (ADR-0046)
+  date: <YYYY-MM-DD | YYYY-MM | null>   # null when the vendor publishes none; third-party ship-date inference is never the date
+  stage: <the vendor's OWN word at that date — GA | Preview | beta — or `not-stated` (no stage vocabulary used) | `ambiguous` (the vendor's own surfaces disagree)>
+  note: "<REQUIRED: the surface checked and when, a later stage transition, why a date is month-level or null>"
 context_window: <tokens>
 max_output: <tokens>
 pricing:                 # structured since ADR-0033 — numbers comparable, prose preserved

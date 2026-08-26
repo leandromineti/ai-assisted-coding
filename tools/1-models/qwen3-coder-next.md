@@ -6,8 +6,10 @@ url: https://huggingface.co/Qwen/Qwen3-Coder-Next
 license: Apache-2.0
 access: open-weights
 model_id: Qwen/Qwen3-Coder-Next
-release_mode: open-weights
-released: "weights: HF initial commit 2026-01-30 (refines the '~Feb 2026' recorded 2026-07-31); no vendor stage vocabulary anywhere — the Model Studio page carries no GA/preview label and a blank update-time field (checked 2026-08-17)"
+release_date:
+  date: 2026-01-30
+  stage: not-stated
+  note: "weights: HF initial commit 2026-01-30 (refines the '~Feb 2026' recorded 2026-07-31); no vendor stage vocabulary anywhere — the Model Studio page carries no GA/preview label and a blank update-time field (checked 2026-08-17)"
 context_window: 262144
 max_output: 65536   # Model Studio context-limits table; max input 204800 of the 262144 window (verified 2026-08-17)
 pricing:

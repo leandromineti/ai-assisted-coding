@@ -6,8 +6,10 @@ url: https://developers.openai.com/api/docs/models
 license: proprietary
 access: closed-source
 model_id: gpt-5.6-sol (alias gpt-5.6); siblings gpt-5.6-terra, gpt-5.6-luna
-release_mode: api-only
-released: "2026-07-09, stage ambiguous in the vendor's own record: the launch forum post calls it a partner-restricted 'preview', the API changelog the same day says 'Released' with no stage word, and no later GA statement exists (verified 2026-08-17)"
+release_date:
+  date: 2026-07-09
+  stage: ambiguous
+  note: "the vendor's own two surfaces disagree on the same day: the launch forum post calls it a partner-restricted 'preview', the API changelog says 'Released' with no stage word, and no later GA statement exists (verified 2026-08-17)"
 context_window: 1050000
 max_output: 128000
 pricing:

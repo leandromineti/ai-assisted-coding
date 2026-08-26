@@ -43,7 +43,7 @@ BLOCKS = tuple(dict.fromkeys(e["block"] for e in REGISTRY["features"]))
 SCALARS = (
     "name", "category", "depth", "maker", "license", "access", "url", "type",
     "stars", "first_commit", "version", "commit", "checked",
-    "model_id", "release_mode", "released", "context_window", "max_output",
+    "model_id", "release_date", "context_window", "max_output",
     "knowledge_cutoff", "execution", "environment_relation",
 )
 LISTS = ("environments", "harness_targets", "surfaces", "stack", "bears_on")

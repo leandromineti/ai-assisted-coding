@@ -638,10 +638,12 @@ transcription_fields:
       old field meant OSI-ness, this one means access. CATEGORY-1 WRINKLE, recorded
       rather than hidden: for all eleven models read so far the value is derivable from
       `release_mode` (api-only ⇔ closed-source; open-weights/both ⇔ open-weights), so it
-      adds no information there TODAY. It earns the column by being one comparable
-      statement across all six categories, and by expressing a state `release_mode`
-      cannot — a model whose TRAINING SOURCE is public reads open-source. Zero instances
-      so far; zeros are honest.
+      added no information there. THAT REDUNDANCY WAS RESOLVED THE SAME DAY, in the other
+      direction: `release_mode` is retired (ADR-0046) — it was isomorphic to this field
+      once corrected, rendered in no matrix, and wrong on two of eleven rows because
+      nothing rendered it. What survives is this field, which expresses a state
+      `release_mode` could not — a model whose TRAINING SOURCE is public reads
+      open-source. Zero instances so far; zeros are honest.
   - id: stars
     group: provenance
     applies_to: [2, 3, 4, 5, 6]
@@ -719,18 +721,25 @@ transcription_fields:
     definition: "exact API model id / HF repo id — the purchasable name, which routes and aggregators may not preserve"
     verification: dated-docs
     rendered_in: []
-  - id: release_mode
+  - id: release_date
     group: identity
     applies_to: [1]
-    value_type: closed-enum
-    definition: "api-only | open-weights | both — verified on both surfaces before 'both' is claimed"
-    verification: dated-docs
-    rendered_in: []
-  - id: released
-    group: identity
-    applies_to: [1]
-    value_type: free-text
-    definition: "first-availability date PLUS lifecycle stage in the vendor's own vocabulary (GA / Preview / beta) — stages don't align across vendors, so the stage word is part of the fact"
+    value_type: date
+    renders_note: true
+    definition: >-
+      FIRST AVAILABILITY on a first-party surface — YYYY-MM or YYYY-MM-DD, null when the
+      vendor publishes none. The cell is a mapping (`date` + `stage` + `note`) but the FACT
+      is a date, and value_type types the fact (ADR-0039). `stage` is the vendor's OWN word
+      at that date (GA · Preview · beta) because stages don't align across vendors, plus two
+      controlled markers: `not-stated` where the vendor uses no stage vocabulary at all
+      (four of eleven), and `ambiguous` where the vendor's own surfaces disagree (GPT-5.6
+      Sol: a launch post says 'preview', the same day's API changelog says 'Released').
+      `note` is REQUIRED and carries what the pair cannot — a later stage transition
+      (DeepSeek V4's preview→GA arc), why a date is month-level, why a date is null, and the
+      surface checked with its date. Third-party ship-date inference is never the date.
+      Renamed from `released` 2026-08-26 (ADR-0046), which itself replaced `ga_date`
+      2026-08-17: the free-text field held the right fact under a name that promised less,
+      and the structure is what lets the name promise a date honestly.
     verification: dated-docs
     rendered_in: [models.md]
   - id: context_window

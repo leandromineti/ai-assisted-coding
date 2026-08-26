@@ -6,8 +6,10 @@ url: https://huggingface.co/moonshotai/Kimi-K3
 license: "Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here)"
 access: open-weights
 model_id: moonshotai/Kimi-K3
-release_mode: open-weights
-released: "API + products 'available today' per the launch blog, which prints NO calendar date (third-party ~2026-07-16); weights promised 'by July 27, 2026' and the HF initial commit is consistent with that — no stage vocabulary used (verified 2026-08-17)"
+release_date:
+  date: null
+  stage: not-stated
+  note: "the launch blog prints NO calendar date and uses no stage vocabulary; third-party puts it ~2026-07-16, which is inference and not the fact. Weights were promised 'by July 27, 2026' and the HF initial commit is consistent with that, but this report has never recorded that commit's date — reading it off the HF repo is the open route to a first-party date (verified 2026-08-17)"
 context_window: 1048576
 max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17)"
 pricing:
