@@ -1,7 +1,7 @@
 ---
 name: spec-kitty
 category: 4
-vendor: Spec Kitty, Inc. (Priivacy-ai)
+maker: Spec Kitty, Inc. (Priivacy-ai)
 url: https://github.com/Priivacy-ai/spec-kitty
 license: MIT
 open_source: true

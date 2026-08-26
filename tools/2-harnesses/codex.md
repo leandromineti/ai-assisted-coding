@@ -5,7 +5,7 @@ surfaces: [terminal]   # `codex app` launches the desktop app on macOS/Windows (
 execution: local   # cloud-tasks crate integrates the async-remote sibling from the CLI
 environments: [host]   # the point: OS-level sandboxing is compiled INTO the harness (seatbelt/landlock/bwrap/windows) — see Surprises 1
 environment_relation: internalize   # Seatbelt/Landlock/bwrap/Windows sandbox compiled INTO the binary, invoked per tool call — verified at deep-dive 2026-07-30
-vendor: OpenAI
+maker: OpenAI
 url: https://github.com/openai/codex
 license: Apache-2.0
 open_source: true

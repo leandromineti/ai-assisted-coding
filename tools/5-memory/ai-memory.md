@@ -2,7 +2,7 @@
 name: ai-memory
 category: 5
 type: memory
-vendor: Fabio Akita (akitaonrails)
+maker: Fabio Akita (akitaonrails)
 url: https://github.com/akitaonrails/ai-memory
 license: MIT
 open_source: true

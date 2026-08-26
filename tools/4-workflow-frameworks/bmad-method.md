@@ -1,7 +1,7 @@
 ---
 name: bmad-method
 category: 4
-vendor: BMad Code, LLC
+maker: BMad Code, LLC
 url: https://github.com/bmad-code-org/BMAD-METHOD
 license: MIT
 open_source: true

@@ -1,7 +1,7 @@
 ---
 name: pilot-shell
 category: 4
-vendor: Max Ritter
+maker: Max Ritter
 url: https://github.com/maxritter/pilot-shell
 license: proprietary   # "Pilot Shell Software License Agreement" — source-available EULA
 open_source: false

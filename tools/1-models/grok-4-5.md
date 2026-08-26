@@ -1,7 +1,7 @@
 ---
 name: grok-4-5
 category: 1
-vendor: xAI
+maker: xAI
 url: https://docs.x.ai/docs/models
 license: proprietary
 open_source: false

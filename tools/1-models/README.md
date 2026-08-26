@@ -77,7 +77,7 @@ Two things that pass came out of it, both recorded rather than smoothed over:
   excludes Haiku 4.5 outright. A derivation that survives its own check is worth noting —
   the ones that don't are why the other three cells stayed `·` instead.
 
-The other half of the surface is **9 transcription fields** — `vendor`, `license`,
+The other half of the surface is **9 transcription fields** — `maker`, `license`,
 `model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
 `knowledge_cutoff` — facts copied from a dated source rather than judged.
 
@@ -90,7 +90,7 @@ are claims.
 
 ## Inventory
 
-| Model | Vendor | Release | One-line |
+| Model | Maker | Release | One-line |
 |-------|--------|---------|----------|
 | [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive reasoning; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
 | [**Opus 5**](claude-opus-5.md) | Anthropic | GA 2026-07-24 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |

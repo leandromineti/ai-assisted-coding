@@ -5,7 +5,7 @@ surfaces: [terminal, ide]  # ide = ACP mode (packages/cli/src/acp/, docs/cli/acp
 execution: local  # a2a-server can SERVE the loop to remote callers but is experimental and consumed by nothing in-repo — see Architecture
 environments: [host, container, worktree]  # container = docker/podman/runsc/lxc/windows-native (sandboxConfig.ts:26-33); worktree experimental, default false (settingsSchema.ts:2234-2243)
 environment_relation: internalize  # primary verb; bundle/bind/inhabit streaks + the default-off caveat in the Environment section
-vendor: Google
+maker: Google
 url: https://github.com/google-gemini/gemini-cli
 license: Apache-2.0
 open_source: true

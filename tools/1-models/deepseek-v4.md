@@ -1,7 +1,7 @@
 ---
 name: deepseek-v4
 category: 1
-vendor: DeepSeek
+maker: DeepSeek
 url: https://api-docs.deepseek.com/quick_start/pricing
 license: "unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over)"
 open_source: true

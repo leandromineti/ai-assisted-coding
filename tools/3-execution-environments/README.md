@@ -19,7 +19,7 @@ whether one exists. Read them through the category's three questions — blast r
 (`isolation_primitive`, `credential_model`), fidelity (`filesystem_sync`, `snapshot_model`),
 and parallelism (`warm_pool`, `self_host`).
 
-The other half is **7 transcription fields** — `vendor`, `license`, `stars`,
+The other half is **7 transcription fields** — `maker`, `license`, `stars`,
 `first_commit`, `version`, `commit`, `stack` — facts copied from a dated source rather than
 judged.
 

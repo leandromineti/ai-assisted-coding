@@ -5,7 +5,7 @@ surfaces: [terminal, desktop, web, ide]   # + ~20 messaging platforms (Telegram,
 execution: both        # local CLI/TUI + persistent gateway daemon on a VPS, cron jobs, remote terminal backends
 environments: [host, container, remote-sandbox]   # tools/environments/: local, docker, ssh, singularity, modal (+managed), daytona, vercel_sandbox
 environment_relation: bind   # attaches to independently-distributed environments: 8 terminal backends (local, docker, ssh, singularity, modal x2, daytona, vercel_sandbox)
-vendor: Nous Research
+maker: Nous Research
 url: https://github.com/NousResearch/hermes-agent
 license: MIT
 open_source: true

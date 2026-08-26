@@ -8,7 +8,7 @@ environments: [host]   # a `containers` package exists; its role unverified — 
 # about isolation — it neither bundles, binds, internalizes, nor inhabits. None of the four
 # verbs fits, and forcing one would fabricate a relationship. The null case is evidence for
 # the category-3 adjudication, not a gap in the frontmatter.
-vendor: Anomaly
+maker: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT
 open_source: true

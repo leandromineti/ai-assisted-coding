@@ -1,7 +1,7 @@
 ---
 name: conductor
 category: 4
-vendor: Google (gemini-cli-extensions org)
+maker: Google (gemini-cli-extensions org)
 url: https://github.com/gemini-cli-extensions/conductor
 license: Apache-2.0
 open_source: true

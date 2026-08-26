@@ -7,7 +7,7 @@ environments: [host]  # runs with the launching user's permissions; no worktree/
 # environment_relation deliberately UNSET — the null case is the finding: pi ships no sandbox and no
 # environment abstraction, recommends external containerization in docs (README ## Permissions & Containerization).
 # The template says leave it unset when none of bundle/bind/internalize/inhabit fits; that null is data.
-vendor: Earendil Works
+maker: Earendil Works
 url: https://github.com/earendil-works/pi
 license: MIT
 open_source: true

@@ -3,7 +3,7 @@ name: cline
 category: 2
 surfaces: [ide, terminal]   # started as a VS Code extension; the tree carries apps/cli/
 execution: local
-vendor: Cline
+maker: Cline
 url: https://github.com/cline/cline
 license: Apache-2.0
 open_source: true

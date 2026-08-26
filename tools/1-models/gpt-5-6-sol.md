@@ -1,7 +1,7 @@
 ---
 name: gpt-5-6-sol
 category: 1
-vendor: OpenAI
+maker: OpenAI
 url: https://developers.openai.com/api/docs/models
 license: proprietary
 open_source: false

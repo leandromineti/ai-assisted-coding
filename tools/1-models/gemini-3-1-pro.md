@@ -1,7 +1,7 @@
 ---
 name: gemini-3-1-pro
 category: 1
-vendor: Google
+maker: Google
 url: https://ai.google.dev/gemini-api/docs/models
 license: proprietary
 open_source: false

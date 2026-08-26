@@ -1,7 +1,7 @@
 ---
 name: cloudflare-sandbox-sdk
 category: 3
-vendor: Cloudflare, Inc.
+maker: Cloudflare, Inc.
 url: https://github.com/cloudflare/sandbox-sdk
 license: Apache-2.0   # root LICENSE file at the pin states Apache-2.0; gh api repos/cloudflare/sandbox-sdk reports license.spdx_id NOASSERTION — the repo's own LICENSE file is authoritative, not the API label (see What it is)
 open_source: true

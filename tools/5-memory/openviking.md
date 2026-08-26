@@ -2,7 +2,7 @@
 name: openviking
 category: 5
 type: memory
-vendor: Volcengine (ByteDance)
+maker: Volcengine (ByteDance)
 url: https://github.com/volcengine/OpenViking
 license: AGPL-3.0
 open_source: true

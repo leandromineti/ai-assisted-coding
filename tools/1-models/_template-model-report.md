@@ -1,7 +1,7 @@
 ---
 name: <model-slug>
 category: 1
-vendor: <who trains it>
+maker: <who trains it>
 url: <primary docs / model card URL — the page the facts below were verified against>
 license: proprietary            # or the weights license (Apache-2.0, MIT, Kimi K3's modified MIT…)
 open_source: false              # true only for released weights

@@ -1,7 +1,7 @@
 ---
 name: glm-5.3
 category: 1
-vendor: Z.ai (Zhipu AI)
+maker: Z.ai (Zhipu AI)
 url: https://docs.z.ai/guides/llm/glm-5.3
 license: "unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over"
 open_source: false   # today; weights announced for after a "two-week safety evaluation" — see release_mode comment

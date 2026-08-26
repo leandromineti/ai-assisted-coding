@@ -1,7 +1,7 @@
 ---
 name: daytona
 category: 3
-vendor: Daytona Platforms, Inc.
+maker: Daytona Platforms, Inc.
 url: https://github.com/daytonaio/daytona
 license: AGPL-3.0   # the repository's own LICENSE file at the freeze pin (4ee2c6365, 2026-06-19); the GitHub API reports no SPDX license for the repository today (checked 2026-08-21) — the before/after split shows up in this field first
 open_source: false   # describes the product's state TODAY: public and AGPL-3.0-licensed at the freeze pin (source, 4ee2c6365, 2026-06-19); GitHub API reports no SPDX license for the repository today (checked 2026-08-21) — treated as closed for this report, which is the closure event this study is built around

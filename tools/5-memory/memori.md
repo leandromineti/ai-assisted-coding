@@ -2,7 +2,7 @@
 name: memori
 category: 5
 type: memory
-vendor: MemoriLabs
+maker: MemoriLabs
 url: https://github.com/MemoriLabs/Memori
 license: Apache-2.0
 open_source: true

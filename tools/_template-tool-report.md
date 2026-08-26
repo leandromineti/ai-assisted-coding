@@ -16,7 +16,7 @@ environments: [<host | worktree | container | remote-sandbox>]  # category-3 bin
 # Set ONLY when verified, and **leave it unset if none of the four fits** — a harness that
 # just runs on the host has no relationship to category 3, and that null case is data.
 environment_relation: <bundle | bind | internalize | inhabit>
-vendor: <who maintains it>
+maker: <who maintains it>
 url: <repo or product URL>
 license: <SPDX id, or "proprietary">
 open_source: <true | false>

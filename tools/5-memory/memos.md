@@ -2,7 +2,7 @@
 name: memos
 category: 5
 type: memory
-vendor: MemTensor (MemOS)
+maker: MemTensor (MemOS)
 url: https://github.com/MemTensor/MemOS
 license: Apache-2.0
 open_source: true

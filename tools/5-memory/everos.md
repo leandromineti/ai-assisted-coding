@@ -2,7 +2,7 @@
 name: everos
 category: 5
 type: memory
-vendor: EverMind AI (EverMind-AI)
+maker: EverMind AI (EverMind-AI)
 url: https://github.com/EverMind-AI/EverOS
 license: Apache-2.0
 open_source: true

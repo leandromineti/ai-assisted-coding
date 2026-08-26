@@ -2,7 +2,7 @@
 name: mem0
 category: 5
 type: memory
-vendor: Mem0 (mem0ai, YC S24)
+maker: Mem0 (mem0ai, YC S24)
 url: https://github.com/mem0ai/mem0
 license: Apache-2.0
 open_source: true

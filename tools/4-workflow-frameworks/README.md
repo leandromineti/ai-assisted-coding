@@ -33,7 +33,7 @@ prose looks like a feature until you check who enforces it**, so every README-so
 a stub row (pilot-shell's `measured_gates` especially) carries an implicit asterisk until
 its source is read.
 
-The other half is **8 transcription fields** — `vendor`, `license`, `stars`,
+The other half is **8 transcription fields** — `maker`, `license`, `stars`,
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 

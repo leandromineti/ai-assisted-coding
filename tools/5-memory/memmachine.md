@@ -2,7 +2,7 @@
 name: memmachine
 category: 5
 type: memory
-vendor: MemMachine
+maker: MemMachine
 url: https://github.com/MemMachine/MemMachine
 license: Apache-2.0
 open_source: true

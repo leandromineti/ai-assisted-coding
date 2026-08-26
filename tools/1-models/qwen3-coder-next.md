@@ -1,7 +1,7 @@
 ---
 name: qwen3-coder-next
 category: 1
-vendor: Alibaba (Qwen team)
+maker: Alibaba (Qwen team)
 url: https://huggingface.co/Qwen/Qwen3-Coder-Next
 license: Apache-2.0
 open_source: true

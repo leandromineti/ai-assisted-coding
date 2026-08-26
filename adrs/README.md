@@ -41,7 +41,11 @@ also names the category-1 reasoning cells `thinking:` and `effort_control:`:
 into `reasoning` (does it reason at all) **and** `reasoning_type` (toggleability), while
 `effort_control` became `reasoning_effort` in `family:specific` form. Not a pure rename in
 either direction, so an old cell's prose does not map onto one new cell; each report's
-**§ Reasoning surface** carries the original wording with its check date.
+**§ Reasoning surface** carries the original wording with its check date. Anything dated
+before **2026-08-26** also calls the report frontmatter key `maker:` by its old name
+`vendor:` — [ADR-0042](0042-vendor-becomes-maker.md) carries that decoder (a pure key
+rename, values unchanged). Note the deliberate exception: `references/cards/` still
+use `vendor:`, correctly, because a vendor model card *is* a commercial vendor's document.
 
 **Rules:**
 
@@ -108,3 +112,4 @@ either direction, so an old cell's prose does not map onto one new cell; each re
 | [0039](0039-value-type-types-the-fact.md) | 2026-08-26 | `value_type` types the fact: `knowledge_cutoff` is `date`; `structured` means plural facts; `renders_note` marks matrix-visible prose | accepted |
 | [0040](0040-reasoning-replaces-thinking.md) | 2026-08-26 | `thinking` + `effort_control` → `reasoning` (presence) + `reasoning_type` (toggleability enum) + `reasoning_effort` (`family:specific` dial); repo voice says *reasoning*, vendor words stay quoted; fourth cell-value check | accepted |
 | [0041](0041-vendors-matrix-removed.md) | 2026-08-26 | `comparisons/vendors.md` removed (33 of 37 rows were single-tool; its gap metric had decayed to a false zero); vendor span is single-sourced in `tool-taxonomy.md` | accepted |
+| [0042](0042-vendor-becomes-maker.md) | 2026-08-26 | Report frontmatter `vendor:` → `maker:` (four values are private individuals); `provider` rejected — it already means the LLM backend a harness talks to; `references/cards` keep `vendor:` | accepted |

@@ -1,7 +1,7 @@
 ---
 name: haft
 category: 4
-vendor: Ivan Zakutnii (m0n0x41d)
+maker: Ivan Zakutnii (m0n0x41d)
 url: https://github.com/m0n0x41d/haft
 license: MIT   # LICENSE file is plain MIT; GitHub API reports NOASSERTION
 open_source: true

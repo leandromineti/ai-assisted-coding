@@ -1,7 +1,7 @@
 ---
 name: claude-opus-5
 category: 1
-vendor: Anthropic
+maker: Anthropic
 url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
 open_source: false

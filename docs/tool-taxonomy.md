@@ -442,6 +442,12 @@ Bleed and vendor span are different axes, and the framework reasons about them d
   several categories at once, and tuning them to each other. Recorded here, because it is a
   fact about a company, not about any single entry.
 
+The frontmatter field is `maker:`, not `vendor:` ([ADR-0042](../adrs/0042-vendor-becomes-maker.md)) —
+four of its values are private individuals, so the field cannot assert commerce. This
+section keeps the narrower word **on purpose**: every row below is a company, and the
+co-optimization it warns about is a commercial strategy. *Vendor* span is the subset of
+maker span that has a business behind it, which is the part a reader has to plan around.
+
 The framework's default posture treats the categories as **independent axes**: pick a model,
 pick a harness, pick an environment. That holds for the field's composable middle — a Nous
 model driven by OpenCode inside a Modal sandbox is three vendors and three separable

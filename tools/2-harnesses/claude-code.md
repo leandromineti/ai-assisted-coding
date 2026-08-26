@@ -5,7 +5,7 @@ surfaces: [terminal, desktop, web, ide]   # in-product statement + docs; termina
 execution: both   # local CLI observed; cloud sessions + claude.ai/code web are the async-remote side (the local client can list/message its own cloud sessions — observed in the session-management tool surface)
 environments: [host, worktree, remote-sandbox]   # host + worktree OBSERVED (worktrees are first-class: EnterWorktree/ExitWorktree tools, plus per-agent `isolation: worktree`); remote-sandbox = cloud sessions/web (bundle). Devcontainer support is docs testimony — left unclaimed
 environment_relation: bundle   # the web/cloud side ships its own sandbox, not separately selectable (the taxonomy's Devin verb). The LOCAL side also *binds* worktrees natively — one product, two relations; bundle recorded as primary because it is the non-obvious one, the worktree bind is noted in Bleed
-vendor: Anthropic
+maker: Anthropic
 url: https://github.com/anthropics/claude-code
 license: proprietary   # the GitHub repo (141,660 stars) is issues + distribution + examples, NOT source; no license file on the repo at check date
 open_source: false

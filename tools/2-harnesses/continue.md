@@ -3,7 +3,7 @@ name: continue
 category: 2
 surfaces: [ide]   # VS Code + JetBrains over a shared core
 execution: local
-vendor: Continue
+maker: Continue
 url: https://github.com/continuedev/continue
 license: Apache-2.0
 open_source: true

@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-26  # bumped 2026-08-26 a sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-26  # bumped 2026-08-26 a seventh time: ADR-0042 renamed the `vendor:` frontmatter key to `maker:` across all 45 reports + both templates (schema_renames decoder; references/cards keep `vendor:`, and references/* is skip_entirely so no gate is needed). Sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -389,6 +389,33 @@ schema_renames:
       `features:` list key inside feature-taxonomy.md's fenced YAML block is NOT
       renamed (it names the registry entries, lives in body text, and LINT-05 scans
       frontmatter only).
+    executes_in: same-day
+    status: applied
+    atomic: true
+  - old: vendor
+    new: maker
+    scope:
+      - "report frontmatter key `vendor:` (45 reports, every category)"
+      - "tools/_template-tool-report.md"
+      - "tools/1-models/_template-model-report.md"
+      - "docs/feature-taxonomy.yaml (the `vendor` transcription field)"
+      - "scripts/build-db.py (the reports table column)"
+    note: >-
+      ADR-0042: "vendor" asserted a commercial relationship four values do not have
+      (Fabio Akita, Affaan Mustafa, Ivan Zakutnii, Max Ritter are private
+      individuals) and two more explicitly disclaim (Open GSD, superradcompany).
+      Values are unchanged — purely a key rename. `provider` was considered and
+      REJECTED: it already means "the LLM API backend a harness talks to" throughout
+      this repo's prose ("75+ providers", "~9 provider API families") and in the
+      harness source those reports quote, so it would have created a
+      split_meaning_terms entry no lint can adjudicate, like `stack`.
+      DELIBERATELY NOT IN SCOPE: `vendor:` on references/cards/*.md, which is a
+      different field on a different note type and correct there — a vendor model
+      card is by definition a commercial vendor's document, and all four are.
+      references/* is exempt_paths.skip_entirely, so LINT-05 never walks it and no
+      per-entry gate is needed. Prose uses of the English word "vendor" for actual
+      commercial vendors (§ Vendor span, `vendor-stated` cutoff basis, "vendor-native")
+      are also untouched and correct.
     executes_in: same-day
     status: applied
     atomic: true

@@ -1,7 +1,7 @@
 ---
 name: modal
 category: 3
-vendor: Modal Labs
+maker: Modal Labs
 url: https://github.com/modal-labs/modal-client
 license: Apache-2.0   # the CLIENT only; the infrastructure is closed and has no public repo
 open_source: false   # the PRODUCT is closed — only the client SDK is open. This is the point of the read; see What it is

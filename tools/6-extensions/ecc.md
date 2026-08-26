@@ -2,7 +2,7 @@
 name: ecc
 category: 6   # 4 (provisional) -> 5 at read time 2026-07-30 (no process spine; see The category verdict) -> 6 at the 2026-08-22 split (ADR-0020: Extensions renumbered 5->6; the verdict itself is unchanged)
 type: config-pack   # set 2026-08-19 per ADR-0016 — the classification the deep-dive already made in prose ("a config pack at scale, with a learning runtime", The category verdict); was the bucket's only report with no type key
-vendor: Affaan Mustafa (affaan-m)
+maker: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT
 open_source: true

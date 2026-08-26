@@ -1,7 +1,7 @@
 ---
 name: microsandbox
 category: 3
-vendor: superradcompany (open-source project; formerly at microsandbox/microsandbox, which now
+maker: superradcompany (open-source project; formerly at microsandbox/microsandbox, which now
   redirects here — checked 2026-08-21 via `gh api repos/microsandbox/microsandbox
   --jq .full_name`, one canonical repository reached via two slugs, not two repos)
 url: https://github.com/superradcompany/microsandbox

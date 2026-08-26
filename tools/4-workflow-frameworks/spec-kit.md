@@ -1,7 +1,7 @@
 ---
 name: spec-kit
 category: 4
-vendor: GitHub
+maker: GitHub
 url: https://github.com/github/spec-kit
 license: MIT
 open_source: true

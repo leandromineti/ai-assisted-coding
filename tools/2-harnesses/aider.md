@@ -3,7 +3,7 @@ name: aider
 category: 2
 surfaces: [terminal]
 execution: local
-vendor: Aider-AI
+maker: Aider-AI
 url: https://github.com/Aider-AI/aider
 license: Apache-2.0
 open_source: true

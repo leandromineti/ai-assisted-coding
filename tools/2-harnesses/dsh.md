@@ -5,7 +5,7 @@ surfaces: [web]
 execution: local
 environments: [host, remote-sandbox]  # remote-sandbox = the e2b POC packages, verified in source, opt-in, no shipped bundle
 environment_relation: internalize
-vendor: DeepSeek
+maker: DeepSeek
 url: https://github.com/deepseek-ai/deepseek-harness
 license: MIT
 open_source: true
