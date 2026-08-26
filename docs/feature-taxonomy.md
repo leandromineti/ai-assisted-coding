@@ -1,19 +1,19 @@
 # The feature taxonomy
 
-`created: 2026-08-18` · decision record: [ADR-0010](../../adrs/0010-two-taxonomies.md)
+`created: 2026-08-18` · decision record: [ADR-0010](../adrs/0010-two-taxonomies.md)
 
-This repo carries **two taxonomies**. The [tool taxonomy](../../taxonomy.md) classifies
+This repo carries **two taxonomies**. The [tool taxonomy](../taxonomy.md) classifies
 what a tool *is* (the categories, plus types like category 6's `type` and category 4's
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
 defined **once**, with an applicability map saying which categories it can occur in. The
 generator (`scripts/build-tool-index.py`) reads the YAML block below as its single
 source of truth for valid frontmatter keys — the per-category (and per-type) matrices in
-[`comparisons/features.md`](../../comparisons/features.md) and its cross-category table
+[`comparisons/features.md`](../comparisons/features.md) and its cross-category table
 are derived from here plus report frontmatter. **Do not add a key anywhere else.**
 
 The YAML block below is machine-read and renders on GitHub as a raw code block — for
 *reading* the registry, use the generated
-[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md) (added
+[`comparisons/feature-registry.md`](../comparisons/feature-registry.md) (added
 2026-08-26), which re-renders it as linked tables. Same rule-3 relationship as every
 matrix: this file is the editable source, that one is derived.
 
@@ -33,7 +33,7 @@ Conventions:
 - The `environment_features` block's cells carry a grammar the other four blocks
   don't: evidence-grade suffixes inside the cell value, a `family:specific` colon tag
   on three of its eight keys, and lists that mean conjunction only — see
-  [ADR-0017](../../adrs/0017-environment-features-block.md) for the full grammar.
+  [ADR-0017](../adrs/0017-environment-features-block.md) for the full grammar.
 - **What belongs where** (the placement test, recorded 2026-08-19): a fact with an
   external ground truth we transcribe (stars, license, context window, pricing) is a
   **top-level frontmatter field** — mechanically collected, dated, and at most

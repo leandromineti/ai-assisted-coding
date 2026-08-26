@@ -44,7 +44,7 @@ harness_targets: [<Harness>, <Harness>]
 # workflow_features: category-4 reports only — same verified-only discipline as harness_features:
 # (omitted = not checked, false = checked and absent). A feature is a structural
 # PRESENCE-claim; whether it pays is the mechanism table's question. Definitions live
-# in the feature taxonomy — tools/cross-cutting/feature-taxonomy.md (ADR-0010), the
+# in the feature taxonomy — docs/feature-taxonomy.md (ADR-0010), the
 # single source of valid keys; the generator warns on and drops keys not registered there.
 workflow_features:
   intent_pipeline: <true | false>

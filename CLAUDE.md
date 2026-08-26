@@ -24,7 +24,7 @@ linked note is an assertion; a finding that changed no note is an anecdote (rule
 | `tools/N-*/` | one report per tool, by taxonomy category. Template: `tools/_template-tool-report.md` | yes |
 | `tools/N-*/index.md` | narrative front door per category: what the category *is*, seed inventory | yes |
 | `tools/candidates.md` | cross-category ledger of sighted-but-not-ingested tools — the pre-`stub` stage (candidate → stub → survey → deep-dive). Dated hand-typed stars are its documented exception | yes |
-| `tools/cross-cutting/` | findings that span categories, plus [`metrics.md`](tools/cross-cutting/metrics.md) (measurement vocabulary) and [`feature-taxonomy.md`](tools/cross-cutting/feature-taxonomy.md) — the registry the feature matrices generate from (ADR-0010–0014); add feature keys there, nowhere else | yes |
+| `docs/` | general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry the feature matrices generate from (ADR-0010–0014); add feature keys there, nowhere else | yes |
 | `refs/` | one note per **source read** (papers, benchmarks). See [`refs/README.md`](refs/README.md) | notes yes, index no |
 | `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `vendors.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables) | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |

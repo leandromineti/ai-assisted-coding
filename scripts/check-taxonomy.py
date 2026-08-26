@@ -39,7 +39,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 TAXONOMY = ROOT / "taxonomy.yaml"
-FEATURE_REGISTRY_PATH = ROOT / "tools" / "cross-cutting" / "feature-taxonomy.md"
+FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
 
 # A file containing this marker is generated output (comparisons/*.md, refs/index.md)
 # and is never a lint target directly — its generator owns the vocabulary it emits
@@ -175,7 +175,7 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
                 if key not in valid_keys:
                     print(
                         f"ERROR: {rel} '{key}' is unregistered in block "
-                        f"'{block}' — add it to tools/cross-cutting/"
+                        f"'{block}' — add it to docs/"
                         f"feature-taxonomy.md or fix the spelling",
                         file=sys.stderr,
                     )
@@ -933,7 +933,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "cross-cutting-not-cross-layer",
-        "path": "tools/cross-cutting/fixture-cutting.md",
+        "path": "docs/fixture-cutting.md",
         "text": "# Fixture\n\nThis document uses cross-cutting concerns terminology "
         "throughout, nothing else.\n",
         "expect": "pass",
@@ -1129,7 +1129,7 @@ FIXTURES: list[dict] = [
 
 
 # LINT-04b (D-06, vocabulary leakage — prose half): the measurement vocabulary in
-# tools/cross-cutting/metrics.md is enforced through the SAME `terms[].deny_list`
+# docs/metrics.md is enforced through the SAME `terms[].deny_list`
 # mechanism `check()` already runs above — no separate function, no fuzzy matching,
 # LINT-03's model extended in scope only. Deliberately live-but-empty: no measurement
 # drift term ("trap score", "attention split", ...) has been observed misused, and

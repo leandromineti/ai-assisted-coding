@@ -42,7 +42,7 @@ confirm, contradict, or note silence.
 | 4 · Workflow frameworks | [`tools/4-workflow-frameworks/`](tools/4-workflow-frameworks/index.md) | GSD, spec-kit |
 | 5 · Memory | [`tools/5-memory/`](tools/5-memory/index.md) | ai-memory, mem0, MemOS, cognee |
 | 6 · Extensions (bucket) | [`tools/6-extensions/`](tools/6-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
-| ✕ Cross-cutting | [`tools/cross-cutting/`](tools/cross-cutting/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
+| ✕ Cross-cutting | [`docs/`](docs/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
 
@@ -83,7 +83,7 @@ under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in
-[`tools/cross-cutting/`](tools/cross-cutting/index.md) about whether a clean A/B is
+[`docs/`](docs/index.md) about whether a clean A/B is
 possible here at all.
 
 ## Conventions
@@ -125,7 +125,7 @@ note. Revised when evidence moves._
    consumed by at least four harnesses (Claude Code, Codex, Kimi, Hermes), so skills are
    now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
-   [`tools/cross-cutting/standards.md`](tools/cross-cutting/standards.md)
+   [`docs/standards.md`](docs/standards.md)
    **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging types
    gained their best evidence yet, and it is a better *class* of evidence: a first-party
    implementation by a rival vendor rather than a third-party installer targeting the
@@ -139,7 +139,7 @@ note. Revised when evidence moves._
    llm-coding-benchmark's data): models produce complete-looking apps whose tests mock
    hallucinated APIs — green suites over dead code. Any personal eval must boot the
    artifact, not count its files. →
-   [`tools/cross-cutting/index.md`](tools/cross-cutting/index.md)
+   [`docs/index.md`](docs/index.md)
 5. **Reading source beats reading marketing, quickly** (2026-07-28). Every finding above
    except #4 came from a few hours of grepping cloned repos — none appears in any tool's
    own documentation. The `upstream/` workflow pays for itself.
@@ -235,7 +235,7 @@ note. Revised when evidence moves._
    (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
    Consequence for the experiment arc: a category-4 framework's measured margin must be
    re-baselined against what the harness already does — recorded as a design rider on
-   exp-03 in [`tools/cross-cutting/`](tools/cross-cutting/index.md). →
+   exp-03 in [`docs/`](docs/index.md). →
    [`tools/2-harnesses/hermes-agent.md`](tools/2-harnesses/hermes-agent.md),
    [`tools/2-harnesses/codex.md`](tools/2-harnesses/codex.md)
    **Third instance, and a counter-instance (2026-08-11, Warp survey; evidence upgraded
@@ -317,7 +317,7 @@ note. Revised when evidence moves._
     (Haiku: the entire ambient-config family, every completed run), not single items,
     carried the separation. Preregistered prediction on per-item dominance was half-wrong
     and is recorded as such. →
-    [`tools/cross-cutting/benchmark-survey.md`](tools/cross-cutting/benchmark-survey.md),
+    [`docs/benchmark-survey.md`](docs/benchmark-survey.md),
     [`experiments/02-spec-kit-vs-plain/log.md`](experiments/02-spec-kit-vs-plain/log.md)
 11. **Intent capture steers trap behavior but does not add trap discovery** (2026-08-17,
     measured — exp-02's preregistered A/B, both predictions supported). On the same
@@ -352,7 +352,7 @@ note. Revised when evidence moves._
     (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
     one check (t3c) went 0/20 with satisfiability unproven. →
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
-    [`tools/cross-cutting/category-2-program.md`](tools/cross-cutting/category-2-program.md)
+    [`docs/category-2-program.md`](docs/category-2-program.md)
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18,
     memory-type reading arc: one deep-dive, two surveys, three instrument full-reads).
     The type's verified substance is real — three distinct wagers (markdown wiki / RL
@@ -411,7 +411,7 @@ note. Revised when evidence moves._
     on quality (J 72.90 vs 68.44) — the measured claim is latency/token efficiency —
     and the 92.5 belongs to a later rewrite whose architecture the paper doesn't
     describe.* →
-    [`tools/cross-cutting/benchmark-survey.md`](tools/cross-cutting/benchmark-survey.md) §6 ·
+    [`docs/benchmark-survey.md`](docs/benchmark-survey.md) §6 ·
     [`tools/5-memory/index.md`](tools/5-memory/index.md)
 
 ## License

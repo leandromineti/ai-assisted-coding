@@ -11,20 +11,20 @@ baselines on hidden, fails-closed instruments, and the pattern is now consistent
 to act on: category-4 effects on code ride on mechanisms the model+harness bundle absorbs
 tier by tier, atop run-to-run noise wider than most of the effects themselves. The
 measurable subject is the **bundle** — the model + harness system (category 2 in
-[`taxonomy.md`](../../taxonomy.md)) — plus framework value at the *artifact* level,
+[`taxonomy.md`](../taxonomy.md)) — plus framework value at the *artifact* level,
 where it demonstrably lives. Promoted as
-[README conclusion 12](../../README.md); this note is the assembled argument and the
+[README conclusion 12](../README.md); this note is the assembled argument and the
 program definition.
 
 ## The four evidence strands
 
 **1. Bundle noise is wider than most treatment effects.** exp-03's calibration band —
 five *identical* plain Haiku runs, same prompt, same corpus, same container — scored
-**7–14/23** ([exp-03 log](../../experiments/03-minimal-harness/log.md) § band v2). A
+**7–14/23** ([exp-03 log](../experiments/03-minimal-harness/log.md) § band v2). A
 seven-check spread from sampling variance alone. exp-02 put the complementary point on
 the record: spec-kit vs plain was **19/21 = 19/21, identical failures** — a zero
 effect against baseline variance at 7.8× cost
-([exp-02](../../experiments/02-spec-kit-vs-plain/README.md) § Results). Detecting
+([exp-02](../experiments/02-spec-kit-vs-plain/README.md) § Results). Detecting
 sub-band effects honestly would need n far beyond what these run costs justify
 (methodology 5f's distributions priced this: ~$0.30–2.46 per run depending on tier).
 
@@ -36,16 +36,16 @@ discovering the corpus-only log format with no instruction (affordance beats
 instruction, amendment 1); then at tier 2, **plain Sonnet scored 8.3/9 on buried-trap
 discovery, matching Haiku-plus-grounding-instruction (8/9)** — one model tier absorbed
 the instruction's entire measured value, on a pre-declared interpretation rule
-([exp-03 README](../../experiments/03-minimal-harness/README.md) § tier 2). A category-4
+([exp-03 README](../experiments/03-minimal-harness/README.md) § tier 2). A category-4
 margin measured today is a claim about *current-tier* models with a built-in
 expiration date.
 
 **3. The published effect sizes live at category 2.** With the model held fixed,
-[swe-agent-2024](../../refs/2024-swe-agent.md) measured the agent-computer interface
+[swe-agent-2024](../refs/2024-swe-agent.md) measured the agent-computer interface
 alone at **+64% relative** over a bare shell, priced both chokepoints separately
 (viewer window shape, history collapse, an edit-gating linter each worth points), and
 found a badly shaped search tool scoring **below no tool at all**.
-[agent-frameworks-eval](../../refs/2025-agent-frameworks-eval.md) traced repair gaps to
+[agent-frameworks-eval](../refs/2025-agent-frameworks-eval.md) traced repair gaps to
 patch *tooling*, not reasoning, and single-agent beat multi-agent on all its tasks.
 Meanwhile our own category-2 baseline (Claude Code) has never been the varied factor in
 any experiment here — we have been measuring the small lever while holding the big
@@ -66,7 +66,7 @@ Three measurement tracks and a standing rule (backlog detail in issue #17):
 1. **Harness A/B** — same model, same task, different harness. The inversion of every
    experiment so far. The rig supports it: the logpeek task + verifier are built and
    calibrated, and opencode is the rig's recorded fallback harness
-   ([rig README](../../experiments/rig/README.md) § Harness decision). Open design
+   ([rig README](../experiments/rig/README.md) § Harness decision). Open design
    questions: driving a second harness headless under the enforced network condition;
    extracting comparable cost/transcripts; the confound that harnesses embed different
    default prompts (that *is* part of the treatment, and must be declared as such).
@@ -91,8 +91,8 @@ framework's code effect *exceeds* the measured band at the current model tier �
 plausibly above the ceremony threshold (exp-01's term) where task size defeats a
 single context window, a regime none of our below-threshold tasks touch; (b) a
 framework whose enforcement is deterministic rather than prose
-([OpenSpec](../4-workflow-frameworks/openspec.md)-style engines), where the
+([OpenSpec](../tools/4-workflow-frameworks/openspec.md)-style engines), where the
 intervention is code the bundle cannot silently absorb; (c) a bundle regression —
 if a future harness/model pairing stops grounding unprompted, the tier-condition in
-[design-principles F2](../../design-principles.md) cuts the other way. Any of these
+[design-principles F2](../design-principles.md) cuts the other way. Any of these
 earns a new preregistration; nothing else does.

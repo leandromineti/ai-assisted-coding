@@ -145,7 +145,7 @@ cannot over-cooperate — see [`lost-in-simulation.md`](lost-in-simulation.md) f
 property matters.
 
 **4. Metrics to adopt into our vocabulary**, recorded in
-[`../tools/cross-cutting/metrics.md`](../tools/cross-cutting/metrics.md): KQC, MPR, ATC, EAR.
+[`../docs/metrics.md`](../docs/metrics.md): KQC, MPR, ATC, EAR.
 EAR in particular already solves a problem we would have hit — how to stop a framework looking
 good by asking thirty questions.
 

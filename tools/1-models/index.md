@@ -100,7 +100,7 @@ calibration verdict, README conclusion 10.
     correctness**: models produce complete-looking apps whose tests mock hallucinated
     library APIs, so the output scores well while not actually running. That's a
     verification insight as much as a model one; see
-    [`../cross-cutting/index.md`](../cross-cutting/index.md).
+    [`../../docs/index.md`](../../docs/index.md).
 
 ## Open questions
 

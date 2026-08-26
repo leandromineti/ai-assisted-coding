@@ -65,13 +65,13 @@ model, so these are model-attributable behaviors, not harness effects:
 - **Known-groups anchor:** fully separated from Haiku 4.5 on the same instrument —
   every completed Haiku run scored 17/21, below Sonnet's worst (18). The reversal
   (Haiku beat Sonnet on the truncated-archive item) is a failure-style effect, not a
-  capability inversion — see [`benchmark-survey`](../cross-cutting/benchmark-survey.md)
+  capability inversion — see [`benchmark-survey`](../../docs/benchmark-survey.md)
   § 6 and README conclusion 10.
 - **Observed session throughput ≈ 91 tok/s** (mean = median, range 75–106, n=15
   sessions: screening + Run A′ + every exp-02 Run B step ≥500 output tokens).
   Session-level, not decode speed — computed by `scripts/observed-throughput.py`
   from the committed transcripts; definition and caveats in
-  [`metrics.md`](../cross-cutting/metrics.md) § Observed session throughput. The
+  [`metrics.md`](../../docs/metrics.md) § Observed session throughput. The
   planning rule of thumb this buys: ~2 min of API time per 10k output tokens.
 
 ## Surprises

@@ -153,7 +153,7 @@ First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-pla
 
 The category now carries the category-4 slice of the repo's **feature taxonomy** —
 `workflow_features:` in report frontmatter, with every key defined once in
-[`tools/cross-cutting/feature-taxonomy.md`](../cross-cutting/feature-taxonomy.md)
+[`docs/feature-taxonomy.md`](../../docs/feature-taxonomy.md)
 ([ADR-0010](../../adrs/0010-two-taxonomies.md)), rendered in
 [`comparisons/features.md`](../../comparisons/features.md). The division of
 labor with the mechanism table below: a **feature** is a presence-claim (the machinery

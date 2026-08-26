@@ -2,7 +2,7 @@
 
 `created: 2026-07-31`
 
-One definition per metric, each traceable to a source in [`../../refs/`](../../refs/index.md) or
+One definition per metric, each traceable to a source in [`../../refs/`](../refs/index.md) or
 to the experiment that scarred it. Written because this repo kept inventing measurements —
 "trap score", "attention split" — without checking whether the literature already had a defined,
 validated version. Twice it did, and better.
@@ -14,7 +14,7 @@ enforces it.
 ## Reliability
 
 ### `pass^k`
-Source: [`tau-bench`](../../refs/2024-tau-bench.md) (ICLR 2025), §3.
+Source: [`tau-bench`](../refs/2024-tau-bench.md) (ICLR 2025), §3.
 
 With `n` trials of a task of which `c` succeed:
 
@@ -33,7 +33,7 @@ At Run A's measured $0.374, k=5 costs under $2. The barrier was never cost.
 
 ## Clarification and information recovery
 
-All four from [`clareval`](../../refs/2026-clareval.md) §3.5 and Appendix B. They presuppose a task
+All four from [`clareval`](../refs/2026-clareval.md) §3.5 and Appendix B. They presuppose a task
 built by **withholding** known information: `K` = expert-annotated required intents, `P` =
 withheld premises, `R ⊆ P` = premises the agent recovered.
 
@@ -55,7 +55,7 @@ it from averages). An arm that clarifies nothing must not score as maximally eff
 
 ## Underspecification detection
 
-Source: [`ambig-swe`](../../refs/2026-ambig-swe.md) (ICLR 2026), §4.
+Source: [`ambig-swe`](../refs/2026-ambig-swe.md) (ICLR 2026), §4.
 
 Present the agent with fully-specified and underspecified tasks at random and measure whether it
 chooses to interact: **accuracy**, **FPR** (interacted when it didn't need to — burden on the
@@ -70,7 +70,7 @@ variable, not a constant, and must be declared and held identical across arms �
 ## Apparatus validation
 
 ### `ECE_Human–LLM`
-Source: [`lost-in-simulation`](../../refs/2026-lost-in-simulation.md), §3.4.
+Source: [`lost-in-simulation`](../refs/2026-lost-in-simulation.md), §3.4.
 
 `Σᵢ wᵢ · |sᵢ^(Human) − sᵢ^(LLM)|` — weighted absolute deviation between agent success measured
 with real users vs simulated ones, across difficulty bins; 0 = perfectly calibrated. The metric
@@ -95,7 +95,7 @@ runs, the instrument discriminates — baselines score 18–20/21 (mean 19.0) wi
 failing at 40–100% baseline rates — and it passes a known-groups test (below). A trap score is
 read **against the measured baseline noise band**, never as a raw pass count: 21/21 beats every
 observed baseline; 19–20 is inside baseline variance. Verdict tables:
-[`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md).
+[`exp-02 log`](../experiments/02-spec-kit-vs-plain/log.md).
 
 The withholding-information design was exp-03's headroom plan, and it ran 2026-08-18 with a
 lesson the literature's numbers didn't carry: **withheld-but-discoverable information only
@@ -105,8 +105,8 @@ amendment buried the traps in a 40k-line corpus; even then, one model tier erase
 Sonnet 8.3/9 vs plain Haiku 4.0/9; exp-03 README § Results). The design remains a different
 instrument for a different question, not a correction to this one:
 withholding produces headroom reliably at both scales measured in the literature — ~80 points on
-function-level tasks ([`clareval`](../../refs/2026-clareval.md) Figure 3) and 28 points on repository
-issues ([`ambig-swe`](../../refs/2026-ambig-swe.md) Figure 3) — whereas escalating edge-case
+function-level tasks ([`clareval`](../refs/2026-clareval.md) Figure 3) and 28 points on repository
+issues ([`ambig-swe`](../refs/2026-ambig-swe.md) Figure 3) — whereas escalating edge-case
 difficulty needed its own headroom proof (which v2 now has).
 
 ### Known-groups separation
@@ -124,7 +124,7 @@ than skill.
 ### Attention split
 Wall-clock divided into *autonomous* vs *attention-required*, with each blocking event logged
 verbatim (exp-02 protocol). Genuinely ours, and named as a gap by
-[`from-prompt-to-process`](../../refs/2026-from-prompt-to-process.md) §7 ("rate of human review
+[`from-prompt-to-process`](../refs/2026-from-prompt-to-process.md) §7 ("rate of human review
 required"). But it is coarser than ATC/EAR, which price *when* information arrived rather than
 just how long someone was blocked. Prefer ATC + EAR where a per-question turn index exists;
 keep attention split for arms that block on approvals rather than questions.
@@ -138,7 +138,7 @@ the interruption, not the leverage.
 
 ### Correction rate (candidate, borrowed 2026-08-17 — not yet used in an experiment)
 `correction attempts / trajectory steps`, from
-[`agent-frameworks-eval`](../../refs/2025-agent-frameworks-eval.md) (its RQ2). Borrowed WITH
+[`agent-frameworks-eval`](../refs/2025-agent-frameworks-eval.md) (its RQ2). Borrowed WITH
 its own sharpest caveat, which the paper demonstrates in its data: **zero corrections
 signals missing self-monitoring, not efficiency** — its two lowest-correction frameworks
 also had 3–10% repair rates. Never read this metric alone; pair it with an effectiveness

@@ -18,7 +18,9 @@ before **2026-08-22** says "category 5" for both memory and the extensions bucke
 [ADR-0020](0020-memory-category-extensions-renumbered.md) carries that decoder
 (memory → 5, everything else → 6). Anything dated before **2026-08-26** cites report
 paths as `notes/0N-<name>/…` — [ADR-0024](0024-notes-to-tools-single-digit.md)
-carries that mapping (`notes/` → `tools/`, `0N-` → `N-`).
+carries that mapping (`notes/` → `tools/`, `0N-` → `N-`), and the cross-cutting
+notes cited at either old home live at root since the same day: `…/cross-cutting/<file>`
+→ `docs/<file>` ([ADR-0025](0025-cross-cutting-becomes-docs.md)).
 
 **Rules:**
 
@@ -68,3 +70,4 @@ carries that mapping (`notes/` → `tools/`, `0N-` → `N-`).
 | [0022](0022-refs-repo-voice-sweepable.md) | 2026-08-22 | Repo-voice prose in `refs/` is sweepable (quotes stay period); decoders relocate to this index | accepted |
 | [0023](0023-category-4-5-components.md) | 2026-08-25 | Components for categories 4 (four functions + substrate finding) and 5 (capture · consolidation · recall); tracing discipline category-generic | accepted |
 | [0024](0024-notes-to-tools-single-digit.md) | 2026-08-26 | Path rename: `notes/` → `tools/`, category dirs `0N-` → `N-` (storage-path decision; decoder above) | accepted |
+| [0025](0025-cross-cutting-becomes-docs.md) | 2026-08-26 | Cross-cutting notes move to root as `docs/`, chartered for repo-structure/methodology/idea notes; concept name unchanged | accepted |

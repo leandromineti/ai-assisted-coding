@@ -1,9 +1,14 @@
-# Cross-cutting concerns
+# Docs — notes that span the survey
 
-`checked: 2026-08-17`
+`checked: 2026-08-26`
 
-These are **not categories**. Each appears at several categories simultaneously, and forcing them
-onto the stack distorts them. See [`../../taxonomy.md`](../../taxonomy.md).
+General notes about the repository's structure, methodology, and ideas — material
+that belongs to no single category (the constitution itself stays at root:
+[`methodology.md`](../methodology.md), [`taxonomy.md`](../taxonomy.md),
+[`design-principles.md`](../design-principles.md)). Renamed from
+`tools/cross-cutting/` on 2026-08-26 (ADR-0025); the cross-category notes below are
+its founding contents. They are **not categories**: each appears at several
+categories simultaneously, and forcing them onto the stack distorts them.
 
 ---
 
@@ -14,7 +19,7 @@ an environment into one number (conclusion 2), and vendor span makes that bindin
 structural. The survey's thesis: the field ships instruments with at most one of the
 three properties an instrument needs (headroom, validity, contamination control) and
 retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the generated
-[benchmark matrix](../../comparisons/benchmarks.md) is its catalog half.
+[benchmark matrix](../comparisons/benchmarks.md) is its catalog half.
 
 ---
 
@@ -63,7 +68,7 @@ context measurably degrades attention on the relevant parts.
   `/analyze` command into a subagent context and **reverted** it — the 300–500-line
   report re-entered the main chat anyway and each later fork inherited the growth,
   compounding until sessions froze (#3185). Isolation only pays if the *return path* is
-  compact — see [`../4-workflow-frameworks/spec-kit.md`](../4-workflow-frameworks/spec-kit.md).
+  compact — see [`../4-workflow-frameworks/spec-kit.md`](../tools/4-workflow-frameworks/spec-kit.md).
 - Just-in-time loading — skills that load on demand rather than up front.
 
 **Candidate first experiment.** One task with real ambiguity in an unfamiliar mid-size
@@ -91,7 +96,7 @@ graded `turn_end_gates` matrix column (ADR-0012) and a probe of all seven
 feature-bearing harnesses found 3✓ / 3✗ / 1 undecidable, with hermes still the only
 always-on native policy; codex and claude-code carry it as hook surfaces, empty unless
 the user configures them. Full table:
-[category-2 index, "What category 2 has absorbed"](../2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
+[category-2 index, "What category 2 has absorbed"](../tools/2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 
 **Implication for experiment 03 (recorded before its design):** if harnesses ship
 verification gates natively, the category-4 margin can migrate down the stack. The
@@ -112,7 +117,7 @@ traced to exp-01's quality margin. Exp-03's "minimal harness" must therefore hol
 *measured* gates as its ingredient, and score any format/prose gating in either arm
 separately — a fully deterministic framework can still never touch the domain.
 **Priced instance for the format quadrant (2026-08-17,
-[swe-agent-2024](../../refs/2024-swe-agent.md)):** SWE-agent's in-`edit` linter — a
+[swe-agent-2024](../refs/2024-swe-agent.md)):** SWE-agent's in-`edit` linter — a
 deterministic, no-domain-contact gate that discards invalid edits mechanically — is
 worth a measured **+3.0pp** on SWE-bench Lite, and the paper's recovery curve shows
 why: edit-success odds halve after a single failed edit, so the gate's value is
@@ -139,7 +144,7 @@ the same task twice cleanly — the first run changes the repo and your own unde
 Experiment 01's working answer: preregister the protocol and falsification criteria
 before any run, run the contaminated arm second with fresh subagent contexts, log during
 (never reconstruct), and state n honestly (methodology rule 5;
-[`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md) is the
+[`experiments/01-gsd-vs-plain/`](../experiments/01-gsd-vs-plain/README.md) is the
 template). The epistemic caveat stands: n=1 preregistered is a *probe*, not a proof —
 but it's no longer anecdote, and the difference is the preregistration.
 

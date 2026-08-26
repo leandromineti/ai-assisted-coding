@@ -128,7 +128,7 @@ its second framework.
   fits in a lunch budget.
 - Observed session throughput: **~91 tokens/second** for the workhorse model,
   ~109 for the small one — session-level, overhead included, which is why the tier
-  gap compresses to ~20% ([metric definition](../tools/cross-cutting/metrics.md)).
+  gap compresses to ~20% ([metric definition](../docs/metrics.md)).
   Rule of thumb that falls out: ~2 minutes of API time per 10k output tokens.
 - Human attention cost of the framework arm: **two blocking events, ~63 seconds**.
   The framework's rationed clarification budget is real — but as the exit-code story

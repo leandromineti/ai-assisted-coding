@@ -29,7 +29,7 @@ they apply to source code. This is where that happens.
 | `log.md` | append-only ingest log | append-only |
 | `pdf/` | local copies of the sources | gitignored |
 | [`../comparisons/benchmarks.md`](../comparisons/benchmarks.md) | characteristics of `kind: benchmark` sources | **generated** |
-| [`../tools/cross-cutting/metrics.md`](../tools/cross-cutting/metrics.md) | metric vocabulary, each citing a ref | yes |
+| [`../docs/metrics.md`](../docs/metrics.md) | metric vocabulary, each citing a ref | yes |
 
 `index.md` and `benchmarks.md` come from `python3 scripts/build-refs-index.py`. Do not edit
 them; edit a note's frontmatter and re-run. Hand-kept indexes drift, and you find out when
@@ -70,7 +70,7 @@ one line to `log.md`; re-run the generator.
 
 **Query** — search the notes before searching the web. If the answer required synthesis
 across several notes, that synthesis is itself worth a note or a line in
-[`../tools/cross-cutting/index.md`](../tools/cross-cutting/index.md).
+[`../docs/index.md`](../docs/index.md).
 
 **Lint** — `python3 scripts/build-refs-index.py --check`. Catches missing frontmatter, keys
 that don't match filenames, unread-but-cited sources, dangling `refs/<key>.md` links, and

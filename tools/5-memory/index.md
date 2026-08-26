@@ -22,7 +22,7 @@ LLM-extraction platform sold on benchmarks (mem0), plus four stubs (memori, ever
 memmachine, openviking). Four consolidation postures verified: background cron, per-turn
 event cascade, agent-invoked, hook-capture-to-platform. **Zero shared formats** — each
 vendor pays the harness-fragmentation cost separately, in code (tracked as a dated watch
-note beside the [standards scoreboard](../cross-cutting/standards.md)). The SDK-facing
+note beside the [standards scoreboard](../../docs/standards.md)). The SDK-facing
 shapes earn membership via their shims, and the shims are where the coding-agent
 behavior lives — up to and including mem0's plugin *blocking the harness's native memory
 writes* (the displacement finding, conclusion 8).
@@ -114,5 +114,5 @@ crystallization (memos), provenance audit (ai-memory).
   promotion trigger itself still hasn't fired: `background` now has four instances,
   `in-loop` and `manual` still one each.
 - A memory-interchange convention would be the next MCP-shaped event — watched from the
-  [standards scoreboard](../cross-cutting/standards.md)'s side (zero shared formats as
+  [standards scoreboard](../../docs/standards.md)'s side (zero shared formats as
   of 2026-08-18).

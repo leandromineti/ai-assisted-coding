@@ -67,7 +67,7 @@ directory"). A third-party installer relocating a vendor's skills into the share
 `.agents/` convention — and calling it *canonical* — is convergence evidence from the
 installer's side, matching what Warp showed from the implementer's side. It also grew a
 `globalSkillsDir` / shared-skill-target concept for home-directory skill targets. See
-[`../cross-cutting/standards.md`](../cross-cutting/standards.md).
+[`../../docs/standards.md`](../../docs/standards.md).
 
 ## The category-4 questions, answered
 

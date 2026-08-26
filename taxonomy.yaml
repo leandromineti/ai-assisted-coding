@@ -63,7 +63,7 @@ terms:
           - "tools/4-workflow-frameworks/gsd-core.md:387"
           - "tools/4-workflow-frameworks/gsd-core.md:547"
           - "tools/4-workflow-frameworks/bmad-method.md:105"
-          - "tools/cross-cutting/feature-taxonomy.md:148"
+          - "docs/feature-taxonomy.md:148"
           - "tools/5-memory/mem0.md:132"
       - compound: "capability ladder"
         canonical_source: >-
@@ -378,7 +378,7 @@ schema_renames:
     scope:
       - "report frontmatter block `features:` (7 category-2 + 5 category-5 reports)"
       - "tools/_template-tool-report.md"
-      - "tools/cross-cutting/feature-taxonomy.md (13 `block: features` registry entries)"
+      - "docs/feature-taxonomy.md (13 `block: features` registry entries)"
       - "scripts/build-tool-index.py"
     note: >-
       ADR-0018: the original ADR-0010 block takes the <category>_features naming

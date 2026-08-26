@@ -7,7 +7,7 @@ GSD vs. Opus 5" is a category error — three things that aren't the same kind o
 at all — so every note and comparison in this repo declares which category its subject
 occupies, and comparisons stay like-for-like. This is the repo's **tool taxonomy**,
 the half that classifies what a tool *is*; its companion, the
-[**feature taxonomy**](tools/cross-cutting/feature-taxonomy.md)[^adr-0010], defines
+[**feature taxonomy**](docs/feature-taxonomy.md)[^adr-0010], defines
 the characteristics assessed on tools — once, with per-category applicability — and
 the comparison matrices are generated from it. Categories may carry **types**
 (category 6's `type`; category 4's SDD / context-discipline / decision-governance
@@ -386,7 +386,7 @@ from the categories that implement it — never given a category entry of its ow
 - **`AGENTS.md` / `CLAUDE.md`** — rules-file conventions; the files are category-6 artifacts.
 - **Agent-permission conventions** — emerging; nothing confirmed as a named standard.
 
-Written up in [`tools/cross-cutting/standards.md`](tools/cross-cutting/standards.md)
+Written up in [`docs/standards.md`](docs/standards.md)
 (one of the cross-cutting notes since 2026-08-18[^adr-0008]),
 which also tracks the
 question this category exists to answer: whether skills and hooks standardize the way MCP
@@ -492,7 +492,7 @@ taxonomy needs revision — not the case.
   revisit if the repo's scope widens.
 - **Human practices** — task decomposition, when to restart context, review discipline.
   Real and important, but they're techniques rather than tooling; they belong in
-  `tools/cross-cutting/`.
+  `docs/`.
 
 ## Category indexes
 
@@ -504,7 +504,7 @@ taxonomy needs revision — not the case.
 | 4 · Workflow frameworks | [`tools/4-workflow-frameworks/index.md`](tools/4-workflow-frameworks/index.md) |
 | 5 · Memory | [`tools/5-memory/index.md`](tools/5-memory/index.md) |
 | 6 · Extensions (bucket) | [`tools/6-extensions/index.md`](tools/6-extensions/index.md) |
-| ✕ Cross-cutting (incl. standards) | [`tools/cross-cutting/index.md`](tools/cross-cutting/index.md) |
+| ✕ Cross-cutting (incl. standards) | [`docs/index.md`](docs/index.md) |
 
 Per-tool reports use [`tools/_template-tool-report.md`](tools/_template-tool-report.md) and
 are indexed flat, across categories, in [`comparisons/tools.md`](comparisons/tools.md).

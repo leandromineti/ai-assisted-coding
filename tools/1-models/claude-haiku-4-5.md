@@ -59,7 +59,7 @@ network) — the first in-repo measurement where only the model varied:
   ~20% above Sonnet 5's 91 in the same rig, far less than the tier gap suggests:
   session overhead (TTFT, tool turns) compresses the difference. Computed by
   `scripts/observed-throughput.py`; caveats in
-  [`metrics.md`](../cross-cutting/metrics.md) § Observed session throughput.
+  [`metrics.md`](../../docs/metrics.md) § Observed session throughput.
 - **Failure style, not just failure count:** blanket `rc=1` error handling — no
   traceback ever escapes (it *beat* Sonnet on the truncated-archive trap, 0/4 vs
   3/5) but no failure is distinguishable (distinct-exit-codes trap failed 4/4).

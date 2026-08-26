@@ -19,7 +19,7 @@ is a storage key (3 → 5 by [ADR-0007](../../adrs/0007-renumber-core-triad-firs
 
 This index covers the **installable things**. The specifications they implement — MCP the
 protocol, the `AGENTS.md` convention — are not category entries; they live in
-[`../standards/`](../cross-cutting/standards.md).
+[`../standards/`](../../docs/standards.md).
 
 ## Types
 
@@ -32,10 +32,10 @@ as residual data, ADR-0020.)*
 | Type | What it does | Portability |
 |------|--------------|-------------|
 | **MCP servers** | Expose external systems (filesystems, APIs, databases, browsers, SaaS) as tools over the Model Context Protocol. | High — one server works across Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, Devin. |
-| **Skills** | Packaged instructions loaded on demand for a class of task. | Converging (2026-07-28): `SKILL.md` consumed by ≥4 harnesses per spec-kit's integration registry — convention-level, like rules files. See [standards](../cross-cutting/standards.md). |
+| **Skills** | Packaged instructions loaded on demand for a class of task. | Converging (2026-07-28): `SKILL.md` consumed by ≥4 harnesses per spec-kit's integration registry — convention-level, like rules files. See [standards](../../docs/standards.md). |
 | **Hooks** | Deterministic code the harness runs at lifecycle points (pre/post tool use, session start/stop). Not model-mediated — the harness executes them, so they *always* fire. | Harness-specific. |
 | **Subagent definitions** | Named agents with their own prompt, tools, and model, spawned for isolated work. | Harness-specific format; the pattern is universal. |
-| **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../cross-cutting/standards.md). |
+| **Rules files** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules` — standing instructions injected into context. | Convention-level only — see [standards](../../docs/standards.md). |
 | **Config packs** | Curated bundles of the other types at scale (skills + agents + rules + hooks), installed as a set. | Rides on the file conventions of what it bundles — ECC's ~13 install targets are the measured case. |
 
 **Coverage note (2026-08-19, renumbered 2026-08-22).** This bucket has one report (ECC)
@@ -43,7 +43,7 @@ as residual data, ADR-0020.)*
 checked-absent. The [candidates ledger](../candidates.md)'s category-6 section (first
 five rows sighted 2026-08-19, all in this bucket's types) is where that gap is being
 worked; the balance arc is issue #30, and the recorded decision point for the bucket's
-shape stays the ~2027-01 [standards re-check](../cross-cutting/standards.md). Coverage
+shape stays the ~2027-01 [standards re-check](../../docs/standards.md). Coverage
 depth per type follows the surviving strata semantics
 ([ADR-0019](../../adrs/0019-category-5-coverage-strata.md), carried forward by
 ADR-0020): content types get Standards tracking plus exemplar reads; reach-side (MCP
@@ -134,7 +134,7 @@ to a particular agent loop. The same is *aspirationally* true of skills and rule
 The counter-argument worth holding: hooks and subagent definitions are harness-specific
 today, so this category is only partly portable — arguably it's "MCP plus a pile of vendor
 features" wearing a category's clothes. Whether that resolves depends on standards adoption,
-which is tracked in [`../standards/`](../cross-cutting/standards.md) rather than here.
+which is tracked in [`../standards/`](../../docs/standards.md) rather than here.
 
 ## Reports
 
@@ -156,7 +156,7 @@ no prescribed process — see the verdict section of [`ecc.md`](ecc.md).
 ## Open questions
 
 *Questions about the specifications themselves live in
-[`../standards/`](../cross-cutting/standards.md). These are about the installable artifacts.*
+[`../standards/`](../../docs/standards.md). These are about the installable artifacts.*
 
 - Hooks are the only deterministic escape hatch in an otherwise probabilistic system —
   the harness executes them, so they always fire. How much of a workflow *should* be moved

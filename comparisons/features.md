@@ -6,7 +6,7 @@
 Cells: **✓** verified present · **✗** verified absent · **·** not yet checked.
 The dot is load-bearing — it is *not* a no. A feature key is only set in a
 report's frontmatter when confirmed in source or official docs. Keys are
-defined once in the [feature taxonomy](../tools/cross-cutting/feature-taxonomy.md)
+defined once in the [feature taxonomy](../docs/feature-taxonomy.md)
 (ADR-0010); the [tool taxonomy](../taxonomy.md) classifies the tools themselves.
 
 ## Models (category 1)
@@ -74,7 +74,7 @@ here do NOT count toward the cross-category table's demand side (that filter is
 ## Workflow frameworks (category 4)
 
 The category-4 slice of the feature taxonomy — `workflow_features:` frontmatter,
-defined in `tools/cross-cutting/feature-taxonomy.md`. Structural
+defined in `docs/feature-taxonomy.md`. Structural
 presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
 mechanism table's job, tools/4-workflow-frameworks/index.md).
@@ -131,7 +131,7 @@ The bleed, quantified. **Demand** counts presence among reports of the
 feature's `applies_to` categories (✓ / checked); **supply** counts tracked
 category-5 tools of the linked `kind`. Zeros are honest — no supply-side tool
 tracked yet. Definitions and links live in the
-[feature taxonomy](../tools/cross-cutting/feature-taxonomy.md).
+[feature taxonomy](../docs/feature-taxonomy.md).
 
 | Feature | Category | Demand (✓/checked) | Supply (category-5 kind) | Note |
 |---|---|---|---|---|
