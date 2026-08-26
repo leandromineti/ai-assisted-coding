@@ -60,9 +60,17 @@ Conventions:
   `closed-enum` (one value from a closed set) is not `open-descriptive` (an open
   vocabulary with a required `family:specific` shape — the ADR-0017 distinction), and
   `graded` is ADR-0011's *ordered* enforcement scale, not merely an enum. The rest:
-  `presence` (✓/✗), `list`, `free-text`, `string`, `number`, `date`, and — since
-  ADR-0033 — `structured`, a mapping whose sub-schema the entry's own definition
-  states (today: `pricing`). A key that is
+  `presence` (✓/✗), `list`, `free-text`, `string`, `number`, `date`, and `structured`.
+  **`value_type` types the FACT, not the envelope** (ADR-0039): `structured` means
+  SEVERAL facts share one cell (`pricing` carries input *and* output), never "this value
+  has provenance" — every value here has provenance, and it lives where it always has, in
+  the `#` comment beside the key and the report body. The one thing a comment cannot do is
+  reach a generated matrix: `safe_load` drops comments, so a field whose *rendered* cell
+  must carry prose — an absence needing its search scope, a qualifier that changes what a
+  number means — writes that prose into the value and sets **`renders_note: true`**. Two
+  fields qualify today (`pricing`, `knowledge_cutoff`) and the test is deliberately narrow:
+  `context_window`, `stars`, and `released` all have caveats worth recording and none that
+  the matrix must show, so they stay plain types with comments. A key that is
   scalar but accepts a list of named instances where naming them is informative
   (`rules_files`, `memory_store`) keeps its scalar type and says so in its definition —
   list-ness is a property of an instance, not a second type. Unknown values are a

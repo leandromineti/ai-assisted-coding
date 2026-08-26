@@ -99,3 +99,4 @@ the library was renamed and split the same day, so those map to
 | [0036](0036-feature-taxonomy-yaml-split.md) | 2026-08-26 | The feature registry becomes `docs/feature-taxonomy.yaml`, pairing with its prose like `tool-taxonomy.{md,yaml}` | accepted |
 | [0037](0037-knowledge-cutoff-structured.md) | 2026-08-26 | `knowledge_cutoff` becomes a mapping: two dates + `basis` (vendor-stated \| inherited \| not-stated \| retracted); third cell-value check | two-date clause superseded by 0038 |
 | [0038](0038-cutoff-single-date.md) | 2026-08-26 | One cutoff date, meaning the training-data limit; the finer vendor figure moves to `note` | accepted |
+| [0039](0039-value-type-types-the-fact.md) | 2026-08-26 | `value_type` types the fact: `knowledge_cutoff` is `date`; `structured` means plural facts; `renders_note` marks matrix-visible prose | accepted |

@@ -63,7 +63,10 @@ VALUE_TYPES = {
     "string",            # a single identifier or name
     "number",            # a bare count
     "date",              # a date
-    "structured",        # a mapping; the entry's definition states its sub-schema (ADR-0033)
+    "structured",        # SEVERAL facts in one cell (pricing: input AND output). Not a
+                         # wrapper for provenance — value_type types the FACT, and a cell
+                         # that adds `note` for the matrix flags `renders_note` instead
+                         # (ADR-0033 introduced it, ADR-0039 narrowed it)
 }
 
 # `pricing:`'s sub-schema (ADR-0033). The base-rate rule lives in the registry definition;
@@ -931,7 +934,8 @@ def render_feature_registry() -> str:
                 kind = e.get("kind_link")
                 kind_cell = f"`{kind}` (cat {5 if kind == 'memory' else 6})" if kind else "—"
                 lines.append(
-                    f"| `{e['id']}` | assessed | `{e['value_type']}` | "
+                    f"| `{e['id']}` | assessed | `{e['value_type']}`"
+                    f"{' + note' if e.get('renders_note') else ''} | "
                     f"{esc(e['definition'])} | {kind_cell} | "
                     f"{esc(e.get('note', '')) or '—'} |"
                 )
@@ -941,7 +945,8 @@ def render_feature_registry() -> str:
             rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
             where = f"renders in {rendered}" if rendered else "frontmatter only"
             lines.append(
-                f"| `{t['id']}` | transcribed | `{t['value_type']}` | "
+                f"| `{t['id']}` | transcribed | `{t['value_type']}`"
+                f"{' + note' if t.get('renders_note') else ''} | "
                 f"{esc(t['definition'])} | — | "
                 f"`{t['verification']}` · {where} |"
             )
