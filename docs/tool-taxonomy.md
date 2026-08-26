@@ -465,15 +465,32 @@ Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation
 | **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
 | **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
 | **DeepSeek** | deepseek-v4 ✓ | dsh ✓ | — | — |
-| **Alibaba (Qwen)** | qwen3-coder-next ✓ | qwen-code ○ *(candidate, not ingested — a gemini-cli fork)* | — | — |
+| **Alibaba (Qwen)** | qwen3-coder-next ✓ | qwen-code ○ *(candidate — a gemini-cli fork)* | — | — |
+| **Moonshot AI** | kimi-k3 ✓ | kimi-code ○ *(candidate, created 2026-05-22)* | — | — |
 
 **The direction is one-way, and that is the finding** *(2026-08-26)*: every vendor here
 spans **from** category 1 **into** category 2. A model maker ships a harness for its own
-weights; no harness maker in the set has trained a model and moved the other way. Six of
-the eight vendors with a tracked model report now have a harness — the two that don't,
-Moonshot and Z.ai, are the sweep's most recent model entries, which reads more like *not
-yet* than *not the pattern*. Treat "this vendor has no harness" as a dated observation
-with a short shelf life, not a stable fact about the vendor.
+weights; no harness maker in the set has trained a model and moved the other way. **Seven
+of the eight** vendors with a tracked model report ship one.
+
+*Corrected the same day it was written.* This paragraph first said **six of eight**, naming
+Moonshot and Z.ai as the holdouts and excusing both as "the sweep's most recent model
+entries — *not yet* rather than *not the pattern*". Moonshot's `kimi-code` had existed since
+**2026-05-22**, three months earlier; the absence was inferred from *this repo having no
+report*, not from looking. That is exactly the blind spot
+[ADR-0041](../adrs/0041-vendors-matrix-removed.md) had just finished arguing about — a
+tracked-only surface understating span — reintroduced one commit later, in prose, by the
+same hand. The lesson the removed matrix was carrying survives its removal: **absence of a
+report is not absence of a product**, and a span claim has to be checked against the world
+rather than against `tools/`.
+
+**Z.ai is the real exception, and it is a strategy rather than a gap.** No Zhipu coding CLI
+exists (org checked 2026-08-26 — model repos only). What Z.ai sells instead is the **GLM
+Coding Plan**: a subscription that plugs its models into *other people's* harnesses. So the
+one vendor that hasn't built a harness monetizes everyone else's — which is a distinct bet
+about where the category's value sits, not a to-do item. Worth watching as the falsifier: if
+Z.ai ships a CLI, the one-way rule has no exceptions left; if the plan grows, it is evidence
+that harness-ownership is optional for a model maker after all.
 
 Two consequences a reasoner must carry:
 
