@@ -51,11 +51,31 @@ single free-text `thinking` key that held four independent facts at once):
   variation is in the level set and the default, which is why both live in the cell:
   `@high` mostly, `@medium` at OpenAI, **`@max`** at Kimi K3 and GLM-5.3.
 
-Five cells are **·** and all five are Anthropic — `reasoning_type` for Opus 5 and Sonnet 5
-(their old cells said only `adaptive`, silent on toggleability) and `reasoning_effort` for
-Fable 5, Opus 5 and Sonnet 5 (the record carries a default but never the level set). They
-are a dated probe against the models overview page —
-[issue #38](https://github.com/leandromineti/ai-assisted-coding/issues/38) — not a guess.
+**All three keys are now 11/11** (2026-08-26). The reshape left five cells at `·`, all
+Anthropic; [issue #38](https://github.com/leandromineti/ai-assisted-coding/issues/38)
+closed them the same day against two first-party pages —
+[`/build-with-claude/effort`](https://platform.claude.com/docs/en/build-with-claude/effort)
+and the per-model configuration table at
+[`/build-with-claude/thinking-troubleshooting`](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting#supported-models).
+Neither is the `url` those four reports point at: **the models overview table carries
+neither fact**, so the surface that answered the knowledge-cutoff question was the wrong
+one here. The three Anthropic frontier models turn out to share one dial —
+`levels:low/medium/high/xhigh/max@high`, `output_config.effort` — while differing on
+toggleability, which is exactly the separation the split was for.
+
+Two things that pass came out of it, both recorded rather than smoothed over:
+
+- **The enum has a known strain point.** Opus 5 is `default-on`, but conditionally: the
+  docs reject `thinking: {type: "disabled"}` at effort `xhigh` or `max` while accepting it
+  at `high` or below. Toggleability is therefore not always a static per-model property —
+  here it is a function of another parameter in the same request. `default-on` is the
+  honest cell; the condition lives in the report. If a second vendor ships the same shape,
+  that is the two-instance bar for revisiting the enum.
+- **The two Haiku 4.5 cells were derivations, and both were confirmed.** The reshape read
+  `opt-in` / `budget:tokens` out of the old cell's *"extended (budget_tokens)"*; the
+  per-model table independently gives Default **Off**, and effort's supported-models list
+  excludes Haiku 4.5 outright. A derivation that survives its own check is worth noting —
+  the ones that don't are why the other three cells stayed `·` instead.
 
 The other half of the surface is **9 transcription fields** — `vendor`, `license`,
 `model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,

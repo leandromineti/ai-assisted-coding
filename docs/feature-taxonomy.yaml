@@ -110,7 +110,7 @@ features:
     applies_to: [1]
     value_type: closed-enum
     definition: "TOGGLEABILITY: always-on (cannot be disabled) | default-on (on unless disabled per request) | opt-in (off unless requested) | none"
-    note: "added 2026-08-26 (ADR-0040). Toggleability, NOT Anthropic's adaptive-vs-extended axis — that axis is who SIZES the reasoning and it surfaces in `reasoning_effort`'s family (levels: vs budget:). Toggleability won the enum because every vendor states it (9/11 settled from the existing record; the 2 · are opus-5 and sonnet-5, whose cells said only `adaptive`, which is silent on this)"
+    note: "added 2026-08-26 (ADR-0040). Toggleability, NOT Anthropic's adaptive-vs-extended axis — that axis is who SIZES the reasoning and it surfaces in `reasoning_effort`'s family (levels: vs budget:). Toggleability won the enum because every vendor states it: 9/11 settled from the existing record at the reshape, 11/11 the same day once issue #38 read Anthropic's per-model thinking table. KNOWN STRAIN (2026-08-26): claude-opus-5 is `default-on` only CONDITIONALLY — `thinking: {type: disabled}` is accepted at effort ≤ high and 400s at xhigh/max, so toggleability there is a function of another request parameter, not a static model property. Recorded in the report; revisit the enum if a second vendor ships the same shape (issue #2's two-instance bar)"
   - id: reasoning_effort
     block: model_features
     applies_to: [1]

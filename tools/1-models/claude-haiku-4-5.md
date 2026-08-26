@@ -22,8 +22,8 @@ knowledge_cutoff:
   note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs define the pair as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used — RECORDED HERE AS THE TRAINING-DATA LIMIT (2025-07); the vendor's finer 'reliable knowledge cutoff' is 2025-02 (ADR-0038: one date, the outer bound)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: opt-in      # "extended (budget_tokens)": reasoning happens only when the caller asks for it
-  reasoning_effort: budget:tokens   # the sweep's only `budget:` dial — the caller allocates, the model does not choose
+  reasoning_type: opt-in      # confirmed 2026-08-26: docs table Default "Off", "Extended only", rejects `adaptive`
+  reasoning_effort: budget:tokens   # the sweep's only `budget:` dial; effort's supported-models list EXCLUDES 4.5
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"
   batch_discount: "50% in+out ($0.50 / $2.50 per MTok)"
 checked: 2026-08-17
@@ -58,6 +58,23 @@ asks for it (`reasoning_type: opt-in`), and **budget_tokens** means the caller a
 the size up front rather than picking a level the model spends against
 (`reasoning_effort: budget:tokens`). Every other model in the sweep is on a level enum —
 this is the generation seam, visible in one column instead of buried in prose.
+
+**Both cells were derivations at the reshape, and both were confirmed 2026-08-26** — worth
+recording, because the alternative was to guess and be right by luck:
+
+- [`/build-with-claude/thinking-troubleshooting`](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting#supported-models)
+  — the per-model table gives Haiku 4.5 as *"Extended only"*, Default **Off**, rejecting
+  `"adaptive"` with a 400. Default Off is precisely `opt-in`, read from the vendor rather
+  than inferred from what "extended" implies.
+- [`/build-with-claude/effort`](https://platform.claude.com/docs/en/build-with-claude/effort)
+  — its supported-models list **excludes** Claude Haiku 4.5 entirely. So the absence of a
+  level dial here is now a verified absence rather than an unexamined one, and
+  `budget:tokens` is the whole surface. (Claude Opus 4.5 is called out as *"the only
+  extended-thinking-only model that supports effort"* — 4.5-era models are not uniform,
+  which is why this had to be read per model.)
+
+The row's `checked:` stays **2026-08-17**: only the reasoning cells were re-verified today,
+and the field dates the whole spec block.
 
 ## Role in this repo's work
 

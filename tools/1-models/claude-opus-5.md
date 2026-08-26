@@ -22,11 +22,9 @@ knowledge_cutoff:
   note: "May 2026 (reliable); training data May 2026 — the two coincide. corroborated 2026-08-26 by a second first-party surface — the [Opus 5 system card](../../references/cards/2026-claude-opus-5.md) §1.1: 'Claude Opus 5's knowledge cutoff date is May 2026' — and re-verified the same day against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  # reasoning_type: the recorded cell said only `adaptive`, which names who SIZES the
-  # reasoning, not whether it can be disabled — silent on this key. Not checked.
-  # reasoning_effort: the record has the default ("effort param; defaults high on Claude
-  # API and Claude Code", 2026-08-17) but never the level set, so the `levels:<set>@<default>`
-  # shape cannot be filled without a new check. Not checked; the recorded prose is in § Reasoning surface.
+  # Both keys below settled 2026-08-26 against the thinking + effort docs (§ Reasoning surface).
+  reasoning_type: default-on   # docs table Default "On"; accepts `disabled` — but ONLY at effort ≤ high, see below
+  reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # "supports all five effort levels"; `output_config.effort`
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
   batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
 checked: 2026-08-17
@@ -52,21 +50,35 @@ window, verified 2026-07-31).
 
 ## Reasoning surface
 
-Two of the three reasoning cells are **·**, and the split is what exposed why (ADR-0040).
-The old free-text cells held, verified 2026-08-17: `thinking: adaptive` and
-*"effort param; defaults high on Claude API and Claude Code."*
+**Both cells resolved 2026-08-26** (issue #38), against two pages neither of which is this
+report's `url` — the overview table does not carry either fact:
 
-- `reasoning_type` is not-checked because `adaptive` answers a different question. It
-  names who *sizes* the reasoning — the model, per request — and says nothing about
-  whether reasoning can be switched off. Reading a toggle out of it would be inference,
-  not transcription.
-- `reasoning_effort` is not-checked because the record has the **default** but never the
-  **level set**, and `levels:<set>@<default>` needs both. The default alone would let a
-  reader assume this model's enum matches Grok's low/medium/high, which is exactly the
-  kind of quiet borrowing the shape exists to prevent.
+- [`/build-with-claude/effort`](https://platform.claude.com/docs/en/build-with-claude/effort)
+  — *"Claude Opus 5 supports all five effort levels"*, *"The API default is `high`"*, and
+  *"Setting `effort` to `"high"` produces exactly the same behavior as omitting the
+  `effort` parameter entirely."* The dial is `output_config.effort`, request-level.
+- [`/build-with-claude/thinking-troubleshooting`](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting#supported-models)
+  — the per-model configuration table: Opus 5 is *"Adaptive only"*, Default **On**, and
+  *"Models marked `On` default to thinking but accept `thinking: {type: "disabled"}`."*
 
-Both are one page away — the models overview table the knowledge-cutoff re-check already
-used (see `tools/1-models/README.md`) — and are tracked as a dated probe, not guessed here.
+**Opus 5 is the sweep's only conditionally-toggleable model, and it strains the enum.**
+The table's footnote: *"Claude Opus 5 accepts `"disabled"` at effort `high` or below;
+combining it with effort `xhigh` or `max` returns a 400 error. This restriction applies to
+Claude Opus 5 and later models and is enforced on each request."* So toggleability here is
+not a static property of the model — it is a function of another parameter's value in the
+same request. `default-on` is the honest cell (it defaults on and does accept `disabled`),
+but a harness that hardcodes `disabled` and raises effort gets a 400 rather than a
+downgrade, which no cell value can convey on its own.
+
+What the old free-text cells held, for the record (verified 2026-08-17): `thinking:
+adaptive` and *"effort param; defaults high on Claude API and Claude Code."* Neither was
+wrong; neither was enough. `adaptive` names who *sizes* the reasoning and is silent on the
+toggle, and a default without its level set cannot fill `levels:<set>@<default>` — which is
+what kept both cells at `·` through the ADR-0040 reshape rather than being guessed.
+
+The row's `checked:` stays **2026-08-17**: only the reasoning cells were re-verified today,
+and the field dates the whole spec block — same discipline as the `knowledge_cutoff` note's
+`re-verified 2026-08-26` above it.
 
 ## Role in this repo's work
 

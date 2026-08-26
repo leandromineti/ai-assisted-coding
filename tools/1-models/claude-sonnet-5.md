@@ -22,11 +22,9 @@ knowledge_cutoff:
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  # reasoning_type: the recorded cell said only `adaptive` — who SIZES the reasoning,
-  # not whether it can be disabled. Not checked.
-  # reasoning_effort: the record has the default ("effort param; defaults high on Claude
-  # API and Claude Code", 2026-08-17) but never the level set, so the `levels:<set>@<default>`
-  # shape cannot be filled without a new check. Not checked; the recorded prose is in § Reasoning surface.
+  # Both keys below settled 2026-08-26 against the thinking + effort docs (§ Reasoning surface).
+  reasoning_type: default-on   # docs table Default "On"; accepts `disabled` unconditionally, unlike Opus 5
+  reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # `output_config.effort`; all five levels
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
   batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
 checked: 2026-08-17
@@ -51,15 +49,27 @@ compromise chosen so category-4 comparisons measure frameworks, not model headro
 
 ## Reasoning surface
 
-Two of the three reasoning cells are **·** for the same reason as Opus 5's (ADR-0040).
-The old free-text cells held, verified 2026-08-17: `thinking: adaptive` and *"effort
-param; defaults high on Claude API and Claude Code."* `adaptive` names who *sizes* the
-reasoning, not whether it can be disabled, so `reasoning_type` stays not-checked; the
-record carries the effort **default** but never the **level set**, so
-`levels:<set>@<default>` cannot be filled without a new check.
+**Both cells resolved 2026-08-26** (issue #38), against two pages neither of which is this
+report's `url`:
 
-Worth re-checking here specifically: this is the rig's pinned model for every category-4
-experiment arm, so its effort default is a cost input to every arm's ledger.
+- [`/build-with-claude/effort`](https://platform.claude.com/docs/en/build-with-claude/effort)
+  — *"Claude Sonnet 5 defaults to `high` effort on the Claude API and Claude Code"*, and
+  all five levels are available to it: the level table lists Sonnet 5 under both `max` and
+  `xhigh`, and `high`/`medium`/`low` are universal. The dial is `output_config.effort`.
+- [`/build-with-claude/thinking-troubleshooting`](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting#supported-models)
+  — the per-model table: *"Adaptive only"*, Default **On**, rejecting only `"enabled"`.
+  `disabled` is accepted, with none of Opus 5's effort-dependent restriction.
+
+**This matters here more than anywhere else in category 1**: this is the rig's pinned model
+for every category-4 experiment arm, so `@high` is the effort every arm has been running at
+by default — a cost input to each arm's ledger that was previously recorded as prose and
+never as a comparable cell. Nothing about past runs changes; the figure is now in the
+matrix where a future ledger can be checked against it.
+
+The old free-text cells, for the record (verified 2026-08-17): `thinking: adaptive` and
+*"effort param; defaults high on Claude API and Claude Code."* The row's `checked:` stays
+**2026-08-17** — only the reasoning cells were re-verified today, and the field dates the
+whole spec block.
 
 ## Role in this repo's work
 

@@ -22,8 +22,8 @@ knowledge_cutoff:
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: always-on   # recorded cell said "adaptive (always on)" — the toggle half is explicit
-  # reasoning_effort: no effort surface was ever recorded here (2026-08-17) — not checked
+  reasoning_type: always-on   # confirmed 2026-08-26: docs table Default "Always on"; rejects BOTH `enabled` and `disabled`
+  reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # settled 2026-08-26 — `output_config.effort` (§ Reasoning surface)
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
   batch_discount: "50% in+out ($5 / $25 per MTok)"
 checked: 2026-08-17
@@ -56,13 +56,25 @@ than by tier.
 
 ## Reasoning surface
 
-The old free-text cell held, verified 2026-08-17: `thinking: "adaptive (always on)"` —
-two facts in one string, which is what ADR-0040 split apart. The parenthetical settles
-`reasoning_type: always-on`; the head word (`adaptive`) describes who *sizes* the
-reasoning and belongs to no cell of its own.
+`reasoning_effort` **resolved 2026-08-26** (issue #38) and `reasoning_type` confirmed the
+same day, against two pages neither of which is this report's `url`:
 
-`reasoning_effort` is **·**: no effort surface was ever recorded for this model, unlike
-Opus 5 and Sonnet 5, whose cells at least carried a default. Tracked as a dated probe.
+- [`/build-with-claude/effort`](https://platform.claude.com/docs/en/build-with-claude/effort)
+  — *"Effort is the primary control for trading off intelligence, latency, and cost on
+  Claude Fable 5. **Start with `high`, the default**"*; the level table lists Fable 5 under
+  both `max` and `xhigh`, so all five are available. The dial is `output_config.effort`.
+- [`/build-with-claude/thinking-troubleshooting`](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting#supported-models)
+  — the per-model table: *"Adaptive only"*, Default **Always on**, and it is the strictest
+  row in the lineup, rejecting **both** `"enabled"` and `"disabled"` with a 400. *"Models
+  marked `Always on` cannot turn thinking off."*
+
+Fable 5 is where the two keys come apart most cleanly. Reasoning cannot be switched off at
+all (`always-on`), yet it has the full five-level dial — so "can't turn it off" and "can't
+control it" are plainly different facts, which a single free-text cell tended to blur.
+
+The old cell held, verified 2026-08-17: `thinking: "adaptive (always on)"` — two facts in
+one string, which is what ADR-0040 split. The row's `checked:` stays **2026-08-17**: only
+the reasoning cells were re-verified today, and the field dates the whole spec block.
 
 ## Role in this repo's work
 
