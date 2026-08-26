@@ -16,7 +16,7 @@ pricing:
   currency: USD
   regime: flat
   note: "$10 / $50 per MTok (verified 2026-08-17)"
-knowledge_cutoff: "Jan 2026 (reliable) — older than Opus 5's May 2026"
+knowledge_cutoff: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "adaptive (always on)"
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"

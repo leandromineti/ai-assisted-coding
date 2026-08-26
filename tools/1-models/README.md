@@ -151,6 +151,24 @@ check starts where the fact actually lives:
   **Unchecked:** which cards, if any, cover the 5-generation models this repo tracks. Only
   the Opus 4 / Sonnet 4 card was opened, and only far enough to establish the genre.
 
+- **Anthropic API docs beat the system cards for specs, and it isn't close.**
+  [`docs.claude.com/en/docs/about-claude/models/overview`](https://docs.claude.com/en/docs/about-claude/models/overview)
+  ships the model table as structured data — one page, every model, with
+  `reliableKnowledgeCutoff` **and** `trainingDataCutoff` as separate fields (plus
+  `releasedOn`, `contextWindowTokens`, `maxOutputTokens`, `thinking`, `defaultEffort`,
+  and a full `pricing` block). All four tracked models re-verified there 2026-08-26 in a
+  single fetch. The system cards would have meant opening 123-page PDFs whose model→card
+  mapping the index does not even expose in HTML. **Cards are for depth — training
+  process, safety evaluations, the reasoning behind a release; the docs are for specs.**
+  Where Google splits the same information across two surfaces and states the cutoff only
+  on the card, Anthropic states it in the docs and elaborates in the card.
+
+  The pair of fields is worth carrying into the notes, because Anthropic distinguishes
+  them: knowledge cutoff is *"the date through which the model's knowledge is most
+  extensive"*, training data cutoff is *"the broader range of data used"*. **Haiku 4.5 is
+  the specimen where they diverge** — 2025-02 vs 2025-07, five months — while the three
+  Claude 5 models have them equal. A single-date field would have flattened that.
+
 ## References
 
 - **[llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)** — Fabio
