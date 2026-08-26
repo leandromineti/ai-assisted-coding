@@ -14,7 +14,7 @@ still](https://mineti.dev/articles/the-ai-coding-stack/).
 ## Start here
 
 **[`docs/tool-taxonomy.md`](docs/tool-taxonomy.md)** — the shared vocabulary, with a boundary rule, a
-bleed/vendor-span distinction, and a stress test for the many tools that straddle the
+bleed/maker-span distinction, and a stress test for the many tools that straddle the
 divisions. A **core triad** — categories 1–3, the three things a running agent cannot
 lack — plus three **interfaces** (4, 5, and the bucket at 6) that mediate between the
 triad and everything around it. Every note and comparison here declares which category
@@ -85,7 +85,7 @@ confirm, contradict, or note silence.
 ├── experiments/               preregistered A/Bs: protocol, log appended live, artifacts
 │   └── rig/                       the pinned container + hidden verifier both arms run against
 │
-├── comparisons/               generated matrices — tools, features, models, vendors, benchmarks
+├── comparisons/               generated matrices — tools, features, models, environments, benchmarks
 ├── adrs/                      dated, immutable records of every structural decision
 ├── articles/                  public-facing drafts, written next to the evidence they cite
 ├── scripts/                   the two index generators, the vocabulary lint, the fact collectors
@@ -150,6 +150,7 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18, memory-type reading arc: one deep-dive, two surveys, three instrument full-reads)
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19, exp-04, n=1 per arm — a probe)
 15. **Harnesses track models by name, so a model's own API drift silently disarms them** (2026-08-26, four harnesses read at their pins — three version-pin, one sends a parameter Anthropic now rejects)
+16. **Every model maker ships its own harness — the composability the taxonomy assumes is not what the market is selling** (2026-08-26, eight of eight makers, no exceptions; the last two found by falsifying this repo's own claims)
 
 ## License
 

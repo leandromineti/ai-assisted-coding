@@ -28,7 +28,7 @@ this repo found that *tried* to fix the harness turned out to inherit that harne
 per-model prompt dispatch (conclusion 2's origin, and the repo's first upstream
 contribution).
 
-The taxonomy's vendor-span section upgrades this from measurement nuisance to structural
+The taxonomy's maker-span section upgrades this from measurement nuisance to structural
 fact: for spanned vendors the model and harness are **co-designed**, so the confound is
 not an artifact of lazy benchmark design — it is a property of the thing being measured.
 Any instrument claiming to compare fundamentals must pin two of the triad

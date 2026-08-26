@@ -420,7 +420,7 @@ So every entry records a **primary category** plus an explicit **bleed** note. T
 signal, not noise: it's how you watch categories consolidate. The clearest current example is
 xAI/SpaceX's $60B acquisition of Anysphere (Cursor), announced 2026-06-16 — a category-1
 vendor buying a category-2 product, then training Grok 4.5 on that harness's session data.
-That acquisition is not bleed, though — it is *vendor span*, the distinct dimension
+That acquisition is not bleed, though — it is *maker span*, the distinct dimension
 formalized just below. Vertical integration across categories is the live structural story of
 2026.
 
@@ -432,15 +432,15 @@ context server-side" is the explicit counter-position. Two instances plus a name
 counter-position make this a pattern to track, not an anecdote:
 **who a harness's maker is at category 1 predicts what the harness collects.**
 
-### Vendor span — when the categories stop being independent choices *(2026-08-16)*
+### Maker span — when the categories stop being independent choices *(2026-08-16; renamed from "Vendor span" 2026-08-26, ADR-0043)*
 
-Bleed and vendor span are different axes, and the framework reasons about them differently:
+Bleed and maker span are different axes, and the framework reasons about them differently:
 
 - **Bleed** is a property of a *tool* — one product reaching into an adjacent category (codex
   internalizing a sandbox, GSD shipping `gsd-pi`). Recorded per report, in the `bleed` note.
-- **Vendor span** is a property of a *maker* — one vendor owning distinct products across
+- **Maker span** is a property of a *maker* — one of them owning distinct products across
   several categories at once, and tuning them to each other. Recorded here, because it is a
-  fact about a company, not about any single entry.
+  fact about the maker, not about any single entry.
 
 The frontmatter field is `maker:`, not `vendor:` ([ADR-0042](../adrs/0042-vendor-becomes-maker.md)) —
 four of its values are private individuals, so the field cannot assert commerce. This
@@ -524,7 +524,7 @@ Two consequences a reasoner must carry:
 **Why this table is hand-kept, not generated** (and it is the one deliberate exception to
 rule 3 in this repo): the sharpest spanners are *closed* — Claude Code, cloud Codex, and
 Managed Agents have no report files — so a frontmatter-generated matrix would **understate
-vendor span precisely for the vendors that have the most of it.** A generated half used to
+maker span precisely for the makers that have the most of it.** A generated half used to
 exist alongside it (`comparisons/vendors.md`, removed 2026-08-26,
 [ADR-0041](../adrs/0041-vendors-matrix-removed.md)): it grouped every report by `vendor:`
 string and was billed as the tracked-only **floor**, its distance from this table

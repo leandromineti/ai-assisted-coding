@@ -306,7 +306,7 @@ Probe target: `@earendil-works/pi-coding-agent@0.84.3` (dist-tag `latest`, publi
 
 - **category 1↔2**: the non-vendor pole (no first-party weights) — but with the
   OAuth-impersonation seam above, which reaches *into* a category-1 vendor's billing
-  identity rather than being reached by it. A new shape for the vendor-span discussion:
+  identity rather than being reached by it. A new shape for the maker-span discussion:
   not integration, but authenticity spoofing.
 - **category 6**: the whole product is an extension host. Consumes the SKILL.md /
   Agent Skills standard and documents cross-tool interop (`~/.claude/skills`,

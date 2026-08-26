@@ -10,7 +10,7 @@ Read these three first. They are the constitution, and they outrank anything in 
 
 | File | What it governs |
 |---|---|
-| [`docs/methodology.md`](docs/methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
+| [`docs/methodology.md`](docs/methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 1 (+1a evidence grades, **1b negative claims** — an absence is only as good as the surface you searched), rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
 | [`docs/tool-taxonomy.md`](docs/tool-taxonomy.md) | the categories, and what a category *test* is |
 | [`docs/design-principles.md`](docs/design-principles.md) | the hypotheses, and the rule for revising them |
 
@@ -29,7 +29,7 @@ conclusion without a linked note is an assertion; a finding that changed no note
 | `docs/` | the constitution (the three files above, moved from root 2026-08-26 by ADR-0026) plus general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and the feature taxonomy — prose in [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry itself in [`feature-taxonomy.yaml`](docs/feature-taxonomy.yaml) since ADR-0036, paired like `tool-taxonomy.{md,yaml}`; the feature matrices generate from the YAML, and feature keys are added there, nowhere else | yes |
 | `references/papers/` | one note per **source read** (papers, benchmarks), each with its own `read_depth` | yes |
 | `references/cards/` | one note per **vendor model card** read — a different schema (`models_covered`, `published`/`last_updated`, and a **required** `snapshot:` Wayback URL, because cards are rewritten in place). See [`references/README.md`](references/README.md) | yes |
-| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables). `vendors.md` was removed 2026-08-26 (ADR-0041): its one real signal — model makers ship harnesses for their own weights — is a sentence, and it lives in `docs/tool-taxonomy.md` § Vendor span | **no — generated** |
+| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables). `vendors.md` was removed 2026-08-26 (ADR-0041): its one real signal — model makers ship harnesses for their own weights — is a sentence, and it lives in `docs/tool-taxonomy.md` § Maker span | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |
 | `experiments/rig/` | the pinned container + hidden verifier both arms run against | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |

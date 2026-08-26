@@ -76,7 +76,7 @@ The wager, stated against its rivals: opencode bets on model-agnosticism, codex 
 compiled security, Warp bets on owning the surface — Claude Code bets that **a
 single-vendor model paired with the deepest extension surface beats all three**, because
 the ecosystem (skills, hooks, agents, MCP servers, plugins) accumulates on the platform.
-`model_agnostic: false` is not a gap; it is the bet's other half — and the vendor-span
+`model_agnostic: false` is not a gap; it is the bet's other half — and the maker-span
 half is below.
 
 ## Main features (grade per claim)
@@ -122,13 +122,13 @@ The heaviest bleed profile in the tracked set — which is the point of the entr
 - **→ category 3**: dual relation. Locally it **binds** worktrees as a native operation;
   the web/cloud side **bundles** a vendor sandbox. One product exhibiting two of the four
   relationship verbs is itself vocabulary evidence.
-- **→ vendor span (the reason this report exists)**: Anthropic now shows tracked
+- **→ maker span (the reason this report exists)**: Anthropic now shows tracked
   coverage at categories 1 (four model reports) **and 2** (this report), with category-6
   conventions and the bundled category-3 sandbox as bleed. (A generated `vendors.md` used
   to track that narrowing; removed 2026-08-26, ADR-0041 — the taxonomy's hand-kept table
-  is now the only vendor-span surface.) The span is co-designed — the harness is tuned to the models and the models to the
+  is now the only maker-span surface.) The span is co-designed — the harness is tuned to the models and the models to the
   harness (TESTIMONY: Anthropic's own model-migration guidance ships Claude-Code-derived
-  prompt patterns) — which is exactly the co-variance the vendor-span section warns
+  prompt patterns) — which is exactly the co-variance the maker-span section warns
   category-choice reasoning about.
 
 ## Cost model

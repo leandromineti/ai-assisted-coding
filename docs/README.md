@@ -41,7 +41,7 @@ distorts them.
 ## Benchmarks as instruments → [`benchmark-survey.md`](benchmark-survey.md)
 
 **Where it lives:** every category at once — a benchmark score binds a model, a harness, and
-an environment into one number (conclusion 2), and vendor span makes that binding
+an environment into one number (conclusion 2), and maker span makes that binding
 structural. The survey's thesis: the field ships instruments with at most one of the
 three properties an instrument needs (headroom, validity, contamination control) and
 retrofits the rest after scores mislead. Written 2026-08-17 from 13 refs; the generated

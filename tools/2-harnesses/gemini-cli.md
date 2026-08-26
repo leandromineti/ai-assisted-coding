@@ -392,7 +392,7 @@ not exit status (5e).
 
 ## Bleed
 
-- **category 1↔2 (vendor span)**: the Google column's harness entry, now traced.
+- **category 1↔2 (maker span)**: the Google column's harness entry, now traced.
   Gemini-protocol by design at every seam; and the *data instrument* reading above.
   New wrinkle for the span table: this is a vendor running **two** category-2
   products through a succession, with the incumbent scripted to hand users to the

@@ -360,3 +360,34 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`continue.md`](../tools/2-harnesses/continue.md) ·
     [`aider.md`](../tools/2-harnesses/aider.md) ·
     [ADR-0040](../adrs/0040-reasoning-replaces-thinking.md)
+
+16. **Every model maker ships its own harness — the composability the taxonomy assumes is
+    not what the market is selling** (2026-08-26, all eight makers with a tracked model
+    report). Anthropic → Claude Code · OpenAI → Codex · Google → Gemini/Antigravity CLI ·
+    xAI → Cursor (acquired 2026-06) · DeepSeek → dsh · Alibaba → qwen-code · Moonshot →
+    kimi-code · Z.ai → ZCode. **Eight of eight, no exceptions, and the direction is
+    one-way**: no harness maker in the set has trained a model and moved the other way.
+    The framework's default posture — pick a model, pick a harness, pick an environment —
+    describes the field's composable middle, and there *is* one; but at the point where
+    the weights are made, a first-party harness always exists and it is always the one the
+    model was tuned against. Conclusion 1's per-model prompts are the mechanism seen from
+    the other side: opencode maintains nine bespoke prompts precisely because each maker
+    has already tuned its own harness to its own weights, and a portable harness has to
+    re-derive that fit per model, forever.
+    **The last two instances arrived by falsifying this repo's own claims, hours apart.**
+    The paragraph recording maker span said six of eight, then seven, before it said eight
+    — each correction driven by a product that existed and had not been looked for. That
+    failure produced [methodology rule 1b](methodology.md) and is worth more than the
+    count: the two holdouts were *both* real, and the reason to doubt them was available
+    the whole time.
+    **What is falsifiable now.** The model→harness direction is saturated and can no
+    longer surprise; the live claim is its converse — that a harness maker with no model
+    (Anomaly, Cline, Continue, Earendil Works, Warp) trains or brands one. Also watch the
+    business shape rather than the product: Z.ai sells the GLM Coding Plan *into* other
+    people's harnesses **and** ships ZCode, so first-party-harness and sell-into-everyone
+    are not alternatives — which is the reading that would have to break for this
+    conclusion to weaken. →
+    [`docs/tool-taxonomy.md`](tool-taxonomy.md) § Maker span ·
+    [`tools/candidates.md`](../tools/candidates.md) (kimi-code, ZCode) ·
+    [`tools/2-harnesses/claude-code.md`](../tools/2-harnesses/claude-code.md) ·
+    [ADR-0041](../adrs/0041-vendors-matrix-removed.md)

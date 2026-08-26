@@ -33,6 +33,28 @@ match its npm registry entry — both would have been wrong if asserted from mem
   original labels with this mapping: modal's VERIFIED = SOURCE (its client is open),
   its OPAQUE = unverified; claude-code's OBSERVED/TESTIMONY/INFERENCE map directly.
 
+- **1b. A negative claim needs a surface that could have shown the thing.** "X has no Y"
+  is a claim, and it is only as good as the place you looked. Searching a surface that
+  *structurally cannot represent* Y and finding nothing is not evidence of absence — it is
+  a measurement of the surface. Before asserting an absence about a maker's product line,
+  search **the maker's own site**; a repository host shows only what is open source, and
+  `tools/` shows only what someone here has already ingested. Where the absence survives,
+  record *where you looked and when*, so the next reader can see the shape of the hole
+  rather than inherit the conclusion.
+
+  *Why it earned its place:* on 2026-08-26 the tool taxonomy's maker-span paragraph was
+  wrong **three times in one day**, each time by this exact method. First it claimed six of
+  eight model makers ship a harness, excusing Moonshot as "not yet" — inferred from *this
+  repo having no report*, while `kimi-code` had shipped three months earlier. Corrected to
+  seven of eight, it then called Z.ai a deliberate exception on the strength of a **GitHub
+  org search** returning only model repos — but ZCode is a closed, proprietary product that
+  could never have appeared there. The true figure was eight of eight, and the paragraph
+  had by then reproduced, in prose, the precise blind spot ADR-0041 had deleted an entire
+  generated matrix over an hour earlier. The rule is a sibling to 1a on purpose: 1a governs
+  how to grade what you *find* about a closed subject, 1b how to claim you found nothing.
+  Closed products are exactly what a code-shaped search misses, and in this field they are
+  disproportionately the ones that matter.
+
 ## 2. Honesty markers beat completeness theater
 
 State-of-knowledge is always visible and machine-readable:
