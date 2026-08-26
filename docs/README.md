@@ -24,6 +24,14 @@ Read these three first. They outrank every other document in the repo, including
 
 ---
 
+## The output → [`conclusions.md`](conclusions.md)
+
+The numbered, dated conclusions — the repo's actual product, cited as "conclusion N"
+throughout. Lived in `README.md` until 2026-08-26 (ADR-0028), which now carries their
+headline index. Not a note about the survey: it is what the survey concluded.
+
+---
+
 ## Notes that span the survey
 
 The cross-category notes — ADR-0025's founding contents. They are **not categories**:

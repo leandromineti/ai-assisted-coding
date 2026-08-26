@@ -26,7 +26,9 @@ before 2026-08-26** also cites the constitution at root — `taxonomy.md`,
 unrenamed ([ADR-0026](0026-constitution-into-docs.md)) — and cites the hand-kept front
 doors as `index.md`: `docs/index.md` and `tools/N-<name>/index.md` map to `README.md` in
 the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); generated
-`refs/index.md` is unaffected.
+`refs/index.md` is unaffected. It also cites the numbered conclusions as living in
+`README.md` — they moved to `docs/conclusions.md` the same day, **numbers unchanged**, so
+"conclusion N" still resolves ([ADR-0028](0028-conclusions-out-of-readme.md)).
 
 **Rules:**
 
@@ -79,3 +81,4 @@ the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); genera
 | [0025](0025-cross-cutting-becomes-docs.md) | 2026-08-26 | Cross-cutting notes move to root as `docs/`, chartered for repo-structure/methodology/idea notes; concept name unchanged | placement clause superseded by 0026 |
 | [0026](0026-constitution-into-docs.md) | 2026-08-26 | The constitution (`taxonomy.md`, `methodology.md`, `design-principles.md`, `taxonomy.yaml`) moves root → `docs/`; `docs/` rechartered in two halves | accepted |
 | [0027](0027-index-front-doors-become-readme.md) | 2026-08-26 | Hand-kept front doors are `README.md` (seven renamed); `index.md` means a generated listing (`refs/index.md`) | accepted |
+| [0028](0028-conclusions-out-of-readme.md) | 2026-08-26 | Conclusions move to `docs/conclusions.md`; README keeps the headline index, numbers unchanged | accepted |

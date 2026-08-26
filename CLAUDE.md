@@ -14,8 +14,10 @@ Read these three first. They are the constitution, and they outrank anything in 
 | [`docs/taxonomy.md`](docs/taxonomy.md) | the categories, and what a category *test* is |
 | [`docs/design-principles.md`](docs/design-principles.md) | the hypotheses, and the rule for revising them |
 
-`README.md` holds the numbered **Conclusions** — the repo's actual output. A conclusion without a
-linked note is an assertion; a finding that changed no note is an anecdote (rule 6).
+[`docs/conclusions.md`](docs/conclusions.md) holds the numbered **Conclusions** — the repo's actual
+output (moved out of `README.md` 2026-08-26, ADR-0028; the README keeps the headline index). A
+conclusion without a linked note is an assertion; a finding that changed no note is an anecdote
+(rule 6). Add one there, then add its headline to `README.md`.
 
 ## Where things go
 

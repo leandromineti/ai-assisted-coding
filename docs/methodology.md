@@ -223,7 +223,7 @@ Two sub-rules, both scarred in experiment 01:
 
 ## 6. Findings are promoted, not scattered
 
-The path is: run log → tool report / category note (dated) → `README.md` Conclusions
+The path is: run log → tool report / category note (dated) → `conclusions.md`
 (numbered, dated, revisable, each linked to its evidence). A finding that changed no
 note is an anecdote; a conclusion without a linked note is an assertion.
 

@@ -54,7 +54,7 @@ values from memory; copy them.>
 
 <The part that earns the note. Which conclusion, experiment, or methodology rule it
 supports, refines, or threatens — and what we would have to change if it's right. If it
-contradicts something we've published in README.md's conclusions, say so plainly here and
+contradicts something we've published in `docs/conclusions.md`, say so plainly here and
 open an issue; do not quietly leave both standing.>
 
 ## Limits

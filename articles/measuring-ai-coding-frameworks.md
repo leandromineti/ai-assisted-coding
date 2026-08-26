@@ -15,7 +15,7 @@ they're praising. The one benchmark I found that fixes the harness turned out to
 route each model through a different system prompt — a confound its own maintainer
 didn't know about until [I reported it](../tools/1-models/README.md), which became
 the repo's first upstream contribution
-([conclusion 2](../README.md#conclusions)).
+([conclusion 2](../docs/conclusions.md)).
 
 This article is about building the isolation myself, at personal scale, and what it
 measured. Fair warning about the sample sizes up front: single runs are called
@@ -75,7 +75,7 @@ single lucky draw.
 **It separates model tiers — non-monotonically.** As a validity check, five runs of
 a deliberately weaker model (Haiku 4.5) against the same instrument: every completed
 run scored exactly 17/21, fully below the stronger model's worst draw — known-groups
-validity, preregistered ([conclusion 10](../README.md#conclusions)). The reversal
+validity, preregistered ([conclusion 10](../docs/conclusions.md)). The reversal
 inside that result is the finding I keep retelling: the weaker model *beat* the
 stronger one on the truncated-archive trap, because its blanket `rc=1` error
 handling never lets a traceback escape — while failing everything that requires
@@ -93,7 +93,7 @@ Two preregistered predictions: the framework writes materially better
 because nothing in its pipeline ever measures the domain.
 
 Both held ([results](../experiments/02-spec-kit-vs-plain/README.md#results-2026-08-17--both-arms-run-under-amendment-4-protocol-above-untouched),
-[conclusion 11](../README.md#conclusions)):
+[conclusion 11](../docs/conclusions.md)):
 
 | | Plain arm | spec-kit arm |
 |---|---|---|
@@ -118,7 +118,7 @@ measures the domain converts ambiguity into *documented* decisions, not *correct
 ones; which way they go is the model's priors wearing a process costume. The
 measured quality margin in an earlier framework experiment came from agents that
 probed the domain and gates that checked measured values
-([conclusion 6](../README.md#conclusions)) — and that decomposition has now survived
+([conclusion 6](../docs/conclusions.md)) — and that decomposition has now survived
 its second framework.
 
 ## Small numbers worth having
