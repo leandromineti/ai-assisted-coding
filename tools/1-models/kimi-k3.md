@@ -19,7 +19,7 @@ pricing:
 knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
-  note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
+  note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf — flagged as the one unread candidate — was READ 2026-08-26 (47 pp, via the HF model page's link to MoonshotAI/Kimi-K3) and is silent: no knowledge cutoff anywhere, the document's only 'cutoff' being an unrelated MoE routing threshold, and its §3.1 Pre-Training Data naming four corpus domains with no dates. Every candidate first-party surface is now checked"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"
   effort_control: "reasoning_effort: low/high/max, default MAX — was the only default-to-most-expensive in the sweep until GLM-5.3 shipped the identical surface and default (sweep-relative clause amended 2026-08-26; the K3 facts themselves are unchanged from the 2026-08-17 check); reasoning tokens billed as output (first-party API)"
