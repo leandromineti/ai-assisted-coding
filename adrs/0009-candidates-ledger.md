@@ -1,6 +1,10 @@
 # ADR-0009 — Candidates ledger: one pre-report rung, cross-layer
 
-`decided: 2026-08-18` · status: **accepted**
+`decided: 2026-08-18` · status: **superseded in part by
+[ADR-0031](0031-candidates-ledger-is-a-backlog.md) (2026-08-26): the append-mostly
+clause only — promotion now removes the row instead of annotating it. The ledger's
+existence, scope, star convention, and the ownership rule it turns on ('the ledger owns
+everything before a report exists; the generator owns everything after') all stand**
 
 ## Decision
 

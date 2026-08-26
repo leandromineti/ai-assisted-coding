@@ -66,7 +66,7 @@ calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both ga
 | [0006](0006-layer-2-program.md) | 2026-08-18 | Framework code-outcome A/Bs stop; the layer-2 program | accepted |
 | [0007](0007-renumber-core-triad-first.md) | 2026-08-18 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
 | [0008](0008-standards-into-cross-cutting.md) | 2026-08-18 | Standards folded into cross-cutting (one non-layer bucket) | accepted |
-| [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`tools/candidates.md`) | accepted |
+| [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`tools/candidates.md`) | append-mostly clause superseded by 0031 |
 | [0010](0010-two-taxonomies.md) | 2026-08-18 | Two taxonomies: tool taxonomy + feature taxonomy (registry, cross-layer view) | accepted |
 | [0011](0011-graded-gate-enforcement.md) | 2026-08-18 | Graded enforcement values (engine/hook/script/prose) for the gate features | accepted |
 | [0012](0012-layer-2-feature-set.md) | 2026-08-18 | Layer-2 feature set: `ptc` + graded `turn_end_gates` | accepted |
@@ -88,3 +88,4 @@ calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both ga
 | [0028](0028-conclusions-out-of-readme.md) | 2026-08-26 | Conclusions move to `docs/conclusions.md`; README keeps the headline index, numbers unchanged | accepted |
 | [0029](0029-category-6-keeps-its-name.md) | 2026-08-26 | "Extensions" stays the name of category 6 (rename to "Stranger Things" declined); the residual-pull strain recorded in §6 instead | accepted |
 | [0030](0030-tool-taxonomy-prefix.md) | 2026-08-26 | `taxonomy.md` / `taxonomy.yaml` gain a `tool-` prefix to pair with `feature-taxonomy.md`; the lint keeps its name | accepted |
+| [0031](0031-candidates-ledger-is-a-backlog.md) | 2026-08-26 | The candidates ledger is a backlog: promotion removes the row (supersedes 0009's append-mostly clause); six promoted rows removed | accepted |

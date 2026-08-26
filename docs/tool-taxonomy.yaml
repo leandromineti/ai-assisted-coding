@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-26  # bumped 2026-08-26 a fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-26  # bumped 2026-08-26 a fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -50,7 +50,7 @@ terms:
           ADR-0009's candidates ledger (candidate → stub → survey → deep-dive) — a
           graded-progression scale, unrelated to the taxonomy's top-level divisions.
         known_sites:
-          - "tools/candidates.md:5"
+          - "tools/candidates.md:7"
           - "tools/4-workflow-frameworks/README.md:119"
       - compound: "enforcement ladder"
         canonical_source: >-

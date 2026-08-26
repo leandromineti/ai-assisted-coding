@@ -1,6 +1,8 @@
 # Candidates ledger
 
-`created: 2026-08-18` · decision record: [ADR-0009](../adrs/0009-candidates-ledger.md)
+`created: 2026-08-18` · decision records:
+[ADR-0009](../adrs/0009-candidates-ledger.md),
+[ADR-0031](../adrs/0031-candidates-ledger-is-a-backlog.md)
 
 A **candidate** is the first step of the engagement ladder — **candidate → stub → survey → deep-dive** — and the only step that lives outside a tool report. A candidate
 has been *sighted and assessed, not ingested*: no clone in `upstream/`, no pinned
@@ -10,9 +12,14 @@ commit, no report file. The row itself is the claim, which sets the conventions:
   exception to "never hand-type stars" — that rule governs reports, where
   `repo-facts.sh` exists to do it mechanically. A candidate has no clone to run it
   against.
-- **Append-mostly.** Promotion (running the ingest operation) *annotates* the row with
-  a dated pointer to the new report — it never deletes it. Refusal reasoning stays so
-  it isn't re-derived later.
+- **This file is a backlog, not a history.** Everything here is open work: sighted,
+  assessed, not ingested. **Promotion removes the row** — the report supersedes it, and
+  the complete list of everything that *has* been ingested is the generated
+  [`comparisons/tools.md`](../comparisons/tools.md) (ADR-0031, 2026-08-26; ADR-0009
+  originally annotated rows in place). Anything in a row that is still load-bearing
+  after the read — a licensing finding, a pre-read prediction the report will score —
+  belongs in the report before the row goes; removed rows stay in git history.
+  Refusal reasoning stays for tools we **declined**, which is what it is for.
 - **Hand-kept by design** — a documented exception to methodology rule 3, same class
   as the ADR index table: these rows are primary dated observations (miniature
   decision records), not derived summaries of content that lives elsewhere.
@@ -32,18 +39,12 @@ GitHub-API sweep, stars as of 2026-07-28; later rows are dated inline.)*
 
 | Candidate | Stars | Why not (yet) |
 |---|---|---|
-| BMAD-METHOD (`bmad-code-org`) | 51k | Famous, active — but its predicted profile (role-playing agent teams, process-gates-heavy) is the mechanism column exp-01 measured near zero. First in line if category-4 scope expands; would make a good ceremony-pole test subject **→ promoted to [stub](4-workflow-frameworks/bmad-method.md) 2026-08-18, deep-dived same day** (prediction half-falsified: build-first entry, ceremony being shed; half-confirmed: every framework gate prose — enforcement sold separately in bmad-loop) |
-| hermes-agent (`NousResearch`) | 222k | A category-2 harness, not a framework (spec-kit installs *into* it). Queued on the category-2 backlog: [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1) *(since ingested: [report](2-harnesses/hermes-agent.md), deep-dive)* |
 | claude-task-master (`eyaltoledano`) | 28k | Quiet since 2026-04; MCP-server-shaped (category-6 bleed dominant) |
 | SuperClaude_Framework | 24k | Single-harness (Claude Code only) — fails the category-4 portability test; useful as the boundary counterexample |
 | wshobson/agents | 38k | Multi-harness plugin *marketplace* — category-6 distribution, no methodology |
 | agent-os (`buildermethods`) | 5k | Too small, quieting since 2026-05 |
 | microsoft/amplifier | 3k | Too small; watchlist |
 | Kiro (AWS), Tessl | — | Closed products — observation-only if ever added; no clone possible |
-| Conductor (`gemini-cli-extensions`) | 3.7k *(2026-08-18)* | Added 2026-08-18. Google-org SDD plugin ("measure twice, code once"; Context → Spec & Plan → Implement) installing into Antigravity and Claude Code — passes the portability test on paper and would extend the [SDD set](4-workflow-frameworks/README.md#spec-driven-development-sdd) beyond the trio. Young (created 2025-12-17) and plugin-distributed (category-6 delivery vehicle, like ECC's hooks). Queue behind BMAD **→ promoted to [stub](4-workflow-frameworks/conductor.md) 2026-08-18** |
-| pilot-shell (`maxritter`) | 2.0k *(2026-08-18)* | Added 2026-08-18. Has a real process spine (spec-driven `/prd` → `/spec` with enforced TDD → `/build` judge loops), targets two harnesses (Claude Code primary + Codex) — passes the portability test, barely. Held back by ECC-shaped platform sprawl around the spine (bot, console, semantic search, code graph, own binary — spine-or-catalog needs a source read), youth (2025-10, 2k stars, 95% single-author), and a custom all-rights-reserved EULA (only non-OSI candidate here; check clone/read terms before ingesting) **→ promoted to [stub](4-workflow-frameworks/pilot-shell.md) 2026-08-18; EULA §2(c) permits internal-use reading** |
-| spec-kitty (`Priivacy-ai`) | 1.5k *(2026-08-18)* | Added 2026-08-18. SDD, and literally a **spec-kit derivative** — carries spec-kit's commit history and `.specify` constitution layout (the `localden` commits in its log are imported history), then extends the pipeline toward a "governed software factory": work packages in kanban lanes, parallel agents in isolated git worktrees (category-3 bleed), review/accept/merge gates, per-mission retrospectives, `dispatch` governance records. Genuinely multi-maintainer (two leads, ~8k commits) — rare in this table. Why not yet: derivative of an already-tracked seed, so marginal new mechanism per read-hour vs BMAD; young (2025-10, 1.5k stars). Evidence the SDD family is speciating: spec-kit's intent pipeline + orchestration grafted on **→ promoted to [stub](4-workflow-frameworks/spec-kitty.md) 2026-08-18** |
-| haft (`m0n0x41d`) | 1.4k *(2026-08-18)* | Added 2026-08-18. Not SDD — a **decision-governance** pole: typed decision records (frame → compare → decide) with **evidence decay** and parity enforcement, implementing Levenchuk's First Principles Framework; SQLite ledger served over MCP. Strongest portability claim in this table (Claude Code + Codex stable, 8 more adapters experimental). Why not yet: 1.4k stars, created 2025-12, ~100% single-author, and MCP-runtime delivery raises the claude-task-master category-6 question — is it an encoded methodology (4), an extension (6), or a memory tool (5)? Worth watching regardless: evidence decay is this repo's own `checked:`-dates discipline as a runtime mechanism, and typed decision records ≈ ADRs. MIT in LICENSE (GitHub API reports NOASSERTION) **→ promoted to [stub](4-workflow-frameworks/haft.md) 2026-08-18** |
 
 ## Category 6 — extensions
 
