@@ -43,5 +43,6 @@ One row per `vendor:` string, columns by category. **This understates vendor spa
 | Volcengine (ByteDance) | — | — | — | — | openviking | — | **1** |
 | Warp (warpdotdev) | — | warp | — | — | — | — | **1** |
 | xAI | grok-4-5 | — | — | — | — | — | **1** |
+| Z.ai (Zhipu AI) | glm-5.3 | — | — | — | — | — | **1** |
 
-**36 vendors** across 44 tracked tools; **4 span ≥2 categories among tracked tools** (Anthropic, DeepSeek, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.
+**37 vendors** across 45 tracked tools; **4 span ≥2 categories among tracked tools** (Anthropic, DeepSeek, Google, OpenAI). The gap between this number and the taxonomy table's is the closed-product blind spot, quantified.

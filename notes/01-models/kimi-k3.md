@@ -14,7 +14,7 @@ pricing: "weights free; first-party API $3 / $15 per MTok flat across the window
 knowledge_cutoff: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"
-  effort_control: "reasoning_effort: low/high/max, default MAX — the only default-to-most-expensive in the sweep; reasoning tokens billed as output (first-party API)"
+  effort_control: "reasoning_effort: low/high/max, default MAX — was the only default-to-most-expensive in the sweep until GLM-5.3 shipped the identical surface and default (sweep-relative clause amended 2026-08-26; the K3 facts themselves are unchanged from the 2026-08-17 check); reasoning tokens billed as output (first-party API)"
   prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
   batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
 checked: 2026-08-17

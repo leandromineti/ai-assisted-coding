@@ -19,6 +19,7 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 1 · Models | claude-fable-5 | — | — | proprietary | — | — | — | `closed source` | stub | [claude-fable-5](../notes/01-models/claude-fable-5.md) |
 | 1 · Models | deepseek-v4 | — | — | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | — | — | — | `—` | stub | [deepseek-v4](../notes/01-models/deepseek-v4.md) |
 | 1 · Models | gemini-3-1-pro | — | — | proprietary | — | — | — | `closed source` | stub | [gemini-3-1-pro](../notes/01-models/gemini-3-1-pro.md) |
+| 1 · Models | glm-5.3 | — | — | unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over | — | — | — | `closed source` | stub | [glm-5.3](../notes/01-models/glm-5.3.md) |
 | 1 · Models | gpt-5-6-sol | — | — | proprietary | — | — | — | `closed source` | stub | [gpt-5-6-sol](../notes/01-models/gpt-5-6-sol.md) |
 | 1 · Models | grok-4-5 | — | — | proprietary | — | — | — | `closed source` | stub | [grok-4-5](../notes/01-models/grok-4-5.md) |
 | 1 · Models | kimi-k3 | — | — | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | — | — | — | `—` | stub | [kimi-k3](../notes/01-models/kimi-k3.md) |
@@ -58,4 +59,4 @@ Every tool with a report, flattened across categories for comparison. Newest rea
 | 5 · Memory | openviking | — | Python, TypeScript, Rust | AGPL-3.0 | 31,583 | 2026-01-29 | · | `v0.4.16-7-g2af48624` | stub | [openviking](../notes/05-memory/openviking.md) |
 | 6 · Extensions | ecc | — | Markdown, Node | MIT | 236,217 | 2026-01-17 | 23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check | `v2.1.0-16-ge4e41631` | deep-dive | [ecc](../notes/06-extensions/ecc.md) |
 
-**44 tools** — 19 deep-dive · 17 stub · 8 survey.
+**45 tools** — 19 deep-dive · 18 stub · 8 survey.

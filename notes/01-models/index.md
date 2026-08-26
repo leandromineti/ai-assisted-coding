@@ -1,6 +1,6 @@
 # Category 1 — Models
 
-`checked: 2026-08-17`
+`checked: 2026-08-26`
 
 The weights. See [`../../taxonomy.md`](../../taxonomy.md) for what this category is and how
 it's judged.
@@ -30,6 +30,7 @@ report's evidence cells, not its depth field.
 | [**Grok 4.5**](grok-4-5.md) | xAI | 2026-07 (day 08 third-party only), no stage vocabulary | Coding/agent-tuned, 1.5T-param V9 base. **Trained on real Cursor session data.** 500k ctx — *half its cheaper siblings' 1M*. $2/$6 (<200k), $4/$12 above. No EU at launch (2026-07-28 check). |
 | [**Kimi K3**](kimi-k3.md) | Moonshot AI | API ~2026-07-16 (vendor prints no date); weights by 07-27 | Largest open-weight model: 2.8T total / 104B activated, KDA, 1M ctx (2^20 exactly), native vision, **QAT-native MXFP4 release**. Bespoke "Kimi K3 License". Claims Terminal-Bench 2.1 **88.3** — harness unstated. |
 | [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 (vendor's words) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Repriced 2026-08-16 to peak/off-peak (off-peak = 50%); still the sweep's cheapest, cache hits near-free. |
+| [**GLM-5.3**](glm-5.3.md) | Z.ai (Zhipu AI) | API 2026-08-14 (day third-party-corroborated); weights held for a "two-week safety evaluation" | 1M ctx / 128K out, always-on reasoning, `reasoning_effort` default **max** (joining Kimi K3). $1.40/$4.40. Weights delayed with a stated offensive-security rationale — the sweep's only safety-gated weights release; prediction on record: HF repo by 2026-08-31. |
 | [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | weights 2026-01-30 (HF commit); no stage stated | Row verified: 80B total / **3B activated**, 256K ctx, Apache-2.0 — the one genuinely self-hostable agent model in the sweep. Publishes its own modest Terminal-Bench 2.0 score (36.2). A "Qwen 4 Coder" successor is third-party rumor, unresolvable on the official org (2026-07-31). |
 
 ## Type 1b — Model access
