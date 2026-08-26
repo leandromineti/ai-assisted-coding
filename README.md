@@ -10,18 +10,39 @@ still](https://mineti.dev/articles/the-ai-coding-stack/).
 
 ## Start here
 
-**[`docs/taxonomy.md`](docs/taxonomy.md)** — the shared vocabulary. A **core triad** — models,
-harnesses, execution environments (categories 1–3), the three things a running agent cannot
-lack — plus two **interfaces**: workflow frameworks (4 — the human⇄stack boundary:
-intent refined into specs and subtasks going down, research and verified evidence coming
-up), memory (5 — persistent cross-session state on the agent↔time edge, a full
-category since the 2026-08-22 split), and extensions (6 — a cross-category bucket
-parameterizing the triad's remaining edges; portability is conferred by adoption, not
-intrinsic, so the name doesn't claim it). How the taxonomy reached this shape —
-demotions, adjudications, the 2026-08-18 renumbering, the 2026-08-22 split — is one
-dated decision record each in [`adrs/`](adrs/README.md).
-With a boundary rule, a bleed/vendor-span distinction, and a stress test for the many
-tools that straddle the divisions. Everything else in the repo declares where it belongs.
+**[`docs/taxonomy.md`](docs/taxonomy.md)** — the shared vocabulary, with a boundary rule, a
+bleed/vendor-span distinction, and a stress test for the many tools that straddle the
+divisions. A **core triad** — categories 1–3, the three things a running agent cannot
+lack — plus three **interfaces** (4, 5, and the bucket at 6) that mediate between the
+triad and everything around it. Every note and comparison here declares which category
+its subject occupies:
+
+1. **[Models](tools/1-models/README.md)** — cognition: the weights, and the first-party
+   API surface that prices and meters them. *Opus 5, Fable 5, Grok 4.5, Kimi K3.*
+2. **[Harnesses](tools/2-harnesses/README.md)** — mediation: the program that runs the
+   agent loop, assembles context, and gates permissions. *Claude Code, OpenCode, Codex
+   CLI, Cursor.*
+3. **[Execution environments](tools/3-execution-environments/README.md)** — situation:
+   where execution lands and what it can damage. The autonomy ceiling lives here, not in
+   the model. *worktrees, devcontainers, E2B.*
+4. **[Workflow frameworks](tools/4-workflow-frameworks/README.md)** — the human⇄stack
+   boundary: intent refined into specs and subtasks going down, research and verified
+   evidence coming up. *GSD, spec-kit.*
+5. **[Memory](tools/5-memory/README.md)** — the agent↔time edge: persistent
+   cross-session state as an installable product, a full category since the 2026-08-22
+   split. *ai-memory, mem0, MemOS, cognee.*
+
+**[Extensions](tools/6-extensions/README.md)** is category 6, and reads apart from the
+five above because it is a cross-category bucket rather than one of the fundamentals: the
+distributable content an agent can see and touch — MCP servers, skills, hooks, rules
+files, subagent definitions, config packs (ECC) — parameterizing the triad's remaining
+edges. Its *runtimes* were always harness features, so what remains is artifacts
+distributed on file conventions; portability is conferred by adoption, not intrinsic, so
+the name doesn't claim it. Beside it, [`docs/`](docs/README.md) holds the **cross-cutting**
+notes, which belong to no single category and appear at several at once — context
+engineering, verification, cost, standards (MCP, `AGENTS.md`). How the taxonomy reached
+this shape — demotions, adjudications, the 2026-08-18 renumbering, the 2026-08-22 split —
+is one dated decision record each in [`adrs/`](adrs/README.md).
 
 **[`docs/methodology.md`](docs/methodology.md)** — how work is done here: verification and honesty
 rules, generated indexes, preregistered experiments, the upstream-reporting gate. Every
@@ -33,16 +54,6 @@ principles derived from the documented tools, per taxonomy category, each carryi
 confidence marker (convergent / single-instance / contested) and its evidence citations.
 Hypotheses under revision, not best practices — every new deep-dive or experiment must
 confirm, contradict, or note silence.
-
-| Category | Index | Examples |
-|-------|-------|----------|
-| 1 · Models | [`tools/1-models/`](tools/1-models/README.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
-| 2 · Harnesses | [`tools/2-harnesses/`](tools/2-harnesses/README.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Execution environments | [`tools/3-execution-environments/`](tools/3-execution-environments/README.md) | worktrees, devcontainers, E2B |
-| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/`](tools/4-workflow-frameworks/README.md) | GSD, spec-kit |
-| 5 · Memory | [`tools/5-memory/`](tools/5-memory/README.md) | ai-memory, mem0, MemOS, cognee |
-| 6 · Extensions (bucket) | [`tools/6-extensions/`](tools/6-extensions/README.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
-| ✕ Cross-cutting | [`docs/`](docs/README.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
 
