@@ -51,7 +51,7 @@ instruction–test mismatches.
 ## What it means for this repo
 
 This is the closest external relative of the repo's own instrument:
-[`experiments/rig/tarpeek/`](../experiments/rig/README.md) packages its task in
+[`experiments/rig/tarpeek/`](../../experiments/rig/README.md) packages its task in
 Terminal-Bench format, verifies end state with hidden pytest, and carries the canary
 line. The lineage should be stated in the survey. Also the third instance of the
 validity-arrives-late pattern (SWE-bench → Verified; Terminal-Bench 2.0 → 2.1; exp-02's

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate refs/index.md and comparisons/benchmarks.md from the frontmatter of every ref note.
+"""Generate references/index.md and comparisons/benchmarks.md from the frontmatter of every ref note.
 
 Sibling of build-tool-index.py, same rule (methodology 3): a hand-kept catalog drifts from
 the notes it describes, and you find out when it's already wrong.
@@ -12,7 +12,7 @@ the notes it describes, and you find out when it's already wrong.
   1. required frontmatter present, `kind` / `read_depth` inside the vocabulary
   2. a ref cited elsewhere in the repo whose note says `read_depth: unread` — the guard
      against an abstract skim hardening into a citation
-  3. a `refs/<key>.md` link with no note behind it
+  3. a `references/<key>.md` link with no note behind it
   4. (warning only) a note with no `bears_on` — recorded but not yet used anywhere
 
 1-3 exit non-zero. Deliberately strict about 2: it is the failure this library was built
@@ -26,11 +26,13 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-REFS = ROOT / "refs"
+REFS = ROOT / "references"
+PAPERS = REFS / "papers"
+CARDS = REFS / "cards"
 OUT = REFS / "index.md"
 BENCH_OUT = ROOT / "comparisons" / "benchmarks.md"
 
-# Files under refs/ that are not sources.
+# Files under references/ that are not sources.
 NOT_A_NOTE = {"index.md", "README.md", "log.md"}
 
 REQUIRED = ("key", "title", "year", "kind", "read_depth", "retrieved")
@@ -73,9 +75,9 @@ def read_frontmatter(path: Path) -> dict | None:
 
 def collect() -> list[dict]:
     notes = []
-    if not REFS.is_dir():
+    if not PAPERS.is_dir():
         return notes
-    for path in sorted(REFS.glob("*.md")):
+    for path in sorted(PAPERS.glob("*.md")):
         if path.name in NOT_A_NOTE or path.name.startswith("_"):
             continue
         fm = read_frontmatter(path)
@@ -95,7 +97,7 @@ def collect() -> list[dict]:
 
 
 def citing_files(key: str) -> list[Path]:
-    """Markdown files outside refs/ that mention this ref key.
+    """Markdown files outside references/ that mention this ref key.
 
     Generated files are skipped: a catalog listing every note, `unread` ones included, is
     not a citation. Only prose that leans on a source counts.
@@ -111,6 +113,54 @@ def citing_files(key: str) -> list[Path]:
         if key in text:
             hits.append(rel)
     return hits
+
+
+# A card note's schema is deliberately NOT the paper one (ADR-0034). `read_depth` and
+# `kind` describe literature; a vendor card's honesty fields are which models it covers,
+# when the vendor published/updated it, when we read it, and — because a card is rewritten
+# in place at one URL — what snapshot backs the quotes a report depends on.
+CARD_REQUIRED = ("key", "vendor", "title", "models_covered", "retrieved", "url", "snapshot")
+
+
+def collect_cards() -> list[dict]:
+    cards = []
+    if not CARDS.is_dir():
+        return cards
+    for path in sorted(CARDS.glob("*.md")):
+        if path.name in NOT_A_NOTE or path.name.startswith("_"):
+            continue
+        fm = read_frontmatter(path)
+        if fm is None:
+            print(f"warn: {path.relative_to(ROOT)} has no frontmatter", file=sys.stderr)
+            continue
+        fm["_path"] = path
+        cards.append(fm)
+    return sorted(cards, key=lambda c: str(c.get("key", "")))
+
+
+def check_cards(cards: list[dict]) -> int:
+    problems = 0
+    for c in cards:
+        rel = c["_path"].relative_to(ROOT)
+        missing = [k for k in CARD_REQUIRED if not c.get(k)]
+        if missing:
+            print(f"ERROR: {rel} missing {missing}", file=sys.stderr)
+            problems += 1
+        if c.get("key") and c["key"] != c["_path"].stem:
+            print(
+                f"ERROR: {rel} key '{c['key']}' != filename stem '{c['_path'].stem}'",
+                file=sys.stderr,
+            )
+            problems += 1
+        snap = str(c.get("snapshot") or "")
+        if snap and "web.archive.org" not in snap:
+            print(
+                f"ERROR: {rel} snapshot must be an archive URL (a card is rewritten in "
+                f"place, so the live URL is not evidence): {snap}",
+                file=sys.stderr,
+            )
+            problems += 1
+    return problems
 
 
 def check(notes: list[dict]) -> int:
@@ -160,29 +210,34 @@ def check(notes: list[dict]) -> int:
         if not n.get("bears_on"):
             print(f"warn: {rel} has no bears_on — recorded but unused", file=sys.stderr)
 
-    # Dangling refs/<key>.md links anywhere in the repo.
-    for path in ROOT.rglob("*.md"):
+    # Dangling references/papers/<key>.md and references/cards/<key>.md links anywhere in
+    # the repo. Split on the FULL prefix, not on "references/": since ADR-0034 the notes
+    # live one level down, so a token starting "papers/…" would trip the "/" guard below
+    # and the check would go silently blind — the failure mode this scan exists to prevent.
+    card_keys = {c.get("key") for c in collect_cards()}
+    for prefix, valid in (("references/papers/", keys), ("references/cards/", card_keys)):
+      for path in ROOT.rglob("*.md"):
         if path.relative_to(ROOT).parts[0] in ("upstream", ".git", ".planning"):
             continue
-        for token in path.read_text(encoding="utf-8").split("refs/")[1:]:
+        for token in path.read_text(encoding="utf-8").split(prefix)[1:]:
             name = token.split(".md")[0].split(")")[0].split("`")[0].strip()
             if not name or "/" in name or name in ("index", "README", "log", "pdf"):
                 continue
             if "<" in name or ">" in name:
-                continue  # a placeholder in the docs, e.g. refs/<key>.md — not a link
+                continue  # a placeholder in the docs, e.g. references/<key>.md — not a link
             if name.startswith("_"):
                 continue  # templates are not notes
             if any(c.isspace() for c in name):
                 # Prose or a diagram that merely mentions the directory, not a citation:
                 # a citekey never contains whitespace. Without this, README's layout tree
-                # ("refs/  one note per source read …") is read as a link to a note named
+                # ("references/  one note per source read …") is read as a link to a note named
                 # after the whole annotation. The established fix for PROSE is to backtick
                 # the mention (the split on "`" above), but that is unavailable inside a
                 # fenced code block — hence the guard rather than another backtick.
                 continue
-            if name not in keys:
+            if name not in valid:
                 print(
-                    f"ERROR: {path.relative_to(ROOT)} links refs/{name}.md — no such note",
+                    f"ERROR: {path.relative_to(ROOT)} links {prefix}{name}.md — no such note",
                     file=sys.stderr,
                 )
                 problems += 1
@@ -202,15 +257,20 @@ def _fmt(value: object) -> str:
     return str(value)
 
 
-def render(notes: list[dict]) -> str:
+def render(notes: list[dict], cards: list[dict] | None = None) -> str:
     newest = max((str(n.get("retrieved", "")) for n in notes), default="")
     lines = [
         "# Reference index",
         "",
         "<!-- GENERATED by scripts/build-refs-index.py — do not edit by hand. -->",
-        "<!-- Edit the frontmatter of the notes in refs/, then re-run the script. -->",
+        "<!-- Edit the frontmatter of the notes in references/papers/ or",
+        "     references/cards/, then re-run the script. -->",
         "",
-        f"Every source with a note, grouped by kind. Newest retrieved: `{newest}`.",
+        f"Every source with a note. **Papers** ({len(notes)}) below, grouped by kind, then",
+        f"**vendor model cards** ({len(cards or [])}) — a separate half because a card is not",
+        "literature: it has no `read_depth` to declare, and it is rewritten in place at one",
+        "URL, so each card note carries the archive snapshot its quotes rest on (ADR-0034).",
+        f"Newest retrieved: `{newest}`.",
         "",
         "`read` is the honesty column, mirroring `depth` in "
         "[`../comparisons/tools.md`](../comparisons/tools.md): **full** means the paper was "
@@ -241,7 +301,7 @@ def render(notes: list[dict]) -> str:
             "|---|---|---|---|---|---|---|---|",
         ]
         for n in group:
-            link = f"[{n['key']}]({n['_path'].name})"
+            link = f"[{n['key']}](papers/{n['_path'].name})"
             bears = _fmt(n.get("bears_on"))
             cites = n.get("citations")
             cites_cell = str(cites).split(" — ")[0] if cites else "·"
@@ -256,8 +316,31 @@ def render(notes: list[dict]) -> str:
     for n in notes:
         counts[n["read_depth"]] = counts.get(n["read_depth"], 0) + 1
     summary = " · ".join(f"{v} {k}" for k, v in sorted(counts.items(), key=lambda kv: READ_DEPTH_ORDER.get(kv[0], 9)))
-    lines += [f"**{len(notes)} sources** — {summary}.", ""]
+    lines += [f"**{len(notes)} papers** — {summary}.", ""]
+    lines += render_cards_section(cards or [])
     return "\n".join(lines)
+
+
+def render_cards_section(cards: list[dict]) -> list[str]:
+    """The index's second half. Columns are the card schema's honesty fields — what the
+    card covers, when the vendor last touched it, when we read it, and the snapshot."""
+    if not cards:
+        return ["## Vendor model cards", "", "*None yet.*", ""]
+    lines = [
+        "## Vendor model cards",
+        "",
+        "| Card | Vendor | Covers | Published | Last updated | Retrieved | Snapshot |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for c in cards:
+        covers = _fmt(c.get("models_covered"))
+        lines.append(
+            f"| [{c['key']}](cards/{c['_path'].name}) | {c.get('vendor', '·')} | {covers} | "
+            f"{_fmt(c.get('published'))} | {_fmt(c.get('last_updated'))} | "
+            f"{_fmt(c.get('retrieved'))} | [archived]({c['snapshot']}) |"
+        )
+    lines.append("")
+    return lines
 
 
 def render_benchmarks(notes: list[dict]) -> str:
@@ -266,7 +349,7 @@ def render_benchmarks(notes: list[dict]) -> str:
         "# Benchmark matrix",
         "",
         "<!-- GENERATED by scripts/build-refs-index.py — do not edit by hand. -->",
-        "<!-- Edit the frontmatter of the benchmark notes in refs/, then re-run. -->",
+        "<!-- Edit the frontmatter of the benchmark notes in references/, then re-run. -->",
         "",
         "Benchmarks we could borrow a task from, or borrow a metric from. Cells: **·** means "
         "not recorded — it is *not* a no.",
@@ -286,7 +369,7 @@ def render_benchmarks(notes: list[dict]) -> str:
     ]
     for n in bench:
         cells = [_fmt(n.get(k)) for k in BENCH_KEYS]
-        link = f"[{n['key']}](../refs/{n['_path'].name})"
+        link = f"[{n['key']}](../references/papers/{n['_path'].name})"
         lines.append(f"| {n.get('title', n['key'])} | " + " | ".join(cells) + f" | {link} |")
     lines += ["", f"**{len(bench)} benchmarks.**", ""]
     return "\n".join(lines)
@@ -294,20 +377,21 @@ def render_benchmarks(notes: list[dict]) -> str:
 
 def main() -> int:
     notes = collect()
+    cards = collect_cards()
     if not notes:
-        print("no ref notes with frontmatter found", file=sys.stderr)
+        print("no paper notes with frontmatter found", file=sys.stderr)
         return 1
 
     if "--check" in sys.argv:
-        problems = check(notes)
-        print(f"{len(notes)} refs checked, {problems} problem(s)")
+        problems = check(notes) + check_cards(cards)
+        print(f"{len(notes)} papers + {len(cards)} cards checked, {problems} problem(s)")
         return 1 if problems else 0
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     BENCH_OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(render(notes), encoding="utf-8")
+    OUT.write_text(render(notes, cards), encoding="utf-8")
     BENCH_OUT.write_text(render_benchmarks(notes), encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} — {len(notes)} sources")
+    print(f"wrote {OUT.relative_to(ROOT)} — {len(notes)} papers, {len(cards)} cards")
     print(f"wrote {BENCH_OUT.relative_to(ROOT)}")
     return 0
 

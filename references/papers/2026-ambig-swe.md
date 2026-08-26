@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2502.13069
 kind: benchmark
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/2026-ambig-swe.pdf
+pdf: references/papers/pdf/2026-ambig-swe.pdf
 task_shape: repo-issue
 task_count: 500
 task_source: SWE-Bench Verified, underspecified variants via GPT-4o

@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2506.07982
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against abstract + HTML full text; PDF not read end to end
 retrieved: 2026-08-17
-pdf: refs/pdf/2025-tau2-bench.pdf
+pdf: references/papers/pdf/2025-tau2-bench.pdf
 task_shape: dialogue
 task_count: 279
 task_source: "retail 115 + airline 50 (inherited from τ-bench) + telecom 114 eval set (from 2,285 programmatically generated)"

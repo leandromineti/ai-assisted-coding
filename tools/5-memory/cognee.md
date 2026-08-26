@@ -118,7 +118,7 @@ most-committed repo in the type, with a real contributor base (unlike the type's
 solo-author entries). `cognee-mcp/` is its own package (pyproject + uv.lock).
 `evals/` archives head-to-head HotpotQA runs against mem0, graphiti, and falkor
 (2025-04 vintage) and points to a current "BEAM" 100K/10M-context report. BEAM is
-now cataloged ([2026-beam](../../refs/2026-beam.md), full read 2026-08-18): cognee's
+now cataloged ([2026-beam](../../references/papers/2026-beam.md), full read 2026-08-18): cognee's
 0.79-at-100K sits far above the BEAM paper's own best configurations (~0.36 average
 at 100K), so the vendor number needs eval-config reconciliation before it is
 repeated — and the report itself flags the 10M figure (0.67) as in-sample/exploratory.
@@ -146,8 +146,8 @@ repeated — and the report itself flags the 10M figure (0.67) as in-sample/expl
 ## Open questions
 
 - ~~Catalog BEAM before any vendor-number is cited~~ — done 2026-08-18
-  ([2026-beam](../../refs/2026-beam.md), plus [2024-locomo](../../refs/2024-locomo.md)
-  and [2025-longmemeval](../../refs/2025-longmemeval.md)). The catalog's cross-cutting
+  ([2026-beam](../../references/papers/2026-beam.md), plus [2024-locomo](../../references/papers/2024-locomo.md)
+  and [2025-longmemeval](../../references/papers/2025-longmemeval.md)). The catalog's cross-cutting
   finding: all three instruments measure chat-assistant memory; **no coding-agent
   memory benchmark exists**. Remaining: memos' `evaluation/` tree and the archived
   HotpotQA comparative runs stay uncataloged.

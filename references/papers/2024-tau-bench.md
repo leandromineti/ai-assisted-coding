@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2406.12045
 kind: benchmark
 read_depth: extract
 retrieved: 2026-07-31
-pdf: refs/pdf/2024-tau-bench.pdf
+pdf: references/papers/pdf/2024-tau-bench.pdf
 task_shape: dialogue
 task_count: 165
 task_source: hand-authored (τ-retail 115 + τ-airline 50)

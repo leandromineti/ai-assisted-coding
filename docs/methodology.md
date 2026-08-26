@@ -45,7 +45,7 @@ State-of-knowledge is always visible and machine-readable:
 ## 3. Generated, never hand-kept
 
 Anything that summarizes other files (`comparisons/tools.md`, `comparisons/features.md`,
-`refs/index.md`, `comparisons/benchmarks.md`) is generated from their frontmatter by
+`references/index.md`, `comparisons/benchmarks.md`) is generated from their frontmatter by
 `scripts/build-tool-index.py` and `scripts/build-refs-index.py`. Hand-kept indexes drift, and
 you find out when they're already wrong. `--check` verifies every report's pinned commit is
 still **reachable** in its clone; a pin that no longer resolves means the claims beneath it

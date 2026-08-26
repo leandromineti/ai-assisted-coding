@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2604.05278
 kind: empirical-study
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/2026-spec-kit-agents.pdf
+pdf: references/papers/pdf/2026-spec-kit-agents.pdf
 bears_on: [conclusion-6, exp-03, spec-kit]
 verdict: "closest prior art to exp-03 — ablates grounding vs validation at n=128, but its own blinded human check contradicts its LLM-judge headline, and the agent was MiniMax-M2.5"
 ---

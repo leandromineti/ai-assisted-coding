@@ -77,9 +77,10 @@ confirm, contradict, or note silence.
 │   ├── 1-models/ … 6-extensions/  category front door (README.md) + one report per tool
 │   └── candidates.md              sighted-but-not-ingested ledger, the pre-report stage
 │
-├── refs/                      one note per source read, each carrying its own read_depth
-│   ├── index.md                   generated catalog of every source
-│   └── pdf/                       cached papers — gitignored, refetchable from each note
+├── references/                the citation library — one note per source read
+│   ├── papers/                    literature; each note carries its own read_depth
+│   ├── cards/                     vendor model cards; each note carries a required snapshot
+│   └── index.md                   generated catalog of both halves
 │
 ├── experiments/               preregistered A/Bs: protocol, log appended live, artifacts
 │   └── rig/                       the pinned container + hidden verifier both arms run against
@@ -152,4 +153,4 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 ## License
 
 [MIT](LICENSE). Cloned upstream sources (`upstream/`, gitignored) and cached papers
-(`refs/pdf/`, gitignored) belong to their respective owners.
+(`references/papers/pdf/`, gitignored) belong to their respective owners.

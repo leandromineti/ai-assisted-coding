@@ -87,6 +87,12 @@ transition deferred its own read) and the stale Terminal-Bench snapshot.
   page the number came from. A card delegating *the fact's own subject* does. Read the
   delegation, not the section heading.
 
+  Both cards now have notes in the library —
+  [`2026-gemini-3-1-pro`](../../references/cards/2026-gemini-3-1-pro.md) and
+  [`2026-gemini-3-pro`](../../references/cards/2026-gemini-3-pro.md) — each carrying its
+  quoted passages and the archive snapshot they can be re-checked against, since a card is
+  rewritten in place (ADR-0034).
+
   Residual caveat: the parent card separates pre-training from post-training data and a
   cutoff describes the pre-training half, so a later post-training refresh would not
   surface here. A first-party page naming 3.1 Pro and a cutoff in one sentence would

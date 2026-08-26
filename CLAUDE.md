@@ -27,26 +27,27 @@ conclusion without a linked note is an assertion; a finding that changed no note
 | `tools/N-*/README.md` | narrative front door per category: what the category *is*, seed inventory, and a **"What we assess here"** section (all six carry one since 2026-08-26) — the category's assessed block named with its key count and a date, why those keys discriminate *here*, the transcription fields, and links to the generated registry and matrix. Never copy the definitions in: the registry owns them (rule 3) | yes |
 | `tools/candidates.md` | cross-category ledger of sighted-but-not-ingested tools — the pre-`stub` stage (candidate → stub → survey → deep-dive). Dated hand-typed stars are its documented exception | yes |
 | `docs/` | the constitution (the three files above, moved from root 2026-08-26 by ADR-0026) plus general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry the feature matrices generate from (ADR-0010–0014); add feature keys there, nowhere else | yes |
-| `refs/` | one note per **source read** (papers, benchmarks). See [`refs/README.md`](refs/README.md) | notes yes, index no |
+| `references/papers/` | one note per **source read** (papers, benchmarks), each with its own `read_depth` | yes |
+| `references/cards/` | one note per **vendor model card** read — a different schema (`models_covered`, `published`/`last_updated`, and a **required** `snapshot:` Wayback URL, because cards are rewritten in place). See [`references/README.md`](references/README.md) | yes |
 | `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `vendors.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables) | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |
 | `experiments/rig/` | the pinned container + hidden verifier both arms run against | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |
-| `refs/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
+| `references/papers/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
 | `scripts/` | the generators (`build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh`) plus the taxonomy lint (`check-taxonomy.py`) — it checks; it writes nothing | yes |
 | `adrs/` | dated, immutable decision records for taxonomy/structure decisions. Living docs always speak the current state; ADRs hold how it was reached and the old→new decoders. Never edit an accepted ADR except `superseded-by`. See [`adrs/README.md`](adrs/README.md) | yes |
 | `articles/` | public-facing drafts, one file per article, site-schema frontmatter. Drafted here so claims keep repo-relative links (rule 4 for prose); published to the personal site as a downstream copy. See [`articles/README.md`](articles/README.md) | yes |
 
-**Never hand-edit anything in `comparisons/` or `refs/index.md`.** Edit the frontmatter of the
+**Never hand-edit anything in `comparisons/` or `references/index.md`.** Edit the frontmatter of the
 note it summarises and re-run the generator. Hand-kept indexes drift and you find out when
 they're already wrong (rule 3).
 
 ## The three operations
 
-**Ingest a source.** Read it — actually read it. Write `refs/<year>-<name>.md` (year-first citekeys since 2026-08-18) from
-[`refs/_template-ref-note.md`](refs/_template-ref-note.md), cache the PDF in `refs/pdf/`, set
+**Ingest a source.** Read it — actually read it. Write `references/papers/<year>-<name>.md` (year-first citekeys since 2026-08-18) from
+[`references/papers/_template-paper-note.md`](references/papers/_template-paper-note.md), cache the PDF in `references/papers/pdf/`, set
 `read_depth` honestly, fill `bears_on` and `verdict`. Then update whatever note or conclusion the
-source actually touches, append a line to `refs/log.md`, and re-run
+source actually touches, append a line to `references/log.md`, and re-run
 `python3 scripts/build-refs-index.py`.
 
 **Ingest a tool.** Clone into `upstream/`, run `scripts/repo-facts.sh` for the mechanical facts
@@ -139,7 +140,7 @@ claim turned out to rest on nothing:
   discipline per ADR-0021/0023, applied since 2026-08-25 — earlier deep-dives read
   under the two-part loop+context definition).
 - **`read_depth`** on a ref note — `full` · `extract` (a tool answered questions against it) ·
-  `abstract` · `unread`. **An `unread` source may not be cited anywhere outside `refs/`**, and
+  `abstract` · `unread`. **An `unread` source may not be cited anywhere outside `references/`**, and
   `--check` fails if it is. On 2026-07-31 two claims stated from extraction summaries were
   contradicted by the full PDFs, one of them backwards. That is what this field is for.
 

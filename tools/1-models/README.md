@@ -118,7 +118,9 @@ check starts where the fact actually lives:
   a PDF). This is a *different* first-party surface from the API docs at
   `ai.google.dev/gemini-api/docs/models`, which every Gemini report carries as its `url`.
   The knowledge cutoff — when Google states one at all — lives on the card, not in the
-  API spec table. The pattern found the first time it was read (2026-08-26,
+  API spec table. Cards that this repo has read get a note in
+  [`references/cards/`](../../references/cards/), with their quoted passages and a
+  required archive snapshot (ADR-0034). The pattern found the first time it was read (2026-08-26,
   [gemini-3-1-pro](gemini-3-1-pro.md)): a later model's card can be **thin**, delegating
   most sections to its family parent's card rather than restating them. **Read what is
   being delegated.** A card that delegates a *section* which happens to contain a

@@ -12,7 +12,7 @@ url: https://github.com/xiaowu162/LongMemEval
 kind: benchmark
 read_depth: full   # main text (pp. 1–10, through Conclusion) read end to end; appendices A–E consulted via cross-references only
 retrieved: 2026-08-18
-pdf: refs/pdf/2025-longmemeval.pdf
+pdf: references/papers/pdf/2025-longmemeval.pdf
 bears_on: [mem0, ai-memory, memos, memory-kind, benchmarks]
 verdict: "the strongest instrument of the three memory benchmarks cataloged — human-curated questions, judge validated at 97% human agreement, and a design-space taxonomy (indexing/retrieval/reading) that maps 1:1 onto what the memory-kind vendors actually build"
 ---

@@ -12,7 +12,7 @@ commit: 001c2352
 first_commit: 2023-06-20
 stars: 63535
 stars_at: 2026-08-18
-read_at: 2026-08-19   # deep-dive, same pin as the 2026-08-18 survey (zero upstream drift); vendor paper separately at full depth (refs/2025-mem0.md)
+read_at: 2026-08-19   # deep-dive, same pin as the 2026-08-18 survey (zero upstream drift); vendor paper separately at full depth (references/papers/2025-mem0.md)
 depth: deep-dive   # 2026-08-19: three parallel readers at the pin (plugin/carrier script bodies; SDK write/read machinery incl. async + TS port; platform boundary/server/benchmark provenance), load-bearing claims spot-verified in main session; displacement gate RUN-probed with synthetic hook payloads (host + alpine/jq container)
 harness_targets: "in-repo at the pin: integrations/mem0-plugin targets Claude Code, Claude Cowork, Cursor, Codex, OpenCode, Antigravity (hooks.json + codex-hooks.json + cursor-hooks.json + a Kimi shim; MCP config bundled — all four MCP manifests point at the hosted mcp.mem0.ai, no stdio/localhost option); also integrations/openclaw (the only carrier with an OSS code path) and pi-agent-plugin, plus non-harness carriers (vercel-ai-sdk — which bypasses the SDK entirely, zapier, n8n) and 17 in-repo skills (survey's six-skill count was closer to the pi-agent set)"
 harness_features:

@@ -21,7 +21,7 @@ kind: <benchmark | empirical-study | method | critique | survey>
 #   unread   — recorded as a lead. NOTHING in this repo may cite it. --check fails if it does.
 read_depth: <full | extract | abstract | unread>
 retrieved: <YYYY-MM-DD the copy behind this note was fetched>
-pdf: <refs/pdf/<key>.pdf if cached locally — gitignored, refetchable from arxiv/doi>
+pdf: <references/papers/pdf/<key>.pdf if cached locally — gitignored, refetchable from arxiv/doi>
 # bears_on: what in THIS repo the source touches. Free-form slugs, but prefer ones that
 # grep: conclusion-N, exp-NN, methodology-Nx, taxonomy, a tool name. Empty = --check warns.
 bears_on: [<conclusion-6>, <exp-03>]

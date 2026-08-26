@@ -64,7 +64,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    margin? → [`experiments/01-gsd-vs-plain/`](../experiments/01-gsd-vs-plain/README.md)
    **Status 2026-07-31 — under re-examination, issue #8.** A published n=128 ablation
    separates the two ingredients this conclusion credits jointly and finds post-phase
-   *validation* worth ~3× pre-phase *grounding* ([`refs/2026-spec-kit-agents.md`](../refs/2026-spec-kit-agents.md)).
+   *validation* worth ~3× pre-phase *grounding* ([`references/papers/2026-spec-kit-agents.md`](../references/papers/2026-spec-kit-agents.md)).
    Its headline is an LLM-judge score its own blinded human sample mildly contradicts, and it
    ran a different base model, so this is a competing decomposition rather than a refutation —
    but our n=1 does not support asserting the split either way.
@@ -91,7 +91,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    same subjects reaches the same tradeoff — "no framework strongly covers all six dimensions
    … a structural trade-off between process depth and portability" — from documentation
    alone, where ours came from reading git history
-   ([`refs/2026-from-prompt-to-process.md`](../refs/2026-from-prompt-to-process.md)). Two methods, one
+   ([`references/papers/2026-from-prompt-to-process.md`](../references/papers/2026-from-prompt-to-process.md)). Two methods, one
    shape. Its GSD scores are also where our *run* evidence contradicts a docs-only reading.
    **Deepened by the 2026-08-18 deep-dives** (spec-kit + gsd-core, both traced in source):
    the "escape hatch" framing was too coarse — the two frameworks diverged. spec-kit
@@ -253,7 +253,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     miscounts, 0/3), and the two files *combined* interfered: grounding went
     checkbox-shallow in 3 of 3 runs. On our fails-closed binary instrument the
     decomposition is **grounding > gates > both** — the opposite direction from the
-    published LLM-judge ablation ([`refs/2026-spec-kit-agents.md`](../refs/2026-spec-kit-agents.md)),
+    published LLM-judge ablation ([`references/papers/2026-spec-kit-agents.md`](../references/papers/2026-spec-kit-agents.md)),
     recorded with both candidate attributions (instrument, model). Then tier 2: **plain
     Sonnet discovered 8.3/9 unprompted** — one model tier absorbed the instruction's
     entire measured value (P5's shrink-with-capability prediction, in the limit).
@@ -317,7 +317,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     87.9 *human* baseline; cognee's 0.79 vs BEAM's ~0.36 best configs) — so the
     type's efficacy for coding is currently an unmeasured claim resting on
     conversational proxies. *Deepened same day by the mem0 vendor paper
-    ([`refs/2025-mem0.md`](../refs/2025-mem0.md), full read): mem0's own published
+    ([`references/papers/2025-mem0.md`](../references/papers/2025-mem0.md), full read): mem0's own published
     comparison shows the no-memory full-context baseline beating its memory system
     on quality (J 72.90 vs 68.44) — the measured claim is latency/token efficiency —
     and the 92.5 belongs to a later rewrite whose architecture the paper doesn't

@@ -15,6 +15,12 @@ Thumbs.db
 .idea/
 # Downloaded papers — read-only study copies, never committed.
 # Copyright belongs to the publishers; refetchable from each note's arxiv/doi frontmatter.
-refs/pdf/*
-!refs/pdf/.gitkeep
+references/papers/pdf/*
+!references/papers/pdf/.gitkeep
+
+# Cached vendor model cards. NOT refetchable the way a paper is — a card is rewritten in
+# place at one URL — which is why every card note carries a REQUIRED snapshot: (Wayback)
+# URL. The note plus its snapshot is the record; this copy is a convenience.
+references/cards/pdf/*
+!references/cards/pdf/.gitkeep
 __pycache__/

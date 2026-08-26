@@ -118,14 +118,14 @@ Three full reads, all `kind: benchmark`, cataloging the instruments the memory-k
 vendors self-report on before any vendor number is repeated (benchmark-survey
 discipline):
 
-- **[2024-locomo](2024-locomo.md)** — the instrument mem0's headline numbers ride on.
+- **[2024-locomo](papers/2024-locomo.md)** — the instrument mem0's headline numbers ride on.
   Persona-driven social-chat memory, 50 LLM-generated conversations, F1 scoring.
   Saturation by 2026 models plausible; discriminance unverified.
-- **[2025-longmemeval](2025-longmemeval.md)** — the strongest of the three: human-curated
+- **[2025-longmemeval](papers/2025-longmemeval.md)** — the strongest of the three: human-curated
   questions, judge meta-evaluated at 97% human agreement, retrieval recall observable.
   Its indexing/retrieval/reading control points map 1:1 onto what ai-memory and memos
   ship — folded into both tool reports' framing.
-- **[2026-beam](2026-beam.md)** — behind cognee's 0.79/0.67 claims; fully synthetic up to
+- **[2026-beam](papers/2026-beam.md)** — behind cognee's 0.79/0.67 claims; fully synthetic up to
   10M tokens, nugget-scored LLM judge; the paper's own best configs average ~0.36 at
   100K, so the vendor number needs config reconciliation before belief.
 
@@ -140,7 +140,7 @@ README.md. Generated index/benchmarks rebuilt.
 
 ## 2026-08-18 — mem0 vendor paper (owner-supplied source)
 
-**[2025-mem0](2025-mem0.md)** (arXiv 2504.19413, full read) — closes the mem0 side of
+**[2025-mem0](papers/2025-mem0.md)** (arXiv 2504.19413, full read) — closes the mem0 side of
 the vendor-number reconciliation the instrument catalog opened. Three findings folded
 into the notes: the README's "LoCoMo 92.5" exceeds even the paper's own best J
 (68.44); the paper's no-memory full-context baseline *beats* both mem0 variants on

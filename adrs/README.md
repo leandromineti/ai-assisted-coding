@@ -26,13 +26,16 @@ before 2026-08-26** also cites the constitution at root — `taxonomy.md`,
 unrenamed ([ADR-0026](0026-constitution-into-docs.md)) — and cites the hand-kept front
 doors as `index.md`: `docs/index.md` and `tools/N-<name>/index.md` map to `README.md` in
 the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); generated
-`refs/index.md` is unaffected. It also cites the numbered conclusions as living in
+`references/index.md` is unaffected. It also cites the numbered conclusions as living in
 `README.md` — they moved to `docs/conclusions.md` the same day, **numbers unchanged**, so
 "conclusion N" still resolves ([ADR-0028](0028-conclusions-out-of-readme.md)). Finally, it
 calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both gained a
 `tool-` prefix on 2026-08-26 to pair with `feature-taxonomy.md`, so they are
 `docs/tool-taxonomy.md` and `docs/tool-taxonomy.yaml`
-([ADR-0030](0030-tool-taxonomy-prefix.md)).
+([ADR-0030](0030-tool-taxonomy-prefix.md)). And it cites source notes as `refs/<key>.md`:
+the library was renamed and split the same day, so those map to
+`references/papers/<key>.md` — bare `refs/` to `references/`
+([ADR-0034](0034-references-papers-and-cards.md)).
 
 **Rules:**
 
@@ -91,3 +94,4 @@ calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both ga
 | [0031](0031-candidates-ledger-is-a-backlog.md) | 2026-08-26 | The candidates ledger is a backlog: promotion removes the row (supersedes 0009's append-mostly clause); six promoted rows removed | accepted |
 | [0032](0032-value-type-column.md) | 2026-08-26 | `value_type` on every registry entry (9 values, repo vocabulary not generic types), rendered as the Type column; unknown values are a generator error | accepted |
 | [0033](0033-pricing-structured.md) | 2026-08-26 | `pricing` becomes a mapping (numeric core + regime + verbatim note); tenth `value_type` `structured`; first cell-value check | accepted |
+| [0034](0034-references-papers-and-cards.md) | 2026-08-26 | `refs/` → `references/`, split into `papers/` + `cards/`; card notes carry a required archive `snapshot` | accepted |

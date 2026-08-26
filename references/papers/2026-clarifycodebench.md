@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2607.00711
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against abstract + HTML full text
 retrieved: 2026-08-17
-pdf: refs/pdf/2026-clarifycodebench.pdf
+pdf: references/papers/pdf/2026-clarifycodebench.pdf
 task_shape: function-level
 task_count: 419
 task_source: "LiveCodeBench v6 problems, manually annotated: 199 with one ambiguity, 169 with two, 51 with three"

@@ -41,7 +41,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TAXONOMY = ROOT / "docs" / "tool-taxonomy.yaml"
 FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
 
-# A file containing this marker is generated output (comparisons/*.md, refs/index.md)
+# A file containing this marker is generated output (comparisons/*.md, references/index.md)
 # and is never a lint target directly — its generator owns the vocabulary it emits
 # (methodology rule 3). This is a backstop: exempt_paths.skip_entirely already lists
 # comparisons/*, so this catches a newly generated file before anyone remembers to add
@@ -741,8 +741,8 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
             old, new, status = entry["old"], entry["new"], entry["status"]
             # kind -> type is scoped to category-5 reports plus the shared template
             # (both explicitly listed in this entry's own `scope:`); layer -> category
-            # applies to every tools/ report and template, so no extra gate — refs/'s
-            # unrelated `kind:` vocabulary never reaches here at all (refs/* is
+            # applies to every tools/ report and template, so no extra gate — references/'s
+            # unrelated `kind:` vocabulary never reaches here at all (references/* is
             # exempt_paths.skip_entirely, so walk() never yields it).
             if old == "kind":
                 # WR-01: read whichever category key is CURRENTLY active, not the

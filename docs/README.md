@@ -143,7 +143,7 @@ traced to exp-01's quality margin. Exp-03's "minimal harness" must therefore hol
 *measured* gates as its ingredient, and score any format/prose gating in either arm
 separately — a fully deterministic framework can still never touch the domain.
 **Priced instance for the format quadrant (2026-08-17,
-[swe-agent-2024](../refs/2024-swe-agent.md)):** SWE-agent's in-`edit` linter — a
+[swe-agent-2024](../references/papers/2024-swe-agent.md)):** SWE-agent's in-`edit` linter — a
 deterministic, no-domain-contact gate that discards invalid edits mechanically — is
 worth a measured **+3.0pp** on SWE-bench Lite, and the paper's recovery curve shows
 why: edit-success odds halve after a single failed edit, so the gate's value is

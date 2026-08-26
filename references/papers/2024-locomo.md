@@ -12,7 +12,7 @@ url: https://snap-research.github.io/locomo/
 kind: benchmark
 read_depth: full   # main text (pp. 1–9, through Limitations & Broader Impacts) read end to end; appendices A–C consulted via cross-references only
 retrieved: 2026-08-18
-pdf: refs/pdf/2024-locomo.pdf
+pdf: references/papers/pdf/2024-locomo.pdf
 bears_on: [mem0, memos, memory-kind, benchmarks]
 verdict: "catalogs the instrument mem0's headline numbers ride on — persona-driven *social* conversation memory, zero coding content; a vendor score here says nothing about coding-agent memory"
 ---

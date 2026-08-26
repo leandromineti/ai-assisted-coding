@@ -93,7 +93,7 @@ per-step advertised-tool finalization → `SafetyCheck` classification → execu
 grant what the sandbox denies ([codex](../tools/2-harnesses/codex.md)). The revised
 statement: visibility, decision, **enforcement** — and the strongest designs make the
 third category mechanical, not prose.
-*Earliest measured evidence found (2026-08-17, [swe-agent-2024](../refs/2024-swe-agent.md)
+*Earliest measured evidence found (2026-08-17, [swe-agent-2024](../references/papers/2024-swe-agent.md)
 full read):* the 2024 ACI ablations price both chokepoints separately, holding the
 model fixed — visibility shaping (100-line viewer window beats both 30 lines and
 full file; last-5 history collapse beats full history, +3.0pp) and mechanical

@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2405.15793
 kind: empirical-study
 read_depth: full   # main body + appendices A–B end to end; C (prompt listings) and D (case studies) surveyed at structure level
 retrieved: 2026-08-17
-pdf: refs/pdf/2024-swe-agent.pdf
+pdf: references/papers/pdf/2024-swe-agent.pdf
 bears_on: [conclusion-8, exp-03, taxonomy, metrics, design-principles]
 verdict: "the academic origin of this repo's category-2 premise — the interface between agent and computer is a measurable capability layer, worth +64% relative over a bare shell with the SAME model; its ablation table is the earliest measured H3 evidence we hold (visibility shaping and execution gating each buy points), and its iterative-search result proves interfaces can SUBTRACT (worse than no tool at all); peer-reviewed, 2,294-instance scale"
 ---

@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2511.00872
 kind: empirical-study
 read_depth: full
 retrieved: 2026-08-17   # PDF refetched this date — the 2026-07-31 cache was lost in the 2026-08-06 server rebuild
-pdf: refs/pdf/2025-agent-frameworks-eval.pdf
+pdf: references/papers/pdf/2025-agent-frameworks-eval.pdf
 bears_on: [conclusion-6, conclusion-8, conclusion-11, exp-03, metrics]
 verdict: "does NOT preempt exp-03 — no framework-less control anywhere in its 7×3 grid, which is exactly our question; corroborates the ceremony-is-cost decomposition at framework scale (single-agent beats multi-agent on all three tasks, 'specialized tools > more agents'); its correction-rate metric is worth borrowing WITH its own caveat (zero corrections = no self-monitoring, not efficiency); several internal inconsistencies between abstract, tables, and answer boxes — cite tables, not prose"
 ---

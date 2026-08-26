@@ -41,11 +41,11 @@ margin measured today is a claim about *current-tier* models with a built-in
 expiration date.
 
 **3. The published effect sizes live at category 2.** With the model held fixed,
-[swe-agent-2024](../refs/2024-swe-agent.md) measured the agent-computer interface
+[swe-agent-2024](../references/papers/2024-swe-agent.md) measured the agent-computer interface
 alone at **+64% relative** over a bare shell, priced both chokepoints separately
 (viewer window shape, history collapse, an edit-gating linter each worth points), and
 found a badly shaped search tool scoring **below no tool at all**.
-[agent-frameworks-eval](../refs/2025-agent-frameworks-eval.md) traced repair gaps to
+[agent-frameworks-eval](../references/papers/2025-agent-frameworks-eval.md) traced repair gaps to
 patch *tooling*, not reasoning, and single-agent beat multi-agent on all its tasks.
 Meanwhile our own category-2 baseline (Claude Code) has never been the varied factor in
 any experiment here — we have been measuring the small lever while holding the big

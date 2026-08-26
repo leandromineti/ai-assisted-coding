@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2603.00187
 kind: benchmark
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/2026-clareval.pdf
+pdf: references/papers/pdf/2026-clareval.pdf
 task_shape: function-level
 task_count: 2250
 task_source: HumanEval (150) + LiveCodeBench (600) = 750 clear tasks × 3 ambiguity types
@@ -145,7 +145,7 @@ cannot over-cooperate — see [`lost-in-simulation.md`](lost-in-simulation.md) f
 property matters.
 
 **4. Metrics to adopt into our vocabulary**, recorded in
-[`../docs/metrics.md`](../docs/metrics.md): KQC, MPR, ATC, EAR.
+[`../docs/metrics.md`](../../docs/metrics.md): KQC, MPR, ATC, EAR.
 EAR in particular already solves a problem we would have hit — how to stop a framework looking
 good by asking thirty questions.
 

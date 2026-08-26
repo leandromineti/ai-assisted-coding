@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2606.04967
 kind: survey
 read_depth: full
 retrieved: 2026-07-31
-pdf: refs/pdf/2026-from-prompt-to-process.pdf
+pdf: references/papers/pdf/2026-from-prompt-to-process.pdf
 bears_on: [conclusion-7, conclusion-6, taxonomy, gsd-core, spec-kit, openspec, bmad-method, methodology-8]
 verdict: "independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep"
 ---
@@ -73,7 +73,7 @@ layer (47 platform codes), achieved by refusing translation entirely (byte-ident
 Agent Skills to every target). Its Valid=2 also deserves the ADR-0011 asterisk: every
 framework-side gate is prose; the engine-graded gates live in the separate bmad-loop
 orchestrator, outside the framework the paper scored —
-[report](../tools/4-workflow-frameworks/bmad-method.md).)*
+[report](../../tools/4-workflow-frameworks/bmad-method.md).)*
 
 ## What it means for this repo
 
@@ -97,7 +97,7 @@ whereas exp-01 ran **gsd-core**, the 2026-05-22 community fork. Different artifa
 fork may have added gates the original lacked. The paper does note "a maintenance move to a
 new organization" and GSD's "maintenance volatility," but its May 2026 snapshot still lists
 the original repo as active, where our
-[`gsd-core` report](../tools/4-workflow-frameworks/gsd-core.md) documents the archival and
+[`gsd-core` report](../../tools/4-workflow-frameworks/gsd-core.md) documents the archival and
 its cause. Both accounts are dated; ours is more specific.
 
 **3. Our niche is named as a research gap.** §7's process-oriented-benchmark agenda asks for

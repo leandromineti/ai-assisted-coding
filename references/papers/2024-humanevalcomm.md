@@ -12,7 +12,7 @@ url: https://arxiv.org/abs/2406.00215
 kind: benchmark
 read_depth: extract   # promoted from unread 2026-08-17 — WebFetch answered targeted questions against the HTML full text
 retrieved: 2026-08-17
-pdf: refs/pdf/2024-humanevalcomm.pdf
+pdf: references/papers/pdf/2024-humanevalcomm.pdf
 task_shape: function-level
 task_count: 762
 task_source: "HumanEval's 164 problems, degraded into variants: 1a ambiguity 164 · 1c inconsistency 164 · 1p incompleteness 164 · 2ac 162 · 2ap 74 · 2cp 34"

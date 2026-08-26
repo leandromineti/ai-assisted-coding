@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Fetch citation counts for refs/ notes from Semantic Scholar — never hand-type them.
+"""Fetch citation counts for references/ notes from Semantic Scholar — never hand-type them.
 
     python3 scripts/fetch-citations.py            # print current counts (dry run)
     python3 scripts/fetch-citations.py --write    # update citations/citations_at in frontmatter
 
-Reads every refs/*.md with an `arxiv:` frontmatter key, batch-queries the Semantic
+Reads every references/*.md with an `arxiv:` frontmatter key, batch-queries the Semantic
 Scholar Graph API, and (with --write) rewrites two frontmatter keys in place:
 
     citations: "N (M influential) — Semantic Scholar"
@@ -30,7 +30,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REFS = ROOT / "refs"
+REFS = ROOT / "references" / "papers"
 API = "https://api.semanticscholar.org/graph/v1/paper/batch?fields=citationCount,influentialCitationCount"
 
 
