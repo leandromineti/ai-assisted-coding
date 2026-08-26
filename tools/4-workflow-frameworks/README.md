@@ -3,7 +3,7 @@
 `checked: 2026-08-18`
 
 An encoded **methodology** riding on top of a harness. Runtime is to framework as harness
-is to this. See [`../../docs/taxonomy.md`](../../docs/taxonomy.md).
+is to this. See [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
 
 The category test is **harness portability by design**: the methodology is defined once and
 targets many harnesses.

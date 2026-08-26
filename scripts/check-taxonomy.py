@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-hard lint for this repo's taxonomy vocabulary — reads docs/taxonomy.yaml as the
+"""Fail-hard lint for this repo's taxonomy vocabulary — reads docs/tool-taxonomy.yaml as the
 sole source of truth and flags drift in current-state documents, extending the fail-hard
 rule-3/rule-4 pattern the other two `--check` generators already enforce (methodology.md):
 a hand-kept vocabulary drifts from what the ADRs actually decided, and you find out when
@@ -38,7 +38,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-TAXONOMY = ROOT / "docs" / "taxonomy.yaml"
+TAXONOMY = ROOT / "docs" / "tool-taxonomy.yaml"
 FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
 
 # A file containing this marker is generated output (comparisons/*.md, refs/index.md)
@@ -52,7 +52,7 @@ FRONTMATTER_KEY_RE = re.compile(r"^(\s*[A-Za-z0-9_.\-]+:)\s?")
 
 
 def load_taxonomy(path: Path = TAXONOMY) -> dict:
-    """Read taxonomy.yaml with the safe loader (matches both existing generators).
+    """Read tool-taxonomy.yaml with the safe loader (matches both existing generators).
 
     Nothing the lint validates against may be hardcoded in this script: terms,
     deny-lists, compounds, and path patterns all come from this file (VOCAB-02).
@@ -389,7 +389,7 @@ def _in_any_span(start: int, end: int, spans: list[tuple[int, int]]) -> bool:
     return any(s <= start and end <= e for s, e in spans)
 
 
-# One predicate per taxonomy.yaml carve_outs[].id, dispatched by id so adding a
+# One predicate per tool-taxonomy.yaml carve_outs[].id, dispatched by id so adding a
 # carve-out to the yaml has a single obvious landing site here. Each predicate takes
 # the match context dict built in check() and returns True to exempt that match.
 def _carveout_adr_filenames(ctx: dict) -> bool:
@@ -423,7 +423,7 @@ def assert_carveouts_implemented(taxo: dict) -> None:
     ids = [c["id"] for c in taxo.get("carve_outs", []) or []]
     missing = [i for i in ids if i not in CARVE_OUT_PREDICATES]
     if missing:
-        sys.exit(f"carve_outs in taxonomy.yaml with no predicate implemented: {missing}")
+        sys.exit(f"carve_outs in tool-taxonomy.yaml with no predicate implemented: {missing}")
 
 
 def _known_sites(taxo: dict) -> dict[str, list[str]]:
@@ -455,7 +455,7 @@ def _why(term: dict) -> str:
 
 
 # --- LINT-02: stale category names/numbering, strict reference-format enforcement ---
-# Every rule below derives from taxonomy.yaml's `categories:` and `reference_formats:`
+# Every rule below derives from tool-taxonomy.yaml's `categories:` and `reference_formats:`
 # blocks — no vocabulary is invented here (methodology rule 4). `stack` is a
 # split_meaning_terms entry with lint_enforceable: false; this check never touches it
 # (nor does any other check in this script) — 'stack' is an accepted gap, caught by
@@ -465,7 +465,7 @@ MIDDLE_DOT = "·"  # U+00B7 MIDDLE DOT — reference_formats.table_index_note
 
 # Separator glyphs reference_formats.table_index_note names as wrong ("not a hyphen,
 # bullet, or other separator") plus the two dash variants and a colon. The period form
-# ("### N. Name", taxonomy.md's live section headings) is deliberately excluded — it is
+# ("### N. Name", tool-taxonomy.md's live section headings) is deliberately excluded — it is
 # canonical prose, not a table-index reference, and flagging it would be wrong.
 WRONG_SEPARATORS = "-–—•:"  # hyphen, en dash, em dash, bullet, colon
 
@@ -477,7 +477,7 @@ def _category_name_alternation(taxo: dict) -> str:
 
 def _table_index_regexes(taxo: dict) -> tuple[re.Pattern, re.Pattern]:
     """Both the wrong-separator and canonical-pairing regexes, over the canonical
-    category names taken from taxonomy.yaml (no hardcoded name list)."""
+    category names taken from tool-taxonomy.yaml (no hardcoded name list)."""
     names_alt = _category_name_alternation(taxo)
     wrong = re.compile(
         rf"(?<!\d)(\d)\s*([{re.escape(WRONG_SEPARATORS)}])\s*({names_alt})\b"
@@ -712,7 +712,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
     scanner, which already excludes colon-suffixed deny entries like `kind:` from
     prose at the regex-build step (`_deny_index`). That's what lets the recorded
     false positive — `tools/5-memory/ai-memory.md:90`'s "Table stakes
-    in the kind: store + retrieve + MCP." (taxonomy.yaml, term `types`,
+    in the kind: store + retrieve + MCP." (tool-taxonomy.yaml, term `types`,
     false_positive_notes) — pass without a per-site carve-out: prose "kind:" is never
     even a candidate for this check, because this check never looks at body text.
     """
@@ -722,7 +722,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
         status = entry.get("status")
         if status not in _VALID_RENAME_STATUSES:
             sys.exit(
-                f"taxonomy.yaml schema_renames[old={entry.get('old')!r}] has "
+                f"tool-taxonomy.yaml schema_renames[old={entry.get('old')!r}] has "
                 f"invalid status {status!r} — must be one of "
                 f"{sorted(_VALID_RENAME_STATUSES)}"
             )
@@ -801,7 +801,7 @@ def _with_schema_renames_pending(taxo: dict) -> dict:
     the symmetric counterpart to `_with_schema_renames_applied`. Used by the
     'old-key-while-pending' and 'premature-renamed-key' fixtures so they test the
     pending branch of check_schema_renames on its own terms rather than relying on
-    the live taxonomy.yaml's status happening to still read 'pending' — a fixture
+    the live tool-taxonomy.yaml's status happening to still read 'pending' — a fixture
     without this patch went silently inverted the moment Phase 3's atomic commit
     flipped the real file to 'applied' (found executing plan 03-02, 2026-08-19)."""
     patched = copy.deepcopy(taxo)
@@ -994,7 +994,7 @@ FIXTURES: list[dict] = [
         "why": "status is pending — the old `layer:` key is still the current "
         "schema and must pass (LINT-05). The fixture supplies its own taxo with "
         "status forced to 'pending' so this proves the pending branch on its own "
-        "terms, independent of the real taxonomy.yaml's status (which Phase 3's "
+        "terms, independent of the real tool-taxonomy.yaml's status (which Phase 3's "
         "atomic commit flips to 'applied').",
     },
     {
@@ -1134,7 +1134,7 @@ FIXTURES: list[dict] = [
 # LINT-03's model extended in scope only. Deliberately live-but-empty: no measurement
 # drift term ("trap score", "attention split", ...) has been observed misused, and
 # inventing a deny entry with no evidence behind it would violate methodology rule 4.
-# Growing this means adding a term to taxonomy.yaml's `terms:` list with NO code
+# Growing this means adding a term to tool-taxonomy.yaml's `terms:` list with NO code
 # change here — that property is what Phase 4 documents.
 
 

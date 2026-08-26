@@ -13,7 +13,7 @@ still](https://mineti.dev/articles/the-ai-coding-stack/).
 
 ## Start here
 
-**[`docs/taxonomy.md`](docs/taxonomy.md)** — the shared vocabulary, with a boundary rule, a
+**[`docs/tool-taxonomy.md`](docs/tool-taxonomy.md)** — the shared vocabulary, with a boundary rule, a
 bleed/vendor-span distinction, and a stress test for the many tools that straddle the
 divisions. A **core triad** — categories 1–3, the three things a running agent cannot
 lack — plus three **interfaces** (4, 5, and the bucket at 6) that mediate between the
@@ -66,8 +66,8 @@ confirm, contradict, or note silence.
 ├── CLAUDE.md                  how the repo works: where things go, the ingest and lint operations
 │
 ├── docs/                      the constitution, the output, and the notes that span categories
-│   ├── taxonomy.md                category definitions + boundary rule — the canonical reference
-│   ├── taxonomy.yaml              its machine-readable half; the vocabulary lint's only source
+│   ├── tool-taxonomy.md                category definitions + boundary rule — the canonical reference
+│   ├── tool-taxonomy.yaml              its machine-readable half; the vocabulary lint's only source
 │   ├── methodology.md             the working rules — verification, honesty markers, protocol
 │   ├── design-principles.md       principles per category, each confidence-marked
 │   ├── conclusions.md             the numbered findings — what the survey actually concluded
@@ -109,7 +109,7 @@ One report per tool, following
 bet"** field is the one that matters — what does this tool believe that its competitors
 don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
 `survey` (used or skimmed), `deep-dive` (the category's components traced — defined in
-[`docs/taxonomy.md`](docs/taxonomy.md) — the report saying which; pre-2026-08-25 deep-dives read
+[`docs/tool-taxonomy.md`](docs/tool-taxonomy.md) — the report saying which; pre-2026-08-25 deep-dives read
 under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead

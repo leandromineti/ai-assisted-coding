@@ -5,7 +5,7 @@
 How work is done in this repo — distilled from practice, not aspiration. Every rule here
 earned its place by catching a real mistake at least once; each entry names where it's
 enforced. Intent lives in [`README.md`](../README.md); vocabulary in
-[`taxonomy.md`](taxonomy.md). This file is the *how*.
+[`tool-taxonomy.md`](tool-taxonomy.md). This file is the *how*.
 
 ## 1. Verify against primary sources; date every claim
 

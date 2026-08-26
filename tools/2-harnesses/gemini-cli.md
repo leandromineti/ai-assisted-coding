@@ -340,7 +340,7 @@ watch") gets its Google data point, and it is two-channel:
   content-bearing one: once a user enables it for their own observability,
   `logPrompts` defaults true and full prompts/tool args/shell strings flow.
 
-Consistent with the two-instance pattern recorded in taxonomy.md: who the maker is
+Consistent with the two-instance pattern recorded in tool-taxonomy.md: who the maker is
 at category 1 predicts what the harness collects — here, *shape from everyone,
 content from the free tier*.
 

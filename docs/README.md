@@ -19,7 +19,7 @@ Read these three first. They outrank every other document in the repo, including
 | File | What it governs |
 |---|---|
 | [`methodology.md`](methodology.md) | the rules — nine numbered, each scarred by a specific failure |
-| [`taxonomy.md`](taxonomy.md) | the categories, and what a category *test* is. Its machine-readable half is [`taxonomy.yaml`](taxonomy.yaml), the vocabulary lint's sole source of truth |
+| [`tool-taxonomy.md`](tool-taxonomy.md) | the categories, and what a category *test* is. Its machine-readable half is [`tool-taxonomy.yaml`](tool-taxonomy.yaml), the vocabulary lint's sole source of truth |
 | [`design-principles.md`](design-principles.md) | the hypotheses, and the rule for revising them |
 
 ---

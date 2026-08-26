@@ -2,7 +2,7 @@
 
 `created: 2026-08-18` · decision record: [ADR-0010](../adrs/0010-two-taxonomies.md)
 
-This repo carries **two taxonomies**. The [tool taxonomy](taxonomy.md) classifies
+This repo carries **two taxonomies**. The [tool taxonomy](tool-taxonomy.md) classifies
 what a tool *is* (the categories, plus types like category 6's `type` and category 4's
 poles). This file is the **feature taxonomy**: every characteristic we assess on tools,
 defined **once**, with an applicability map saying which categories it can occur in. The
@@ -319,7 +319,7 @@ features:
 # hand-typed) · source-or-docs (read in the pinned clone or official docs, the same
 # discipline as feature cells). Honesty/meta columns (depth, checked, read_at) and
 # tool-taxonomy classification fields (category, type) are deliberately absent: rule 2
-# and taxonomy.md govern those, and they are not facts about the subject.
+# and tool-taxonomy.md govern those, and they are not facts about the subject.
 transcription_fields:
   - id: vendor
     applies_to: [1, 2, 3, 4, 5, 6]

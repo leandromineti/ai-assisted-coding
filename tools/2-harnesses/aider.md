@@ -24,7 +24,7 @@ what the model sees. The oldest project in the set — first commit 2023-04-03, 
 current harness generation by well over a year.
 
 Classified category 2 despite having real opinions about process — see the stress test in
-[`../../docs/taxonomy.md`](../../docs/taxonomy.md). Its methodology isn't installable on another
+[`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md). Its methodology isn't installable on another
 harness, so it's a harness with strong defaults, not a workflow framework.
 
 ## The distinguishing bet

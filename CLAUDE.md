@@ -11,7 +11,7 @@ Read these three first. They are the constitution, and they outrank anything in 
 | File | What it governs |
 |---|---|
 | [`docs/methodology.md`](docs/methodology.md) | the rules. Nine numbered, each scarred by a specific failure. Rule 3 (generated indexes), rule 4 (traceable claims), rule 5 (preregistration + 5a–5f), rule 8 (docs/source/run) constrain nearly every task here |
-| [`docs/taxonomy.md`](docs/taxonomy.md) | the categories, and what a category *test* is |
+| [`docs/tool-taxonomy.md`](docs/tool-taxonomy.md) | the categories, and what a category *test* is |
 | [`docs/design-principles.md`](docs/design-principles.md) | the hypotheses, and the rule for revising them |
 
 [`docs/conclusions.md`](docs/conclusions.md) holds the numbered **Conclusions** — the repo's actual
@@ -84,15 +84,15 @@ the drift touches what the report claims and record the answer, dated, in the re
 upstream bug fix that falsified a claim in its deep-dive.
 
 The taxonomy lint (`check-taxonomy.py`) has different semantics: it reads
-`docs/taxonomy.yaml` and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately
+`docs/tool-taxonomy.yaml` and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately
 exempt); exit 0 prints a trailing `0 problem(s)`; exit 2 means a bad argument. Run
-`python3 scripts/check-taxonomy.py --selftest` after touching `taxonomy.yaml` or the
+`python3 scripts/check-taxonomy.py --selftest` after touching `tool-taxonomy.yaml` or the
 lint itself — it is the lint's permanent calibration (methodology rule 5d). `--selftest`
 deliberately prints ERROR diagnostics from fixtures designed to fail, so its verdict is
 the trailing `0 problem(s)` line and the exit code, never the absence of ERROR output.
 
 Three green `--check` runs are not proof the repo's vocabulary is correct — the lint
-enforces only what `taxonomy.yaml` lists. `taxonomy.yaml`'s own `split_meaning_terms`
+enforces only what `tool-taxonomy.yaml` lists. `tool-taxonomy.yaml`'s own `split_meaning_terms`
 records at least one sense (`stack`) no lint can judge, and a word inflection outside a
 deny-listed entry is invisible to it (see the deny-list growth procedure below for a
 worked example of exactly this gap).
@@ -101,12 +101,12 @@ worked example of exactly this gap).
 
 1. Decide it's drift before denying anything. A word with legitimate non-taxonomy uses is
    not a deny-list candidate — record it instead as a `false_positive_notes` entry under
-   the relevant term in `taxonomy.yaml`. Precedent: the bare `kind` token is deliberately
+   the relevant term in `tool-taxonomy.yaml`. Precedent: the bare `kind` token is deliberately
    not denied (only the frontmatter-key form `` `kind:` `` is) because a bare-token entry
    would guarantee false positives — the reason this repo chose a deny-list over an
    allow-list in the first place.
 2. To deny it: add the term as a string under the matching `terms[].deny_list` in
-   `docs/taxonomy.yaml`. That is the only file to edit — no Python change is required. Two
+   `docs/tool-taxonomy.yaml`. That is the only file to edit — no Python change is required. Two
    mechanics to get right: matching is whole-token and case-insensitive with no stemming,
    so list every inflected form you mean to catch, and a longer word that merely contains
    an entry does not match; and position within the list doesn't matter, because the lint
@@ -120,7 +120,7 @@ worked example of exactly this gap).
    are a work queue: fix the prose first, exempt only second and only with a written
    `canonical_source` — exemption is the cheapest way to turn a finding green and the
    easiest way to hollow the lint out.
-5. Bump `checked:` in `taxonomy.yaml` (dates on everything).
+5. Bump `checked:` in `tool-taxonomy.yaml` (dates on everything).
 6. The one case that needs code: a genuinely new sort of exemption — a new
    `carve_outs[].id` — needs a matching predicate in `scripts/check-taxonomy.py`, or the
    lint refuses to run and says so. Deny-list entries, exempt compounds, and exempt paths
@@ -133,7 +133,7 @@ claim turned out to rest on nothing:
 
 - **`depth`** on a tool report — `stub` (facts collected mechanically, nobody read the source) ·
   `survey` (used or skimmed) · `deep-dive` (the category's component decomposition
-  actually traced, the report declaring which components — taxonomy.md defines them for
+  actually traced, the report declaring which components — tool-taxonomy.md defines them for
   categories 2, 4, and 5, and category 3's (host · principal · working directory)
   live in its index with the three questions as the lens over them; tracing
   discipline per ADR-0021/0023, applied since 2026-08-25 — earlier deep-dives read

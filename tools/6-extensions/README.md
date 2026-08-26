@@ -3,7 +3,7 @@
 > Renamed from "Portable artifacts" 2026-08-17: portability is not an intrinsic
 > property of an extension but a status the ecosystem confers by adoption — unevenly
 > across the types below (see the Standards scoreboard and the dated rename note in
-> [`../../docs/taxonomy.md`](../../docs/taxonomy.md)). Renumbered 5 → 6 at the 2026-08-22 split
+> [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md)). Renumbered 5 → 6 at the 2026-08-22 split
 > ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)): the memory
 > type left this bucket to become category 5 — [Memory](../5-memory/README.md).
 
@@ -12,7 +12,7 @@
 What the agent can **see and touch**, as distributable content. **A bucket, not a
 category-of-fundamentals, since the 2026-07-30 taxonomy revision** (trigger fired at the
 ECC deep-dive — see the executed-revision note in
-[`../../docs/taxonomy.md`](../../docs/taxonomy.md)). The membership test is unchanged: independent
+[`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md)). The membership test is unchanged: independent
 distribution — authored, versioned, and installed separately from any harness. The "6"
 is a storage key (3 → 5 by [ADR-0007](../../adrs/0007-renumber-core-triad-first.md),
 5 → 6 by ADR-0020).

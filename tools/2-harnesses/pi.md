@@ -261,7 +261,7 @@ sharper.
 
 ## The Claude Code impersonation — the data-instrument note from the other side *(2026-08-26)*
 
-taxonomy.md records "who a harness's maker is at category 1 predicts what the harness
+tool-taxonomy.md records "who a harness's maker is at category 1 predicts what the harness
 collects", tracked from the *vendor* pole (Cursor→Grok, hermes trajectory export). Pi
 supplies the **non-vendor mirror image, and it is an authenticity finding rather than a
 collection one.** On Anthropic **OAuth** credentials (i.e. a Claude Pro/Max

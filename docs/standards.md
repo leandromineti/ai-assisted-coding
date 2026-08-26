@@ -4,7 +4,7 @@
 
 Specifications, not installable things. A standard has no category of its own; it is recorded
 here once and referenced from the categories that implement it. See
-[`taxonomy.md`](taxonomy.md).
+[`tool-taxonomy.md`](tool-taxonomy.md).
 
 This category exists because the taxonomy's stress test broke on MCP: it has no defensible
 home in the stack, because *the protocol* and *the servers that speak it* are different

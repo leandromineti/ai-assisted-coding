@@ -12,7 +12,7 @@ the characteristics assessed on tools — once, with per-category applicability 
 the comparison matrices are generated from it. Categories may carry **types**
 (category 6's `type`; category 4's SDD / context-discipline / decision-governance
 poles), which live in the category indexes, and the canonical terms with their
-deny-lists live in [`taxonomy.yaml`](taxonomy.yaml) — this document is prose, linted
+deny-lists live in [`tool-taxonomy.yaml`](tool-taxonomy.yaml) — this document is prose, linted
 against it.
 
 ## Tool categories

@@ -3,14 +3,14 @@
 `created: 2026-08-18`
 
 One dated, immutable record per structural decision about this repo's taxonomy and
-organization. The living documents ([`taxonomy.md`](../docs/taxonomy.md),
+organization. The living documents ([`tool-taxonomy.md`](../docs/tool-taxonomy.md),
 [`design-principles.md`](../docs/design-principles.md), the notes indexes) always speak the
 **current** state with no inline history; how the current state was reached — and what
 it superseded — lives here. When a dated document elsewhere (an experiment log, a
 conclusion's original wording, git history, an old GitHub URL) seems to contradict the
 living docs, the ADR trail is the decoder.
 
-**The standing decoders** (relocated here from taxonomy.md's lead-in, 2026-08-22,
+**The standing decoders** (relocated here from the tool taxonomy's lead-in, 2026-08-22,
 [ADR-0022](0022-refs-repo-voice-sweepable.md)): anything dated before **2026-08-18**
 (git history, old URLs, experiment logs) uses the pre-renumbering scheme —
 [ADR-0007](0007-renumber-core-triad-first.md) carries the mapping. Anything dated
@@ -28,7 +28,11 @@ doors as `index.md`: `docs/index.md` and `tools/N-<name>/index.md` map to `READM
 the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); generated
 `refs/index.md` is unaffected. It also cites the numbered conclusions as living in
 `README.md` — they moved to `docs/conclusions.md` the same day, **numbers unchanged**, so
-"conclusion N" still resolves ([ADR-0028](0028-conclusions-out-of-readme.md)).
+"conclusion N" still resolves ([ADR-0028](0028-conclusions-out-of-readme.md)). Finally, it
+calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both gained a
+`tool-` prefix on 2026-08-26 to pair with `feature-taxonomy.md`, so they are
+`docs/tool-taxonomy.md` and `docs/tool-taxonomy.yaml`
+([ADR-0030](0030-tool-taxonomy-prefix.md)).
 
 **Rules:**
 
@@ -36,7 +40,7 @@ the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); genera
   acceptance** — except to set `superseded-by` when a later ADR overturns it.
 - Each carries `decided:` (when the decision was made) and, for the initial backfill,
   `recorded: 2026-08-18 (backfill)` — ADRs 0001–0006 were extracted from revision
-  records previously embedded in `taxonomy.md`; the extracted text is preserved
+  records previously embedded in the tool taxonomy; the extracted text is preserved
   as written, under its original date.
 - Live falsifiers and re-check triggers stay in the living documents; ADRs record the
   narrative and evidence of the decision.
@@ -83,3 +87,4 @@ the same directory ([ADR-0027](0027-index-front-doors-become-readme.md)); genera
 | [0027](0027-index-front-doors-become-readme.md) | 2026-08-26 | Hand-kept front doors are `README.md` (seven renamed); `index.md` means a generated listing (`refs/index.md`) | accepted |
 | [0028](0028-conclusions-out-of-readme.md) | 2026-08-26 | Conclusions move to `docs/conclusions.md`; README keeps the headline index, numbers unchanged | accepted |
 | [0029](0029-category-6-keeps-its-name.md) | 2026-08-26 | "Extensions" stays the name of category 6 (rename to "Stranger Things" declined); the residual-pull strain recorded in §6 instead | accepted |
+| [0030](0030-tool-taxonomy-prefix.md) | 2026-08-26 | `taxonomy.md` / `taxonomy.yaml` gain a `tool-` prefix to pair with `feature-taxonomy.md`; the lint keeps its name | accepted |

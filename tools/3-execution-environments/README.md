@@ -3,7 +3,7 @@
 `checked: 2026-08-21`
 
 Where the agent's code actually runs, and what it can damage. See
-[`../../docs/taxonomy.md`](../../docs/taxonomy.md).
+[`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
 
 The most-ignored category, because it's invisible until it fails.
 
@@ -109,7 +109,7 @@ category-2 discipline spent where the category-3 default made it most needed.
 
 This is the category's own analytic contribution, and it was produced the hard way — one verb
 per deep-dive, each arriving as a surprise that the existing words couldn't describe. It
-lived scattered across four `taxonomy.md` stress-test rows until 2026-08-16; the taxonomy
+lived scattered across four `tool-taxonomy.md` stress-test rows until 2026-08-16; the taxonomy
 now points here rather than defining it in four places.
 
 The question it answers is not *which* environment a tool reaches, but **how it relates to

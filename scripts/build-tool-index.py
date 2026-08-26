@@ -246,7 +246,7 @@ def render(reports: list[dict]) -> str:
         "",
         "`depth` is the honesty column: **stub** means facts were collected mechanically but "
         "nobody read the source; **survey** means it was used or skimmed; **deep-dive** means "
-        "the category's component decomposition (defined in taxonomy.md) was actually traced, "
+        "the category's component decomposition (defined in tool-taxonomy.md) was actually traced, "
         "the report saying which components (pre-2026-08-25 deep-dives read under the earlier "
         "loop+context definition).",
         "",
@@ -386,7 +386,7 @@ def render_features(reports: list[dict]) -> str:
         "The dot is load-bearing — it is *not* a no. A feature key is only set in a",
         "report's frontmatter when confirmed in source or official docs. Keys are",
         "defined once in the [feature taxonomy](../docs/feature-taxonomy.md)",
-        "(ADR-0010); the [tool taxonomy](../docs/taxonomy.md) classifies the tools themselves.",
+        "(ADR-0010); the [tool taxonomy](../docs/tool-taxonomy.md) classifies the tools themselves.",
         "",
     ]
 
@@ -732,7 +732,7 @@ def render_feature_registry() -> str:
         "not facts about the subject.",
         "",
     ]
-    # Sections follow the repo's category order (taxonomy.md, 1→6). Each category's
+    # Sections follow the repo's category order (tool-taxonomy.md, 1→6). Each category's
     # assessed block is found via the min of its entries' applies_to; a category with
     # no assessed block (6 — Extensions) still gets a section for its transcribed rows.
     block_cat: dict[str, int] = {}
@@ -848,7 +848,7 @@ def render_environments(reports: list[dict]) -> str:
 def render_vendors(reports: list[dict]) -> str:
     """Vendor coverage among TRACKED tools, grouped by exact `vendor:` string.
 
-    This is the generated half of the vendor-span picture (taxonomy.md → Vendor span).
+    This is the generated half of the vendor-span picture (tool-taxonomy.md → Vendor span).
     It is a LOWER BOUND by construction: closed products with no report (Claude Code,
     cloud Codex, Cursor, Managed Agents) can't appear here, and those belong to the
     vendors with the MOST span — the taxonomy's hand-kept table exists for exactly them.
@@ -867,7 +867,7 @@ def render_vendors(reports: list[dict]) -> str:
         "spanners' flagship products are closed with no report (Claude Code, cloud Codex, "
         "Cursor, Managed Agents). The authoritative span picture — including "
         "observation-only products — is the hand-kept table in "
-        "[`../docs/taxonomy.md`](../docs/taxonomy.md) → *Vendor span*; this file is its generated, "
+        "[`../docs/tool-taxonomy.md`](../docs/tool-taxonomy.md) → *Vendor span*; this file is its generated, "
         "tracked-only floor.",
         "",
         "| Vendor | 1 · Models | 2 · Harnesses | 3 · Environments | 4 · Frameworks | 5 · Memory | 6 · Extensions | Categories |",

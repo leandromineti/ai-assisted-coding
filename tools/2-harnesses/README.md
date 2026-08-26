@@ -3,7 +3,7 @@
 `checked: 2026-08-26`
 
 Loop + context assembly + permission model + UI. See
-[`../../docs/taxonomy.md`](../../docs/taxonomy.md).
+[`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
 
 The prevailing mid-2026 read: the frontier models have converged enough that **the harness
 now decides most of the day-to-day experience**. That claim is worth testing here rather
@@ -54,7 +54,7 @@ A harness's *environment bindings* — which category-3 environments it can atta
 worktree, container, remote sandbox) — are recorded in each report's frontmatter as
 `environments`. That's bleed, not merger: the environments themselves stay independently
 distributed category-3 entities (see the scope note in
-[`../../docs/taxonomy.md`](../../docs/taxonomy.md)).
+[`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md)).
 
 ## Candidates
 
