@@ -38,6 +38,10 @@ What reports here do carry is **9 transcription fields** — `maker`, `license`,
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 
+They are read as **three groups** — Identity · Provenance · Shape — the same three every
+category carries; this category adds none of its own, which is the empty-block statement
+in another form: [`feature-registry.md` § Extensions](../../comparisons/feature-registry.md#extensions).
+
 Definitions, and the empty-block statement itself:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md) § Extensions.
 

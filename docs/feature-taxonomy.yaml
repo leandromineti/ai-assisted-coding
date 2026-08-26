@@ -9,27 +9,279 @@
 # scripts/check-taxonomy.py (unregistered-key gate), and scripts/build-db.py.
 # Do not hand-edit comparisons/feature-registry.md — it is this file, rendered.
 
+# --- groups (added 2026-08-26, ADR-0045) — what TEACHES the reader ---------------
+# Every entry in both lists below carries a `group:`. Groups exist for the reader, not
+# for the schema: the registry renders one subsection per group instead of one flat
+# table per category (26 rows for harnesses, 22 for memory), and each group's `blurb`
+# says what the group is ABOUT and how its keys read together. The division of labour
+# is deliberate — feature-registry.md's intro teaches NOTATION (presence vs graded,
+# omitted vs false, the three verification routes), and these blurbs teach SUBJECT
+# MATTER. Neither repeats the other, and neither repeats a key's own `definition`.
+#
+# Groups span the placement test on purpose: `identity` holds transcribed fields,
+# `reasoning` holds assessed keys, `cost` holds both. The Basis column is what marks
+# that boundary — row position never was.
+#
+# `order` sorts groups within a category section AND orders the matrix columns, since
+# features[] entries are physically stored in group order (build-tool-index.py builds
+# HARNESS_FEATURE_KEYS and its four siblings from registry entry order). A group's
+# applies_to is DERIVED from its members, never declared — one less thing to drift.
+groups:
+  - id: identity
+    title: Identity
+    order: 10
+    blurb: >-
+      Who made the thing, what you may do with it, and what exactly you are looking at.
+      `maker` and `license` are the two most often assumed rather than read — a maker's
+      name drifts in spelling until one maker reads as two, and a license is a file in a
+      repo, not a reputation. Read `license` and `access` as a PAIR: the first says under
+      what terms, the second what you can actually obtain, and only together do they
+      separate open source from source-available from closed (ADR-0044).
+  - id: provenance
+    title: Provenance
+    order: 20
+    blurb: >-
+      How re-checkable everything else in the report is. `commit` is the one
+      machine-checked pin per report — every claim in it was read at that tree, and
+      `build-tool-index.py --check` fails when it stops resolving. `stars` and
+      `first_commit` are script-collected, never hand-typed, and describe the CURRENT
+      repo only: a fork or an org move strands the predecessor's history while keeping
+      its commits. A pin that has drifted is a work queue, not a failure — but a claim
+      whose pin no longer resolves cannot be checked at all.
+  - id: shape
+    title: Shape
+    order: 30
+    blurb: >-
+      What the subject is built from, and where you meet it. `stack` is the language and
+      runtime you would have to read to verify anything deeper than a README claim.
+      `surfaces` and `execution` say whether you meet the tool in a terminal, an IDE, a
+      desktop app or a browser, and whether the work runs on your machine or someone
+      else's. `harness_targets` asks the reverse question for categories 4–6 — which
+      harnesses the thing installs into — and lists only verified install paths.
+  - id: capacity
+    title: Capacity
+    order: 40
+    blurb: >-
+      What the model can hold, and how current what it knows is. `context_window` and
+      `max_output` are the vendor's ADVERTISED numbers, not measured ones: usable-versus-
+      advertised context is a category-1 axis, evidenced in the report rather than here.
+      `knowledge_cutoff` is the outer bound on training data, and it is null when the
+      vendor publishes none — five of eleven do not, which is why the cell carries its own
+      `basis` and a required note rather than a bare dash (ADR-0037/0038).
+  - id: cost
+    title: Cost
+    order: 41
+    blurb: >-
+      What it costs, and the two levers that move that. `pricing` carries a BASE RATE —
+      a small, standard, non-batch, uncached request on the vendor's first-party USD
+      surface — precisely so the numbers compare across vendors; everything two numbers
+      cannot hold (tier boundaries, off-peak windows, sibling variants) lives in `regime`
+      and a dated note. `prompt_caching` and `batch_discount` exist only to move that base
+      rate, and both stay in the vendor's own words because the economics differ
+      structurally: a 0.1x read with a 5-minute TTL is not comparable to a flat 50% off
+      asynchronous work.
+  - id: reasoning
+    title: Reasoning
+    order: 42
+    blurb: >-
+      Whether the model produces reasoning tokens, and who controls how many. Read the
+      three keys together, because each answers a different question: `reasoning` ✓ only
+      says such tokens are generated, `reasoning_type` says whether you can turn them off
+      (always-on · default-on · opt-in · none), and `reasoning_effort` says who SIZES
+      them — a level set the model spends against (`levels:…`) or a token budget the
+      caller allocates up front (`budget:…`). A ✓ beside `always-on` and a budget dial is
+      a very different bill from a ✓ beside `opt-in`; reasoning tokens bill as output.
+  - id: environment-binding
+    title: Environment binding
+    order: 50
+    blurb: >-
+      The bleed: where a harness runs the agent's work, and how tightly it is tied to that
+      place. `environments` lists only VERIFIED category-3 bindings. `environment_relation`
+      says which of four postures the tool takes — bundle (ships one), bind (drives someone
+      else's), internalize (built its own), inhabit (detects the one it is already inside).
+      It is deliberately left unset when none of the four fits, and that null is data.
+  - id: extension-points
+    title: Extension points
+    order: 51
+    blurb: >-
+      What can be plugged into the harness, and how the model reaches past its own context.
+      `mcp`, `lsp` and `hooks` are the wire-level ports — other processes the harness
+      speaks to; `skills`, `subagents` and `rules_files` are instruction-level — text and
+      isolated agents the model is given. `ptc` is a different shape from both: model-
+      emitted code drives tools inside a sandboxed runtime, instead of one chat-loop tool
+      call at a time. A `·` in this group is not a no; these keys are set only where the
+      mechanism was found in source or official docs.
+  - id: control-gates
+    title: Control gates
+    order: 52
+    blurb: >-
+      Where a human or the engine can stop the agent, and the three keys intervene at
+      three different moments: `plan_mode` before the work starts, `tool_approval` before
+      a tool call runs, `turn_end_gates` when the model tries to end its turn.
+      `turn_end_gates` is GRADED rather than ✓/✗ (engine > hook > script > prose, strongest
+      verified enforcer wins) because who enforces a gate is the finding — a gate compiled
+      into the engine and a gate written into a prompt are not the same gate, and that gap
+      is what conclusion 8 measures.
+  - id: operations
+    title: Operations
+    order: 53
+    blurb: >-
+      What living with the harness is like. `model_agnostic` says whether you can bring
+      your own weights; `session_sharing` whether a session can leave the machine, as a
+      link (which implies a hosted surface) or a portable export — the report's cell says
+      which; `evals` whether it ships scoring for MODELS AND AGENTS, where a unit-test
+      suite explicitly does not count; `learning_loop` whether the agent writes memory or
+      skills of its own accord, which is the demand side of the whole category-5 supply.
+  - id: boundary
+    title: The boundary
+    order: 60
+    blurb: >-
+      The sandbox itself: what the wall is made of, whose hardware it stands on, and how
+      long you wait for one. `isolation_primitive` names the mechanism — a microVM, a
+      container, a kernel namespace — and every other guarantee in this category is capped
+      by how strong it is. `self_host` says whether you can run the thing on your own
+      infrastructure at all; `warm_pool` whether a sandbox is kept waiting, which is the
+      difference between a sub-second start and a cold boot on every agent turn.
+  - id: crossing
+    title: What crosses it
+    order: 61
+    blurb: >-
+      What is allowed through the wall, in both directions. `egress_default` is the single
+      most consequential cell in this category — whether a fresh sandbox can reach the
+      network before anyone configures anything — and `egress_controls` says what you can
+      do about it. `credential_model` is the inbound half of the same question: how secrets
+      get in, and what holds them there. Read an open default as a fact about YOUR posture,
+      not the vendor's.
+  - id: persistence
+    title: What persists
+    order: 62
+    blurb: >-
+      What survives the sandbox. `snapshot_model` says whether a running machine's state
+      can be captured and restored, which is what makes a long agent run resumable rather
+      than restartable. `filesystem_sync` says how the working directory gets its contents
+      in the first place — mounted, cloned, or uploaded — and that choice decides whether
+      an interrupted run picks up where it left off.
+  - id: spine
+    title: The spine
+    order: 70
+    blurb: >-
+      The framework's actual shape: what it takes in, what carries state between steps, and
+      whether anything comes back out. `intent_pipeline` is the ordered path from intent to
+      code (a `/prd → /spec → /build` chain); `deterministic_engine` says whether anything
+      OUTSIDE the model enforces that path; `state_store` names where phase state lives;
+      `retrospectives` whether finished work feeds anything forward. A framework that is
+      prose all the way down still has a spine — it just has no engine holding it up.
+  - id: verification-gates
+    title: Verification gates
+    order: 71
+    blurb: >-
+      Three questions a framework can ask before letting work pass, in ascending order of
+      what they cost to fake: does the output have the right SHAPE (`format_gates`), do the
+      tests and types actually PASS (`measured_gates`), was the PROCESS followed
+      (`process_gates`). All three are graded (engine > hook > script > prose) rather than
+      ✓/✗, because a gate is only as strong as whatever enforces it — a bare `true` is an
+      explicit unanswered who-enforces question, not a pass.
+  - id: orchestration
+    title: Orchestration
+    order: 72
+    blurb: >-
+      How the framework spends context and parallelism. `context_isolation` says whether
+      sub-work runs in its own window instead of filling the main one; `parallel_orchestration`
+      whether independent work runs at the same time, typically over git worktrees. They
+      tend to arrive together, because isolating context is what makes parallel agents safe
+      to run at all.
+  - id: store-scope
+    title: Store & scope
+    order: 80
+    blurb: >-
+      Where memories live and who can see them. `memory_store` names the substrate — a file
+      tree, a vector index, a graph, a relational database, or several at once — and
+      `memory_tiers` whether short- and long-lived memory are distinguished at all.
+      `memory_scope` is the blast radius (session · project · user · organisation), and
+      `deployment_mode` says whether the store runs locally or as someone else's service,
+      which is a privacy question before it is an architecture one.
+  - id: write-path
+    title: Write path
+    order: 81
+    blurb: >-
+      How something becomes a memory, and how it stops being one. `capture_path` says what
+      triggers a write — an explicit command, an inferred decision, a background pass — and
+      `write_admission` whether anything stands between a candidate and the store.
+      `memory_revision` and `decay` are the far end: whether a wrong memory can be corrected,
+      and whether an old one loses weight on its own. A system with no admission and no decay
+      accumulates its errors permanently.
+  - id: read-path
+    title: Read path
+    order: 82
+    blurb: >-
+      How a stored memory reaches the model. `recall_injection` says WHEN — always in the
+      prompt, on a tool call, on a retrieval hit — and `hybrid_retrieval` whether more than
+      one retrieval strategy is combined. `injection_trust_boundary` is the security key of
+      this category: recalled text arrives in the model's context wearing the same clothes
+      as the user's instructions, and this cell says whether the system marks that seam at
+      all.
+  - id: integration
+    title: Integration
+    order: 83
+    blurb: >-
+      How the memory system meets the harness. `harness_installer` says whether it ships an
+      install path rather than leaving you to wire it up; `rule_extraction` whether it can
+      turn accumulated memory into standing instructions — which is the point where a memory
+      tool starts doing a workflow framework's job, and the reason the two categories bleed.
+
 features:
   # --- harness block (`harness_features:`), applies to category 2 ---
   - id: mcp
+    group: extension-points
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: MCP client support
     kind_link: mcp-server
   - id: lsp
+    group: extension-points
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: language-server integration
   - id: hooks
+    group: extension-points
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: deterministic lifecycle hooks / plugin triggers
     kind_link: hook
     note: "supply side also carries category-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks"
+  - id: skills
+    group: extension-points
+    block: harness_features
+    applies_to: [2]
+    value_type: presence
+    definition: on-demand packaged instructions
+    kind_link: skill
+  - id: subagents
+    group: extension-points
+    block: harness_features
+    applies_to: [2]
+    value_type: presence
+    definition: spawnable isolated agents
+    kind_link: subagent-def
+  - id: ptc
+    group: extension-points
+    block: harness_features
+    applies_to: [2]
+    value_type: presence
+    definition: programmatic tool calling — model-emitted code drives tools in a sandboxed runtime instead of chat-loop tool calls
+    note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it?"
+  - id: rules_files
+    group: extension-points
+    block: harness_features
+    applies_to: [2]
+    value_type: presence
+    definition: standing-instruction files (value may list filenames)
+    kind_link: rules-file
   - id: turn_end_gates
+    group: control-gates
     block: harness_features
     applies_to: [2]
     value_type: graded
@@ -37,59 +289,41 @@ features:
     kind_link: hook
     note: "added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
   - id: tool_approval
+    group: control-gates
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: "per-tool human approval at dispatch — the harness can ask before executing a tool call; distinct from sandbox bounds (the environment_relation field) and from turn gates (turn_end_gates)"
     note: "added 2026-08-25 after the dsh deep-dive supplied the first verified absent (its tools/pre-execute default is allow; the sole prompt in a stock run is a model-initiated sandbox escalation) — the axis discriminates: 6 present / 2 absent as of 2026-08-26, all transcribed from the category-2 index's absorption table at their pins. Warp's present carries the AgentDecided caveat (a model-authored is_risky:false self-authorizes). The two absents (dsh, pi) take OPPOSITE philosophies and that is the discriminating finding: dsh moves the gate down a level to a compiled per-call OS sandbox; pi removes it entirely (no permission system, no sandbox, runs as the launching user, confinement delegated to external containerization by docs — pi.md, 2026-08-26). gemini-cli's present is the strongest form: a tiered TOML policy engine, ASK_USER default, plus a one-way LLM-authored checker (CONSECA)"
-  - id: skills
-    block: harness_features
-    applies_to: [2]
-    value_type: presence
-    definition: on-demand packaged instructions
-    kind_link: skill
-  - id: subagents
-    block: harness_features
-    applies_to: [2]
-    value_type: presence
-    definition: spawnable isolated agents
-    kind_link: subagent-def
-  - id: ptc
-    block: harness_features
-    applies_to: [2]
-    value_type: presence
-    definition: programmatic tool calling — model-emitted code drives tools in a sandboxed runtime instead of chat-loop tool calls
-    note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it?"
   - id: plan_mode
+    group: control-gates
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: built-in plan/act split
     note: "shape diverges across verified instances — enforced MODE (claude-code, opencode, cline) · tool (codex) · bundled skill (hermes) · per-query FLAG (warp, 2026-08-19: /plan sets UserQueryMode::Plan on that one submission, no sticky state, planning_enabled always on server-side) — but only `mode` has ≥2 instances, so the enum promotion is deferred (ADR-0012, tracked with issue #13)"
-  - id: rules_files
-    block: harness_features
-    applies_to: [2]
-    value_type: presence
-    definition: standing-instruction files (value may list filenames)
-    kind_link: rules-file
   - id: model_agnostic
+    group: operations
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: bring-your-own-model by design
   - id: session_sharing
+    group: operations
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: "a session leaves the machine as a shareable link (implies a hosted surface) or a portable exported artifact — the report's cell comment says which form"
     note: "definition sharpened 2026-08-25 — dsh forced the call (ZIP export + resume present, share links verified absent); the old 'links/artifacts' disjunction hid exactly that distinction"
   - id: evals
+    group: operations
     block: harness_features
     applies_to: [2]
     value_type: presence
     definition: "ships its own model/agent evaluation harness — task-success or output-quality scoring; software test suites and coverage gates do not count"
     note: "sharpened 2026-08-25 — the dsh near-misfire: 872 unit specs and per-file 100% coverage but zero model evals; the old wording did not exclude software tests"
   - id: learning_loop
+    group: operations
     block: harness_features
     applies_to: [2]
     value_type: presence
@@ -99,54 +333,76 @@ features:
   # --- category-1 block (`model_features:`), ADR-0014 — verified against the report's
   # `url` on its `checked` date. The two economics keys stay free-text (vendor economics
   # differ structurally); the three reasoning keys are typed (ADR-0040) ---
-  - id: reasoning
-    block: model_features
-    applies_to: [1]
-    value_type: presence
-    definition: "the model generates reasoning tokens at all — true even when reasoning cannot be switched off; the vendor's own word (thinking | reasoning) is not the test"
-    note: "added 2026-08-26 (ADR-0040), splitting the old free-text `thinking` key. Weak discriminator BY DESIGN and recorded as such: 10 present / 1 absent across the sweep, the lone ✗ being qwen3-coder-next ('supports only non-thinking mode'). Kept anyway because it is the base fact the other two are conditional on, and because a non-reasoning model is a thing that ships again — but do not mistake it for a measurement"
-  - id: reasoning_type
-    block: model_features
-    applies_to: [1]
-    value_type: closed-enum
-    definition: "TOGGLEABILITY: always-on (cannot be disabled) | default-on (on unless disabled per request) | opt-in (off unless requested) | none"
-    note: "added 2026-08-26 (ADR-0040). Toggleability, NOT Anthropic's adaptive-vs-extended axis — that axis is who SIZES the reasoning and it surfaces in `reasoning_effort`'s family (levels: vs budget:). Toggleability won the enum because every vendor states it: 9/11 settled from the existing record at the reshape, 11/11 the same day once issue #38 read Anthropic's per-model thinking table. KNOWN STRAIN (2026-08-26): claude-opus-5 is `default-on` only CONDITIONALLY — `thinking: {type: disabled}` is accepted at effort ≤ high and 400s at xhigh/max, so toggleability there is a function of another request parameter, not a static model property. Recorded in the report; revisit the enum if a second vendor ships the same shape (issue #2's two-instance bar)"
-  - id: reasoning_effort
-    block: model_features
-    applies_to: [1]
-    value_type: open-descriptive
-    definition: "the caller-facing depth dial, `family:specific` (ADR-0017 shape) — `levels:<set>@<default>` | `budget:<unit>` | `none`. The family says who sizes the reasoning: a level enum the model spends against, or a token budget the caller allocates up front"
-    note: "added 2026-08-26 (ADR-0040), replacing the free-text `effort_control`. NOT a presence-claim: a boolean would have been 10 ✓ / 1 ✗ with the ✗ on the same row as `reasoning`'s — the same column twice, and rule 5d says an instrument that cannot discriminate cannot measure. The variation is in the level set (four distinct shapes) and the default: `@high` mostly, `@medium` at OpenAI, `@max` at kimi-k3 and glm-5.3 — which is why the default lives in the cell and not in body prose"
   - id: prompt_caching
+    group: cost
     block: model_features
     applies_to: [1]
     value_type: free-text
     definition: write/read economics + TTLs, in the vendor's own terms
     note: "folded 2026-08-19 (ADR-0014)"
   - id: batch_discount
+    group: cost
     block: model_features
     applies_to: [1]
     value_type: free-text
     definition: async batch pricing, if offered
     note: "folded 2026-08-19 (ADR-0014)"
+  - id: reasoning
+    group: reasoning
+    block: model_features
+    applies_to: [1]
+    value_type: presence
+    definition: "the model generates reasoning tokens at all — true even when reasoning cannot be switched off; the vendor's own word (thinking | reasoning) is not the test"
+    note: "added 2026-08-26 (ADR-0040), splitting the old free-text `thinking` key. Weak discriminator BY DESIGN and recorded as such: 10 present / 1 absent across the sweep, the lone ✗ being qwen3-coder-next ('supports only non-thinking mode'). Kept anyway because it is the base fact the other two are conditional on, and because a non-reasoning model is a thing that ships again — but do not mistake it for a measurement"
+  - id: reasoning_type
+    group: reasoning
+    block: model_features
+    applies_to: [1]
+    value_type: closed-enum
+    definition: "TOGGLEABILITY: always-on (cannot be disabled) | default-on (on unless disabled per request) | opt-in (off unless requested) | none"
+    note: "added 2026-08-26 (ADR-0040). Toggleability, NOT Anthropic's adaptive-vs-extended axis — that axis is who SIZES the reasoning and it surfaces in `reasoning_effort`'s family (levels: vs budget:). Toggleability won the enum because every vendor states it: 9/11 settled from the existing record at the reshape, 11/11 the same day once issue #38 read Anthropic's per-model thinking table. KNOWN STRAIN (2026-08-26): claude-opus-5 is `default-on` only CONDITIONALLY — `thinking: {type: disabled}` is accepted at effort ≤ high and 400s at xhigh/max, so toggleability there is a function of another request parameter, not a static model property. Recorded in the report; revisit the enum if a second vendor ships the same shape (issue #2's two-instance bar)"
+  - id: reasoning_effort
+    group: reasoning
+    block: model_features
+    applies_to: [1]
+    value_type: open-descriptive
+    definition: "the caller-facing depth dial, `family:specific` (ADR-0017 shape) — `levels:<set>@<default>` | `budget:<unit>` | `none`. The family says who sizes the reasoning: a level enum the model spends against, or a token budget the caller allocates up front"
+    note: "added 2026-08-26 (ADR-0040), replacing the free-text `effort_control`. NOT a presence-claim: a boolean would have been 10 ✓ / 1 ✗ with the ✗ on the same row as `reasoning`'s — the same column twice, and rule 5d says an instrument that cannot discriminate cannot measure. The variation is in the level set (four distinct shapes) and the default: `@high` mostly, `@medium` at OpenAI, `@max` at kimi-k3 and glm-5.3 — which is why the default lives in the cell and not in body prose"
   # --- category-4 block (`workflow_features:`) ---
   - id: intent_pipeline
+    group: spine
     block: workflow_features
     applies_to: [4]
     value_type: presence
     definition: staged requirements→implementation artifact pipeline (the SDD spine)
   - id: deterministic_engine
+    group: spine
     block: workflow_features
     applies_to: [4]
     value_type: presence
     definition: a program — not prose — parses/validates/advances workflow state
+  - id: state_store
+    group: spine
+    block: workflow_features
+    applies_to: [4]
+    value_type: closed-enum
+    definition: "where workflow state lives: repo-files | database"
+  - id: retrospectives
+    group: spine
+    block: workflow_features
+    applies_to: [4]
+    value_type: presence
+    definition: encoded learning step feeding completed work back into the process
+    note: "the framework-side cousin of the harness `learning_loop`"
   - id: format_gates
+    group: verification-gates
     block: workflow_features
     applies_to: [4]
     value_type: graded
     definition: "artifact-structure gates; GRADED value = strongest verified enforcer: engine | hook | script | prose | true (present, unclassified) | false (ADR-0011)"
     note: "calibration lesson 2026-08-18: spec-kit's ✓ flipped to ✗ at deep-dive; same day GSD's deep-dive showed a four-rung enforcement ladder — hence the grading. A bare `true` is an unanswered who-enforces question"
   - id: measured_gates
+    group: verification-gates
     block: workflow_features
     applies_to: [4]
     value_type: graded
@@ -154,109 +410,114 @@ features:
     kind_link: hook
     note: "the ECC finding — deliverable as installable category-6 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the category's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts. bmad-loop stub 2026-08-18: first engine-graded value in the registry — policy-defined verify commands executed and judged by the orchestrator (verify.py:2661, engine.py:2037-2040); in BMAD's companion orchestrator, not the framework"
   - id: process_gates
+    group: verification-gates
     block: workflow_features
     applies_to: [4]
     value_type: graded
     definition: "human approval checkpoints encoded in the flow; GRADED per ADR-0011: engine | hook | script | prose | true | false"
   - id: context_isolation
+    group: orchestration
     block: workflow_features
     applies_to: [4]
     value_type: presence
     definition: fresh/right-sized agent context per unit of work, by design
     note: "supply side is category-2 machinery (subagents, fresh sessions). 2026-08-18 correction: 'a framework can only instruct it' was falsified by GSD's deep-dive — its agent-isolation-guard ENFORCES it as a hard-blocking harness hook (exit 2)"
   - id: parallel_orchestration
+    group: orchestration
     block: workflow_features
     applies_to: [4]
     value_type: presence
     definition: concurrent agents/work-packages machinery (worktrees, fan-out)
-  - id: state_store
-    block: workflow_features
-    applies_to: [4]
-    value_type: closed-enum
-    definition: "where workflow state lives: repo-files | database"
-  - id: retrospectives
-    block: workflow_features
-    applies_to: [4]
-    value_type: presence
-    definition: encoded learning step feeding completed work back into the process
-    note: "the framework-side cousin of the harness `learning_loop`"
   # --- category-5 memory block (`memory_features:`), kind: memory reports only (ADR-0013) ---
   # Descriptive enums per the category-4 `state_store` precedent — mechanism choices, not
   # ADR-0011 enforcement grades. No kind_link on these entries by design: category-5
   # supply participation flows through `learning_loop`'s kind_link above.
   - id: memory_store
+    group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
     definition: "what the store is: files-git | vector | graph | rows (list allowed for hybrids, primary first)"
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (git-versioned markdown wiki), mem0 (vector+BM25), memos (SQLite rows+vectors), cognee (graph+vector+relational)"
-  - id: capture_path
-    block: memory_features
-    applies_to: [5]
-    value_type: closed-enum
-    definition: "how sessions become memory: hook | adapter | agent-invoked"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory + mem0 (harness hooks), memos (in-process adapter cascade), cognee (agent-invoked MCP tools — the learning_loop: false pole)"
-  - id: write_admission
-    block: memory_features
-    applies_to: [5]
-    value_type: closed-enum
-    definition: "what earns AUTONOMOUS storage: evidence-gated (enactment/outcomes required) | scored (reward/confidence thresholds with probation) | unfiltered (assertion suffices)"
-    note: "added 2026-08-19 post exp-04 arm C (conclusion 14): the write-side half of the injection story injection_trust_boundary tells on the read side — unfiltered admission + authoritative recall = the injection-to-authority pipeline. Instances: ai-memory (evidence-gated — 12 verbatim rejections archived, 'no implementation evidence'), memos (scored — gain thresholds + probation, golden-tested), mem0 (unfiltered — ADD-only extraction from say-so, verified opposite pole). Explicit/deliberate write paths (write-page, add_memory) are NOT gated by this key — it classifies the autonomous path only"
-  - id: recall_injection
-    block: memory_features
-    applies_to: [5]
-    value_type: closed-enum
-    definition: "how memory reaches the next session: auto | pull-only | both"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (auto baton + pull-only wiki = both), memos (turn-start auto, bounded), mem0 (session-start/prompt-submit auto), cognee (pull-only)"
   - id: memory_scope
+    group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: list
     definition: "scoping axes the store natively supports (list): project | agent | user | session"
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee"
   - id: memory_tiers
+    group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: typed memory tiers rather than one flat store (working/episodic/semantic, traces/policies, session/permanent)
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos, cognee — WAS 'all four' until mem0's deep-dive (2026-08-19) flipped its cell: procedural_memory is a metadata tag on one collection, not a tier"
-  - id: hybrid_retrieval
+  - id: deployment_mode
+    group: store-scope
     block: memory_features
     applies_to: [5]
-    value_type: presence
-    definition: multi-stream retrieval fusion (RRF/MMR/reranker over lexical+vector+structural)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓"
+    value_type: closed-enum
+    definition: "self-host | cloud | both"
+    note: "added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon)"
+  - id: capture_path
+    group: write-path
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    definition: "how sessions become memory: hook | adapter | agent-invoked"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory + mem0 (harness hooks), memos (in-process adapter cascade), cognee (agent-invoked MCP tools — the learning_loop: false pole)"
+  - id: write_admission
+    group: write-path
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    definition: "what earns AUTONOMOUS storage: evidence-gated (enactment/outcomes required) | scored (reward/confidence thresholds with probation) | unfiltered (assertion suffices)"
+    note: "added 2026-08-19 post exp-04 arm C (conclusion 14): the write-side half of the injection story injection_trust_boundary tells on the read side — unfiltered admission + authoritative recall = the injection-to-authority pipeline. Instances: ai-memory (evidence-gated — 12 verbatim rejections archived, 'no implementation evidence'), memos (scored — gain thresholds + probation, golden-tested), mem0 (unfiltered — ADD-only extraction from say-so, verified opposite pole). Explicit/deliberate write paths (write-page, add_memory) are NOT gated by this key — it classifies the autonomous path only"
   - id: decay
+    group: write-path
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: expiry/forgetting/retirement lifecycle on stored memories
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (exponential retention + forget sweep), mem0 (expiration_date), memos (time-decayed value, candidate→active→retired)"
   - id: memory_revision
+    group: write-path
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
     definition: "who can change an existing memory once stored: auto (the system revises/supersedes/retires on its own) | proposed (system proposes, human approves) | caller-only (only explicit API calls)"
     note: "added 2026-08-19 from the mem0 deep-dive's central finding; instances: ai-memory (auto — background consolidation auto-approves wiki edits, require_approval=false), memos (auto — three live demotion paths, candidate→active→archived; confirmed in source at deep-dive but default-UNMOUNTED under lightweight mode), mem0 (caller-only — no auto-supersession anywhere; the prompt's linking mechanism is parsed and discarded). The kind's sharpest trust axis: what happens when a memory is WRONG"
+  - id: recall_injection
+    group: read-path
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    definition: "how memory reaches the next session: auto | pull-only | both"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (auto baton + pull-only wiki = both), memos (turn-start auto, bounded), mem0 (session-start/prompt-submit auto), cognee (pull-only)"
+  - id: hybrid_retrieval
+    group: read-path
+    block: memory_features
+    applies_to: [5]
+    value_type: presence
+    definition: multi-stream retrieval fusion (RRF/MMR/reranker over lexical+vector+structural)
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓"
   - id: injection_trust_boundary
+    group: read-path
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: injected memory is delimited/framed as untrusted data, not instructions
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos. mem0 SETTLED ✗ at its 2026-08-19 deep-dive — bare-markdown injection, and its openclaw recall protocol actively inverts the boundary (memories as authoritative rules). Security-relevant: memory injection is a prompt-injection vector"
-  - id: deployment_mode
-    block: memory_features
-    applies_to: [5]
-    value_type: closed-enum
-    definition: "self-host | cloud | both"
-    note: "added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon)"
   - id: harness_installer
+    group: integration
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: ships an installer that mutates the harness's own config (settings/hooks) rather than only offering an MCP endpoint
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (install-hooks --apply rewrites settings.json), mem0 (hooks.json bundle, 6 harnesses), memos (one-command installer + adapters)"
   - id: rule_extraction
+    group: integration
     block: memory_features
     applies_to: [5]
     value_type: presence
@@ -267,48 +528,56 @@ features:
   # scoping rule 2. No kind_link on these entries by design: category-3 demand-side
   # linkage lives at bucket granularity in comparisons/environments.md, not here.
   - id: isolation_primitive
+    group: boundary
     block: environment_features
     applies_to: [3]
     value_type: open-descriptive
     definition: "the mechanism the sandbox's isolation boundary rests on; open-descriptive family:specific tag, family closed: hardware-virt | userspace-kernel | shared-kernel | os-native; specific half open-descriptive, optional per cell"
     note: "added 2026-08-20 per ADR-0017; instances: e2b (hardware-virt:firecracker-microvm), modal (userspace-kernel:gvisor-runsc)"
-  - id: egress_default
-    block: environment_features
-    applies_to: [3]
-    value_type: closed-enum
-    definition: "the network posture in effect with no explicit configuration; closed lattice: open | restricted | tier-gated"
-    note: "added 2026-08-20 per ADR-0017; instances: e2b open (internet on by default), modal open (egress OPEN by default)"
-  - id: egress_controls
-    block: environment_features
-    applies_to: [3]
-    value_type: closed-enum
-    definition: "how an explicit allow/deny rule resolves against the default; closed lattice: allow-biased | deny-wins | none-native"
-    note: "added 2026-08-20 per ADR-0017; instances: e2b allow-biased (an allow entry beats a deny, including beating allowInternetAccess:false), modal OPAQUE — the interface (block_network, CIDR/domain allowlists) is verified, but no source states whether an allow entry can override a block, the axis E2B's finding turns on"
-  - id: credential_model
-    block: environment_features
-    applies_to: [3]
-    value_type: open-descriptive
-    definition: "how a third-party credential reaches, or is kept from, the sandboxed process; open-descriptive family:specific tag, family closed: broker-relayed | split-plane | plain-env-var; specific half open-descriptive, optional per cell"
-    note: "added 2026-08-20 per ADR-0017; instances: e2b broker-relayed:spiffe-jwt-svid (egress-proxy-brokered SPIFFE JWT-SVID), modal split-plane (long-lived MODAL_TOKEN_ID/SECRET control-plane only; short-lived JWT to the worker)"
-  - id: snapshot_model
-    block: environment_features
-    applies_to: [3]
-    value_type: open-descriptive
-    definition: "the mechanism by which sandbox state is paused/resumed; open-descriptive family:specific tag, family closed: create-is-resume | checkpoint-restore | explicit-backup | none; specific half open-descriptive, optional per cell"
-    note: "added 2026-08-20 per ADR-0017; instances: e2b create-is-resume:uffd-lazy-paging, modal checkpoint-restore (bare family — the gVisor-internals specific mechanism is Modal's own testimony, not source-verified)"
   - id: self_host
+    group: boundary
     block: environment_features
     applies_to: [3]
     value_type: closed-enum
     definition: "whether the environment is genuinely operable outside the vendor's own cloud; closed lattice: full | partial | none"
     note: "added 2026-08-20 per ADR-0017; instances: e2b partial (named closed components: the egress proxy, belt), modal none (no infra repo; SaaS-only)"
   - id: warm_pool
+    group: boundary
     block: environment_features
     applies_to: [3]
     value_type: presence
     definition: "whether a pool of pre-started instances exists to cut cold-start latency; boolean presence-claim outside both enum regimes (omitted = not checked, false = checked and absent)"
     note: "added 2026-08-20 per ADR-0017; instances: e2b false (verified absent — grep for prewarm/warm-pool patterns over packages/, iac/, docs/), modal OPAQUE"
+  - id: egress_default
+    group: crossing
+    block: environment_features
+    applies_to: [3]
+    value_type: closed-enum
+    definition: "the network posture in effect with no explicit configuration; closed lattice: open | restricted | tier-gated"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b open (internet on by default), modal open (egress OPEN by default)"
+  - id: egress_controls
+    group: crossing
+    block: environment_features
+    applies_to: [3]
+    value_type: closed-enum
+    definition: "how an explicit allow/deny rule resolves against the default; closed lattice: allow-biased | deny-wins | none-native"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b allow-biased (an allow entry beats a deny, including beating allowInternetAccess:false), modal OPAQUE — the interface (block_network, CIDR/domain allowlists) is verified, but no source states whether an allow entry can override a block, the axis E2B's finding turns on"
+  - id: credential_model
+    group: crossing
+    block: environment_features
+    applies_to: [3]
+    value_type: open-descriptive
+    definition: "how a third-party credential reaches, or is kept from, the sandboxed process; open-descriptive family:specific tag, family closed: broker-relayed | split-plane | plain-env-var; specific half open-descriptive, optional per cell"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b broker-relayed:spiffe-jwt-svid (egress-proxy-brokered SPIFFE JWT-SVID), modal split-plane (long-lived MODAL_TOKEN_ID/SECRET control-plane only; short-lived JWT to the worker)"
+  - id: snapshot_model
+    group: persistence
+    block: environment_features
+    applies_to: [3]
+    value_type: open-descriptive
+    definition: "the mechanism by which sandbox state is paused/resumed; open-descriptive family:specific tag, family closed: create-is-resume | checkpoint-restore | explicit-backup | none; specific half open-descriptive, optional per cell"
+    note: "added 2026-08-20 per ADR-0017; instances: e2b create-is-resume:uffd-lazy-paging, modal checkpoint-restore (bare family — the gVisor-internals specific mechanism is Modal's own testimony, not source-verified)"
   - id: filesystem_sync
+    group: persistence
     block: environment_features
     applies_to: [3]
     value_type: closed-enum
@@ -329,18 +598,21 @@ features:
 # and tool-taxonomy.md govern those, and they are not facts about the subject.
 transcription_fields:
   - id: maker
+    group: identity
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: string
     definition: "who built or trained it — a company, a research lab, or a named individual. Renamed from `vendor` 2026-08-26 (ADR-0042): four values are private people and two more disclaim commerce, so `vendor` asserted a commercial relationship the field does not carry. Exact-string identity matters — spelling drift makes one maker read as two when span is reasoned about (tool-taxonomy.md § Maker span)"
     verification: source-or-docs
     rendered_in: []   # no generated matrix renders it since vendors.md was removed (ADR-0041); it carries hand-kept tables and § Maker span
   - id: license
+    group: identity
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: string
     definition: "SPDX id or 'proprietary'; for category 1 the WEIGHTS license — unverifiable until weights are published, and recorded as such rather than assumed from a predecessor"
     verification: source-or-docs
     rendered_in: [tools.md, features.md]
   - id: access
+    group: identity
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: closed-enum
     definition: >-
@@ -371,96 +643,112 @@ transcription_fields:
       cannot — a model whose TRAINING SOURCE is public reads open-source. Zero instances
       so far; zeros are honest.
   - id: stars
+    group: provenance
     applies_to: [2, 3, 4, 5, 6]
     value_type: number
     definition: "GitHub stars via the API, carrying their own stars_at date (stars drift daily); describes the CURRENT repo only — a fork or org move strands the predecessor's stars"
     verification: mechanical
     rendered_in: [tools.md]
   - id: first_commit
+    group: provenance
     applies_to: [2, 3, 4, 5, 6]
     value_type: date
     definition: "the public repo's first commit date — the public history's start, which postdates the product where a tool open-sourced later"
     verification: mechanical
     rendered_in: [tools.md]
   - id: version
+    group: provenance
     applies_to: [2, 3, 4, 5, 6]
     value_type: string
     definition: "git describe --tags --always of the clone at read time. Corrected 2026-08-26 (ADR-0044): the old 'omitted for closed source' was wrong on both halves — a closed PRODUCT can have a pinned open client (modal), and a subject with no clone at all can still report a version, which is then self-reported rather than machine-checked (claude-code's `claude --version`) and must say so in the field's comment. The cell only became visible for closed subjects when the Version-read column stopped substituting an openness literal"
     verification: mechanical
     rendered_in: [tools.md]
   - id: commit
+    group: provenance
     applies_to: [2, 3, 4, 5, 6]
     value_type: string
     definition: "the ONE machine-checked pin per report — build-tool-index --check verifies it still resolves in upstream/<name>; secondary pins are prose-recorded (see the tool template)"
     verification: mechanical
     rendered_in: []
   - id: stack
+    group: shape
     applies_to: [2, 3, 4, 5, 6]
     value_type: list
     definition: "[Language, Runtime/Framework] of the subject"
     verification: source-or-docs
     rendered_in: [tools.md]
   - id: surfaces
+    group: shape
     applies_to: [2]
     value_type: list
     definition: "where you interact — terminal | ide | desktop | web (multi-valued)"
     verification: source-or-docs
     rendered_in: [tools.md]
   - id: execution
+    group: shape
     applies_to: [2]
     value_type: closed-enum
     definition: "how it runs — local | async-remote | both"
     verification: source-or-docs
     rendered_in: [tools.md]
   - id: environments
+    group: environment-binding
     applies_to: [2]
     value_type: list
     definition: "category-3 bindings (the bleed): which environments the tool can run its agent in — list only what is verified"
     verification: source-or-docs
     rendered_in: [environments.md]
   - id: environment_relation
+    group: environment-binding
     applies_to: [2]
     value_type: closed-enum
     definition: "HOW the tool relates to the environment — bundle | bind | internalize | inhabit; left unset when none of the four fits, and that null case is data"
     verification: source-or-docs
     rendered_in: [environments.md]
   - id: harness_targets
+    group: shape
     applies_to: [4, 5, 6]
     value_type: list
     definition: "which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets"
     verification: source-or-docs
     rendered_in: [tools.md]
   - id: model_id
+    group: identity
     applies_to: [1]
     value_type: string
     definition: "exact API model id / HF repo id — the purchasable name, which routes and aggregators may not preserve"
     verification: dated-docs
     rendered_in: []
   - id: release_mode
+    group: identity
     applies_to: [1]
     value_type: closed-enum
     definition: "api-only | open-weights | both — verified on both surfaces before 'both' is claimed"
     verification: dated-docs
     rendered_in: []
   - id: released
+    group: identity
     applies_to: [1]
     value_type: free-text
     definition: "first-availability date PLUS lifecycle stage in the vendor's own vocabulary (GA / Preview / beta) — stages don't align across vendors, so the stage word is part of the fact"
     verification: dated-docs
     rendered_in: [models.md]
   - id: context_window
+    group: capacity
     applies_to: [1]
     value_type: number
     definition: "advertised input tokens; usable-vs-advertised is a category-1 axis, measured in report evidence cells, not here"
     verification: dated-docs
     rendered_in: [models.md, features.md]
   - id: max_output
+    group: capacity
     applies_to: [1]
     value_type: number
     definition: "maximum output tokens, with vendor caveats carried in the value (defaults vs settable ceilings, visible-output-only counts)"
     verification: dated-docs
     rendered_in: [models.md]
   - id: pricing
+    group: cost
     applies_to: [1]
     value_type: structured
     renders_note: true
@@ -482,6 +770,7 @@ transcription_fields:
     verification: dated-docs
     rendered_in: [models.md]
   - id: knowledge_cutoff
+    group: capacity
     applies_to: [1]
     value_type: date
     renders_note: true

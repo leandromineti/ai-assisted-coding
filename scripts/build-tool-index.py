@@ -91,7 +91,7 @@ REASONING_EFFORT_FAMILIES = {"levels", "budget"}
 ACCESS_VALUES = {"open-source", "closed-source", "open-weights"}
 
 
-def _load_feature_registry() -> tuple[list[dict], list[dict]]:
+def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
     try:
         text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
     except OSError as e:
@@ -104,6 +104,34 @@ def _load_feature_registry() -> tuple[list[dict], list[dict]]:
     if not isinstance(entries, list) or not entries:
         sys.exit("feature taxonomy: `features:` must be a non-empty list")
     t_fields = (data or {}).get("transcription_fields") or []
+    groups = (data or {}).get("groups") or []
+    if not groups:
+        sys.exit("feature taxonomy: `groups:` must be a non-empty list (ADR-0045)")
+    for g in groups:
+        for req in ("id", "title", "order", "blurb"):
+            if req not in g:
+                sys.exit(f"group missing `{req}`: {g}")
+    group_ids = {g["id"] for g in groups}
+    if len(group_ids) != len(groups):
+        sys.exit("feature taxonomy: duplicate group id")
+    used: set[str] = set()
+    for e in entries + t_fields:
+        g = e.get("group")
+        if not g:
+            sys.exit(
+                f"`{e.get('id')}` carries no `group:` — every registry entry belongs to "
+                "exactly one group since ADR-0045, because the registry renders by group"
+            )
+        if g not in group_ids:
+            sys.exit(
+                f"`{e.get('id')}` has unknown group `{g}` (known: {sorted(group_ids)})"
+            )
+        used.add(g)
+    orphans = group_ids - used
+    if orphans:
+        # A group nothing points at is a half-landed rename, and it would render as an
+        # empty section with a teaching paragraph above it — prose explaining nothing.
+        sys.exit(f"group(s) defined but used by no entry: {sorted(orphans)}")
     feature_ids = {e.get("id") for e in entries}
     for t in t_fields:
         for req in ("id", "applies_to", "definition", "verification", "value_type"):
@@ -145,10 +173,10 @@ def _load_feature_registry() -> tuple[list[dict], list[dict]]:
                 f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
                 f"(known: {sorted(known_blocks)}) — a typo here silently empties a matrix"
             )
-    return entries, t_fields
+    return entries, t_fields, sorted(groups, key=lambda g: g["order"])
 
 
-FEATURE_REGISTRY, TRANSCRIPTION_FIELDS = _load_feature_registry()
+FEATURE_REGISTRY, TRANSCRIPTION_FIELDS, FEATURE_GROUPS = _load_feature_registry()
 HARNESS_FEATURE_KEYS = [
     e["id"] for e in FEATURE_REGISTRY if e["block"] == "harness_features"
 ]
@@ -1060,29 +1088,42 @@ def render_feature_registry() -> str:
                 )
                 + ". The rows below are the transcription facts collected on its reports."
             )
-        lines += [f"## {title}", "", framing, "", header, divider]
-        if block:
-            for e in (e for e in FEATURE_REGISTRY if e["block"] == block):
+        lines += [f"## {title}", "", framing, ""]
+
+        # Rows for this category, in group order (ADR-0045). A group's membership is
+        # derived, never declared: an assessed key belongs to this category's block, a
+        # transcribed field lists the category in applies_to. Within a group the two
+        # halves keep their assessed-then-transcribed order, and the Basis column is
+        # what tells them apart — the flat 26-row table this replaced used row position.
+        assessed = [e for e in FEATURE_REGISTRY if block and e["block"] == block]
+        transcribed = [t for t in TRANSCRIPTION_FIELDS if cat in t["applies_to"]]
+        for group in FEATURE_GROUPS:
+            rows = []
+            for e in (e for e in assessed if e["group"] == group["id"]):
                 kind = e.get("kind_link")
                 kind_cell = f"`{kind}` (cat {5 if kind == 'memory' else 6})" if kind else "—"
-                lines.append(
+                rows.append(
                     f"| `{e['id']}` | assessed | `{e['value_type']}`"
                     f"{' + note' if e.get('renders_note') else ''} | "
                     f"{esc(e['definition'])} | {kind_cell} | "
                     f"{esc(e.get('note', '')) or '—'} |"
                 )
-        for t in TRANSCRIPTION_FIELDS:
-            if cat not in t["applies_to"]:
-                continue
-            rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
-            where = f"renders in {rendered}" if rendered else "frontmatter only"
-            lines.append(
-                f"| `{t['id']}` | transcribed | `{t['value_type']}`"
-                f"{' + note' if t.get('renders_note') else ''} | "
-                f"{esc(t['definition'])} | — | "
-                f"`{t['verification']}` · {where} |"
-            )
-        lines.append("")
+            for t in (t for t in transcribed if t["group"] == group["id"]):
+                rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
+                where = f"renders in {rendered}" if rendered else "frontmatter only"
+                rows.append(
+                    f"| `{t['id']}` | transcribed | `{t['value_type']}`"
+                    f"{' + note' if t.get('renders_note') else ''} | "
+                    f"{esc(t['definition'])} | — | "
+                    f"`{t['verification']}` · {where} |"
+                )
+            if not rows:
+                continue  # this group has no members in this category
+            # The blurb is prose, not a cell — `esc` would render its pipes as `\|`.
+            # No blurb currently contains one; if one ever does, it is a table-free
+            # paragraph and the pipe is literal.
+            lines += [f"### {group['title']}", "", group["blurb"], "",
+                      header, divider] + rows + [""]
     lines += [
         f"**{len(FEATURE_REGISTRY)} assessed keys across {len(block_cat)} blocks · "
         f"{len(TRANSCRIPTION_FIELDS)} transcription fields.**",

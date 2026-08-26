@@ -23,6 +23,11 @@ The other half is **8 transcription fields** — `maker`, `license`, `access`, `
 `first_commit`, `version`, `commit`, `stack` — facts copied from a dated source rather than
 judged.
 
+Both halves are read as **six groups** — Identity · Provenance · Shape · The boundary ·
+What crosses it · What persists — the last three following the sandbox itself, what is
+allowed through it, and what survives it: [`feature-registry.md` § Execution
+environments](../../comparisons/feature-registry.md#execution-environments).
+
 Definitions:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
 [`comparisons/features.md § Execution environments`](../../comparisons/features.md#execution-environments-category-3).

@@ -81,6 +81,11 @@ The other half of the surface is **10 transcription fields** — `maker`, `licen
 `access`, `model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
 `knowledge_cutoff` — facts copied from a dated source rather than judged.
 
+Both halves are read as **four groups** — Identity · Capacity · Cost · Reasoning — and
+each opens with what it is about and how its keys read together: [`feature-registry.md`
+§ Models](../../comparisons/feature-registry.md#models). The groups cross the assessed/transcribed line on purpose;
+the **Basis** column is what marks it.
+
 Definitions for every key:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
 [`comparisons/features.md § Models`](../../comparisons/features.md#models-category-1) and

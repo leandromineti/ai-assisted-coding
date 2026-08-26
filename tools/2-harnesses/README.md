@@ -29,6 +29,10 @@ The other half is **12 transcription fields** — `maker`, `license`, `access`, 
 `first_commit`, `version`, `commit`, `stack`, `surfaces`, `execution`, `environments`,
 `environment_relation` — facts copied from a dated source rather than judged.
 
+Both halves are read as **seven groups** — Identity · Provenance · Shape · Environment
+binding · Extension points · Control gates · Operations — each opening with what it is
+about and how its keys read together: [`feature-registry.md` § Harnesses](../../comparisons/feature-registry.md#harnesses).
+
 Definitions:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
 [`comparisons/features.md § Harnesses`](../../comparisons/features.md#harnesses-category-2).

@@ -37,6 +37,10 @@ The other half is **9 transcription fields** — `maker`, `license`, `access`, `
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 
+Both halves are read as **six groups** — Identity · Provenance · Shape · The spine ·
+Verification gates · Orchestration — each opening with what it is about and how its keys
+read together: [`feature-registry.md` § Workflow frameworks](../../comparisons/feature-registry.md#workflow-frameworks).
+
 Definitions:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
 [`comparisons/features.md § Workflow frameworks`](../../comparisons/features.md#workflow-frameworks-category-4).

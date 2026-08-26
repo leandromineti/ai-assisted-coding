@@ -54,6 +54,10 @@ The other half is **9 transcription fields** — `maker`, `license`, `access`, `
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 
+Both halves are read as **seven groups** — Identity · Provenance · Shape · Store & scope ·
+Write path · Read path · Integration — the middle three following a memory in, through and
+out of the store: [`feature-registry.md` § Memory](../../comparisons/feature-registry.md#memory).
+
 Definitions:
 [`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
 [`comparisons/features.md § Memory`](../../comparisons/features.md#memory-category-5). A
