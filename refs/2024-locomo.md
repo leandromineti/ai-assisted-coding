@@ -61,7 +61,7 @@ to measure whether models comprehend months-long conversational history (§3–4
 ## What it means for this repo
 
 The memory kind's most-cited instrument (mem0's published results ride on it — see
-`notes/05-memory/mem0.md`). Three things the catalog must remember
+`tools/5-memory/mem0.md`). Three things the catalog must remember
 when a vendor number arrives: (1) the domain is **social persona chat** — no code, no
 tools, no repo state; transfer to coding-agent memory is asserted, never measured;
 (2) the observation-granularity RAG finding independently corroborates what ai-memory

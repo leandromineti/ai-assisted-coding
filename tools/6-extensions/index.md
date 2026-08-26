@@ -5,7 +5,7 @@
 > across the types below (see the Standards scoreboard and the dated rename note in
 > [`../../taxonomy.md`](../../taxonomy.md)). Renumbered 5 → 6 at the 2026-08-22 split
 > ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)): the memory
-> type left this bucket to become category 5 — [Memory](../05-memory/index.md).
+> type left this bucket to become category 5 — [Memory](../5-memory/index.md).
 
 `checked: 2026-08-22`
 

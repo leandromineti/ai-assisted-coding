@@ -366,7 +366,7 @@ each cell point back here:
 ## Bleed
 
 - **← category 2 (harnesses).** microsandbox is one of hermes-agent's eight swappable
-  `bind` backends (see `notes/03-execution-environments/index.md`'s relationship vocabulary)
+  `bind` backends (see `tools/3-execution-environments/index.md`'s relationship vocabulary)
   — the same category as e2b, modal, and cloudflare-sandbox-sdk in that vocabulary, reached
   by a harness that binds to it rather than bundling or internalizing it.
 - **→ category 6 (extensions).** An MCP server package (`microsandbox-mcp`) is referenced as a

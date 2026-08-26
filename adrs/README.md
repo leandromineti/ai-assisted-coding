@@ -10,13 +10,15 @@ it superseded — lives here. When a dated document elsewhere (an experiment log
 conclusion's original wording, git history, an old GitHub URL) seems to contradict the
 living docs, the ADR trail is the decoder.
 
-**The two standing decoders** (relocated here from taxonomy.md's lead-in, 2026-08-22,
+**The standing decoders** (relocated here from taxonomy.md's lead-in, 2026-08-22,
 [ADR-0022](0022-refs-repo-voice-sweepable.md)): anything dated before **2026-08-18**
 (git history, old URLs, experiment logs) uses the pre-renumbering scheme —
 [ADR-0007](0007-renumber-core-triad-first.md) carries the mapping. Anything dated
 before **2026-08-22** says "category 5" for both memory and the extensions bucket —
 [ADR-0020](0020-memory-category-extensions-renumbered.md) carries that decoder
-(memory → 5, everything else → 6).
+(memory → 5, everything else → 6). Anything dated before **2026-08-26** cites report
+paths as `notes/0N-<name>/…` — [ADR-0024](0024-notes-to-tools-single-digit.md)
+carries that mapping (`notes/` → `tools/`, `0N-` → `N-`).
 
 **Rules:**
 
@@ -50,7 +52,7 @@ before **2026-08-22** says "category 5" for both memory and the extensions bucke
 | [0006](0006-layer-2-program.md) | 2026-08-18 | Framework code-outcome A/Bs stop; the layer-2 program | accepted |
 | [0007](0007-renumber-core-triad-first.md) | 2026-08-18 | Renumber: core triad 1–3, frameworks 4, extensions 5 | accepted |
 | [0008](0008-standards-into-cross-cutting.md) | 2026-08-18 | Standards folded into cross-cutting (one non-layer bucket) | accepted |
-| [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`notes/candidates.md`) | accepted |
+| [0009](0009-candidates-ledger.md) | 2026-08-18 | Candidates ledger: one pre-report rung, cross-layer (`tools/candidates.md`) | accepted |
 | [0010](0010-two-taxonomies.md) | 2026-08-18 | Two taxonomies: tool taxonomy + feature taxonomy (registry, cross-layer view) | accepted |
 | [0011](0011-graded-gate-enforcement.md) | 2026-08-18 | Graded enforcement values (engine/hook/script/prose) for the gate features | accepted |
 | [0012](0012-layer-2-feature-set.md) | 2026-08-18 | Layer-2 feature set: `ptc` + graded `turn_end_gates` | accepted |
@@ -65,3 +67,4 @@ before **2026-08-22** says "category 5" for both memory and the extensions bucke
 | [0021](0021-harness-three-component-decomposition.md) | 2026-08-22 | Harness decomposition: three components (loop, context assembly, permission gate) + two descriptive axes | accepted |
 | [0022](0022-refs-repo-voice-sweepable.md) | 2026-08-22 | Repo-voice prose in `refs/` is sweepable (quotes stay period); decoders relocate to this index | accepted |
 | [0023](0023-category-4-5-components.md) | 2026-08-25 | Components for categories 4 (four functions + substrate finding) and 5 (capture · consolidation · recall); tracing discipline category-generic | accepted |
+| [0024](0024-notes-to-tools-single-digit.md) | 2026-08-26 | Path rename: `notes/` → `tools/`, category dirs `0N-` → `N-` (storage-path decision; decoder above) | accepted |

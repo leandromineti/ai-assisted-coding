@@ -57,7 +57,7 @@ the model was broken.
 ## The component vocabulary
 
 `added: 2026-08-20` *(from the extensions-bucket boundary discussion — see the
-[discussion-state note](../05-memory/index.md) — via the question "what
+[discussion-state note](../5-memory/index.md) — via the question "what
 is the default environment?"; tested against this index's seed inventory and the codex,
 Warp, and E2B deep-dives before recording)*
 
@@ -378,7 +378,7 @@ together.
   with no open client, no trust center, and no advisories at all is still untested. Issue #11.**
 - ~~Why has nobody verified `worktree` support for any harness?~~ **First cell filled
   2026-08-17: Claude Code, observed** — native enter/exit-worktree operations plus
-  per-subagent worktree isolation ([`../02-harnesses/claude-code.md`](../02-harnesses/claude-code.md)).
+  per-subagent worktree isolation ([`../2-harnesses/claude-code.md`](../2-harnesses/claude-code.md)).
   The irony is recorded there: the first verified worktree support is on the *closed*
   harness, from product-surface observation. The rest of the column is still `·` —
   the universal-or-unexamined question stands for the open harnesses, where checking

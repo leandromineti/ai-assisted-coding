@@ -36,13 +36,13 @@ confirm, contradict, or note silence.
 
 | Category | Index | Examples |
 |-------|-------|----------|
-| 1 · Models | [`notes/01-models/`](notes/01-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
-| 2 · Harnesses | [`notes/02-harnesses/`](notes/02-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Execution environments | [`notes/03-execution-environments/`](notes/03-execution-environments/index.md) | worktrees, devcontainers, E2B |
-| 4 · Workflow frameworks | [`notes/04-workflow-frameworks/`](notes/04-workflow-frameworks/index.md) | GSD, spec-kit |
-| 5 · Memory | [`notes/05-memory/`](notes/05-memory/index.md) | ai-memory, mem0, MemOS, cognee |
-| 6 · Extensions (bucket) | [`notes/06-extensions/`](notes/06-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
-| ✕ Cross-cutting | [`notes/cross-cutting/`](notes/cross-cutting/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
+| 1 · Models | [`tools/1-models/`](tools/1-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
+| 2 · Harnesses | [`tools/2-harnesses/`](tools/2-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
+| 3 · Execution environments | [`tools/3-execution-environments/`](tools/3-execution-environments/index.md) | worktrees, devcontainers, E2B |
+| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/`](tools/4-workflow-frameworks/index.md) | GSD, spec-kit |
+| 5 · Memory | [`tools/5-memory/`](tools/5-memory/index.md) | ai-memory, mem0, MemOS, cognee |
+| 6 · Extensions (bucket) | [`tools/6-extensions/`](tools/6-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
+| ✕ Cross-cutting | [`tools/cross-cutting/`](tools/cross-cutting/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
 
@@ -52,7 +52,7 @@ confirm, contradict, or note silence.
 | `taxonomy.md` | The category definitions and boundary rule — the canonical reference |
 | `methodology.md` | The working rules — verification, honesty markers, experiment protocol |
 | `design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
-| `notes/` | One index per category, plus one file per tool, written while using it |
+| `tools/` | One index per category, plus one file per tool, written while using it |
 | `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
 | `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
@@ -74,7 +74,7 @@ pattern) — candidates already weighed and passed over are recorded in the rele
 category index's "considered, not added" table instead.
 
 One report per tool, following
-[`notes/_template-tool-report.md`](notes/_template-tool-report.md). Its **"distinguishing
+[`tools/_template-tool-report.md`](tools/_template-tool-report.md). Its **"distinguishing
 bet"** field is the one that matters — what does this tool believe that its competitors
 don't? — and **`depth`** is the honesty marker: `stub` (facts collected, source unread),
 `survey` (used or skimmed), `deep-dive` (the category's components traced — defined in
@@ -83,7 +83,7 @@ under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in
-[`notes/cross-cutting/`](notes/cross-cutting/index.md) about whether a clean A/B is
+[`tools/cross-cutting/`](tools/cross-cutting/index.md) about whether a clean A/B is
 possible here at all.
 
 ## Conventions
@@ -105,7 +105,7 @@ note. Revised when evidence moves._
    different ways: opencode maintains nine bespoke prompts sharing zero substantive lines;
    cline built that architecture and *dismantled* it; continue runs ~15 lines and bets the
    prompt barely matters. Nobody's position is backed by a published eval. →
-   [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md)
+   [`tools/2-harnesses/index.md`](tools/2-harnesses/index.md)
 2. **No public benchmark isolates model from harness** (2026-07-28). Leaderboards pair
    them ("Codex CLI + GPT-5.5"), and the one benchmark that fixes the harness turned out
    to inherit that harness's per-model prompt dispatch — a confound its maintainer didn't
@@ -117,7 +117,7 @@ note. Revised when evidence moves._
    (Sonnet 5 vs Haiku 4.5, n=5 each; see conclusion 10). The public-benchmark claim
    stands unchanged; what changed is that the isolation the field lacks is
    demonstrably buildable at personal scale for ~$3. →
-   [`notes/01-models/index.md`](notes/01-models/index.md)
+   [`tools/1-models/index.md`](tools/1-models/index.md)
 3. **The extensions bucket (category 6; numbered 5 until the 2026-08-22 split) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension types, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
@@ -125,7 +125,7 @@ note. Revised when evidence moves._
    consumed by at least four harnesses (Claude Code, Codex, Kimi, Hermes), so skills are
    now convention-level like rules files, no longer Claude-Code-shaped.
    Re-check the scoreboard ~2027-01. →
-   [`notes/cross-cutting/standards.md`](notes/cross-cutting/standards.md)
+   [`tools/cross-cutting/standards.md`](tools/cross-cutting/standards.md)
    **Strengthened, headline unchanged (2026-08-11, Warp survey).** Both converging types
    gained their best evidence yet, and it is a better *class* of evidence: a first-party
    implementation by a rival vendor rather than a third-party installer targeting the
@@ -134,12 +134,12 @@ note. Revised when evidence moves._
    files (`CLAUDE.md`, `.cursorrules`, `GEMINI.md`, `.clinerules`, `.windsurfrules`,
    Copilot instructions, `AGENT.md`) into its own. The headline still stands: both remain
    filename-plus-frontmatter conventions with no schema, and hooks and subagent
-   definitions did not move. → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
+   definitions did not move. → [`tools/2-harnesses/warp.md`](tools/2-harnesses/warp.md)
 4. **Structural completeness does not predict runtime correctness** (2026-07-28, from
    llm-coding-benchmark's data): models produce complete-looking apps whose tests mock
    hallucinated APIs — green suites over dead code. Any personal eval must boot the
    artifact, not count its files. →
-   [`notes/cross-cutting/index.md`](notes/cross-cutting/index.md)
+   [`tools/cross-cutting/index.md`](tools/cross-cutting/index.md)
 5. **Reading source beats reading marketing, quickly** (2026-07-28). Every finding above
    except #4 came from a few hours of grepping cloned repos — none appears in any tool's
    own documentation. The `upstream/` workflow pays for itself.
@@ -175,7 +175,7 @@ note. Revised when evidence moves._
    (#3185). Both frameworks studied grew deterministic engines (spec-kit's `workflows/`
    YAML runner, GSD's `gsd-pi`) as the escape hatch — category-2 bleed as a structural
    symptom, not a coincidence. →
-   [`notes/04-workflow-frameworks/spec-kit.md`](notes/04-workflow-frameworks/spec-kit.md)
+   [`tools/4-workflow-frameworks/spec-kit.md`](tools/4-workflow-frameworks/spec-kit.md)
    **Independently corroborated (2026-07-31):** a six-framework taxonomy study covering the
    same subjects reaches the same tradeoff — "no framework strongly covers all six dimensions
    … a structural trade-off between process depth and portability" — from documentation
@@ -197,7 +197,7 @@ note. Revised when evidence moves._
    enforcement. Gate-enforcement grading formalized in the feature taxonomy
    ([ADR-0011](adrs/0011-graded-gate-enforcement.md)): no framework yet has an
    engine-graded measured or process gate. →
-   [`notes/04-workflow-frameworks/gsd-core.md`](notes/04-workflow-frameworks/gsd-core.md)
+   [`tools/4-workflow-frameworks/gsd-core.md`](tools/4-workflow-frameworks/gsd-core.md)
    **Third shape added (2026-08-18, BMAD deep-dive):** an engine divergence datapoint that
    *inverts* GSD's thesis — BMAD ships ~2.6k lines of tested Python state tooling and
    deliberately denies it authority (every script failure licenses the LLM to "deliver
@@ -209,13 +209,13 @@ note. Revised when evidence moves._
    `.agents/skills/` convention), so there is no degradation gradient to measure; the
    price surfaces instead as a hand-forked, runtime-stripped 6-of-29-skill
    `web-bundles/` for chat platforms, quarantined outside the mechanism. The
-   same-day [bmad-loop stub](notes/04-workflow-frameworks/bmad-loop.md) completes the
+   same-day [bmad-loop stub](tools/4-workflow-frameworks/bmad-loop.md) completes the
    shape: the ecosystem's companion orchestrator holds the tracked category's first
    **engine-graded measured and process gates** ("No LLM in the control loop") — so
    "no framework yet has an engine-graded measured or process gate" stays true
    precisely because BMAD ships those gates outside the framework, in the escape
    hatch productized. →
-   [`notes/04-workflow-frameworks/bmad-method.md`](notes/04-workflow-frameworks/bmad-method.md)
+   [`tools/4-workflow-frameworks/bmad-method.md`](tools/4-workflow-frameworks/bmad-method.md)
    **Reinforced (2026-08-21, gsd-core v1.11.0 release re-read):** the migration
    direction held under a 369-commit window — every enforcement movement went
    prose→code (disk-strict completion predicate, vendored RE2 for untrusted plan
@@ -225,7 +225,7 @@ note. Revised when evidence moves._
    evidence yet on the reliability floor of prose-graded gates. One count corrected:
    "three hard-blocking hooks" was a curated subset — a lexical exit-2 grep matches 8
    hook files at both pins. →
-   [release assessment](notes/04-workflow-frameworks/gsd-core.md#release-assessment--v1110-2026-08-21-pin-fee72d55--182f60b4)
+   [release assessment](tools/4-workflow-frameworks/gsd-core.md#release-assessment--v1110-2026-08-21-pin-fee72d55--182f60b4)
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent categories sell are turning up *natively in
    category 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
@@ -235,9 +235,9 @@ note. Revised when evidence moves._
    (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
    Consequence for the experiment arc: a category-4 framework's measured margin must be
    re-baselined against what the harness already does — recorded as a design rider on
-   exp-03 in [`notes/cross-cutting/`](notes/cross-cutting/index.md). →
-   [`notes/02-harnesses/hermes-agent.md`](notes/02-harnesses/hermes-agent.md),
-   [`notes/02-harnesses/codex.md`](notes/02-harnesses/codex.md)
+   exp-03 in [`tools/cross-cutting/`](tools/cross-cutting/index.md). →
+   [`tools/2-harnesses/hermes-agent.md`](tools/2-harnesses/hermes-agent.md),
+   [`tools/2-harnesses/codex.md`](tools/2-harnesses/codex.md)
    **Third instance, and a counter-instance (2026-08-11, Warp survey; evidence upgraded
    to deep-dive 2026-08-19 — the loop is now traced).** Extended: Warp absorbs
    category-4-shaped *orchestration* — multi-agent fan-out where the harness running each
@@ -254,7 +254,7 @@ note. Revised when evidence moves._
    `is_autogenerated` field shows an auto-write path was built and then removed. The
    sideways absorption also has a cost the survey couldn't see: children launch with
    their own permission gates disabled — absorption of orchestration without absorption
-   of governance.)* → [`notes/02-harnesses/warp.md`](notes/02-harnesses/warp.md)
+   of governance.)* → [`tools/2-harnesses/warp.md`](tools/2-harnesses/warp.md)
    **Counter-current (2026-08-18, memory-type reading arc).** Absorption predicts
    independent memory extensions get eaten by native loops; the arc found the opposite
    motion running concurrently. The extensions are growing *despite* native memory
@@ -271,8 +271,8 @@ note. Revised when evidence moves._
    arc: the continuity mechanism is real but its automatic floor is thin (ai-memory's
    baton is first + last prompt + tool names, no LLM) — whether the bet survives
    contact with use is an open rig question. →
-   [`notes/05-memory/ai-memory.md`](notes/05-memory/ai-memory.md),
-   [`notes/05-memory/memos.md`](notes/05-memory/memos.md)
+   [`tools/5-memory/ai-memory.md`](tools/5-memory/ai-memory.md),
+   [`tools/5-memory/memos.md`](tools/5-memory/memos.md)
 9. **The environments category (3) is a real category, not an axis of the harness category —
    decided by its own falsifier** (2026-08-16, decision record
    [ADR-0003](adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to
@@ -300,11 +300,11 @@ note. Revised when evidence moves._
    [issue #11](https://github.com/leandromineti/ai-assisted-coding/issues/11) actually asked
    about — a thin, uncommented client with no trust center and no advisories at all — so that
    test remains open after five reads.
-   → [`notes/03-execution-environments/e2b.md`](notes/03-execution-environments/e2b.md),
-   [`notes/03-execution-environments/cloudflare-sandbox-sdk.md`](notes/03-execution-environments/cloudflare-sandbox-sdk.md),
-   [`notes/03-execution-environments/microsandbox.md`](notes/03-execution-environments/microsandbox.md),
-   [`notes/03-execution-environments/daytona.md`](notes/03-execution-environments/daytona.md),
-   [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md)
+   → [`tools/3-execution-environments/e2b.md`](tools/3-execution-environments/e2b.md),
+   [`tools/3-execution-environments/cloudflare-sandbox-sdk.md`](tools/3-execution-environments/cloudflare-sandbox-sdk.md),
+   [`tools/3-execution-environments/microsandbox.md`](tools/3-execution-environments/microsandbox.md),
+   [`tools/3-execution-environments/daytona.md`](tools/3-execution-environments/daytona.md),
+   [`tools/3-execution-environments/index.md`](tools/3-execution-environments/index.md)
 10. **A task-level trap instrument that cannot rank same-tier runs still separates model
     tiers — and its items are not monotone in capability** (2026-08-17, measured). exp-02's
     21-check instrument, saturated against Sonnet 5 baselines (mean 19.0/21, n=5), fully
@@ -317,7 +317,7 @@ note. Revised when evidence moves._
     (Haiku: the entire ambient-config family, every completed run), not single items,
     carried the separation. Preregistered prediction on per-item dominance was half-wrong
     and is recorded as such. →
-    [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md),
+    [`tools/cross-cutting/benchmark-survey.md`](tools/cross-cutting/benchmark-survey.md),
     [`experiments/02-spec-kit-vs-plain/log.md`](experiments/02-spec-kit-vs-plain/log.md)
 11. **Intent capture steers trap behavior but does not add trap discovery** (2026-08-17,
     measured — exp-02's preregistered A/B, both predictions supported). On the same
@@ -352,7 +352,7 @@ note. Revised when evidence moves._
     (conclusion 11). Caveats stated in the report: the Haiku grounding arm is n=1;
     one check (t3c) went 0/20 with satisfiability unproven. →
     [`experiments/03-minimal-harness/`](experiments/03-minimal-harness/README.md) ·
-    [`notes/cross-cutting/category-2-program.md`](notes/cross-cutting/category-2-program.md)
+    [`tools/cross-cutting/category-2-program.md`](tools/cross-cutting/category-2-program.md)
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18,
     memory-type reading arc: one deep-dive, two surveys, three instrument full-reads).
     The type's verified substance is real — three distinct wagers (markdown wiki / RL
@@ -371,7 +371,7 @@ note. Revised when evidence moves._
     contains a 1,582-line remotely-scripted A/B upsell funnel (`notices.py`) — the
     benchmark-vs-product gap is not just marketing outside the repo, it is
     instrumentation inside it. →
-    [`notes/05-memory/mem0.md`](notes/05-memory/mem0.md)
+    [`tools/5-memory/mem0.md`](tools/5-memory/mem0.md)
     **Third instance, inverted (2026-08-19, memos deep-dive):** the benchmark-vs-product
     gap runs the other way — memos' machinery is real and golden-tested in source, but
     the ten README numbers (five of them CODING benchmarks incl. SWE-Bench, all
@@ -380,7 +380,7 @@ note. Revised when evidence moves._
     published npm artifact — runs with that machinery unmounted. The type's pattern is
     now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
     benchmarks what the shipped default doesn't enable. →
-    [`notes/05-memory/memos.md`](notes/05-memory/memos.md)
+    [`tools/5-memory/memos.md`](tools/5-memory/memos.md)
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19,
     exp-04, n=1 per arm — a probe). The memory type's headline bet, measured for the
     only tool that ships a continuity mechanism (ai-memory, pin-built): the automatic
@@ -411,8 +411,8 @@ note. Revised when evidence moves._
     on quality (J 72.90 vs 68.44) — the measured claim is latency/token efficiency —
     and the 92.5 belongs to a later rewrite whose architecture the paper doesn't
     describe.* →
-    [`notes/cross-cutting/benchmark-survey.md`](notes/cross-cutting/benchmark-survey.md) §6 ·
-    [`notes/05-memory/index.md`](notes/05-memory/index.md)
+    [`tools/cross-cutting/benchmark-survey.md`](tools/cross-cutting/benchmark-survey.md) §6 ·
+    [`tools/5-memory/index.md`](tools/5-memory/index.md)
 
 ## License
 

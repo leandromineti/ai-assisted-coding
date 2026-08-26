@@ -63,7 +63,7 @@ context measurably degrades attention on the relevant parts.
   `/analyze` command into a subagent context and **reverted** it — the 300–500-line
   report re-entered the main chat anyway and each later fork inherited the growth,
   compounding until sessions froze (#3185). Isolation only pays if the *return path* is
-  compact — see [`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
+  compact — see [`../4-workflow-frameworks/spec-kit.md`](../4-workflow-frameworks/spec-kit.md).
 - Just-in-time loading — skills that load on demand rather than up front.
 
 **Candidate first experiment.** One task with real ambiguity in an unfamiliar mid-size
@@ -91,7 +91,7 @@ graded `turn_end_gates` matrix column (ADR-0012) and a probe of all seven
 feature-bearing harnesses found 3✓ / 3✗ / 1 undecidable, with hermes still the only
 always-on native policy; codex and claude-code carry it as hook surfaces, empty unless
 the user configures them. Full table:
-[category-2 index, "What category 2 has absorbed"](../02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
+[category-2 index, "What category 2 has absorbed"](../2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 
 **Implication for experiment 03 (recorded before its design):** if harnesses ship
 verification gates natively, the category-4 margin can migrate down the stack. The

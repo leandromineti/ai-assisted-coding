@@ -39,7 +39,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 TAXONOMY = ROOT / "taxonomy.yaml"
-FEATURE_REGISTRY_PATH = ROOT / "notes" / "cross-cutting" / "feature-taxonomy.md"
+FEATURE_REGISTRY_PATH = ROOT / "tools" / "cross-cutting" / "feature-taxonomy.md"
 
 # A file containing this marker is generated output (comparisons/*.md, refs/index.md)
 # and is never a lint target directly — its generator owns the vocabulary it emits
@@ -159,7 +159,7 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
     )
     for path in walk(taxo, root=root):
         rel = path.relative_to(root).as_posix()
-        if not rel.startswith("notes/"):
+        if not rel.startswith("tools/"):
             continue
         if path.name.startswith("_") or path.name == "index.md":
             continue  # templates and layer indexes are not reports (mirrors collect())
@@ -175,7 +175,7 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
                 if key not in valid_keys:
                     print(
                         f"ERROR: {rel} '{key}' is unregistered in block "
-                        f"'{block}' — add it to notes/cross-cutting/"
+                        f"'{block}' — add it to tools/cross-cutting/"
                         f"feature-taxonomy.md or fix the spelling",
                         file=sys.stderr,
                     )
@@ -275,7 +275,7 @@ def _deny_index(taxo: dict) -> tuple[re.Pattern | None, dict, list[str]]:
             if d.endswith(":"):
                 # Frontmatter-key entries (e.g. "kind:") are schema, not prose — Plan
                 # 02's schema-rename check owns these. Known false positive this
-                # exclusion prevents: notes/05-memory/ai-memory.md:90
+                # exclusion prevents: tools/5-memory/ai-memory.md:90
                 # ("Table stakes in the kind: store + retrieve + MCP.") — ordinary
                 # prose, not the report frontmatter key.
                 continue
@@ -711,7 +711,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
     `split_frontmatter` lines) — this is deliberately disjoint from `check()`'s prose
     scanner, which already excludes colon-suffixed deny entries like `kind:` from
     prose at the regex-build step (`_deny_index`). That's what lets the recorded
-    false positive — `notes/05-memory/ai-memory.md:90`'s "Table stakes
+    false positive — `tools/5-memory/ai-memory.md:90`'s "Table stakes
     in the kind: store + retrieve + MCP." (taxonomy.yaml, term `types`,
     false_positive_notes) — pass without a per-site carve-out: prose "kind:" is never
     even a candidate for this check, because this check never looks at body text.
@@ -729,7 +729,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
 
     for path in walk(taxo, root=root):
         rel = path.relative_to(root).as_posix()
-        if not rel.startswith("notes/"):
+        if not rel.startswith("tools/"):
             continue
         text = path.read_text(encoding="utf-8")
         raw_lines = _raw_frontmatter_lines(text)
@@ -741,7 +741,7 @@ def check_schema_renames(taxo: dict, root: Path = ROOT) -> int:
             old, new, status = entry["old"], entry["new"], entry["status"]
             # kind -> type is scoped to category-5 reports plus the shared template
             # (both explicitly listed in this entry's own `scope:`); layer -> category
-            # applies to every notes/ report and template, so no extra gate — refs/'s
+            # applies to every tools/ report and template, so no extra gate — refs/'s
             # unrelated `kind:` vocabulary never reaches here at all (refs/* is
             # exempt_paths.skip_entirely, so walk() never yields it).
             if old == "kind":
@@ -837,7 +837,7 @@ def _with_extra_known_site(site: str, compound: str = "enforcement ladder"):
 FIXTURES: list[dict] = [
     {
         "id": "denied-term-prose",
-        "path": "notes/02-harnesses/fixture-tool.md",
+        "path": "tools/2-harnesses/fixture-tool.md",
         "text": "# Fixture\n\nThis report still uses the old layer terminology in prose.\n",
         "expect": "fail",
         "why": "'layer' is on the deny_list for term 'categories' — must fail.",
@@ -852,7 +852,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "inline-code-span",
-        "path": "notes/02-harnesses/fixture-code.md",
+        "path": "tools/2-harnesses/fixture-code.md",
         "text": "# Fixture\n\nThe old `layer` identifier appears here only inside code "
         "formatting.\n",
         "expect": "pass",
@@ -861,7 +861,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "adr-filename-link",
-        "path": "notes/04-workflow-frameworks/fixture-link.md",
+        "path": "tools/4-workflow-frameworks/fixture-link.md",
         "text": "# Fixture\n\nSee [ADR-0003](../../adrs/0003-environments-stay-a-rung.md) "
         "for background.\n",
         "expect": "pass",
@@ -888,7 +888,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "exempt-compound-ladder",
-        "path": "notes/04-workflow-frameworks/fixture-ladder.md",
+        "path": "tools/4-workflow-frameworks/fixture-ladder.md",
         "text": "# Fixture\n\nHere the engagement ladder concept appears, not the "
         "taxonomy's own top-level grouping.\n",
         "expect": "pass",
@@ -897,29 +897,29 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "known-site-scoped-to-compound-span",
-        "path": "notes/04-workflow-frameworks/fixture-known-site-scope.md",
+        "path": "tools/4-workflow-frameworks/fixture-known-site-scope.md",
         "text": "# Fixture\n\nThe enforcement ladder is fine here, but the layer's "
         "sharpest categories concept is not.\n",
         "expect": "fail",
         "taxo_patch": _with_extra_known_site(
-            "notes/04-workflow-frameworks/fixture-known-site-scope.md:3"
+            "tools/4-workflow-frameworks/fixture-known-site-scope.md:3"
         ),
         "why": "CR-01: a known_sites entry recorded for the 'enforcement ladder' "
         "compound at this exact file:line must only shield matches falling inside "
         "that compound's own span — the independent, genuinely deny-listed 'layer' "
         "match elsewhere on the same line is unrelated and must still fail. "
-        "Reproduces the real notes/04-workflow-frameworks/gsd-core.md:191 shape "
+        "Reproduces the real tools/4-workflow-frameworks/gsd-core.md:191 shape "
         "(compound + unrelated violation sharing a line) without depending on "
         "real-repo line numbers.",
     },
     {
         "id": "known-site-scoped-to-compound-span-memory-layer",
-        "path": "notes/05-memory/fixture-memory-layer-scope.md",
+        "path": "tools/5-memory/fixture-memory-layer-scope.md",
         "text": "# Fixture\n\nThe memory layer is fine here, but the layer's "
         "sharpest categories concept is not.\n",
         "expect": "fail",
         "taxo_patch": _with_extra_known_site(
-            "notes/05-memory/fixture-memory-layer-scope.md:3",
+            "tools/5-memory/fixture-memory-layer-scope.md:3",
             compound="memory layer",
         ),
         "why": "WR-02: calibrates one of the 7 compounds added in 60e9b97 (chosen "
@@ -933,7 +933,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "cross-cutting-not-cross-layer",
-        "path": "notes/cross-cutting/fixture-cutting.md",
+        "path": "tools/cross-cutting/fixture-cutting.md",
         "text": "# Fixture\n\nThis document uses cross-cutting concerns terminology "
         "throughout, nothing else.\n",
         "expect": "pass",
@@ -942,7 +942,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "stale-numbering-pairing",
-        "path": "notes/03-execution-environments/fixture-stale-numbering.md",
+        "path": "tools/3-execution-environments/fixture-stale-numbering.md",
         "text": "# Fixture\n\n| Idx | Note |\n|---|---|\n"
         "| 5 · Execution environments | wrong pairing |\n",
         "expect": "fail",
@@ -951,7 +951,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "wrong-separator-table-index",
-        "path": "notes/02-harnesses/fixture-wrong-separator.md",
+        "path": "tools/2-harnesses/fixture-wrong-separator.md",
         "text": "# Fixture\n\n| Idx | Note |\n|---|---|\n"
         "| 2 - Harnesses | wrong separator |\n",
         "expect": "fail",
@@ -961,7 +961,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "sentence-initial-category-ok",
-        "path": "notes/04-workflow-frameworks/fixture-sentence-initial.md",
+        "path": "tools/4-workflow-frameworks/fixture-sentence-initial.md",
         "text": "# Fixture\n\nCategory 2 covers harnesses tooling in this repo.\n",
         "expect": "pass",
         "why": "line-initial 'Category' is orthographic capitalisation, not "
@@ -969,7 +969,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "unregistered-feature-key",
-        "path": "notes/02-harnesses/fixture-bad-feature-key.md",
+        "path": "tools/2-harnesses/fixture-bad-feature-key.md",
         "text": "---\nname: fixture-tool\nharness_features:\n  totally_invented_key_xyz: true\n"
         "---\n\n# Fixture\n\nBody text, clean.\n",
         "expect": "fail",
@@ -978,7 +978,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "registered-feature-key",
-        "path": "notes/02-harnesses/fixture-good-feature-key.md",
+        "path": "tools/2-harnesses/fixture-good-feature-key.md",
         "text": "---\nname: fixture-tool\nharness_features:\n  mcp: true\n---\n\n# Fixture\n\n"
         "Body text, clean.\n",
         "expect": "pass",
@@ -987,7 +987,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "old-key-while-pending",
-        "path": "notes/02-harnesses/fixture-old-key-pending.md",
+        "path": "tools/2-harnesses/fixture-old-key-pending.md",
         "text": "---\nlayer: 2\n---\n\n# Fixture\n\nOld key usage, no drift.\n",
         "expect": "pass",
         "taxo_patch": _with_schema_renames_pending,
@@ -999,7 +999,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "premature-renamed-key",
-        "path": "notes/02-harnesses/fixture-premature-key.md",
+        "path": "tools/2-harnesses/fixture-premature-key.md",
         "text": "---\ncategory: 2\n---\n\n# Fixture\n\nPremature rename.\n",
         "expect": "fail",
         "taxo_patch": _with_schema_renames_pending,
@@ -1009,7 +1009,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "old-key-after-rename-applied",
-        "path": "notes/02-harnesses/fixture-old-key-applied.md",
+        "path": "tools/2-harnesses/fixture-old-key-applied.md",
         "text": "---\nlayer: 2\n---\n\n# Fixture\n\nOld key survives after the rename "
         "was supposedly applied.\n",
         "expect": "fail",
@@ -1020,7 +1020,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "kind-gate-survives-rename-applied",
-        "path": "notes/05-memory/fixture-kind-gate-applied.md",
+        "path": "tools/5-memory/fixture-kind-gate-applied.md",
         "text": "---\ncategory: 5\nkind: agent\n---\n\n# Fixture\n\nBoth renames "
         "applied; stale kind: key must still be caught.\n",
         "expect": "fail",
@@ -1034,7 +1034,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "kind-gate-fires-at-category-6",
-        "path": "notes/06-extensions/fixture-kind-gate-cat6.md",
+        "path": "tools/6-extensions/fixture-kind-gate-cat6.md",
         "text": "---\ncategory: 6\nkind: agent\n---\n\n# Fixture\n\nADR-0020 "
         "split: a category-6 report with a stale kind: key must still be caught.\n",
         "expect": "fail",
@@ -1046,24 +1046,24 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "kind-colon-in-prose",
-        "path": "notes/05-memory/fixture-kind-colon.md",
+        "path": "tools/5-memory/fixture-kind-colon.md",
         "text": "# Fixture\n\nTable stakes in the kind: store + retrieve + MCP.\n",
         "expect": "pass",
         "why": "'kind:' here is ordinary body prose (a list-introducing colon), not "
         "a frontmatter key — check_schema_renames only scans frontmatter and never "
         "sees this line; the deny-list scanner already excludes colon-suffixed "
         "entries from prose. Mirrors the real false positive at "
-        "notes/05-memory/ai-memory.md:90.",
+        "tools/5-memory/ai-memory.md:90.",
     },
     {
         "id": "generated-file-skipped",
-        "path": "notes/02-harnesses/fixture-generated-marker.md",
+        "path": "tools/2-harnesses/fixture-generated-marker.md",
         "text": "<!-- GENERATED by scripts/build-tool-index.py -->\n\n# Fixture\n\n"
         "This file still carries old layer terminology, but it also carries the "
         "generated-output marker.\n",
         "expect": "pass",
         "why": "GENERATED_MARKER makes walk() skip this file before any check ever "
-        "sees it, even though notes/* is not itself in exempt_paths.skip_entirely — "
+        "sees it, even though tools/* is not itself in exempt_paths.skip_entirely — "
         "the marker is a backstop independent of the path-pattern exemptions "
         "(methodology rule 3).",
     },
@@ -1117,7 +1117,7 @@ FIXTURES: list[dict] = [
     },
     {
         "id": "split-meaning-stack-not-flagged",
-        "path": "notes/02-harnesses/fixture-stack.md",
+        "path": "tools/2-harnesses/fixture-stack.md",
         "text": "# Fixture\n\nHere the tool's stack refers to its top-level grouping "
         "in this survey, not the running composed system.\n",
         "expect": "pass",
@@ -1129,7 +1129,7 @@ FIXTURES: list[dict] = [
 
 
 # LINT-04b (D-06, vocabulary leakage — prose half): the measurement vocabulary in
-# notes/cross-cutting/metrics.md is enforced through the SAME `terms[].deny_list`
+# tools/cross-cutting/metrics.md is enforced through the SAME `terms[].deny_list`
 # mechanism `check()` already runs above — no separate function, no fuzzy matching,
 # LINT-03's model extended in scope only. Deliberately live-but-empty: no measurement
 # drift term ("trap score", "attention split", ...) has been observed misused, and

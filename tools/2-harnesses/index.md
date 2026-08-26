@@ -161,7 +161,7 @@ Three readings of the table:
   the swappable component. Where the frontier is crossed, the traffic runs the other
   way: model vendors treating harnesses as **data instruments** (xAI's acquisition of
   Cursor followed by Grok 4.5 training on its session data —
-  [grok-4-5 report](../01-models/grok-4-5.md); hermes' trajectory-export tooling
+  [grok-4-5 report](../1-models/grok-4-5.md); hermes' trajectory-export tooling
   openly labeled for training its maker's next models —
   [hermes report](hermes-agent.md)). Falsifier: a tracked harness shipping or
   fine-tuning its own weights would end the asymmetry — the vendor-native harnesses

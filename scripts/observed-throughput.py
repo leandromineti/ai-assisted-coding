@@ -9,7 +9,7 @@ with `usage` + `duration_api_ms`) and prints per-model throughput:
 This is SESSION-level agent throughput, not decode speed: the denominator
 includes per-turn TTFT, tool-result processing, and inter-turn overhead, so it
 is a lower bound on raw generation and the honest number for planning agent-run
-wall-clock. Defined in notes/cross-cutting/metrics.md § Observed session
+wall-clock. Defined in tools/cross-cutting/metrics.md § Observed session
 throughput; recorded values in model reports cite this script — never hand-type
 the numbers (methodology rule 3's spirit applied to observed data).
 

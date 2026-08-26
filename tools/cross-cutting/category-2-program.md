@@ -91,7 +91,7 @@ framework's code effect *exceeds* the measured band at the current model tier â€
 plausibly above the ceremony threshold (exp-01's term) where task size defeats a
 single context window, a regime none of our below-threshold tasks touch; (b) a
 framework whose enforcement is deterministic rather than prose
-([OpenSpec](../04-workflow-frameworks/openspec.md)-style engines), where the
+([OpenSpec](../4-workflow-frameworks/openspec.md)-style engines), where the
 intervention is code the bundle cannot silently absorb; (c) a bundle regression â€”
 if a future harness/model pairing stops grounding unprompted, the tier-condition in
 [design-principles F2](../../design-principles.md) cuts the other way. Any of these

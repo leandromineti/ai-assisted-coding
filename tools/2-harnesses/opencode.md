@@ -293,7 +293,7 @@ They're drawing a line between "call a model" and "run an agent."
 Category 5 (ships an MCP client, plugin system, skills, subagents) and category 3 (`containers`).
 Reaches upward into category 4 too: plan mode with its own prompts (`prompt/plan-mode.txt`,
 `plan.txt`, `build-switch.txt`) is process methodology living inside a harness — the same
-absorption noted in [`../04-workflow-frameworks/index.md`](../04-workflow-frameworks/index.md).
+absorption noted in [`../4-workflow-frameworks/index.md`](../4-workflow-frameworks/index.md).
 
 ## Cost model
 

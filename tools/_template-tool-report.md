@@ -9,7 +9,7 @@ environments: [<host | worktree | container | remote-sandbox>]  # category-3 bin
 # reaches. One of: bundle (ships its own sandbox, not separately selectable — Devin) ·
 # bind (attaches to independently-distributed environments — hermes' 8 backends) ·
 # internalize (sandbox compiled into the harness binary — codex) · inhabit (detects the
-# environment it is already inside — Warp). Defined in notes/03-execution-environments/.
+# environment it is already inside — Warp). Defined in tools/3-execution-environments/.
 # Set ONLY when verified, and **leave it unset if none of the four fits** — a harness that
 # just runs on the host has no relationship to category 3, and that null case is data.
 environment_relation: <bundle | bind | internalize | inhabit>
@@ -44,7 +44,7 @@ harness_targets: [<Harness>, <Harness>]
 # workflow_features: category-4 reports only — same verified-only discipline as harness_features:
 # (omitted = not checked, false = checked and absent). A feature is a structural
 # PRESENCE-claim; whether it pays is the mechanism table's question. Definitions live
-# in the feature taxonomy — notes/cross-cutting/feature-taxonomy.md (ADR-0010), the
+# in the feature taxonomy — tools/cross-cutting/feature-taxonomy.md (ADR-0010), the
 # single source of valid keys; the generator warns on and drops keys not registered there.
 workflow_features:
   intent_pipeline: <true | false>
@@ -111,7 +111,7 @@ harness_features:
 > and grade every claim inline per methodology rule 1a: SOURCE · OBSERVED · TESTIMONY ·
 > INFERENCE (strictly ordered; only SOURCE supports architecture claims).
 >
-> Relative links below are written for a report's destination, `notes/0N-<layer>/<tool>.md`
+> Relative links below are written for a report's destination, `tools/N-<layer>/<tool>.md`
 > — they resolve once copied there, not from this file's own location.
 
 ## Drift check — YYYY-MM-DD (not a re-read; the pin is unchanged)

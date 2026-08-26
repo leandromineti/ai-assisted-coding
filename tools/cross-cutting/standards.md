@@ -71,7 +71,7 @@ vendors' rules files as consumable input is what "converging on `AGENTS.md`" loo
 the implementer's side, not the spec's. Note what it *doesn't* show: linking is a
 concatenation courtesy, so it still tests nothing about schema — the convention remains
 weak in exactly the way the open question below says.
-[`../02-harnesses/warp.md`](../02-harnesses/warp.md).
+[`../2-harnesses/warp.md`](../2-harnesses/warp.md).
 
 **Open questions**
 
@@ -107,7 +107,7 @@ Current state of the evidence:
 | MCP servers | Yes — full protocol, universal adoption | Settled |
 | Rules files | Weakly — filename convention only | Converging on `AGENTS.md` |
 | Skills | **Emerging** — `SKILL.md` consumed by ≥5 harnesses (2026-07-28 evidence below; Warp added 2026-08-11) | Converging |
-| Hooks | No — harness-specific. Best fragmentation evidence to date: ai-memory deep-dive (2026-08-18), a vendor that must consume ~15 harnesses' hook surfaces — event vocabularies differ per harness (Devin ships PostCompaction not PreCompact; Zero execs without a shell), lifecycle coverage differs (Codex and Antigravity lack a true session-end; Antigravity lacks SessionStart), and *semantics* differ for the same event (Kimi Code discards SessionStart stdout and fires PostToolUse only on success; Claude Code wants JSON stdout). Each quirk is worked around in per-harness installer code | **First movement, 2026-08-24 — and it is bridging, not standardization**: dsh executes *unmodified* Claude Code `hooks.json` (7 events, matchers, `${CLAUDE_PLUGIN_ROOT}` substitution) and Codex's snake_case dialect via bridge plugins (`packages/hooks/hooks-{claude-code,codex}`, shipped but mounted in no bundle) — the first cross-vendor consumer of a hooks format ([dsh deep-dive](../02-harnesses/dsh.md)). Adoption of one vendor's format by a rival is how `AGENTS.md` started; watch whether a second consumer follows |
+| Hooks | No — harness-specific. Best fragmentation evidence to date: ai-memory deep-dive (2026-08-18), a vendor that must consume ~15 harnesses' hook surfaces — event vocabularies differ per harness (Devin ships PostCompaction not PreCompact; Zero execs without a shell), lifecycle coverage differs (Codex and Antigravity lack a true session-end; Antigravity lacks SessionStart), and *semantics* differ for the same event (Kimi Code discards SessionStart stdout and fires PostToolUse only on success; Claude Code wants JSON stdout). Each quirk is worked around in per-harness installer code | **First movement, 2026-08-24 — and it is bridging, not standardization**: dsh executes *unmodified* Claude Code `hooks.json` (7 events, matchers, `${CLAUDE_PLUGIN_ROOT}` substitution) and Codex's snake_case dialect via bridge plugins (`packages/hooks/hooks-{claude-code,codex}`, shipped but mounted in no bundle) — the first cross-vendor consumer of a hooks format ([dsh deep-dive](../2-harnesses/dsh.md)). Adoption of one vendor's format by a rival is how `AGENTS.md` started; watch whether a second consumer follows |
 | Subagent definitions | No — harness-specific format, universal pattern | Watch |
 
 **Memory watch note (row moved 2026-08-22, ADR-0020 — memory is now category 5, not a
@@ -119,7 +119,7 @@ paid per-vendor in code (~7.8k lines of per-harness installer in ai-memory alone
 the only cross-vendor data flow found in four reads is one-way competitive import
 (mem0's migration script) — an acquisition funnel, not interchange. **A
 memory-interchange convention would be the next MCP-shaped event** — watched from here,
-reported in [category 5](../05-memory/index.md).
+reported in [category 5](../5-memory/index.md).
 
 **Skills evidence (2026-07-28, from spec-kit's integration registry @ `655a3cb`):** a
 third party that must *install into* every harness is a good witness for what harnesses
@@ -129,7 +129,7 @@ integration, targets Hermes at `~/.hermes/skills`, and handles a shared `.agents
 directory that multiple integrations resolve to. Like rules files, this is
 convention-level (a filename + frontmatter shape, no schema) — but it's no longer
 Claude-Code-shaped. See
-[`../04-workflow-frameworks/spec-kit.md`](../04-workflow-frameworks/spec-kit.md).
+[`../4-workflow-frameworks/spec-kit.md`](../4-workflow-frameworks/spec-kit.md).
 
 *Installer-side evidence (2026-08-16, OpenSpec drift check @ `d578896`):* OpenSpec moved
 **Codex's** skills directory from `.codex` to **`.agents`**, demoting `.codex` to
@@ -139,13 +139,13 @@ into the shared `.agents/` tree, and calling that location canonical, is the con
 happening in the direction that matters: not a new tool adopting the convention, but an
 existing vendor-specific path being retired in favour of it. Watch whether `.codex` is
 eventually dropped rather than kept as legacy — that is when the convention has actually
-won. [`../04-workflow-frameworks/openspec.md`](../04-workflow-frameworks/openspec.md).
+won. [`../4-workflow-frameworks/openspec.md`](../4-workflow-frameworks/openspec.md).
 
 *Direct-consumer evidence (2026-08-11):* Warp implements the format natively —
 `crates/ai/src/skills/` parses `SKILL.md`, resolves scoped skill directories with a
 `WARP_SKILL_DIRS` override, and ships 13 bundled skills of its own. That's a first-party
 implementation by a non-Anthropic vendor, which is a stronger witness than a third-party
-installer targeting it. [`../02-harnesses/warp.md`](../02-harnesses/warp.md).
+installer targeting it. [`../2-harnesses/warp.md`](../2-harnesses/warp.md).
 
 Two and a half of five have moved (the half being skills, at 2026-07-28). That's the
 number to re-check in six months: if hooks are still harness-specific and skills stall at

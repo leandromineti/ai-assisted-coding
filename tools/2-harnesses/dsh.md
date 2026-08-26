@@ -220,7 +220,7 @@ policy vocabulary — network is never confined**, stated in the README's limita
   delegated children inherit only the parent's explicit sandbox override and are
   **pinned to `approval: 'never'`** — a decision reversing an earlier shipped design
   after observing invisible blocked children, recorded as a dated in-repo design note
-  (`.agents/notes/implemented/feature/2026-08-10-subagent-approval-pinned-never.md`) —
+  (`.agents/tools/implemented/feature/2026-08-10-subagent-approval-pinned-never.md`) —
   the publish-your-own-negative-results epistemics this repo credits. At *foreign*
   harness boundaries the parent fixes the child's native permission mode as deployment
   config (codex default `never`, claude-code default `dontAsk`), with no model-visible

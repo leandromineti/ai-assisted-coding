@@ -109,7 +109,7 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   sentence, so `skill_candidates` was always empty and `agent_candidates`, filtered from
   it, always empty too — the mechanism did not fire *at all*, and it took an upstream bug
   fix twelve days later to surface it
-  ([`notes/06-extensions/ecc.md`](notes/06-extensions/ecc.md)).
+  ([`tools/6-extensions/ecc.md`](tools/6-extensions/ecc.md)).
   Two lessons, both cheap: **a pipeline is only as traced as its least-interesting
   stage** — steps 1–3 were read at the call sites and the last step was skimmed because
   by then the design was convincing; and **"clusters"/"promotes"/"selects" are verbs that
@@ -173,7 +173,7 @@ Two sub-rules, both scarred in experiment 01:
   and that the *orchestrator's* cache reads, invisible to notifications, dominated
   total spend. Session + agent transcripts carry exact `usage` fields; parse those.
   (Same failure family as `stats-cache.json` inflating cache reads —
-  `notes/cross-cutting/index.md`.) Attribute usage **per model**: exp-02's Run A ledger
+  `tools/cross-cutting/index.md`.) Attribute usage **per model**: exp-02's Run A ledger
   showed an auxiliary `claude-haiku-4-5` call the protocol's "sole model" wording hadn't
   anticipated — immaterial at $0.0008, but you only know that by looking.
 - **5d. Comparison instruments are proven to discriminate, not just to fail closed.**

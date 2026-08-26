@@ -77,7 +77,7 @@ README's own guidance is "start with the workflow you need, not the full catalog
 workflow content is opt-in catalog items, and the multi-* orchestration commands
 require an external runtime (`ccg-workflow`). A config pack at scale with a real
 learning runtime, not an encoded methodology. Report now at
-[`../06-extensions/ecc.md`](../06-extensions/ecc.md). What it
+[`../6-extensions/ecc.md`](../6-extensions/ecc.md). What it
 contributed to *this* category's questions: verification gates can arrive as installable
 Stop hooks (a category-6 delivery vehicle for the mechanism exp-01 credited to category 4),
 and its `ecc2` Rust control plane repeats the conclusion-7 escape-hatch pattern from
@@ -153,7 +153,7 @@ First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-pla
 
 The category now carries the category-4 slice of the repo's **feature taxonomy** —
 `workflow_features:` in report frontmatter, with every key defined once in
-[`notes/cross-cutting/feature-taxonomy.md`](../cross-cutting/feature-taxonomy.md)
+[`tools/cross-cutting/feature-taxonomy.md`](../cross-cutting/feature-taxonomy.md)
 ([ADR-0010](../../adrs/0010-two-taxonomies.md)), rendered in
 [`comparisons/features.md`](../../comparisons/features.md). The division of
 labor with the mechanism table below: a **feature** is a presence-claim (the machinery
@@ -232,7 +232,7 @@ spec-kit" as brands was the wrong comparison — this table is the real one.
   frameworks themselves never reach; the unabsorbed remainder is exactly the SDD spine
   (intent pipeline, format gates, workflow-scoped state). The line, on current evidence:
   harnesses absorb *mechanisms*, methodology stays here. →
-  [category-2 index, "What category 2 has absorbed"](../02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses)
+  [category-2 index, "What category 2 has absorbed"](../2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses)
 - ~~Neither is easy to A/B test, since you can't run the same task twice cleanly. What
   would a fair comparison even look like?~~ **Working answer 2026-07-28:** preregister
   the protocol and falsification criteria, run the contaminated arm second with fresh

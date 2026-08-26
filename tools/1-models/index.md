@@ -94,7 +94,7 @@ calibration verdict, README conclusion 10.
   - It **fixes the harness and varies the model** — the closest thing found so far to the
     model-isolating benchmark the open question below asks for. (And the fixed harness is
     opencode, whose per-model prompt dispatch is documented in
-    [`../02-harnesses/opencode.md`](../02-harnesses/opencode.md) — so "same harness" still
+    [`../2-harnesses/opencode.md`](../2-harnesses/opencode.md) — so "same harness" still
     means each model gets its own system prompt. True isolation is harder than it looks.)
   - Its headline finding — **structural completeness does not predict runtime
     correctness**: models produce complete-looking apps whose tests mock hallucinated

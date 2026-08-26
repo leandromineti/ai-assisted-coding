@@ -73,7 +73,7 @@ layer (47 platform codes), achieved by refusing translation entirely (byte-ident
 Agent Skills to every target). Its Valid=2 also deserves the ADR-0011 asterisk: every
 framework-side gate is prose; the engine-graded gates live in the separate bmad-loop
 orchestrator, outside the framework the paper scored —
-[report](../notes/04-workflow-frameworks/bmad-method.md).)*
+[report](../tools/4-workflow-frameworks/bmad-method.md).)*
 
 ## What it means for this repo
 
@@ -97,7 +97,7 @@ whereas exp-01 ran **gsd-core**, the 2026-05-22 community fork. Different artifa
 fork may have added gates the original lacked. The paper does note "a maintenance move to a
 new organization" and GSD's "maintenance volatility," but its May 2026 snapshot still lists
 the original repo as active, where our
-[`gsd-core` report](../notes/04-workflow-frameworks/gsd-core.md) documents the archival and
+[`gsd-core` report](../tools/4-workflow-frameworks/gsd-core.md) documents the archival and
 its cause. Both accounts are dated; ours is more specific.
 
 **3. Our niche is named as a research gap.** §7's process-oriented-benchmark agenda asks for

@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-22  # bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-26  # bumped 2026-08-26: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -50,33 +50,33 @@ terms:
           ADR-0009's candidates ledger (candidate → stub → survey → deep-dive) — a
           graded-progression scale, unrelated to the taxonomy's top-level divisions.
         known_sites:
-          - "notes/candidates.md:5"
-          - "notes/04-workflow-frameworks/index.md:118"
+          - "tools/candidates.md:5"
+          - "tools/4-workflow-frameworks/index.md:118"
       - compound: "enforcement ladder"
         canonical_source: >-
           ADR-0011's graded gate enforcement scale (engine/hook/script/prose) —
           unrelated to the taxonomy's top-level divisions.
         known_sites:
-          - "notes/04-workflow-frameworks/gsd-core.md:196"
-          - "notes/04-workflow-frameworks/gsd-core.md:359"
-          - "notes/04-workflow-frameworks/gsd-core.md:376"
-          - "notes/04-workflow-frameworks/gsd-core.md:387"
-          - "notes/04-workflow-frameworks/gsd-core.md:547"
-          - "notes/04-workflow-frameworks/bmad-method.md:105"
-          - "notes/cross-cutting/feature-taxonomy.md:148"
-          - "notes/05-memory/mem0.md:132"
+          - "tools/4-workflow-frameworks/gsd-core.md:196"
+          - "tools/4-workflow-frameworks/gsd-core.md:359"
+          - "tools/4-workflow-frameworks/gsd-core.md:376"
+          - "tools/4-workflow-frameworks/gsd-core.md:387"
+          - "tools/4-workflow-frameworks/gsd-core.md:547"
+          - "tools/4-workflow-frameworks/bmad-method.md:105"
+          - "tools/cross-cutting/feature-taxonomy.md:148"
+          - "tools/5-memory/mem0.md:132"
       - compound: "capability ladder"
         canonical_source: >-
           Model reasoning-tier vocabulary (Anthropic's capability tiers) — unrelated
           to the taxonomy's top-level divisions.
         known_sites:
-          - "notes/01-models/gpt-5-6-sol.md:30"
+          - "tools/1-models/gpt-5-6-sol.md:30"
       - compound: "effort ladder"
         canonical_source: >-
           Model reasoning-tier vocabulary (effort levels none→max) — unrelated to
           the taxonomy's top-level divisions.
         known_sites:
-          - "notes/01-models/gpt-5-6-sol.md:60"
+          - "tools/1-models/gpt-5-6-sol.md:60"
       - compound: "egress layer"
         canonical_source: >-
           Networking vocabulary — the point where traffic actually leaves the
@@ -115,13 +115,13 @@ terms:
           than split into two treatments. Owner decision, phase-3 wave-1 checkpoint
           (2026-08-19).
         known_sites:
-          - "notes/05-memory/mem0.md:40"
-          - "notes/05-memory/memmachine.md:24"
-          - "notes/05-memory/memmachine.md:32"
-          - "notes/05-memory/everos.md:34"
-          - "notes/05-memory/cognee.md:41"
-          - "notes/05-memory/cognee.md:131"
-          - "notes/05-memory/index.md:92"
+          - "tools/5-memory/mem0.md:40"
+          - "tools/5-memory/memmachine.md:24"
+          - "tools/5-memory/memmachine.md:32"
+          - "tools/5-memory/everos.md:34"
+          - "tools/5-memory/cognee.md:41"
+          - "tools/5-memory/cognee.md:131"
+          - "tools/5-memory/index.md:92"
         near_miss_note: >-
           Sharpened 2026-08-22 (ADR-0020): category 5 is now NAMED Memory, so "the
           memory layer" is no longer merely adjacent to a division name — it is a
@@ -141,14 +141,14 @@ terms:
           taxonomy's top-level divisions. Same phase-3 wave-1 owner decision as
           "memory layer".
         known_sites:
-          - "notes/02-harnesses/opencode.md:337"
+          - "tools/2-harnesses/opencode.md:337"
       - compound: "system-prompt layer"
         canonical_source: >-
           Software-architecture vocabulary (where in an LLM request a wrapper
           instruction is injected) — unrelated to the taxonomy's top-level
           divisions. Same phase-3 wave-1 owner decision as "memory layer".
         known_sites:
-          - "notes/05-memory/memos.md:99"
+          - "tools/5-memory/memos.md:99"
       - compound: "synthesis layer"
         canonical_source: >-
           Software-architecture vocabulary (design-principles.md's own synthesis
@@ -183,10 +183,10 @@ terms:
         longer word, so a `deny_list` entry would not catch this inflection anyway
         without a dedicated pattern — and adding one would flag three surviving
         in-repo uses that are non-taxonomy senses, not the taxonomy-division sense
-        this decision replaces: notes/02-harnesses/codex.md:234 ("The permission
-        architecture is three-layered"), notes/05-memory/memos.md:95
+        this decision replaces: tools/2-harnesses/codex.md:234 ("The permission
+        architecture is three-layered"), tools/5-memory/memos.md:95
         ("The trust boundary is real and two-layered"), and
-        notes/04-workflow-frameworks/spec-kit.md:226 ("layered on top", ordinary
+        tools/4-workflow-frameworks/spec-kit.md:226 ("layered on top", ordinary
         English). Denying the inflection would guarantee false positives at all
         three sites — the same reasoning already recorded above for the bare `kind`
         token in the `types` term. The one genuine taxonomy-sense use of this
@@ -214,7 +214,7 @@ terms:
         `kind:` (with the colon) is banned.
       - >-
         The colon-qualified form `kind:` also has a known false positive:
-        `notes/05-memory/ai-memory.md:90` reads "Table stakes in the
+        `tools/5-memory/ai-memory.md:90` reads "Table stakes in the
         kind: store + retrieve + MCP." — ordinary prose using "kind" followed by a
         list-introducing colon, not the report frontmatter key, and not inside
         backticks. Phase 2's lint must not flag this exact site; either scope the
@@ -354,16 +354,16 @@ schema_renames:
     new: category
     scope:
       - "report frontmatter key `layer:` (~38 tool reports)"
-      - "notes/_template-tool-report.md"
-      - "notes/01-models/_template-model-report.md"
+      - "tools/_template-tool-report.md"
+      - "tools/1-models/_template-model-report.md"
       - "scripts/build-tool-index.py"
     note: >-
-      Values 1-5 are unchanged — purely a key rename (D-03). 40 files under notes/
+      Values 1-5 are unchanged — purely a key rename (D-03). 40 files under tools/
       carry a `layer:` frontmatter key (ADR-0015 Sequencing), matching
-      `grep -rl "^layer:" notes/ | wc -l`; the 40th is
-      notes/01-models/_template-model-report.md, easy to miss because it is not
+      `grep -rl "^layer:" tools/ | wc -l`; the 40th is
+      tools/1-models/_template-model-report.md, easy to miss because it is not
       named in ADR-0015's Sequencing prose (which only mentions the singular
-      notes/_template-tool-report.md). This template also carries a
+      tools/_template-tool-report.md). This template also carries a
       `## The layer-1 axes` heading, which renames alongside its `layer:` key.
     executes_in: phase-3
     # Dormancy switch (Phase 2 decision). `pending` = the OLD key is still the current
@@ -377,8 +377,8 @@ schema_renames:
     new: harness_features
     scope:
       - "report frontmatter block `features:` (7 category-2 + 5 category-5 reports)"
-      - "notes/_template-tool-report.md"
-      - "notes/cross-cutting/feature-taxonomy.md (13 `block: features` registry entries)"
+      - "tools/_template-tool-report.md"
+      - "tools/cross-cutting/feature-taxonomy.md (13 `block: features` registry entries)"
       - "scripts/build-tool-index.py"
     note: >-
       ADR-0018: the original ADR-0010 block takes the <category>_features naming
@@ -394,7 +394,7 @@ schema_renames:
     new: type
     scope:
       - "report frontmatter key `kind:` in category-5 and category-6 reports (5-only until the 2026-08-22 split, ADR-0020)"
-      - "notes/_template-tool-report.md"
+      - "tools/_template-tool-report.md"
       - "scripts/build-tool-index.py"
     note: >-
       Sub-classification values are unchanged — purely a key rename

@@ -88,7 +88,7 @@ fails on the source:
 
 So the stress-test's live case resolves: **a config pack at scale, with a learning
 runtime — not a methodology.** The report moved shelves accordingly (this file was
-`notes/04-workflow-frameworks/ecc.md` as a stub).
+`tools/4-workflow-frameworks/ecc.md` as a stub).
 
 ## The distinguishing bet
 

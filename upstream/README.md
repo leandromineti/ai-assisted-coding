@@ -29,11 +29,11 @@ informative than the design itself.
 
 ## Where the analysis goes
 
-**Not here.** The clone is the raw material; the writing lives in `notes/`:
+**Not here.** The clone is the raw material; the writing lives in `tools/`:
 
 | Artifact | Path |
 |---|---|
-| Tool report — one per tool | `notes/0N-<layer>/<tool>.md`, from [`notes/_template-tool-report.md`](../notes/_template-tool-report.md) |
+| Tool report — one per tool | `tools/N-<layer>/<tool>.md`, from [`tools/_template-tool-report.md`](../tools/_template-tool-report.md) |
 | Flat cross-layer index | [`comparisons/tools.md`](../comparisons/tools.md) — **generated**, never hand-edited |
 
 The index deliberately does **not** live in this directory: it has to cover tools that have
@@ -45,7 +45,7 @@ Workflow for a new tool:
 
 ```sh
 ./scripts/repo-facts.sh <name>        # verified frontmatter — never hand-type a SHA
-# write notes/0N-<layer>/<name>.md from the template
+# write tools/N-<layer>/<name>.md from the template
 python3 scripts/build-tool-index.py   # regenerate comparisons/tools.md
 ```
 
