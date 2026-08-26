@@ -323,7 +323,7 @@ the eight backends exist specifically to solve it.
    background review fork, idle curator that never deletes (only archives), tool
    whitelists on the fork. Expected marketing; found engineering. What's *absent* is any
    measurement that the loop improves outcomes.
-3. **A fourth position in the per-model-prompt split** (index.md three-way). Hermes
+3. **A fourth position in the per-model-prompt split** (README.md three-way). Hermes
    keeps ONE shared prompt but appends small per-family appendices: ~4.4KB total —
    tool-use enforcement for a listed model set (`gpt, codex, gemini, gemma, grok, glm,
    qwen, deepseek`), a 2,694-char OpenAI/Grok execution-discipline block, an 860-char

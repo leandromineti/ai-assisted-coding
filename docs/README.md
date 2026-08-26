@@ -114,7 +114,7 @@ graded `turn_end_gates` matrix column (ADR-0012) and a probe of all seven
 feature-bearing harnesses found 3✓ / 3✗ / 1 undecidable, with hermes still the only
 always-on native policy; codex and claude-code carry it as hook surfaces, empty unless
 the user configures them. Full table:
-[category-2 index, "What category 2 has absorbed"](../tools/2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
+[category-2 index, "What category 2 has absorbed"](../tools/2-harnesses/README.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 
 **Implication for experiment 03 (recorded before its design):** if harnesses ship
 verification gates natively, the category-4 margin can migrate down the stack. The

@@ -466,7 +466,7 @@ anything below #3857.
 ## Bleed
 
 Reaches **down into category 2** via `gsd-pi`, its own standalone CLI, and into **category 6** via
-`gsd-browser`. Documented in [`index.md`](index.md) — it's the clearest case in the repo of a
+`gsd-browser`. Documented in [`README.md`](README.md) — it's the clearest case in the repo of a
 workflow framework growing into the runtime it was meant to sit on top of.
 
 ## Cost model

@@ -79,7 +79,7 @@ weak in exactly the way the open question below says.
   specification at all — which is either elegant or a sign the category is too loose.
 - Rules files are the cheapest context intervention and the least measured anywhere. What
   is the marginal value of a longer one, and where does it turn negative? (Candidate first
-  experiment — see [`index.md`](index.md).)
+  experiment — see [`README.md`](README.md).)
 
 ---
 
@@ -119,7 +119,7 @@ paid per-vendor in code (~7.8k lines of per-harness installer in ai-memory alone
 the only cross-vendor data flow found in four reads is one-way competitive import
 (mem0's migration script) — an acquisition funnel, not interchange. **A
 memory-interchange convention would be the next MCP-shaped event** — watched from here,
-reported in [category 5](../tools/5-memory/index.md).
+reported in [category 5](../tools/5-memory/README.md).
 
 **Skills evidence (2026-07-28, from spec-kit's integration registry @ `655a3cb`):** a
 third party that must *install into* every harness is a good witness for what harnesses

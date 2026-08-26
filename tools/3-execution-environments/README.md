@@ -57,7 +57,7 @@ the model was broken.
 ## The component vocabulary
 
 `added: 2026-08-20` *(from the extensions-bucket boundary discussion — see the
-[discussion-state note](../5-memory/index.md) — via the question "what
+[discussion-state note](../5-memory/README.md) — via the question "what
 is the default environment?"; tested against this index's seed inventory and the codex,
 Warp, and E2B deep-dives before recording)*
 

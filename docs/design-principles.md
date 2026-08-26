@@ -135,7 +135,7 @@ the delta** to history — the prefix stays byte-stable *and* the model sees fre
 paid for in machinery and history growth ([codex](../tools/2-harnesses/codex.md)). The
 durable core of the principle is *append-only prefix discipline*; freshness-vs-staleness
 is an implementation choice on top of it. Also recorded as differentiation axis 6 in
-[`tools/2-harnesses/index.md`](../tools/2-harnesses/index.md).
+[`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md).
 *Confronted 2026-08-26 — both reads CONFIRM append-only prefix discipline, pi most
 strongly.* gemini-cli documents a tiered cache layout (volatile memory kept out of the
 system-instruction prefix; JIT subdirectory context appended to tool output). pi is the
@@ -186,7 +186,7 @@ the counter-motion to this principle. The tracked harnesses split on it: codex a
 turn-end gates as a hook SURFACE (waist-shaped — the mechanism is an extension point),
 hermes as always-on loop POLICY (core growth). Whether absorbed mechanisms arrive as
 surfaces or as core code may be H8's real test — see
-[the absorption table](../tools/2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
+[the absorption table](../tools/2-harnesses/README.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
 *Confronted 2026-08-26 (pi) — the strongest instance in the set, and it exposes H8's
 uncomfortable corollary.* pi takes the narrow waist furthest of anything read: four
 default tools, no budget, no loop detection, a stock loop with **zero active
@@ -217,7 +217,7 @@ but isolation available to buy it with.
 
 **E2. Isolation without fidelity produces category-2-looking failures — engineer the
 fidelity back explicitly.** *(convergent)* The worktree/gitignore trap
-([`tools/3-execution-environments/`](../tools/3-execution-environments/index.md)):
+([`tools/3-execution-environments/`](../tools/3-execution-environments/README.md)):
 isolation that hides `node_modules`/`.env`/plans breaks agents in ways misread as
 harness bugs. hermes engineers around the same class from the other side — file-sync
 plus a file-based RPC transport so programmatic tool calling still works *inside*
@@ -231,7 +231,7 @@ eight swappable backends), **internalize** (codex compiles Seatbelt/Landlock/bwr
 the binary), **inhabit** (Warp detects the container it is already inside for workload
 identity). opencode takes the fifth position: **none of them** — it runs on the host and
 does nothing about isolation, which is a choice rather than an omission. Defined in
-[`tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md),
+[`tools/3-execution-environments/README.md`](../tools/3-execution-environments/README.md),
 rendered in [`comparisons/environments.md`](../comparisons/environments.md).
 *Confronted 2026-08-26 (pi) — a second abstention instance, which makes the fifth
 position convergent.* After opencode's "none of the four verbs", pi is the second
@@ -421,7 +421,7 @@ and the *content* just-in-time.
 reach.** *(registered bet, 2026-08-22 — falsifiable predictions, not yet a principle;
 re-check rides the ~2027-01 standards re-check; registered per
 [ADR-0019](../adrs/0019-category-5-coverage-strata.md) from the
-[bucket boundary discussion](../tools/5-memory/index.md))* Harnesses absorb
+[bucket boundary discussion](../tools/5-memory/README.md))* Harnesses absorb
 *mechanisms* (gates, memory — both now verified native in multiple harnesses), *bundle*
 content (Warp ships 13 skills; the loader was always category 2), and never absorb
 reach. Independent mechanism extensions survive absorption on the one bet a single
@@ -459,7 +459,7 @@ Recorded as open decisions, not principles — with the positions documented:
 |---|---|
 | Per-model prompting | five incompatible answers, none eval-backed (H7) |
 | Stuck-agent resolution | human-escalate (opencode) vs in-band (hermes) (H2) |
-| Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files vs — fourth position, **source-verified 2026-08-18** (memory-type arc) — **agent-written but independently stored**. The arc's finding: independent storage doesn't pick one authorship, it *stacks* them — ai-memory's wiki is simultaneously rule-written (session pages), agent-written with auto-approval (`_rules/` via its scheduler, `require_approval=false` default), and user-edited (Obsidian/vim watcher reconciles); memos' policy DB is fully machine-authored with feedback-gated lifecycles *(confirmed in source at the 2026-08-19 deep-dive — and default-unmounted: lightweight mode ships the whole authoring cascade off)*; cognee splits the decision *across repos* (agent-invoked writes in the MCP server, automation added by the plugin). The open question sharpened: not who writes memory, but who approves it — and as of 2026-08-19 that axis is a matrix column: `memory_revision` (auto: ai-memory, memos · caller-only: mem0, whose deep-dive found no auto-supersession path at all — the linking mechanism is dead code). [Bucket index](../tools/5-memory/index.md) |
+| Memory authorship | autonomous agent-written **shipped on** (hermes) vs **built, stabilized, default-off** (codex, 2026-07-30) vs user-curated files vs — fourth position, **source-verified 2026-08-18** (memory-type arc) — **agent-written but independently stored**. The arc's finding: independent storage doesn't pick one authorship, it *stacks* them — ai-memory's wiki is simultaneously rule-written (session pages), agent-written with auto-approval (`_rules/` via its scheduler, `require_approval=false` default), and user-edited (Obsidian/vim watcher reconciles); memos' policy DB is fully machine-authored with feedback-gated lifecycles *(confirmed in source at the 2026-08-19 deep-dive — and default-unmounted: lightweight mode ships the whole authoring cascade off)*; cognee splits the decision *across repos* (agent-invoked writes in the MCP server, automation added by the plugin). The open question sharpened: not who writes memory, but who approves it — and as of 2026-08-19 that axis is a matrix column: `memory_revision` (auto: ai-memory, memos · caller-only: mem0, whose deep-dive found no auto-supersession path at all — the linking mechanism is dead code). [Bucket index](../tools/5-memory/README.md) |
 | Session-data posture | harness as training-data instrument (hermes, Cursor) vs stores-nothing (opencode) — taxonomy boundary-rule note |
 | Where verification lives | category 4 gates (GSD), category 2 native (hermes `verification_stop`; codex stop hooks that can veto turn end), external CI — cross-cutting note. exp-03 (2026-08-18) measured the category-4 pole: an instructed gate catches crash-visible failures only, and at Sonnet tier the bundle grounds/verifies unprompted — the live question is now category-2-native vs external CI (issue #17) |
 

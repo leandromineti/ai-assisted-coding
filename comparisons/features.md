@@ -77,7 +77,7 @@ The category-4 slice of the feature taxonomy — `workflow_features:` frontmatte
 defined in `docs/feature-taxonomy.md`. Structural
 presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
-mechanism table's job, tools/4-workflow-frameworks/index.md).
+mechanism table's job, tools/4-workflow-frameworks/README.md).
 
 | Tool | license | intent pipeline | deterministic engine | format gates | measured gates | process gates | context isolation | parallel orchestration | state store | retrospectives |
 |---|---|---|---|---|---|---|---|---|---|---|

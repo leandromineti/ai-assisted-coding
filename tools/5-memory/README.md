@@ -7,7 +7,7 @@ by hooks/MCP during a session, consolidated between sessions, injected back at t
 session start, on any harness. A full category since the 2026-08-22 split
 ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)); born 2026-08-18
 as the extensions bucket's `memory` type (the bucket is now
-[category 6](../6-extensions/index.md)). Reports keep `type: memory` in frontmatter as
+[category 6](../6-extensions/README.md)). Reports keep `type: memory` in frontmatter as
 residual data; the category's feature vocabulary is the 13-key `memory_features` block
 ([ADR-0013](../../adrs/0013-memory-features-block.md)) with its
 [generated matrix](../../comparisons/features.md). Roster count (2026-08-22): **eight**

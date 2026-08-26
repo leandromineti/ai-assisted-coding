@@ -161,8 +161,8 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
         rel = path.relative_to(root).as_posix()
         if not rel.startswith("tools/"):
             continue
-        if path.name.startswith("_") or path.name == "index.md":
-            continue  # templates and layer indexes are not reports (mirrors collect())
+        if path.name.startswith("_") or path.name == "README.md":
+            continue  # templates and category front doors are not reports (mirrors collect())
         fm = read_frontmatter(path)
         if not fm:
             continue
@@ -513,7 +513,7 @@ def check_reference_formats(taxo: dict, root: Path = ROOT) -> int:
 
     Table-index matching is restricted to markdown TABLE ROWS (a line that, once
     stripped, starts with `|`) — the only in-repo occurrences of the "N <sep> Name"
-    shape are table cells (`| 2 · Harnesses |`); layer index.md files' H1 titles use
+    shape are table cells (`| 2 · Harnesses |`); category README.md files' H1 titles use
     the same digit-dash-name shape for an unrelated purpose (e.g. "# Layer 5 —
     Execution environments") and must not be double-counted as a table-index
     violation — they are already flagged by the deny-list check for the word "Layer".

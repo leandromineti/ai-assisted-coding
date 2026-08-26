@@ -344,7 +344,7 @@ spec-kit **built one and left it disconnected from its own methodology**.
 ## Mechanism profile
 
 Against the mechanism classes from experiment 01 (see
-[`index.md`](index.md#mechanisms--the-unit-of-value)); source-read assessment, not a run:
+[`README.md`](README.md#mechanisms--the-unit-of-value)); source-read assessment, not a run:
 
 | Mechanism class | spec-kit's position |
 |---|---|

@@ -81,7 +81,7 @@ observable surface and 1b covering the route. Minting model components would cla
 tracing access the repo does not have.
 
 How you actually reach the weights is a type of its own (**1b — model access**, four
-routes, in [the category index](../tools/1-models/index.md)): the same model by a
+routes, in [the category index](../tools/1-models/README.md)): the same model by a
 different route is a different product — it silently explains a lot of "why did it get
 worse".
 
@@ -115,7 +115,7 @@ sorting frame for the `harness_features` vocabulary:
 2. **Context assembly** — *what reaches the prompt, who wrote it, and where does the
    agent's own output land?* Rules-file and skill injection, memory write-back,
    compaction, cache discipline. Anchor: the hermes cache-tension finding
-   ([category index](../tools/2-harnesses/index.md)), which asks this component's
+   ([category index](../tools/2-harnesses/README.md)), which asks this component's
    question verbatim. This is the harness sophistication the lead-in calls the
    contested ground of 2026, and what the `deep-dive` depth is defined as tracing.
 3. **The permission gate** — *what may the agent attempt without a human, and can the
@@ -178,7 +178,7 @@ The **third fundamental of the core triad**.
 
 Easy to overlook until it bites. Isolation that hides the files the agent needs is a
 category-3 problem routinely misread as a category-2 bug — the worktree/gitignore trap written
-up in [`tools/3-execution-environments/`](../tools/3-execution-environments/index.md) is
+up in [`tools/3-execution-environments/`](../tools/3-execution-environments/README.md) is
 the case that convinced me this category is real.
 
 **Scope note.** This category is in scope only through the lens of agents. Most of its
@@ -200,7 +200,7 @@ environment is open source?)
 
 **The components** — an execution environment is **host · principal · working
 directory** — are defined once in
-[`tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md),
+[`tools/3-execution-environments/README.md`](../tools/3-execution-environments/README.md),
 where every seed is classified by which components it changes against the default
 {your machine, you, cwd}. The three questions above are the lens over them: blast
 radius = host × principal, fidelity = host toolchain + cwd completeness, parallelism =
@@ -246,7 +246,7 @@ clean partition: `intent_pipeline` sorts to functions 1–2, the gate keys to 4 
 boundary, `retrospectives` beside 3 — but `context_isolation`,
 `parallel_orchestration`, and `state_store` sit on an **execution substrate outside
 the four functions**, and that substrate is exactly what harnesses absorb natively
-(conclusion 8; the [category-2 absorption table](../tools/2-harnesses/index.md)), while
+(conclusion 8; the [category-2 absorption table](../tools/2-harnesses/README.md)), while
 what stays unabsorbed is the function-1/2 artifact spine. The decomposition predicts
 the absorption boundary: frameworks own the translation; the substrate is borrowed
 ground.
@@ -292,7 +292,7 @@ carrying its own trust sub-question:
    (`write_admission`), and the write-side trust boundary. Anchor: mem0's plugin
    *blocking the harness's native memory writes* to redirect them — the displacement
    finding (conclusion 8's counter-current;
-   [category index](../tools/5-memory/index.md)).
+   [category index](../tools/5-memory/README.md)).
 2. **Consolidation** — *what happens to it between sessions, and does that run by
    default?* The store wager (files-git / vector / rows+vector / graph+vector+rows —
    the identity axis), tiers, decay, revision authority. Anchor: memos'
@@ -498,13 +498,13 @@ taxonomy needs revision — not the case.
 
 | Category | Index |
 |-------|-------|
-| 1 · Models | [`tools/1-models/index.md`](../tools/1-models/index.md) |
-| 2 · Harnesses | [`tools/2-harnesses/index.md`](../tools/2-harnesses/index.md) |
-| 3 · Execution environments | [`tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md) |
-| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/index.md`](../tools/4-workflow-frameworks/index.md) |
-| 5 · Memory | [`tools/5-memory/index.md`](../tools/5-memory/index.md) |
-| 6 · Extensions (bucket) | [`tools/6-extensions/index.md`](../tools/6-extensions/index.md) |
-| ✕ Cross-cutting (incl. standards) | [`docs/index.md`](index.md) |
+| 1 · Models | [`tools/1-models/README.md`](../tools/1-models/README.md) |
+| 2 · Harnesses | [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) |
+| 3 · Execution environments | [`tools/3-execution-environments/README.md`](../tools/3-execution-environments/README.md) |
+| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/README.md`](../tools/4-workflow-frameworks/README.md) |
+| 5 · Memory | [`tools/5-memory/README.md`](../tools/5-memory/README.md) |
+| 6 · Extensions (bucket) | [`tools/6-extensions/README.md`](../tools/6-extensions/README.md) |
+| ✕ Cross-cutting (incl. standards) | [`docs/README.md`](README.md) |
 
 Per-tool reports use [`tools/_template-tool-report.md`](../tools/_template-tool-report.md) and
 are indexed flat, across categories, in [`comparisons/tools.md`](../comparisons/tools.md).

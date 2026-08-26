@@ -92,7 +92,7 @@ maintain. The claim underneath it is that model-agnosticism is achievable *but n
 and that pretending one prompt fits all is where portable harnesses actually lose.
 
 It also quietly contradicts the mid-2026 consensus recorded in
-[`index.md`](index.md) that "the models have converged." A team maintaining nine prompts
+[`README.md`](README.md) that "the models have converged." A team maintaining nine prompts
 does not believe that — and the prompts themselves settle how seriously to take it.
 
 ### How far apart are they? (measured 2026-07-28, commit `017a5977d`)
@@ -137,7 +137,7 @@ different theories of how to drive an agent, not one theory in two dialects.
 a model-agnostic harness, with every incentive to write one prompt, concluded it needed
 nine, one of which must forbid parallel tool calls outright. But it is one side of a
 live disagreement: cline *dismantled* exactly this architecture, and continue never
-built it (see the three-way comparison in [`index.md`](index.md)). Practitioner behavior
+built it (see the three-way comparison in [`README.md`](README.md)). Practitioner behavior
 is split; nobody's position is backed by a published eval.
 
 ## Main features
@@ -293,7 +293,7 @@ They're drawing a line between "call a model" and "run an agent."
 Category 5 (ships an MCP client, plugin system, skills, subagents) and category 3 (`containers`).
 Reaches upward into category 4 too: plan mode with its own prompts (`prompt/plan-mode.txt`,
 `plan.txt`, `build-switch.txt`) is process methodology living inside a harness — the same
-absorption noted in [`../4-workflow-frameworks/index.md`](../4-workflow-frameworks/index.md).
+absorption noted in [`../4-workflow-frameworks/README.md`](../4-workflow-frameworks/README.md).
 
 ## Cost model
 

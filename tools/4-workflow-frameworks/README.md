@@ -232,7 +232,7 @@ spec-kit" as brands was the wrong comparison — this table is the real one.
   frameworks themselves never reach; the unabsorbed remainder is exactly the SDD spine
   (intent pipeline, format gates, workflow-scoped state). The line, on current evidence:
   harnesses absorb *mechanisms*, methodology stays here. →
-  [category-2 index, "What category 2 has absorbed"](../2-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses)
+  [category-2 index, "What category 2 has absorbed"](../2-harnesses/README.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses)
 - ~~Neither is easy to A/B test, since you can't run the same task twice cleanly. What
   would a fair comparison even look like?~~ **Working answer 2026-07-28:** preregister
   the protocol and falsification criteria, run the contaminated arm second with fresh

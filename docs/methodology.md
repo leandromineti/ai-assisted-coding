@@ -173,7 +173,7 @@ Two sub-rules, both scarred in experiment 01:
   and that the *orchestrator's* cache reads, invisible to notifications, dominated
   total spend. Session + agent transcripts carry exact `usage` fields; parse those.
   (Same failure family as `stats-cache.json` inflating cache reads —
-  `docs/index.md`.) Attribute usage **per model**: exp-02's Run A ledger
+  `docs/README.md`.) Attribute usage **per model**: exp-02's Run A ledger
   showed an auxiliary `claude-haiku-4-5` call the protocol's "sole model" wording hadn't
   anticipated — immaterial at $0.0008, but you only know that by looking.
 - **5d. Comparison instruments are proven to discriminate, not just to fail closed.**

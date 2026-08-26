@@ -49,7 +49,7 @@ and read the license before any "open" claim stronger than "downloadable".
 ## Role in this repo's work
 
 None run. Z.ai appears in the repo's orbit only as an API *route* in
-llm-coding-benchmark's roster (see [`index.md`](index.md) § References) — earlier
+llm-coding-benchmark's roster (see [`README.md`](README.md) § References) — earlier
 GLM models, not 5.3.
 
 ## Surprises

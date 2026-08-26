@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-26  # bumped 2026-08-26 again: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-26  # bumped 2026-08-26 a third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -51,7 +51,7 @@ terms:
           graded-progression scale, unrelated to the taxonomy's top-level divisions.
         known_sites:
           - "tools/candidates.md:5"
-          - "tools/4-workflow-frameworks/index.md:118"
+          - "tools/4-workflow-frameworks/README.md:119"
       - compound: "enforcement ladder"
         canonical_source: >-
           ADR-0011's graded gate enforcement scale (engine/hook/script/prose) —
@@ -121,7 +121,7 @@ terms:
           - "tools/5-memory/everos.md:34"
           - "tools/5-memory/cognee.md:41"
           - "tools/5-memory/cognee.md:131"
-          - "tools/5-memory/index.md:92"
+          - "tools/5-memory/README.md:84"
         near_miss_note: >-
           Sharpened 2026-08-22 (ADR-0020): category 5 is now NAMED Memory, so "the
           memory layer" is no longer merely adjacent to a division name — it is a

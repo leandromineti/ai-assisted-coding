@@ -36,13 +36,13 @@ confirm, contradict, or note silence.
 
 | Category | Index | Examples |
 |-------|-------|----------|
-| 1 · Models | [`tools/1-models/`](tools/1-models/index.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
-| 2 · Harnesses | [`tools/2-harnesses/`](tools/2-harnesses/index.md) | Claude Code, OpenCode, Codex CLI, Cursor |
-| 3 · Execution environments | [`tools/3-execution-environments/`](tools/3-execution-environments/index.md) | worktrees, devcontainers, E2B |
-| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/`](tools/4-workflow-frameworks/index.md) | GSD, spec-kit |
-| 5 · Memory | [`tools/5-memory/`](tools/5-memory/index.md) | ai-memory, mem0, MemOS, cognee |
-| 6 · Extensions (bucket) | [`tools/6-extensions/`](tools/6-extensions/index.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
-| ✕ Cross-cutting | [`docs/`](docs/index.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
+| 1 · Models | [`tools/1-models/`](tools/1-models/README.md) | Opus 5, Fable 5, Grok 4.5, Kimi K3 |
+| 2 · Harnesses | [`tools/2-harnesses/`](tools/2-harnesses/README.md) | Claude Code, OpenCode, Codex CLI, Cursor |
+| 3 · Execution environments | [`tools/3-execution-environments/`](tools/3-execution-environments/README.md) | worktrees, devcontainers, E2B |
+| 4 · Workflow frameworks | [`tools/4-workflow-frameworks/`](tools/4-workflow-frameworks/README.md) | GSD, spec-kit |
+| 5 · Memory | [`tools/5-memory/`](tools/5-memory/README.md) | ai-memory, mem0, MemOS, cognee |
+| 6 · Extensions (bucket) | [`tools/6-extensions/`](tools/6-extensions/README.md) | MCP servers, skills, hooks, rules files, config packs (ECC) |
+| ✕ Cross-cutting | [`docs/`](docs/README.md) | context engineering, verification, cost, standards (MCP, `AGENTS.md`) |
 
 ## Layout
 
@@ -52,7 +52,7 @@ confirm, contradict, or note silence.
 | `docs/taxonomy.md` | The category definitions and boundary rule — the canonical reference. `docs/taxonomy.yaml` is its machine-readable half, read by the vocabulary lint |
 | `docs/methodology.md` | The working rules — verification, honesty markers, experiment protocol |
 | `docs/design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
-| `docs/` | Those three — the constitution — plus the notes that span categories (benchmarks, metrics, standards, the feature registry). See [`docs/index.md`](docs/index.md) |
+| `docs/` | Those three — the constitution — plus the notes that span categories (benchmarks, metrics, standards, the feature registry). See [`docs/README.md`](docs/README.md) |
 | `tools/` | One index per category, plus one file per tool, written while using it |
 | `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
 | `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
@@ -84,7 +84,7 @@ under the earlier loop+context definition).
 
 The point of reusing one task across `experiments/` is to make comparisons honest instead
 of impressionistic — though see the open question in
-[`docs/`](docs/index.md) about whether a clean A/B is
+[`docs/`](docs/README.md) about whether a clean A/B is
 possible here at all.
 
 ## Conventions
@@ -106,7 +106,7 @@ note. Revised when evidence moves._
    different ways: opencode maintains nine bespoke prompts sharing zero substantive lines;
    cline built that architecture and *dismantled* it; continue runs ~15 lines and bets the
    prompt barely matters. Nobody's position is backed by a published eval. →
-   [`tools/2-harnesses/index.md`](tools/2-harnesses/index.md)
+   [`tools/2-harnesses/README.md`](tools/2-harnesses/README.md)
 2. **No public benchmark isolates model from harness** (2026-07-28). Leaderboards pair
    them ("Codex CLI + GPT-5.5"), and the one benchmark that fixes the harness turned out
    to inherit that harness's per-model prompt dispatch — a confound its maintainer didn't
@@ -118,7 +118,7 @@ note. Revised when evidence moves._
    (Sonnet 5 vs Haiku 4.5, n=5 each; see conclusion 10). The public-benchmark claim
    stands unchanged; what changed is that the isolation the field lacks is
    demonstrably buildable at personal scale for ~$3. →
-   [`tools/1-models/index.md`](tools/1-models/index.md)
+   [`tools/1-models/README.md`](tools/1-models/README.md)
 3. **The extensions bucket (category 6; numbered 5 until the 2026-08-22 split) is "MCP plus vendor features," so far** (2026-07-28). Of five capability-
    extension types, only MCP has fully standardized; rules files are converging on a
    filename convention; hooks and subagent definitions remain harness-specific.
@@ -140,7 +140,7 @@ note. Revised when evidence moves._
    llm-coding-benchmark's data): models produce complete-looking apps whose tests mock
    hallucinated APIs — green suites over dead code. Any personal eval must boot the
    artifact, not count its files. →
-   [`docs/index.md`](docs/index.md)
+   [`docs/README.md`](docs/README.md)
 5. **Reading source beats reading marketing, quickly** (2026-07-28). Every finding above
    except #4 came from a few hours of grepping cloned repos — none appears in any tool's
    own documentation. The `upstream/` workflow pays for itself.
@@ -236,7 +236,7 @@ note. Revised when evidence moves._
    (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
    Consequence for the experiment arc: a category-4 framework's measured margin must be
    re-baselined against what the harness already does — recorded as a design rider on
-   exp-03 in [`docs/`](docs/index.md). →
+   exp-03 in [`docs/`](docs/README.md). →
    [`tools/2-harnesses/hermes-agent.md`](tools/2-harnesses/hermes-agent.md),
    [`tools/2-harnesses/codex.md`](tools/2-harnesses/codex.md)
    **Third instance, and a counter-instance (2026-08-11, Warp survey; evidence upgraded
@@ -305,7 +305,7 @@ note. Revised when evidence moves._
    [`tools/3-execution-environments/cloudflare-sandbox-sdk.md`](tools/3-execution-environments/cloudflare-sandbox-sdk.md),
    [`tools/3-execution-environments/microsandbox.md`](tools/3-execution-environments/microsandbox.md),
    [`tools/3-execution-environments/daytona.md`](tools/3-execution-environments/daytona.md),
-   [`tools/3-execution-environments/index.md`](tools/3-execution-environments/index.md)
+   [`tools/3-execution-environments/README.md`](tools/3-execution-environments/README.md)
 10. **A task-level trap instrument that cannot rank same-tier runs still separates model
     tiers — and its items are not monotone in capability** (2026-08-17, measured). exp-02's
     21-check instrument, saturated against Sonnet 5 baselines (mean 19.0/21, n=5), fully
@@ -413,7 +413,7 @@ note. Revised when evidence moves._
     and the 92.5 belongs to a later rewrite whose architecture the paper doesn't
     describe.* →
     [`docs/benchmark-survey.md`](docs/benchmark-survey.md) §6 ·
-    [`tools/5-memory/index.md`](tools/5-memory/index.md)
+    [`tools/5-memory/README.md`](tools/5-memory/README.md)
 
 ## License
 

@@ -70,7 +70,7 @@ one line to `log.md`; re-run the generator.
 
 **Query** — search the notes before searching the web. If the answer required synthesis
 across several notes, that synthesis is itself worth a note or a line in
-[`../docs/index.md`](../docs/index.md).
+[`../docs/README.md`](../docs/README.md).
 
 **Lint** — `python3 scripts/build-refs-index.py --check`. Catches missing frontmatter, keys
 that don't match filenames, unread-but-cited sources, dangling `refs/<key>.md` links, and

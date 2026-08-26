@@ -37,7 +37,7 @@ ENV_KEYS = ["host", "worktree", "container", "remote-sandbox"]
 
 # How a tool relates to the environment it runs in — the category-3 relationship
 # vocabulary, one verb per instance, each earned at a different deep-dive. Defined
-# in tools/3-execution-environments/index.md; listed here only to validate spelling.
+# in tools/3-execution-environments/README.md; listed here only to validate spelling.
 ENV_RELATIONS = ["bundle", "bind", "internalize", "inhabit"]
 
 # Fixed vocabulary — order defines the matrix columns. Keep small and axis-aligned;
@@ -157,8 +157,8 @@ def read_frontmatter(path: Path) -> dict | None:
 def collect() -> list[dict]:
     reports = []
     for path in sorted(TOOLS.rglob("*.md")):
-        if path.name.startswith("_") or path.name == "index.md":
-            continue  # templates and category indexes are not reports
+        if path.name.startswith("_") or path.name == "README.md":
+            continue  # templates and category front doors are not reports
         fm = read_frontmatter(path)
         if fm is None:
             continue
@@ -489,7 +489,7 @@ def render_features(reports: list[dict]) -> str:
         "defined in `docs/feature-taxonomy.md`. Structural",
         "presence-claims, not value-claims:",
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
-        "mechanism table's job, tools/4-workflow-frameworks/index.md).",
+        "mechanism table's job, tools/4-workflow-frameworks/README.md).",
         "",
         "| Tool | license | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
         "|---|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
@@ -806,7 +806,7 @@ def render_environments(reports: list[dict]) -> str:
         "",
         "Which category-3 environments a tool can run its agent in, and **how it relates to "
         "them** — see the relationship vocabulary in "
-        "[`../tools/3-execution-environments/index.md`](../tools/3-execution-environments/index.md).",
+        "[`../tools/3-execution-environments/README.md`](../tools/3-execution-environments/README.md).",
         "",
         "Cells: **✓** verified · **·** not yet checked. Same discipline as the feature "
         "matrix — a value is set only when confirmed in source or official docs, so a dot "

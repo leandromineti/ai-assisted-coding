@@ -13,7 +13,7 @@ The [first article in this series](the-ai-coding-stack.md) ended on an accusatio
 public leaderboards score model+harness *pairings*, so nobody knows which category
 they're praising. The one benchmark I found that fixes the harness turned out to
 route each model through a different system prompt — a confound its own maintainer
-didn't know about until [I reported it](../tools/1-models/index.md), which became
+didn't know about until [I reported it](../tools/1-models/README.md), which became
 the repo's first upstream contribution
 ([conclusion 2](../README.md#conclusions)).
 
@@ -142,7 +142,7 @@ harness with only the two mechanisms the evidence credits — empirical groundin
 measured verification gates — against the now-confirmed baseline. And a **local
 open-weights arm**: the same instrument pointed at models running on my own
 hardware, where the field's real bottleneck isn't benchmark scores but
-tokens-per-second ([the groundwork](../tools/1-models/index.md)).
+tokens-per-second ([the groundwork](../tools/1-models/README.md)).
 
 ---
 
