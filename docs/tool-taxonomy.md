@@ -467,30 +467,46 @@ Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation
 | **DeepSeek** | deepseek-v4 ✓ | dsh ✓ | — | — |
 | **Alibaba (Qwen)** | qwen3-coder-next ✓ | qwen-code ○ *(candidate — a gemini-cli fork)* | — | — |
 | **Moonshot AI** | kimi-k3 ✓ | kimi-code ○ *(candidate, created 2026-05-22)* | — | — |
+| **Z.ai (Zhipu)** | glm-5.3 ✓ | ZCode ○ *(closed; "Official Harness for GLM-5.3")* | — | — |
 
-**The direction is one-way, and that is the finding** *(2026-08-26)*: every vendor here
+**The direction is one-way, with no exceptions left** *(2026-08-26)*: every vendor here
 spans **from** category 1 **into** category 2. A model maker ships a harness for its own
-weights; no harness maker in the set has trained a model and moved the other way. **Seven
-of the eight** vendors with a tracked model report ship one.
+weights; no harness maker in the set has trained a model and moved the other way. **All
+eight** vendors with a tracked model report ship one. For a reader choosing a category-1
+model, the practical form of this is: *there is always a first-party harness, and it is
+always the one the model was tuned against.*
 
-*Corrected the same day it was written.* This paragraph first said **six of eight**, naming
-Moonshot and Z.ai as the holdouts and excusing both as "the sweep's most recent model
-entries — *not yet* rather than *not the pattern*". Moonshot's `kimi-code` had existed since
-**2026-05-22**, three months earlier; the absence was inferred from *this repo having no
-report*, not from looking. That is exactly the blind spot
-[ADR-0041](../adrs/0041-vendors-matrix-removed.md) had just finished arguing about — a
-tracked-only surface understating span — reintroduced one commit later, in prose, by the
-same hand. The lesson the removed matrix was carrying survives its removal: **absence of a
-report is not absence of a product**, and a span claim has to be checked against the world
-rather than against `tools/`.
+### How this paragraph was wrong three times in one day
 
-**Z.ai is the real exception, and it is a strategy rather than a gap.** No Zhipu coding CLI
-exists (org checked 2026-08-26 — model repos only). What Z.ai sells instead is the **GLM
-Coding Plan**: a subscription that plugs its models into *other people's* harnesses. So the
-one vendor that hasn't built a harness monetizes everyone else's — which is a distinct bet
-about where the category's value sits, not a to-do item. Worth watching as the falsifier: if
-Z.ai ships a CLI, the one-way rule has no exceptions left; if the plan grows, it is evidence
-that harness-ownership is optional for a model maker after all.
+It is kept as a worked example, because the failure repeated after the lesson was written
+down — twice.
+
+1. **Six of eight.** Moonshot and Z.ai named as holdouts, excused as "*not yet*". Moonshot's
+   `kimi-code` had shipped **2026-05-22**, three months earlier. The absence was inferred
+   from *this repo having no report*.
+2. **Seven of eight.** Z.ai called "the real exception… a strategy rather than a gap",
+   on the strength of a **GitHub org search** returning only model repos. **ZCode is
+   closed-source** — a proprietary desktop/CLI product sold on subscription tiers. It could
+   never have appeared in that search.
+3. Both corrections were written *in this section*, one after the other, by the same hand
+   that then made the next version of the same mistake.
+
+Each time the method was identical: **infer absence from a surface that structurally cannot
+show the thing.** Once from `tools/` (which only holds what someone has already ingested),
+once from GitHub (which only holds what is open source). That is the blind spot
+[ADR-0041](../adrs/0041-vendors-matrix-removed.md) deleted a whole generated matrix over —
+and this section reproduced it in prose within the hour, then again fifteen minutes later.
+
+The operational rule: **a negative claim about a vendor's product line needs a search of the
+vendor's own site, not of a repository host or of this repo.** The closed products are
+exactly the ones a code-shaped search misses, and they are disproportionately the ones that
+matter here — Claude Code, cloud Codex, Cursor, Managed Agents, and now ZCode are all
+closed, and all belong to the biggest spanners.
+
+**The standing falsifier moves accordingly.** The one-way rule now predicts that a *harness*
+maker with no model — Anomaly, Cline, Continue, Earendil Works, Warp — trains or brands one.
+That is the claim to watch; the model→harness direction is saturated and can no longer
+surprise.
 
 Two consequences a reasoner must carry:
 
