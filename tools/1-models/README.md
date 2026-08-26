@@ -129,6 +129,28 @@ check starts where the fact actually lives:
   does: Gemini 3.1 Pro's card sends its **training dataset** to the 3 Pro card, and a
   cutoff is a property of the training dataset, so the parent's January 2025 carries.
 
+- **Anthropic system cards** —
+  [`anthropic.com/system-cards`](https://www.anthropic.com/system-cards) (index verified
+  2026-08-26, HTTP 200). A **different genre from a model card**, and the differences are
+  load-bearing:
+  - **Safety-evaluation documents, and long.** The one opened to ground this entry —
+    `System Card: Claude Opus 4 & Claude Sonnet 4`, May 2025 — runs **123 pages**, with
+    training data and process as one subsection among dozens. A DeepMind model card is
+    ~10 pages of specs.
+  - **One card can cover several models** — that example covers two in a single document.
+    Which is exactly why a card note's `models_covered` is a list, and the same axis that
+    produced the Grok 4.5/4.6 retraction.
+  - **URLs are content-addressed** (`www-cdn.anthropic.com/<40-hex>.pdf`), which inverts
+    the mutability risk. A DeepMind card is rewritten at a stable URL, so the bytes move
+    under you; an Anthropic card's bytes are pinned by its own name, but the *index* can
+    repoint to a new hash and leave the old URL unreferenced. The snapshot guards a
+    different failure: not silent revision, but silent replacement.
+  - The index renders its labels client-side — raw HTML exposes only the PDF URLs — so
+    mapping a model to its card means opening the page.
+
+  **Unchecked:** which cards, if any, cover the 5-generation models this repo tracks. Only
+  the Opus 4 / Sonnet 4 card was opened, and only far enough to establish the genre.
+
 ## References
 
 - **[llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)** — Fabio
