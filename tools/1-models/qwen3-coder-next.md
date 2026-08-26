@@ -4,7 +4,7 @@ category: 1
 maker: Alibaba (Qwen team)
 url: https://huggingface.co/Qwen/Qwen3-Coder-Next
 license: Apache-2.0
-open_source: true
+access: open-weights
 model_id: Qwen/Qwen3-Coder-Next
 release_mode: open-weights
 released: "weights: HF initial commit 2026-01-30 (refines the '~Feb 2026' recorded 2026-07-31); no vendor stage vocabulary anywhere — the Model Studio page carries no GA/preview label and a blank update-time field (checked 2026-08-17)"

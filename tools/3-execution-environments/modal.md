@@ -4,7 +4,7 @@ category: 3
 maker: Modal Labs
 url: https://github.com/modal-labs/modal-client
 license: Apache-2.0   # the CLIENT only; the infrastructure is closed and has no public repo
-open_source: false   # the PRODUCT is closed — only the client SDK is open. This is the point of the read; see What it is
+access: closed-source   # the PRODUCT is closed — only the client SDK is open. This is the point of the read; see What it is
 stack: [Python, Go, TypeScript]   # modal-client monorepo; Python is the reference SDK
 version: py/v1.5.4-7-g59e6e618
 commit: 59e6e618   # the open modal client (cloned as upstream/modal); --check guards this pin even though the PRODUCT is closed — see the generator's decouple note (2026-08-16)

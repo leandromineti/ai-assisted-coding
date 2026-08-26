@@ -8,7 +8,7 @@ environment_relation: internalize
 maker: DeepSeek
 url: https://github.com/deepseek-ai/deepseek-harness
 license: MIT
-open_source: true
+access: open-source
 stack: [TypeScript, Node.js]
 version: dsh-v0.1.1-rc.2
 commit: b150a551b8

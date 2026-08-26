@@ -4,7 +4,7 @@ category: 4
 maker: GitHub
 url: https://github.com/github/spec-kit
 license: MIT
-open_source: true
+access: open-source
 stack: [Python]
 version: v0.1.10-1039-g655a3cb
 commit: 655a3cb

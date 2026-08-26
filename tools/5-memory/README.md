@@ -50,7 +50,7 @@ finding is always *which* posture, never *whether*. Four consolidation postures 
 verified so far, and the roster's zero shared formats is the population-level version of
 the same point.
 
-The other half is **8 transcription fields** — `maker`, `license`, `stars`,
+The other half is **9 transcription fields** — `maker`, `license`, `access`, `stars`,
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 

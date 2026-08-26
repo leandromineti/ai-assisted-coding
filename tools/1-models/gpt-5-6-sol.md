@@ -4,7 +4,7 @@ category: 1
 maker: OpenAI
 url: https://developers.openai.com/api/docs/models
 license: proprietary
-open_source: false
+access: closed-source
 model_id: gpt-5.6-sol (alias gpt-5.6); siblings gpt-5.6-terra, gpt-5.6-luna
 release_mode: api-only
 released: "2026-07-09, stage ambiguous in the vendor's own record: the launch forum post calls it a partner-restricted 'preview', the API changelog the same day says 'Released' with no stage word, and no later GA statement exists (verified 2026-08-17)"

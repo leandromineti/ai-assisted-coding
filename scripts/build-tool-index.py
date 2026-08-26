@@ -84,6 +84,11 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}(-\d{2})?$")
 # open-descriptive: the FAMILY is closed (who sizes the reasoning), the specific is free.
 REASONING_TYPES = {"always-on", "default-on", "opt-in", "none"}
 REASONING_EFFORT_FAMILIES = {"levels", "budget"}
+# `access:`'s closed enum (ADR-0044) — what the public can OBTAIN, paired with `license:`,
+# which says under what terms. The repo's fifth cell-value check and the first that is
+# REQUIRED on every report in every category: the field it replaced (`open_source:`) was
+# already universal, and a missing openness cell would read as "closed" to any eye.
+ACCESS_VALUES = {"open-source", "closed-source", "open-weights"}
 
 
 def _load_feature_registry() -> tuple[list[dict], list[dict]]:
@@ -335,6 +340,33 @@ def check_pricing(reports: list[dict]) -> None:
             )
 
 
+def check_access(reports: list[dict]) -> None:
+    """Validate `access:` on every report, every category (ADR-0044).
+
+    Unlike the other four cell-value checks, absence is a failure rather than an
+    "omitted = not checked": `access` replaced a boolean that was already on all 45
+    reports, and an empty openness cell does not read as unchecked — it reads as closed.
+    `open-weights` is category-1-only by construction; `open-source` on a model would
+    mean its TRAINING SOURCE is public, which no report claims yet, so it is allowed
+    rather than gated (a zero, not an impossibility).
+    """
+    for r in reports:
+        rel = r["_path"].relative_to(ROOT)
+        v = r.get("access")
+        if v is None:
+            sys.exit(
+                f"{rel}: `access:` is required on every report since ADR-0044 — "
+                f"one of {sorted(ACCESS_VALUES)}"
+            )
+        if v not in ACCESS_VALUES:
+            sys.exit(f"{rel}: `access:` is {v!r} — known: {sorted(ACCESS_VALUES)}")
+        if v == "open-weights" and r.get("category") != 1:
+            sys.exit(
+                f"{rel}: `access: open-weights` outside category 1 — weights are a "
+                "model's artifact; a tool's is its source"
+            )
+
+
 def check(reports: list[dict]) -> int:
     """Verify each report's pinned commit is still *reachable*, and report upstream drift.
 
@@ -357,7 +389,7 @@ def check(reports: list[dict]) -> int:
     behind = []
     for r in reports:
         pinned = r.get("commit")
-        # A recorded pin with a clone present is checked regardless of open_source: a
+        # A recorded pin with a clone present is checked regardless of `access:`: a
         # closed *product* can still expose an open, pinned artifact (Modal — closed infra,
         # open client), and its verified claims drift with that clone. Genuinely closed
         # tools carry no `commit` and skip via `not pinned`; the clone-existence guard below
@@ -422,9 +454,28 @@ def render(reports: list[dict]) -> str:
         "install into) — set in frontmatter only when verified in source or docs; `·` "
         "means not yet checked, `—` not applicable.",
         "",
+        "`Access` and `License` are a **pair** (ADR-0044): access says what the public can "
+        "*obtain* — `open-source` (the subject's source is public, whatever the terms) · "
+        "`open-weights` (a model's weights are published; its training source is not) · "
+        "`closed-source` (neither) — and license says under what *terms*. Read them "
+        "together: `open-source` beside a non-OSI license is what the ecosystem calls "
+        "source-available (pilot-shell), and an OSI license beside `closed-source` means "
+        "the license covers an accessory, not the product (modal's client SDK). The "
+        "subject is the tool as shipped, so a public issues-and-releases repo is not "
+        "source access (claude-code).",
+        "",
+        "`Version read` is `git describe --tags --always` of the clone at read time — the "
+        "tree the report's claims were checked against, not a release the vendor "
+        "advertises. `—` means there was no clone to describe, which is every category-1 "
+        "row: weights have no working tree. One row is neither: claude-code has no clone "
+        "but does report a version, so its cell is what the shipped binary says about "
+        "itself (`claude --version`) and nothing in it is machine-checked — the report's "
+        "own field comment says so.",
+        "",
     ]
-    header_row = "| Tool | Surfaces · exec | Stack | License | Stars | Since | Harness targets | Version read | Depth | Report |"
-    divider = "|---|---|---|---|---|---|---|---|---|---|"
+    header_row = ("| Tool | Surfaces · exec | Stack | License | Access | Stars | Since | "
+                  "Harness targets | Version read | Depth | Report |")
+    divider = "|---|---|---|---|---|---|---|---|---|---|---|"
     current_cat = None
     for r in reports:
         if r["category"] != current_cat:
@@ -442,22 +493,19 @@ def render(reports: list[dict]) -> str:
         rel = r["_path"].relative_to(ROOT)
         link = f"[{r['name']}](../{rel})"
         version = r.get("version") or "—"
-        if not r.get("open_source", True):
-            # `open_source: false` usually means "no source to pin against" and the
-            # cell should say so plainly. The one exception: a report that sets
-            # `closed_source_pin_note` alongside a real `commit` (Daytona's
-            # before/after read — `open_source: false` there marks the product's
-            # CURRENT post-closure state for narrative purposes, not an absence of
-            # pinned source; see daytona.md's frontmatter comment). Opt-in via an
-            # explicit field, not inferred from version/commit presence alone, so
-            # this stays a one-report exception rather than silently changing
-            # every other closed report that happens to carry a version pin
-            # (modal, pilot-shell) — CR-01.
-            pin_note = r.get("closed_source_pin_note")
-            if pin_note and r.get("commit"):
-                version = f"{r['commit']} ({pin_note})"
-            else:
-                version = "closed source"
+        # This column says ONE thing: which tree the report read. Until ADR-0044 it also
+        # substituted an openness literal ("closed source") for the version whenever
+        # `open_source: false` — an openness fact rendered in a column named for versions,
+        # and the reason eight of eleven category-1 rows read `closed source` where they
+        # have no clone at all. Openness now has its own `Access` column, and the cell
+        # falls back to `—` like any other unknown. `closed_source_pin_note` survives the
+        # change with a narrower job: it ANNOTATES the version rather than replacing it
+        # (Daytona reads "v0.189.0-9-g4ee2c6365 (pre-closure pin)"), so a reader meeting a
+        # closed subject with a readable pin learns why — CR-01's point, kept. Still
+        # opt-in and still Daytona-only by design.
+        pin_note = r.get("closed_source_pin_note")
+        if pin_note and version != "—":
+            version = f"{version} ({pin_note})"
         surfaces = r.get("surfaces") or []
         if surfaces:
             shape = " + ".join(surfaces)
@@ -476,7 +524,8 @@ def render(reports: list[dict]) -> str:
             targets = "·" if r["category"] in (4, 5, 6) else "—"
         lines.append(
             f"| {r['name']} | {shape} | "
-            f"{stack or '—'} | {r.get('license') or '—'} | {stars} | {since} | {targets} | "
+            f"{stack or '—'} | {r.get('license') or '—'} | `{r.get('access') or '—'}` | "
+            f"{stars} | {since} | {targets} | "
             f"`{version}` | {r['depth']} | {link} |"
         )
 
@@ -558,15 +607,16 @@ def render_features(reports: list[dict]) -> str:
         unknown.update(k for k in feats if k not in HARNESS_FEATURE_KEYS)
         cells = [fmt_feature_cell(feats.get(key)) for key in HARNESS_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
-        lic = r.get("license") or "·"
-        return f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |"
+        # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
+        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        return f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |"
 
     # license is rendered from the reports' existing top-level frontmatter field
     # (single source of truth; NOT a registry key — it is a tool-taxonomy fact)
-    header_row = "| Tool | license | " + " | ".join(
+    header_row = "| Tool | license | access | " + " | ".join(
         k.replace("_", " ") for k in HARNESS_FEATURE_KEYS
     ) + " |"
-    divider = "|---|---|" + "---|" * len(HARNESS_FEATURE_KEYS)
+    divider = "|---|---|---|" + "---|" * len(HARNESS_FEATURE_KEYS)
     unknown_keys: set[str] = set()
 
     lines += [
@@ -578,8 +628,8 @@ def render_features(reports: list[dict]) -> str:
         "against the report's `url` on its `checked` date. Quantitative surface (context,",
         "pricing, cutoff, lifecycle) stays in [models.md](models.md).",
         "",
-        "| Model | license | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
-        "|---|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
+        "| Model | license | access | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
+        "|---|---|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
     ]
     m_unknown: set[str] = set()
     for r in reports:
@@ -591,10 +641,11 @@ def render_features(reports: list[dict]) -> str:
         m_unknown.update(k for k in feats if k not in MODEL_FEATURE_KEYS)
         cells = [fmt_feature_cell(feats.get(k)) for k in MODEL_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
-        lic = r.get("license") or "·"
+        # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
+        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
         cw = r.get("context_window")
         cw = f"{cw:,}" if isinstance(cw, int) else (cw or "·")
-        lines.append(f"| [{r['name']}](../{rel}) | {lic} | {cw} | " + " | ".join(cells) + " |")
+        lines.append(f"| [{r['name']}](../{rel}) | {pair} | {cw} | " + " | ".join(cells) + " |")
     for k in sorted(m_unknown):
         print(f"warn: model feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
     lines += [
@@ -641,8 +692,8 @@ def render_features(reports: list[dict]) -> str:
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
         "mechanism table's job, tools/4-workflow-frameworks/README.md).",
         "",
-        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
-        "|---|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
+        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
+        "|---|---|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
     ]
     wf_unknown: set[str] = set()
     for r in reports:
@@ -664,8 +715,9 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lic = r.get("license") or "·"
-        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+        # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
+        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(wf_unknown):
         print(f"warn: workflow feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
@@ -678,8 +730,8 @@ def render_features(reports: list[dict]) -> str:
         "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
         "of dots are stub-depth reports — unread, honestly unclaimed.",
         "",
-        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
-        "|---|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
+        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
+        "|---|---|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
     ]
     mem_unknown: set[str] = set()
     for r in reports:
@@ -703,8 +755,9 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lic = r.get("license") or "·"
-        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+        # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
+        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(mem_unknown):
         print(f"warn: memory feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
@@ -718,8 +771,8 @@ def render_features(reports: list[dict]) -> str:
         "and lists that mean conjunction only — see the ADR. Rows of dots are not yet",
         "checked, honestly unclaimed.",
         "",
-        "| Tool | license | " + " | ".join(k.replace("_", " ") for k in ENVIRONMENT_FEATURE_KEYS) + " |",
-        "|---|---|" + "---|" * len(ENVIRONMENT_FEATURE_KEYS),
+        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in ENVIRONMENT_FEATURE_KEYS) + " |",
+        "|---|---|---|" + "---|" * len(ENVIRONMENT_FEATURE_KEYS),
     ]
     env_unknown: set[str] = set()
     for r in reports:
@@ -743,8 +796,9 @@ def render_features(reports: list[dict]) -> str:
             else:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
-        lic = r.get("license") or "·"
-        lines.append(f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |")
+        # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
+        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(env_unknown):
         print(f"warn: environment feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
 
@@ -922,8 +976,8 @@ def render_feature_registry() -> str:
         "- **transcribed** — a fact with an external ground truth: a top-level",
         "  frontmatter field, transcribed and dated, never duplicated as a key",
         "  (enforced: the generator refuses an id that appears in both lists). A",
-        "  transcribed field spanning categories (`vendor`, `license`) appears in every",
-        "  section it applies to.",
+        "  transcribed field spanning categories (`maker`, `license`, `access`) appears",
+        "  in every section it applies to.",
         "",
         "**Type** is the shape a cell's value takes — the registry's own",
         "`value_type` vocabulary rather than generic types (ADR-0032), because two of",
@@ -1095,6 +1149,7 @@ def main() -> int:
     check_pricing(reports)
     check_cutoff(reports)
     check_reasoning(reports)
+    check_access(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

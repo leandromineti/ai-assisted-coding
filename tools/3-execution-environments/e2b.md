@@ -4,7 +4,7 @@ category: 3
 maker: FoundryLabs, Inc. (E2B)
 url: https://github.com/e2b-dev/E2B
 license: Apache-2.0   # root LICENSE on both repos; note the SDK package.json/pyproject declare MIT — unresolved mismatch, see What it is
-open_source: true
+access: open-source
 stack: [Python, TypeScript, Go]   # SDK/CLI clone is Py+TS; the infra clone (isolation machinery) is Go
 version: "@e2b/python-sdk@2.39.1"
 commit: f5d702a5   # the e2b SDK/CLI clone; this is what build-tool-index --check validates

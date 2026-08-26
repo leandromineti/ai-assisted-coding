@@ -4,7 +4,7 @@ category: 1
 maker: Anthropic
 url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
-open_source: false
+access: closed-source
 model_id: claude-haiku-4-5-20251001
 release_mode: api-only
 released: "GA 2025-10-15, no preview stage — the model-id snapshot suffix (20251001) predates the announced date by two weeks; the announcement text is the source (verified 2026-08-17)"

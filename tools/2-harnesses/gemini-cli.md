@@ -8,7 +8,7 @@ environment_relation: internalize  # primary verb; bundle/bind/inhabit streaks +
 maker: Google
 url: https://github.com/google-gemini/gemini-cli
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [TypeScript, Node, Ink]
 version: v0.49.0-preview.0-117-g64b5b79a6
 commit: 64b5b79a6

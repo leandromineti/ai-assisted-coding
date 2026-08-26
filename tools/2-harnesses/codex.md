@@ -8,7 +8,7 @@ environment_relation: internalize   # Seatbelt/Landlock/bwrap/Windows sandbox co
 maker: OpenAI
 url: https://github.com/openai/codex
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Rust, TypeScript]
 version: rusty-v8-v150.4.0-94-g413492cd6c
 commit: 413492cd6c

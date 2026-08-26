@@ -4,7 +4,7 @@ category: 4
 maker: Max Ritter
 url: https://github.com/maxritter/pilot-shell
 license: proprietary   # "Pilot Shell Software License Agreement" — source-available EULA
-open_source: false
+access: open-source   # ADR-0044 flipped this (was `open_source: false`): the source IS public and pinned here at c8c8243 — `access` is about reach, and the non-OSI EULA is `license: proprietary`'s job. The pair reads source-available
 stack: [TypeScript, Python, React]
 version: v10.3.1
 commit: c8c8243

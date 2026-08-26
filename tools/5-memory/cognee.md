@@ -5,7 +5,7 @@ type: memory
 maker: Topoteretes (topoteretes)
 url: https://github.com/topoteretes/cognee
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Python, TypeScript]
 version: v1.5.0-2-gb948f88d4
 commit: b948f88d4

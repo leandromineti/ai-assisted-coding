@@ -8,7 +8,7 @@ environment_relation: inhabit   # crates/isolation_platform detects the containe
 maker: Warp (warpdotdev)
 url: https://github.com/warpdotdev/warp
 license: AGPL-3.0   # `warpui`/`warpui_core` carved out as MIT (README, LICENSE-MIT)
-open_source: true   # since 2026-04-28; the product shipped years earlier — see Stack & repo shape
+access: open-source   # since 2026-04-28; the product shipped years earlier — see Stack & repo shape
 stack: [Rust]
 version: tui-screenshots-app5029-227-g80a20347
 commit: 80a20347

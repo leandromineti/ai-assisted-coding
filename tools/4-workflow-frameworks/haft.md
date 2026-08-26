@@ -4,7 +4,7 @@ category: 4
 maker: Ivan Zakutnii (m0n0x41d)
 url: https://github.com/m0n0x41d/haft
 license: MIT   # LICENSE file is plain MIT; GitHub API reports NOASSERTION
-open_source: true
+access: open-source
 stack: [Go, Rust, SQLite]
 version: v9.1.0
 commit: 8a5f038

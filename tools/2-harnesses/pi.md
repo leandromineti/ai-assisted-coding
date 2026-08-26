@@ -10,7 +10,7 @@ environments: [host]  # runs with the launching user's permissions; no worktree/
 maker: Earendil Works
 url: https://github.com/earendil-works/pi
 license: MIT
-open_source: true
+access: open-source
 stack: [TypeScript, Node]
 version: v0.84.3-20-g8fa7eebd2
 commit: 8fa7eebd2

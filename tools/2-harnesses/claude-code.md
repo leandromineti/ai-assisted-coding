@@ -8,7 +8,7 @@ environment_relation: bundle   # the web/cloud side ships its own sandbox, not s
 maker: Anthropic
 url: https://github.com/anthropics/claude-code
 license: proprietary   # the GitHub repo (141,660 stars) is issues + distribution + examples, NOT source; no license file on the repo at check date
-open_source: false
+access: closed-source   # the public repo (see `license:` above) is issues + distribution + examples, not source — a public repo is not source access
 stack: [TypeScript, Node]   # distribution observable (npm package, bundled); internals not readable — this is packaging fact, not architecture claim
 version: 2.1.233   # `claude --version`, observed 2026-08-17 — NOT a git pin; there is no clone, so nothing here is machine-checked (--check skips: no commit field)
 stars: 141660

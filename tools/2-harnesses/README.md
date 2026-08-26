@@ -25,7 +25,7 @@ This is the presence half only, and the warning below applies to it: the matrix 
 "does it ship this?", never "does it pay?" — the mechanism sections further down are where
 that second question is argued.
 
-The other half is **11 transcription fields** — `maker`, `license`, `stars`,
+The other half is **12 transcription fields** — `maker`, `license`, `access`, `stars`,
 `first_commit`, `version`, `commit`, `stack`, `surfaces`, `execution`, `environments`,
 `environment_relation` — facts copied from a dated source rather than judged.
 

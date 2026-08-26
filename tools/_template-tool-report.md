@@ -19,7 +19,7 @@ environment_relation: <bundle | bind | internalize | inhabit>
 maker: <who maintains it>
 url: <repo or product URL>
 license: <SPDX id, or "proprietary">
-open_source: <true | false>
+access: <open-source | closed-source>   # what the public can obtain: is the SUBJECT's source public? Not its terms (that's `license:`) and not an accessory — a public issues-and-releases repo is not source access
 stack: [<Language>, <Runtime/Framework>]
 version: <git describe --tags --always — omit if closed source>
 commit: <short SHA — omit if closed source>

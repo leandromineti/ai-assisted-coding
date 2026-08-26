@@ -4,7 +4,7 @@ category: 1
 maker: xAI
 url: https://docs.x.ai/docs/models
 license: proprietary
-open_source: false
+access: closed-source
 model_id: grok-4.5
 release_mode: api-only
 released: "July 2026, no stage vocabulary ('now available on the xAI API') — month-level only from the first-party release notes; the day this repo carries (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"

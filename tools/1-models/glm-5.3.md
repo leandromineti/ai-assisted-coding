@@ -4,7 +4,7 @@ category: 1
 maker: Z.ai (Zhipu AI)
 url: https://docs.z.ai/guides/llm/glm-5.3
 license: "unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over"
-open_source: false   # today; weights announced for after a "two-week safety evaluation" — see release_mode comment
+access: closed-source   # today; weights announced for after a "two-week safety evaluation" — see release_mode comment
 model_id: glm-5.3 (API); the announced HF repo does not exist yet — zai-org lists GLM-5, GLM-5.1, GLM-5.2 (+ FP8 variants) and no 5.3 (HF API `author=zai-org&search=GLM-5`, checked 2026-08-26)
 release_mode: api-only   # weights-delayed, not weights-never: prediction below says both by 2026-08-31
 released: "API 2026-08-14, no stage vocabulary ('GLM-5.3 is now available to all GLM Coding Plan users') — day third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell); open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26)"

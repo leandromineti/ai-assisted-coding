@@ -4,7 +4,7 @@ category: 4
 maker: BMad Code, LLC
 url: https://github.com/bmad-code-org/bmad-loop
 license: MIT
-open_source: true
+access: open-source
 stack: [Python]
 version: v0.10.0-135-g75e0348
 commit: 75e0348

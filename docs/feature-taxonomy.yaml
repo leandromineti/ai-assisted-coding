@@ -333,13 +333,43 @@ transcription_fields:
     value_type: string
     definition: "who built or trained it — a company, a research lab, or a named individual. Renamed from `vendor` 2026-08-26 (ADR-0042): four values are private people and two more disclaim commerce, so `vendor` asserted a commercial relationship the field does not carry. Exact-string identity matters — spelling drift makes one maker read as two when span is reasoned about (tool-taxonomy.md § Maker span)"
     verification: source-or-docs
-    rendered_in: []   # no generated matrix renders it since vendors.md was removed (ADR-0041); it carries hand-kept tables and § Vendor span
+    rendered_in: []   # no generated matrix renders it since vendors.md was removed (ADR-0041); it carries hand-kept tables and § Maker span
   - id: license
     applies_to: [1, 2, 3, 4, 5, 6]
     value_type: string
     definition: "SPDX id or 'proprietary'; for category 1 the WEIGHTS license — unverifiable until weights are published, and recorded as such rather than assumed from a predecessor"
     verification: source-or-docs
     rendered_in: [tools.md, features.md]
+  - id: access
+    applies_to: [1, 2, 3, 4, 5, 6]
+    value_type: closed-enum
+    definition: >-
+      which artifact of the SUBJECT the public can obtain and inspect — open-source
+      (the source is public, whatever the terms) | open-weights (a model's trained
+      weights are published; its training source is not) | closed-source (neither).
+      ACCESS, NOT TERMS: pilot-shell reads open-source under a non-OSI EULA, and the
+      `license` cell beside it carries the terms — the two are a PAIR, and the
+      OSI-open vs source-available distinction is read off that pair, never asserted
+      here. THE SUBJECT is the thing the report is about as shipped, never an
+      accessory: modal is closed-source though its client SDK is Apache-2.0;
+      claude-code is closed-source though its repo is public (issues + distribution,
+      not source). Dated like every transcribed fact — daytona is closed-source TODAY
+      and AGPL-3.0 at its freeze pin.
+    verification: source-or-docs
+    rendered_in: [tools.md, features.md]
+    note: >-
+      renamed from `open_source` 2026-08-26 (ADR-0044), and NOT a pure key rename: the
+      boolean carried four incompatible meanings, each rescued by a YAML comment
+      safe_load drops before any matrix renders — non-OSI but public (pilot-shell),
+      product closed / client open (modal), open at the pin but closed today (daytona),
+      no source at all (claude-code). pilot-shell FLIPS (`false` → `open-source`): the
+      old field meant OSI-ness, this one means access. CATEGORY-1 WRINKLE, recorded
+      rather than hidden: for all eleven models read so far the value is derivable from
+      `release_mode` (api-only ⇔ closed-source; open-weights/both ⇔ open-weights), so it
+      adds no information there TODAY. It earns the column by being one comparable
+      statement across all six categories, and by expressing a state `release_mode`
+      cannot — a model whose TRAINING SOURCE is public reads open-source. Zero instances
+      so far; zeros are honest.
   - id: stars
     applies_to: [2, 3, 4, 5, 6]
     value_type: number
@@ -355,7 +385,7 @@ transcription_fields:
   - id: version
     applies_to: [2, 3, 4, 5, 6]
     value_type: string
-    definition: "git describe --tags --always of the clone at read time; omitted for closed source"
+    definition: "git describe --tags --always of the clone at read time. Corrected 2026-08-26 (ADR-0044): the old 'omitted for closed source' was wrong on both halves — a closed PRODUCT can have a pinned open client (modal), and a subject with no clone at all can still report a version, which is then self-reported rather than machine-checked (claude-code's `claude --version`) and must say so in the field's comment. The cell only became visible for closed subjects when the Version-read column stopped substituting an openness literal"
     verification: mechanical
     rendered_in: [tools.md]
   - id: commit

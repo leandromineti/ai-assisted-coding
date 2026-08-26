@@ -5,7 +5,7 @@ type: memory
 maker: Volcengine (ByteDance)
 url: https://github.com/volcengine/OpenViking
 license: AGPL-3.0
-open_source: true
+access: open-source
 stack: [Python, TypeScript, Rust]
 version: v0.4.16-7-g2af48624
 commit: 2af48624

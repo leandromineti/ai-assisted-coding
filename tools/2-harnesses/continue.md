@@ -6,7 +6,7 @@ execution: local
 maker: Continue
 url: https://github.com/continuedev/continue
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [TypeScript, React]
 version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44

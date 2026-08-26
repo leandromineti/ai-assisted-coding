@@ -5,7 +5,7 @@ type: memory
 maker: EverMind AI (EverMind-AI)
 url: https://github.com/EverMind-AI/EverOS
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Python]
 version: v1.2.3-5-gd07cddc
 commit: d07cddc

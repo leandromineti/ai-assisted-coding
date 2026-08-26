@@ -33,7 +33,8 @@ not a matrix column ([ADR-0005](../../adrs/0005-rename-to-extensions.md)). Where
 category-6 artifact does get feature cells, they are borrowed from the harness vocabulary,
 because what is being described is the harness-side surface the artifact plugs into.
 
-What reports here do carry is **8 transcription fields** — `maker`, `license`, `stars`,
+What reports here do carry is **9 transcription fields** — `maker`, `license`, `access`,
+`stars`,
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
 source rather than judged.
 

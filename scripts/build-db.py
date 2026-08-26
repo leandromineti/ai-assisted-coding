@@ -41,7 +41,7 @@ BLOCKS = tuple(dict.fromkeys(e["block"] for e in REGISTRY["features"]))
 # Scalar frontmatter carried as real columns. Everything else lands in `extra` as JSON,
 # so a field added to a report tomorrow is queryable today without touching this script.
 SCALARS = (
-    "name", "category", "depth", "maker", "license", "url", "type",
+    "name", "category", "depth", "maker", "license", "access", "url", "type",
     "stars", "first_commit", "version", "commit", "checked",
     "model_id", "release_mode", "released", "context_window", "max_output",
     "knowledge_cutoff", "execution", "environment_relation",

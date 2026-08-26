@@ -4,7 +4,7 @@ category: 4
 maker: Open GSD
 url: https://github.com/open-gsd/gsd-core
 license: MIT
-open_source: true
+access: open-source
 stack: [Markdown, Node]
 version: v1.11.0
 commit: 182f60b4

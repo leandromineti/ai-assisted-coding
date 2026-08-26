@@ -4,7 +4,7 @@ category: 1
 maker: Google
 url: https://ai.google.dev/gemini-api/docs/models
 license: proprietary
-open_source: false
+access: closed-source
 model_id: gemini-3.1-pro (Preview)
 release_mode: api-only
 released: "Preview since 2026-02-19 (API changelog: 'Released Gemini 3.1 Pro Preview'); no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"

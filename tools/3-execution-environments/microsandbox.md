@@ -6,7 +6,7 @@ maker: superradcompany (open-source project; formerly at microsandbox/microsandb
   --jq .full_name`, one canonical repository reached via two slugs, not two repos)
 url: https://github.com/superradcompany/microsandbox
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Rust, TypeScript, Python, Go]   # Rust-dominant (605 tracked .rs files); TS/Py/Go are SDK bindings — see repo-facts.sh output
 version: v0.6.12-3-g0191b03
 commit: 0191b03

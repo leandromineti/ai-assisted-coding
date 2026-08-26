@@ -4,7 +4,7 @@ category: 1
 maker: Anthropic
 url: https://platform.claude.com/docs/en/about-claude/models/overview
 license: proprietary
-open_source: false
+access: closed-source
 model_id: claude-sonnet-5
 release_mode: api-only
 released: "GA 2026-06-30, no preview stage — launched as the default model on Free/Pro plans day one (verified 2026-08-17)"

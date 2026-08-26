@@ -4,7 +4,7 @@ category: 4
 maker: BMad Code, LLC
 url: https://github.com/bmad-code-org/BMAD-METHOD
 license: MIT
-open_source: true
+access: open-source
 stack: [JavaScript, Node.js, Python]
 version: v6.11.0-29-g86beb065
 commit: 86beb065

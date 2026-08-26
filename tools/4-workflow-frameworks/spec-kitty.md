@@ -4,7 +4,7 @@ category: 4
 maker: Spec Kitty, Inc. (Priivacy-ai)
 url: https://github.com/Priivacy-ai/spec-kitty
 license: MIT
-open_source: true
+access: open-source
 stack: [Python]
 version: v3.2.6rc1-371-g30cffb08b
 commit: 30cffb08b

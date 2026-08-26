@@ -5,7 +5,7 @@ type: memory
 maker: MemMachine
 url: https://github.com/MemMachine/MemMachine
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Python]
 version: v0.3.9-20-g2d28c1c
 commit: 2d28c1c

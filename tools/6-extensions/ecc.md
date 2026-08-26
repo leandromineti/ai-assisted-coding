@@ -5,7 +5,7 @@ type: config-pack   # set 2026-08-19 per ADR-0016 — the classification the dee
 maker: Affaan Mustafa (affaan-m)
 url: https://github.com/affaan-m/ECC
 license: MIT
-open_source: true
+access: open-source
 stack: [Markdown, Node]
 version: v2.1.0-16-ge4e41631
 commit: e4e41631

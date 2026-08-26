@@ -11,7 +11,7 @@ environments: [host]   # a `containers` package exists; its role unverified — 
 maker: Anomaly
 url: https://github.com/anomalyco/opencode
 license: MIT
-open_source: true
+access: open-source
 stack: [TypeScript, Bun, Effect]
 version: github-v1.2.25-1492-g017a5977d
 commit: 017a5977d

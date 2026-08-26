@@ -4,7 +4,7 @@ category: 1
 maker: Moonshot AI
 url: https://huggingface.co/moonshotai/Kimi-K3
 license: "Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here)"
-open_source: true
+access: open-weights
 model_id: moonshotai/Kimi-K3
 release_mode: open-weights
 released: "API + products 'available today' per the launch blog, which prints NO calendar date (third-party ~2026-07-16); weights promised 'by July 27, 2026' and the HF initial commit is consistent with that — no stage vocabulary used (verified 2026-08-17)"
@@ -80,8 +80,9 @@ whose per-model dispatch this repo documented upstream).
    Codex+GPT-5.5) — claims now flow from open-weight labs toward closed leaders, with
    harness pairing unstated in both directions.
 3. **A bespoke license with a name** ("Kimi K3 License") — neither Apache/MIT nor
-   proprietary; open-weights licensing is speciating, and `open_source: true` needs
-   the license field read, not assumed.
+   proprietary; open-weights licensing is speciating, and `access: open-weights` needs
+   the license field read, not assumed — the two fields are a pair, and this is exactly
+   the case where the second does the work (ADR-0044).
 4. **`reasoning_effort` defaults to `max`** (2026-08-17) — the only
    default-to-most-expensive in the sweep (OpenAI defaults `medium`, DeepSeek `high`,
    and reasoning tokens bill as output at $15/MTok). Thinking is also always-on with

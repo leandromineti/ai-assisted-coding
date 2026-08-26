@@ -6,7 +6,7 @@ execution: local
 maker: Aider-AI
 url: https://github.com/Aider-AI/aider
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Python]
 version: v0.86.3.dev-53-g5dc9490b
 commit: 5dc9490b

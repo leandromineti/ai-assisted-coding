@@ -5,7 +5,7 @@ type: memory
 maker: Fabio Akita (akitaonrails)
 url: https://github.com/akitaonrails/ai-memory
 license: MIT
-open_source: true
+access: open-source
 stack: [Rust]
 version: v1.28.1-16-gacd9c0b
 commit: acd9c0b

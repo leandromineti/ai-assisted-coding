@@ -4,7 +4,7 @@ category: 4
 maker: Fission AI
 url: https://github.com/Fission-AI/OpenSpec
 license: MIT
-open_source: true
+access: open-source
 stack: [TypeScript, Node]
 version: v1.7.0-5-g2b3d368
 commit: 2b3d368

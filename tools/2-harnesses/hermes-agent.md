@@ -8,7 +8,7 @@ environment_relation: bind   # attaches to independently-distributed environment
 maker: Nous Research
 url: https://github.com/NousResearch/hermes-agent
 license: MIT
-open_source: true
+access: open-source
 stack: [Python, TypeScript]
 version: v2026.7.20-3084-g524ab5399
 commit: 524ab5399

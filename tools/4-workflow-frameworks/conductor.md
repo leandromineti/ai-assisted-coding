@@ -4,7 +4,7 @@ category: 4
 maker: Google (gemini-cli-extensions org)
 url: https://github.com/gemini-cli-extensions/conductor
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Markdown]
 version: conductor-v0.4.1-16-gf06add3
 commit: f06add3

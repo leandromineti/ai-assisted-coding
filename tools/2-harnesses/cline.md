@@ -6,7 +6,7 @@ execution: local
 maker: Cline
 url: https://github.com/cline/cline
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [TypeScript, React]
 version: nightly-main-20260728125218-dc175c73a8dd
 commit: dc175c73a

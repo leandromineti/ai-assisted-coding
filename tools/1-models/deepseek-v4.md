@@ -4,7 +4,7 @@ category: 1
 maker: DeepSeek
 url: https://api-docs.deepseek.com/quick_start/pricing
 license: "unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over)"
-open_source: true
+access: open-weights
 model_id: deepseek-v4-pro / deepseek-v4-flash (API); deepseek-ai/DeepSeek-V4-Pro, DeepSeek-V4-Flash (+ -Base, -DSpark variants) on HF
 release_mode: both   # first-party API and published weights, verified on both surfaces 2026-07-31
 released: "Preview 2026-04-24 ('DeepSeek-V4 Preview is officially live & open-sourced') → GA 2026-08-13 (vendor's own title: 'GA Release') — the sweep's only explicit preview→GA arc, 3.5 months (verified 2026-08-17)"

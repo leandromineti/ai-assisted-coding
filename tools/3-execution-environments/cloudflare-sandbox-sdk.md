@@ -4,7 +4,7 @@ category: 3
 maker: Cloudflare, Inc.
 url: https://github.com/cloudflare/sandbox-sdk
 license: Apache-2.0   # root LICENSE file at the pin states Apache-2.0; gh api repos/cloudflare/sandbox-sdk reports license.spdx_id NOASSERTION — the repo's own LICENSE file is authoritative, not the API label (see What it is)
-open_source: true
+access: open-source
 stack: [TypeScript, Cloudflare Workers]   # turbo monorepo; ts(447) is the dominant extension count per repo-facts.sh
 version: "@cloudflare/sandbox@0.12.7-2-g6abf639"
 commit: 6abf639   # this is what build-tool-index --check validates

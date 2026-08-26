@@ -5,7 +5,7 @@ type: memory
 maker: MemTensor (MemOS)
 url: https://github.com/MemTensor/MemOS
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [TypeScript, Python]
 version: v2.0.30-20-g85532420
 commit: 85532420

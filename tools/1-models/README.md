@@ -77,8 +77,8 @@ Two things that pass came out of it, both recorded rather than smoothed over:
   excludes Haiku 4.5 outright. A derivation that survives its own check is worth noting —
   the ones that don't are why the other three cells stayed `·` instead.
 
-The other half of the surface is **9 transcription fields** — `maker`, `license`,
-`model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
+The other half of the surface is **10 transcription fields** — `maker`, `license`,
+`access`, `model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
 `knowledge_cutoff` — facts copied from a dated source rather than judged.
 
 Definitions for every key:

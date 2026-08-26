@@ -5,7 +5,7 @@ type: memory
 maker: Mem0 (mem0ai, YC S24)
 url: https://github.com/mem0ai/mem0
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [TypeScript, Python]
 version: ts-v3.1.6-20-g001c2352
 commit: 001c2352

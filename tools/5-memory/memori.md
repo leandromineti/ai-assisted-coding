@@ -5,7 +5,7 @@ type: memory
 maker: MemoriLabs
 url: https://github.com/MemoriLabs/Memori
 license: Apache-2.0
-open_source: true
+access: open-source
 stack: [Rust, Python, TypeScript]
 version: v3.3.6-24-g538b61f
 commit: 538b61f
