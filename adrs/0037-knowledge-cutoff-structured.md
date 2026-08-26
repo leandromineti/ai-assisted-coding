@@ -1,6 +1,10 @@
 # ADR-0037 — `knowledge_cutoff` becomes structured, with two dates and a basis
 
-`decided: 2026-08-26` · status: **accepted**
+`decided: 2026-08-26` · status: **superseded in part by
+[ADR-0038](0038-cutoff-single-date.md) (2026-08-26): the two-date clause only — the
+field now carries one date, the training-data limit, with any finer vendor figure in
+`note`. The mapping, `basis`, the null-when-not-stated constraint and the cell-value
+check all stand**
 
 ## Decision
 

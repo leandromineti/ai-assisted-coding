@@ -231,16 +231,15 @@ def check_cutoff(reports: list[dict]) -> None:
         if c.get("basis") not in CUTOFF_BASIS:
             sys.exit(f"{rel}: `knowledge_cutoff.basis` is {c.get('basis')!r} — "
                      f"known: {sorted(CUTOFF_BASIS)}")
-        for k in ("knowledge", "training_data"):
-            v = c.get(k)
-            if v is not None and not DATE_RE.match(str(v)):
-                sys.exit(f"{rel}: `knowledge_cutoff.{k}` must be YYYY-MM or YYYY-MM-DD, got {v!r}")
+        v = c.get("date")
+        if v is not None and not DATE_RE.match(str(v)):
+            sys.exit(f"{rel}: `knowledge_cutoff.date` must be YYYY-MM or YYYY-MM-DD, got {v!r}")
         absent = c["basis"] in ("not-stated", "retracted")
-        if absent and c.get("knowledge") is not None:
-            sys.exit(f"{rel}: `knowledge_cutoff.knowledge` is set while basis is "
+        if absent and c.get("date") is not None:
+            sys.exit(f"{rel}: `knowledge_cutoff.date` is set while basis is "
                      f"`{c['basis']}` — a date the vendor does not stand behind")
-        if not absent and c.get("knowledge") is None:
-            sys.exit(f"{rel}: `knowledge_cutoff.knowledge` is required when basis is "
+        if not absent and c.get("date") is None:
+            sys.exit(f"{rel}: `knowledge_cutoff.date` is required when basis is "
                      f"`{c['basis']}`")
         if not c.get("note"):
             sys.exit(f"{rel}: `knowledge_cutoff.note` is required — the surface checked, "
@@ -762,9 +761,7 @@ def fmt_cutoff(c) -> str:
     prose the date cannot hold (ADR-0037)."""
     if not isinstance(c, dict):
         return str(c)
-    head = f"**{c['knowledge']}**" if c.get("knowledge") else "**—**"
-    if c.get("training_data") and c["training_data"] != c.get("knowledge"):
-        head += f" · training data {c['training_data']}"
+    head = f"**{c['date']}**" if c.get("date") else "**—**"
     head += f" · `{c.get('basis')}`"
     return f"{head} — {c['note']}" if c.get("note") else head
 

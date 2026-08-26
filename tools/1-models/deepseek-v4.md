@@ -17,8 +17,7 @@ pricing:
   regime: time-of-day
   note: "peak/off-peak since 2026-08-16 16:00 UTC — off-peak is 50% of peak (peak 01:00–04:00 + 06:00–10:00 UTC): Pro $1.32 / $3.96 peak, $0.66 / $1.98 off-peak; Flash $0.44 / $1.32 peak, $0.22 / $0.66 off-peak per MTok (verified 2026-08-17; supersedes the flat launch rates recorded 2026-07-31)"
 knowledge_cutoff:
-  knowledge: null       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: null
+  date: null          # the limit date on training data
   basis: not-stated
   note: "not disclosed by vendor — no cutoff on the HF model card or either launch/GA announcement (checked 2026-08-17); third-party 'April 2026' claims are ship-date inference"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged

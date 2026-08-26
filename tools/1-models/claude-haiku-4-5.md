@@ -17,10 +17,9 @@ pricing:
   regime: flat
   note: "$1 / $5 per MTok (verified 2026-08-17)"
 knowledge_cutoff:
-  knowledge: 2025-02       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: 2025-07
+  date: 2025-07          # the limit date on training data
   basis: vendor-stated
-  note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs define the pair as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used"
+  note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs define the pair as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used — RECORDED HERE AS THE TRAINING-DATA LIMIT (2025-07); the vendor's finer 'reliable knowledge cutoff' is 2025-02 (ADR-0038: one date, the outer bound)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "extended (budget_tokens) — the only current model without adaptive thinking"
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"

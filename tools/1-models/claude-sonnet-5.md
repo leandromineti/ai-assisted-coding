@@ -17,8 +17,7 @@ pricing:
   regime: flat
   note: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
 knowledge_cutoff:
-  knowledge: 2026-01       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: 2026-01
+  date: 2026-01          # the limit date on training data
   basis: vendor-stated
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged

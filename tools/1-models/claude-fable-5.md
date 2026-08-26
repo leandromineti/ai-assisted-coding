@@ -17,8 +17,7 @@ pricing:
   regime: flat
   note: "$10 / $50 per MTok (verified 2026-08-17)"
 knowledge_cutoff:
-  knowledge: 2026-01       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: 2026-01
+  date: 2026-01          # the limit date on training data
   basis: vendor-stated
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged

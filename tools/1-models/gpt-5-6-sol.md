@@ -17,8 +17,7 @@ pricing:
   regime: context-tiered
   note: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20; prompts >272k input tokens billed 2x in / 1.5x out for the whole request (verified 2026-08-17)"
 knowledge_cutoff:
-  knowledge: 2026-02-16       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: null
+  date: 2026-02-16          # the limit date on training data
   basis: vendor-stated
   note: "Feb 16, 2026 (all three tiers)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged

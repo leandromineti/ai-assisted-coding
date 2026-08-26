@@ -17,8 +17,7 @@ pricing:
   regime: flat
   note: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"
 knowledge_cutoff:
-  knowledge: 2026-05       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: 2026-05
+  date: 2026-05          # the limit date on training data
   basis: vendor-stated
   note: "May 2026 (reliable); training data May 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged

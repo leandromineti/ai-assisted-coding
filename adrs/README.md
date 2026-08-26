@@ -97,4 +97,5 @@ the library was renamed and split the same day, so those map to
 | [0034](0034-references-papers-and-cards.md) | 2026-08-26 | `refs/` → `references/`, split into `papers/` + `cards/`; card notes carry a required archive `snapshot` | accepted |
 | [0035](0035-generated-sqlite-export.md) | 2026-08-26 | Generated SQLite export (`comparisons/repo.db`, gitignored) for querying; frontmatter stays authoritative | accepted |
 | [0036](0036-feature-taxonomy-yaml-split.md) | 2026-08-26 | The feature registry becomes `docs/feature-taxonomy.yaml`, pairing with its prose like `tool-taxonomy.{md,yaml}` | accepted |
-| [0037](0037-knowledge-cutoff-structured.md) | 2026-08-26 | `knowledge_cutoff` becomes a mapping: two dates + `basis` (vendor-stated \| inherited \| not-stated \| retracted); third cell-value check | accepted |
+| [0037](0037-knowledge-cutoff-structured.md) | 2026-08-26 | `knowledge_cutoff` becomes a mapping: two dates + `basis` (vendor-stated \| inherited \| not-stated \| retracted); third cell-value check | two-date clause superseded by 0038 |
+| [0038](0038-cutoff-single-date.md) | 2026-08-26 | One cutoff date, meaning the training-data limit; the finer vendor figure moves to `note` | accepted |

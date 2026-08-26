@@ -17,8 +17,7 @@ pricing:
   regime: flat
   note: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20, GLM-5-Turbo $1.20 / $4.00 (verified 2026-08-26)"
 knowledge_cutoff:
-  knowledge: null       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: null
+  date: null          # the limit date on training data
   basis: not-stated
   note: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
 model_features:   # nested per ADR-0014

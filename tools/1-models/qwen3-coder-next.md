@@ -17,8 +17,7 @@ pricing:
   regime: route-dependent
   note: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
 knowledge_cutoff:
-  knowledge: null       # YYYY-MM or YYYY-MM-DD; null when none is published
-  training_data: null
+  date: null          # the limit date on training data
   basis: not-stated
   note: "not stated by Qwen — HF README (full read), Model Studio page, and launch blog all silent (checked 2026-08-17)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
