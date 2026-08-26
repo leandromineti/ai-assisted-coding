@@ -148,8 +148,14 @@ check starts where the fact actually lives:
   - The index renders its labels client-side — raw HTML exposes only the PDF URLs — so
     mapping a model to its card means opening the page.
 
-  **Unchecked:** which cards, if any, cover the 5-generation models this repo tracks. Only
-  the Opus 4 / Sonnet 4 card was opened, and only far enough to establish the genre.
+  **Checked 2026-08-26 for two of the four tracked Claude models, and they disagree:**
+  the [Opus 5 card](../../references/cards/2026-claude-opus-5.md) (198 pp) states *"Claude
+  Opus 5's knowledge cutoff date is May 2026"* in §1.1; the
+  [Sonnet 5 card](../../references/cards/2026-claude-sonnet-5.md) (146 pp, same §1.1
+  heading, three weeks earlier) has **zero occurrences of "cutoff"** and gives its training
+  data's sources and methods without a date. So within Anthropic the cards are an
+  inconsistent specs surface and **the docs table is the reliable one** — it carries both
+  cutoff fields for every model, as structured data, in one fetch.
 
 - **Anthropic API docs beat the system cards for specs, and it isn't close.**
   [`docs.claude.com/en/docs/about-claude/models/overview`](https://docs.claude.com/en/docs/about-claude/models/overview)

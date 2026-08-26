@@ -19,7 +19,7 @@ pricing:
 knowledge_cutoff:
   date: 2026-05          # the limit date on training data
   basis: vendor-stated
-  note: "May 2026 (reliable); training data May 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
+  note: "May 2026 (reliable); training data May 2026 — the two coincide. corroborated 2026-08-26 by a second first-party surface — the [Opus 5 system card](../../references/cards/2026-claude-opus-5.md) §1.1: 'Claude Opus 5's knowledge cutoff date is May 2026' — and re-verified the same day against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: adaptive
   effort_control: "effort param; defaults high on Claude API and Claude Code"
