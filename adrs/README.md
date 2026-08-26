@@ -95,3 +95,4 @@ the library was renamed and split the same day, so those map to
 | [0032](0032-value-type-column.md) | 2026-08-26 | `value_type` on every registry entry (9 values, repo vocabulary not generic types), rendered as the Type column; unknown values are a generator error | accepted |
 | [0033](0033-pricing-structured.md) | 2026-08-26 | `pricing` becomes a mapping (numeric core + regime + verbatim note); tenth `value_type` `structured`; first cell-value check | accepted |
 | [0034](0034-references-papers-and-cards.md) | 2026-08-26 | `refs/` → `references/`, split into `papers/` + `cards/`; card notes carry a required archive `snapshot` | accepted |
+| [0035](0035-generated-sqlite-export.md) | 2026-08-26 | Generated SQLite export (`comparisons/repo.db`, gitignored) for querying; frontmatter stays authoritative | accepted |

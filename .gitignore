@@ -23,4 +23,9 @@ references/papers/pdf/*
 # URL. The note plus its snapshot is the record; this copy is a convenience.
 references/cards/pdf/*
 !references/cards/pdf/.gitkeep
+# Generated SQLite export of the corpus — a VIEW over frontmatter, never authoritative
+# (ADR-0035). Rebuilt from scratch in under a second by scripts/build-db.py, so it is
+# never worth committing and never worth repairing: delete and rebuild.
+comparisons/repo.db
+
 __pycache__/
