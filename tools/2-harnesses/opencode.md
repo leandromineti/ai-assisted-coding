@@ -315,6 +315,33 @@ you attach — which is itself the product's position.
 5. **Cache reads count toward overflow.** Cheap ≠ absent.
 6. **Written entirely in Effect.** An unusual bet for a project this size — worth watching
    whether it helps or just raises the contribution barrier.
+7. **Reasoning effort is a chain of per-model-id string matches, and it version-pins**
+   (2026-08-26, at this report's pin `017a5977d`, not a re-read of the whole report).
+   `ProviderTransform.variants()` in `packages/opencode/src/provider/transform.ts` maps an
+   effort name to request params through ~100 lines of `id.includes(...)` branches —
+   `minimax-m3`, `glm-5.2`, Kimi-on-Anthropic-transports, `grok-3-mini`, then a per-SDK
+   switch. GLM's branches match the literal set `["glm-5.2", "glm-5-2", "glm-5p2"]`
+   (`transform.ts:725`), so **GLM-5.3 matches none of them** and falls to
+   `(id.includes("glm") && !glm52) → return {}` (`:779`) — an empty variant map, meaning no
+   effort parameter is sent at all. Same short-circuit for `kimi`, `deepseek-*`, `minimax`,
+   `qwen`.
+
+   The consequence lands on cost, not correctness, and it lands hardest on exactly the two
+   models where it is most expensive: **GLM-5.3 and Kimi K3 are the sweep's only
+   default-to-`max` models** (see [`comparisons/models.md`](../../comparisons/models.md) —
+   `levels:low/high/max@max` on both). Send no effort parameter and the server applies its
+   own default, so those two run at their most expensive setting with no way to step down
+   from here. DeepSeek V4 takes the same path but defaults to `high`, so it costs less to
+   be wrong about.
+
+   This is not a bug report — sending nothing is defensible, and the request still
+   succeeds. It is the **verified instance** that `tools/1-models/glm-5.3.md` surprise #3
+   predicted in the abstract on 2026-08-26 (*"version-pinning behavior worth remembering
+   when a harness hardcodes thinking params"*), scored the same day: prediction landed,
+   mechanism as described, on the first harness checked. Found via
+   [issue #39](https://github.com/leandromineti/ai-assisted-coding/issues/39); verified at
+   the pin with `git show 017a5977d:…` after the clone was found sitting on drifted HEAD
+   (`03bff6500`) — the finding holds at both.
 
 ## Open questions
 
