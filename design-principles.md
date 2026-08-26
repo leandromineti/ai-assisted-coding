@@ -66,6 +66,19 @@ model-declared completion with no step budget at all, so a repeated-call guard w
 the only bound in a design that otherwise trusts the model to stop. Worth asking the next
 deep-dive explicitly, since a third data point either way settles the shape.
 
+*Confronted 2026-08-26 (gemini-cli read 08-25, pi read 08-26) — two data points, still
+contested, and the abstain pole gains company.* gemini-cli **guards**: loop detection is
+default-on (5 identical calls / 10 repeated content chunks / an LLM loop-check after
+turn 30), but its *first* firing is a coaching re-prompt and only the second aborts — a
+fourth resolution shape (steer-in-band-then-halt-on-repeat), distinct from opencode's
+human-escalation and hermes' synthetic-result path. pi **abstains**: no loop detection
+and no turn/step/token budget anywhere (grep over all `packages/*/src` → 0), matching
+codex's deliberate silence. So of five deep-dived harnesses the tally is **3 guard / 2
+abstain**, and the two abstainers share a rationale — a loop guard would be the only
+bound in a design that otherwise trusts the model (codex) or the environment (pi) to
+stop. Still contested; what is newly clear is that abstention is a *position*, not an
+oversight, held by two independent vendors.
+
 **H3. Two chokepoints, not one: shape what the model can see, then gate what it does.**
 *(convergent — the strongest architectural pattern in the set; deepened 2026-07-30)*
 opencode filters the tool list before the model sees it (`visibleTools`) and gates
@@ -88,6 +101,19 @@ enforcement (an in-`edit` linter that *discards* invalid edits, +3.0pp) each buy
 points, and a badly shaped tool (iterative search) scores *below having no tool at
 all* (−6.0 vs −2.3). The pattern this repo found convergent in 2026 harness source
 was measured at NeurIPS 2024.
+*Confronted 2026-08-26 — gemini-cli confirms the three-category form; pi is the sharp
+counter-instance on the second chokepoint.* gemini-cli implements all three cleanly:
+visibility shaping (statically-denied tools stripped from the model's schema), decision
+gating (a ~12.8k-line tiered TOML policy engine, ASK_USER default), and — a novel third
+— an LLM-authored *one-way* policy checker (CONSECA) that can only tighten a decision,
+never loosen it ([gemini-cli](notes/02-harnesses/gemini-cli.md)). pi removes the middle
+chokepoint entirely: no permission system, `bash`/`write`/`edit` dispatch unprompted
+(README states it; grep `confirm|approve|permission` over core tools → 0), and its
+`--tools`/`--exclude-tools` knobs are visibility-only, pre-decision
+([pi](notes/02-harnesses/pi.md)). So "gate what it does" is now a design *position*, not
+a universal — two harnesses ship without it (dsh substituting a compiled sandbox, pi
+substituting nothing). H3 holds as *what the strongest designs do*; it can no longer be
+stated as *what all serious harnesses do*.
 
 **H4. Prompts are versioned data, not string literals.** *(convergent, spans categories 2
 and 4)* opencode imports tool descriptions from `.txt` files; spec-kit's product *is*
@@ -110,6 +136,15 @@ paid for in machinery and history growth ([codex](notes/02-harnesses/codex.md)).
 durable core of the principle is *append-only prefix discipline*; freshness-vs-staleness
 is an implementation choice on top of it. Also recorded as differentiation axis 6 in
 [`notes/02-harnesses/index.md`](notes/02-harnesses/index.md).
+*Confronted 2026-08-26 — both reads CONFIRM append-only prefix discipline, pi most
+strongly.* gemini-cli documents a tiered cache layout (volatile memory kept out of the
+system-instruction prefix; JIT subdirectory context appended to tool output). pi is the
+strongest positive instance in the set — a deliberately clock-free prefix, default-on
+`cache_control` at correct breakpoints, `cacheRetention:'none'` on one-off summaries —
+and the only tracked harness that **instruments its own cache waste**, showing the user
+an inline dollar figure for misses ([pi](notes/02-harnesses/pi.md)). The invariant is now
+convergent across five-plus harnesses; the freshness-vs-staleness implementation axis is
+untouched by either read.
 
 **H6. Termination must be designed; budgets shape behavior in ways you choose.**
 *(convergent on the first clause, two designs on the second)* opencode terminates on
@@ -130,6 +165,14 @@ instructions per model slug *inside* its WorldState, per-model prompting applied
 vendor's own family. README conclusion 1 has the detail. This file records it as a
 *forced decision*, not a principle: harness builders cannot avoid it, and none of the
 five has published evidence.
+*Confronted 2026-08-26 — two more positions, both toward convergence.* gemini-cli ships
+two full prompt bodies switched on model *family* (gemini-3+/custom vs legacy), not per
+slug; pi ships **exactly one** across ~9 provider API families — the strongest
+convergence vote yet, a multi-provider client with zero family-conditional prose (a
+Claude Code identity block prepends on Anthropic *OAuth*, but that is auth-mode-keyed,
+not model-keyed). The documented positions are now seven, and the two newest both sit at
+or near the one-prompt pole. Still no eval backing for any position; still a forced
+decision — but the centre of gravity has drifted toward "one prompt fits all".
 
 **H8. Keep the core a narrow waist; ship capability at the edges as data.**
 *(convergent)* hermes states it outright (every core tool is paid for on every API
@@ -144,6 +187,18 @@ turn-end gates as a hook SURFACE (waist-shaped — the mechanism is an extension
 hermes as always-on loop POLICY (core growth). Whether absorbed mechanisms arrive as
 surfaces or as core code may be H8's real test — see
 [the absorption table](notes/02-harnesses/index.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).)*
+*Confronted 2026-08-26 (pi) — the strongest instance in the set, and it exposes H8's
+uncomfortable corollary.* pi takes the narrow waist furthest of anything read: four
+default tools, no budget, no loop detection, a stock loop with **zero active
+interception points**, and every other capability — plan mode, subagents, gates, memory
+— shipped as removable extensions ([pi](notes/02-harnesses/pi.md)). But pi also pushes
+the *permission gate* out to the edges (there is none in core), which is where "narrow
+waist" and E1 collide: a waist this narrow means the loop ships with no safety of its
+own and *depends* on category 3 to supply it. So H8 is confirmed as an architecture and
+qualified as a safety stance — the removable-everything ideal is only safe when
+something below the harness (the environment) is not removable. The
+surface-vs-core-growth test (codex hook-surface vs hermes loop-policy) gains pi as the
+limit case: it declines to grow the core at all, and exports the risk downward.
 
 ## Category 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
 
@@ -153,6 +208,12 @@ documented bundles a sandbox, not a smarter model; hermes ships eight terminal-b
 implementations and its serverless pitch is an *economics* answer to keeping an
 always-on agent isolated. The same permission flag that is reckless on a host is sane
 in a container.
+*Confronted 2026-08-26 (pi) — CONFIRMS in its purest form.* pi ships no permission gate
+and no sandbox and states in its own README that isolation is the user's responsibility
+(external containerization); its autonomy ceiling is *defined* to live in category 3,
+gate-factor 1 ([pi](notes/02-harnesses/pi.md)). The clearest instance yet of "buy
+autonomy with isolation, not model quality" — a harness with, quite literally, nothing
+but isolation available to buy it with.
 
 **E2. Isolation without fidelity produces category-2-looking failures — engineer the
 fidelity back explicitly.** *(convergent)* The worktree/gitignore trap
@@ -172,6 +233,16 @@ identity). opencode takes the fifth position: **none of them** — it runs on th
 does nothing about isolation, which is a choice rather than an omission. Defined in
 [`notes/03-execution-environments/index.md`](notes/03-execution-environments/index.md),
 rendered in [`comparisons/environments.md`](comparisons/environments.md).
+*Confronted 2026-08-26 (pi) — a second abstention instance, which makes the fifth
+position convergent.* After opencode's "none of the four verbs", pi is the second
+harness to take the null environment relation deliberately: no sandbox, no worktree
+machinery, no container launcher, no environment self-detection — confinement declined
+and delegated to docs ([pi](notes/02-harnesses/pi.md)). E3's "four verbs **plus
+abstention**" now reads as the complete option set with two independent votes for the
+abstention pole, rather than four verbs and a lone outlier. Note the contrast with
+gemini-cli, which ships all four verbs but default-off — "abstention" (pi: nothing built)
+and "dormant" (gemini-cli: built, unmounted) are different null states, and only pi's is
+a design position on category 3 rather than a default.
 
 *Recorded with the principle, because it is the uncomfortable part:* all four verbs are
 properties of **category-2 tools**, discovered inside category-2 reads. The 2026-08-16

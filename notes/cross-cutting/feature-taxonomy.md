@@ -74,7 +74,7 @@ features:
     block: harness_features
     applies_to: [2]
     definition: "per-tool human approval at dispatch — the harness can ask before executing a tool call; distinct from sandbox bounds (the environment_relation field) and from turn gates (turn_end_gates)"
-    note: "added 2026-08-25 after the dsh deep-dive supplied the first verified absent (its tools/pre-execute default is allow; the sole prompt in a stock run is a model-initiated sandbox escalation) — the axis discriminates: 5 present / 1 absent at admission, all transcribed from the category-2 index's absorption table at their pins. Warp's present carries the AgentDecided caveat (a model-authored is_risky:false self-authorizes)"
+    note: "added 2026-08-25 after the dsh deep-dive supplied the first verified absent (its tools/pre-execute default is allow; the sole prompt in a stock run is a model-initiated sandbox escalation) — the axis discriminates: 6 present / 2 absent as of 2026-08-26, all transcribed from the category-2 index's absorption table at their pins. Warp's present carries the AgentDecided caveat (a model-authored is_risky:false self-authorizes). The two absents (dsh, pi) take OPPOSITE philosophies and that is the discriminating finding: dsh moves the gate down a level to a compiled per-call OS sandbox; pi removes it entirely (no permission system, no sandbox, runs as the launching user, confinement delegated to external containerization by docs — pi.md, 2026-08-26). gemini-cli's present is the strongest form: a tiered TOML policy engine, ASK_USER default, plus a one-way LLM-authored checker (CONSECA)"
   - id: skills
     block: harness_features
     applies_to: [2]
