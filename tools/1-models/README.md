@@ -17,6 +17,29 @@ behavior is OBSERVED-grade evidence, not source. Closed-weight models therefore 
 out at `survey` no matter how much we measure them; the measurements go into a
 report's evidence cells, not its depth field.
 
+## What we assess here
+
+The assessed block is **`model_features:`, 4 keys** (2026-08-26): `thinking`,
+`effort_control`, `prompt_caching`, `batch_discount`. The weights themselves are
+untraceable at this repo's level of analysis — which is why category 1 deliberately has no
+component decomposition — so what *is* assessable is the first-party surface around them:
+the two keys that change how a harness can drive the model, and the two that decide what a
+completed task costs. Values are free text in each vendor's own vocabulary rather than
+presence-claims ([ADR-0014](../../adrs/0014-model-features-into-registry.md)), because the
+economics differ structurally across vendors and flattening them to ✓/✗ would erase the
+finding. Each is verified against the report's `url` on its `checked` date.
+
+The other half of the surface is **9 transcription fields** — `vendor`, `license`,
+`model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
+`knowledge_cutoff` — facts copied from a dated source rather than judged.
+
+Definitions for every key:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
+[`comparisons/features.md § Models`](../../comparisons/features.md#models-category-1) and
+the fuller [`comparisons/models.md`](../../comparisons/models.md). A key is set **only**
+when verified — omitted means "not checked", `false` means "checked and absent", and both
+are claims.
+
 ## Inventory
 
 | Model | Vendor | Release | One-line |

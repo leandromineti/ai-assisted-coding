@@ -1,11 +1,33 @@
 # Category 3 — Execution environments
 
-`checked: 2026-08-21`
+`checked: 2026-08-26`
 
 Where the agent's code actually runs, and what it can damage. See
 [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
 
 The most-ignored category, because it's invisible until it fails.
+
+## What we assess here
+
+The assessed block is **`environment_features:`, 8 keys** (2026-08-26):
+`isolation_primitive`, `egress_default`, `egress_controls`, `credential_model`,
+`snapshot_model`, `self_host`, `warm_pool`, `filesystem_sync`. Most carry **enum values
+rather than ✓/✗** ([ADR-0017](../../adrs/0017-environment-features-block.md)), and that is
+the category's whole point: every environment isolates something and every one has some
+egress posture, so the discriminating fact is *which* primitive and *which* default, never
+whether one exists. Read them through the category's three questions — blast radius
+(`isolation_primitive`, `credential_model`), fidelity (`filesystem_sync`, `snapshot_model`),
+and parallelism (`warm_pool`, `self_host`).
+
+The other half is **7 transcription fields** — `vendor`, `license`, `stars`,
+`first_commit`, `version`, `commit`, `stack` — facts copied from a dated source rather than
+judged.
+
+Definitions:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
+[`comparisons/features.md § Execution environments`](../../comparisons/features.md#execution-environments-category-3).
+A key is set **only** when verified in source or official docs — omitted means "not
+checked", `false` means "checked and absent", and both are claims.
 
 ## Seed inventory
 

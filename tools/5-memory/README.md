@@ -1,6 +1,6 @@
 # 5 — Memory
 
-`checked: 2026-08-22`
+`checked: 2026-08-26`
 
 Persistent cross-session state as an installable product — **the agent↔time edge**. Fed
 by hooks/MCP during a session, consolidated between sessions, injected back at the next
@@ -8,9 +8,7 @@ session start, on any harness. A full category since the 2026-08-22 split
 ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)); born 2026-08-18
 as the extensions bucket's `memory` type (the bucket is now
 [category 6](../6-extensions/README.md)). Reports keep `type: memory` in frontmatter as
-residual data; the category's feature vocabulary is the 13-key `memory_features` block
-([ADR-0013](../../adrs/0013-memory-features-block.md)) with its
-[generated matrix](../../comparisons/features.md). Roster count (2026-08-22): **eight**
+residual data. Roster count (2026-08-22): **eight**
 reports carry `category: 5` — the eight rows in the generated
 [tools matrix](../../comparisons/tools.md). ADR-0020's "all nine reports stay" counted
 the pre-split bucket's nine files, which included ecc — moved to category 6 by the same
@@ -33,6 +31,34 @@ Since 2026-08-25 the category has an explicit component decomposition —
 of those components (capture path → capture; store wager → consolidation; recall
 injection and trust boundary → recall), and `harness_installer` is the aperture, not
 a pipeline stage.
+
+## What we assess here
+
+The assessed block is **`memory_features:`, 13 keys** (2026-08-26,
+[ADR-0013](../../adrs/0013-memory-features-block.md)): `memory_store`, `capture_path`,
+`write_admission`, `recall_injection`, `memory_scope`, `memory_tiers`,
+`hybrid_retrieval`, `decay`, `memory_revision`, `injection_trust_boundary`,
+`deployment_mode`, `harness_installer`, `rule_extraction`. They map onto the three
+components above — capture (`capture_path`, `write_admission`), consolidation
+(`memory_store`, `memory_tiers`, `decay`, `memory_revision`, `rule_extraction`), and
+recall (`recall_injection`, `hybrid_retrieval`, `injection_trust_boundary`) — with
+`harness_installer` the aperture onto a harness.
+
+Values are **descriptive enums naming a mechanism choice, not ADR-0011 enforcement
+grades**: every tool in this category stores something and recalls something, so the
+finding is always *which* posture, never *whether*. Four consolidation postures are
+verified so far, and the roster's zero shared formats is the population-level version of
+the same point.
+
+The other half is **8 transcription fields** — `vendor`, `license`, `stars`,
+`first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
+source rather than judged.
+
+Definitions:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
+[`comparisons/features.md § Memory`](../../comparisons/features.md#memory-category-5). A
+key is set **only** when verified in source or official docs — omitted means "not
+checked", `false` means "checked and absent", and both are claims.
 
 ## The memory matrix — first cut (2026-08-19)
 

@@ -7,7 +7,7 @@
 > ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)): the memory
 > type left this bucket to become category 5 — [Memory](../5-memory/README.md).
 
-`checked: 2026-08-22`
+`checked: 2026-08-26`
 
 What the agent can **see and touch**, as distributable content. **A bucket, not a
 category-of-fundamentals, since the 2026-07-30 taxonomy revision** (trigger fired at the
@@ -20,6 +20,25 @@ is a storage key (3 → 5 by [ADR-0007](../../adrs/0007-renumber-core-triad-firs
 This index covers the **installable things**. The specifications they implement — MCP the
 protocol, the `AGENTS.md` convention — are not category entries; they live in
 [`../standards/`](../../docs/standards.md).
+
+## What we assess here
+
+**This category has no assessed feature block**, and the absence is deliberate rather than
+a gap: the `type` vocabulary below is tool-taxonomy *classification*
+([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)), not a set of
+characteristics judged on a subject. An extension's interesting property is how far its
+file convention has been adopted — which is a per-type, dated measurement kept in the
+[standards scoreboard](../../docs/standards.md), deliberately not a name and deliberately
+not a matrix column ([ADR-0005](../../adrs/0005-rename-to-extensions.md)). Where a
+category-6 artifact does get feature cells, they are borrowed from the harness vocabulary,
+because what is being described is the harness-side surface the artifact plugs into.
+
+What reports here do carry is **8 transcription fields** — `vendor`, `license`, `stars`,
+`first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
+source rather than judged.
+
+Definitions, and the empty-block statement itself:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md) § Extensions.
 
 ## Types
 

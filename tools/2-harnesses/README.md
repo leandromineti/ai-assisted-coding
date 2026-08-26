@@ -9,6 +9,32 @@ The prevailing mid-2026 read: the frontier models have converged enough that **t
 now decides most of the day-to-day experience**. That claim is worth testing here rather
 than repeating.
 
+## What we assess here
+
+The assessed block is **`harness_features:`, 14 keys** (2026-08-26): `mcp`, `lsp`, `hooks`,
+`turn_end_gates`, `tool_approval`, `skills`, `subagents`, `ptc`, `plan_mode`,
+`rules_files`, `model_agnostic`, `session_sharing`, `evals`, `learning_loop`. They sort
+under the category's three components — the loop (`subagents`, `plan_mode`,
+`turn_end_gates`, `ptc`), context assembly (`skills`, `rules_files`, `learning_loop`), and
+the permission gate (`tool_approval`) — with the rest describing reach and portability.
+All are presence-claims except `turn_end_gates`, which is graded engine \| hook \| script \|
+prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
+because *who enforces* a gate turned out to matter more than whether one exists.
+
+This is the presence half only, and the warning below applies to it: the matrix answers
+"does it ship this?", never "does it pay?" — the mechanism sections further down are where
+that second question is argued.
+
+The other half is **11 transcription fields** — `vendor`, `license`, `stars`,
+`first_commit`, `version`, `commit`, `stack`, `surfaces`, `execution`, `environments`,
+`environment_relation` — facts copied from a dated source rather than judged.
+
+Definitions:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
+[`comparisons/features.md § Harnesses`](../../comparisons/features.md#harnesses-category-2).
+A key is set **only** when verified in source or official docs — omitted means "not
+checked", `false` means "checked and absent", and both are claims.
+
 ## Inventory
 
 Two axes, recorded separately — an earlier version of this index grouped by a single

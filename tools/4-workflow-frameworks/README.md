@@ -1,12 +1,48 @@
 # Category 4 — Workflow frameworks
 
-`checked: 2026-08-18`
+`checked: 2026-08-26`
 
 An encoded **methodology** riding on top of a harness. Runtime is to framework as harness
 is to this. See [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
 
 The category test is **harness portability by design**: the methodology is defined once and
 targets many harnesses.
+
+## What we assess here
+
+The assessed block is **`workflow_features:`, 9 keys** (2026-08-26, added 2026-08-18):
+`intent_pipeline`, `deterministic_engine`, `format_gates`, `measured_gates`,
+`process_gates`, `context_isolation`, `parallel_orchestration`, `state_store`,
+`retrospectives` — one per mechanism the category sells, which is what makes the same
+vocabulary reusable for the absorption question asked of harnesses in
+[category 2](../2-harnesses/README.md#what-category-2-has-absorbed--the-category-4-feature-set-checked-against-harnesses).
+The three gate keys are **graded** (`engine | hook | script | prose | true | false` —
+[ADR-0011](../../adrs/0011-graded-gate-enforcement.md)) after the GSD deep-dive supplied a
+second instance of the who-enforces ambiguity; a bare `true` in a gate column is an
+explicit unanswered question.
+
+The division of labor with the mechanism table below: a **feature** is a presence-claim
+(the machinery exists, verified in source or docs); a **mechanism** is a value-claim (it
+measurably pays). The matrix says *what* each framework built; the experiments say
+*whether it matters*.
+
+**First falsification, the same day the block was created (2026-08-18):** spec-kit's
+`format_gates` went ✓→✗ at deep-dive — the survey-visible gates turned out to be prose the
+agent enforces on itself, not machinery. The calibration this buys: **a gate stated in
+prose looks like a feature until you check who enforces it**, so every README-sourced ✓ in
+a stub row (pilot-shell's `measured_gates` especially) carries an implicit asterisk until
+its source is read.
+
+The other half is **8 transcription fields** — `vendor`, `license`, `stars`,
+`first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
+source rather than judged.
+
+Definitions:
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md). Values:
+[`comparisons/features.md § Workflow frameworks`](../../comparisons/features.md#workflow-frameworks-category-4).
+A key is set **only** when verified — omitted means "not checked", `false` means "checked
+and absent", and absences are findings (Conductor's verified-absent engine; haft's
+verified-absent intent pipeline).
 
 ## Seed inventory
 
@@ -148,32 +184,6 @@ Same diagnosis, different organ.
 That bet is falsifiable, and testing it is one of the more valuable things this repo could
 do: as models improve, does imposed structure keep paying, or does it become overhead?
 First test run: [`experiments/01-gsd-vs-plain/`](../../experiments/01-gsd-vs-plain/README.md).
-
-## Feature taxonomy (2026-08-18)
-
-The category now carries the category-4 slice of the repo's **feature taxonomy** —
-`workflow_features:` in report frontmatter, with every key defined once in
-[`docs/feature-taxonomy.md`](../../docs/feature-taxonomy.md)
-([ADR-0010](../../adrs/0010-two-taxonomies.md)), rendered in
-[`comparisons/features.md`](../../comparisons/features.md). The division of
-labor with the mechanism table below: a **feature** is a presence-claim (the machinery
-exists, verified in source or docs); a **mechanism** is a value-claim (it measurably
-pays). The matrix says *what* each framework built; the experiments say *whether it
-matters*. Keys follow the same discipline as the harness vocabulary — omitted means
-"not checked", `false` means "checked and absent", and absences are findings
-(Conductor's verified-absent engine; haft's verified-absent intent pipeline).
-
-Second calibration, also 2026-08-18: the GSD deep-dive supplied the second verified
-instance of the who-enforces ambiguity, and the gate keys became **graded**
-(`engine | hook | script | prose | true | false` — [ADR-0011](../../adrs/0011-graded-gate-enforcement.md));
-a bare `true` in a gate column is now an explicit unanswered question.
-
-First falsification, same day it was created (2026-08-18): spec-kit's `format_gates`
-went ✓→✗ at deep-dive — the survey-visible gates turned out to be prose the agent
-enforces on itself, not machinery. The calibration this buys: **a gate stated in prose
-looks like a feature until you check who enforces it**, so every README-sourced ✓ in a
-stub row (pilot-shell's `measured_gates` especially) carries an implicit asterisk until
-its source is read.
 
 ## Mechanisms — the unit of value
 
