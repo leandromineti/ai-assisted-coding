@@ -105,6 +105,24 @@ style, not just capability. Details: the per-model reports' § Measured in this 
 [`exp-02 log`](../../experiments/02-spec-kit-vs-plain/log.md) § Model-tier
 calibration verdict, README conclusion 10.
 
+## First-party surfaces worth knowing
+
+`verification: dated-docs` means a fact was checked against the report's own `url` on its
+`checked` date — but a vendor's "docs" is routinely **several** surfaces, and a fact
+absent from one can be published on another. Recorded here as they are found, so the next
+check starts where the fact actually lives:
+
+- **Google DeepMind model cards** —
+  [`deepmind.google/models/model-cards/`](https://deepmind.google/models/model-cards/)
+  (index verified 2026-08-26: HTTP 200, **32 cards** listed, each with a landing page and
+  a PDF). This is a *different* first-party surface from the API docs at
+  `ai.google.dev/gemini-api/docs/models`, which every Gemini report carries as its `url`.
+  The knowledge cutoff — when Google states one at all — lives on the card, not in the
+  API spec table. Two traps found the first time it was read (2026-08-26,
+  [gemini-3-1-pro](gemini-3-1-pro.md)): a card can **delegate** whole sections to its
+  family parent's card rather than restate them, and the parent's statements are scoped
+  by model name, so a figure read there is the *parent's*, not the subject's.
+
 ## References
 
 - **[llm-coding-benchmark](https://github.com/akitaonrails/llm-coding-benchmark)** — Fabio
