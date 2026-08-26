@@ -107,7 +107,9 @@ def build() -> sqlite3.Connection:
         # silently, and a date column that arrives as a string sorts identically anyway.
         def cell(v):
             if isinstance(v, (list, dict)):
-                return json.dumps(v)
+                # default=str: YAML turns a full date (2026-02-16) into a date object,
+                # and one can now sit inside a structured value like knowledge_cutoff.
+                return json.dumps(v, default=str)
             return v if v is None or isinstance(v, (int, float, str)) else str(v)
         con.execute(
             f"INSERT INTO reports VALUES ({','.join('?' * len(row))})",

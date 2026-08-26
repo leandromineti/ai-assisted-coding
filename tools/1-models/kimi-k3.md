@@ -16,7 +16,11 @@ pricing:
   currency: USD
   regime: route-dependent
   note: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"
-knowledge_cutoff: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
+knowledge_cutoff:
+  knowledge: null       # YYYY-MM or YYYY-MM-DD; null when none is published
+  training_data: null
+  basis: not-stated
+  note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"
   effort_control: "reasoning_effort: low/high/max, default MAX — was the only default-to-most-expensive in the sweep until GLM-5.3 shipped the identical surface and default (sweep-relative clause amended 2026-08-26; the K3 facts themselves are unchanged from the 2026-08-17 check); reasoning tokens billed as output (first-party API)"

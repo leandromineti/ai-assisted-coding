@@ -72,6 +72,11 @@ VALUE_TYPES = {
 PRICING_REGIMES = {
     "flat", "context-tiered", "time-of-day", "variant-priced", "route-dependent",
 }
+# What kind of claim a knowledge-cutoff date is (ADR-0037). `inherited` exists because a
+# vendor can delegate the underlying fact — Gemini 3.1 Pro's card sends its training
+# dataset to the Gemini 3 Pro card — and that is neither stated-for-this-model nor absent.
+CUTOFF_BASIS = {"vendor-stated", "inherited", "not-stated", "retracted"}
+DATE_RE = re.compile(r"^\d{4}-\d{2}(-\d{2})?$")
 
 
 def _load_feature_registry() -> tuple[list[dict], list[dict]]:
@@ -205,6 +210,41 @@ def collect() -> list[dict]:
         reports,
         key=lambda r: (r["category"], DEPTH_ORDER.get(r["depth"], 9), r["name"]),
     )
+
+
+def check_cutoff(reports: list[dict]) -> None:
+    """Validate `knowledge_cutoff:` on every category-1 report (ADR-0037).
+
+    Second cell-value check, same standing as check_pricing: a date that does not sort is
+    worse than no date, and a date next to `basis: not-stated` is a contradiction that
+    would render as fact.
+    """
+    for r in reports:
+        if r.get("category") != 1:
+            continue
+        rel = r["_path"].relative_to(ROOT)
+        c = r.get("knowledge_cutoff")
+        if c is None:
+            continue
+        if not isinstance(c, dict):
+            sys.exit(f"{rel}: `knowledge_cutoff:` must be a mapping since ADR-0037")
+        if c.get("basis") not in CUTOFF_BASIS:
+            sys.exit(f"{rel}: `knowledge_cutoff.basis` is {c.get('basis')!r} — "
+                     f"known: {sorted(CUTOFF_BASIS)}")
+        for k in ("knowledge", "training_data"):
+            v = c.get(k)
+            if v is not None and not DATE_RE.match(str(v)):
+                sys.exit(f"{rel}: `knowledge_cutoff.{k}` must be YYYY-MM or YYYY-MM-DD, got {v!r}")
+        absent = c["basis"] in ("not-stated", "retracted")
+        if absent and c.get("knowledge") is not None:
+            sys.exit(f"{rel}: `knowledge_cutoff.knowledge` is set while basis is "
+                     f"`{c['basis']}` — a date the vendor does not stand behind")
+        if not absent and c.get("knowledge") is None:
+            sys.exit(f"{rel}: `knowledge_cutoff.knowledge` is required when basis is "
+                     f"`{c['basis']}`")
+        if not c.get("note"):
+            sys.exit(f"{rel}: `knowledge_cutoff.note` is required — the surface checked, "
+                     f"the search scope, or the delegation")
 
 
 def check_pricing(reports: list[dict]) -> None:
@@ -707,12 +747,26 @@ def render_models(reports: list[dict]) -> str:
                 cells.append("·")
             elif c == "pricing":
                 cells.append(fmt_pricing(v))
+            elif c == "knowledge_cutoff":
+                cells.append(fmt_cutoff(v))
             else:
                 cells.append(f"`{v}`" if c in MODEL_FEATURE_KEYS else str(v))
         rel = r["_path"].relative_to(ROOT)
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     lines.append("")
     return "\n".join(lines)
+
+
+def fmt_cutoff(c) -> str:
+    """Date first so the column sorts by eye, then what kind of claim it is, then the
+    prose the date cannot hold (ADR-0037)."""
+    if not isinstance(c, dict):
+        return str(c)
+    head = f"**{c['knowledge']}**" if c.get("knowledge") else "**—**"
+    if c.get("training_data") and c["training_data"] != c.get("knowledge"):
+        head += f" · training data {c['training_data']}"
+    head += f" · `{c.get('basis')}`"
+    return f"{head} — {c['note']}" if c.get("note") else head
 
 
 def fmt_pricing(p) -> str:
@@ -1020,6 +1074,7 @@ def main() -> int:
     # Runs under BOTH invocations: --check must catch a malformed price, and a plain
     # run must refuse to render one.
     check_pricing(reports)
+    check_cutoff(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

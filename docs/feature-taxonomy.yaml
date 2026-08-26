@@ -445,7 +445,23 @@ transcription_fields:
     rendered_in: [models.md]
   - id: knowledge_cutoff
     applies_to: [1]
-    value_type: free-text
-    definition: "vendor-stated only; absence is recorded as 'not stated', dated — third-party ship-date inference is not a cutoff"
+    value_type: structured
+    definition: >-
+      a mapping, not a string (ADR-0037): knowledge + training_data (YYYY-MM or
+      YYYY-MM-DD, null when the vendor publishes none) · basis · note. TWO DATES because
+      vendors publish two facts — Anthropic ships reliableKnowledgeCutoff and
+      trainingDataCutoff separately and defines them differently (knowledge = the date
+      through which the model's knowledge is most extensive; training data = the broader
+      range of data used), and Haiku 4.5 has them five months apart. They stay sub-keys of
+      one field rather than two fields: the pair describes one thing, training recency,
+      and splitting it would add a column that is null for every vendor publishing only
+      one. basis says what kind of claim the date is — vendor-stated | inherited (the
+      vendor delegates the underlying fact to another card, as Gemini 3.1 Pro delegates
+      its training dataset to Gemini 3 Pro) | not-stated | retracted — and knowledge MUST
+      be null when basis is not-stated or retracted, which is the honesty the free-text
+      version carried in prose. note is required and carries what the dates cannot: the
+      surface checked and when, the search scope behind a not-stated, the delegation
+      behind an inherited, the history behind a retracted. Third-party ship-date inference
+      is never a cutoff.
     verification: dated-docs
     rendered_in: [models.md]

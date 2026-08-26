@@ -16,7 +16,11 @@ pricing:
   currency: USD
   regime: flat
   note: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20, GLM-5-Turbo $1.20 / $4.00 (verified 2026-08-26)"
-knowledge_cutoff: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
+knowledge_cutoff:
+  knowledge: null       # YYYY-MM or YYYY-MM-DD; null when none is published
+  training_data: null
+  basis: not-stated
+  note: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
 model_features:   # nested per ADR-0014
   thinking: "always-on — 'GLM-5.3 always operates with reasoning enabled'; thinking.type: disabled is 'no longer supported', and the migration note tells 5.2 users to flip disabled→enabled before upgrading"
   effort_control: "reasoning_effort: low/high/max, default MAX ('Deep Reasoning') — the same surface and same most-expensive default as Kimi K3, ending K3's run as the sweep's only default-to-max"

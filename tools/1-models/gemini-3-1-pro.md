@@ -16,7 +16,11 @@ pricing:
   currency: USD
   regime: context-tiered
   note: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
-knowledge_cutoff: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
+knowledge_cutoff:
+  knowledge: 2025-01       # YYYY-MM or YYYY-MM-DD; null when none is published
+  training_data: 2025-01
+  basis: inherited
+  note: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "dynamic ('thinking by default'), cannot be fully disabled; thinking_level caps depth; legacy thinking_budget mutually exclusive with it"
   effort_control: "thinking_level: low/medium/high, default high — IS the effort surface, no separate param; 'minimal' exists only on Flash lines"
