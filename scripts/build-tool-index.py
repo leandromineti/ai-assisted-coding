@@ -538,7 +538,7 @@ def render(reports: list[dict]) -> str:
         "own field comment says so.",
         "",
     ]
-    header_row = ("| Tool | Surfaces · exec | Stack | License | Access | Stars | Since | "
+    header_row = ("| Tool | Surfaces · exec | Stack | Access | License | Stars | Since | "
                   "Harness targets | Version read | Depth | Report |")
     divider = "|---|---|---|---|---|---|---|---|---|---|---|"
     current_cat = None
@@ -589,7 +589,7 @@ def render(reports: list[dict]) -> str:
             targets = "·" if r["category"] in (4, 5, 6) else "—"
         lines.append(
             f"| {r['name']} | {shape} | "
-            f"{stack or '—'} | {r.get('license') or '—'} | `{r.get('access') or '—'}` | "
+            f"{stack or '—'} | `{r.get('access') or '—'}` | {r.get('license') or '—'} | "
             f"{stars} | {since} | {targets} | "
             f"`{version}` | {r['depth']} | {link} |"
         )
@@ -673,12 +673,12 @@ def render_features(reports: list[dict]) -> str:
         cells = [fmt_feature_cell(feats.get(key)) for key in HARNESS_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
-        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
         return f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |"
 
     # license is rendered from the reports' existing top-level frontmatter field
     # (single source of truth; NOT a registry key — it is a tool-taxonomy fact)
-    header_row = "| Tool | license | access | " + " | ".join(
+    header_row = "| Tool | access | license | " + " | ".join(
         k.replace("_", " ") for k in HARNESS_FEATURE_KEYS
     ) + " |"
     divider = "|---|---|---|" + "---|" * len(HARNESS_FEATURE_KEYS)
@@ -693,7 +693,7 @@ def render_features(reports: list[dict]) -> str:
         "against the report's `url` on its `checked` date. Quantitative surface (context,",
         "pricing, cutoff, lifecycle) stays in [models.md](models.md).",
         "",
-        "| Model | license | access | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
+        "| Model | access | license | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
         "|---|---|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
     ]
     m_unknown: set[str] = set()
@@ -707,7 +707,7 @@ def render_features(reports: list[dict]) -> str:
         cells = [fmt_feature_cell(feats.get(k)) for k in MODEL_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
-        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
         cw = r.get("context_window")
         cw = f"{cw:,}" if isinstance(cw, int) else (cw or "·")
         lines.append(f"| [{r['name']}](../{rel}) | {pair} | {cw} | " + " | ".join(cells) + " |")
@@ -757,7 +757,7 @@ def render_features(reports: list[dict]) -> str:
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
         "mechanism table's job, tools/4-workflow-frameworks/README.md).",
         "",
-        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
+        "| Tool | access | license | " + " | ".join(k.replace("_", " ") for k in WORKFLOW_FEATURE_KEYS) + " |",
         "|---|---|---|" + "---|" * len(WORKFLOW_FEATURE_KEYS),
     ]
     wf_unknown: set[str] = set()
@@ -781,7 +781,7 @@ def render_features(reports: list[dict]) -> str:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
-        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
         lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(wf_unknown):
         print(f"warn: workflow feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
@@ -795,7 +795,7 @@ def render_features(reports: list[dict]) -> str:
         "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
         "of dots are stub-depth reports — unread, honestly unclaimed.",
         "",
-        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
+        "| Tool | access | license | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
         "|---|---|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
     ]
     mem_unknown: set[str] = set()
@@ -821,7 +821,7 @@ def render_features(reports: list[dict]) -> str:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
-        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
         lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(mem_unknown):
         print(f"warn: memory feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
@@ -836,7 +836,7 @@ def render_features(reports: list[dict]) -> str:
         "and lists that mean conjunction only — see the ADR. Rows of dots are not yet",
         "checked, honestly unclaimed.",
         "",
-        "| Tool | license | access | " + " | ".join(k.replace("_", " ") for k in ENVIRONMENT_FEATURE_KEYS) + " |",
+        "| Tool | access | license | " + " | ".join(k.replace("_", " ") for k in ENVIRONMENT_FEATURE_KEYS) + " |",
         "|---|---|---|" + "---|" * len(ENVIRONMENT_FEATURE_KEYS),
     ]
     env_unknown: set[str] = set()
@@ -862,7 +862,7 @@ def render_features(reports: list[dict]) -> str:
                 cells.append(f"`{v}`")
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
-        pair = f"{r.get('license') or '·'} | `{r.get('access') or '·'}`"
+        pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
         lines.append(f"| [{r['name']}](../{rel}) | {pair} | " + " | ".join(cells) + " |")
     for k in sorted(env_unknown):
         print(f"warn: environment feature key '{k}' not in the feature taxonomy — not rendered", file=sys.stderr)
@@ -1152,15 +1152,13 @@ def render_feature_registry() -> str:
         transcribed = [t for t in TRANSCRIPTION_FIELDS if cat in t["applies_to"]]
         for group in FEATURE_GROUPS:
             rows = []
-            for e in (e for e in assessed if e["group"] == group["id"]):
-                kind = e.get("kind_link")
-                kind_cell = f"`{kind}` (cat {5 if kind == 'memory' else 6})" if kind else "—"
-                rows.append(
-                    f"| `{e['id']}` | assessed | `{e['value_type']}`"
-                    f"{' + note' if e.get('renders_note') else ''} | "
-                    f"{esc(e['definition'])} | {kind_cell} | "
-                    f"{esc(e.get('note', '')) or '—'} |"
-                )
+            # TRANSCRIBED FIRST, then assessed — a group's facts before what was judged
+            # about them. `cost` is the only group that mixes the two today, and it is
+            # the case that settles the rule: `pricing` is the base rate, and
+            # `prompt_caching` / `batch_discount` exist only to move it, so rendering
+            # them above it contradicted the group's own blurb. The earlier order was
+            # assessed-first, which was the placement test's shape leaking back into row
+            # position — exactly what ADR-0045 took row position out of.
             for t in (t for t in transcribed if t["group"] == group["id"]):
                 rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
                 where = f"renders in {rendered}" if rendered else "frontmatter only"
@@ -1169,6 +1167,15 @@ def render_feature_registry() -> str:
                     f"{' + note' if t.get('renders_note') else ''} | "
                     f"{esc(t['definition'])} | — | "
                     f"`{t['verification']}` · {where} |"
+                )
+            for e in (e for e in assessed if e["group"] == group["id"]):
+                kind = e.get("kind_link")
+                kind_cell = f"`{kind}` (cat {5 if kind == 'memory' else 6})" if kind else "—"
+                rows.append(
+                    f"| `{e['id']}` | assessed | `{e['value_type']}`"
+                    f"{' + note' if e.get('renders_note') else ''} | "
+                    f"{esc(e['definition'])} | {kind_cell} | "
+                    f"{esc(e.get('note', '')) or '—'} |"
                 )
             if not rows:
                 continue  # this group has no members in this category

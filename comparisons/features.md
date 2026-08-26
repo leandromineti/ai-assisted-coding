@@ -17,35 +17,35 @@ the two economics keys stay free-text in the vendor's own terms. All verified
 against the report's `url` on its `checked` date. Quantitative surface (context,
 pricing, cutoff, lifecycle) stays in [models.md](models.md).
 
-| Model | license | access | context window | prompt caching | batch discount | reasoning | reasoning type | reasoning effort |
+| Model | access | license | context window | prompt caching | batch discount | reasoning | reasoning type | reasoning effort |
 |---|---|---|---|---|---|---|---|---|
-| [claude-haiku-4-5](../tools/1-models/claude-haiku-4-5.md) | proprietary | `closed-source` | 200,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok` | `50% in+out ($0.50 / $2.50 per MTok)` | ✓ | `opt-in` | `budget:tokens` |
-| [claude-opus-5](../tools/1-models/claude-opus-5.md) | proprietary | `closed-source` | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok` | `50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header` | ✓ | `default-on` | `levels:low/medium/high/xhigh/max@high` |
-| [claude-sonnet-5](../tools/1-models/claude-sonnet-5.md) | proprietary | `closed-source` | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok` | `50% in+out ($1 / $5 per MTok); 300k max output via beta header` | ✓ | `default-on` | `levels:low/medium/high/xhigh/max@high` |
-| [claude-fable-5](../tools/1-models/claude-fable-5.md) | proprietary | `closed-source` | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok` | `50% in+out ($5 / $25 per MTok)` | ✓ | `always-on` | `levels:low/medium/high/xhigh/max@high` |
-| [deepseek-v4](../tools/1-models/deepseek-v4.md) | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | `open-weights` | 1,000,000 | `automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok` | `no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC` | ✓ | `default-on` | `levels:low/high/max@high` |
-| [gemini-3-1-pro](../tools/1-models/gemini-3-1-pro.md) | proprietary | `closed-source` | 1,048,576 | `implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h` | `50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard` | ✓ | `always-on` | `levels:low/medium/high@high` |
-| [glm-5.3](../tools/1-models/glm-5.3.md) | unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over | `closed-source` | 1,000,000 | `cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated` | `no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates` | ✓ | `always-on` | `levels:low/high/max@max` |
-| [gpt-5-6-sol](../tools/1-models/gpt-5-6-sol.md) | proprietary | `closed-source` | 1,050,000 | `automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok` | `50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch` | ✓ | `default-on` | `levels:none/low/medium/high/xhigh/max@medium` |
-| [grok-4-5](../tools/1-models/grok-4-5.md) | proprietary | `closed-source` | 500,000 | `automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs` | `verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only` | ✓ | `always-on` | `levels:low/medium/high@high` |
-| [kimi-k3](../tools/1-models/kimi-k3.md) | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | `open-weights` | 1,048,576 | `automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)` | `checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)` | ✓ | `always-on` | `levels:low/high/max@max` |
-| [qwen3-coder-next](../tools/1-models/qwen3-coder-next.md) | Apache-2.0 | `open-weights` | 262,144 | `unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash` | `unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)` | ✗ | `none` | `none` |
+| [claude-haiku-4-5](../tools/1-models/claude-haiku-4-5.md) | `closed-source` | proprietary | 200,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok` | `50% in+out ($0.50 / $2.50 per MTok)` | ✓ | `opt-in` | `budget:tokens` |
+| [claude-opus-5](../tools/1-models/claude-opus-5.md) | `closed-source` | proprietary | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok` | `50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header` | ✓ | `default-on` | `levels:low/medium/high/xhigh/max@high` |
+| [claude-sonnet-5](../tools/1-models/claude-sonnet-5.md) | `closed-source` | proprietary | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok` | `50% in+out ($1 / $5 per MTok); 300k max output via beta header` | ✓ | `default-on` | `levels:low/medium/high/xhigh/max@high` |
+| [claude-fable-5](../tools/1-models/claude-fable-5.md) | `closed-source` | proprietary | 1,000,000 | `write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok` | `50% in+out ($5 / $25 per MTok)` | ✓ | `always-on` | `levels:low/medium/high/xhigh/max@high` |
+| [deepseek-v4](../tools/1-models/deepseek-v4.md) | `open-weights` | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | 1,000,000 | `automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok` | `no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC` | ✓ | `default-on` | `levels:low/high/max@high` |
+| [gemini-3-1-pro](../tools/1-models/gemini-3-1-pro.md) | `closed-source` | proprietary | 1,048,576 | `implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h` | `50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard` | ✓ | `always-on` | `levels:low/medium/high@high` |
+| [glm-5.3](../tools/1-models/glm-5.3.md) | `closed-source` | unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over | 1,000,000 | `cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated` | `no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates` | ✓ | `always-on` | `levels:low/high/max@max` |
+| [gpt-5-6-sol](../tools/1-models/gpt-5-6-sol.md) | `closed-source` | proprietary | 1,050,000 | `automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok` | `50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch` | ✓ | `default-on` | `levels:none/low/medium/high/xhigh/max@medium` |
+| [grok-4-5](../tools/1-models/grok-4-5.md) | `closed-source` | proprietary | 500,000 | `automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs` | `verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only` | ✓ | `always-on` | `levels:low/medium/high@high` |
+| [kimi-k3](../tools/1-models/kimi-k3.md) | `open-weights` | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | 1,048,576 | `automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)` | `checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)` | ✓ | `always-on` | `levels:low/high/max@max` |
+| [qwen3-coder-next](../tools/1-models/qwen3-coder-next.md) | `open-weights` | Apache-2.0 | 262,144 | `unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash` | `unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)` | ✗ | `none` | `none` |
 
 ## Harnesses (category 2)
 
-| Tool | license | access | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
+| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [codex](../tools/2-harnesses/codex.md) | Apache-2.0 | `open-source` | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | ✓ | ✓ | ✓ | · | · | ✓ |
-| [dsh](../tools/2-harnesses/dsh.md) | MIT | `open-source` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | Apache-2.0 | `open-source` | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | MIT | `open-source` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| [opencode](../tools/2-harnesses/opencode.md) | MIT | `open-source` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | · | · |
-| [pi](../tools/2-harnesses/pi.md) | MIT | `open-source` | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `hook` | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ |
-| [warp](../tools/2-harnesses/warp.md) | AGPL-3.0 | `open-source` | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [claude-code](../tools/2-harnesses/claude-code.md) | proprietary | `closed-source` | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | ✓ | ✓ | ✗ | ✓ | · | ✓ |
-| [cline](../tools/2-harnesses/cline.md) | Apache-2.0 | `open-source` | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | ✓ | · |
-| [continue](../tools/2-harnesses/continue.md) | Apache-2.0 | `open-source` | ✓ | · | · | · | · | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | · | · |
-| [aider](../tools/2-harnesses/aider.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [codex](../tools/2-harnesses/codex.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | ✓ | ✓ | ✓ | · | · | ✓ |
+| [dsh](../tools/2-harnesses/dsh.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ |
+| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
+| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../tools/2-harnesses/opencode.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | · | · |
+| [pi](../tools/2-harnesses/pi.md) | `open-source` | MIT | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `hook` | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ |
+| [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ |
+| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | ✓ | ✓ | ✗ | ✓ | · | ✓ |
+| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | ✓ | · |
+| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | · | · |
+| [aider](../tools/2-harnesses/aider.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)
 
@@ -55,22 +55,22 @@ environment exposing session sharing). Same columns, same discipline; rows
 here do NOT count toward the cross-category table's demand side (that filter is
 `applies_to`).
 
-| Tool | license | access | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
+| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [daytona](../tools/3-execution-environments/daytona.md) | AGPL-3.0 | `closed-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [e2b](../tools/3-execution-environments/e2b.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [microsandbox](../tools/3-execution-environments/microsandbox.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [modal](../tools/3-execution-environments/modal.md) | Apache-2.0 | `closed-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ai-memory](../tools/5-memory/ai-memory.md) | MIT | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [mem0](../tools/5-memory/mem0.md) | Apache-2.0 | `open-source` | · | · | · | ✓ | · | · | · | · | · | · | · | · | · | ✓ |
-| [memos](../tools/5-memory/memos.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../tools/5-memory/cognee.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
-| [everos](../tools/5-memory/everos.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../tools/5-memory/memmachine.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../tools/5-memory/memori.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | AGPL-3.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ecc](../tools/6-extensions/ecc.md) | MIT | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [daytona](../tools/3-execution-environments/daytona.md) | `closed-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [e2b](../tools/3-execution-environments/e2b.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [microsandbox](../tools/3-execution-environments/microsandbox.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [modal](../tools/3-execution-environments/modal.md) | `closed-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | · | · | · | ✓ | · | · | · | · | · | · | · | · | · | ✓ |
+| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
+| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../tools/6-extensions/ecc.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 
 ## Workflow frameworks (category 4)
 
@@ -80,17 +80,17 @@ presence-claims, not value-claims:
 a ✓ says the machinery exists in source/docs, not that it pays (that is the
 mechanism table's job, tools/4-workflow-frameworks/README.md).
 
-| Tool | license | access | intent pipeline | deterministic engine | state store | retrospectives | format gates | measured gates | process gates | context isolation | parallel orchestration |
+| Tool | access | license | intent pipeline | deterministic engine | state store | retrospectives | format gates | measured gates | process gates | context isolation | parallel orchestration |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| [bmad-method](../tools/4-workflow-frameworks/bmad-method.md) | MIT | `open-source` | ✓ | ✓ | `repo-files` | ✓ | `script` | `prose` | `prose` | ✓ | ✗ |
-| [gsd-core](../tools/4-workflow-frameworks/gsd-core.md) | MIT | `open-source` | ✓ | ✓ | `repo-files` | ✓ | `engine` | `prose` | `prose` | ✓ | ✓ |
-| [openspec](../tools/4-workflow-frameworks/openspec.md) | MIT | `open-source` | ✓ | ✓ | `repo-files` | ✗ | `engine` | ✗ | · | ✗ | ✗ |
-| [spec-kit](../tools/4-workflow-frameworks/spec-kit.md) | MIT | `open-source` | ✓ | ✓ | `repo-files` | ✗ | ✗ | ✗ | `prose` | ✗ | ✗ |
-| [bmad-loop](../tools/4-workflow-frameworks/bmad-loop.md) | MIT | `open-source` | · | ✓ | `repo-files` | ✗ | `engine` | `engine` | `engine` | ✓ | · |
-| [conductor](../tools/4-workflow-frameworks/conductor.md) | Apache-2.0 | `open-source` | ✓ | ✗ | `repo-files` | · | ✗ | · | · | · | · |
-| [haft](../tools/4-workflow-frameworks/haft.md) | MIT | `open-source` | ✗ | ✓ | `database` | · | ✓ | · | · | · | · |
-| [pilot-shell](../tools/4-workflow-frameworks/pilot-shell.md) | proprietary | `open-source` | ✓ | ✓ | · | · | · | ✓ | · | · | · |
-| [spec-kitty](../tools/4-workflow-frameworks/spec-kitty.md) | MIT | `open-source` | ✓ | ✓ | `repo-files` | ✓ | · | · | ✓ | · | ✓ |
+| [bmad-method](../tools/4-workflow-frameworks/bmad-method.md) | `open-source` | MIT | ✓ | ✓ | `repo-files` | ✓ | `script` | `prose` | `prose` | ✓ | ✗ |
+| [gsd-core](../tools/4-workflow-frameworks/gsd-core.md) | `open-source` | MIT | ✓ | ✓ | `repo-files` | ✓ | `engine` | `prose` | `prose` | ✓ | ✓ |
+| [openspec](../tools/4-workflow-frameworks/openspec.md) | `open-source` | MIT | ✓ | ✓ | `repo-files` | ✗ | `engine` | ✗ | · | ✗ | ✗ |
+| [spec-kit](../tools/4-workflow-frameworks/spec-kit.md) | `open-source` | MIT | ✓ | ✓ | `repo-files` | ✗ | ✗ | ✗ | `prose` | ✗ | ✗ |
+| [bmad-loop](../tools/4-workflow-frameworks/bmad-loop.md) | `open-source` | MIT | · | ✓ | `repo-files` | ✗ | `engine` | `engine` | `engine` | ✓ | · |
+| [conductor](../tools/4-workflow-frameworks/conductor.md) | `open-source` | Apache-2.0 | ✓ | ✗ | `repo-files` | · | ✗ | · | · | · | · |
+| [haft](../tools/4-workflow-frameworks/haft.md) | `open-source` | MIT | ✗ | ✓ | `database` | · | ✓ | · | · | · | · |
+| [pilot-shell](../tools/4-workflow-frameworks/pilot-shell.md) | `open-source` | proprietary | ✓ | ✓ | · | · | · | ✓ | · | · | · |
+| [spec-kitty](../tools/4-workflow-frameworks/spec-kitty.md) | `open-source` | MIT | ✓ | ✓ | `repo-files` | ✓ | · | · | ✓ | · | ✓ |
 
 ## Memory (category 5)
 
@@ -99,16 +99,16 @@ The category-5 slice of the feature taxonomy — `memory_features:` frontmatter
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
-| Tool | license | access | memory store | memory scope | memory tiers | deployment mode | capture path | write admission | decay | memory revision | recall injection | hybrid retrieval | injection trust boundary | harness installer | rule extraction |
+| Tool | access | license | memory store | memory scope | memory tiers | deployment mode | capture path | write admission | decay | memory revision | recall injection | hybrid retrieval | injection trust boundary | harness installer | rule extraction |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ai-memory](../tools/5-memory/ai-memory.md) | MIT | `open-source` | `files-git` | `project`, `user` | ✓ | `self-host` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ |
-| [mem0](../tools/5-memory/mem0.md) | Apache-2.0 | `open-source` | `vector` | `user`, `agent`, `session` | ✗ | `both` | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · |
-| [memos](../tools/5-memory/memos.md) | Apache-2.0 | `open-source` | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ |
-| [cognee](../tools/5-memory/cognee.md) | Apache-2.0 | `open-source` | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ |
-| [everos](../tools/5-memory/everos.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../tools/5-memory/memmachine.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../tools/5-memory/memori.md) | Apache-2.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | AGPL-3.0 | `open-source` | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | `files-git` | `project`, `user` | ✓ | `self-host` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ |
+| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · |
+| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ |
+| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Execution environments (category 3)
 
@@ -118,13 +118,13 @@ grammar: evidence-grade suffixes, a `family:specific` colon tag on three keys,
 and lists that mean conjunction only — see the ADR. Rows of dots are not yet
 checked, honestly unclaimed.
 
-| Tool | license | access | isolation primitive | self host | warm pool | egress default | egress controls | credential model | snapshot model | filesystem sync |
+| Tool | access | license | isolation primitive | self host | warm pool | egress default | egress controls | credential model | snapshot model | filesystem sync |
 |---|---|---|---|---|---|---|---|---|---|---|
-| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | Apache-2.0 | `open-source` | `hardware-virt (testimony)` | `partial` | ✓ | `open (testimony)` | `allow-biased (testimony)` | `plain-env-var (source)` | `explicit-backup:squashfs-r2-overlay (source)` | `clone` |
-| [daytona](../tools/3-execution-environments/daytona.md) | AGPL-3.0 | `closed-source` | `shared-kernel:docker-container (source)` | `partial (testimony)` | `true (testimony)` | `tier-gated (testimony)` | `deny-wins (testimony)` | `plain-env-var (source)` | `explicit-backup:container-commit (source)` | `upload (source)`, `clone (source)`, `mount (source)` |
-| [e2b](../tools/3-execution-environments/e2b.md) | Apache-2.0 | `open-source` | `hardware-virt:firecracker-microvm` | `partial` | ✗ | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `clone` |
-| [microsandbox](../tools/3-execution-environments/microsandbox.md) | Apache-2.0 | `open-source` | `hardware-virt:msb-krun-vmm` | `full` | ✗ | `open` | `allow-biased` | `broker-relayed:tls-proxy-placeholder-substitution` | `explicit-backup:sparse-upper-copy` | `mount`, `upload` |
-| [modal](../tools/3-execution-environments/modal.md) | Apache-2.0 | `closed-source` | `userspace-kernel:gvisor-runsc (source)` | `none (source)` | `OPAQUE` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `upload (source)` |
+| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | `open-source` | Apache-2.0 | `hardware-virt (testimony)` | `partial` | ✓ | `open (testimony)` | `allow-biased (testimony)` | `plain-env-var (source)` | `explicit-backup:squashfs-r2-overlay (source)` | `clone` |
+| [daytona](../tools/3-execution-environments/daytona.md) | `closed-source` | AGPL-3.0 | `shared-kernel:docker-container (source)` | `partial (testimony)` | `true (testimony)` | `tier-gated (testimony)` | `deny-wins (testimony)` | `plain-env-var (source)` | `explicit-backup:container-commit (source)` | `upload (source)`, `clone (source)`, `mount (source)` |
+| [e2b](../tools/3-execution-environments/e2b.md) | `open-source` | Apache-2.0 | `hardware-virt:firecracker-microvm` | `partial` | ✗ | `open` | `allow-biased` | `broker-relayed:spiffe-jwt-svid` | `create-is-resume:uffd-lazy-paging` | `clone` |
+| [microsandbox](../tools/3-execution-environments/microsandbox.md) | `open-source` | Apache-2.0 | `hardware-virt:msb-krun-vmm` | `full` | ✗ | `open` | `allow-biased` | `broker-relayed:tls-proxy-placeholder-substitution` | `explicit-backup:sparse-upper-copy` | `mount`, `upload` |
+| [modal](../tools/3-execution-environments/modal.md) | `closed-source` | Apache-2.0 | `userspace-kernel:gvisor-runsc (source)` | `none (source)` | `OPAQUE` | `open (source)` | `OPAQUE` | `split-plane (source)` | `checkpoint-restore (testimony)` | `upload (source)` |
 
 ## Cross-category features
 
