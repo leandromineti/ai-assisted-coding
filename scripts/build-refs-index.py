@@ -172,6 +172,14 @@ def check(notes: list[dict]) -> int:
                 continue  # a placeholder in the docs, e.g. refs/<key>.md — not a link
             if name.startswith("_"):
                 continue  # templates are not notes
+            if any(c.isspace() for c in name):
+                # Prose or a diagram that merely mentions the directory, not a citation:
+                # a citekey never contains whitespace. Without this, README's layout tree
+                # ("refs/  one note per source read …") is read as a link to a note named
+                # after the whole annotation. The established fix for PROSE is to backtick
+                # the mention (the split on "`" above), but that is unavailable inside a
+                # fenced code block — hence the guard rather than another backtick.
+                continue
             if name not in keys:
                 print(
                     f"ERROR: {path.relative_to(ROOT)} links refs/{name}.md — no such note",
