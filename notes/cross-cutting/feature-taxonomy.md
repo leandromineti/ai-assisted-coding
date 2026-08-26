@@ -11,6 +11,12 @@ source of truth for valid frontmatter keys — the per-category (and per-type) m
 [`comparisons/features.md`](../../comparisons/features.md) and its cross-category table
 are derived from here plus report frontmatter. **Do not add a key anywhere else.**
 
+The YAML block below is machine-read and renders on GitHub as a raw code block — for
+*reading* the registry, use the generated
+[`comparisons/feature-registry.md`](../../comparisons/feature-registry.md) (added
+2026-08-26), which re-renders it as linked tables. Same rule-3 relationship as every
+matrix: this file is the editable source, that one is derived.
+
 Conventions:
 
 - A feature is a **presence-claim** verified in source or docs (omitted = not checked,
