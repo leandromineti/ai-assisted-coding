@@ -118,10 +118,14 @@ check starts where the fact actually lives:
   a PDF). This is a *different* first-party surface from the API docs at
   `ai.google.dev/gemini-api/docs/models`, which every Gemini report carries as its `url`.
   The knowledge cutoff — when Google states one at all — lives on the card, not in the
-  API spec table. Two traps found the first time it was read (2026-08-26,
-  [gemini-3-1-pro](gemini-3-1-pro.md)): a card can **delegate** whole sections to its
-  family parent's card rather than restate them, and the parent's statements are scoped
-  by model name, so a figure read there is the *parent's*, not the subject's.
+  API spec table. The pattern found the first time it was read (2026-08-26,
+  [gemini-3-1-pro](gemini-3-1-pro.md)): a later model's card can be **thin**, delegating
+  most sections to its family parent's card rather than restating them. **Read what is
+  being delegated.** A card that delegates a *section* which happens to contain a
+  model-scoped figure does not transfer that figure — the Grok 4.5 cutoff was retracted
+  2026-08-17 for exactly that inference. A card that delegates *the fact's own subject*
+  does: Gemini 3.1 Pro's card sends its **training dataset** to the 3 Pro card, and a
+  cutoff is a property of the training dataset, so the parent's January 2025 carries.
 
 ## References
 

@@ -16,7 +16,7 @@ pricing:
   currency: USD
   regime: context-tiered
   note: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
-knowledge_cutoff: "not stated for 3.1 Pro — the DeepMind model card was read 2026-08-26 (Gemini-3-1-Pro-Model-Card.pdf, published February 2026, 9 pp) and contains no cutoff sentence at all: its Known Limitations section says 'For more information about the known limitations for Gemini 3.1 Pro, see the Gemini 3 Pro model card.' THAT card (Gemini-3-Pro-Model-Card.pdf, Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025' — scoped by name to Gemini 3 Pro, which the same card lists as a DIFFERENT model from 3.1 Pro ('each subsequent model in the Gemini 3 Pro family is based on Gemini 3 Pro (see each model card for individual model details)'). Recorded as the family parent's figure, NOT adopted for 3.1 Pro — same discipline as the Grok 4.5/4.6 retraction. Model page still has no cutoff row, only 'Latest update: February 2026'"
+knowledge_cutoff: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "dynamic ('thinking by default'), cannot be fully disabled; thinking_level caps depth; legacy thinking_budget mutually exclusive with it"
   effort_control: "thinking_level: low/medium/high, default high — IS the effort surface, no separate param; 'minimal' exists only on Flash lines"
@@ -64,26 +64,32 @@ transition deferred its own read) and the stale Terminal-Bench snapshot.
   omits it — the gap was real, just one page deep).
 - Does "Preview" gate anything material (SLAs, caching, rate limits) for agent use?
 - ~~Knowledge cutoff is still unverified; the DeepMind model card is the likely primary
-  source.~~ **Checked 2026-08-26 — the card exists and is silent.**
+  source.~~ **Resolved 2026-08-26: January 2025, inherited.**
   [`Gemini-3-1-Pro-Model-Card.pdf`](https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-3-1-Pro-Model-Card.pdf)
-  (published February 2026, 9 pp) contains no occurrence of "knowledge" or "cutoff":
-  four of its sections — Known Limitations, Acceptable Usage, Evaluation Approach,
-  Safety Policies — are one line each, delegating to
+  (published February 2026, 9 pp) contains no occurrence of "knowledge" or "cutoff" —
+  it is a thin card that delegates most sections to
   [`Gemini-3-Pro-Model-Card.pdf`](https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-3-Pro-Model-Card.pdf)
   (Last Updated May 2026), whose Known Limitations reads *"The knowledge cutoff date
   for Gemini 3 Pro was January 2025."*
 
-  **That figure is not adopted here**, and the reason is a distinction the parent card
-  draws itself: *"Gemini 3 Pro is not a modification or a fine-tune of a prior model.
-  Each subsequent model in the Gemini 3 Pro family is based on Gemini 3 Pro (see each
-  model card for individual model details)"* — with Gemini 3.1 Pro named in that
-  family list, carrying its own card. So the delegation makes January 2025 *arguable*
-  for 3.1 Pro and vendor-stated for neither. The repo already paid for this exact
-  inference once: the Grok 4.5 cutoff was retracted 2026-08-17 after the recorded
-  "Feb 1, 2026" turned out to be documented for Grok 4.6.
+  **The figure carries**, on a delegation of the underlying fact rather than of a
+  section: the 3.1 card's Model Data section reads *"Training Dataset: Gemini 3.1 Pro
+  is based on Gemini 3 Pro. For more information about the training dataset for
+  Gemini 3.1 Pro, see the Gemini 3 Pro model card"* — the same "is based on" formula
+  it uses for Training Data Processing, Hardware, and Software. A cutoff is a property
+  of the training dataset; the vendor sends that dataset question to the parent card;
+  the parent card answers January 2025.
 
-  What would settle it: a first-party page naming 3.1 Pro and a cutoff in the same
-  sentence. The card's own landing page —
+  **The distinction worth keeping** (this was first recorded the other way on
+  2026-08-26 and corrected the same day): a card delegating a *section* that happens to
+  contain a model-scoped figure does not transfer that figure — which is why the Grok
+  4.5 cutoff was retracted on 2026-08-17, with nothing linking 4.5's data to the 4.6
+  page the number came from. A card delegating *the fact's own subject* does. Read the
+  delegation, not the section heading.
+
+  Residual caveat: the parent card separates pre-training from post-training data and a
+  cutoff describes the pre-training half, so a later post-training refresh would not
+  surface here. A first-party page naming 3.1 Pro and a cutoff in one sentence would
+  still be better evidence —
   [`deepmind.google/models/model-cards/gemini-3-1-pro/`](https://deepmind.google/models/model-cards/gemini-3-1-pro/)
-  — and whatever Google publishes at GA (still Preview at six months, per `released`)
-  are the two candidates left.
+  and whatever Google publishes at GA (still Preview at six months, per `released`).
