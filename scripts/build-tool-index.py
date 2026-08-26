@@ -47,6 +47,24 @@ ENV_RELATIONS = ["bundle", "bind", "internalize", "inhabit"]
 # kind links (ADR-0010). Do NOT hardcode keys here; edit the registry.
 FEATURE_REGISTRY_PATH = ROOT / "docs" / "feature-taxonomy.md"
 
+# What shape a cell's VALUE takes — the registry's own vocabulary, reified from prose
+# that already said it (ADR-0032). Not generic types: `closed-enum` vs `open-descriptive`
+# is an ADR-0017 distinction (a closed set you can validate against vs an open vocabulary
+# with a required family:specific shape), and `graded` is ADR-0011's ordered enforcement
+# scale, not merely an enum. A key that is scalar but accepts a list of named instances
+# (rules_files, memory_store) keeps its scalar type and says so in its definition.
+VALUE_TYPES = {
+    "presence",          # ✓/✗ presence-claim (omitted = not checked, false = checked-absent)
+    "graded",            # ADR-0011 ordered scale: engine | hook | script | prose | true | false
+    "closed-enum",       # one value from a closed set stated in the definition
+    "open-descriptive",  # open vocabulary with a required shape (family:specific)
+    "list",              # several values from a stated set
+    "free-text",         # the vendor's or subject's own words; no controlled vocabulary
+    "string",            # a single identifier or name
+    "number",            # a bare count
+    "date",              # a date
+}
+
 
 def _load_feature_registry() -> tuple[list[dict], list[dict]]:
     try:
@@ -66,9 +84,14 @@ def _load_feature_registry() -> tuple[list[dict], list[dict]]:
     t_fields = (data or {}).get("transcription_fields") or []
     feature_ids = {e.get("id") for e in entries}
     for t in t_fields:
-        for req in ("id", "applies_to", "definition", "verification"):
+        for req in ("id", "applies_to", "definition", "verification", "value_type"):
             if req not in t:
                 sys.exit(f"transcription field missing `{req}`: {t}")
+        if t["value_type"] not in VALUE_TYPES:
+            sys.exit(
+                f"transcription field `{t['id']}` has unknown value_type "
+                f"`{t['value_type']}` (known: {sorted(VALUE_TYPES)})"
+            )
         if t["verification"] not in {"dated-docs", "mechanical", "source-or-docs"}:
             sys.exit(
                 f"transcription field `{t['id']}` has unknown verification "
@@ -87,9 +110,14 @@ def _load_feature_registry() -> tuple[list[dict], list[dict]]:
         "environment_features",
     }
     for e in entries:
-        for req in ("id", "block", "applies_to", "definition"):
+        for req in ("id", "block", "applies_to", "definition", "value_type"):
             if req not in e:
                 sys.exit(f"feature taxonomy entry missing `{req}`: {e}")
+        if e["value_type"] not in VALUE_TYPES:
+            sys.exit(
+                f"feature taxonomy entry `{e['id']}` has unknown value_type "
+                f"`{e['value_type']}` (known: {sorted(VALUE_TYPES)})"
+            )
         if e["block"] not in known_blocks:
             sys.exit(
                 f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
@@ -717,6 +745,14 @@ def render_feature_registry() -> str:
         "  transcribed field spanning categories (`vendor`, `license`) appears in every",
         "  section it applies to.",
         "",
+        "**Type** is the shape a cell's value takes, from the registry's own",
+        "`value_type` vocabulary (ADR-0032): `presence` (✓/✗) · `graded` (ADR-0011's",
+        "ordered enforcement scale) · `closed-enum` (one value from a closed set) ·",
+        "`open-descriptive` (open vocabulary, required `family:specific` shape — the",
+        "ADR-0017 distinction a generic \"enum\" would erase) · `list` · `free-text` ·",
+        "`string` · `number` · `date`. A scalar key that accepts a list of named",
+        "instances keeps its scalar type and says so in its definition.",
+        "",
         "**Kind link** names the demand↔supply correspondence: the installable artifact",
         "kind that supplies the feature — `memory` from category 5, every other kind",
         "from category 6 (ADR-0020). **Provenance** carries an assessed key's `note:`",
@@ -743,8 +779,8 @@ def render_feature_registry() -> str:
     categories = sorted(
         set(cat_block) | {c for t in TRANSCRIPTION_FIELDS for c in t["applies_to"]}
     )
-    header = "| Key | Basis | Definition | Kind link | Provenance |"
-    divider = "|---|---|---|---|---|"
+    header = "| Key | Basis | Type | Definition | Kind link | Provenance |"
+    divider = "|---|---|---|---|---|---|"
     for cat in categories:
         block = cat_block.get(cat)
         name = CATEGORY_NAMES.get(cat, "?")
@@ -769,7 +805,8 @@ def render_feature_registry() -> str:
                 kind = e.get("kind_link")
                 kind_cell = f"`{kind}` (cat {5 if kind == 'memory' else 6})" if kind else "—"
                 lines.append(
-                    f"| `{e['id']}` | assessed | {esc(e['definition'])} | {kind_cell} | "
+                    f"| `{e['id']}` | assessed | `{e['value_type']}` | "
+                    f"{esc(e['definition'])} | {kind_cell} | "
                     f"{esc(e.get('note', '')) or '—'} |"
                 )
         for t in TRANSCRIPTION_FIELDS:
@@ -778,7 +815,8 @@ def render_feature_registry() -> str:
             rendered = ", ".join(f"[{x}]({x})" for x in t.get("rendered_in") or [])
             where = f"renders in {rendered}" if rendered else "frontmatter only"
             lines.append(
-                f"| `{t['id']}` | transcribed | {esc(t['definition'])} | — | "
+                f"| `{t['id']}` | transcribed | `{t['value_type']}` | "
+                f"{esc(t['definition'])} | — | "
                 f"`{t['verification']}` · {where} |"
             )
         lines.append("")
