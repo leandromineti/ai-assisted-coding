@@ -1,11 +1,14 @@
 # AI-assisted coding
 
-A personal sandbox for understanding the AI-assisted-coding tooling landscape — from
-first-hand trial rather than from marketing pages.
+A survey of the AI-assisted-coding tooling landscape, organised as a **taxonomy of tool
+categories** with **dated, evidence-linked** findings — read from source and measured in
+preregistered trials rather than taken from marketing pages.
 
-This is a learning repo. The deliverable is notes and conclusions, not a product.
-The map that survived the first month of it is published as an article:
-[The AI-coding stack: a map for a landscape that won't sit
+Exploratory, not prescriptive. The deliverable is notes and conclusions, not a product:
+every claim carries the date it was checked and a link to what it rests on, and the two
+honesty columns say plainly how deeply each tool and each source was actually read. The
+map that survived the first month is published as an article: [The AI-coding stack: a map
+for a landscape that won't sit
 still](https://mineti.dev/articles/the-ai-coding-stack/).
 
 ## Start here
@@ -57,20 +60,36 @@ confirm, contradict, or note silence.
 
 ## Layout
 
-| Path | Holds |
-|------|-------|
-| `CLAUDE.md` | How the repo works: where things go, the ingest/lint operations, the honesty columns |
-| `docs/taxonomy.md` | The category definitions and boundary rule — the canonical reference. `docs/taxonomy.yaml` is its machine-readable half, read by the vocabulary lint |
-| `docs/methodology.md` | The working rules — verification, honesty markers, experiment protocol |
-| `docs/design-principles.md` | Design principles derived from the reports, per category, confidence-marked |
-| `docs/` | Those three — the constitution — plus the notes that span categories (benchmarks, metrics, standards, the feature registry). See [`docs/README.md`](docs/README.md) |
-| `tools/` | One index per category, plus one file per tool, written while using it |
-| `refs/` | One note per **source read** — papers and benchmarks — each carrying its own `read_depth`. See [`refs/README.md`](refs/README.md) |
-| `upstream/` | Cloned open-source sources to read — **gitignored**, see [`upstream/README.md`](upstream/README.md) |
-| `experiments/` | Small self-contained trials — ideally the *same* task, different tools |
-| `comparisons/` | Side-by-side matrices distilled from the notes and experiments |
-| `scripts/` | `sync-upstream.sh` (clone/update), `repo-facts.sh` (verified frontmatter facts), `build-tool-index.py` and `build-refs-index.py` (regenerate the indexes) |
-| `articles/` | Public-facing writing drawn from the findings — drafted next to the evidence, every claim linked and dated. See [`articles/README.md`](articles/README.md) |
+```
+.
+├── README.md                  the map, the layout, and the conclusions index
+├── CLAUDE.md                  how the repo works: where things go, the ingest and lint operations
+│
+├── docs/                      the constitution, the output, and the notes that span categories
+│   ├── taxonomy.md                category definitions + boundary rule — the canonical reference
+│   ├── taxonomy.yaml              its machine-readable half; the vocabulary lint's only source
+│   ├── methodology.md             the working rules — verification, honesty markers, protocol
+│   ├── design-principles.md       principles per category, each confidence-marked
+│   ├── conclusions.md             the numbered findings — what the survey actually concluded
+│   └── …                          benchmark-survey · metrics · standards · feature-taxonomy
+│
+├── tools/                     one report per tool, filed by category
+│   ├── 1-models/ … 6-extensions/  category front door (README.md) + one report per tool
+│   └── candidates.md              sighted-but-not-ingested ledger, the pre-report stage
+│
+├── refs/                      one note per source read, each carrying its own read_depth
+│   ├── index.md                   generated catalog of every source
+│   └── pdf/                       cached papers — gitignored, refetchable from each note
+│
+├── experiments/               preregistered A/Bs: protocol, log appended live, artifacts
+│   └── rig/                       the pinned container + hidden verifier both arms run against
+│
+├── comparisons/               generated matrices — tools, features, models, vendors, benchmarks
+├── adrs/                      dated, immutable records of every structural decision
+├── articles/                  public-facing drafts, written next to the evidence they cite
+├── scripts/                   the two index generators, the vocabulary lint, the fact collectors
+└── upstream/                  cloned study copies — gitignored; a manifest, not the code
+```
 
 **[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-category index of every
 tool with a report, **[`comparisons/features.md`](comparisons/features.md)** the
