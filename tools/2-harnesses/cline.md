@@ -125,6 +125,34 @@ Open source; metered inference against whichever provider you configure.
    verification is across the field. (Whether the evals drove the prompt retreat is an
    open question worth chasing — that would be the first documented case of harness
    evals actually settling a design bet.)
+3. **Reasoning capability is decided by enumerated model-id substrings, and the
+   enumeration is a generation behind** (2026-08-26, verified at this report's pin
+   `dc175c73a`; a targeted read for [issue #40](https://github.com/leandromineti/ai-assisted-coding/issues/40),
+   not a re-read of the report). `apps/vscode/src/shared/utils/reasoning-support.ts`
+   carries two predicates, and both miss the current lineup:
+
+   - `isClaudeOpusAdaptiveThinkingModel()` matches `claude-fable-5` plus the literal
+     version set `["4-6", "4.6", "4-7", "4.7", "4-8", "4.8"]`. **Claude Opus 5 and Sonnet 5
+     match neither**, though both are adaptive-only models that reject
+     `thinking: {type: "enabled"}` with a 400 (Anthropic's per-model configuration table;
+     see [`../1-models/claude-opus-5.md`](../1-models/claude-opus-5.md) § Reasoning
+     surface). Both shipped **before** this pin was read — Sonnet 5 on 2026-06-30, Opus 5
+     on 2026-07-24, against a 2026-07-28 read — so this is a live gap at the pin, not
+     hindsight.
+   - `supportsReasoningEffortForModel()` matches `gemini`, `gpt`, `openai/o…`, `grok` —
+     **no Anthropic model at all**, so no effort control is offered for any Claude.
+
+   A third code path disagrees with cline's own front end: `buildSdkProviderConfig`
+   (`apps/vscode/src/sdk/sdk-api-handler.ts`) forwards effort only when it is
+   `low | medium | high`, while the CLI's `ACTIVE_REASONING_EFFORTS`
+   (`apps/cli/src/utils/reasoning.ts`) accepts `xhigh` as well. **Selecting `xhigh` in the
+   CLI therefore sends no effort at all** — the model silently runs at its own default.
+   Neither code path has any spelling of `max`, the *default* on GLM-5.3 and Kimi K3.
+
+   Not traced to the wire: `thinkingBudgetTokens` is handed to cline's SDK gateway as
+   `reasoning.max_tokens`, and whether that becomes a 400-producing `budget_tokens` on a
+   4.7-or-later Claude depends on translation code outside this clone. The predicates
+   above are stated as read; the wire consequence is not claimed.
 
 ## Open questions
 

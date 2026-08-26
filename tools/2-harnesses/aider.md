@@ -64,6 +64,32 @@ Open source; you pay for inference against whichever model you point it at.
 _Source unread — but two things are already odd: it does more with 147 Python files than
 peers do with 2000 TypeScript ones, and it may be slowing down while the field accelerates._
 
+**Reasoning capability is declared data, not code branches — the best architecture of the
+eight harnesses read for [issue #40](https://github.com/leandromineti/ai-assisted-coding/issues/40)**
+(2026-08-26, verified at this report's pin `5dc9490b`; a targeted read of the reasoning
+path only — this report's `depth: stub` is unchanged, nothing else was read). Each model
+carries an `accepts_settings` list in `aider/resources/model-settings.yml` (233 entries),
+and `--check-model-accepts-settings` refuses to send a setting the model has not declared.
+Capability is a per-model fact in a data file that ships with the release, and the default
+on an unknown model is *don't send* — the inverse of opencode's and cline's approach, where
+capability is inferred from a substring match in code and the fallthrough is silent.
+
+It still version-pins in one place, and the shape is instructive — an **exclusion** list
+rather than an inclusion list (`aider/models.py`, the OpenRouter branch):
+
+```python
+if ("thinking_tokens" not in self.accepts_settings
+    and "claude-opus-4.7" not in self.name
+    and "claude-opus-4-7" not in self.name):
+    self.accepts_settings.append("thinking_tokens")
+```
+
+OpenRouter models are auto-granted `thinking_tokens` unless they are **Opus 4.7
+specifically** — the one model observed to have removed it. Opus 4.8, Opus 5, Sonnet 5 and
+Fable 5 removed the same parameter and are all auto-granted it here. A carve-out added
+reactively for one model id does not generalise to the next one, which is the same failure
+as an inclusion list that stops at 4.8 — only reached from the opposite direction.
+
 ## Open questions
 
 - Is the low commit velocity a sign of maturity or of decline? Check the contributor graph

@@ -149,6 +149,7 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 12. **A model tier absorbed a workflow mechanism whole — and the category-4 A/B arc closes on it** (2026-08-18, exp-03, preregistered two-tier ablation, saturation branch pre-declared)
 13. **The memory extensions sell to coding agents but benchmark on chat** (2026-08-18, memory-type reading arc: one deep-dive, two surveys, three instrument full-reads)
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19, exp-04, n=1 per arm — a probe)
+15. **Harnesses track models by name, so a model's own API drift silently disarms them** (2026-08-26, four harnesses read at their pins — three version-pin, one sends a parameter Anthropic now rejects)
 
 ## License
 

@@ -83,6 +83,38 @@ definitions, rules files, and retrieval do the work the others do with prose —
 the prose never did much work at all. Either way it's the null hypothesis of the
 per-model-prompt debate, running in production.
 
+**The Anthropic provider sends deprecated extended thinking unconditionally** (2026-08-26,
+verified at this report's pin `5522c6f44`; a targeted read for
+[issue #40](https://github.com/leandromineti/ai-assisted-coding/issues/40), not a re-read).
+`core/llm/llms/Anthropic.ts` `convertArgs()`:
+
+```ts
+thinking: options.reasoning
+  ? { type: "enabled" as const,
+      budget_tokens: options.reasoningBudgetTokens ?? DEFAULT_REASONING_TOKENS }
+  : undefined,
+```
+
+There is **no model-id check on this branch at all** — every Anthropic model gets
+`thinking: {type: "enabled", budget_tokens: N}` whenever reasoning is switched on. Per
+Anthropic's per-model configuration table (read 2026-08-26, cited in
+[`../1-models/claude-opus-5.md`](../1-models/claude-opus-5.md) § Reasoning surface),
+`"enabled"` is **rejected with a 400 on Claude 4.7 and later** — which is Fable 5, Opus 5,
+Opus 4.8, Opus 4.7, and Sonnet 5, i.e. all three current frontier models. It remains
+correct for the 4.5-era models (Haiku 4.5, Sonnet 4.5) where extended thinking is the only
+mode, and works-but-deprecated on the 4.6 pair.
+
+This is the sharpest instance of the pattern in [issue #40](https://github.com/leandromineti/ai-assisted-coding/issues/40)
+and it inverts the going assumption: **continue is a per-vendor-adapter harness, the shape
+predicted to be structurally immune.** Per-vendor adapters do protect against confusing one
+vendor's surface for another's — they do nothing about a vendor deprecating its own
+parameter, because there is no model-version dimension in the design at all. opencode and
+cline at least *look* at the model id and get the version wrong; this branch never looks.
+
+Every affected model shipped before the 2026-07-28 read (Fable 5 2026-06-09, Sonnet 5
+2026-06-30, Opus 5 2026-07-24), so it is a live gap at the pin. Not traced: whether a
+default config reaches this branch without the user explicitly enabling reasoning.
+
 ## Open questions
 
 - What exactly lives in the shared core vs. the per-IDE extension? That boundary is the

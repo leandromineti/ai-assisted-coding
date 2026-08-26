@@ -325,3 +325,38 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`docs/benchmark-survey.md`](benchmark-survey.md) §6 ·
     [`tools/5-memory/README.md`](../tools/5-memory/README.md)
 
+
+15. **Harnesses track models by name, so a model's own API drift silently disarms them**
+    (2026-08-26, four harnesses read at their pins for
+    [issue #40](https://github.com/leandromineti/ai-assisted-coding/issues/40)). Category 1's
+    reasoning surface is not one switch: eleven models split four ways on toggleability
+    and carry six distinct depth dials, one of which is a token budget rather than a level
+    enum (ADR-0040). Every harness read encodes that spread as **model-id string matching
+    or nothing**, and each pin already trailed models that had shipped before it was read:
+    opencode matches the literal `glm-5.2`, so **GLM-5.3 falls through to an empty variant
+    map and no effort parameter is sent**; cline enumerates Opus `4.6/4.7/4.8` + Fable 5,
+    omitting **Opus 5 and Sonnet 5**, and its own CLI accepts an `xhigh` its SDK config
+    builder drops; aider — the best architecture of the four, capability declared as data with an
+    opt-in check — still auto-grants `thinking_tokens` to every OpenRouter model *except*
+    `claude-opus-4.7`, the single id someone carved out reactively.
+    **The failure has two shapes, and the quiet one costs money.** Sending nothing
+    succeeds and lets the server apply its own default — which on GLM-5.3 and Kimi K3 is
+    `max`, the sweep's only default-to-most-expensive models and precisely the two
+    opencode cannot reach. Sending a deprecated parameter 400s instead: continue's
+    Anthropic provider emits `thinking: {type: "enabled", budget_tokens}` with **no
+    model check on the branch at all**, which Anthropic rejects on every model from 4.7
+    onward — all three current frontier models.
+    **This inverts the obvious defence.** Per-vendor adapters were the shape predicted to
+    be immune, and continue is exactly that shape and fails hardest: adapters keep one
+    vendor's surface from being mistaken for another's, and do nothing about a vendor
+    deprecating its own parameter, because model *version* is not a dimension of the
+    design. Conclusion 8's absorption thesis has a cost side — a harness that owns the
+    model-capability decision inherits the obligation to track every vendor's deprecations,
+    and none of the four is winning that race. Scope: four harnesses read closely, two
+    (gemini-cli single-vendor, codex config-driven) structurally out of reach of the
+    pattern, hermes-agent unread. →
+    [`tools/2-harnesses/opencode.md`](../tools/2-harnesses/opencode.md) §7 ·
+    [`cline.md`](../tools/2-harnesses/cline.md) §3 ·
+    [`continue.md`](../tools/2-harnesses/continue.md) ·
+    [`aider.md`](../tools/2-harnesses/aider.md) ·
+    [ADR-0040](../adrs/0040-reasoning-replaces-thinking.md)
