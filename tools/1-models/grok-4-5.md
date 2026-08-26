@@ -10,7 +10,12 @@ release_mode: api-only
 released: "July 2026, no stage vocabulary ('now available on the xAI API') — month-level only from the first-party release notes; the day this repo carries (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"
 context_window: 500000
 max_output: "no model-specific figure published; generic max_completion_tokens defaults to 128000, visible-output only (checked 2026-08-17)"
-pricing: "$2 / $6 per MTok for prompts <200k tokens; $4 / $12 at ≥200k — the higher rate applies to ALL tokens once the prompt reaches 200k (re-verified 2026-08-17)"
+pricing:
+  input: 2          # USD per MTok — base list rate (see the registry's rule)
+  output: 6
+  currency: USD
+  regime: context-tiered
+  note: "$2 / $6 per MTok for prompts <200k tokens; $4 / $12 at ≥200k — the higher rate applies to ALL tokens once the prompt reaches 200k (re-verified 2026-08-17)"
 knowledge_cutoff: "RETRACTED 2026-08-17 — the 'Feb 1, 2026' recorded 2026-07-31 is documented for Grok 4.6, not 4.5; no first-party page states a 4.5 cutoff (model page, overview, release notes, launch post all checked)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "reasoning always-on, 'cannot be disabled'; reasoning_tokens in usage, encrypted reasoning content via include param"

@@ -10,7 +10,12 @@ release_mode: api-only
 released: "GA 2026-07-24, no preview stage — 'available today' across all surfaces (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
-pricing: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"
+pricing:
+  input: 5          # USD per MTok — base list rate (see the registry's rule)
+  output: 25
+  currency: USD
+  regime: flat
+  note: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"
 knowledge_cutoff: "May 2026 (reliable) — the freshest cutoff in the current lineup, newer than Fable 5's Jan 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: adaptive

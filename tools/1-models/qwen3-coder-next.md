@@ -10,7 +10,12 @@ release_mode: open-weights
 released: "weights: HF initial commit 2026-01-30 (refines the '~Feb 2026' recorded 2026-07-31); no vendor stage vocabulary anywhere — the Model Studio page carries no GA/preview label and a blank update-time field (checked 2026-08-17)"
 context_window: 262144
 max_output: 65536   # Model Studio context-limits table; max input 204800 of the 262144 window (verified 2026-08-17)
-pricing: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
+pricing:
+  input: 0.3          # USD per MTok — base list rate (see the registry's rule)
+  output: 1.5
+  currency: USD
+  regime: route-dependent
+  note: "weights free; first-party Model Studio (Singapore + Frankfurt, USD) tiered by input length: $0.30 / $1.50 ≤32k, $0.50 / $2.50 32–128k, $0.80 / $4.00 128–256k per MTok; China-mainland CNY list ~half that; other routes route-dependent (verified 2026-08-17)"
 knowledge_cutoff: "not stated by Qwen — HF README (full read), Model Studio page, and launch blog all silent (checked 2026-08-17)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)"

@@ -10,7 +10,12 @@ release_mode: api-only
 released: "2026-07-09, stage ambiguous in the vendor's own record: the launch forum post calls it a partner-restricted 'preview', the API changelog the same day says 'Released' with no stage word, and no later GA statement exists (verified 2026-08-17)"
 context_window: 1050000
 max_output: 128000
-pricing: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20; prompts >272k input tokens billed 2x in / 1.5x out for the whole request (verified 2026-08-17)"
+pricing:
+  input: 5          # USD per MTok — base list rate (see the registry's rule)
+  output: 30
+  currency: USD
+  regime: context-tiered
+  note: "Sol $5 / $30 per MTok; Terra $2 / $12; Luna $0.20 / $1.20; prompts >272k input tokens billed 2x in / 1.5x out for the whole request (verified 2026-08-17)"
 knowledge_cutoff: "Feb 16, 2026 (all three tiers)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "adaptive (docs: fewer tokens for simpler tasks); disable per-request via reasoning.effort: none"

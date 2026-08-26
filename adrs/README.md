@@ -90,3 +90,4 @@ calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both ga
 | [0030](0030-tool-taxonomy-prefix.md) | 2026-08-26 | `taxonomy.md` / `taxonomy.yaml` gain a `tool-` prefix to pair with `feature-taxonomy.md`; the lint keeps its name | accepted |
 | [0031](0031-candidates-ledger-is-a-backlog.md) | 2026-08-26 | The candidates ledger is a backlog: promotion removes the row (supersedes 0009's append-mostly clause); six promoted rows removed | accepted |
 | [0032](0032-value-type-column.md) | 2026-08-26 | `value_type` on every registry entry (9 values, repo vocabulary not generic types), rendered as the Type column; unknown values are a generator error | accepted |
+| [0033](0033-pricing-structured.md) | 2026-08-26 | `pricing` becomes a mapping (numeric core + regime + verbatim note); tenth `value_type` `structured`; first cell-value check | accepted |

@@ -63,6 +63,14 @@ VALUE_TYPES = {
     "string",            # a single identifier or name
     "number",            # a bare count
     "date",              # a date
+    "structured",        # a mapping; the entry's definition states its sub-schema (ADR-0033)
+}
+
+# `pricing:`'s sub-schema (ADR-0033). The base-rate rule lives in the registry definition;
+# these are the shape constraints a cell must satisfy — the repo's first CELL-value check,
+# the follow-on ADR-0032 named and deferred.
+PRICING_REGIMES = {
+    "flat", "context-tiered", "time-of-day", "variant-priced", "route-dependent",
 }
 
 
@@ -200,6 +208,40 @@ def collect() -> list[dict]:
         reports,
         key=lambda r: (r["category"], DEPTH_ORDER.get(r["depth"], 9), r["name"]),
     )
+
+
+def check_pricing(reports: list[dict]) -> None:
+    """Validate the `pricing:` mapping on every category-1 report (ADR-0033).
+
+    The first check in this repo that reads a CELL rather than a registry key. Fails the
+    run rather than warning: an unparseable price is worse than a missing one, because it
+    renders as something that looks like a number and isn't.
+    """
+    for r in reports:
+        if r.get("category") != 1:
+            continue
+        rel = r["_path"].relative_to(ROOT)
+        p = r.get("pricing")
+        if p is None:
+            continue  # omitted = not checked, same discipline as every other field
+        if not isinstance(p, dict):
+            sys.exit(f"{rel}: `pricing:` must be a mapping since ADR-0033, got {type(p).__name__}")
+        for k in ("input", "output"):
+            v = p.get(k)
+            if not isinstance(v, (int, float)) or isinstance(v, bool) or v <= 0:
+                sys.exit(f"{rel}: `pricing.{k}` must be a positive number (USD per MTok), got {v!r}")
+        if not p.get("currency"):
+            sys.exit(f"{rel}: `pricing.currency` is required")
+        if p.get("regime") not in PRICING_REGIMES:
+            sys.exit(
+                f"{rel}: `pricing.regime` is {p.get('regime')!r} — "
+                f"known: {sorted(PRICING_REGIMES)}"
+            )
+        if p["regime"] != "flat" and not p.get("note"):
+            sys.exit(
+                f"{rel}: `pricing.note` is required when regime is "
+                f"`{p['regime']}` — the numbers alone would misstate the price"
+            )
 
 
 def check(reports: list[dict]) -> int:
@@ -667,13 +709,30 @@ def render_models(reports: list[dict]) -> str:
             if v is None:
                 cells.append("·")
             elif c == "pricing":
-                cells.append(str(v))
+                cells.append(fmt_pricing(v))
             else:
                 cells.append(f"`{v}`" if c in MODEL_FEATURE_KEYS else str(v))
         rel = r["_path"].relative_to(ROOT)
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     lines.append("")
     return "\n".join(lines)
+
+
+def fmt_pricing(p) -> str:
+    """`$5 / $25` first, then the regime, then the note — the column leads with the
+    comparable numbers and still carries everything the prose held (ADR-0033)."""
+    if not isinstance(p, dict):
+        return str(p)
+    def money(x):
+        # Money reads with two decimals or none — never "$1.4", which looks like a typo.
+        return f"{x:,.2f}" if isinstance(x, float) and not x.is_integer() else f"{int(x):,}"
+    sym = "$" if p.get("currency") == "USD" else f"{p.get('currency')} "
+    head = f"**{sym}{money(p['input'])} / {sym}{money(p['output'])}** per MTok"
+    regime = p.get("regime")
+    if regime and regime != "flat":
+        head += f" · `{regime}`"
+    note = p.get("note")
+    return f"{head} — {note}" if note else head
 
 
 def render_feature_registry() -> str:
@@ -961,6 +1020,9 @@ def main() -> int:
     if not reports:
         print("no reports with frontmatter found", file=sys.stderr)
         return 1
+    # Runs under BOTH invocations: --check must catch a malformed price, and a plain
+    # run must refuse to render one.
+    check_pricing(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

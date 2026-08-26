@@ -10,7 +10,12 @@ release_mode: api-only
 released: "Preview since 2026-02-19 (API changelog: 'Released Gemini 3.1 Pro Preview'); no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"
 context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap)
 max_output: 65536
-pricing: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
+pricing:
+  input: 2          # USD per MTok — base list rate (see the registry's rule)
+  output: 12
+  currency: USD
+  regime: context-tiered
+  note: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
 knowledge_cutoff: "unverified — model page has no cutoff row, only 'Latest update: February 2026'; the DeepMind model card may carry it (unchecked, off first-party API docs)"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "dynamic ('thinking by default'), cannot be fully disabled; thinking_level caps depth; legacy thinking_budget mutually exclusive with it"

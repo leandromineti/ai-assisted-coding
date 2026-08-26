@@ -10,7 +10,12 @@ release_mode: api-only   # weights-delayed, not weights-never: prediction below 
 released: "API 2026-08-14, no stage vocabulary ('GLM-5.3 is now available to all GLM Coding Plan users') — day third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell); open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26)"
 context_window: 1000000
 max_output: 128000
-pricing: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20, GLM-5-Turbo $1.20 / $4.00 (verified 2026-08-26)"
+pricing:
+  input: 1.4          # USD per MTok — base list rate (see the registry's rule)
+  output: 4.4
+  currency: USD
+  regime: flat
+  note: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20, GLM-5-Turbo $1.20 / $4.00 (verified 2026-08-26)"
 knowledge_cutoff: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
 model_features:   # nested per ADR-0014
   thinking: "always-on — 'GLM-5.3 always operates with reasoning enabled'; thinking.type: disabled is 'no longer supported', and the migration note tells 5.2 users to flip disabled→enabled before upgrading"

@@ -10,7 +10,12 @@ release_mode: api-only
 released: "GA 2025-10-15, no preview stage — the model-id snapshot suffix (20251001) predates the announced date by two weeks; the announcement text is the source (verified 2026-08-17)"
 context_window: 200000
 max_output: 64000
-pricing: "$1 / $5 per MTok (verified 2026-08-17)"
+pricing:
+  input: 1          # USD per MTok — base list rate (see the registry's rule)
+  output: 5
+  currency: USD
+  regime: flat
+  note: "$1 / $5 per MTok (verified 2026-08-17)"
 knowledge_cutoff: "Feb 2025 (reliable); training data Jul 2025"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "extended (budget_tokens) — the only current model without adaptive thinking"

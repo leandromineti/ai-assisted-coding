@@ -60,7 +60,9 @@ Conventions:
   `closed-enum` (one value from a closed set) is not `open-descriptive` (an open
   vocabulary with a required `family:specific` shape — the ADR-0017 distinction), and
   `graded` is ADR-0011's *ordered* enforcement scale, not merely an enum. The rest:
-  `presence` (✓/✗), `list`, `free-text`, `string`, `number`, `date`. A key that is
+  `presence` (✓/✗), `list`, `free-text`, `string`, `number`, `date`, and — since
+  ADR-0033 — `structured`, a mapping whose sub-schema the entry's own definition
+  states (today: `pricing`). A key that is
   scalar but accepts a list of named instances where naming them is informative
   (`rules_files`, `memory_store`) keeps its scalar type and says so in its definition —
   list-ness is a property of an instance, not a second type. Unknown values are a
@@ -485,8 +487,22 @@ transcription_fields:
     rendered_in: [models.md]
   - id: pricing
     applies_to: [1]
-    value_type: free-text
-    definition: "$in / $out per MTok, with any time-limited or tiered pricing dated and its tier boundaries stated"
+    value_type: structured
+    definition: >-
+      a mapping, not a string (ADR-0033): input + output (numbers, USD per MTok) ·
+      currency · regime (flat | context-tiered | time-of-day | variant-priced |
+      route-dependent) · note. THE BASE-RATE RULE, which is what makes the numbers
+      comparable: input/output are the list rate for a small, standard, non-batch,
+      uncached request on the vendor's first-party USD surface, for the model THIS
+      report is about — so Sol's $5/$30 and not its Terra/Luna siblings, DeepSeek's
+      peak rate, Qwen's smallest tier. regime names why the base is not the whole
+      story and carries ONE value even where two apply (gpt-5-6-sol is both
+      context-tiered and variant-priced): the second regime lives in note rather than
+      making regime list-valued, because a matrix column sorts on one thing. note
+      carries everything the numbers cannot — tier boundaries and their semantics,
+      off-peak windows, sibling variants, non-USD lists that are not conversions,
+      retired promos ledgers still depend on — dated, and is required unless regime
+      is flat.
     verification: dated-docs
     rendered_in: [models.md]
   - id: knowledge_cutoff

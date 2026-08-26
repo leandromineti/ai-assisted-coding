@@ -10,7 +10,12 @@ release_mode: open-weights
 released: "API + products 'available today' per the launch blog, which prints NO calendar date (third-party ~2026-07-16); weights promised 'by July 27, 2026' and the HF initial commit is consistent with that — no stage vocabulary used (verified 2026-08-17)"
 context_window: 1048576
 max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17)"
-pricing: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"
+pricing:
+  input: 3          # USD per MTok — base list rate (see the registry's rule)
+  output: 15
+  currency: USD
+  regime: route-dependent
+  note: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"
 knowledge_cutoff: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf is the one unread candidate source"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"

@@ -10,7 +10,12 @@ release_mode: api-only
 released: "GA 2026-06-30, no preview stage — launched as the default model on Free/Pro plans day one (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
-pricing: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
+pricing:
+  input: 2          # USD per MTok — base list rate (see the registry's rule)
+  output: 10
+  currency: USD
+  regime: flat
+  note: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
 knowledge_cutoff: "Jan 2026 (reliable); training data Jan 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: adaptive

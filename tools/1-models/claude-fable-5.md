@@ -10,7 +10,12 @@ release_mode: api-only
 released: "GA 2026-06-09, no preview stage — then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01): the sweep's only GA interruption (verified 2026-08-17)"
 context_window: 1000000
 max_output: 128000
-pricing: "$10 / $50 per MTok (verified 2026-08-17)"
+pricing:
+  input: 10          # USD per MTok — base list rate (see the registry's rule)
+  output: 50
+  currency: USD
+  regime: flat
+  note: "$10 / $50 per MTok (verified 2026-08-17)"
 knowledge_cutoff: "Jan 2026 (reliable) — older than Opus 5's May 2026"
 model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
   thinking: "adaptive (always on)"

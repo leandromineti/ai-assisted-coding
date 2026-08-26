@@ -10,7 +10,15 @@ release_mode: api-only          # api-only | open-weights | both
 released: "<lifecycle: date + stage in the vendor's OWN vocabulary — 'GA YYYY-MM-DD, no preview stage' / 'Preview since YYYY-MM-DD, no GA date' / 'weights YYYY-MM-DD, first-party API YYYY-MM-DD'. Stages don't align across vendors, so the stage word is part of the fact (replaced ga_date 2026-08-17)>"
 context_window: <tokens>
 max_output: <tokens>
-pricing: "<$in / $out per MTok, with any time-limited pricing dated>"
+pricing:                 # structured since ADR-0033 — numbers comparable, prose preserved
+  input: <n>             # USD per MTok, BASE rate: a small, standard, non-batch, uncached
+  output: <n>            # request on the vendor's first-party USD surface, for THIS model
+  currency: USD
+  regime: <flat | context-tiered | time-of-day | variant-priced | route-dependent>
+  # Everything the two numbers can't hold — tiers and their boundaries, off-peak windows,
+  # sibling variants, non-USD lists, retired promos — goes here, dated. Required unless
+  # regime is `flat`.
+  note: "<$in / $out per MTok, with any time-limited or tiered pricing dated>"
 knowledge_cutoff: <vendor-stated>
 # API-feature keys (2026-08-17) — set ONLY when verified against `url`-linked vendor
 # docs on the `checked` date; omitted = not checked (models matrix renders ·).
