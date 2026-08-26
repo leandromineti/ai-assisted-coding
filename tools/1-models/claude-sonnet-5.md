@@ -20,9 +20,13 @@ knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from)"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: adaptive
-  effort_control: "effort param; defaults high on Claude API and Claude Code"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  # reasoning_type: the recorded cell said only `adaptive` — who SIZES the reasoning,
+  # not whether it can be disabled. Not checked.
+  # reasoning_effort: the record has the default ("effort param; defaults high on Claude
+  # API and Claude Code", 2026-08-17) but never the level set, so the `levels:<set>@<default>`
+  # shape cannot be filled without a new check. Not checked; the recorded prose is in § Reasoning surface.
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
   batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
 checked: 2026-08-17
@@ -45,6 +49,18 @@ compromise chosen so category-4 comparisons measure frameworks, not model headro
 | Cost per completed task | **Measured** (2026-08-17, at $2/$10): $0.31–0.51 per completed tarpeek run, mean $0.41 (n=6). The time-sensitivity warning that used to live here is retired — see Surprises §1's dated correction: $2/$10 became the standard price, so August ledgers need no September renormalization |
 | Release mode & access routes (1b) | API-only; Claude API + Bedrock + Vertex + Foundry. `effort` defaults to `high` on the Claude API and Claude Code — a cost-relevant default worth pinning in experiment configs |
 
+## Reasoning surface
+
+Two of the three reasoning cells are **·** for the same reason as Opus 5's (ADR-0040).
+The old free-text cells held, verified 2026-08-17: `thinking: adaptive` and *"effort
+param; defaults high on Claude API and Claude Code."* `adaptive` names who *sizes* the
+reasoning, not whether it can be disabled, so `reasoning_type` stays not-checked; the
+record carries the effort **default** but never the **level set**, so
+`levels:<set>@<default>` cannot be filled without a new check.
+
+Worth re-checking here specifically: this is the rig's pinned model for every category-4
+experiment arm, so its effort default is a cost input to every arm's ledger.
+
 ## Role in this repo's work
 
 - **The rig's pinned model** — exp-02's pre-run amendment names `claude-sonnet-5` the
@@ -53,8 +69,9 @@ compromise chosen so category-4 comparisons measure frameworks, not model headro
   amendment §1; [`experiments/rig/`](../../experiments/rig/README.md) pins table).
 - The machine's standing subagent tier for lighter search/mechanical work (alongside
   Opus for substantive analysis).
-- Adaptive thinking; no legacy extended-thinking toggle — prompt/config written for
-  4.x-era thinking controls doesn't carry over unchanged.
+- Adaptive reasoning; no legacy extended-thinking toggle — prompt/config written for
+  4.x-era thinking controls doesn't carry over unchanged (the vendor's own names for
+  those two modes are kept as written).
 
 ## Measured in this repo (2026-08-17, all OBSERVED)
 

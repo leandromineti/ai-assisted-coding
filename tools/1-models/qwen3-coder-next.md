@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
   note: "not stated by Qwen — HF README (full read), Model Studio page, and launch blog all silent (checked 2026-08-17)"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "none — verified absent: HF README 'supports only non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party, 2026-08-17)"
-  effort_control: "n/a — no thinking mode, so Model Studio's thinking_budget/reasoning_effort surfaces are not offered for this model"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: false             # verified absent: HF README "supports only non-thinking mode"
+  reasoning_type: none
+  reasoning_effort: none       # no reasoning mode, so no dial is offered for this model
   prompt_caching: "unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash"
   batch_discount: "unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)"
 checked: 2026-08-17
@@ -53,6 +54,18 @@ cycle.
 | Usable context (vs advertised) | 256K native — deliberately *not* the 1M class; the small-activated-params bet spends elsewhere |
 | Cost per completed task | 3B activated params is the lowest inference cost in this sweep by far — this is the one model here an individual can genuinely self-host |
 | Release mode & access routes (1b) | Open weights (Apache-2.0, the cleanest license in the sweep) + hosted routes; heavy GGUF ecosystem |
+
+## Reasoning surface
+
+The sweep's only verified **absence**, and the evidence is why it is a `✗` rather than a
+`·` — verified 2026-08-17, carried verbatim from the free-text `thinking`/`effort_control`
+cells those keys replaced (ADR-0040): *"none — verified absent: HF README 'supports only
+non-thinking mode'; absent from Model Studio's deep-thinking model table (first-party)"*
+and *"n/a — no thinking mode, so Model Studio's `thinking_budget`/`reasoning_effort`
+surfaces are not offered for this model."*
+
+Two first-party surfaces, one stating the absence and one failing to list the model where
+listed models appear. That pair is what an absence claim costs here.
 
 ## Role in this repo's work
 

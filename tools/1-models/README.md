@@ -19,15 +19,43 @@ report's evidence cells, not its depth field.
 
 ## What we assess here
 
-The assessed block is **`model_features:`, 4 keys** (2026-08-26): `thinking`,
-`effort_control`, `prompt_caching`, `batch_discount`. The weights themselves are
-untraceable at this repo's level of analysis — which is why category 1 deliberately has no
-component decomposition — so what *is* assessable is the first-party surface around them:
-the two keys that change how a harness can drive the model, and the two that decide what a
-completed task costs. Values are free text in each vendor's own vocabulary rather than
-presence-claims ([ADR-0014](../../adrs/0014-model-features-into-registry.md)), because the
-economics differ structurally across vendors and flattening them to ✓/✗ would erase the
-finding. Each is verified against the report's `url` on its `checked` date.
+The assessed block is **`model_features:`, 5 keys** (2026-08-26): `reasoning`,
+`reasoning_type`, `reasoning_effort`, `prompt_caching`, `batch_discount`. The weights
+themselves are untraceable at this repo's level of analysis — which is why category 1
+deliberately has no component decomposition — so what *is* assessable is the first-party
+surface around them: the three keys that change how a harness can drive the model, and the
+two that decide what a completed task costs. Each is verified against the report's `url`
+on its `checked` date.
+
+The two economics keys are free text in each vendor's own vocabulary
+([ADR-0014](../../adrs/0014-model-features-into-registry.md)): the economics differ
+structurally across vendors and flattening them to ✓/✗ would erase the finding. The three
+reasoning keys are **typed**, and they discriminate here for a reason worth stating
+([ADR-0040](../../adrs/0040-reasoning-replaces-thinking.md), 2026-08-26 — they replace a
+single free-text `thinking` key that held four independent facts at once):
+
+- **`reasoning`** (presence) — does the model generate reasoning tokens at all. The honest
+  base fact, and a **weak discriminator today**: 10 present, 1 absent (qwen3-coder-next).
+  Recorded as weak rather than quietly dropped — it is the fact the other two are
+  conditional on, and non-reasoning models ship again.
+- **`reasoning_type`** (closed enum) — `always-on` · `default-on` · `opt-in` · `none`.
+  **Toggleability**, chosen over Anthropic's adaptive-vs-extended axis because every
+  vendor states it and only three state theirs. Nothing is lost: adaptive-vs-extended is
+  the question of who *sizes* the reasoning, and that surfaces below.
+- **`reasoning_effort`** (`family:specific`) — the caller-facing depth dial. The family is
+  who sizes it: `levels:<set>@<default>` (the model spends against a level) or
+  `budget:<unit>` (the caller allocates up front — Haiku 4.5 is the sweep's only one).
+  Deliberately *not* a ✓/✗: ten of eleven models have a dial, and the eleventh is
+  qwen3-coder-next, so a boolean would have reproduced the `reasoning` column exactly —
+  an instrument that cannot discriminate cannot measure (methodology rule 5d). The
+  variation is in the level set and the default, which is why both live in the cell:
+  `@high` mostly, `@medium` at OpenAI, **`@max`** at Kimi K3 and GLM-5.3.
+
+Five cells are **·** and all five are Anthropic — `reasoning_type` for Opus 5 and Sonnet 5
+(their old cells said only `adaptive`, silent on toggleability) and `reasoning_effort` for
+Fable 5, Opus 5 and Sonnet 5 (the record carries a default but never the level set). They
+are a dated probe against the models overview page —
+[issue #38](https://github.com/leandromineti/ai-assisted-coding/issues/38) — not a guess.
 
 The other half of the surface is **9 transcription fields** — `vendor`, `license`,
 `model_id`, `release_mode`, `released`, `context_window`, `max_output`, `pricing`,
@@ -44,7 +72,7 @@ are claims.
 
 | Model | Vendor | Release | One-line |
 |-------|--------|---------|----------|
-| [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive thinking; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
+| [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive reasoning; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
 | [**Opus 5**](claude-opus-5.md) | Anthropic | GA 2026-07-24 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |
 | [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | GA 2026-06-30 | Mid-tier; **the rig's pinned model for all category-4 experiment arms.** Now measured in-repo: 18–20/21 on the tarpeek verifier (n=6 incl. Run A), $0.41/run. $2/$10 became the *standard* price on 2026-08-17 — the scheduled September increase was cancelled, so August ledgers are at list price. |
 | [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | GA 2025-10-15 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Now measured in-repo: uniform 17/21, one packaging DOA, $0.150/run — fully separated from Sonnet on the same instrument. Feb 2025 cutoff. $1/$5. |

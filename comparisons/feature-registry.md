@@ -62,12 +62,13 @@ not facts about the subject.
 
 ## Models (category 1) — `model_features:` + transcription fields
 
-Assessed rows are free-text values in the vendor's own terms (economics differ structurally across vendors), verified against each report's `url` on its `checked` date (ADR-0014). Cells render in [features.md → Models](features.md#models-category-1) and [models.md](models.md).
+Assessed rows split by what the fact is (ADR-0040): the three reasoning keys are typed — `reasoning` a presence-claim, `reasoning_type` a closed enum of TOGGLEABILITY, `reasoning_effort` a `family:specific` dial whose family (`levels:` \| `budget:`) says who sizes the reasoning — while `prompt_caching` and `batch_discount` stay free-text in the vendor's own terms, because the economics differ structurally across vendors. All verified against each report's `url` on its `checked` date (ADR-0014). Cells render in [features.md → Models](features.md#models-category-1) and [models.md](models.md).
 
 | Key | Basis | Type | Definition | Kind link | Provenance |
 |---|---|---|---|---|---|
-| `thinking` | assessed | `free-text` | reasoning generation + control style: adaptive \| extended \| none, in the vendor's terms | — | folded from the hardcoded MODEL_FEATURE_KEYS list 2026-08-19 (ADR-0014); keys added 2026-08-17 |
-| `effort_control` | assessed | `free-text` | effort/reasoning-level parameter — default and control surfaces | — | folded 2026-08-19 (ADR-0014) |
+| `reasoning` | assessed | `presence` | the model generates reasoning tokens at all — true even when reasoning cannot be switched off; the vendor's own word (thinking \| reasoning) is not the test | — | added 2026-08-26 (ADR-0040), splitting the old free-text `thinking` key. Weak discriminator BY DESIGN and recorded as such: 10 present / 1 absent across the sweep, the lone ✗ being qwen3-coder-next ('supports only non-thinking mode'). Kept anyway because it is the base fact the other two are conditional on, and because a non-reasoning model is a thing that ships again — but do not mistake it for a measurement |
+| `reasoning_type` | assessed | `closed-enum` | TOGGLEABILITY: always-on (cannot be disabled) \| default-on (on unless disabled per request) \| opt-in (off unless requested) \| none | — | added 2026-08-26 (ADR-0040). Toggleability, NOT Anthropic's adaptive-vs-extended axis — that axis is who SIZES the reasoning and it surfaces in `reasoning_effort`'s family (levels: vs budget:). Toggleability won the enum because every vendor states it (9/11 settled from the existing record; the 2 · are opus-5 and sonnet-5, whose cells said only `adaptive`, which is silent on this) |
+| `reasoning_effort` | assessed | `open-descriptive` | the caller-facing depth dial, `family:specific` (ADR-0017 shape) — `levels:<set>@<default>` \| `budget:<unit>` \| `none`. The family says who sizes the reasoning: a level enum the model spends against, or a token budget the caller allocates up front | — | added 2026-08-26 (ADR-0040), replacing the free-text `effort_control`. NOT a presence-claim: a boolean would have been 10 ✓ / 1 ✗ with the ✗ on the same row as `reasoning`'s — the same column twice, and rule 5d says an instrument that cannot discriminate cannot measure. The variation is in the level set (four distinct shapes) and the default: `@high` mostly, `@medium` at OpenAI, `@max` at kimi-k3 and glm-5.3 — which is why the default lives in the cell and not in body prose |
 | `prompt_caching` | assessed | `free-text` | write/read economics + TTLs, in the vendor's own terms | — | folded 2026-08-19 (ADR-0014) |
 | `batch_discount` | assessed | `free-text` | async batch pricing, if offered | — | folded 2026-08-19 (ADR-0014) |
 | `vendor` | transcribed | `string` | who maintains (or trains) it; the exact string is the grouping key for vendors.md, so spelling drift splits a vendor's row | — | `source-or-docs` · renders in [tools.md](tools.md), [vendors.md](vendors.md) |
@@ -201,4 +202,4 @@ No assessed key block exists for this category — its `type` vocabulary is tool
 | `stack` | transcribed | `list` | [Language, Runtime/Framework] of the subject | — | `source-or-docs` · renders in [tools.md](tools.md) |
 | `harness_targets` | transcribed | `list` | which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets | — | `source-or-docs` · renders in [tools.md](tools.md) |
 
-**48 assessed keys across 5 blocks · 19 transcription fields.**
+**49 assessed keys across 5 blocks · 19 transcription fields.**

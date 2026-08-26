@@ -35,7 +35,13 @@ calls the tool taxonomy `taxonomy.md` / `taxonomy.yaml`, at either home: both ga
 ([ADR-0030](0030-tool-taxonomy-prefix.md)). And it cites source notes as `refs/<key>.md`:
 the library was renamed and split the same day, so those map to
 `references/papers/<key>.md` — bare `refs/` to `references/`
-([ADR-0034](0034-references-papers-and-cards.md)).
+([ADR-0034](0034-references-papers-and-cards.md)). Anything dated before **2026-08-26**
+also names the category-1 reasoning cells `thinking:` and `effort_control:`:
+[ADR-0040](0040-reasoning-replaces-thinking.md) carries that decoder — `thinking` split
+into `reasoning` (does it reason at all) **and** `reasoning_type` (toggleability), while
+`effort_control` became `reasoning_effort` in `family:specific` form. Not a pure rename in
+either direction, so an old cell's prose does not map onto one new cell; each report's
+**§ Reasoning surface** carries the original wording with its check date.
 
 **Rules:**
 
@@ -100,3 +106,4 @@ the library was renamed and split the same day, so those map to
 | [0037](0037-knowledge-cutoff-structured.md) | 2026-08-26 | `knowledge_cutoff` becomes a mapping: two dates + `basis` (vendor-stated \| inherited \| not-stated \| retracted); third cell-value check | two-date clause superseded by 0038 |
 | [0038](0038-cutoff-single-date.md) | 2026-08-26 | One cutoff date, meaning the training-data limit; the finer vendor figure moves to `note` | accepted |
 | [0039](0039-value-type-types-the-fact.md) | 2026-08-26 | `value_type` types the fact: `knowledge_cutoff` is `date`; `structured` means plural facts; `renders_note` marks matrix-visible prose | accepted |
+| [0040](0040-reasoning-replaces-thinking.md) | 2026-08-26 | `thinking` + `effort_control` → `reasoning` (presence) + `reasoning_type` (toggleability enum) + `reasoning_effort` (`family:specific` dial); repo voice says *reasoning*, vendor words stay quoted; fourth cell-value check | accepted |

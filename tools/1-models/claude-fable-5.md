@@ -20,8 +20,10 @@ knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
   note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "adaptive (always on)"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: always-on   # recorded cell said "adaptive (always on)" — the toggle half is explicit
+  # reasoning_effort: no effort surface was ever recorded here (2026-08-17) — not checked
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
   batch_discount: "50% in+out ($5 / $25 per MTok)"
 checked: 2026-08-17
@@ -36,7 +38,7 @@ long-running agents." GA 2026-06-09 across Claude API and all cloud routes — t
 restoration update dated 2026-07-01 (anthropic.com/news/redeploying-fable-5). The only
 GA interruption in this sweep: a lifecycle event no "GA date" cell can carry alone,
 and a reminder that GA is a state, not a milestone.
-Comparative latency: *slower* — the flagship trades speed for depth. Adaptive thinking
+Comparative latency: *slower* — the flagship trades speed for depth. Adaptive reasoning
 is **always on** (not merely available). A sibling exists: **Claude Mythos 5**, same
 specs and pricing, invitation-only under Project Glasswing for defensive-cybersecurity
 work — the first case in this study of a frontier model gated by *use-domain* rather
@@ -51,6 +53,16 @@ than by tier.
 | Usable context (vs advertised) | 1M advertised, with a tokenizer caveat that matters: Fable 5 uses the Opus-4.7-era tokenizer — the same text costs ~30% more tokens than on pre-4.7 models, so cross-generation token counts are not comparable |
 | Cost per completed task | 2× Opus per token; whether it's cheaper per *completed task* is an open empirical question (the taxonomy's preferred metric) |
 | Release mode & access routes (1b) | API-only; four cloud routes; Mythos twin gated by domain |
+
+## Reasoning surface
+
+The old free-text cell held, verified 2026-08-17: `thinking: "adaptive (always on)"` —
+two facts in one string, which is what ADR-0040 split apart. The parenthetical settles
+`reasoning_type: always-on`; the head word (`adaptive`) describes who *sizes* the
+reasoning and belongs to no cell of its own.
+
+`reasoning_effort` is **·**: no effort surface was ever recorded for this model, unlike
+Opus 5 and Sonnet 5, whose cells at least carried a default. Tracked as a dated probe.
 
 ## Role in this repo's work
 

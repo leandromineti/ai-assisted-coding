@@ -20,9 +20,13 @@ knowledge_cutoff:
   date: 2026-05          # the limit date on training data
   basis: vendor-stated
   note: "May 2026 (reliable); training data May 2026 — the two coincide. corroborated 2026-08-26 by a second first-party surface — the [Opus 5 system card](../../references/cards/2026-claude-opus-5.md) §1.1: 'Claude Opus 5's knowledge cutoff date is May 2026' — and re-verified the same day against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: adaptive
-  effort_control: "effort param; defaults high on Claude API and Claude Code"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  # reasoning_type: the recorded cell said only `adaptive`, which names who SIZES the
+  # reasoning, not whether it can be disabled — silent on this key. Not checked.
+  # reasoning_effort: the record has the default ("effort param; defaults high on Claude
+  # API and Claude Code", 2026-08-17) but never the level set, so the `levels:<set>@<default>`
+  # shape cannot be filled without a new check. Not checked; the recorded prose is in § Reasoning surface.
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
   batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
 checked: 2026-08-17
@@ -45,6 +49,24 @@ window, verified 2026-07-31).
 | Usable context (vs advertised) | 1M advertised; sessions here run with summarization long before the raw window binds, so unprobed |
 | Cost per completed task | · (exp-01's cost data measured *framework* overhead on this model, not the model itself) |
 | Release mode & access routes (1b) | API-only; all four cloud routes. `effort` defaults `high` on Claude API + Claude Code |
+
+## Reasoning surface
+
+Two of the three reasoning cells are **·**, and the split is what exposed why (ADR-0040).
+The old free-text cells held, verified 2026-08-17: `thinking: adaptive` and
+*"effort param; defaults high on Claude API and Claude Code."*
+
+- `reasoning_type` is not-checked because `adaptive` answers a different question. It
+  names who *sizes* the reasoning — the model, per request — and says nothing about
+  whether reasoning can be switched off. Reading a toggle out of it would be inference,
+  not transcription.
+- `reasoning_effort` is not-checked because the record has the **default** but never the
+  **level set**, and `levels:<set>@<default>` needs both. The default alone would let a
+  reader assume this model's enum matches Grok's low/medium/high, which is exactly the
+  kind of quiet borrowing the shape exists to prevent.
+
+Both are one page away — the models overview table the knowledge-cutoff re-check already
+used (see `tools/1-models/README.md`) — and are tracked as a dated probe, not guessed here.
 
 ## Role in this repo's work
 

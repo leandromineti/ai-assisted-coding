@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
   note: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
-model_features:   # nested per ADR-0014
-  thinking: "always-on — 'GLM-5.3 always operates with reasoning enabled'; thinking.type: disabled is 'no longer supported', and the migration note tells 5.2 users to flip disabled→enabled before upgrading"
-  effort_control: "reasoning_effort: low/high/max, default MAX ('Deep Reasoning') — the same surface and same most-expensive default as Kimi K3, ending K3's run as the sweep's only default-to-max"
+model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: always-on    # "GLM-5.3 always operates with reasoning enabled"; thinking.type: disabled is "no longer supported"
+  reasoning_effort: "levels:low/high/max@max"   # 'Deep Reasoning' — identical surface and default to Kimi K3
   prompt_caching: "cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated"
   batch_discount: "no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates"
 checked: 2026-08-26
@@ -53,6 +54,19 @@ post-training.
 by **2026-08-31** (the announced two-week hold from 2026-08-14 ends ~08-28; +3 days
 slack). Score this at the next re-read; if it lands, flip `release_mode` to `both`
 and read the license before any "open" claim stronger than "downloadable".
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-26 against the model guide
+(carried verbatim from the free-text `thinking`/`effort_control` cells those keys
+replaced, ADR-0040): *"always-on — 'GLM-5.3 always operates with reasoning enabled';
+`thinking.type: disabled` is 'no longer supported', and the migration note tells 5.2
+users to flip disabled→enabled before upgrading"* and *"`reasoning_effort`: low/high/max,
+default MAX ('Deep Reasoning') — the same surface and same most-expensive default as Kimi
+K3, ending K3's run as the sweep's only default-to-max."*
+
+Z.ai is the clean specimen of the vendor split this repo's key names had to resolve: the
+prose says *reasoning*, the parameter is still called `thinking.type`.
 
 ## Role in this repo's work
 

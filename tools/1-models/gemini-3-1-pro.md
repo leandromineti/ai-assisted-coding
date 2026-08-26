@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: 2025-01          # the limit date on training data
   basis: inherited
   note: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "dynamic ('thinking by default'), cannot be fully disabled; thinking_level caps depth; legacy thinking_budget mutually exclusive with it"
-  effort_control: "thinking_level: low/medium/high, default high — IS the effort surface, no separate param; 'minimal' exists only on Flash lines"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: always-on    # "thinking by default", cannot be fully disabled
+  reasoning_effort: "levels:low/medium/high@high"   # thinking_level IS the dial; legacy thinking_budget is mutually exclusive with it
   prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
   batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
 checked: 2026-08-17
@@ -46,6 +47,19 @@ the fast/cheap line; the flagship Pro trails it in release status.
 | Usable context (vs advertised) | 1,048,576-token input limit, 65,536 output, from the model page (resolved 2026-08-17 — the 2026-07-31 check found no window on the overview page; the per-model page carries it). Usable-vs-advertised unprobed |
 | Cost per completed task | Tiered pricing doubles input cost above 200k prompt tokens — long-context work is priced super-linearly, which directly taxes the "whole monorepo in context" use case the model is marketed for |
 | Release mode & access routes (1b) | API-only (Gemini API + Vertex); free tier exists on Flash lines, not Pro |
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-17 (carried verbatim from the
+free-text `thinking`/`effort_control` cells those keys replaced, ADR-0040): *"dynamic
+('thinking by default'), cannot be fully disabled; `thinking_level` caps depth; legacy
+`thinking_budget` mutually exclusive with it"* and *"`thinking_level`: low/medium/high,
+default high — IS the effort surface, no separate param; 'minimal' exists only on Flash
+lines."*
+
+Google is the one vendor whose *dial* is thinking-named while everyone else's is
+reasoning-named — and it carries both dial shapes at once, the level enum superseding a
+legacy token budget that cannot be combined with it.
 
 ## Role in this repo's work
 

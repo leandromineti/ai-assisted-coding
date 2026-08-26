@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
   note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf — flagged as the one unread candidate — was READ 2026-08-26 (47 pp, via the HF model page's link to MoonshotAI/Kimi-K3) and is silent: no knowledge cutoff anywhere, the document's only 'cutoff' being an unrelated MoE routing threshold, and its §3.1 Pre-Training Data naming four corpus domains with no dates. Every candidate first-party surface is now checked"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "always-on, not toggleable — docs: 'K3 always thinks'; reasoning_content returned. Collapses K2's thinking/non-thinking variant split (first-party API)"
-  effort_control: "reasoning_effort: low/high/max, default MAX — was the only default-to-most-expensive in the sweep until GLM-5.3 shipped the identical surface and default (sweep-relative clause amended 2026-08-26; the K3 facts themselves are unchanged from the 2026-08-17 check); reasoning tokens billed as output (first-party API)"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: always-on    # docs: "K3 always thinks"; not toggleable (first-party API)
+  reasoning_effort: "levels:low/high/max@max"   # default-to-most-expensive; reasoning tokens bill as output
   prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
   batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
 checked: 2026-08-17
@@ -47,6 +48,20 @@ that third parties quantize down. Released July 2026.
 | Usable context (vs advertised) | 1,048,576 exactly (2^20) — same power-of-two budget as GPT-5.6's "1.05M" |
 | Cost per completed task | Weights free; the real cost is inference infrastructure (vLLM/SGLang on H100/H20-class GPUs) — the taxonomy's open question about whether 2.8T-scale open weights change anything *practical* for individuals stands |
 | Release mode & access routes (1b) | Open weights + hosted APIs + aggregators; the full 1b spread, with quantization variance built in rather than added downstream |
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-17 against the first-party API
+docs (carried verbatim from the free-text `thinking`/`effort_control` cells those keys
+replaced, ADR-0040): *"always-on, not toggleable — docs: 'K3 always thinks';
+`reasoning_content` returned. Collapses K2's thinking/non-thinking variant split
+(first-party API)"* and *"`reasoning_effort`: low/high/max, default MAX — was the only
+default-to-most-expensive in the sweep until GLM-5.3 shipped the identical surface and
+default (sweep-relative clause amended 2026-08-26; the K3 facts themselves are unchanged
+from the 2026-08-17 check); reasoning tokens billed as output (first-party API)."*
+
+Moonshot's docs say *thinks*; the response field says `reasoning_content`. Both are
+quoted as written — only this repo's own voice standardised on *reasoning*.
 
 ## Role in this repo's work
 

@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: 2026-02-16          # the limit date on training data
   basis: vendor-stated
   note: "Feb 16, 2026 (all three tiers)"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "adaptive (docs: fewer tokens for simpler tasks); disable per-request via reasoning.effort: none"
-  effort_control: "reasoning.effort: none/low/medium/high/xhigh/max, default medium — identical across tiers; no 'minimal' on the 5.6 family"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: default-on   # on unless disabled per request — `reasoning.effort: none` is the off switch
+  reasoning_effort: "levels:none/low/medium/high/xhigh/max@medium"   # the sweep's only default below `high`
   prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
   batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
 checked: 2026-08-17
@@ -51,6 +52,19 @@ warning in the index applies to its own snapshot.
 | Usable context (vs advertised) | 1.05M advertised — the odd 50k over the round number suggests an exact power-of-two budget (2^20 ≈ 1.049M); unprobed |
 | Cost per completed task | · — the 25× Sol/Luna price spread within one family is the widest in the sweep; where each tier's per-task crossover sits is unmeasured |
 | Release mode & access routes (1b) | API-only; the models driving Codex CLI/cloud (category-2 pairing) |
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-17 (carried verbatim from the
+free-text `thinking`/`effort_control` cells those keys replaced, ADR-0040): *"adaptive
+(docs: fewer tokens for simpler tasks); disable per-request via `reasoning.effort: none`"*
+and *"`reasoning.effort`: none/low/medium/high/xhigh/max, default medium — identical
+across tiers; no 'minimal' on the 5.6 family."*
+
+The only model in the sweep where the off switch lives *inside* the effort enum rather
+than beside it — which is why `reasoning_type: default-on` and the `none` level in
+`reasoning_effort` are the same fact seen from two sides. Its `@medium` default is also
+the sweep's only one below `high`.
 
 ## Role in this repo's work
 

@@ -173,7 +173,7 @@ def check_feature_registry(taxo: dict, root: Path = ROOT) -> int:
                     print(
                         f"ERROR: {rel} '{key}' is unregistered in block "
                         f"'{block}' — add it to docs/"
-                        f"feature-taxonomy.md or fix the spelling",
+                        f"feature-taxonomy.yaml or fix the spelling",
                         file=sys.stderr,
                     )
                     problems += 1

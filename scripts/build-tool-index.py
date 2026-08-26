@@ -80,6 +80,11 @@ PRICING_REGIMES = {
 # dataset to the Gemini 3 Pro card — and that is neither stated-for-this-model nor absent.
 CUTOFF_BASIS = {"vendor-stated", "inherited", "not-stated", "retracted"}
 DATE_RE = re.compile(r"^\d{4}-\d{2}(-\d{2})?$")
+# The reasoning keys' controlled values (ADR-0040) — the repo's fourth cell-value check.
+# `reasoning_type` is a closed enum of TOGGLEABILITY. `reasoning_effort` is
+# open-descriptive: the FAMILY is closed (who sizes the reasoning), the specific is free.
+REASONING_TYPES = {"always-on", "default-on", "opt-in", "none"}
+REASONING_EFFORT_FAMILIES = {"levels", "budget"}
 
 
 def _load_feature_registry() -> tuple[list[dict], list[dict]]:
@@ -247,6 +252,54 @@ def check_cutoff(reports: list[dict]) -> None:
         if not c.get("note"):
             sys.exit(f"{rel}: `knowledge_cutoff.note` is required — the surface checked, "
                      f"the search scope, or the delegation")
+
+
+def check_reasoning(reports: list[dict]) -> None:
+    """Validate the three reasoning cells on every category-1 report (ADR-0040).
+
+    Fourth cell-value check. `reasoning_effort` is `open-descriptive`, and this is what
+    that type means in practice: the family is closed and checked here, the specific is
+    free and is not. Without it the shape rots one report at a time — `low/high/max`
+    written bare, a default dropped — and the column stops being comparable, which was
+    the whole reason the level set and default live in the cell rather than in prose.
+    """
+    for r in reports:
+        if r.get("category") != 1:
+            continue
+        rel = r["_path"].relative_to(ROOT)
+        feats = r.get("model_features") or {}
+        if not isinstance(feats, dict):
+            continue
+
+        t = feats.get("reasoning_type")
+        if t is not None and t not in REASONING_TYPES:
+            sys.exit(f"{rel}: `reasoning_type` is {t!r} — known: {sorted(REASONING_TYPES)}")
+
+        e = feats.get("reasoning_effort")
+        if e is not None and e != "none":
+            family, _, specific = str(e).partition(":")
+            if family not in REASONING_EFFORT_FAMILIES or not specific:
+                sys.exit(
+                    f"{rel}: `reasoning_effort` is {e!r} — must be `none` or "
+                    f"`family:specific` with family in {sorted(REASONING_EFFORT_FAMILIES)}"
+                )
+            if family == "levels" and "@" not in specific:
+                sys.exit(
+                    f"{rel}: `reasoning_effort` is {e!r} — a `levels:` dial carries its "
+                    f"default after `@` (a level set without one understates cost: "
+                    f"kimi-k3 and glm-5.3 default to `max`)"
+                )
+
+        # A model that does not reason cannot carry a dial, and one that does cannot be
+        # `none` on either — the contradiction the split exists to make visible.
+        if feats.get("reasoning") is False:
+            for k in ("reasoning_type", "reasoning_effort"):
+                if feats.get(k) not in (None, "none"):
+                    sys.exit(f"{rel}: `reasoning: false` but `{k}: {feats[k]!r}`")
+        if feats.get("reasoning") is True:
+            for k in ("reasoning_type", "reasoning_effort"):
+                if feats.get(k) == "none":
+                    sys.exit(f"{rel}: `reasoning: true` but `{k}: none`")
 
 
 def check_pricing(reports: list[dict]) -> None:
@@ -504,19 +557,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         unknown.update(k for k in feats if k not in HARNESS_FEATURE_KEYS)
-        cells = []
-        for key in HARNESS_FEATURE_KEYS:
-            v = feats.get(key)
-            if v is True:
-                cells.append("✓")
-            elif v is False:
-                cells.append("✗")
-            elif isinstance(v, list):
-                cells.append(", ".join(f"`{x}`" for x in v))
-            elif v is None:
-                cells.append("·")
-            else:
-                cells.append(f"`{v}`")
+        cells = [fmt_feature_cell(feats.get(key)) for key in HARNESS_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         lic = r.get("license") or "·"
         return f"| [{r['name']}](../{rel}) | {lic} | " + " | ".join(cells) + " |"
@@ -532,10 +573,11 @@ def render_features(reports: list[dict]) -> str:
     lines += [
         "## Models (category 1)",
         "",
-        "The category-1 slice — `model_features:` frontmatter (ADR-0014). Free-text",
-        "values in the vendor's own terms, verified against the report's `url` on its",
-        "`checked` date. Quantitative surface (context, pricing, cutoff, lifecycle)",
-        "stays in [models.md](models.md).",
+        "The category-1 slice — `model_features:` frontmatter (ADR-0014). The three",
+        "reasoning keys are typed (presence · closed-enum · `family:specific`, ADR-0040);",
+        "the two economics keys stay free-text in the vendor's own terms. All verified",
+        "against the report's `url` on its `checked` date. Quantitative surface (context,",
+        "pricing, cutoff, lifecycle) stays in [models.md](models.md).",
         "",
         "| Model | license | context window | " + " | ".join(k.replace("_", " ") for k in MODEL_FEATURE_KEYS) + " |",
         "|---|---|---|" + "---|" * len(MODEL_FEATURE_KEYS),
@@ -548,7 +590,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         m_unknown.update(k for k in feats if k not in MODEL_FEATURE_KEYS)
-        cells = ["·" if feats.get(k) is None else f"`{feats.get(k)}`" for k in MODEL_FEATURE_KEYS]
+        cells = [fmt_feature_cell(feats.get(k)) for k in MODEL_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         lic = r.get("license") or "·"
         cw = r.get("context_window")
@@ -595,7 +637,7 @@ def render_features(reports: list[dict]) -> str:
         "## Workflow frameworks (category 4)",
         "",
         "The category-4 slice of the feature taxonomy — `workflow_features:` frontmatter,",
-        "defined in `docs/feature-taxonomy.md`. Structural",
+        "defined in `docs/feature-taxonomy.yaml`. Structural",
         "presence-claims, not value-claims:",
         "a ✓ says the machinery exists in source/docs, not that it pays (that is the",
         "mechanism table's job, tools/4-workflow-frameworks/README.md).",
@@ -729,7 +771,11 @@ def render_models(reports: list[dict]) -> str:
         "<!-- Edit the frontmatter of tools/1-models/*.md, then re-run. -->",
         "",
         "API-feature cells are set only when verified against the report's `url` on",
-        "its `checked` date — **·** means not checked, never absent. Values are",
+        "its `checked` date — **·** means not checked, never absent. The reasoning keys",
+        "are typed (ADR-0040): `reasoning` is ✓/✗, `reasoning_type` a closed enum, and",
+        "`reasoning_effort` a `family:specific` dial where the family says who sizes the",
+        "reasoning — a level set the model spends against (`levels:<set>@<default>`) or a",
+        "budget the caller allocates (`budget:<unit>`). The caching and batch keys stay",
         "free-text because the economics differ structurally across vendors.",
         "`released` carries first-availability date **plus lifecycle stage** in the",
         "vendor's own vocabulary (GA / Preview / beta) — stages don't align across",
@@ -752,11 +798,32 @@ def render_models(reports: list[dict]) -> str:
             elif c == "knowledge_cutoff":
                 cells.append(fmt_cutoff(v))
             else:
-                cells.append(f"`{v}`" if c in MODEL_FEATURE_KEYS else str(v))
+                cells.append(
+                    fmt_feature_cell(v) if c in MODEL_FEATURE_KEYS else str(v)
+                )
         rel = r["_path"].relative_to(ROOT)
         lines.append(f"| [{r['name']}](../{rel}) | " + " | ".join(cells) + " |")
     lines.append("")
     return "\n".join(lines)
+
+
+def fmt_feature_cell(v) -> str:
+    """One registry cell, rendered. Shared by every feature matrix so a `presence`
+    key reads the same wherever it appears — `·` is not-checked, `✗` is
+    checked-and-absent, and the two are never collapsed. Extracted from
+    `render_features`'s harness rows when ADR-0040 gave the `model_features` block
+    its first boolean (`reasoning`): the models matrices formatted every cell as
+    code, so a bare True would have rendered as `` `True` ``.
+    """
+    if v is True:
+        return "✓"
+    if v is False:
+        return "✗"
+    if isinstance(v, list):
+        return ", ".join(f"`{x}`" for x in v)
+    if v is None:
+        return "·"
+    return f"`{v}`"
 
 
 def fmt_cutoff(c) -> str:
@@ -808,10 +875,14 @@ def render_feature_registry() -> str:
             "[features.md → Harnesses](features.md#harnesses-category-2).",
         ),
         "model_features": (
-            "Assessed rows are free-text values in the vendor's own terms (economics "
-            "differ structurally across vendors), verified against each report's `url` "
-            "on its `checked` date (ADR-0014). Cells render in "
-            "[features.md → Models](features.md#models-category-1) "
+            "Assessed rows split by what the fact is (ADR-0040): the three reasoning "
+            "keys are typed — `reasoning` a presence-claim, `reasoning_type` a closed "
+            "enum of TOGGLEABILITY, `reasoning_effort` a `family:specific` dial whose "
+            "family (`levels:` \\| `budget:`) says who sizes the reasoning — while "
+            "`prompt_caching` and `batch_discount` stay free-text in the vendor's own "
+            "terms, because the economics differ structurally across vendors. All "
+            "verified against each report's `url` on its `checked` date (ADR-0014). "
+            "Cells render in [features.md → Models](features.md#models-category-1) "
             "and [models.md](models.md).",
         ),
         "workflow_features": (
@@ -1077,6 +1148,7 @@ def main() -> int:
     # run must refuse to render one.
     check_pricing(reports)
     check_cutoff(reports)
+    check_reasoning(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

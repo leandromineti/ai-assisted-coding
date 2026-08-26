@@ -95,7 +95,7 @@ confirm, contradict, or note silence.
 **[`comparisons/tools.md`](comparisons/tools.md)** is the flat cross-category index of every
 tool with a report, **[`comparisons/features.md`](comparisons/features.md)** the
 harness feature matrix, and **[`comparisons/models.md`](comparisons/models.md)** the
-category-1 matrix (thinking control, caching economics, batch pricing — the API surface
+category-1 matrix (reasoning control, caching economics, batch pricing — the API surface
 that drifts fastest) — all generated from the reports' frontmatter, never hand-edited,
 so they can't drift from them. In the matrices, `·` means *not yet checked*, which is
 deliberately distinct from ✗ *verified absent*.

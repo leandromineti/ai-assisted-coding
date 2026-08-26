@@ -20,8 +20,10 @@ knowledge_cutoff:
   date: 2025-07          # the limit date on training data
   basis: vendor-stated
   note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs define the pair as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used — RECORDED HERE AS THE TRAINING-DATA LIMIT (2025-07); the vendor's finer 'reliable knowledge cutoff' is 2025-02 (ADR-0038: one date, the outer bound)"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "extended (budget_tokens) — the only current model without adaptive thinking"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: opt-in      # "extended (budget_tokens)": reasoning happens only when the caller asks for it
+  reasoning_effort: budget:tokens   # the sweep's only `budget:` dial — the caller allocates, the model does not choose
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"
   batch_discount: "50% in+out ($0.50 / $2.50 per MTok)"
 checked: 2026-08-17
@@ -44,6 +46,18 @@ thinking — a generation seam running visibly through the lineup.
 | Usable context (vs advertised) | 200k advertised; unprobed |
 | Cost per completed task | **Measured** (2026-08-17): $0.10–0.20 per tarpeek run, mean $0.150 (n=5) — ~2.7× cheaper than Sonnet's measured $0.41 on the identical task, at a measured quality gap (17/21 vs 19.0/21) and one packaging failure. The retry-rate question below is no longer hypothetical: the DOA run *is* the retry case |
 | Release mode & access routes (1b) | API-only; four cloud routes |
+
+## Reasoning surface
+
+The sweep's only `budget:` dial, and the reason the `reasoning_effort` family is closed
+rather than free. The old free-text cell held, verified 2026-08-17: *"extended
+(budget_tokens) — the only current model without adaptive thinking."*
+
+That string carries both cells: **extended** means reasoning happens only when the caller
+asks for it (`reasoning_type: opt-in`), and **budget_tokens** means the caller allocates
+the size up front rather than picking a level the model spends against
+(`reasoning_effort: budget:tokens`). Every other model in the sweep is on a level enum —
+this is the generation seam, visible in one column instead of buried in prose.
 
 ## Role in this repo's work
 

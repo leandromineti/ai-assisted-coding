@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
   note: "not disclosed by vendor — no cutoff on the HF model card or either launch/GA announcement (checked 2026-08-17); third-party 'April 2026' claims are ship-date inference"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "on by default; toggled per-request via thinking.type enabled/disabled — one model id, a parameter, not a variant; thinking mode rejects temperature/top_p/penalties"
-  effort_control: "reasoning_effort: low/high/max, default high; foreign values 'medium'/'xhigh' silently coerced to high; identical mapping Pro and Flash"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: default-on   # on by default, toggled per request via thinking.type enabled/disabled
+  reasoning_effort: "levels:low/high/max@high"   # foreign values 'medium'/'xhigh' silently coerced to high; same mapping Pro and Flash
   prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
   batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
 checked: 2026-08-17
@@ -35,8 +36,8 @@ DeepSeek's fourth-generation line, resolving the seed inventory's `unverified` r
 the current API is **deepseek-v4-pro** and **deepseek-v4-flash**, both 1M context,
 both with **384K max output** — 3× the largest Western max-output in this sweep — and
 **weights published** on HF (Pro at 1.6T-scale, Flash smaller, each with Base and
-DSpark variants; per-model licenses unverified). Both modes ship thinking-by-default
-with a non-thinking toggle, JSON output, and tool calls.
+DSpark variants; per-model licenses unverified). Both modes ship reasoning-on by default
+with a per-request off switch (`thinking.type`), JSON output, and tool calls.
 
 ## The category-1 axes
 
@@ -47,6 +48,18 @@ with a non-thinking toggle, JSON output, and tool calls.
 | Usable context (vs advertised) | 1M advertised; unprobed |
 | Cost per completed task | Still the sweep's outlier, now time-of-day-dependent (repriced 2026-08-16): Flash output $0.66–1.32/MTok is ~38–76× cheaper than Fable 5 output; Pro $1.98–3.96 is ~13–25×. The 2026-07-31 figures ($0.28 / $0.87 flat) were launch promo rates, ~2–3× lower than today's. Cache-hit input remains fractions of a cent. The "different sport" framing survives the repricing, attenuated |
 | Release mode & access routes (1b) | **Both** — first-party API *and* open weights, the only line in this sweep with full route spread plus frontier-scale claims. Concurrency tiering (Flash 2500 vs Pro 500) is an access-route fact APIs elsewhere hide |
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-17 (carried verbatim from the
+free-text `thinking`/`effort_control` cells those keys replaced, ADR-0040): *"on by
+default; toggled per-request via `thinking.type` enabled/disabled — one model id, a
+parameter, not a variant; thinking mode rejects temperature/top_p/penalties"* and
+*"`reasoning_effort`: low/high/max, default high; foreign values 'medium'/'xhigh'
+silently coerced to high; identical mapping Pro and Flash."*
+
+The sampling-parameter rejection is the part a harness feels: turning reasoning on here
+invalidates a temperature setting elsewhere in the same request.
 
 ## Role in this repo's work
 

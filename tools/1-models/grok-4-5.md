@@ -20,9 +20,10 @@ knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
   note: "RESOLVED 2026-08-26 — *Model Card: Grok 4.5* (July 14 2026, 23 pp, cursor.com/resources/grok-4-5-model-card.pdf) states in §1: 'Grok 4.5 has a pretraining cutoff of January 2026.' First-party despite the cursor.com host: the card's §1 names the model as 'the initial release of the newest family of models from SpaceXAI* and Cursor†' — Cursor is a CO-AUTHOR, not a third party mirroring someone else's document, which is what makes this admissible where the 4.6 figure was not. Vendor terminology is 'pretraining cutoff', matching this field's semantics (the outer training-data bound; the card notes midtraining and post-training followed). Supersedes the 2026-08-17 retraction, kept here: RETRACTED 2026-08-17 — the 'Feb 1, 2026' recorded 2026-07-31 is documented for Grok 4.6, not 4.5; no first-party page states a 4.5 cutoff (model page, overview, release notes, launch post all checked)"
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: "reasoning always-on, 'cannot be disabled'; reasoning_tokens in usage, encrypted reasoning content via include param"
-  effort_control: "reasoning_effort: low/medium/high, default high; 'xhigh' silently downgraded to high (xhigh is 4.6+ only)"
+model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: always-on    # vendor: "cannot be disabled"
+  reasoning_effort: "levels:low/medium/high@high"   # 'xhigh' is silently downgraded to high (4.6+ only)
   prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs"
   batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only"
 checked: 2026-08-17
@@ -46,6 +47,17 @@ note. No EU availability at launch (2026-07-28 check; not re-verified today).
 | Usable context (vs advertised) | 500k — **half of the 1M its own cheaper siblings offer** (Grok 4.3 and 4.20: 1M at $1.25/$2.50). The flagship trades window for capability, inverting the usual assumption |
 | Cost per completed task | The cross-cutting note records xAI's own pitch: ~60% cheaper per token than frontier tier, ~half the per-task cost in Codex — vendor claim, unmeasured here |
 | Release mode & access routes (1b) | API-only (`console.x.ai`); tiered pricing at the 200k boundary like Google |
+
+## Reasoning surface
+
+What the three reasoning cells rest on, verified 2026-08-17 (carried verbatim from the
+free-text `thinking`/`effort_control` cells those keys replaced, ADR-0040): *"reasoning
+always-on, 'cannot be disabled'; `reasoning_tokens` in usage, encrypted reasoning content
+via `include` param"* and *"`reasoning_effort`: low/medium/high, default high; 'xhigh'
+silently downgraded to high (xhigh is 4.6+ only)."*
+
+The silent downgrade is the trap: a harness written for 4.6 and pointed at 4.5 gets
+`high` without an error, so the effort setting reads as honoured when it wasn't.
 
 ## Role in this repo's work
 

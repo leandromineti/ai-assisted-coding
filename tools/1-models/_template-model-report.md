@@ -22,10 +22,16 @@ pricing:                 # structured since ADR-0033 — numbers comparable, pro
 knowledge_cutoff: <vendor-stated>
 # API-feature keys (2026-08-17) — set ONLY when verified against `url`-linked vendor
 # docs on the `checked` date; omitted = not checked (models matrix renders ·).
-# Free-text values: the economics differ structurally across vendors.
-model_features:   # nested per ADR-0014 (2026-08-19); values unchanged
-  thinking: <adaptive | extended | none — generation + control style>
-  effort_control: "<effort/reasoning-level parameter: default and surfaces, if offered>"
+model_features:   # nested per ADR-0014 (2026-08-19)
+  # The three reasoning keys are typed (ADR-0040, 2026-08-26). Repo voice says
+  # "reasoning"; the vendor's own word (thinking.type, budget_tokens, "K3 always
+  # thinks") is quoted verbatim in the body, never translated.
+  reasoning: <true | false — generates reasoning tokens at all; true even if always-on>
+  reasoning_type: <always-on | default-on | opt-in | none — TOGGLEABILITY, not who sizes it>
+  # The depth dial, `family:specific`. The family says who sizes the reasoning:
+  # `levels:<set>@<default>` (model spends against a level) | `budget:<unit>`
+  # (caller allocates up front) | `none`. The default after `@` is required.
+  reasoning_effort: <levels:low/high/max@high | budget:tokens | none>
   prompt_caching: "<write/read economics + TTLs, in the vendor's own terms>"
   batch_discount: "<async batch pricing, if offered>"
 checked: <YYYY-MM-DD — the date every spec above was verified against `url`>
