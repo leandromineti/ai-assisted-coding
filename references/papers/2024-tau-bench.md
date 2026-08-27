@@ -106,7 +106,7 @@ reassuring that a peer-reviewed benchmark reached the same choice for the same s
   pass^1-vs-pass^k gap are the durable contributions.
 - Tasks are hand-authored customer-service dialogues, not software engineering — the *metric*
   transfers, the domain does not.
-- LLM-simulated user, subject to [`lost-in-simulation.md`](lost-in-simulation.md)'s critique,
+- LLM-simulated user, subject to [`lost-in-simulation.md`](2026-lost-in-simulation.md)'s critique,
   which used this very benchmark as its testbed and found ~9pp of measured performance riding on
   the choice of user model.
 - No contamination defence; hand-authored 2024 tasks may now be in training data.

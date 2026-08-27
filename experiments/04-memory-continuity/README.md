@@ -16,7 +16,7 @@ no single harness can absorb (conclusion 8 counter-current; conclusion 13). The
 *least-instantiated* feature: exactly one source-verified mechanism (ai-memory's
 handoff baton), and that mechanism is thin by design — first prompt + last prompt +
 tool names, no LLM, rich memory pull-only via MCP
-([ai-memory report](../../notes/05-capability-extensions/ai-memory.md)). The bucket
+([ai-memory report](../../tools/5-memory/ai-memory.md)). The bucket
 index's standing rig question: *"capture a session, switch harness, measure what the
 second agent actually knows."* This probe answers it for the only tool that can
 currently attempt it.

@@ -158,4 +158,4 @@ credit assigned above: the measured behavior observed here (fixture repos, craft
 commits, timezone probes) came from the researcher/planner instructions, which were
 live. It does mean any reading of this experiment that attributes grounding to the
 *spec-phase probe steps* specifically would be wrong — they could not have executed at
-this pin. Details: [`notes/04-workflow-frameworks/gsd-core.md`](../../notes/04-workflow-frameworks/gsd-core.md).
+this pin. Details: [`notes/04-workflow-frameworks/gsd-core.md`](../../tools/4-workflow-frameworks/gsd-core.md).

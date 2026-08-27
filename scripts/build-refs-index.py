@@ -13,13 +13,22 @@ the notes it describes, and you find out when it's already wrong.
   2. a ref cited elsewhere in the repo whose note says `read_depth: unread` — the guard
      against an abstract skim hardening into a citation
   3. a `references/<key>.md` link with no note behind it
-  4. (warning only) a note with no `bears_on` — recorded but not yet used anywhere
+  4. **every relative markdown link in the repo resolves** (issue #37, added 2026-08-27)
+  5. (warning only) a note with no `bears_on` — recorded but not yet used anywhere
 
-1-3 exit non-zero. Deliberately strict about 2: it is the failure this library was built
+1-4 exit non-zero. Deliberately strict about 2: it is the failure this library was built
 to prevent.
+
+Check 4 exists because check 3 only pattern-matched `references/<key>.md`-prefixed
+citations, so a *sibling* link inside `references/papers/` (`](clareval.md)`) was invisible
+to it — the repo carried 29 dead links, of which the issue had spotted 7. It sweeps every
+tracked `.md`, which also catches the class no per-directory checker would: a **generated**
+file inheriting a relative link from the report it transcribes (see `rebase_links` in
+build-tool-index.py).
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -244,6 +253,46 @@ def check(notes: list[dict]) -> int:
     return problems
 
 
+# Relative markdown links, excluding absolute URLs, mail, and pure anchors.
+_REL_LINK = re.compile(r"\]\((?!https?://|mailto:|#)([^)\s]+?)(?:#[^)]*)?\)")
+
+# Paths whose dead links are NOT findings. Each exclusion is a claim; keep the reason.
+_LINK_SKIP = (
+    # ADRs are immutable by repo law (CLAUDE.md: never edit an accepted ADR except
+    # `superseded-by`), so they cite paths as of their own date on purpose. The
+    # old→new decoders live in adrs/README.md — that is the intended reading path,
+    # and rewriting an ADR's links would destroy the record the ADR exists to be.
+    "adrs/",
+    # Run artifacts: files an experiment arm produced. Editing them would falsify
+    # the record of what the arm did.
+    "/artifacts/",
+    # GSD planning records (plans, reviews, patterns) describe the repo as it stood
+    # when the phase ran — dated artifacts, same class as ADRs and run artifacts.
+    ".planning/",
+    # Templates carry placeholder syntax (`](<url>)`) that is meant to be replaced.
+    "_template-",
+    # Gitignored clones and caches.
+    "upstream/", "references/papers/pdf/",
+)
+
+
+def check_links() -> int:
+    """Check 4: every relative markdown link in the repo resolves."""
+    problems = 0
+    for path in sorted(ROOT.rglob("*.md")):
+        rel = path.relative_to(ROOT).as_posix()
+        if any(s in f"/{rel}" or rel.startswith(s) for s in _LINK_SKIP):
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for m in _REL_LINK.finditer(text):
+            target = m.group(1)
+            if not (path.parent / target).exists():
+                line = text.count("\n", 0, m.start()) + 1
+                print(f"ERROR: {rel}:{line} dead relative link -> {target}")
+                problems += 1
+    return problems
+
+
 def _fmt(value: object) -> str:
     """Render a frontmatter value as a table cell. `·` means not recorded, not 'no'."""
     if value is None:
@@ -383,7 +432,7 @@ def main() -> int:
         return 1
 
     if "--check" in sys.argv:
-        problems = check(notes) + check_cards(cards)
+        problems = check(notes) + check_cards(cards) + check_links()
         print(f"{len(notes)} papers + {len(cards)} cards checked, {problems} problem(s)")
         return 1 if problems else 0
 

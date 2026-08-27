@@ -87,7 +87,7 @@ instruction following or adapt more readily to agent responses," so simulation-b
 
 ## What it means for this repo
 
-**1. It is the reason to prefer [ClarEval](clareval.md)'s rule-based simulator over an LLM
+**1. It is the reason to prefer [ClarEval](2026-clareval.md)'s rule-based simulator over an LLM
 proxy.** The 9-point robustness swing means an LLM oracle makes the *apparatus* a free variable
 in the result — precisely the failure methodology 8a was written for. A rule-based
 trigger/response table has no such degree of freedom, and ClarEval validates it at 96.5%

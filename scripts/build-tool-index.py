@@ -15,6 +15,7 @@ turn a dated observation into a false claim about current code.
 """
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -946,12 +947,18 @@ def render_models(reports: list[dict]) -> str:
             v = model_feats.get(c) if c in MODEL_FEATURE_KEYS else r.get(c)
             if v is None:
                 cells.append("·")
+            # The three `renders_note` cells carry prose from the report's own
+            # frontmatter, so any relative link in it is written relative to the
+            # REPORT, not to comparisons/ — rebase before emitting (issue #37).
             elif c == "pricing":
-                cells.append(fmt_pricing(v))
+                cells.append(rebase_links(
+                    fmt_pricing(v), r["_path"].parent, MODELS_OUT.parent))
             elif c == "knowledge_cutoff":
-                cells.append(fmt_cutoff(v))
+                cells.append(rebase_links(
+                    fmt_cutoff(v), r["_path"].parent, MODELS_OUT.parent))
             elif c == "release_date":
-                cells.append(fmt_release_date(v))
+                cells.append(rebase_links(
+                    fmt_release_date(v), r["_path"].parent, MODELS_OUT.parent))
             else:
                 cells.append(
                     fmt_feature_cell(v) if c in MODEL_FEATURE_KEYS else str(v)
@@ -979,6 +986,37 @@ def fmt_feature_cell(v) -> str:
     if v is None:
         return "·"
     return f"`{v}`"
+
+
+_REL_LINK = re.compile(r"\]\((?!https?://|mailto:|#)([^)\s]+?)(#[^)]*)?\)")
+
+
+def rebase_links(text: str, from_dir: Path, to_dir: Path) -> str:
+    """Rewrite relative markdown links in prose transcribed between directories.
+
+    `renders_note: true` cells (ADR-0039) carry prose from a report's frontmatter
+    into a generated matrix. The prose was written relative to the REPORT's
+    directory, but it renders in `comparisons/`, one level up — so a link that
+    resolves in the report 404s in the matrix. Found 2026-08-27 by the repo-wide
+    dangling-link sweep (issue #37): claude-opus-5's cutoff note links its system
+    card as `../../references/cards/...`, correct from `tools/1-models/` and
+    pointing above the repo root from `comparisons/`.
+
+    Rebasing at render time keeps the report the single source of truth — the
+    alternative (absolute URLs in the note) breaks the report's own links, and
+    hand-maintaining two forms of the same link is what generated files exist to
+    avoid.
+    """
+    def sub(m: re.Match) -> str:
+        target, frag = m.group(1), m.group(2) or ""
+        try:
+            resolved = (from_dir / target).resolve()
+            new = os.path.relpath(resolved, to_dir.resolve())
+        except (ValueError, OSError):
+            return m.group(0)
+        return f"]({new}{frag})"
+
+    return _REL_LINK.sub(sub, text)
 
 
 def fmt_cutoff(c) -> str:

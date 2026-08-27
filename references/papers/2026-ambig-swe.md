@@ -142,7 +142,7 @@ configured.
 
 **2. Repo-scale headroom, with numbers.** Hidden vs Full is 40.00 vs 68.00 for Claude Sonnet 4
 — a 28-point gap on real repository issues, not toy functions. Combined with
-[`clareval.md`](clareval.md)'s ~80-point gap on function-level tasks, withholding information
+[`clareval.md`](2026-clareval.md)'s ~80-point gap on function-level tasks, withholding information
 reliably produces headroom at *both* scales. Our trap set produced none.
 
 **3. The causal-identification argument justifies spec-first construction.** Their reason for
@@ -165,7 +165,7 @@ rise. If we price attention *and* wall-clock, expect them to move in opposite di
 - Underspecification is synthetic and admittedly more aggressive than real issues; the paper
   documents the distributional difference rather than hiding it.
 - The user proxy is **GPT-4o**, so it inherits the LLM-simulated-user risks quantified in
-  [`lost-in-simulation.md`](lost-in-simulation.md) — over-cooperation and information leakage.
+  [`lost-in-simulation.md`](2026-lost-in-simulation.md) — over-cooperation and information leakage.
   Their conservative design ("only information explicitly present", *"I don't have that
   information"*) mitigates but does not eliminate this, and they do not validate the proxy
   against a rule-based baseline the way ClarEval does (96.5% agreement).

@@ -141,7 +141,7 @@ taxonomy, and two sibling modes (**Generic Querying** — "anything else you nee
 
 **3. Use its rule-based simulator, not an LLM one.** 96.5% agreement means the rigidity
 objection is quantified and small, and it costs nothing to run, is fully replayable, and
-cannot over-cooperate — see [`lost-in-simulation.md`](lost-in-simulation.md) for why that last
+cannot over-cooperate — see [`lost-in-simulation.md`](2026-lost-in-simulation.md) for why that last
 property matters.
 
 **4. Metrics to adopt into our vocabulary**, recorded in

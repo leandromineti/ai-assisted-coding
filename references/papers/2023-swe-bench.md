@@ -39,7 +39,7 @@ against held-out tests.
 
 - At publication: "the best-performing model, Claude 2, is able to solve a mere 1.96% of
   the issues" — the largest launch headroom of any major coding benchmark.
-- Later found (see [`swebench-verified-2024.md`](swebench-verified-2024.md)): 68.3% of
+- Later found (see [`swebench-verified-2024.md`](2024-swebench-verified.md)): 68.3% of
   sampled items were invalid — 38.3% underspecified, 61.1% with tests rejecting valid
   solutions.
 

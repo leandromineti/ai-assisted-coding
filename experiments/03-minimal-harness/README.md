@@ -16,7 +16,7 @@ Conclusion 6 (n=1, exp-01) credits a workflow framework's quality margin to **em
 grounding and measured verification gates, jointly**. Exp-02 confirmed the complement
 (intent capture without measurement buys steering, not discovery) and its decision rule
 green-lit this experiment. Since then, a published n=128 ablation
-([`refs/2026-spec-kit-agents.md`](../../refs/2026-spec-kit-agents.md)) separated the two
+([`refs/2026-spec-kit-agents.md`](../../references/papers/2026-spec-kit-agents.md)) separated the two
 ingredients and found post-phase **validation worth ~3× pre-phase grounding** on an
 LLM-judge composite — a decomposition pointing *away* from conclusion 6's emphasis, with
 declared caveats (its own blinded human sample mildly contradicts the headline; different
@@ -33,7 +33,7 @@ binary instruments, that is a finding about the *judge*, not just the mechanisms
 So, two questions, one experiment:
 
 1. **Minimal-harness question** (exp-02's decision rule, confirmed unoccupied by the
-   field — [`refs/2025-agent-frameworks-eval.md`](../../refs/2025-agent-frameworks-eval.md) full
+   field — [`refs/2025-agent-frameworks-eval.md`](../../references/papers/2025-agent-frameworks-eval.md) full
    read found no framework-less control in $875 of published runs): does a harness
    reduced to grounding + gates alone — two prompt files, no ceremony — capture the
    layer-4 quality margin at near-plain cost?
@@ -50,7 +50,7 @@ So, two questions, one experiment:
 - **P2 — gates buy containment, not discovery.** The V-only arm scores *within* the
   plain band on sample-discoverable traps (no discovery mechanism), but its
   corrections concentrate **at the gate** rather than spread through the trajectory
-  (correction-location, [`metrics.md`](../../notes/cross-cutting/metrics.md)), and its
+  (correction-location, [`metrics.md`](../../docs/metrics.md)), and its
   functional-check score is at or above the band mean (a gate catches plain bugs it
   can anticipate without measurement).
 - **P3 — the decomposition itself** (no directional bet; either direction revises).
@@ -144,7 +144,7 @@ prior experiment taught the orchestrator an inventory for.
 
 Exp-02's instrument saturated: the plain arm cleared all five hidden trap classes
 unaided, leaving no headroom (5d's scar). The clarification-benchmark cluster
-([`benchmark-survey §5`](../../notes/cross-cutting/benchmark-survey.md)) shows
+([`benchmark-survey §5`](../../docs/benchmark-survey.md)) shows
 **withholding specification information produces headroom reliably at every scale
 measured** (~80pp function-level, 28pp repo-level). So this task moves the sharp edges
 out of the prompt and into a **visible sample corpus**: the prompt deliberately does not
@@ -247,7 +247,7 @@ Order and rules, each clause carrying its methodology anchor:
 | Trap score | per-check pass/fail against `expected.json`, machine-checked; discoverable and decided subsets reported separately |
 | Functional checks | normal file, multi-file, `--level`, `--json`, non-log, empty — same script, all arms |
 | **Cost ledger** | transcripts' `usage` fields per 5c, per model, orchestrator/subagent split; P4 judged on this |
-| **Correction location** | for V arms: corrections (post-first-implementation edits) classified gate-triggered vs. spontaneous, from transcript + `GATELOG.md`; the correction-rate caveat applies — zero ≠ good, pair with effectiveness ([`metrics.md`](../../notes/cross-cutting/metrics.md)) |
+| **Correction location** | for V arms: corrections (post-first-implementation edits) classified gate-triggered vs. spontaneous, from transcript + `GATELOG.md`; the correction-rate caveat applies — zero ≠ good, pair with effectiveness ([`metrics.md`](../../docs/metrics.md)) |
 | Grounding fidelity | for G arms: does `MEASUREMENTS.md` contain real command outputs (cross-checked against transcript) or confabulated ones — a prose gate that lies is exp-02's steering failure in new clothes |
 | Attention split | blocking events, question, verbatim answer, seconds blocked (fixed-oracle design should drive this to ~0; measured anyway) |
 | Wall-clock per arm | session timestamps |
@@ -291,7 +291,7 @@ without approval (no arm spend).
 
 Results append below this line after runs. The verdict updates: conclusion 6's
 annotation (issue #8 — weaken, re-decompose, or corroborate, dated), F2 in
-[`design-principles.md`](../../design-principles.md) (revision rule: this experiment
+[`design-principles.md`](../../docs/design-principles.md) (revision rule: this experiment
 must confront it), the where-verification-lives open decision (design-principles'
 disputed table), and the rig task inventory. n=1 per arm is a probe and will be
 labelled as such.

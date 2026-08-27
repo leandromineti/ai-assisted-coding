@@ -25,7 +25,7 @@ spec-kit for real, which simultaneously:
 ## Preregistered predictions
 
 From spec-kit's mechanism profile
-([`notes/04-workflow-frameworks/spec-kit.md`](../../notes/04-workflow-frameworks/spec-kit.md)):
+([`notes/04-workflow-frameworks/spec-kit.md`](../../tools/4-workflow-frameworks/spec-kit.md)):
 
 - **P1 — requirements:** the spec-kit arm produces materially better *written
   requirements* than the plain arm (rubric below).

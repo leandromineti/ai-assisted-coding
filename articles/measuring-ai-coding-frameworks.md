@@ -9,7 +9,7 @@ series: "AI-Assisted Coding, Measured"
 seriesOrder: 2
 ---
 
-The [first article in this series](the-ai-coding-stack.md) ended on an accusation:
+The [first article in this series](https://mineti.dev/articles/the-ai-coding-stack/) ended on an accusation:
 public leaderboards score model+harness *pairings*, so nobody knows which category
 they're praising. The one benchmark I found that fixes the harness turned out to
 route each model through a different system prompt — a confound its own maintainer
