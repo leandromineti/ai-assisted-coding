@@ -291,13 +291,27 @@ harness already does") generalized from gates to the full table.
   it reads as settled.
 
   **The two absences have different causes, and the difference is the answer to the
-  question this bullet was really asking.** pi *has* a tool loop and simply ships no MCP
-  client, so MCP would ride an extension — it could gain the column tomorrow. aider has
-  **no tool registry at all**: edits are markdown fences parsed by regex, `functions = None`,
-  and no tool schema is ever sent. There is no socket for MCP to plug into. So: **MCP is
-  genuinely portable across tool-dispatch harnesses, and aider marks the boundary of that
-  class** — an edit-format harness cannot host MCP without becoming a different harness.
-  The portability is real; its domain is narrower than "harnesses".
+  question this bullet was really asking.** pi *has* a tool loop and **refuses MCP as a
+  stated position**: `README.md:498` under ## Philosophy reads *"**No MCP.** Build CLI
+  tools with READMEs, or build an extension that adds MCP support"*, with a linked
+  rationale, and `docs/usage.md:308` says it *"intentionally does not include built-in
+  MCP"*. The extension route is the designed path, and it is named in-tree
+  (`npm:pi-mcp-adapter` in a test fixture) — so **pi is the clean specimen for "the
+  harness declines the protocol and the ecosystem supplies it."** aider is a different
+  kind of ✗ entirely: **no tool registry at all** — edits are markdown fences parsed by
+  regex, `functions = None`, no tool schema ever sent. There is no socket for MCP to plug
+  into, at any level — extension or otherwise.
+
+  So the answer is two-layered. **MCP is genuinely portable across tool-dispatch
+  harnesses**, and it is portable *enough* that a harness can decline it in core and let
+  category 6 supply it (pi). **aider marks the outer boundary**: an edit-format harness
+  cannot host MCP at any level without becoming a different harness. The portability is
+  real; its domain is "harnesses with a tool registry", not "harnesses".
+
+  *(Dependency-scan trap, recorded because it would flip both cells:* `@modelcontextprotocol/sdk`
+  appears in pi's `package-lock.json` transitively via `@google/genai`, and `mcp` appears in
+  aider's `requirements.in` as a comment about a dependency it *avoids*. A manifest scan
+  reports MCP support in both places where source and docs deny it.)
 - Is "the harness decides the experience" true, or a claim that survives because nobody
   benchmarks the model independently of the harness?
 - ~~Have the frontier models really converged?~~ **The portable harnesses split three ways

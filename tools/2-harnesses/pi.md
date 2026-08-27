@@ -20,7 +20,7 @@ stars_at: 2026-08-26
 read_at: 2026-08-26
 depth: deep-dive
 harness_features:
-  mcp: false             # checked and absent: no MCP client anywhere (grep modelcontextprotocol over packages/{coding-agent,ai,agent}/src → 0; the one "MCP" token is a comment naming MCP bridges as a hypothetical image source). ai-memory's "pi via hooks+MCP" claim was made at ai-memory's pin — MCP would ride an extension, not core
+  mcp: false             # checked and absent: no MCP client anywhere (grep modelcontextprotocol over packages/{coding-agent,ai,agent}/src → 0; the one "MCP" token is a comment naming MCP bridges as a hypothetical image source). ai-memory's "pi via hooks+MCP" claim was made at ai-memory's pin — MCP would ride an extension, not core. STRENGTHENED 2026-08-27 at this same pin (no re-read, prompted by the aider read's MCP work): the surface is now the whole tree, not three src dirs, and the subject STATES the refusal — README.md:498 under ## Philosophy, "**No MCP.** Build CLI tools with READMEs, or build an extension that adds MCP support", linking an argued rationale; docs/usage.md:308 "intentionally does not include built-in MCP". Dependency-scan trap recorded: @modelcontextprotocol/sdk IS in package-lock.json but purely TRANSITIVELY (required by @google/genai) — no pi package.json declares it, so a manifest scan reports MCP where source and docs both deny it. README.md:394's "MCP server integration" is in a "What's possible" list of things EXTENSIONS can build, not a shipped feature
   lsp: false             # checked and absent: no LSP client, no vscode-languageserver/jsonrpc/tree-sitter/ast-grep dependency (two independent reader greps → 0 files each)
   hooks: true            # 34-event extension lifecycle system (types.ts:1237-1279), 14 with a blocking/modifying return contract; dispatch is ordered + first-block-wins + fail-closed (runner.ts:936-950). DEFAULT-OFF: the only default-mounted extension (llama.cpp) registers zero handlers
   turn_end_gates: hook   # DEFAULT-OFF: an extension agent_end handler can queue a follow-up and force another turn (agent-session.ts:1125-1127), but the handler has NO return contract (no {block,reason}); the engine-grade shouldStopAfterTurn seam exists in pi-agent-core but the CLI never assigns it (referenced only in packages/agent tests)
@@ -381,3 +381,11 @@ user a running dollar figure for cache misses.
   extension that adds an MCP client, making pi's MCP support a category-6 artifact
   rather than a harness feature? (Consistent with the taxonomy's "the runtime is a
   category-2 feature" line — here the runtime is simply absent and outsourced.)
+  *(Partly answered 2026-08-27 at this same pin, no re-read.)* The route the question
+  posits **exists and is named in-tree**: `test/settings-manager-bug.test.ts:45,52,53`
+  uses `npm:pi-mcp-adapter` as its example package, and the README directs users to
+  "build an extension that adds MCP support" (`:498`). So MCP support for pi *is* a
+  category-6 artifact by the maker's own design, not merely by omission — pi is the
+  clean specimen for "the harness declines the protocol and the ecosystem supplies it".
+  What remains open is the narrower half: whether the specific ai-memory/mem0
+  integrations take that route, which needs a read at *their* pins, not pi's.
