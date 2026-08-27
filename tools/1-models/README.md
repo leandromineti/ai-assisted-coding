@@ -1,6 +1,6 @@
 # Category 1 — Models
 
-`checked: 2026-08-26`
+`checked: 2026-08-27`
 
 The weights. See [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md) for what this category is and how
 it's judged.
@@ -19,8 +19,9 @@ report's evidence cells, not its depth field.
 
 ## What we assess here
 
-The assessed block is **`model_features:`, 5 keys** (2026-08-26): `reasoning`,
-`reasoning_type`, `reasoning_effort`, `prompt_caching`, `batch_discount`. The weights
+The assessed block is **`model_features:`, 5 keys** (2026-08-26; re-counted 2026-08-27 over
+13 models): `reasoning`, `reasoning_type`, `reasoning_effort`, `prompt_caching`,
+`batch_discount`. The weights
 themselves are untraceable at this repo's level of analysis — which is why category 1
 deliberately has no component decomposition — so what *is* assessable is the first-party
 surface around them: the three keys that change how a harness can drive the model, and the
@@ -35,9 +36,10 @@ reasoning keys are **typed**, and they discriminate here for a reason worth stat
 single free-text `thinking` key that held four independent facts at once):
 
 - **`reasoning`** (presence) — does the model generate reasoning tokens at all. The honest
-  base fact, and a **weak discriminator today**: 10 present, 1 absent (qwen3-coder-next).
-  Recorded as weak rather than quietly dropped — it is the fact the other two are
-  conditional on, and non-reasoning models ship again.
+  base fact, and a **weak discriminator today**: 10 present, 1 absent (qwen3-coder-next)
+  — **12 present, 1 absent of 13 after the two Qwen3.8 additions** (2026-08-27), i.e.
+  weaker still. Recorded as weak rather than quietly dropped — it is the fact the
+  other two are conditional on, and non-reasoning models ship again.
 - **`reasoning_type`** (closed enum) — `always-on` · `default-on` · `opt-in` · `none`.
   **Toggleability**, chosen over Anthropic's adaptive-vs-extended axis because every
   vendor states it and only three state theirs. Nothing is lost: adaptive-vs-extended is
@@ -49,7 +51,13 @@ single free-text `thinking` key that held four independent facts at once):
   qwen3-coder-next, so a boolean would have reproduced the `reasoning` column exactly —
   an instrument that cannot discriminate cannot measure (methodology rule 5d). The
   variation is in the level set and the default, which is why both live in the cell:
-  `@high` mostly, `@medium` at OpenAI, **`@max`** at Kimi K3 and GLM-5.3.
+  `@high` mostly, `@medium` at OpenAI, **`@max`** at Kimi K3 and GLM-5.3. **2026-08-27:**
+  twelve of thirteen, and the most-expensive-default group is now four models across three
+  makers — Kimi K3 and GLM-5.3 at `@max`, both Qwen3.8 models at `@xhigh` (their top
+  level). Every Western model still defaults lower. The level *sets* have stopped
+  converging too: Qwen's `low/medium/xhigh` overlaps Anthropic's five-level set only
+  partially, and qwen3.8-flash silently promotes the two names it doesn't implement
+  (`high`, `max`) to `xhigh`.
 
 **All three keys are now 11/11** (2026-08-26). The reshape left five cells at `·`, all
 Anthropic; [issue #38](https://github.com/leandromineti/ai-assisted-coding/issues/38)
@@ -76,6 +84,23 @@ Two things that pass came out of it, both recorded rather than smoothed over:
   per-model table independently gives Default **Off**, and effort's supported-models list
   excludes Haiku 4.5 outright. A derivation that survives its own check is worth noting —
   the ones that don't are why the other three cells stayed `·` instead.
+
+**2026-08-27 — 13 models, and the first blank that isn't ignorance.** Adding
+[qwen3.8-max](qwen3.8-max.md) and [qwen3.8-flash](qwen3.8-flash.md) leaves `reasoning`
+**13/13** and `reasoning_effort` **13/13**, but `reasoning_type` at **12/13**: the flagship
+is documented as *Hybrid* ("toggle thinking on or off per request with `enable_thinking`"),
+which excludes `always-on`, and no first-party surface states its **default** — the one
+thing the enum encodes. Qwen states that default for the open weights and for the Flash
+sibling, and not for the flagship. The cell was left empty rather than guessed, at a real
+cost: the matrix renders `·`, which this repo reads as *not checked*, and this was checked.
+
+That is a **second, different strain on the same enum** — the Opus 5 case above is
+toggleability being conditional on another parameter; this is toggleability being
+*undocumented* while adjacent models document it. The two-instance bar for revisiting a
+vocabulary is met in spirit but not in kind, so the queued question is narrower than a new
+enum value: does `reasoning_type` need a `not-stated` marker of the sort `release_date.stage`
+and `knowledge_cutoff.basis` already carry, so that "checked, vendor silent" stops
+rendering as "unchecked"? One more instance and it stops being a question.
 
 The other half of the surface is **9 transcription fields** — `maker`, `license`,
 `access`, `model_id`, `release_date`, `context_window`, `max_output`, `pricing`,
@@ -108,6 +133,8 @@ are claims.
 | [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 (vendor's words) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Repriced 2026-08-16 to peak/off-peak (off-peak = 50%); still the sweep's cheapest, cache hits near-free. |
 | [**GLM-5.3**](glm-5.3.md) | Z.ai (Zhipu AI) | API 2026-08-14 (day third-party-corroborated); weights held for a "two-week safety evaluation" | 1M ctx / 128K out, always-on reasoning, `reasoning_effort` default **max** (joining Kimi K3). $1.40/$4.40. Weights delayed with a stated offensive-security rationale — the sweep's only safety-gated weights release; prediction on record: HF repo by 2026-08-31. |
 | [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | weights 2026-01-30 (HF commit); no stage stated | Row verified: 80B total / **3B activated**, 256K ctx, Apache-2.0 — the one genuinely self-hostable agent model in the sweep. Publishes its own modest Terminal-Bench 2.0 score (36.2). A "Qwen 4 Coder" successor is third-party rumor, unresolvable on the official org (2026-07-31). |
+| [**Qwen3.8-Max**](qwen3.8-max.md) | Alibaba | API 2026-08-03, no stage stated (the same changelog says "General Availability" for another model — the omission is a choice) | Added 2026-08-27. The line's actual flagship: **2.4T total / 95B activated**, native vision, 1M served context, $2/$6. Weights published (`Qwen3.8-2.4T-A95B`) under a **bespoke `qwen3.8-max` license** — and the card says the API adds vision, non-thinking mode, 1M-by-default and built-in tools *over* them. `reasoning_type` is the sweep's first deliberately-blank cell: Hybrid is verified, the default is unstated. |
+| [**Qwen3.8-Flash**](qwen3.8-flash.md) | Alibaba | API 2026-08-26, no stage stated (the changelog prints the year as **2025** — a first-party typo, reconstructed from its own ordering) | Added 2026-08-27. **The cheapest model in the sweep** — $0.15/$0.47, 1M ctx, multimodal. Production form of `Qwen3.8-Flash-Next` (125B total / **6B activated** + a 51B n-gram embedding layer the Qwen team frames as a Qwen4 preview), so `access` is `closed-source`: the served weights are not published, a preview relative's are. Silently promotes `high`/`max` effort to `xhigh`. |
 
 ## Type 1b — Model access
 

@@ -7,7 +7,7 @@
 # this file and the ADR's `## Decision` ever disagree, the ADR is wrong or this file is
 # wrong; they must not diverge.
 
-checked: 2026-08-26  # bumped 2026-08-26 a ninth time: ADR-0046 renamed `released:` to `release_date:` and restructured it as a mapping (date + stage + note, the fact typed as a date), and RETIRED `release_mode:` outright — no decoder for a removal, and the two rows it was already wrong on are recorded in the ADR. Eighth time: ADR-0044 renamed the `open_source:` boolean to the `access:` enum (open-source | closed-source | open-weights) across all 45 reports + both templates and registered it in feature-taxonomy.yaml as a transcription field — the ONLY schema_renames entry whose values change too, not just the key. Seventh time: ADR-0042 renamed the `vendor:` frontmatter key to `maker:` across all 45 reports + both templates (schema_renames decoder; references/cards keep `vendor:`, and references/* is skip_entirely so no gate is needed). Sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
+checked: 2026-08-27  # bumped 2026-08-27 a tenth time: the two Qwen3.8 model reports added the `embedding layer` exempt compound — the first exemption naming a MODEL-internal structure rather than a software or scale one (known_sites re-derived from the check, as always). Ninth time, 2026-08-26: ADR-0046 renamed `released:` to `release_date:` and restructured it as a mapping (date + stage + note, the fact typed as a date), and RETIRED `release_mode:` outright — no decoder for a removal, and the two rows it was already wrong on are recorded in the ADR. Eighth time: ADR-0044 renamed the `open_source:` boolean to the `access:` enum (open-source | closed-source | open-weights) across all 45 reports + both templates and registered it in feature-taxonomy.yaml as a transcription field — the ONLY schema_renames entry whose values change too, not just the key. Seventh time: ADR-0042 renamed the `vendor:` frontmatter key to `maker:` across all 45 reports + both templates (schema_renames decoder; references/cards keep `vendor:`, and references/* is skip_entirely so no gate is needed). Sixth time: ADR-0034 renamed refs/ → references/ with papers/ + cards/ beneath it (exempt_paths entry follows the directory). Fifth time: ADR-0031 made the candidates ledger a backlog (six promoted rows removed; "engagement ladder" known_site re-derived 5→7 as the header grew). Fourth time: ADR-0030 gave this file and its prose half the `tool-` prefix (taxonomy.{md,yaml} → tool-taxonomy.{md,yaml}), pairing them with feature-taxonomy.md; contents unchanged. Third time: ADR-0027 renamed the seven hand-kept front doors index.md → README.md (known_sites re-derived again: "engagement ladder" and "memory layer" were both line-stale too, 118→119 and 92→84). Earlier same day: ADR-0026 moved this file and the three constitution docs root → docs/ ("egress layer" known_sites re-derived; both entries were already line-stale). Same day: ADR-0024 path rename (notes/ → tools/, 0N- → N-; known_sites repathed). Previously bumped 2026-08-22 twice: ADR-0020 split (5=Memory + 6=Extensions registered, near-miss note inverted, types/bucket re-anchored, kind gate widened, known_sites repathed); ADR-0022 (refs repo-voice swept manually, exempt-path comment amended)
 decision_record: adrs/0015-layers-become-categories.md
 canonical_top_level_term: categories
 
@@ -157,6 +157,18 @@ terms:
           "memory layer".
         known_sites:
           - "README.md:26"
+      - compound: "embedding layer"
+        canonical_source: >-
+          Neural-network architecture vocabulary (the embedding stage of a
+          transformer — here Qwen3.8-Flash-Next's 51B n-gram embedding layer,
+          named as such by its own model card) — unrelated to the taxonomy's
+          top-level divisions. Added 2026-08-27 with the two Qwen3.8 model
+          reports; this is the first exempted compound naming a MODEL-internal
+          structure rather than a software or scale one.
+        known_sites:
+          - "tools/1-models/README.md:137"
+          - "tools/1-models/qwen3.8-flash.md:45"
+          - "tools/1-models/qwen3.8-flash.md:110"
     deny_list_exempt_note: >-
       Bare "rung"/"rungs"/"ladder" stay denied for the taxonomy-stacking sense (the
       old "five-rung ladder" framing this decision replaces). Bare "layer"/"layers"

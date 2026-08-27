@@ -30,6 +30,8 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | grok-4-5 | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [grok-4-5](../tools/1-models/grok-4-5.md) |
 | kimi-k3 | — | — | `open-weights` | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | — | — | — | `—` | stub | [kimi-k3](../tools/1-models/kimi-k3.md) |
 | qwen3-coder-next | — | — | `open-weights` | Apache-2.0 | — | — | — | `—` | stub | [qwen3-coder-next](../tools/1-models/qwen3-coder-next.md) |
+| qwen3.8-flash | — | — | `closed-source` | not published for the SERVED model — no Hugging Face repo carries the name `qwen3.8-flash` (Qwen org search, 2026-08-27: Qwen3.8-Flash-Next, -Next-FP8, -27B, -27B-FP8, -2.4T-A95B, and nothing else). The upstream experimental preview it is built on, Qwen/Qwen3.8-Flash-Next, is `qwen-community-1.0` — a third license inside one model family (cf. qwen3-coder-next's Apache-2.0 and qwen3.8-max's bespoke terms) | — | — | — | `—` | stub | [qwen3.8-flash](../tools/1-models/qwen3.8-flash.md) |
+| qwen3.8-max | — | — | `open-weights` | qwen3.8-max — a bespoke license, named after the model, shown on the weights repo Qwen/Qwen3.8-2.4T-A95B (checked 2026-08-27); NOT Apache-2.0 like qwen3-coder-next, and not the `qwen-community-1.0` its Flash sibling's upstream carries | — | — | — | `—` | stub | [qwen3.8-max](../tools/1-models/qwen3.8-max.md) |
 
 ## 2 · Harnesses
 
@@ -91,4 +93,4 @@ Every tool with a report, one subsection per category in repo order. Newest read
 |---|---|---|---|---|---|---|---|---|---|---|
 | ecc | — | Markdown, Node | `open-source` | MIT | 236,217 | 2026-01-17 | 23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check | `v2.1.0-16-ge4e41631` | deep-dive | [ecc](../tools/6-extensions/ecc.md) |
 
-**46 tools** — 21 deep-dive · 17 stub · 8 survey.
+**48 tools** — 21 deep-dive · 19 stub · 8 survey.

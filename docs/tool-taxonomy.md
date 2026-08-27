@@ -503,7 +503,7 @@ Clearest spanners as of 2026-08-27 (✓ tracked with a report · ○ observation
 | **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
 | **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
 | **DeepSeek** | deepseek-v4 ✓ | dsh ✓ | — | — |
-| **Alibaba (Qwen)** | qwen3-coder-next ✓ | [qwen-code](../tools/2-harnesses/qwen-code.md) ✓ *(deep-dive 2026-08-27; a gemini-cli fork that now leads its parent on four keys)* | — | — |
+| **Alibaba (Qwen)** | qwen3.8-max · qwen3.8-flash · qwen3-coder-next ✓ *(the two Qwen3.8 models added 2026-08-27)* | [qwen-code](../tools/2-harnesses/qwen-code.md) ✓ *(deep-dive 2026-08-27; a gemini-cli fork that now leads its parent on four keys)* | — | — |
 | **Moonshot AI** | kimi-k3 ✓ | kimi-code ○ *(candidate, created 2026-05-22)* | — | — |
 | **Z.ai (Zhipu)** | glm-5.3 ✓ | ZCode ○ *(closed; "Official Harness for GLM-5.3")* | — | — |
 

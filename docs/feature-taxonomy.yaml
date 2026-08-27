@@ -463,7 +463,7 @@ features:
     applies_to: [1]
     value_type: presence
     definition: "the model generates reasoning tokens at all — true even when reasoning cannot be switched off; the vendor's own word (thinking | reasoning) is not the test"
-    note: "added 2026-08-26 (ADR-0040), splitting the old free-text `thinking` key. Weak discriminator BY DESIGN and recorded as such: 10 present / 1 absent across the sweep, the lone ✗ being qwen3-coder-next ('supports only non-thinking mode'). Kept anyway because it is the base fact the other two are conditional on, and because a non-reasoning model is a thing that ships again — but do not mistake it for a measurement"
+    note: "added 2026-08-26 (ADR-0040), splitting the old free-text `thinking` key. Weak discriminator BY DESIGN and recorded as such: 10 present / 1 absent across the sweep, the lone ✗ being qwen3-coder-next ('supports only non-thinking mode') — re-counted 2026-08-27 as 12 present / 1 absent of 13, the same lone ✗, after the two Qwen3.8 models were added. Kept anyway because it is the base fact the other two are conditional on, and because a non-reasoning model is a thing that ships again — but do not mistake it for a measurement"
   - id: reasoning_type
     group: reasoning
     block: model_features

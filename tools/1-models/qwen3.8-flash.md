@@ -1,0 +1,132 @@
+---
+name: qwen3.8-flash
+category: 1
+maker: Alibaba (Qwen team)
+url: https://www.qwencloud.com/models/qwen3.8-flash
+license: "not published for the SERVED model — no Hugging Face repo carries the name `qwen3.8-flash` (Qwen org search, 2026-08-27: Qwen3.8-Flash-Next, -Next-FP8, -27B, -27B-FP8, -2.4T-A95B, and nothing else). The upstream experimental preview it is built on, Qwen/Qwen3.8-Flash-Next, is `qwen-community-1.0` — a third license inside one model family (cf. qwen3-coder-next's Apache-2.0 and qwen3.8-max's bespoke terms)"
+access: closed-source   # JUDGMENT CALL, see § Weights — the served model's weights are not published; its upstream preview's are
+model_id: qwen3.8-flash (API, QwenCloud); upstream weights Qwen/Qwen3.8-Flash-Next (+ FP8)
+release_date:
+  date: 2026-08-26
+  stage: not-stated
+  note: "the QwenCloud changelog entry prints 'August 26, **2025**' — a first-party TYPO, not a fact: it sits at the TOP of a strictly descending list whose next entry is 2026-08-24, and QwenCloud itself only launched 2026-05-26, so a 2025 release is impossible on it. Day and month are taken from the entry, the year from the list it sits in; recorded 2026-08-26 (checked 2026-08-27). No stage word — the same changelog says 'General Availability' for wan3.0-video two days earlier, so the omission is a choice"
+context_window: 1000000
+max_output: 131072   # docs print exact figures for this model: "1,000,000 tokens" context, "131,072 tokens" output, 262,144 max thinking tokens; the model page's limits row shows max input 991K, 983K in thinking mode
+pricing:
+  input: 0.15         # USD per MTok — base list rate (see the registry's rule)
+  output: 0.47
+  currency: USD
+  regime: flat
+  note: "$0.15 / $0.47 per MTok (model page, verified 2026-08-27) — HALF DeepSeek V4 Flash's off-peak input rate and the cheapest model in this sweep. Widely reported third-party as $0.16 input; the first-party page says $0.15, and the page is what this row records"
+knowledge_cutoff:
+  date: null          # the limit date on training data
+  basis: not-stated
+  note: "not stated on any surface checked 2026-08-27: QwenCloud model page, the platform changelog entry, the docs' latest-model page, and the Hugging Face card for the upstream Qwen/Qwen3.8-Flash-Next"
+model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
+  reasoning: true
+  reasoning_type: default-on   # docs, verbatim: "Thinking mode is enabled by default" + "To disable thinking entirely, set `enable_thinking=false` — the model answers directly"
+  reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs: "`xhigh` (default)" / medium / low, and "`max` and `high` are automatically mapped to `xhigh`" — an alias mapping no other model here publishes
+  prompt_caching: "implicit cache read $0.016 per MTok (≈0.107x of input); explicit cache creation $0.20 (1.33x) + explicit cache read $0.016 per MTok. Described as storing 'shared prefixes for long-context requests'; no TTL and no breakpoint surface stated (2026-08-27)"
+  batch_discount: "platform Batch API is '50% of the real-time price', results 'delivered within 24 hours' (first-party batch guide); the guide's supported-model list names only the older `qwen-max`/`qwen-plus`/`qwen-flash`/`qwen-turbo` ids and not `qwen3.8-flash`, while the model page carries a Batch card. Same unresolved two-surface disagreement as qwen3.8-max (2026-08-27)"
+checked: 2026-08-27
+depth: stub
+---
+
+# Qwen3.8-Flash
+
+The cheap end of the Qwen3.8 line and, at **$0.15 / $0.47 per MTok**, the cheapest model
+tracked in this repo — roughly a thirteenth of qwen3.8-max's input rate for the same
+advertised 1M context, the same three-level reasoning dial, and the same multimodal input
+(image, text, video in; text out). Released three weeks after the flagship, on 2026-08-26.
+
+What makes it worth a report beyond the price: it is the **production form of an
+architecture preview**. Its upstream, `Qwen/Qwen3.8-Flash-Next`, is a 125B-total /
+**6B-activated** MoE carrying two structures the Qwen team frames as previews of the next
+generation — a **51B n-gram embedding layer** and a 4B MTP module. The cheap tier is where
+the next architecture ships first, which is not where this repo would have looked for it.
+
+## Weights: why this row says `closed-source`
+
+The most revisable cell in this report, so the reasoning is stated rather than assumed.
+
+- No Hugging Face repo carries the served name. The Qwen org publishes `Qwen3.8-Flash-Next`
+  and its FP8 variant, `Qwen3.8-27B` (+FP8), and `Qwen3.8-2.4T-A95B` — checked 2026-08-27.
+- The upstream card's own framing is *"Qwen3.8-Flash is the official version based on
+  Qwen3.8-Flash-Next with more production features."* **Based on** is not **is**.
+- Contrast the sibling: qwen3.8-max's weights card says its repo holds the post-trained
+  model behind the commercial service. That is an identity claim, and it is why that report
+  says `open-weights` and this one does not.
+
+So what the public can obtain is a *related experimental preview*, not this model. Anyone
+reading `closed-source` here should read this section with it — 125B weights in the same
+lineage are downloadable, under `qwen-community-1.0`. Flip the cell the day a
+`Qwen/Qwen3.8-Flash` repo exists, and read the license before calling it open.
+
+This is the second Qwen3.8 report in a row where `access` (ADR-0044) turns out to be
+coarser than the situation: one enum value covers "these exact weights are published",
+"the post-trained base is published and the API adds features", and "a preview relative is
+published". The distinction is currently carried by prose in two reports, which is where a
+future axis usually starts.
+
+## The category-1 axes (taxonomy §1)
+
+| Axis | Evidence here |
+|---|---|
+| Tool-call fidelity | · — the docs advertise multimodal agent use; nothing measured here |
+| Long-horizon coherence | · |
+| Usable context (vs advertised) | 1,000,000 advertised and printed exactly (not rounded, unlike the flagship's page); addressable input is **991K**, and **983K** once thinking is on. Upstream weights are *"262,144 natively and extensible up to 1,000,000 tokens"* — so, as with qwen3.8-max, the 1M is a serving configuration over a 256K-native model |
+| Cost per completed task | **The cheapest list price in the sweep**, and the one where the reasoning default matters most: `xhigh` by default on a model bought for cost means realized cost can sit far above the $0.15 headline. A cheap model that thinks hard by default is not automatically a cheap model |
+| Release mode & access routes (1b) | First-party API on QwenCloud; the served weights are not published, the upstream preview's are (§ Weights). No second first-party route found |
+
+## Reasoning surface
+
+All three cells verified against the docs' latest-model page, 2026-08-27:
+
+- *"Thinking mode is enabled by default."* → `default-on`.
+- *"To disable thinking entirely, set `enable_thinking=false` — the model answers
+  directly"* → toggleable, which is what separates `default-on` from `always-on`.
+- *"Use `reasoning_effort` to control reasoning intensity: `xhigh` (default) … `medium` …
+  `low`"* → `levels:low/medium/xhigh@xhigh`, joining Kimi K3, GLM-5.3 and its own flagship
+  sibling in defaulting to the most expensive level it offers. That is now **four models,
+  three makers, all non-Western** — while every Western model in the sweep defaults lower
+  (`@high` or `@medium`). What was a Kimi curiosity in July is a regional pattern in August.
+
+One detail no other model in the sweep publishes: *"`max` and `high` are automatically
+mapped to `xhigh`."* The API silently accepts two level names it does not implement and
+promotes them to the most expensive one. A harness that sends OpenAI's `high` — a
+perfectly reasonable default — gets `xhigh` and the bill that comes with it, with no error
+to notice. That is conclusion 15's failure mode (harnesses track models by name, and API
+drift disarms them) arriving through a *compatibility alias* rather than a rejection.
+
+## Role in this repo's work
+
+None run. The obvious use is as a cheap arm in the rig: it is the only model in the sweep
+whose list price makes a many-run experiment trivially affordable, and the only one where
+`reasoning_effort` can be swept across three levels for less than a single Opus run costs.
+
+## Surprises
+
+1. **The next architecture shipped in the cheap tier, not the flagship.** The n-gram
+   embedding layer and MTP module are framed as Qwen4 previews and appear in the $0.15
+   model, while the 2.4T flagship is conventional MoE. Cost tiers are usually where
+   vendors are most conservative.
+2. **A first-party changelog with the wrong year on its newest entry** ("August 26,
+   **2025**"). Every date in this repo is supposed to come from a first-party surface;
+   this is the first time such a surface was internally inconsistent enough to need
+   *reconstruction* from its own ordering rather than transcription.
+3. **Silent level aliasing.** `max` and `high` are accepted and promoted to `xhigh`. Every
+   other vendor here either implements the level or rejects it.
+4. **Third-party consensus was one cent off.** Multiple outlets report $0.16 input; the
+   vendor's page says $0.15. Small, and exactly the kind of drift that makes a repo of
+   copied numbers worthless — the reason rule 1 exists.
+
+## Open questions
+
+- Do the served weights ever get published under this name, or does `-Next` remain the
+  only downloadable form? That answer flips the `access` cell.
+- Does the Batch API accept the `qwen3.8-flash` id? Same unresolved two-surface
+  disagreement as the flagship.
+- Is the `high` → `xhigh` promotion visible anywhere in the response (a returned effort
+  field), or is it entirely silent? If silent, it belongs in conclusion 15's evidence.
+- Cheapest-model claim: worth re-checking against DeepSeek V4 Flash's off-peak window,
+  where a time-of-day rate can undercut a flat one for a given schedule.
