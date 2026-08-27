@@ -101,3 +101,6 @@
 5|openviking|https://github.com/volcengine/OpenViking
 # DeepSeek Harness (dsh), added 2026-08-24 — issue #19 ingest, taken to deep-dive on owner request.
 2|dsh|https://github.com/deepseek-ai/deepseek-harness
+# qwen-code, added 2026-08-27 — candidates-ledger promotion (row added 2026-08-18); the read
+# is a divergence study against gemini-cli at its pin, per the ledger row it supersedes.
+2|qwen-code|https://github.com/QwenLM/qwen-code

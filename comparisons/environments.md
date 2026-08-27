@@ -17,7 +17,8 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [hermes-agent](../tools/2-harnesses/hermes-agent.md) | 2 | ✓ | · | ✓ | ✓ | **bind** |
 | [opencode](../tools/2-harnesses/opencode.md) | 2 | ✓ | · | · | · | · |
 | [pi](../tools/2-harnesses/pi.md) | 2 | ✓ | · | · | · | · |
+| [qwen-code](../tools/2-harnesses/qwen-code.md) | 2 | ✓ | ✓ | ✓ | · | **internalize** |
 | [warp](../tools/2-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 | [claude-code](../tools/2-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 
-**8 of 45 reports declare `environments:`.**
+**9 of 46 reports declare `environments:`.**
