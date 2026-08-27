@@ -466,7 +466,7 @@ choosing the harness chooses the model, the sandbox, and the extension format, b
 maker ships all of them. This is the single most important thing the taxonomy has to warn
 its reader about before they treat a category choice as free.
 
-Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation-only, closed):
+Clearest spanners as of 2026-08-27 (✓ tracked with a report · ○ observation-only, closed):
 
 | Vendor | 1 · Model | 2 · Harness | 3 · Environment | 6 · Artifacts |
 |---|---|---|---|---|
@@ -475,7 +475,7 @@ Clearest spanners as of 2026-08-16 (✓ tracked with a report · ○ observation
 | **Google** | gemini-3-1-pro ✓ | Gemini → Antigravity CLI ✓ | — | — |
 | **xAI** | grok-4-5 ✓ | Cursor ○ *(acquired 2026-06)* | — | — |
 | **DeepSeek** | deepseek-v4 ✓ | dsh ✓ | — | — |
-| **Alibaba (Qwen)** | qwen3-coder-next ✓ | qwen-code ○ *(candidate — a gemini-cli fork)* | — | — |
+| **Alibaba (Qwen)** | qwen3-coder-next ✓ | [qwen-code](../tools/2-harnesses/qwen-code.md) ✓ *(deep-dive 2026-08-27; a gemini-cli fork that now leads its parent on four keys)* | — | — |
 | **Moonshot AI** | kimi-k3 ✓ | kimi-code ○ *(candidate, created 2026-05-22)* | — | — |
 | **Z.ai (Zhipu)** | glm-5.3 ✓ | ZCode ○ *(closed; "Official Harness for GLM-5.3")* | — | — |
 
