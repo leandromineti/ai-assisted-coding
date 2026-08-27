@@ -739,9 +739,36 @@ transcription_fields:
     group: shape
     applies_to: [2]
     value_type: list
-    definition: "where you interact — terminal | ide | desktop | web (multi-valued)"
+    definition: >-
+      where you interact — terminal | ide | desktop | web | messaging (multi-valued).
+      `messaging` added 2026-08-27 (ADR-0047) on the second verified instance: it names a
+      CLASS of platforms rather than one, and the report's cell comment says which
+      (hermes-agent ~20 via its gateway; qwen-code 11 channel packages — feishu, dingtalk,
+      telegram, qqbot, wecom, weixin, github, gitlab, dws). Before it, both reports recorded
+      the platforms in prose as explicitly outside the vocabulary
     verification: source-or-docs
     rendered_in: [tools.md]
+  - id: residency
+    group: shape
+    applies_to: [2]
+    value_type: closed-enum
+    definition: >-
+      does the agent outlive the conversation — session | resident. `resident` means a
+      persistent process that survives any one conversation and can act unprompted: a daemon,
+      scheduled work, or inbound messages arriving with no session open. DISTINCT FROM
+      `execution`, which says WHERE the work runs (local vs someone else's machine); the two
+      are independent, which is exactly why this is its own field. Both verified instances
+      prove the independence: hermes-agent is `both` + resident, qwen-code is `local` +
+      resident, and a third `execution` value would have forced each to drop a true fact.
+      Verified-only like every transcribed fact — omitted means not checked, and most reports
+      predate the field
+    verification: source-or-docs
+    rendered_in: [tools.md]
+    note: >-
+      added 2026-08-27 (ADR-0047), firing a trigger the tool taxonomy wrote for itself at the
+      hermes-agent deep-dive (2026-07-30): "not promoted to a third value on one instance —
+      recorded here so the second instance triggers the revision". qwen-code supplied it from
+      an independent lineage, which is what makes it a shape rather than one product's quirk
   - id: execution
     group: shape
     applies_to: [2]

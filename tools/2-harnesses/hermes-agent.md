@@ -1,8 +1,9 @@
 ---
 name: hermes-agent
 category: 2
-surfaces: [terminal, desktop, web, ide]   # + ~20 messaging platforms (Telegram, Discord, Slack, WhatsApp, Signal…) via the gateway — beyond the fixed vocabulary, see What it is
-execution: both        # local CLI/TUI + persistent gateway daemon on a VPS, cron jobs, remote terminal backends
+surfaces: [terminal, desktop, web, ide, messaging]   # messaging = ~20 platforms via the gateway (Telegram, Discord, Slack, WhatsApp, Signal…), see What it is. `messaging` entered the vocabulary 2026-08-27 (ADR-0047) on qwen-code's second instance; this report is the first, and until then recorded the platforms as being OUTSIDE the four-value set
+execution: both        # local CLI/TUI + remote terminal backends. The daemon/cron half of this comment moved to `residency:` below (ADR-0047) — it was never an execution fact
+residency: resident    # the gateway daemon outlives any conversation, cron delivers to any platform, serverless backends hibernate between sessions — the FIRST verified instance of the shape (deep-dive 2026-07-30)
 environments: [host, container, remote-sandbox]   # tools/environments/: local, docker, ssh, singularity, modal (+managed), daytona, vercel_sandbox
 environment_relation: bind   # attaches to independently-distributed environments: 8 terminal backends (local, docker, ssh, singularity, modal x2, daytona, vercel_sandbox)
 maker: Nous Research

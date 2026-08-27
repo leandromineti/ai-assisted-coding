@@ -138,7 +138,8 @@ What the subject is built from, and where you meet it. `stack` is the language a
 | Key | Basis | Type | Definition | Kind link | Provenance |
 |---|---|---|---|---|---|
 | `stack` | transcribed | `list` | [Language, Runtime/Framework] of the subject | — | `source-or-docs` · renders in [tools.md](tools.md) |
-| `surfaces` | transcribed | `list` | where you interact — terminal \| ide \| desktop \| web (multi-valued) | — | `source-or-docs` · renders in [tools.md](tools.md) |
+| `surfaces` | transcribed | `list` | where you interact — terminal \| ide \| desktop \| web \| messaging (multi-valued). `messaging` added 2026-08-27 (ADR-0047) on the second verified instance: it names a CLASS of platforms rather than one, and the report's cell comment says which (hermes-agent ~20 via its gateway; qwen-code 11 channel packages — feishu, dingtalk, telegram, qqbot, wecom, weixin, github, gitlab, dws). Before it, both reports recorded the platforms in prose as explicitly outside the vocabulary | — | `source-or-docs` · renders in [tools.md](tools.md) |
+| `residency` | transcribed | `closed-enum` | does the agent outlive the conversation — session \| resident. `resident` means a persistent process that survives any one conversation and can act unprompted: a daemon, scheduled work, or inbound messages arriving with no session open. DISTINCT FROM `execution`, which says WHERE the work runs (local vs someone else's machine); the two are independent, which is exactly why this is its own field. Both verified instances prove the independence: hermes-agent is `both` + resident, qwen-code is `local` + resident, and a third `execution` value would have forced each to drop a true fact. Verified-only like every transcribed fact — omitted means not checked, and most reports predate the field | — | `source-or-docs` · renders in [tools.md](tools.md) |
 | `execution` | transcribed | `closed-enum` | how it runs — local \| async-remote \| both | — | `source-or-docs` · renders in [tools.md](tools.md) |
 
 ### Environment binding
@@ -420,4 +421,4 @@ What the subject is built from, and where you meet it. `stack` is the language a
 | `stack` | transcribed | `list` | [Language, Runtime/Framework] of the subject | — | `source-or-docs` · renders in [tools.md](tools.md) |
 | `harness_targets` | transcribed | `list` | which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets | — | `source-or-docs` · renders in [tools.md](tools.md) |
 
-**49 assessed keys across 5 blocks · 19 transcription fields.**
+**49 assessed keys across 5 blocks · 20 transcription fields.**

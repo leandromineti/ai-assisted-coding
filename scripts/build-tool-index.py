@@ -93,6 +93,15 @@ ACCESS_VALUES = {"open-source", "closed-source", "open-weights"}
 # because stages don't align across vendors. These two are the controlled exceptions
 # (ADR-0046): the vendor used no stage vocabulary at all, or its own surfaces disagreed.
 STAGE_MARKERS = {"not-stated", "ambiguous"}
+# `residency:` (ADR-0047) — does the agent outlive the conversation. Independent of
+# `execution`, which says where the work runs: hermes-agent is both+resident, qwen-code is
+# local+resident. Seventh cell-value check, and unlike `access` it is NOT required on every
+# report: most predate the field, and there an absent cell honestly means unchecked.
+RESIDENCY_VALUES = {"session", "resident"}
+# `surfaces:` had no vocabulary check at all until 2026-08-27. Adding `messaging` widened an
+# unvalidated list, and the moment a vocabulary grows is the moment to start checking it —
+# a typo here silently invents a surface nothing else in the repo knows about.
+SURFACE_VALUES = {"terminal", "ide", "desktop", "web", "messaging"}
 
 
 def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
@@ -432,6 +441,27 @@ def check_release_date(reports: list[dict]) -> None:
             )
 
 
+def check_shape_axes(reports: list[dict]) -> None:
+    """Validate `residency:` and `surfaces:` on category-2 reports (ADR-0047).
+
+    Seventh cell-value check. Both are verified-only, so absence is never an error here —
+    only a value outside the vocabulary is. `surfaces` is validated for the first time:
+    it was a free list until `messaging` widened it.
+    """
+    for r in reports:
+        if r.get("category") != 2:
+            continue
+        rel = r["_path"].relative_to(ROOT)
+        res = r.get("residency")
+        if res is not None and res not in RESIDENCY_VALUES:
+            sys.exit(f"{rel}: `residency:` is {res!r} — known: {sorted(RESIDENCY_VALUES)}")
+        for sfc in r.get("surfaces") or []:
+            if sfc not in SURFACE_VALUES:
+                sys.exit(
+                    f"{rel}: `surfaces:` contains {sfc!r} — known: {sorted(SURFACE_VALUES)}"
+                )
+
+
 def check(reports: list[dict]) -> int:
     """Verify each report's pinned commit is still *reachable*, and report upstream drift.
 
@@ -576,6 +606,8 @@ def render(reports: list[dict]) -> str:
             shape = " + ".join(surfaces)
             if r.get("execution"):
                 shape += f" · {r['execution']}"
+            if r.get("residency") == "resident":
+                shape += " · **resident**"
         else:
             shape = "—"
         stars = f"{r['stars']:,}" if isinstance(r.get("stars"), int) else "—"
@@ -1260,6 +1292,7 @@ def main() -> int:
     check_reasoning(reports)
     check_access(reports)
     check_release_date(reports)
+    check_shape_axes(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

@@ -136,22 +136,32 @@ Beside the components, two **descriptive axes** — transcription facts readable
 product docs, not traced mechanisms — recorded separately because products
 increasingly span both:
 
-- **Surfaces** — where you interact: terminal, IDE, desktop, web. **Multi-valued.** An
-  earlier version of this taxonomy used a single surface bucket; that forced converged
-  products into one label (Claude Code spans all four; OpenCode ships terminal + desktop +
-  IDE from one core) and conflated web-as-interface with remote-as-execution.
+- **Surfaces** — where you interact: terminal, IDE, desktop, web, **messaging**.
+  **Multi-valued.** An earlier version of this taxonomy used a single surface bucket; that
+  forced converged products into one label (Claude Code spans four; OpenCode ships terminal +
+  desktop + IDE from one core) and conflated web-as-interface with remote-as-execution.
+  `messaging` was added 2026-08-27 ([ADR-0047](../adrs/0047-residency-and-the-messaging-surface.md))
+  on the second verified instance; it names a *class* of platforms and each report's cell
+  comment says which.
 - **Execution** — how it runs: `local` (synchronous, on your machine, you watch) vs.
   `async-remote` (Devin, Jules, cloud Codex, Claude Code on web — the agent runs elsewhere
   and reports back). Claude Code on web and Devin are *not* the same kind of thing, and
   the old "async/cloud" bucket said they were.
 
-  *Strain recorded (2026-07-30, hermes-agent deep-dive):* a third shape exists that
-  neither value describes — the **resident** agent: a persistent daemon that outlives any
-  conversation, receives messages from ~20 platforms, and runs cron jobs unattended
-  (hermes' gateway; its serverless backends hibernate between sessions). Not promoted to
-  a third value on one instance — recorded here so the second instance triggers the
-  revision. Same read strained **surfaces**: messaging platforms don't fit the four-value
-  vocabulary and are recorded as an annotation, not a fifth value.
+  *Strain recorded 2026-07-30 (hermes-agent), **resolved 2026-08-27** ([ADR-0047](../adrs/0047-residency-and-the-messaging-surface.md)):*
+  a third shape exists that neither `execution` value describes — the **resident** agent: a
+  persistent process that outlives any conversation and can act unprompted, via a daemon,
+  scheduled work, or inbound messages arriving with no session open. The trigger this
+  paragraph wrote for itself — *"recorded here so the second instance triggers the
+  revision"* — fired when the qwen-code deep-dive (2026-08-27) found the same shape in an
+  independent lineage: `qwen serve`, a per-session cron scheduler, and eleven messaging
+  channels. It is resolved in the two halves the strain always had, and **not** by widening
+  this enum: residency is now its own transcribed field (`residency: session | resident`),
+  because it answers a different question — *does the agent outlive the conversation* — and
+  is independent of *where the work runs*. Both instances prove the independence, and a
+  third `execution` value would have forced each to drop a true fact: hermes-agent is `both`
+  **and** resident, qwen-code is `local` **and** resident. The surfaces half became the
+  fifth value above.
 
 A **human front** is deliberately not a fourth component[^adr-0021]: its
 assessment-grade fragments already belong to the components (approval UI to the gate,

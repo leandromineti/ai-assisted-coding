@@ -25,9 +25,11 @@ This is the presence half only, and the warning below applies to it: the matrix 
 "does it ship this?", never "does it pay?" — the mechanism sections further down are where
 that second question is argued.
 
-The other half is **12 transcription fields** — `maker`, `license`, `access`, `stars`,
-`first_commit`, `version`, `commit`, `stack`, `surfaces`, `execution`, `environments`,
-`environment_relation` — facts copied from a dated source rather than judged.
+The other half is **13 transcription fields** — `maker`, `license`, `access`, `stars`,
+`first_commit`, `version`, `commit`, `stack`, `surfaces`, `residency`, `execution`,
+`environments`, `environment_relation` — facts copied from a dated source rather than judged.
+`residency` joined 2026-08-27 (ADR-0047) when the resident-agent strain reached its second
+verified instance.
 
 Both halves are read as **seven groups** — Identity · Provenance · Shape · Environment
 binding · Extension points · Control gates · Operations — each opening with what it is

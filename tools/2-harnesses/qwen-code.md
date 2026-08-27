@@ -1,8 +1,9 @@
 ---
 name: qwen-code
 category: 2
-surfaces: [terminal, ide, desktop, web]  # cli (terminal) · vscode-ide-companion + zed-extension + --acp (ide) · desktop-shell, 84 files · web-shell, 619 files + webui, 220 files
-execution: local  # plus a RESIDENT streak the enum has no value for — see Environment relationship & surfaces; this is the second instance of the strain the taxonomy recorded at hermes-agent
+surfaces: [terminal, ide, desktop, web, messaging]  # cli (terminal) · vscode-ide-companion + zed-extension + --acp (ide) · desktop-shell, 84 files · web-shell, 619 files + webui, 220 files · messaging = 11 channel packages (feishu, dingtalk, telegram, qqbot, wecom, weixin, github, gitlab, dws), each driving a spawned `--acp` child
+execution: local  # the work runs on your machine; the resident half is `residency:` below, which ADR-0047 split out of this axis precisely because this report is `local` AND resident while hermes-agent is `both` AND resident
+residency: resident  # `qwen serve` HTTP daemon (Stage 1 experimental), a per-session CronScheduler (acp-integration/session/Session.ts:3333), and 11 messaging channels delivering inbound with no session open — the SECOND verified instance, from an independent lineage, which is what fired the taxonomy's own trigger
 environments: [host, container, worktree]  # container = docker | podman | sandbox-exec (config.ts:910); worktree is real but scoped to the `review` command (cli/src/commands/review/lib/worktree.ts), not a general execution mode
 environment_relation: internalize  # configures and drives its own sandbox, same verb as the parent
 maker: Alibaba (Qwen)
@@ -223,10 +224,12 @@ its own trigger:
 
 **This is that second instance**, independently arrived at by a different vendor in a
 different lineage: persistent daemon, messaging platforms, unattended cron. Both strains
-fire — `execution` has no value for it (recorded as `local`, which is true of the primary
-mode and silent about the rest), and the eleven messaging platforms are not one of the four
-surfaces. The trigger is met; the vocabulary decision is not this report's to make, and is
-raised as an open question below rather than assumed.
+fire. **Resolved the same day (ADR-0047)**, in the two halves the taxonomy had already
+separated: `messaging` becomes a fifth `surfaces` value — the list composes, so nothing has
+to be dropped — and a new `residency: session | resident` field carries the persistence that
+`execution` was never asking about. This report's `execution: local` and hermes-agent's
+`execution: both` are both true and both keep their value; a third execution value would
+have forced one of them to give up a fact, which is why it was rejected.
 
 ## Run probe — 2026-08-27
 
@@ -291,10 +294,10 @@ path is a default-on token bill, and the settings schema's per-agent turn (5–8
 
 ## Open questions
 
-- **Does the resident shape get a vocabulary?** The trigger the taxonomy wrote for itself is
-  now met by a second, independent instance. Options: a third `execution` value, a fifth
-  surface, or an admission that the axes describe sessions and resident agents need their
-  own row. Not decided here.
+- **Is `resident` one shape or two?** The vocabulary landed (ADR-0047), but both instances
+  bundle three things — a daemon, scheduled work, and inbound messages — and nothing yet
+  shows whether they separate. A harness with cron and no messaging, or messaging and no
+  daemon, would say whether `residency` is one axis or a collapsed pair.
 - **What is the cua-driver's actual capability?** 663 Rust files across macOS, Windows,
   Linux and browser crates, untraced in this read. Computer use inside a coding harness is
   either a serious second product or an unshipped bet, and the file count alone cannot tell
