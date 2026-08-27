@@ -329,7 +329,20 @@ features:
       as MUST-block, so it fails closed. Its engine also strips user allow-rules broad enough to
       defeat the classifier (permission-manager.ts:1512), the only tracked gate that defends itself
       from the OPERATOR. So model-in-the-gate is not the defect; model authority that can WIDEN a
-      permission is. Warp ✓-with-caveat and qwen-code ✓ are the two poles of the same mechanism
+      permission is. Warp ✓-with-caveat and qwen-code ✓ are the two poles of the same mechanism —
+      and continue is the third instance of the monotonic clamp that resolves them, arrived at
+      independently for a NON-model evaluator (gui/src/redux/thunks/evaluateToolPolicies.ts:56-64:
+      a dynamic per-argument result may tighten, never loosen; `disabled` is unoverridable; an
+      evaluator error resolves to `disabled`). COLUMN COMPLETED 2026-08-27 by the issue-#35 probe
+      (cline, continue) — 12 of 12 harness reports set, 10 present / 2 absent, the first assessed key
+      in this category with no honest dots left. cline's ✓ carries the reverse of Warp's caveat and
+      is the reason the presence bool is thin here: the gate is a property of the SURFACE, not the
+      engine. Its SDK checks `autoApprove === false` against an optional field and ships `{}` as the
+      default policy — upstream's own words, "The SDK defaults unlisted tools to auto-approved"
+      (apps/vscode/src/sdk/sdk-tool-policies.ts:7) — so VS Code turns the gate on by forcing
+      autoApprove:false across five tool families while the CLI turns it off
+      (defaultToolAutoApprove = true, apps/cli/src/main.ts:868). One tool, one ✓, two opposite
+      out-of-the-box postures
   - id: headless_approval
     group: control-gates
     block: harness_features
@@ -354,8 +367,24 @@ features:
       `--yes-always` flag is STRICTER than its absence, because the shell gate passes
       explicit_yes_required=True and io.py:866-867 turns blanket-yes into an automatic "no" for
       model-authored commands. So on aider the safety flag is the safe setting and the unattended
-      default is not. Only the two instances are set; every other report leaves this unset (not
-      checked, or no gate to check).
+      default is not. EXTENDED 2026-08-27 by the issue-#35 probe (cline dc175c73a, continue
+      5522c6f44), which doubled the key to 4 set — 2 deny, 2 allow — and named the mechanism
+      behind each value rather than just the value. cline is `deny` twice over: no TTY on stdin
+      OR stdout returns approved:false before any prompt is drawn (apps/cli/src/utils/approval.ts:68-73),
+      and its SDK denies again when no approval callback is configured (agent-runtime.ts:1429-1434).
+      continue is `allow` in the key's most literal form: getDefaultToolPolicies(isHeadless) appends
+      `*: allow` + `Bash: allow` where the TUI branch appends `ask` for both
+      (extensions/cli/src/permissions/defaultPolicies.ts:30-37) — the absence of a human IS the
+      condition, and upstream documents it (permissions/README.md:16). continue also supplies a
+      THIRD mechanism the enum has no word for and that the definition should not be stretched to
+      cover: Edit/MultiEdit/Write stay pinned `ask`, and headless does not decide them, it WITHDRAWS
+      them — ask-tools are filtered out of the schema sent to the model (stream/handleToolCalls.ts:187-191).
+      Withdrawal is not a third value; it is why continue's `allow` is fail-open only over a reduced
+      tool set, which belongs in the report body. Read together, the four instances say the value
+      tracks NOTHING structural — aider and continue reach `allow` by opposite routes (an EOF default
+      vs. a deliberate headless branch), cline and gemini-cli reach `deny` by opposite routes (a TTY
+      check vs. a policy-engine default). Every other report leaves this unset (not checked, or no
+      gate to check).
   - id: plan_mode
     group: control-gates
     block: harness_features

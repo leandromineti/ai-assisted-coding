@@ -19,6 +19,8 @@ harness_features:
   mcp: true            # apps/vscode MCP configuration UI, McpPromptRow
   turn_end_gates: false  # 2026-08-18 targeted probe at pin dc175c73a: no stop-hook/should_block/turn-end machinery anywhere in src; attempt_completion's feedback loop is a HUMAN gate (process), not a native verification veto
   ptc: false             # 2026-08-18 targeted probe at pin: no execute_code/code-mode/programmatic mechanism in src
+  tool_approval: true    # 2026-08-27 targeted probe at pin dc175c73a (issue #35): a real dispatch gate in the SDK — agent-runtime.ts:1403-1412 routes any tool whose policy says `autoApprove === false` through requestToolApproval before execution, with terminal and desktop-IPC front ends (apps/cli/src/utils/approval.ts:102). The qualification belongs on the cell: the check is `=== false`, and the SDK's own default is to leave it UNSET — "the SDK defaults unlisted tools to auto-approved" (apps/vscode/src/sdk/sdk-tool-policies.ts:7, upstream's words). The gate exists because each surface turns it on: VS Code forces autoApprove:false for the read/edit/command/web/MCP families (same file, :25-37); the CLI does NOT — `defaultToolAutoApprove = true` (apps/cli/src/main.ts:868), so a stock CLI run prompts for nothing until the user toggles it
+  headless_approval: deny  # 2026-08-27, same probe and pin. Fail-closed twice over: no TTY on stdin OR stdout returns `approved: false` before any prompt is drawn (apps/cli/src/utils/approval.ts:68-73), and the SDK denies again when no approval callback is configured at all (agent-runtime.ts:1429-1434). Distinct from the CLI's auto-approve default above, which is not headless-conditioned — cline answers the same way in a TTY, so this cell reads the gate's resolution, not the stock run's behaviour
   subagents: true      # sdk .../tools/team/subagent-prompts.ts, AgentConfigLoader
   plan_mode: true      # PLAN_MODE_INSTRUCTIONS + switch_to_act_mode tool (measured)
   rules_files: true    # {{CLINE_RULES}} slot in the system prompt; filenames not yet verified
@@ -115,6 +117,50 @@ concern living inside a category-2 product, which is worth documenting.
 ## Cost model
 
 Open source; metered inference against whichever provider you configure.
+
+## Permission gate — targeted probe 2026-08-27 (not a re-read; the pin is unchanged)
+
+Executed for [issue #35](https://github.com/leandromineti/ai-assisted-coding/issues/35).
+`tool_approval: true`, but the interesting fact is *where the gate lives*, because cline is
+the only harness here that ships its loop as a library and therefore has to answer the
+question twice.
+
+**The SDK's default is auto-approve, and it says so.** `agent-runtime.ts:1398-1412` resolves
+a per-call policy (`*` merged with the tool's own entry) and calls `requestToolApproval`
+only when `policy.autoApprove === false`. Strict equality against an *optional* field: an
+unset policy is not a gate. `createToolPoliciesWithPreset` returns `{}` for every preset
+except `yolo` (`sdk/packages/core/src/extensions/tools/presets.ts:137-142`), so an embedder
+who configures nothing gets a loop with no permission model. Upstream states the
+consequence in its own comment — *"The SDK defaults unlisted tools to auto-approved"*
+(`apps/vscode/src/sdk/sdk-tool-policies.ts:7`).
+
+**The gate is therefore a property of each surface, not of the engine.** The two shipped
+surfaces disagree:
+
+- **VS Code turns it on.** `buildToolPolicies()` forces `autoApprove: false` across the
+  read, edit, command, web-fetch and per-server MCP tool families (`:25-37`), routing them
+  into the approval callback, which re-reads the AutoApproveBar settings live so a
+  mid-task toggle takes effect on the next call.
+- **The CLI turns it off.** `const defaultToolAutoApprove = true`
+  (`apps/cli/src/main.ts:868`) becomes `{"*": {autoApprove: true}}`, and the TUI reads that
+  same cell back as "yolo enabled" (`runtime/format.ts:30`). A stock `cline` run prompts
+  for nothing until the user flips the toggle, which then re-derives the policy table from
+  a hardcoded safe-list of seven read-only tools
+  (`runtime/tool-policies.ts:3-11`, `:30-48`).
+
+**`headless_approval: deny`, fail-closed twice over.** When the gate *is* on and no human
+can answer, `requestTerminalToolApproval` returns `approved: false` before drawing anything
+if either stdin or stdout is not a TTY (`apps/cli/src/utils/approval.ts:68-73`), and the
+SDK denies independently when no approval callback was configured at all
+(`agent-runtime.ts:1429-1434`) — the embedder who half-configures a policy without a
+front end gets refusal, not execution.
+
+Worth keeping the two facts apart, because collapsing them would give the wrong cell.
+Cline's CLI auto-approves by default **in a TTY too**; that is a product default, not a
+headless decision. Continue's, probed the same day, is the opposite on both counts: its
+gate is on by default and its wildcard is rewritten `ask → allow` *because* the run is
+headless. Same key, same category, opposite failure modes — which is the pair the key was
+admitted for.
 
 ## Surprises
 

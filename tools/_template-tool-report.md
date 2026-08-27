@@ -86,6 +86,7 @@ harness_features:
   hooks: <true | false>            # deterministic lifecycle hooks / plugin triggers
   turn_end_gates: <engine | hook | script | prose | true | false>  # native turn-end stop/verification gate, GRADED (ADR-0012)
   tool_approval: <true | false>    # per-tool human approval at dispatch — distinct from sandbox bounds (environment_relation) and turn gates (added 2026-08-25)
+  headless_approval: <deny | allow>  # what that gate resolves to when NO HUMAN CAN ANSWER (added 2026-08-27). Set only where tool_approval is true; the null where no gate exists is data, not a gap
   skills: <true | false>           # on-demand packaged instructions
   subagents: <true | false>        # spawnable isolated agents
   ptc: <true | false>              # programmatic tool calling in a sandboxed runtime (ADR-0012)

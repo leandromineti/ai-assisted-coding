@@ -32,9 +32,31 @@ the **opposite value** from gemini-cli's: aider's gate fails **open** when there
 gemini-cli's fails **closed** (DENY headless). Both are `tool_approval: true`, which is
 exactly why the presence bool was not enough — the two harnesses take opposite decisions
 the moment the terminal is a pipe, and that is the condition every CI run, cron job, and
-scripted invocation actually meets. Set on those two reports only; left unset everywhere
-else, including the two harnesses with no gate at all (dsh, pi), where the null is data
-rather than a gap.
+scripted invocation actually meets.
+
+**Four instances as of 2026-08-27** — 2 deny, 2 allow — after the [issue #35](https://github.com/leandromineti/ai-assisted-coding/issues/35)
+probe settled cline and continue at their existing pins. Both new cells landed on the
+opposite side from the tool they most resemble, which is the argument for the key existing:
+cline fails **closed** (no TTY on stdin or stdout returns `approved: false` before a prompt
+is drawn, and its SDK denies again when no approval callback was configured at all),
+continue fails **open** in the most literal form the key has yet produced — its default
+policy builder takes `isHeadless` as an argument and appends `*: allow` where the TUI branch
+appends `*: ask`, so the absence of a human is itself the condition. Read across all four,
+the value tracks nothing structural: aider and continue reach `allow` by opposite routes (an
+EOF default nobody designed vs. a deliberate headless branch upstream documents), cline and
+gemini-cli reach `deny` by opposite routes (a TTY check vs. a policy-engine default). Left
+unset everywhere else, including the two harnesses with no gate at all (dsh, pi), where the
+null is data rather than a gap.
+
+The same probe closed `tool_approval` — **12 of 12 harness reports set, 10 present / 2
+absent**, the first assessed key in this category with no honest dots left. What completing
+it exposed is that a ✓ can hide two opposite defaults inside one tool: cline's gate is a
+property of the **surface**, not the engine. Its SDK checks `autoApprove === false` against
+an optional field and ships an empty default policy — *"The SDK defaults unlisted tools to
+auto-approved"*, upstream's own comment — so the VS Code extension turns the gate on by
+forcing `autoApprove: false` across five tool families while the CLI turns it off with a
+one-line `defaultToolAutoApprove = true`. Same ✓, opposite out-of-the-box posture, and only
+the report body can say so.
 
 This is the presence half only, and the warning below applies to it: the matrix answers
 "does it ship this?", never "does it pay?" — the mechanism sections further down are where
@@ -99,8 +121,8 @@ web-as-interface with remote-as-execution:
 | **Grok Build** | xAI | terminal | local | Ships Grok 4.5 in a first-party CLI. |
 | **Cursor** | Anysphere → **SpaceX/xAI** | IDE · terminal (Cursor CLI) | local + async (Cloud Agent handoff) | Being acquired for $60B (announced 2026-06-16, closing Q3 2026). ~$2.6B ARR. Grok 4.5 was trained on its session data. The sharpest example of category 1↔2 consolidation. *(2026-08-19, docs-route — closed source)* Cursor CLI widens the row on both axes: a terminal agent (Agent/Plan/Ask modes) with a non-interactive mode for scripts/CI and handoff of a running session to Cloud Agents — the vendor joins the all-surfaces-both-modes convergence below. |
 | **Windsurf** | — | IDE | local | IDE-embedded agent. |
-| [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. |
-| [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. |
+| [**Cline**](cline.md) | open source | IDE · terminal | local | Started as a VS Code extension; grew `apps/cli/`, an SDK, and its own `evals/` suite. BYO model. **Probed 2026-08-27** (issue #35): `tool_approval: true`, but the gate belongs to each surface rather than the engine — the SDK auto-approves anything unlisted, VS Code forces the gate on across five tool families, the CLI ships `defaultToolAutoApprove = true`. `headless_approval: deny`, fail-closed at both the TTY check and the missing-callback fall-through. |
+| [**Continue**](continue.md) | open source | IDE (VS Code + JetBrains) · terminal | local | Two IDEs over a shared core — the only harness here forced to abstract its own UI. BYO model. **`terminal` added 2026-08-27** (issue #35 probe): `extensions/cli/` ships `@continuedev/cli` (bin `cn`) with its own permissions subsystem, present at the report's 2026-07-28 pin and missed by the survey — the row now matches cline's, and both IDE-origin harnesses here grew a CLI. Strongest gate in the set after gemini-cli's: three-valued, re-evaluated against each call's parsed arguments, and monotonically clamped so the dynamic result can only tighten. `headless_approval: allow` — the wildcard is rewritten `ask → allow` because nobody is watching. |
 | **GitHub Copilot** | GitHub/Microsoft | IDE · web | local + async (coding agent) | The incumbent; agent mode moved it from completion to loop. |
 | **Devin** | Cognition | web | async-remote | Autonomous agent that bundles its own execution environment (category-3 bleed). |
 | **Jules** | Google | web | async-remote | Async repo-level agent. |

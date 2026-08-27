@@ -45,8 +45,8 @@ pricing, cutoff, lifecycle) stays in [models.md](models.md).
 | [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `hook` | ✓ | · | ✓ | ✓ | ✗ | ✗ | ✓ |
 | [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | ✓ | · | ✓ | ✓ | ✓ | ✗ | ✗ |
 | [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | ✓ | · | ✓ | ✗ | ✓ | · | ✓ |
-| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | · | · | ✓ | ✓ | · | ✓ | · |
-| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | · | · | ✓ | ✓ | · | · | · |
+| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | ✓ | `deny` | ✓ | ✓ | · | ✓ | · |
+| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | ✓ | `allow` | ✓ | ✓ | · | · | · |
 
 ## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)
 
