@@ -158,9 +158,13 @@ generation and is the honest number for planning agent-run wall-clock. Known beh
 ~20% faster than Sonnet 5 in-session — far less than the tier difference suggests), and
 sub-500-token turns are latency-bound, not throughput-bound (excluded by the script).
 Why recorded at all: vendors publish no first-party tokens/sec (the models matrix
-correctly has no column), but the planned **local open-weight arm** makes throughput a
-first-class constraint — on self-hosted hardware, tok/s is the gating resource, and
-this metric is the comparable the API side needs to already have (issue #15).
+correctly has no column), so this is the only route to a comparable throughput number —
+and it already earned its keep on the API side (the tier-gap compression finding above).
+*Amended 2026-08-27:* the original second justification — a planned **local open-weight
+arm** where tok/s would be the gating resource (issue #15) — is retired: category 1 now
+assesses first-party API versions only
+([ADR-0048](../adrs/0048-category-1-assesses-api-versions-only.md)), and the arm was
+killed with the decision, not deferred. The metric stays on its API-side value alone.
 
 ### Cost ledger
 Output · cache-write · cache-read · uncached-input tokens, per model, from transcripts

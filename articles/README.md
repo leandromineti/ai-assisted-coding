@@ -45,4 +45,5 @@ matures.
 | [Measuring AI-Coding Frameworks](measuring-ai-coding-frameworks.md) | 2 | draft | `measuring-ai-coding-frameworks` | — |
 
 Series: **"AI-Assisted Coding, Measured"** — room for part 3+ as experiments land
-(exp-03, the local open-weights arm).
+(exp-03; the local open-weights arm teased here until 2026-08-27 was killed by
+[ADR-0048](../adrs/0048-category-1-assesses-api-versions-only.md)).

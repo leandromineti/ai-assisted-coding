@@ -28,6 +28,14 @@ surface around them: the three keys that change how a harness can drive the mode
 two that decide what a completed task costs. Each is verified against the report's `url`
 on its `checked` date.
 
+Since 2026-08-27 that framing is a **stated decision, not an accident of practice**
+([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md), and the §1 scope
+note in [`tool-taxonomy.md`](../../docs/tool-taxonomy.md)): every spec and assessed key
+describes the **first-party API-served product**. A published weights release is
+acknowledged — `access`, `license`, the HF id in `model_id`, its row in the 1b table —
+and never assessed as a second subject, even where the vendor documents the two diverging
+(qwen3.8-max, the forcing case).
+
 The two economics keys are free text in each vendor's own vocabulary
 ([ADR-0014](../../adrs/0014-model-features-into-registry.md)): the economics differ
 structurally across vendors and flattening them to ✓/✗ would erase the finding. The three
@@ -143,11 +151,18 @@ are claims.
 | First-party APIs | Anthropic, OpenAI, Google, xAI (`console.x.ai`). Reference behavior; caching and rate limits as designed. |
 | Aggregators / routers | OpenRouter, Models.dev. One key, many models — at the cost of an extra hop and inconsistent caching support. |
 | Cloud marketplaces | AWS Bedrock, GCP Vertex. Procurement and data-residency plays; feature lag is common. |
-| Local runtimes | Ollama, llama.cpp, vLLM. Only viable for open-weight models, and quantization changes behavior under the same model name. |
+| Local runtimes | Ollama, llama.cpp, vLLM. Only viable for open-weight models, and quantization changes behavior under the same model name. *(acknowledged, not assessed — ADR-0048)* |
 
 **Why this type matters:** the same model name reached by different routes is not the
 same product. Prompt-caching support, quantization, rate limits, and silent context
-truncation all vary by route.
+truncation all vary by route — and in the extreme case the routes carry different
+artifacts outright (qwen3.8-max's API adds vision, non-thinking mode, and 1M-default
+context over its published weights, per the vendor's own card).
+
+**These are acknowledged routes, not assessed subjects** (2026-08-27,
+[ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)): every assessment
+in this category binds to the first row. The other three exist here so a reader knows
+route variance is real before blaming a model for its route.
 
 ## Benchmark snapshot
 
@@ -288,5 +303,9 @@ check starts where the fact actually lives:
   `--uniform-system-prompt` mode that pins one prompt for all models via opencode's
   `agent.build.prompt` override.
 - Long-horizon coherence has no standard measure. What would a homegrown one look like?
-- Does open-weight parity (Kimi K3) actually change anything practical, given that
-  self-hosting a 2.8T-param model is out of reach for an individual?
+- ~~Does open-weight parity (Kimi K3) actually change anything practical, given that
+  self-hosting a 2.8T-param model is out of reach for an individual?~~ **Closed by scope
+  2026-08-27** ([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)):
+  answering it would mean assessing the self-hosted route, which this category
+  deliberately does not. The question was pointing at a real asymmetry — that is now
+  recorded as the scope note's falsifier rather than an open probe.

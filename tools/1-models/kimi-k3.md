@@ -100,5 +100,7 @@ whose per-model dispatch this repo documented upstream).
   summaries, before any claim stronger than "weights downloadable".
 - What harness produced the 88.3 Terminal-Bench claim? (Unstated in the card
   summary; the model+harness confound cuts both ways.)
-- Does 104B-activated MoE inference actually fit any individual's budget via the
-  GGUF/community route, and at what quality loss?
+- ~~Does 104B-activated MoE inference actually fit any individual's budget via the
+  GGUF/community route, and at what quality loss?~~ **Closed by scope 2026-08-27**
+  ([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)): the
+  GGUF/community route is self-hosted serving, acknowledged but not assessed here.

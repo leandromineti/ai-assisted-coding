@@ -97,4 +97,7 @@ treat it as needing execution-discipline correction).
 - Verify or bury "Qwen 4 Coder" at the next check — if real, it supersedes this
   report's subject within months of it.
 - The 10–20× efficiency claim is benchmark-relative; does it survive an agentic
-  workload with real tool loops? (The rig could test a self-hosted arm cheaply.)
+  workload with real tool loops? ~~(The rig could test a self-hosted arm cheaply.)~~
+  *Self-hosted-arm clause closed by scope 2026-08-27
+  ([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)); the question
+  itself stands, but any test runs against the first-party API route.*

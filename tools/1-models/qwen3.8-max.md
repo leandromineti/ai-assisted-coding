@@ -60,10 +60,14 @@ default, official built-in tools."* Read that against the same card's reasoning 
 the open weights think **always**, in `<think>` tags, and cannot be told not to.
 
 So the reasoning contract, the context window, and the input modalities all differ by
-access route for one model name. Type 1b's standing claim in this repo is that "the same
-model reached by different routes is not the same product"; this is the cleanest specimen
-yet, because for once the vendor writes the difference down instead of leaving it to be
-discovered.
+access route for one model name — and for once the vendor writes the difference down
+instead of leaving it to be discovered. When first written (2026-08-27, same day) this
+section framed that as a strain on type 1b: the type's "same model, different product"
+claim had meant *serving* variance, and this is *artifact* variance — the routes hand you
+different things. **Resolved the same day by scoping, not by splitting**
+([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)): every spec and
+assessed key in this report describes the API-served product, and the weights divergence
+above is acknowledged context — which is exactly what this section now is.
 
 ## The category-1 axes (taxonomy §1)
 

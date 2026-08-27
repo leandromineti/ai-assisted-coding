@@ -137,12 +137,9 @@ its second framework.
 
 ## What's next
 
-Two arms are queued. **Exp-03** strips the framework question to its core: a minimal
+Next in the queue: **Exp-03** strips the framework question to its core: a minimal
 harness with only the two mechanisms the evidence credits — empirical grounding and
-measured verification gates — against the now-confirmed baseline. And a **local
-open-weights arm**: the same instrument pointed at models running on my own
-hardware, where the field's real bottleneck isn't benchmark scores but
-tokens-per-second ([the groundwork](../tools/1-models/README.md)).
+measured verification gates — against the now-confirmed baseline.
 
 ---
 

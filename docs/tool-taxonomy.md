@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-26`
+`checked: 2026-08-27`
 
 The point of this document is a **shared vocabulary**: without one, "Claude Code vs.
 GSD vs. Opus 5" is a category error — three things that aren't the same kind of thing
@@ -84,6 +84,19 @@ How you actually reach the weights is a type of its own (**1b — model access**
 routes, in [the category index](../tools/1-models/README.md)): the same model by a
 different route is a different product — it silently explains a lot of "why did it get
 worse".
+
+**Scope note.** This category assesses the **first-party API-served version** of a model,
+and only it[^adr-0048] (decided 2026-08-27). Where a vendor also publishes weights, the
+release is *acknowledged* — existence and terms in `access`/`license`, the route in the 1b
+table — and that is the whole claim: self-hosted serving (local runtimes, quantization
+variants, GGUF ecosystems, throughput on owned hardware) earns no assessment of its own
+here. The forcing case is Qwen3.8-Max, whose own weights card documents the API *adding*
+vision, non-thinking support, and 1M-default context over checkpoint weights that think
+always — one name, two products, split by route. Rather than fork every spec field into an
+API cell and a weights cell for a route this repo cannot run, the assessed subject is the
+API product by definition and the weights variant is recorded context. The position is
+falsifiable: if a weights-route difference ever falsifies an API-derived finding this repo
+relies on, the exclusion is wrong and gets a new ADR.
 
 ### 2. Harnesses
 
@@ -599,6 +612,11 @@ taxonomy needs revision — not the case.
 - **Human practices** — task decomposition, when to restart context, review discipline.
   Real and important, but they're techniques rather than tooling; they belong in
   `docs/`.
+- **Self-hosted model serving** — running published weights on your own hardware (local
+  runtimes, quantization variants, GGUF ecosystems). Category 1 assesses the first-party
+  API-served version only; weights releases are acknowledged, never assessed — the §1
+  scope note carries the argument and the falsifier[^adr-0048]. Excluded by decision
+  (2026-08-27), not dismissed; a revisal needs a new ADR.
 
 ## Category indexes
 
@@ -641,3 +659,4 @@ reads in superseded vocabulary — [`adrs/`](../adrs/README.md) carries the deco
 [^adr-0021]: [ADR-0021 — harness decomposition: three components, two descriptive axes](../adrs/0021-harness-three-component-decomposition.md), decided 2026-08-22.
 [^adr-0022]: [ADR-0022 — repo-voice prose in refs is sweepable; decoders relocate to the ADR index](../adrs/0022-refs-repo-voice-sweepable.md), decided 2026-08-22.
 [^adr-0023]: [ADR-0023 — components for categories 4 and 5; tracing discipline goes category-generic](../adrs/0023-category-4-5-components.md), decided 2026-08-25.
+[^adr-0048]: [ADR-0048 — category 1 assesses the first-party API-served version only](../adrs/0048-category-1-assesses-api-versions-only.md), decided 2026-08-27.

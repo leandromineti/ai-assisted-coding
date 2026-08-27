@@ -75,10 +75,14 @@ Three measurement tracks and a standing rule (backlog detail in issue #17):
    tarpeek Haiku n=5 (known-groups), logpeek Haiku n=5, logpeek Sonnet n=3
    (gate-reading, not a calibrated band — the 5f caveat travels with it). Doubles as
    the power analysis every future comparison needs.
-3. **Throughput arm** — [issue #15](https://github.com/leandromineti/ai-assisted-coding/issues/15),
+3. ~~**Throughput arm** — [issue #15](https://github.com/leandromineti/ai-assisted-coding/issues/15),
    unblocked by the arc close: local open-weight models on owned hardware, on the
-   hypothesis that tokens/second, not benchmark score, gates local agent use. Metric
-   and API comparables already recorded in [`metrics.md`](metrics.md).
+   hypothesis that tokens/second, not benchmark score, gates local agent use.~~
+   **Retired 2026-08-27, killed with
+   [ADR-0048](../adrs/0048-category-1-assesses-api-versions-only.md)** (category 1
+   assesses first-party API versions only; self-hosted serving is acknowledged, never
+   assessed). The throughput *metric* survives on its API-side value — recorded in
+   [`metrics.md`](metrics.md) § Observed session throughput, amended the same day.
 
 **Standing rule:** workflow frameworks are measured at the **artifact level only**
 (requirements rubrics, documented-decision counts, attention-split). No more code-
