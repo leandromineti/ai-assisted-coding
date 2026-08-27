@@ -129,7 +129,7 @@ distributed category-3 entities (see the scope note in
 ## Candidates
 
 Sighted-but-not-ingested harnesses live in the cross-category
-[candidates ledger](../candidates.md) — three today: ZCode, kimi-code, orca. qwen-code was the ledger's first entry (2026-08-18) and left it by promotion on 2026-08-27, which is what promotion means (ADR-0031): the report supersedes the row.
+[candidates ledger](../candidates.md) — four today: ZCode, kimi-code, orca, and **cecli**, added 2026-08-27 as the set's first *succession* case (an aider fork, renamed and still shipping while its parent sits frozen — sighted from API metadata only). qwen-code was the ledger's first entry (2026-08-18) and left it by promotion on 2026-08-27, which is what promotion means (ADR-0031): the report supersedes the row.
 
 ## What actually differentiates a harness
 

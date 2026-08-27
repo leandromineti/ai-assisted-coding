@@ -100,6 +100,38 @@ number and a date so the next read can score them): *by 2026-11-27, six months p
 pin, the repo will carry fewer than 60 additional commits, ≥80% of them model-settings or
 website-regeneration changes, and still no status statement.*
 
+### Custody appears to have moved — `cecli` *(sighted 2026-08-27, API metadata only)*
+
+Checked after the read, when the dormancy finding invited the question *"has anyone
+continued it?"*. GitHub reports [`cecli-dev/cecli`](https://github.com/cecli-dev/cecli) as
+`fork: true` with `parent`/`source` = `Aider-AI/aider`: renamed, Apache-2.0, its own domain
+(cecli.dev), **398 stars**, created **2025-08-02**, shipping releases — v1.3.1 merged
+2026-08-23, two days before this read, against 49 forks and 23 open issues of its own.
+
+Two things make the sighting load-bearing rather than trivia. **The timing**: the fork was
+created in the same window aider's commit rate collapsed (2025-05 = 367 commits, 2025-06 =
+125, 2025-07 = 27). **The subject matter**: its README carries a checklist of *upstream
+aider issues it has closed*, and several are repo-map ranking issues — including
+[#2405](https://github.com/Aider-AI/aider/issues/2405) *"Bias page ranking toward
+active/editable files in repo map parsing"*, [#2688](https://github.com/Aider-AI/aider/issues/2688)
+*"Include import information in repo map for richer context"*, and
+[#2341](https://github.com/Aider-AI/aider/issues/2341) *"Handle non-unique symbols that
+break down in large codebases"*.
+
+**That is independent corroboration of this report's measured cold-start finding.** The
+probe below found the ranking selecting 20 language test fixtures out of 33 files and
+omitting `base_coder.py` on an empty chat; a third party hit the same weakness in practice
+and made "bias ranking toward active/editable files" their headline fix. Two independent
+observations of one defect, one measured here and one acted on there.
+
+Scope of this claim, stated so it is not over-read: **API metadata and the fork's README
+only.** No source was read, no pin taken, no verification that cecli is a faithful
+continuation rather than a divergence. It is a dated sighting, ledgered in
+[`tools/candidates.md`](../candidates.md), not an ingested tool. The prediction above is
+**left exactly as written** — a forecast edited after the fact stops being an instrument —
+but cecli's trajectory is now worth scoring beside it, because "the upstream stays frozen"
+and "the work moved" are different worlds and only one of them is about aider.
+
 ### The unreleased fix that matters
 
 The published artifact and the source disagree about something users hit immediately.
