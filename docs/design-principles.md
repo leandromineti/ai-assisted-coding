@@ -41,6 +41,25 @@ the *only* sanctioned exception to prompt immutability
 ([codex](../tools/2-harnesses/codex.md), confirmed 2026-07-30). Designs that treat
 overflow as an exception path are the ones that break on long tasks.
 
+*Confronted 2026-08-27 (aider) — **the cleanest negative instance in the set, and it
+separates two things this principle had conflated.*** aider compacts *on a schedule*
+better than anything else read here: `ChatSummary` tries the **weak model first**, caps
+history at `max_input_tokens/16`, and runs **on a background thread** started after each
+edit-completing turn and joined lazily at prompt-assembly time — so compaction overlaps
+the human's typing (`base_coder.py:1011-1012`, `:1278`). And it cannot compact **on
+demand at all**: a real `ContextWindowExceededError` is caught, appends a fake assistant
+turn *"you sent too many tokens"*, shows an error, and **returns — the turn ends**
+(`:1536-1547`); the pre-flight check merely asks the human *"Try to proceed anyway?"*.
+No auto-compaction, no retry with a smaller repo map, no rollover
+([aider](../tools/2-harnesses/aider.md)).
+
+So the principle should be read as being about **reactive** compaction specifically.
+Scheduled compaction is common and aider does it well; what distinguishes the convergent
+three is that overflow is a *branch in the loop* rather than an exception, and remediation
+is the harness's job rather than the human's. aider proves the two capabilities are
+independent — you can have an elegant scheduled summarizer and still hand the user a dead
+end.
+
 **H2. The loop needs an explicit stuck-state policy — and who resolves it is a product
 decision.** *(**contested** since 2026-08-16 — was "convergent on existence, contested on
 resolution; one silence" until codex's absence was verified; see the settlement note
@@ -78,6 +97,30 @@ abstain**, and the two abstainers share a rationale — a loop guard would be th
 bound in a design that otherwise trusts the model (codex) or the environment (pi) to
 stop. Still contested; what is newly clear is that abstention is a *position*, not an
 oversight, held by two independent vendors.
+
+*Confronted 2026-08-27 (aider) — **a fourth shape the guard/abstain axis has no bucket
+for, and it inverts the abstainers' rationale.*** aider has **no repetition detection
+whatsoever**, and the negative is clean: a grep for
+`repeat|loop_detect|stuck|no_progress|identical|oscillat|thrash|livelock|infinite_loop`
+over every `.py` returns four hits, all irrelevant (a test comment, a string-matching
+docstring, two metadata-dedup lines in a script). But it carries **the most aggressive
+iteration cap in the set**: `max_reflections = 3`, a class attribute exposed as no flag,
+no config key, and no environment variable (`base_coder.py:101`, `:932-944`).
+
+That is **ceiling-without-detection** — a blanket bound that fires whether or not progress
+is being made. A model working through a genuine cascade of lint errors is cut off at three
+exactly as a looping one is, and the halt injects nothing into the model's context; control
+simply returns to the human. Worse, the budget is **shared across causes** — malformed-edit
+repairs, file-mention re-prompts, lint fixes and test fixes all draw from the same pool of
+3, so edit-format fragility directly consumes the verification budget.
+
+**And it inverts the abstainers' stated rationale.** codex and pi decline a guard because it
+would be *the only bound* in a design that otherwise trusts the model or the environment to
+stop. aider has **only** the bound and nothing else — no cost ceiling, no token budget, no
+wall-clock limit (see H6). So across six deep-read harnesses the tally is **3 guard / 2
+abstain / 1 bound-only**, and the disagreement's real shape is clearer: the axis is not
+*detect vs don't* but **what kind of thing the loop is allowed to run out of**
+([aider](../tools/2-harnesses/aider.md)).
 
 **H3. Two chokepoints, not one: shape what the model can see, then gate what it does.**
 *(convergent — the strongest architectural pattern in the set; deepened 2026-07-30)*
@@ -146,6 +189,28 @@ an inline dollar figure for misses ([pi](../tools/2-harnesses/pi.md)). The invar
 convergent across five-plus harnesses; the freshness-vs-staleness implementation axis is
 untouched by either read.
 
+*Confronted 2026-08-27 (aider) — **the principle gains its price tag.*** Every prior
+instance showed a harness *paying* for prefix stability in machinery (codex's WorldState
+diff-append) or staleness (hermes' date-only timestamps). aider shows what happens when the
+bill comes due in **features**. Its repo map sits at cache breakpoint 2, is recomputed every
+turn, and is ranked by personalization seeded from *every word of the current user message*
+— so a different question yields a different map and shatters breakpoints 2 and 3 plus all
+history between them. aider diagnosed this correctly and fixed it in two lines
+(`main.py:954-955`): setting `--cache-prompts` silently flips `--map-refresh` from `auto` to
+`files`, dropping the per-query terms from the cache key. RUN-confirmed; the entire
+disclosure to the user is one word in the startup banner
+([aider](../tools/2-harnesses/aider.md)).
+
+Two revisions follow. **(1) The invariant holds but is not free**: append-only prefix
+discipline is convergent across six-plus harnesses, and aider is the first case where
+honoring it *costs the harness its distinguishing capability* rather than costing machinery
+or freshness. **(2) The tension recorded at hermes generalizes.** That note blamed the
+*agent's own write path* crossing its cache tiers. aider has no agent write path at all and
+hits the identical collision, so the real statement is: **retrieval quality and prefix
+stability are in direct conflict whenever retrieval is query-conditioned** — self-modifying
+agents are one instance, not the cause. Any harness adding per-query context assembly
+inherits it.
+
 **H6. Termination must be designed; budgets shape behavior in ways you choose.**
 *(convergent on the first clause, two designs on the second)* opencode terminates on
 explicit conditions (finish reasons, content filters, structured-output failure) with no
@@ -154,6 +219,24 @@ programmatic-tool-calling turns — a deliberate incentive for the model to coll
 chains into scripts whose intermediate results never touch context. If you meter
 something, you're steering the model toward whatever the meter doesn't count. Choose
 knowingly.
+
+*Confronted 2026-08-27 (aider) — **the sharpest instance of the second clause, because it
+separates metering from governing entirely.*** aider meters more than most harnesses: a
+per-response `total_cost` with cache-write and cache-hit multipliers, printed every turn;
+`total_tokens_sent`/`received`; plus `num_malformed_responses`,
+`num_exhausted_context_windows`, `num_error_outputs`, `num_user_asks`. Consumer-grep on all
+of them: **the only readers are `benchmark/`.** There is no comparison of `total_cost` to any
+threshold anywhere in the codebase — no `--max-cost`, no budget flag
+([aider](../tools/2-harnesses/aider.md)).
+
+So the single enforced ceiling is `max_reflections = 3` — a count of *round-trips*,
+indifferent to cost, tokens, time, or files touched. One reflection may rewrite fifty files
+and spend $8 in a 200k-token call and nothing objects; four cheap 400-token lint fixes are
+halted. **The instruments exist to score the benchmark, not to steer the loop** — which is
+the principle's second clause in its purest form: aider steers hard toward "few round-trips"
+and leaves everything the meter doesn't count unbounded. Worth carrying into any
+harness-vs-harness A/B: a harness that *displays* cost is not a harness that *bounds* it,
+and only the second changes behaviour.
 
 **H7. Model-agnostic is not prompt-agnostic — you must take a position on model
 divergence, and no position currently has eval backing.** *(contested — five documented
@@ -173,6 +256,32 @@ Claude Code identity block prepends on Anthropic *OAuth*, but that is auth-mode-
 not model-keyed). The documented positions are now seven, and the two newest both sit at
 or near the one-prompt pole. Still no eval backing for any position; still a forced
 decision — but the centre of gravity has drifted toward "one prompt fits all".
+
+*Confronted 2026-08-27 (aider) — **an eighth position on a different axis, and the "no eval
+backing" clause finally takes an asterisk.*** aider varies neither prose nor prompt body:
+all 17 `coders/*_prompts.py` modules grepped for model conditionals return **two hits, both
+TODO comments**. What varies per model, from a **357-entry YAML resource**, is **the edit
+format** (`diff` 289 · `diff-fenced` 35 · `udiff` 4 · `whole` 4 · `architect` 1), the
+**message shape** (`examples_as_sys_msg` inlines few-shot examples into the system message
+instead of sending real turns; `use_system_prompt: false` emits the system prompt as a
+user+assistant pair; `reminder` chooses trailing-system vs spliced-into-final-user), and the
+**weak model** (66 distinct). **The prose is fixed; the protocol is what differs**
+([aider](../tools/2-harnesses/aider.md)).
+
+This reframes the principle. Six of the seven prior positions argue about *how much prose to
+vary*, and the drift toward one-prompt-fits-all is a drift within that frame. aider says the
+frame is wrong: models diverge in **how reliably they emit a given edit protocol**, not in
+what prose they need — so hold the words fixed and swap the machinery.
+
+**And it is the only position with published measurements.** aider's benchmark scores
+`pct_well_formed` (malformed-edit rate) **separately from** `pass_rate_1`/`pass_rate_2` code
+correctness, and two of its 14 in-tree result files are A/B ablations of aider's own design
+choices rather than model rankings. Two caveats before the asterisk is mistaken for a
+settlement: the corpus lives in a **separate, unpinned repo** cloned at setup, and the
+leaderboard configuration runs a `--tries 2` test-feedback loop that **the shipped default
+does not have** (`--auto-test` defaults to `False`). So one harness has evidence for its own
+position, on a benchmark it owns, in a configuration that is not its product's default —
+meaningfully more than zero, and considerably less than a settled question.
 
 **H8. Keep the core a narrow waist; ship capability at the edges as data.**
 *(convergent)* hermes states it outright (every core tool is paid for on every API
@@ -199,6 +308,30 @@ qualified as a safety stance — the removable-everything ideal is only safe whe
 something below the harness (the environment) is not removable. The
 surface-vs-core-growth test (codex hook-surface vs hermes loop-policy) gains pi as the
 limit case: it declines to grow the core at all, and exports the risk downward.
+
+*Confronted 2026-08-27 (aider) — **a narrow waist that is not an architecture, and the
+distinction matters.*** By the letter of the principle aider scores well: the loop is 13
+lines, there is no plugin system to weigh it down, and the core does one thing. By its
+spirit it fails completely — **there are no edges to ship capability to.** Verified absent:
+`mcp`, `hooks`, `skills`, `lsp`, `rules_files`, `subagents`, `ptc`, `plan_mode`; no
+entry-points group; the only extension seam is `/load`, which replays a file of
+slash-commands. **aider is the least extensible harness tracked**
+([aider](../tools/2-harnesses/aider.md)).
+
+So H8 needs its two halves separated, because aider satisfies one and voids the other. The
+principle is really a conjunction — *keep the core small* **and** *make capability arrive as
+removable data* — and the second half is what does the work. hermes and pi are narrow
+because capability was deliberately pushed outward; aider is narrow because nothing was ever
+bolted on. Both produce a small core; only the first produces an extensible product. **A
+narrow waist is a consequence of the architecture, not evidence of it** — which means "core
+line count" is a bad proxy for this principle, and the diagnostic is the edge surface, not
+the middle.
+
+There is also a dormancy reading worth keeping, since aider is the only frozen subject in
+the set: an unextensible harness has no way for the field to route around its maintainer.
+When the commits stopped (2026-05-22), nothing could be added by anyone else — no MCP
+server, no skill, no hook. The other narrow-waist harnesses would have survived the same
+event with their capability surface intact.
 
 ## Category 3 — execution-environment design *(renumbered from 5 per ADR-0007)*
 

@@ -11,6 +11,7 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 
 | Tool | Category | host | worktree | container | remote-sandbox | Relation |
 |---|---|---|---|---|---|---|
+| [aider](../tools/2-harnesses/aider.md) | 2 | ✓ | · | ✓ | · | · |
 | [codex](../tools/2-harnesses/codex.md) | 2 | ✓ | · | · | · | **internalize** |
 | [dsh](../tools/2-harnesses/dsh.md) | 2 | ✓ | · | · | ✓ | **internalize** |
 | [gemini-cli](../tools/2-harnesses/gemini-cli.md) | 2 | ✓ | ✓ | ✓ | · | **internalize** |
@@ -21,4 +22,4 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [warp](../tools/2-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
 | [claude-code](../tools/2-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 
-**9 of 46 reports declare `environments:`.**
+**10 of 46 reports declare `environments:`.**

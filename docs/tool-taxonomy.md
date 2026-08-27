@@ -112,6 +112,34 @@ sorting frame for the `harness_features` vocabulary:
    splits). Trigger: the first reach-shaped finding that isn't loop-shaped — an
    edit-format study, or verified MCP-client divergence (aider's matrix row, unread
    today, is the likeliest source).
+
+   *Strain update (2026-08-27) — **the premise is falsified, the trigger's letter is
+   not clearly met, and the promotion decision is deliberately left open.*** Three
+   things changed and they do not point the same way:
+
+   1. **"Uniform ✓" was already false when written above, and stayed false unnoticed.**
+      Re-derived from frontmatter: **10 ✓ / 2 ✗ across all 12 category-2 reports.** pi
+      was recorded `mcp: false` on 2026-08-26; this paragraph was not revisited. The
+      [aider read](../tools/2-harnesses/aider.md) (2026-08-27) is the second ✗, verified
+      to the strongest available standard — one `mcp` token in the whole tree (a comment
+      about a dependency the project *avoids*), and **zero** across all 13,138 commit
+      messages on every ref and every file path ever added.
+   2. **So reach now discriminates**, which removes the stated reason for not promoting it.
+   3. **But the trigger asked for a finding that *isn't loop-shaped*, and aider's is
+      loop-shaped in its cause.** aider has no tool registry at all — edits are markdown
+      fences parsed by regex, `functions = None`, no tool schema ever sent — so there is
+      no socket for MCP to plug into. The divergence is reach-shaped in its *observable*
+      and loop-shaped in its *mechanism*. pi's absence is the cleaner reach finding (a
+      real tool loop, simply no MCP client) but it is a plain absence rather than
+      divergence.
+
+   Whether that satisfies the trigger is a **vocabulary question, not a reading
+   question**, and it is left for a deliberate decision rather than settled here — the
+   same discipline as the resident-agent strain, which sat two instances before ADR-0047
+   resolved it. What the reads *do* settle is narrower and worth stating on its own: the
+   long-standing open question "does universal MCP support make category 6 portable in
+   practice or only in principle?" has an answer — **MCP is genuinely portable across
+   tool-dispatch harnesses, and an edit-format harness marks the boundary of that class.**
 2. **Context assembly** — *what reaches the prompt, who wrote it, and where does the
    agent's own output land?* Rules-file and skill injection, memory write-back,
    compaction, cache discipline. Anchor: the hermes cache-tension finding

@@ -151,6 +151,8 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19, exp-04, n=1 per arm — a probe)
 15. **Harnesses track models by name, so a model's own API drift silently disarms them** (2026-08-26, four harnesses read at their pins — three version-pin, one sends a parameter Anthropic now rejects)
 16. **Every model maker ships its own harness — the composability the taxonomy assumes is not what the market is selling** (2026-08-26, eight of eight makers, no exceptions; the last two found by falsifying this repo's own claims)
+17. **The context-assembly position everyone assumed nobody held was held all along, by the oldest and most dormant tool in the set** (2026-08-27, aider — a tree-sitter symbol index ranked by PageRank, injected as source lines every turn, 71% of the assembled prompt; the claim had survived three deep-dives because all three were tool-dispatch harnesses)
+18. **A harness with no tool loop ships the strongest native verification gate in the set** (2026-08-27, aider — zero-config `--auto-lint` runs a real linter on every edit and feeds failures back; "runs something fresh" turns out not to require agentic dispatch)
 
 ## License
 

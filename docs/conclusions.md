@@ -391,3 +391,74 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`tools/candidates.md`](../tools/candidates.md) (kimi-code, ZCode) ·
     [`tools/2-harnesses/claude-code.md`](../tools/2-harnesses/claude-code.md) ·
     [ADR-0041](../adrs/0041-vendors-matrix-removed.md)
+
+17. **The context-assembly position everyone assumed nobody held was held all along, by the
+    oldest and most dormant tool in the set** (2026-08-27,
+    [aider deep-dive](../tools/2-harnesses/aider.md), all three ADR-0021 components traced
+    at `5dc9490b`). Since 2026-08-11 this repo has tracked a claim across three deep-dives —
+    warp, gemini-cli, qwen-code — that **no tracked harness assembles context from an
+    index**: warp's embedding index turned out to back a single search tool whose chain ends
+    in a `{name, path}` pointer with zero surrounding context lines; gemini-cli's embedding
+    path is dead code with zero production callers; retrieval is delegated to a subagent or
+    to grep everywhere it was looked for. The claim survived every test it was given.
+    **It was false, and the falsifier was never read.** aider ships a persistent on-disk
+    symbol index (`.aider.tags.cache.v4`, diskcache/SQLite, mtime-invalidated) built by
+    tree-sitter from 58 query files, ranks it with real `nx.pagerank` over a weighted
+    file-reference graph, enforces a token budget by binary search, and injects **the actual
+    source lines** of each ranked definition into a **user message every single turn**, with
+    no model request. Measured on the published artifact against aider's own 691-file repo:
+    110 files and 25,253 bytes at the 4096-token default — **71% of the entire assembled
+    prompt**. Warp's index ends in a pointer; aider's ends in the prefix.
+    **The error was a sampling artifact, and that is the transferable part.** Every harness
+    read closely between 2026-07 and 2026-08 was a 2025–2026 tool-dispatch design, where
+    retrieval is necessarily a tool the model calls and therefore necessarily a pointer. The
+    claim generalized correctly over what had been read and silently assumed the sample was
+    the field. The tool that broke it is the one nobody prioritized *because* it is old and
+    dormant — the same reasoning that made it low-priority made it the only member of the
+    other class. **A negative claim about a category is only as good as the diversity of the
+    sample, not just the size of the search** — [rule 1b](methodology.md) says an absence is
+    only as good as the surface you searched; this adds that a surface can be wide and still
+    be one kind of place.
+    **Two riders keep it from being read as a straight win**, both measured. The index needs
+    a human seed: at a 1024-token budget with an empty chat it selects 33 files of which 20
+    are language test fixtures and omits `base_coder.py`, the repo's own core file — add
+    that one file and the map collapses to 13, 10 of them its real collaborators, because
+    files in the chat carry a ×50 edge multiplier. The human's `/add` *is* the PageRank's
+    personalization vector. And the index collides with prompt caching: aider diagnosed the
+    collision three years before the same shape surfaced at hermes, fixed it in two lines,
+    and the fix silently disables per-query personalization — RUN-confirmed, the whole
+    disclosure being one word in the startup banner. →
+    [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) axes 1 and 6 ·
+    [`docs/design-principles.md`](design-principles.md) H5 ·
+    [`warp.md`](../tools/2-harnesses/warp.md) · [`gemini-cli.md`](../tools/2-harnesses/gemini-cli.md)
+
+18. **A harness with no tool loop ships the strongest native verification gate in the set —
+    so "runs something fresh before the turn ends" is independent of agentic dispatch**
+    (2026-08-27, [aider deep-dive](../tools/2-harnesses/aider.md)). aider never sends a tool
+    schema: `functions = None` on the base coder, the only three classes that would attach
+    one are dead code with no importers, and the whole turn engine is 13 lines capped at a
+    hard-coded 3 reflections. It cannot call a tool. Yet `--auto-lint` **defaults to true**,
+    and with *zero* user configuration every edited Python file gets a tree-sitter parse, a
+    real `compile()`, and a `flake8` subprocess whose failures are rendered in AST context
+    and fed back as the next user message. RUN-confirmed on the published artifact,
+    including `F821 undefined name` in **syntactically valid** code — a semantic error
+    catchable only by actually running a linter.
+    **This is the first tracked harness to clear the repo's "ran something fresh" bar by
+    default**, and it clears it without any of the machinery the bar was assumed to require.
+    Across the other eleven category-2 reports, turn-end gating is `hook`-grade surfaces
+    that ship empty (claude-code, codex, gemini-cli, qwen-code), `engine` policy that is
+    default-off or default-empty (dsh, gemini-cli's next-speaker), verified absent
+    (opencode, cline, continue, warp), or default-on in exactly one product (hermes).
+    Conclusion 8's absorption thesis holds that harnesses ate the workflow frameworks'
+    mechanisms; aider shows the *measured-gate* leg was never a function of that absorption —
+    it needs a linter and a place to put the output, not a tool registry.
+    **The qualifier is stated rather than buried**: the re-prompt passes through a
+    `confirm_ask` that defaults to yes, auto-accepts under `--yes-always`, and returns its
+    default on `EOFError` in every non-interactive mode. The human touchpoint exists in the
+    default interactive path and evaporates everywhere else — so aider is unambiguously
+    default-on and measured, and ambiguously *unattended*.
+    **Falsifier**: a harness shipping a default-on verifier that re-prompts with no human
+    touchpoint at all would move aider from "strongest" to "second"; the vendor-native three
+    (codex, dsh, gemini-cli) already ship the surface and would only need to arm it. →
+    [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) § absorption table,
+    `measured_gates` · [ADR-0011](../adrs/0011-graded-gate-enforcement.md)

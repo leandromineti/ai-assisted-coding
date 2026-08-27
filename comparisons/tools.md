@@ -35,6 +35,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 
 | Tool | Surfaces · exec | Stack | Access | License | Stars | Since | Harness targets | Version read | Depth | Report |
 |---|---|---|---|---|---|---|---|---|---|---|
+| aider | terminal + web · local | Python | `open-source` | Apache-2.0 | 48,519 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | deep-dive | [aider](../tools/2-harnesses/aider.md) |
 | codex | terminal · local | Rust, TypeScript | `open-source` | Apache-2.0 | 102,646 | 2025-04-16 | — | `rusty-v8-v150.4.0-94-g413492cd6c` | deep-dive | [codex](../tools/2-harnesses/codex.md) |
 | dsh | web · local | TypeScript, Node.js | `open-source` | MIT | 190,941 | 2026-06-10 | — | `dsh-v0.1.1-rc.2` | deep-dive | [dsh](../tools/2-harnesses/dsh.md) |
 | gemini-cli | terminal + ide · local | TypeScript, Node, Ink | `open-source` | Apache-2.0 | 106,681 | 2025-04-15 | — | `v0.49.0-preview.0-117-g64b5b79a6` | deep-dive | [gemini-cli](../tools/2-harnesses/gemini-cli.md) |
@@ -46,7 +47,6 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | claude-code | terminal + desktop + web + ide · both | TypeScript, Node | `closed-source` | proprietary | 141,660 | — | — | `2.1.233` | survey | [claude-code](../tools/2-harnesses/claude-code.md) |
 | cline | ide + terminal · local | TypeScript, React | `open-source` | Apache-2.0 | 65,138 | 2024-07-05 | — | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../tools/2-harnesses/cline.md) |
 | continue | ide · local | TypeScript, React | `open-source` | Apache-2.0 | 35,166 | 2023-05-23 | — | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../tools/2-harnesses/continue.md) |
-| aider | terminal · local | Python | `open-source` | Apache-2.0 | 47,763 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | stub | [aider](../tools/2-harnesses/aider.md) |
 
 ## 3 · Execution environments
 
@@ -91,4 +91,4 @@ Every tool with a report, one subsection per category in repo order. Newest read
 |---|---|---|---|---|---|---|---|---|---|---|
 | ecc | — | Markdown, Node | `open-source` | MIT | 236,217 | 2026-01-17 | 23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check | `v2.1.0-16-ge4e41631` | deep-dive | [ecc](../tools/6-extensions/ecc.md) |
 
-**46 tools** — 20 deep-dive · 18 stub · 8 survey.
+**46 tools** — 21 deep-dive · 17 stub · 8 survey.
