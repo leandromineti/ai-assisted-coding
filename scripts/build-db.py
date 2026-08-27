@@ -44,7 +44,7 @@ SCALARS = (
     "name", "category", "depth", "maker", "license", "access", "url", "type",
     "stars", "first_commit", "version", "commit", "checked",
     "model_id", "release_date", "context_window", "max_output",
-    "knowledge_cutoff", "execution", "environment_relation",
+    "knowledge_cutoff", "execution", "residency", "environment_relation",
 )
 LISTS = ("environments", "harness_targets", "surfaces", "stack", "bears_on")
 
