@@ -120,13 +120,19 @@ groups:
     title: Control gates
     order: 52
     blurb: >-
-      Where a human or the engine can stop the agent, and the three keys intervene at
-      three different moments: `plan_mode` before the work starts, `tool_approval` before
-      a tool call runs, `turn_end_gates` when the model tries to end its turn.
+      Where a human or the engine can stop the agent. Three of the keys mark three
+      different moments in a turn: `plan_mode` before the work starts, `tool_approval`
+      before a tool call runs, `turn_end_gates` when the model tries to end its turn. The
+      fourth, `headless_approval`, cuts across all of them by asking a different question —
+      not *when* the gate fires but *what it decides when nobody is there to answer*, which
+      is the condition every CI run and scripted invocation meets and every demo does not.
       `turn_end_gates` is GRADED rather than ✓/✗ (engine > hook > script > prose, strongest
       verified enforcer wins) because who enforces a gate is the finding — a gate compiled
       into the engine and a gate written into a prompt are not the same gate, and that gap
-      is what conclusion 8 measures.
+      is what conclusion 8 measures. Read the four together and the group's real subject
+      appears: a gate is only as strong as its weakest condition, so a ✓ on `tool_approval`
+      says a prompt exists and `headless_approval` says whether that prompt survives contact
+      with automation.
   - id: operations
     title: Operations
     order: 53
@@ -324,6 +330,32 @@ features:
       defeat the classifier (permission-manager.ts:1512), the only tracked gate that defends itself
       from the OPERATOR. So model-in-the-gate is not the defect; model authority that can WIDEN a
       permission is. Warp ✓-with-caveat and qwen-code ✓ are the two poles of the same mechanism
+  - id: headless_approval
+    group: control-gates
+    block: harness_features
+    applies_to: [2]
+    value_type: closed-enum
+    definition: >-
+      what the permission gate resolves to when NO HUMAN CAN ANSWER — deny | allow. Scoped to
+      harnesses that HAVE a gate (`tool_approval: true`); left unset where none exists, and that
+      null is data rather than a gap (dsh substitutes a compiled sandbox, pi substitutes nothing).
+      DISTINCT FROM `tool_approval`, which says only whether a prompt exists: two harnesses can
+      both be ✓ and take opposite decisions the moment the terminal is a pipe, which is the
+      condition every CI run, cron job, and scripted invocation actually meets. Read it as the
+      gate's failure mode, not its strength — `allow` is fail-open, `deny` is fail-closed.
+    note: >-
+      added 2026-08-27 from the aider deep-dive, which supplied the second verified instance and
+      the opposite value from gemini-cli's. aider is `allow`: confirm_ask's signature default is
+      "y" (io.py:810), no agent-loop call site overrides it, and the EOF handler treats end-of-input
+      as "the user pressed Enter" (io.py:884-886) — so all seven gates auto-approve under
+      `aider -m` with no TTY. gemini-cli is `deny`: ASK_USER interactive / DENY headless when no
+      rule matches (policy-engine.ts:291-293). The pair is what makes the key discriminate, and
+      aider adds a second-order finding recorded in its report body rather than here — its
+      `--yes-always` flag is STRICTER than its absence, because the shell gate passes
+      explicit_yes_required=True and io.py:866-867 turns blanket-yes into an automatic "no" for
+      model-authored commands. So on aider the safety flag is the safe setting and the unattended
+      default is not. Only the two instances are set; every other report leaves this unset (not
+      checked, or no gate to check).
   - id: plan_mode
     group: control-gates
     block: harness_features

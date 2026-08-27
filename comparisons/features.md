@@ -33,20 +33,20 @@ pricing, cutoff, lifecycle) stays in [models.md](models.md).
 
 ## Harnesses (category 2)
 
-| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [aider](../tools/2-harnesses/aider.md) | `open-source` | Apache-2.0 | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | `engine` | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ |
-| [codex](../tools/2-harnesses/codex.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | ✓ | ✓ | ✓ | · | · | ✓ |
-| [dsh](../tools/2-harnesses/dsh.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ |
-| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| [opencode](../tools/2-harnesses/opencode.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | · | · |
-| [pi](../tools/2-harnesses/pi.md) | `open-source` | MIT | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `hook` | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ |
-| [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `hook` | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ |
-| [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | ✓ | ✓ | ✗ | ✓ | · | ✓ |
-| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | ✓ | · |
-| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | · | ✓ | ✓ | · | · | · |
+| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | headless approval | plan mode | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [aider](../tools/2-harnesses/aider.md) | `open-source` | Apache-2.0 | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | `engine` | ✓ | `allow` | ✗ | ✓ | ✓ | ✓ | ✗ |
+| [codex](../tools/2-harnesses/codex.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | ✓ | · | ✓ | ✓ | · | · | ✓ |
+| [dsh](../tools/2-harnesses/dsh.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | ✗ | · | ✓ | ✓ | ✓ | ✗ | ✗ |
+| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | ✓ | `deny` | ✓ | ✗ | ✗ | ✓ | ✗ |
+| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | ✓ | · | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../tools/2-harnesses/opencode.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | ✓ | · | ✓ | ✓ | ✓ | · | · |
+| [pi](../tools/2-harnesses/pi.md) | `open-source` | MIT | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `hook` | ✗ | · | ✗ | ✓ | ✓ | ✓ | ✗ |
+| [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `hook` | ✓ | · | ✓ | ✓ | ✗ | ✗ | ✓ |
+| [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | ✓ | · | ✓ | ✓ | ✓ | ✗ | ✗ |
+| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | ✓ | · | ✓ | ✗ | ✓ | · | ✓ |
+| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | · | · | ✓ | ✓ | · | ✓ | · |
+| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | · | · | ✓ | ✓ | · | · | · |
 
 ## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)
 
@@ -56,22 +56,22 @@ environment exposing session sharing). Same columns, same discipline; rows
 here do NOT count toward the cross-category table's demand side (that filter is
 `applies_to`).
 
-| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | plan mode | model agnostic | session sharing | evals | learning loop |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [daytona](../tools/3-execution-environments/daytona.md) | `closed-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [e2b](../tools/3-execution-environments/e2b.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [microsandbox](../tools/3-execution-environments/microsandbox.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [modal](../tools/3-execution-environments/modal.md) | `closed-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | · | · | · | ✓ | · | · | · | · | · | · | · | · | · | ✓ |
-| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
-| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
-| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [ecc](../tools/6-extensions/ecc.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | headless approval | plan mode | model agnostic | session sharing | evals | learning loop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [daytona](../tools/3-execution-environments/daytona.md) | `closed-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [e2b](../tools/3-execution-environments/e2b.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [microsandbox](../tools/3-execution-environments/microsandbox.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [modal](../tools/3-execution-environments/modal.md) | `closed-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | · | · | · | ✓ | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
+| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [ecc](../tools/6-extensions/ecc.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | · | ✓ |
 
 ## Workflow frameworks (category 4)
 

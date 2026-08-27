@@ -1,6 +1,6 @@
 # Category 2 — Harnesses
 
-`checked: 2026-08-26`
+`checked: 2026-08-27`
 
 Loop + context assembly + permission model + UI. See
 [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
@@ -11,15 +11,30 @@ than repeating.
 
 ## What we assess here
 
-The assessed block is **`harness_features:`, 14 keys** (2026-08-26): `mcp`, `lsp`, `hooks`,
-`turn_end_gates`, `tool_approval`, `skills`, `subagents`, `ptc`, `plan_mode`,
-`rules_files`, `model_agnostic`, `session_sharing`, `evals`, `learning_loop`. They sort
-under the category's three components — the loop (`subagents`, `plan_mode`,
+The assessed block is **`harness_features:`, 15 keys** (2026-08-27): `mcp`, `lsp`, `hooks`,
+`turn_end_gates`, `tool_approval`, `headless_approval`, `skills`, `subagents`, `ptc`,
+`plan_mode`, `rules_files`, `model_agnostic`, `session_sharing`, `evals`, `learning_loop`.
+They sort under the category's three components — the loop (`subagents`, `plan_mode`,
 `turn_end_gates`, `ptc`), context assembly (`skills`, `rules_files`, `learning_loop`), and
-the permission gate (`tool_approval`) — with the rest describing reach and portability.
-All are presence-claims except `turn_end_gates`, which is graded engine \| hook \| script \|
-prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
-because *who enforces* a gate turned out to matter more than whether one exists.
+the permission gate (`tool_approval`, `headless_approval`) — with the rest describing reach
+and portability.
+
+Thirteen are presence-claims. Two are not: `turn_end_gates` is graded engine \| hook \|
+script \| prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
+because *who enforces* a gate turned out to matter more than whether one exists; and
+`headless_approval` is a closed enum (deny \| allow) for the same species of reason one
+level down — *under what conditions* a gate holds turned out to matter more than whether
+it exists.
+
+`headless_approval` joined 2026-08-27 when the aider read supplied a second instance taking
+the **opposite value** from gemini-cli's: aider's gate fails **open** when there is no TTY
+(the EOF handler reads end-of-input as "the user pressed Enter", and the default is yes),
+gemini-cli's fails **closed** (DENY headless). Both are `tool_approval: true`, which is
+exactly why the presence bool was not enough — the two harnesses take opposite decisions
+the moment the terminal is a pipe, and that is the condition every CI run, cron job, and
+scripted invocation actually meets. Set on those two reports only; left unset everywhere
+else, including the two harnesses with no gate at all (dsh, pi), where the null is data
+rather than a gap.
 
 This is the presence half only, and the warning below applies to it: the matrix answers
 "does it ship this?", never "does it pay?" — the mechanism sections further down are where
