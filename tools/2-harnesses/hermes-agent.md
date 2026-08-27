@@ -355,6 +355,121 @@ the eight backends exist specifically to solve it.
    announced Claude Code Routines… We shipped it two months ago") all committed at the
    top level. The repo is visibly a working surface for agents, not just a product.
 
+## Reasoning-parameter handling — targeted read 2026-08-27 (not a re-read; the pin is unchanged)
+
+The gap [conclusion 15](../../docs/conclusions.md) named. Executed for
+[issue #41](https://github.com/leandromineti/ai-assisted-coding/issues/41), which was
+opened because the [#40](https://github.com/leandromineti/ai-assisted-coding/issues/40)
+sweep could not read this harness. **Hermes is the fifth harness read on this axis and the
+first that does not fail it** — not by accident, and not everywhere.
+
+### Method note, because the issue got the diagnosis wrong
+
+`upstream/hermes-agent` is a **`--filter=blob:none` blobless clone with a promisor remote**
+(`git config remote.origin.partialclonefilter` → `blob:none`). That, not repo size, is why
+`git grep <pin>` stalled: a whole-tree grep at a non-checked-out commit must fetch every
+blob in the tree from GitHub, one round trip at a time. The issue's recommended fix — a
+worktree at the pin — is the *same* operation and is worse: it ran for over four minutes,
+produced nothing, and earned an HTTP 429 from GitHub. The working method is the one the
+issue listed second, plus a refinement:
+
+- **`git grep <pin> -- <narrow-pathspec>`** — `-- 'agent'` returned in **0.045 s** where the
+  whole-tree form timed out at 55 s+. Scope the pathspec; do not build a worktree.
+- **`git show <pin>:<path>`** for anything the grep did not already have locally, one blob
+  per call.
+
+Recorded here rather than only in the issue because it applies to every large clone in
+`upstream/` and the wrong diagnosis cost two attempts.
+
+### The three questions
+
+**1. Where is the parameter decided?** At four nested points, and only the innermost is
+model-aware. User config is the source of truth — `resolve_reasoning_config(cfg, model)`
+(`hermes_constants.py:972`) is a single documented chokepoint shared by *every* surface
+(CLI startup, gateway, TUI, cron, `/model` switch, fallback activation), resolving
+per-model overrides above a global `agent.reasoning_effort`. Below it sits a **route-keyed
+capability gate**, `_supports_reasoning_extra_body()` (`run_agent.py:6436`), which picks a
+strategy by how much the endpoint is willing to tell it: trusted routes answer yes
+unconditionally (Nous Portal, Vercel AI Gateway); **servers that publish capabilities get
+probed live and cached** (LM Studio's `allowed_options`, Ollama's `/api/show` `thinking`
+capability, GitHub Models' per-model effort list); OpenRouter falls back to a prefix
+allowlist; everything else defaults to *omit the field*. Below that, per-provider transports
+decide only the **wire shape** — top-level `reasoning_effort` (Kimi, TokenHub, LM Studio),
+`extra_body.reasoning` (the OpenAI-compatible default), `extra_body.thinking` (Kimi),
+`thinking_config` (Gemini), `reasoning: {effort, summary}` (Responses). And only at the
+bottom does anything match a model id.
+
+**2. Does it version-pin? Deliberately, in whichever direction the vendor's API fails —
+and the Anthropic case is a documented inversion of the exact mistake the other four
+made.** `agent/anthropic_adapter.py:77-106` carries the reasoning verbatim:
+
+> Newer Claude releases (4.8, and named models like claude-fable-5) follow the same modern
+> contract — but they share no common version substring, so **an allowlist of version
+> numbers ("4.6", "4.7", …) goes stale the moment a model ships without a recognized number**
+> and silently routes it down the legacy manual-thinking path. Instead we DEFAULT unknown
+> Claude models to the modern contract and keep an explicit *legacy* list … so each new
+> Claude release works without a code change.
+
+That is a **denylist of superseded families with a default-to-newest fallthrough**, applied
+independently at three call sites — `_supports_adaptive_thinking` (`:245`),
+`_supports_xhigh_effort` (`:265`), `_forbids_sampling_params` (`:282`) — plus
+`_get_anthropic_max_output`, which the comment cites as the pattern's origin. Checked
+against the lineup that defeated the other four: `claude-opus-5`, `claude-sonnet-5`,
+`claude-fable-5` and `claude-opus-4-8` all match no legacy substring, so all four route to
+adaptive thinking with `xhigh` available and sampling params omitted — correct on every one.
+`claude-opus-4-5`, `claude-sonnet-4-5`, `claude-haiku-4-5` match and take the manual
+budget path — also correct. The 4.6 pair sits in its own list (`_NO_XHIGH_CLAUDE_SUBSTRINGS`)
+and gets `xhigh` downgraded to `max`, its strongest accepted level. **This is the same
+comparison continue fails outright and cline fails by omission, on the same models, at a
+pin one day older than cline's.**
+
+The polarity flips where the vendor's failure flips. On xAI, `grok_supports_reasoning_effort`
+(`agent/model_metadata.py:479`) is an **allowlist** of four prefixes, and the docstring says
+why: *"Conservative by design: if a future Grok model isn't listed, we send no effort dial
+rather than 400."* The call site names the exact failure it is avoiding — *"xAI rejects
+`reasoning.effort` on grok-4 / grok-4-fast / grok-3 / grok-code-fast / grok-4.20-0309-* with
+HTTP 400 even though those models reason natively"* (`agent/transports/codex.py:347-354`).
+One entry carries a dated live probe in its comment (`grok-4.5`, *"verified live against
+/v1/responses 2026-07-08 — accepts effort low/medium/high (default: high when omitted) but
+REJECTS 'none'"*), cross-checked against models.dev. So: denylist where the vendor 400s on
+the *old* shape, allowlist where the vendor 400s on the *new* dial. The choice is made per
+vendor, from the observed failure, and written down.
+
+**3. What happens on the fallthrough?** Three different answers, each matched to its route,
+and none of them is an error. Where the field is safe, a **hardcoded `medium`** is sent
+(`transports/chat_completions.py:479-482`, `transports/codex.py:215`). Where the vendor
+rejects an unrecognized dial, **nothing is sent and the server default applies** — grok off
+the allowlist, Gemma on the Gemini provider (`_build_gemini_thinking_config` returns `None`
+for any non-`gemini` model, added for issue #17426 after the polite
+`{"includeThoughts": False}` form also 400'd), and every route the capability gate does not
+recognize. An unrecognized *user* value never propagates: `parse_reasoning_effort`
+(`hermes_constants.py:820`) returns `None` and logs `"Unknown reasoning_effort '%s', using
+default (medium)"`. Where a level is real but too strong for the target, it is **clamped
+rather than dropped** — `xhigh|max|ultra → high` on xAI Responses, `minimal → low`
+everywhere, Gemini 3 Pro's `low|high` versus Flash's `low|medium|high`.
+
+### What this does not say
+
+Hermes is not immune; it is immune *where someone engineered against this specific failure*,
+and carries the ordinary disease everywhere else. The clearest instance is internal and
+checkable at the pin: `_supports_reasoning_extra_body`'s OpenRouter prefix list includes
+`google/gemini-2` and `qwen/qwen3` (`run_agent.py:6473-6484`), while
+`_build_gemini_thinking_config` two files away already branches on `gemini-3` and
+`gemini-3.1`. **So a Gemini 3 model reached through OpenRouter fails the capability gate and
+is sent no reasoning field at all**, in a codebase that demonstrably knows Gemini 3 exists.
+Same failure shape as opencode's `glm-5.2` — the quiet one, an under-send that succeeds and
+lets the server decide. `_reasoning_config_for_model` (`transports/chat_completions.py:21`)
+is a second, dated instance in waiting: it maps `ultra → max` only when `"gpt-5.6" in model`,
+duplicated in `codex.py:223-225`, so a successor shipping under any other id would forward the
+product-tier word `ultra` as a wire value the Responses API does not define.
+
+**Prediction, scored at the next re-read (rule: dated and falsifiable).** By **2027-02-28**,
+the Anthropic denylist will still be correct for every Claude released between this pin and
+then *without a code change*, while at least one of the two allowlists above
+(`_GROK_EFFORT_CAPABLE_PREFIXES`, the OpenRouter vendor prefixes) will have gone stale
+against a model shipped in the same window. The asymmetry, not either half alone, is the
+claim.
+
 ## Open questions
 
 - **Does the learning loop pay?** No eval in the repo measures skill/memory accumulation

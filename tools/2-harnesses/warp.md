@@ -410,6 +410,38 @@ should be read from the site with a `checked:` date, not from source.
     a de facto standard for following any CLI agent in a terminal — including
     `permission_request` events for prompts Warp itself disabled.
 
+## Reasoning-parameter handling — targeted read 2026-08-27 (not a re-read; the pin is unchanged)
+
+The "while you're there" half of [issue #41](https://github.com/leandromineti/ai-assisted-coding/issues/41).
+Warp was characterised but not traced in the [#40](https://github.com/leandromineti/ai-assisted-coding/issues/40)
+sweep because it presents a shape none of the others do: **a harness setting a reasoning
+parameter for a harness it is driving**. Traced at this pin, the answer is that it does not
+handle the parameter at all, and that turns out to be the finding.
+
+`set_codex_model_reasoning_effort` (`app/src/ai/agent_sdk/driver/harness/codex.rs:777-789`)
+takes the user's `HarnessModelConfig.reasoning_level`, filters out the empty string, and
+writes it verbatim into Codex's `config.toml` as `model_reasoning_effort`. If it is unset,
+the key is **removed** so Codex applies its own default. No model-id check, no vendor
+branch, no vocabulary validation, no version pin — the string the user picked in Warp's UI
+lands in another product's config file untouched.
+
+That is a fourth position on [conclusion 15](../../docs/conclusions.md)'s axis, and it is
+locally correct: the parameter's validity is Codex's problem, and Codex is OpenAI's own
+client for OpenAI's own models. Warp's exposure is zero because it holds no model-capability
+knowledge to go stale. The same instinct is written down one function over
+(`:806-810`), for the model key rather than the effort key — *"We do this unconditionally
+rather than enumerating a list of 'old' models on the client"* — which is the same
+conclusion hermes reached independently and stated in its Anthropic adapter, from the
+opposite direction.
+
+**But delegation moves the obligation rather than discharging it.** Warp cannot detect that
+the value it forwarded is wrong, cannot clamp it, and cannot report the resulting 400 as
+anything but a child-process failure — and Codex's own handling is one of the cases
+conclusion 15 covers. Read alongside the child-launch finding in § Permission model
+(Warp launches every child harness with its guardrails disabled), the pattern is consistent:
+**Warp's orchestration is strict about its own surface and pass-through about everything it
+delegates.** That is a coherent position; it is not a defence.
+
 ## Drift
 
 *(2026-08-19, pin unmoved per rule 4b.)* Upstream is 98 commits past the pin; 27 touch the

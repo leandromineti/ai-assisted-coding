@@ -352,13 +352,38 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     deprecating its own parameter, because model *version* is not a dimension of the
     design. Conclusion 8's absorption thesis has a cost side — a harness that owns the
     model-capability decision inherits the obligation to track every vendor's deprecations,
-    and none of the four is winning that race. Scope: four harnesses read closely, two
-    (gemini-cli single-vendor, codex config-driven) structurally out of reach of the
-    pattern, hermes-agent unread. →
+    and none of the four is winning that race.
+    **QUALIFIED 2026-08-27 by the fifth harness, which closes the gap this conclusion
+    declared** ([issue #41](https://github.com/leandromineti/ai-assisted-coding/issues/41)):
+    hermes-agent does not fail the Anthropic comparison, and the reason is that someone
+    inverted the polarity on purpose and wrote down why. Its adapter keeps a **denylist of
+    superseded Claude families and defaults unknown models to the newest contract**, because
+    — in its own comment — *"an allowlist of version numbers ('4.6', '4.7', …) goes stale the
+    moment a model ships without a recognized number."* Opus 5, Sonnet 5, Fable 5 and Opus 4.8
+    all route correctly with no code change; 4.5-and-older correctly take the legacy budget
+    path. Where the vendor's failure runs the other way it uses an allowlist for the same
+    reason — on xAI, an unlisted model gets **no effort dial rather than a 400**, stated as
+    *"conservative by design"*. So the defence is not an architecture, it is a **per-vendor
+    choice of default direction, made from the observed failure**: default-to-newest where
+    the old shape is rejected, default-to-silent where the new dial is. That is cheap, and
+    the other four could have done it.
+    Two things keep this a qualification rather than a refutation. Hermes carries the same
+    disease wherever nobody engineered against it — its OpenRouter capability gate allowlists
+    `google/gemini-2` while its own Gemini adapter, two files away, already branches on
+    `gemini-3`, so a Gemini 3 model reached through OpenRouter is sent no reasoning field at
+    all. And **Warp shows the cost of the escape hatch**: driving Codex as a sub-harness, it
+    writes whatever effort string the user picked into `config.toml` with no model check and
+    no validation, and removes the key when unset. Zero exposure of its own — and zero
+    ability to detect or fix the sub-harness's, which is one of the four failures above.
+    Delegation moves the obligation; it does not discharge it.
+    Scope: five harnesses read closely, two (gemini-cli single-vendor, codex config-driven)
+    structurally out of reach of the pattern; Warp characterised as a delegating case. →
     [`tools/2-harnesses/opencode.md`](../tools/2-harnesses/opencode.md) §7 ·
     [`cline.md`](../tools/2-harnesses/cline.md) §3 ·
     [`continue.md`](../tools/2-harnesses/continue.md) ·
     [`aider.md`](../tools/2-harnesses/aider.md) ·
+    [`hermes-agent.md`](../tools/2-harnesses/hermes-agent.md) § Reasoning-parameter handling ·
+    [`warp.md`](../tools/2-harnesses/warp.md) § Reasoning-parameter handling ·
     [ADR-0040](../adrs/0040-reasoning-replaces-thinking.md)
 
 16. **Every model maker ships its own harness — the composability the taxonomy assumes is
