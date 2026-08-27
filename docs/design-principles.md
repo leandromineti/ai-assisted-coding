@@ -327,6 +327,20 @@ narrow waist is a consequence of the architecture, not evidence of it** — whic
 line count" is a bad proxy for this principle, and the diagnostic is the edge surface, not
 the middle.
 
+*The contrast is documented on pi's side, which is what makes it a distinction and not a
+just-so story* (verified 2026-08-27 at pi's own pin, `packages/coding-agent/README.md`
+§ Philosophy): pi states the conjunction in one paragraph block — *"Pi is aggressively
+extensible so it doesn't have to dictate your workflow. Features that other tools bake in
+can be built with extensions, skills, or installed from third-party pi packages. This keeps
+the core minimal"* — and then names six things it declines (**No MCP · No sub-agents · No
+permission popups · No plan mode · No built-in to-dos · No background bash**), each with the
+same disposal route. Every absence is paired with where the capability went. aider's
+absences are paired with nothing, because there is nowhere for them to go. **The test that
+separates the two is not how small the core is but whether each ✗ has a named destination**
+— and that also means a minimalist philosophy produces *correlated* absences that a feature
+matrix renders as independent evidence (see the reading warning in the
+[category index](../tools/2-harnesses/README.md#what-we-assess-here)).
+
 There is also a dormancy reading worth keeping, since aider is the only frozen subject in
 the set: an unextensible harness has no way for the field to route around its maintainer.
 When the commits stopped (2026-05-22), nothing could be added by anyone else — no MCP

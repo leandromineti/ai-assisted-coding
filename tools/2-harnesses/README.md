@@ -40,6 +40,26 @@ This is the presence half only, and the warning below applies to it: the matrix 
 "does it ship this?", never "does it pay?" — the mechanism sections further down are where
 that second question is argued.
 
+**A second warning, recorded 2026-08-27: cells are rendered as independent and often are
+not.** pi's README states its design in one paragraph block under `## Philosophy` — *"Pi is
+aggressively extensible so it doesn't have to dictate your workflow… This keeps the core
+minimal"* — followed by six clauses: **No MCP · No sub-agents · No permission popups · No
+plan mode · No built-in to-dos · No background bash**, each with the same rationale, *build
+it as an extension*. Four of those are cells here (`mcp`, `subagents`, `tool_approval`,
+`plan_mode`), all `false`. **So pi contributes one bit of information to the matrix and it
+renders as four ✗.** Any count that treats them as four independent absences is
+over-counting a single stated position.
+
+And the failure is not symmetric across tools, which is what makes it worth a warning
+rather than a footnote. **aider's ✗ profile is similarly correlated and has the opposite
+cause**: `mcp`, `hooks`, `skills`, `lsp`, `rules_files`, `subagents`, `ptc`, `plan_mode`
+are all absent not because a maker declined them but because a 2023 architecture never grew
+the surfaces — there is no tool registry for MCP to attach to, no plugin API for hooks to
+fire in. **Declined-and-delegated and never-built produce identical rows.** The matrix
+cannot distinguish them; only the report body can, which is where each ✗'s comment carries
+its reason. Read a row of absences as a question — *is this a position or a vintage?* — and
+go to the report for the answer.
+
 The other half is **13 transcription fields** — `maker`, `license`, `access`, `stars`,
 `first_commit`, `version`, `commit`, `stack`, `surfaces`, `residency`, `execution`,
 `environments`, `environment_relation` — facts copied from a dated source rather than judged.
