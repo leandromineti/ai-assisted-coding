@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # "supports all five effort levels"; `output_config.effort`
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
   batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
+  fast_mode: true    # "up to 2.5x higher output tokens per second" at $10/$50 (2x list), `speed: "fast"` + fast-mode-2026-02-01 beta header; research preview, Claude API only, Opus 5/4.8 only; explicitly NOT the Priority Tier ("Fast mode is not available with a Priority Tier commitment") — first-party fast-mode page, verified 2026-08-27
 checked: 2026-08-17
 depth: survey
 ---

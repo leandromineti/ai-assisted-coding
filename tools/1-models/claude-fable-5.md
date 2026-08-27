@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # settled 2026-08-26 — `output_config.effort` (§ Reasoning surface)
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
   batch_discount: "50% in+out ($5 / $25 per MTok)"
+  fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
 checked: 2026-08-17
 depth: stub
 ---

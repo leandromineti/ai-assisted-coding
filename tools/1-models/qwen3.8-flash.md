@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs: "`xhigh` (default)" / medium / low, and "`max` and `high` are automatically mapped to `xhigh`" — an alias mapping no other model here publishes
   prompt_caching: "implicit cache read $0.016 per MTok (≈0.107x of input); explicit cache creation $0.20 (1.33x) + explicit cache read $0.016 per MTok. Described as storing 'shared prefixes for long-context requests'; no TTL and no breakpoint surface stated (2026-08-27)"
   batch_discount: "platform Batch API is '50% of the real-time price', results 'delivered within 24 hours' (first-party batch guide); the guide's supported-model list names only the older `qwen-max`/`qwen-plus`/`qwen-flash`/`qwen-turbo` ids and not `qwen3.8-flash`, while the model page carries a Batch card. Same unresolved two-surface disagreement as qwen3.8-max (2026-08-27)"
+  fast_mode: false   # checked and absent: QwenCloud's Prime Mode ("TPS is 1.5~2x that of the standard API") is the platform's throughput mode, and its supported-models list excludes this model (glm-5.2-fast-preview and wan3.0-video-prime only; verified 2026-08-27)
 checked: 2026-08-27
 depth: stub
 ---

@@ -19,13 +19,14 @@ report's evidence cells, not its depth field.
 
 ## What we assess here
 
-The assessed block is **`model_features:`, 5 keys** (2026-08-26; re-counted 2026-08-27 over
-13 models): `reasoning`, `reasoning_type`, `reasoning_effort`, `prompt_caching`,
-`batch_discount`. The weights
+The assessed block is **`model_features:`, 6 keys** (5 since 2026-08-26; `fast_mode`
+added 2026-08-27, ADR-0049; counts below re-run over 13 models): `reasoning`,
+`reasoning_type`, `reasoning_effort`, `prompt_caching`, `batch_discount`, `fast_mode`.
+The weights
 themselves are untraceable at this repo's level of analysis — which is why category 1
 deliberately has no component decomposition — so what *is* assessable is the first-party
 surface around them: the three keys that change how a harness can drive the model, and the
-two that decide what a completed task costs. Each is verified against the report's `url`
+three that decide what a completed task costs. Each is verified against the report's `url`
 on its `checked` date.
 
 Since 2026-08-27 that framing is a **stated decision, not an accident of practice**
@@ -36,9 +37,20 @@ acknowledged — `access`, `license`, the HF id in `model_id`, its row in the 1b
 and never assessed as a second subject, even where the vendor documents the two diverging
 (qwen3.8-max, the forcing case).
 
-The two economics keys are free text in each vendor's own vocabulary
+Two of the three cost keys (`prompt_caching`, `batch_discount`) are free text in each
+vendor's own vocabulary
 ([ADR-0014](../../adrs/0014-model-features-into-registry.md)): the economics differ
-structurally across vendors and flattening them to ✓/✗ would erase the finding. The three
+structurally across vendors and flattening them to ✓/✗ would erase the finding. The third,
+**`fast_mode`** ([ADR-0049](../../adrs/0049-fast-mode-presence-key.md), 2026-08-27), is a
+presence key and `batch_discount`'s inverse — batch trades speed for a discount, fast mode
+buys output-token throughput at a premium for the *same* model (a fast sibling doesn't
+count). It earns ✓/✗ where `reasoning` couldn't because it genuinely discriminates:
+first sweep **3 ✓ / 9 ✗ / 1 ·**, and the ✓s are exactly Anthropic (`speed: "fast"`,
+2.5× OTPS at 2× price, Opus-only), OpenAI (`service_tier: fast|priority` — priority
+processing *renamed* fast mode 2026-07-30), and Google (Priority tier, ~1.8×). Every
+non-Western maker checked has none — the near-mirror of `reasoning_effort`'s regional
+split below: the West sells speed as the premium add-on, the Chinese makers spend the
+premium on reasoning by default. The three
 reasoning keys are **typed**, and they discriminate here for a reason worth stating
 ([ADR-0040](../../adrs/0040-reasoning-replaces-thinking.md), 2026-08-26 — they replace a
 single free-text `thinking` key that held four independent facts at once):

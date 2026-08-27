@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/medium/high@high"   # thinking_level IS the dial; legacy thinking_budget is mutually exclusive with it
   prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
   batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
+  fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27)
 checked: 2026-08-17
 depth: stub
 ---

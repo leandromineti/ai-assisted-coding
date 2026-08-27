@@ -36,6 +36,8 @@ model_features:   # nested per ADR-0014 (2026-08-19)
   reasoning_effort: <levels:low/high/max@high | budget:tokens | none>
   prompt_caching: "<write/read economics + TTLs, in the vendor's own terms>"
   batch_discount: "<async batch pricing, if offered>"
+  fast_mode: <true | false — a paid faster-token-throughput serving option for THIS model on the first-party API (ADR-0049); a fast SIBLING model does not count, nor does a no-speedup SLA tier. Comment carries vendor name, premium, and mechanism>
+
 checked: <YYYY-MM-DD — the date every spec above was verified against `url`>
 depth: <stub | survey>
 ---

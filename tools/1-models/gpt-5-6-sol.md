@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:none/low/medium/high/xhigh/max@medium"   # the sweep's only default below `high`
   prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
   batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
+  fast_mode: true    # `service_tier: "fast"` (also accepts "priority" — priority processing RENAMED to fast mode 2026-07-30): Sol $8/$40 short-context, $16/$60 long; offered on all three 5.6 tiers (first-party pricing page, verified 2026-08-27)
 checked: 2026-08-17
 depth: stub
 ---

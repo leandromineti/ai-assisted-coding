@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/high/max@high"   # foreign values 'medium'/'xhigh' silently coerced to high; same mapping Pro and Flash
   prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
   batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
+  fast_mode: false   # checked and absent: the pricing page's only dimensions are peak/off-peak hours and cache hit/miss — no speed tier (verified 2026-08-27)
 checked: 2026-08-17
 depth: stub
 ---

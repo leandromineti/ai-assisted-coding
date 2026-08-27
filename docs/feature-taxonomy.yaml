@@ -457,6 +457,13 @@ features:
     value_type: free-text
     definition: async batch pricing, if offered
     note: "folded 2026-08-19 (ADR-0014)"
+  - id: fast_mode
+    group: cost
+    block: model_features
+    applies_to: [1]
+    value_type: presence
+    definition: "the first-party API offers a paid option to serve THIS model at higher output-token throughput, whatever the vendor calls it (fast mode, priority serving). A faster SIBLING model does not count, and neither does a capacity/SLA commitment that claims no token-speed gain"
+    note: "added 2026-08-27 (ADR-0049), owner-requested as a boolean. batch_discount's inverse: batch is slower-for-cheaper, this is faster-for-pricier — the premium and mechanism live in each report's cell comment and prose, not here. First sweep 3 ✓ / 9 ✗ / 1 · over 13 models, and the split carries a finding: the ✓s are exactly Anthropic (fast mode, `speed: fast`, 2.5x OTPS at 2x price, Opus-only), OpenAI (`service_tier: fast|priority` — priority RENAMED to fast mode 2026-07-30), and Google (Priority tier, ~1.8x); every non-Western maker checked lacks one, and two of the three ✓ vendors converged on the same product name within a month"
   - id: reasoning
     group: reasoning
     block: model_features

@@ -28,6 +28,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/medium/high@high"   # 'xhigh' is silently downgraded to high (4.6+ only)
   prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs"
   batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only"
+  fast_mode: false   # checked and absent: the docs models page lists no serving-speed option for grok-4-5 — the only "fast" tokens there are separate voice model ids, which are siblings, not modes (verified 2026-08-27)
 checked: 2026-08-17
 depth: stub
 ---
