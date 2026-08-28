@@ -1,6 +1,6 @@
 # Category 1 — Models
 
-`checked: 2026-08-27`
+`checked: 2026-08-28`
 
 The weights. See [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md) for what this category is and how
 it's judged.
@@ -152,7 +152,7 @@ are claims.
 | [**Kimi K3**](kimi-k3.md) | Moonshot AI | API ~2026-07-16 (vendor prints no date); weights by 07-27 | Largest open-weight model: 2.8T total / 104B activated, KDA, 1M ctx (2^20 exactly), native vision, **QAT-native MXFP4 release**. Bespoke "Kimi K3 License". Claims Terminal-Bench 2.1 **88.3** — harness unstated. |
 | [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 (vendor's words) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Repriced 2026-08-16 to peak/off-peak (off-peak = 50%); still the sweep's cheapest, cache hits near-free. |
 | [**GLM-5.3**](glm-5.3.md) | Z.ai (Zhipu AI) | API 2026-08-14 (day third-party-corroborated); weights held for a "two-week safety evaluation" | 1M ctx / 128K out, always-on reasoning, `reasoning_effort` default **max** (joining Kimi K3). $1.40/$4.40. Weights delayed with a stated offensive-security rationale — the sweep's only safety-gated weights release; prediction on record: HF repo by 2026-08-31. |
-| [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | weights 2026-01-30 (HF commit); no stage stated | Row verified: 80B total / **3B activated**, 256K ctx, Apache-2.0 — the one genuinely self-hostable agent model in the sweep. Publishes its own modest Terminal-Bench 2.0 score (36.2). A "Qwen 4 Coder" successor is third-party rumor, unresolvable on the official org (2026-07-31). |
+| [**Qwen3-Coder-Next**](qwen3-coder-next.md) | Alibaba | weights 2026-01-30 (HF commit); no stage stated | **Superseded 2026-08-28** (owner decision): headline Qwen entry passed to Qwen3.8-Max/Flash, no further re-checks planned; kept in the sweep as its only verified non-reasoning model (the lone `reasoning: ✗`). Row facts as of their own dates: 80B total / **3B activated**, 256K ctx, Apache-2.0; publishes its own modest Terminal-Bench 2.0 score (36.2). |
 | [**Qwen3.8-Max**](qwen3.8-max.md) | Alibaba | API 2026-08-03, no stage stated (the same changelog says "General Availability" for another model — the omission is a choice) | Added 2026-08-27. The line's actual flagship: **2.4T total / 95B activated**, native vision, 1M served context, $2/$6. Weights published (`Qwen3.8-2.4T-A95B`) under a **bespoke `qwen3.8-max` license** — and the card says the API adds vision, non-thinking mode, 1M-by-default and built-in tools *over* them. `reasoning_type` is the sweep's first deliberately-blank cell: Hybrid is verified, the default is unstated. |
 | [**Qwen3.8-Flash**](qwen3.8-flash.md) | Alibaba | API 2026-08-26, no stage stated (the changelog prints the year as **2025** — a first-party typo, reconstructed from its own ordering) | Added 2026-08-27. **The cheapest model in the sweep** — $0.15/$0.47, 1M ctx, multimodal. Production form of `Qwen3.8-Flash-Next` (125B total / **6B activated** + a 51B n-gram embedding layer the Qwen team frames as a Qwen4 preview), so `access` is `closed-source`: the served weights are not published, a preview relative's are. Silently promotes `high`/`max` effort to `xhigh`. |
 

@@ -34,6 +34,17 @@ depth: stub
 
 # Qwen3-Coder-Next
 
+> **Superseded (2026-08-28, owner decision).** No further re-checks are planned for this
+> report. The Qwen line's headline entries are now [qwen3.8-max](qwen3.8-max.md) and
+> [qwen3.8-flash](qwen3.8-flash.md) (both added 2026-08-27), and this model's distinctive
+> pitch — the self-hostable agent model — is the story ADR-0048 scoped out of category 1
+> the same week. It stays in the sweep rather than being deleted because its facts were
+> paid for and one is load-bearing: it is the sweep's **only verified `reasoning: ✗`**,
+> the instance behind three registry notes, and the per-feature "Unsupported"
+> capability-matrix lesson lives here. Everything below is accurate as of its own dated
+> checks and will drift without further notice — treat the `checked:` dates as the
+> freshness bound, not "recently confirmed".
+
 The Qwen line's current **verified** coding release (card checked 2026-07-31,
 resolving the seed inventory's `unverified` row): an 80B-total / **3B-activated** MoE
 (512 experts, 10 per token), 256K native context, Apache-2.0, released ~Feb 2026.
@@ -94,8 +105,13 @@ treat it as needing execution-discipline correction).
 
 ## Open questions
 
+*Frozen with the supersession (2026-08-28) — no next check is planned, so these are
+recorded as they stood, not queued:*
+
 - Verify or bury "Qwen 4 Coder" at the next check — if real, it supersedes this
-  report's subject within months of it.
+  report's subject within months of it. *Frozen note: with this report superseded,
+  a real Qwen 4 Coder would enter as a new `tools/candidates.md` row on its own
+  merits, not as an update here.*
 - The 10–20× efficiency claim is benchmark-relative; does it survive an agentic
   workload with real tool loops? ~~(The rig could test a self-hosted arm cheaply.)~~
   *Self-hosted-arm clause closed by scope 2026-08-27
