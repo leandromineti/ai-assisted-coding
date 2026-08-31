@@ -122,6 +122,17 @@ enum value: does `reasoning_type` need a `not-stated` marker of the sort `releas
 and `knowledge_cutoff.basis` already carry, so that "checked, vendor silent" stops
 rendering as "unchecked"? One more instance and it stops being a question.
 
+**Closed 2026-08-31 — all three keys 13/13, and the strain dissolved without touching the
+enum.** The blank cell was resolved by the first [issue #42](https://github.com/leandromineti/ai-assisted-coding/issues/42)
+thin-client probe: a paramless request to `qwen3.8-max` returned `reasoning_content`
+(thinking on by default), `enable_thinking: false` returned none (toggleable) —
+`default-on`, both directions observed, for under a cent. The lesson supersedes the
+queued `not-stated`-marker question, which lost its only instance: for **observable**
+behavior a vendor won't state, the fix is escalating the evidence route (docs → probe),
+not adding vocabulary for vendor silence. A `not-stated` marker remains the right shape
+only for facts a probe cannot reach (cutoffs, dates) — which is exactly where the repo
+already has one.
+
 The other half of the surface is **9 transcription fields** — `maker`, `license`,
 `access`, `model_id`, `release_date`, `context_window`, `max_output`, `pricing`,
 `knowledge_cutoff` — facts copied from a dated source rather than judged.

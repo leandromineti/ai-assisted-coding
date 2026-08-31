@@ -24,11 +24,7 @@ knowledge_cutoff:
   note: "not stated on any surface checked 2026-08-27: the QwenCloud model page, the platform's model-release changelog entry, and the Hugging Face card for the weights (Qwen/Qwen3.8-2.4T-A95B) are all silent. Third-party 'August 2026' figures are ship-date inference, not the fact"
 model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning: true
-  # reasoning_type: DELIBERATELY OMITTED, not unchecked — the docs put this model in the
-  # `Hybrid` mode ("toggle thinking on or off per request with `enable_thinking`") but no
-  # first-party surface states the DEFAULT, which is the one thing the enum encodes.
-  # `always-on` is excluded by the toggle; `default-on` vs `opt-in` is unresolved. See
-  # § Reasoning surface.
+  reasoning_type: default-on   # OBSERVED 2026-08-31 (issue #42 thin-client probe), closing the cell left deliberately blank 2026-08-27: a request with NO thinking params returned `reasoning_content` (36 reasoning tokens billed), and `enable_thinking: false` returned none — default-on, toggleable, both directions observed. The docs' `Hybrid` classification stands; the DEFAULT was never stated on any first-party surface, so this cell is the sweep's first enum value that rests on a probe rather than a page. See § Reasoning surface.
   reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs, verbatim: "Example with `qwen3.8-max` (options: `low`, `medium`, `xhigh`; default `xhigh`)"
   prompt_caching: "two priced modes on one model page: implicit cache read $0.25 per MTok (0.125x of input, no opt-in stated), explicit cache creation $2.50 (1.25x) + explicit cache read $0.17 per MTok (0.085x). No TTL and no breakpoint surface stated anywhere checked (2026-08-27)"
   batch_discount: "platform Batch API is '50% of the real-time price', results 'delivered within 24 hours' (first-party batch guide) — but the guide's supported-model list names only the older `qwen-max`/`qwen-plus`/`qwen-flash`/`qwen-turbo` ids and never mentions `qwen3.8-max`, while the model page itself carries a Batch card ('Asynchronously process requests in batches to reduce costs'). Two first-party surfaces, one claim each way; recorded unresolved (2026-08-27)"
@@ -82,8 +78,8 @@ above is acknowledged context — which is exactly what this section now is.
 
 ## Reasoning surface
 
-Two of the three reasoning cells are verified; the third is deliberately blank, and the
-reason is the point.
+All three cells are now verified — but the third took a probe where the first two took a
+page, and the four-day gap between those is the story of this section.
 
 - **`reasoning: true`** — the docs list Qwen3.8 among the series supporting thinking, and
   the model streams it as `response.reasoning_text.delta` before the answer.
@@ -94,20 +90,23 @@ reason is the point.
   error."* Both dials exist; using them together is an error, which makes this the sweep's
   first model where the two `reasoning_effort` families (levels vs budget) are **mutually
   exclusive within one model** rather than a per-vendor choice.
-- **`reasoning_type`: omitted on purpose.** The guide's mode taxonomy is *"**Hybrid**:
-  toggle thinking on or off per request with `enable_thinking`. **Thinking-only**: always
-  thinks — cannot be disabled"*, and it places this model in Hybrid — corroborated by the
-  weights card's "non-thinking support" as an API addition. That rules out `always-on`. It
-  does **not** decide between `default-on` and `opt-in`, which is exactly what the enum
-  records, and no surface checked states the default *for this model*: the platform states
-  it for the open weights ("thinking enabled by default") and for the Flash sibling
-  ("Thinking mode is enabled by default"), and for its flagship it does not.
+- **`reasoning_type: default-on` — observed, not read.** As written on 2026-08-27 this
+  cell was *deliberately blank*: the guide's mode taxonomy (*"**Hybrid**: toggle thinking
+  on or off per request with `enable_thinking`"*) ruled out `always-on`, but no
+  first-party surface stated the **default** for this model — the platform states it for
+  the open weights and for the Flash sibling, and for its flagship it did not. Rather
+  than guess between `default-on` and `opt-in`, the cell stayed empty and the gap was
+  recorded as an enum strain (the matrix renders `·` = "not checked" for a cell that
+  *was* checked). **Resolved 2026-08-31 by the first [issue #42] thin-client probe**: a
+  request with no thinking parameters returned `reasoning_content` (36 reasoning tokens
+  billed), and `enable_thinking: false` returned none — default-on, toggleable, both
+  directions observed for well under a cent. The strain resolved by **escalating the
+  evidence route** (docs → probe), not by widening the enum; the queued question of a
+  `not-stated` marker for `reasoning_type` lost its only instance the day the probe
+  route opened, which is an argument that probes, not vocabulary, are the fix for
+  vendor silence about *observable* behavior.
 
-Omitting the cell costs something real — the matrix renders `·`, which the repo reads as
-"not checked", and this was checked. That is a **known strain point in the enum**, the
-second one recorded (the first is Opus 5's effort-conditional toggleability, in
-[`../1-models/README.md`](README.md)). Two strain points is this repo's stated bar for
-revisiting a vocabulary, so this belongs in the ADR queue rather than in a guessed cell.
+[issue #42]: https://github.com/leandromineti/ai-assisted-coding/issues/42
 
 ## Role in this repo's work
 
@@ -132,13 +131,19 @@ model is unchecked and is the obvious next probe.
 
 ## Open questions
 
-- Is thinking on by default for `qwen3.8-max`? A single API call answers it (send no
-  thinking parameters, look for `reasoning_text`); until then the cell stays empty.
+- ~~Is thinking on by default for `qwen3.8-max`? A single API call answers it (send no
+  thinking parameters, look for `reasoning_text`); until then the cell stays empty.~~
+  **Resolved 2026-08-31** exactly as predicted — one paramless call, `reasoning_content`
+  returned, `default-on` (§ Reasoning surface).
 - Is the 22:00–08:00 (UTC+8) half-price night window real for this model? If it is, the
   regime is `time-of-day` (DeepSeek V4's shape), not `flat` — this changes a comparable
   number, so it needs a first-party page, not a press citation.
 - Does the Batch API accept the `qwen3.8-max` id? The model page and the batch guide
-  disagree; one request settles it.
+  disagree; one request settles it. **Probed 2026-08-31, still unresolved — but the
+  blocker moved**: the file upload with `purpose=batch` was accepted, and batch creation
+  failed on the *account*, not the model — `access_denied: "The user information is not
+  completed"`. The disagreement is now behind an account-verification wall; complete the
+  QwenCloud profile and re-run the one request.
 - Does the 1M serving window behave like context or like a truncation cliff past the
   262,144 native length? The rig could probe this cheaply, and the answer generalizes to
   every "extensible up to" model in the sweep.

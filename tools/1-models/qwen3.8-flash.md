@@ -99,6 +99,13 @@ perfectly reasonable default — gets `xhigh` and the bill that comes with it, w
 to notice. That is conclusion 15's failure mode (harnesses track models by name, and API
 drift disarms them) arriving through a *compatibility alias* rather than a rejection.
 
+**The silence is now observed** (2026-08-31, issue #42 thin-client probe):
+`reasoning_effort: "high"` was accepted with no error, and the response carries **no
+effort field of any kind** — no echo of what was requested, no report of what ran, in
+either the message or `usage` (which does itemize `reasoning_tokens`). The docs state
+the mapping; the probe establishes that nothing in the response contract lets a caller
+detect it. Fully silent, as feared.
+
 ## Role in this repo's work
 
 None run. The obvious use is as a cheap arm in the rig: it is the only model in the sweep
