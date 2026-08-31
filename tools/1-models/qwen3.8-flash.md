@@ -27,7 +27,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning_type: default-on   # docs, verbatim: "Thinking mode is enabled by default" + "To disable thinking entirely, set `enable_thinking=false` — the model answers directly"
   reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs: "`xhigh` (default)" / medium / low, and "`max` and `high` are automatically mapped to `xhigh`" — an alias mapping no other model here publishes
   prompt_caching: "implicit cache read $0.016 per MTok (≈0.107x of input); explicit cache creation $0.20 (1.33x) + explicit cache read $0.016 per MTok. Described as storing 'shared prefixes for long-context requests'; no TTL and no breakpoint surface stated (2026-08-27)"
-  batch_discount: "platform Batch API is '50% of the real-time price', results 'delivered within 24 hours' (first-party batch guide); the guide's supported-model list names only the older `qwen-max`/`qwen-plus`/`qwen-flash`/`qwen-turbo` ids and not `qwen3.8-flash`, while the model page carries a Batch card. Same unresolved two-surface disagreement as qwen3.8-max (2026-08-27)"
+  batch_discount: "checked and absent — OBSERVED 2026-08-31: batch creation fails validation with `model_not_found`: 'The provided model 'qwen3.8-flash' is not supported by the Batch API' (issue #42 probe; failed validation bills nothing). This RESOLVES the two-surface disagreement recorded 2026-08-27 — the batch guide's supported-model list (older qwen-max/plus/flash/turbo ids only) was right, and the model page's own Batch card was wrong for this model. The platform batch discount itself is 50% of real-time, 24h window — just not for this model"
   fast_mode: false   # checked and absent: QwenCloud's Prime Mode ("TPS is 1.5~2x that of the standard API") is the platform's throughput mode, and its supported-models list excludes this model (glm-5.2-fast-preview and wan3.0-video-prime only; verified 2026-08-27)
 checked: 2026-08-27
 depth: stub
@@ -132,8 +132,11 @@ whose list price makes a many-run experiment trivially affordable, and the only 
 
 - Do the served weights ever get published under this name, or does `-Next` remain the
   only downloadable form? That answer flips the `access` cell.
-- Does the Batch API accept the `qwen3.8-flash` id? Same unresolved two-surface
-  disagreement as the flagship.
+- ~~Does the Batch API accept the `qwen3.8-flash` id? Same unresolved two-surface
+  disagreement as the flagship.~~ **Resolved 2026-08-31 identically to the flagship's**:
+  batch validation fails with `model_not_found` — *"The provided model 'qwen3.8-flash'
+  is not supported by the Batch API."* The batch guide was right, the model page's Batch
+  card wrong; cell updated (issue #42 probe, $0).
 - Is the `high` → `xhigh` promotion visible anywhere in the response (a returned effort
   field), or is it entirely silent? If silent, it belongs in conclusion 15's evidence.
 - Cheapest-model claim: worth re-checking against DeepSeek V4 Flash's off-peak window,

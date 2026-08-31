@@ -27,7 +27,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning_type: default-on   # OBSERVED 2026-08-31 (issue #42 thin-client probe), closing the cell left deliberately blank 2026-08-27: a request with NO thinking params returned `reasoning_content` (36 reasoning tokens billed), and `enable_thinking: false` returned none — default-on, toggleable, both directions observed. The docs' `Hybrid` classification stands; the DEFAULT was never stated on any first-party surface, so this cell is the sweep's first enum value that rests on a probe rather than a page. See § Reasoning surface.
   reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs, verbatim: "Example with `qwen3.8-max` (options: `low`, `medium`, `xhigh`; default `xhigh`)"
   prompt_caching: "two priced modes on one model page: implicit cache read $0.25 per MTok (0.125x of input, no opt-in stated), explicit cache creation $2.50 (1.25x) + explicit cache read $0.17 per MTok (0.085x). No TTL and no breakpoint surface stated anywhere checked (2026-08-27)"
-  batch_discount: "platform Batch API is '50% of the real-time price', results 'delivered within 24 hours' (first-party batch guide) — but the guide's supported-model list names only the older `qwen-max`/`qwen-plus`/`qwen-flash`/`qwen-turbo` ids and never mentions `qwen3.8-max`, while the model page itself carries a Batch card ('Asynchronously process requests in batches to reduce costs'). Two first-party surfaces, one claim each way; recorded unresolved (2026-08-27)"
+  batch_discount: "checked and absent — OBSERVED 2026-08-31: batch creation fails validation with `model_not_found`: 'The provided model 'qwen3.8-max' is not supported by the Batch API' (issue #42 probe; failed validation bills nothing). This RESOLVES the two-surface disagreement recorded 2026-08-27 — the batch guide's supported-model list (older qwen-max/plus/flash/turbo ids only) was right, and the model page's own Batch card was wrong for this model. The platform batch discount itself is 50% of real-time, 24h window — just not for this model"
   fast_mode: false   # checked and absent: QwenCloud's Prime Mode ("TPS is 1.5~2x that of the standard API") is the platform's throughput mode, and its supported-models list excludes this model (glm-5.2-fast-preview and wan3.0-video-prime only; verified 2026-08-27)
 checked: 2026-08-27
 depth: stub
@@ -138,12 +138,14 @@ model is unchecked and is the obvious next probe.
 - Is the 22:00–08:00 (UTC+8) half-price night window real for this model? If it is, the
   regime is `time-of-day` (DeepSeek V4's shape), not `flat` — this changes a comparable
   number, so it needs a first-party page, not a press citation.
-- Does the Batch API accept the `qwen3.8-max` id? The model page and the batch guide
-  disagree; one request settles it. **Probed 2026-08-31, still unresolved — but the
-  blocker moved**: the file upload with `purpose=batch` was accepted, and batch creation
-  failed on the *account*, not the model — `access_denied: "The user information is not
-  completed"`. The disagreement is now behind an account-verification wall; complete the
-  QwenCloud profile and re-run the one request.
+- ~~Does the Batch API accept the `qwen3.8-max` id? The model page and the batch guide
+  disagree; one request settles it.~~ **Resolved 2026-08-31, in two probe rounds**: the
+  first attempt hit an account-verification wall (`access_denied: "The user information
+  is not completed"`); after the owner completed the QwenCloud account, batch validation
+  failed with `model_not_found`: *"The provided model 'qwen3.8-max' is not supported by
+  the Batch API."* **The API is the tiebreaker when two doc surfaces disagree** — the
+  batch guide's model list was right, the model page's Batch card wrong. Cell updated;
+  failed validation billed nothing.
 - Does the 1M serving window behave like context or like a truncation cliff past the
   262,144 native length? The rig could probe this cheaply, and the answer generalizes to
   every "extensible up to" model in the sweep.
