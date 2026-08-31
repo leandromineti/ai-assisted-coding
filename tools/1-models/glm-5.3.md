@@ -3,9 +3,9 @@ name: glm-5.3
 category: 1
 maker: Z.ai (Zhipu AI)
 url: https://docs.z.ai/guides/llm/glm-5.3
-license: "unverified — no GLM-5.3 weights published yet, so there is no license to read; do not assume the GLM-5/5.1/5.2 repo licenses carry over"
-access: closed-source   # today; weights announced for after a "two-week safety evaluation" — see the dated prediction below, which scores this cell flipping to open-weights
-model_id: glm-5.3 (API); the announced HF repo does not exist yet — zai-org lists GLM-5, GLM-5.1, GLM-5.2 (+ FP8 variants) and no 5.3 (HF API `author=zai-org&search=GLM-5`, checked 2026-08-26)
+license: "GLM-5.3 License — bespoke, named after the model (the sweep's third such, after Kimi K3's and qwen3.8-max's; LICENSE file read 2026-08-31). Not OSI-shaped: its distinctive term is a Model-as-a-Service gate — a licensee whose aggregate revenue exceeds $10B 'must pass Z.AI's security review before using the Software' — which rhymes with the offensive-security rationale for the weights delay. No attribution requirement, no output/synthetic-data clauses"
+access: open-weights   # FLIPPED from closed-source 2026-08-31 per the report's own dated prediction, which scored a HIT (see § the prediction, scored) — weights landed 2026-08-25
+model_id: glm-5.3 (API); weights zai-org/GLM-5.3 (+ GLM-5.3-Flash sibling, and -BF16 variants of both; all created 2026-08-25 — supersedes the 2026-08-26 no-repo check)
 release_date:
   date: 2026-08-14
   stage: not-stated
@@ -21,7 +21,7 @@ pricing:
 knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
-  note: "not stated — the model guide carries no cutoff, and no HF model card exists yet to check (checked 2026-08-26)"
+  note: "not stated — the model guide carries no cutoff (checked 2026-08-26); the HF card, once it existed, was read 2026-08-31 and is also silent: no cutoff or training-data date anywhere on zai-org/GLM-5.3"
 model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on    # "GLM-5.3 always operates with reasoning enabled"; thinking.type: disabled is "no longer supported"
@@ -51,7 +51,7 @@ post-training.
 | Long-horizon coherence | · |
 | Usable context (vs advertised) | 1M advertised; unprobed |
 | Cost per completed task | · — list $1.40 / $4.40 per MTok puts it between DeepSeek V4 Pro and the Western mid-tier (Sonnet 5 $2 / $10); with `reasoning_effort` defaulting to `max`, list price understates realized cost more than usual |
-| Release mode & access routes (1b) | **api-only today, `both` announced**: first-party API live 2026-08-14, weights promised "downloadable by anyone" after a two-week safety hold. The zai-org HF org has published every prior 5.x line (GLM-5, 5.1, 5.2, each with FP8 variants), so the precedent supports the promise |
+| Release mode & access routes (1b) | **Both, as of 2026-08-25**: first-party API live 2026-08-14; weights on HF eleven days later (`zai-org/GLM-5.3`, 753B total params per the card, + a GLM-5.3-Flash sibling and BF16 variants). The earlier "api-only today, `both` announced" reading held for eleven days and resolved per the scored prediction below |
 
 **Prediction (dated, falsifiable):** a `zai-org/GLM-5.3` repo appears on Hugging Face
 by **2026-08-31** (the announced two-week hold from 2026-08-14 ends ~08-28; +3 days
@@ -59,6 +59,21 @@ slack). Score this at the next re-read; if it lands, flip `access` to `open-weig
 and read the license before any "open" claim stronger than "downloadable". (Restated
 2026-08-26: the prediction was written against `release_mode: both`, retired by
 ADR-0046 — the claim, the date and the falsifier are unchanged.)
+
+**Scored 2026-08-31 — HIT, early.** The repo was created **2026-08-25** (HF API
+`createdAt`), inside the window with six days to spare — and *before* the announced
+two-week hold would even have elapsed (~08-28). So the vendor beat its own stated
+timeline: the safety hold ran eleven days, not fourteen. Both follow-through
+obligations the prediction carried were executed the same day: `access` flipped to
+`open-weights`, and the LICENSE file was read before any stronger claim — it is a
+bespoke **"GLM-5.3 License"**, and the caution about assuming the 5.x predecessors'
+terms was warranted: its distinctive clause gates Model-as-a-Service use by licensees
+above **$10B aggregate revenue** behind "Z.AI's security review" — the license
+encoding the same offensive-security posture that delayed the weights. Calibration
+note: the prediction's ceiling was chosen well (precedent-based: zai-org had published
+every prior 5.x line), but the estimate assumed the vendor would use its full stated
+hold; vendors under release pressure apparently don't. A `GLM-5.3-Flash` sibling
+shipped in the same push — folded here per the family convention, not rowed.
 
 ## Reasoning surface
 
@@ -103,10 +118,13 @@ GLM models, not 5.3.
 
 ## Open questions
 
-- Weights license and parameter count — unknowable until the HF repo lands; check
-  against the prediction above.
-- Knowledge cutoff — not stated anywhere first-party found; re-check the HF model
-  card when it exists.
+- ~~Weights license and parameter count — unknowable until the HF repo lands; check
+  against the prediction above.~~ **Resolved 2026-08-31**: GLM-5.3 License (bespoke,
+  $10B-revenue MaaS security-review gate — see frontmatter), 753B total params per
+  the HF card; **activated params remain unstated**, the residue of this question.
+- ~~Knowledge cutoff — not stated anywhere first-party found; re-check the HF model
+  card when it exists.~~ **Checked 2026-08-31**: the HF card exists and is silent
+  too — cutoff stays `not-stated`, now with both first-party surfaces searched.
 - Does "intelligent caching" have a TTL or explicit-breakpoint surface? The docs
   don't say; the $0.26 cached rate (≈0.19x) is mid-pack (Anthropic/OpenAI 0.1x,
   Grok 0.15x).
