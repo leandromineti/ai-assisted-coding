@@ -24,7 +24,7 @@ knowledge_cutoff:
   note: "RESOLVED 2026-08-26 — *Model Card: Grok 4.5* (July 14 2026, 23 pp, cursor.com/resources/grok-4-5-model-card.pdf) states in §1: 'Grok 4.5 has a pretraining cutoff of January 2026.' First-party despite the cursor.com host: the card's §1 names the model as 'the initial release of the newest family of models from SpaceXAI* and Cursor†' — Cursor is a CO-AUTHOR, not a third party mirroring someone else's document, which is what makes this admissible where the 4.6 figure was not. Vendor terminology is 'pretraining cutoff', matching this field's semantics (the outer training-data bound; the card notes midtraining and post-training followed). Supersedes the 2026-08-17 retraction, kept here: RETRACTED 2026-08-17 — the 'Feb 1, 2026' recorded 2026-07-31 is documented for Grok 4.6, not 4.5; no first-party page states a 4.5 cutoff (model page, overview, release notes, launch post all checked)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: always-on    # vendor: "cannot be disabled"
+  reasoning_type: always-on    # vendor: "cannot be disabled" — OBSERVED 2026-08-31 (issue #42 probe): 27 reasoning tokens on a three-word prompt, no thinking config sent
   reasoning_effort: "levels:low/medium/high@high"   # 'xhigh' is silently downgraded to high (4.6+ only)
   prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs"
   batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only"
@@ -86,6 +86,23 @@ advantage.
    Batch API rejects grok-4.5 and grok-4.6 outright; the 20% discount covers only the
    older 4.3/4.20 line. Same shape as Moonshot (batch excludes K3) — batch support is
    trailing-edge at two vendors, presumably a capacity choice.
+
+## Probed (2026-08-31, issue #42 thin-client pass)
+
+One three-word request ("Say ok.", `max_tokens: 256`) returned three observations:
+
+1. **Always-on reasoning confirmed observed** — 27 `reasoning_tokens` with no thinking
+   config sent.
+2. **The response reports its own cost** — `usage.cost_in_usd_ticks: 11620000`, unique
+   in this sweep: no other tracked vendor returns a price in the response. Against list
+   rates the arithmetic implies a tick is **$1e-10** (497 in @ $2/MTok + 28 out @ $6/MTok
+   ≈ $0.00116 ≈ 11.62M ticks); no docs page defining the unit was found, so the
+   inference is recorded as arithmetic, not vendor fact.
+3. **`prompt_tokens: 497` for a three-word message.** ~490 tokens are injected or
+   counted server-side beyond the user content — the response also carries
+   `num_sources_used: 0`, suggesting live-search machinery in the default serving path.
+   Cause unverified; recorded because billed-input-per-request is exactly the kind of
+   fact list price doesn't capture (cost-per-completed-task axis).
 
 ## Open questions
 

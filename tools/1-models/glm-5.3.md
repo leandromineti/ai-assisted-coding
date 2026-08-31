@@ -24,7 +24,7 @@ knowledge_cutoff:
   note: "not stated — the model guide carries no cutoff (checked 2026-08-26); the HF card, once it existed, was read 2026-08-31 and is also silent: no cutoff or training-data date anywhere on zai-org/GLM-5.3"
 model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: always-on    # "GLM-5.3 always operates with reasoning enabled"; thinking.type: disabled is "no longer supported"
+  reasoning_type: always-on    # "GLM-5.3 always operates with reasoning enabled"; thinking.type: disabled is "no longer supported" — OBSERVED 2026-08-31 (issue #42 probe): sending it returns error 1210, 'This model always engages in thinking and cannot be disabled; please use low, high, or max' — the refusal also names the exact low/high/max level set the reasoning_effort cell records
   reasoning_effort: "levels:low/high/max@max"   # 'Deep Reasoning' — identical surface and default to Kimi K3
   prompt_caching: "cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated"
   batch_discount: "no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates"
@@ -127,4 +127,7 @@ GLM models, not 5.3.
   too — cutoff stays `not-stated`, now with both first-party surfaces searched.
 - Does "intelligent caching" have a TTL or explicit-breakpoint surface? The docs
   don't say; the $0.26 cached rate (≈0.19x) is mid-pack (Anthropic/OpenAI 0.1x,
-  Grok 0.15x).
+  Grok 0.15x). *Partial observation 2026-08-31 (issue #42 probe): the surface is at
+  least response-visible — `usage.prompt_tokens_details.cached_tokens` appears on a
+  plain request — so hit rates are measurable even though the mechanism stays
+  undocumented. TTL still unknown; probing it needs two spaced requests.*

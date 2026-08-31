@@ -24,7 +24,7 @@ knowledge_cutoff:
   note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf — flagged as the one unread candidate — was READ 2026-08-26 (47 pp, via the HF model page's link to MoonshotAI/Kimi-K3) and is silent: no knowledge cutoff anywhere, the document's only 'cutoff' being an unrelated MoE routing threshold, and its §3.1 Pre-Training Data naming four corpus domains with no dates. Every candidate first-party surface is now checked"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: always-on    # docs: "K3 always thinks"; not toggleable (first-party API)
+  reasoning_type: always-on    # docs: "K3 always thinks"; not toggleable (first-party API) — OBSERVED 2026-08-31 (issue #42 probe): reasoning_content returned with no params; and `enable_thinking: false` is ACCEPTED AND SILENTLY IGNORED — no error, reasoning still returned. Contrast Z.ai (rejects with an error) and Qwen (honors it): three vendors, three behaviors for the same param intent
   reasoning_effort: "levels:low/high/max@max"   # default-to-most-expensive; reasoning tokens bill as output
   prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
   batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"

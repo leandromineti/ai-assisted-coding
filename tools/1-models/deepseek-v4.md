@@ -24,9 +24,9 @@ knowledge_cutoff:
   note: "not disclosed by vendor — no cutoff on the HF model card or either launch/GA announcement (checked 2026-08-17); third-party 'April 2026' claims are ship-date inference"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: default-on   # on by default, toggled per request via thinking.type enabled/disabled
+  reasoning_type: default-on   # on by default, toggled per request via thinking.type enabled/disabled — default-on half OBSERVED 2026-08-31 (issue #42 probe): reasoning_content returned with no params
   reasoning_effort: "levels:low/high/max@high"   # foreign values 'medium'/'xhigh' silently coerced to high; same mapping Pro and Flash
-  prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
+  prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); usage exposes a DUAL cache surface, observed 2026-08-31: DeepSeek's own prompt_cache_hit_tokens/prompt_cache_miss_tokens alongside OpenAI-style prompt_tokens_details.cached_tokens; cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
   batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
   fast_mode: false   # checked and absent: the pricing page's only dimensions are peak/off-peak hours and cache hit/miss — no speed tier (verified 2026-08-27)
 checked: 2026-08-17

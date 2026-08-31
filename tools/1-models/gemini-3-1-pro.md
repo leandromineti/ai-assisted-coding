@@ -24,11 +24,11 @@ knowledge_cutoff:
   note: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: always-on    # "thinking by default", cannot be fully disabled
+  reasoning_type: always-on    # "thinking by default", cannot be fully disabled — OBSERVED 2026-08-31 (issue #42 probe): thoughtsTokenCount 87 on a three-word prompt, no thinking config sent
   reasoning_effort: "levels:low/medium/high@high"   # thinking_level IS the dial; legacy thinking_budget is mutually exclusive with it
   prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
   batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
-  fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27)
+  fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27); the tier is RESPONSE-OBSERVABLE — usageMetadata carries `serviceTier: "standard"` on a plain request (observed 2026-08-31), so a Priority purchase would be verifiable from the same field
 checked: 2026-08-17
 depth: stub
 ---
