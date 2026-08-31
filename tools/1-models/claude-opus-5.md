@@ -29,7 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # "supports all five effort levels"; `output_config.effort`
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
   batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
-  fast_mode: true    # "up to 2.5x higher output tokens per second" at $10/$50 (2x list), `speed: "fast"` + fast-mode-2026-02-01 beta header; research preview, Claude API only, Opus 5/4.8 only; explicitly NOT the Priority Tier ("Fast mode is not available with a Priority Tier commitment") — first-party fast-mode page, verified 2026-08-27
+  fast_mode: true    # "up to 2.5x higher output tokens per second" at $10/$50 (2x list), `speed: "fast"` + fast-mode-2026-02-01 beta header; research preview, Claude API only, Opus 5/4.8 only; explicitly NOT the Priority Tier ("Fast mode is not available with a Priority Tier commitment") — first-party fast-mode page, verified 2026-08-27; OBSERVED 2026-08-31: a plain pay-as-you-go key with no waitlist enrollment was served `usage.speed: "fast"` on the first request — the research-preview gate did not gate in practice
 checked: 2026-08-17
 depth: survey
 ---
@@ -93,6 +93,24 @@ and the field dates the whole spec block — same discipline as the `knowledge_c
 - Its **May 2026 knowledge cutoff** — newer than Fable 5's — is occasionally
   load-bearing for a repo that studies tools released through mid-2026: less of the
   survey territory is post-cutoff for Opus than for the flagship.
+
+## Probed (2026-08-31) — first observed-grade cells
+
+The first pass of [issue #42](https://github.com/leandromineti/ai-assisted-coding/issues/42)'s
+thin-client probes (raw HTTP, no SDK; combined cost < $0.001):
+
+1. **Fast mode is obtainable, not just documented.** A fresh pay-as-you-go key with no
+   waitlist enrollment sent `speed: "fast"` + the beta header and was served
+   `usage.speed: "fast"` on the first request. The docs' research-preview framing
+   ("contact your account manager… join the waitlist") did not gate in practice — the
+   distance between a vendor's stated access process and its enforced one is itself a
+   1b-flavored fact.
+2. **The conditional-toggleability strain is confirmed observed**, with a better error
+   than the docs promise: `thinking: {type: "disabled"}` at `output_config.effort:
+   "xhigh"` returns 400 — *"output_config.effort 'xhigh' is not supported when thinking
+   is disabled on this model. Use effort 'high' or below, or enable thinking."* The
+   `default-on` cell's condition (recorded 2026-08-26 from docs) now rests on the API's
+   own refusal, at zero cost — a rejected request bills nothing.
 
 ## Surprises
 
