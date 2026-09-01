@@ -64,19 +64,32 @@ _ALL_THINKING_MODES = {"thinking-on", "thinking-off"}
 # D-08/D-11/T-10-06 (plan 10-02): the closed vocabulary of every reason a
 # param x model x mode cell can be skipped instead of emitted. The first three
 # come from firing_models()/modes_for_model() (unchanged from plan 10-01); the
-# last two are new here — a `vendor_overrides` entry whose "on"/"off" fragment
-# is an explicit null means no request fragment can be constructed: an admitted
-# unknown (`toggle-shape-unknown`, e.g. Kimi — no documented shape) or a vendor
-# whose thinking mode is not a request parameter at all
+# next two are from plan 10-02 — a `vendor_overrides` entry whose "on"/"off"
+# fragment is an explicit null means no request fragment can be constructed: an
+# admitted unknown (`toggle-shape-unknown`, e.g. Kimi — no documented shape) or
+# a vendor whose thinking mode is not a request parameter at all
 # (`toggle-not-a-request-parameter`, e.g. DeepSeek — selected by model id).
 # Enforced, not free text — axis_fragment_availability() aborts generation
 # (fail-loud) if a null-fragment override names a reason outside this set.
+#
+# `no-request-field-for-vendor` (added 2026-09-01, plan 10-04, closing CR-01):
+# the row's parameter has no request field at this model's wire family — an
+# explicit null in `names:` (D-02's checked-absence marker) with no
+# `name_overrides:` entry supplying one — so there is no request body key that
+# could carry the parameter at all. Before this reason existed,
+# `firing_scope: all` fired these (row, model) pairs anyway and
+# build_extra_params() silently omitted the key, producing a billed cell whose
+# request body never contained the parameter under test (67 of 396 emitted
+# scalar cells). resolve_param_name() returning None is now routed to a skip
+# record with this reason (expand_params(), before mode expansion) instead of
+# reaching the emit path at all.
 SKIP_REASONS = frozenset({
     "no-thinking-off-toggle",
     "no-thinking-capability",
     "wire-shape-incompatible",
     "toggle-shape-unknown",
     "toggle-not-a-request-parameter",
+    "no-request-field-for-vendor",
 })
 
 # Generated-file headers — module-level constants so write_generated_files() (the
@@ -308,11 +321,17 @@ def axis_fragment(row: dict, model: dict, inventory: dict, mode: str) -> dict:
     return shape[key]
 
 
-def build_extra_params(row: dict, model: dict, inventory: dict, mode: str, value) -> dict:
-    """extra_params = the row's per-family parameter name mapped to the probe
-    value, merged with the axis fragment for that family (with the vendor
-    override applied when one exists). For a thinking-on/thinking-off cell the
-    axis fragment is always present; for 'default' it is absent (D-06)."""
+def resolve_param_name(row: dict, model: dict) -> str | None:
+    """The single name-resolution path for a (row, model) pair (D-02): the
+    row's per-wire-family `names:` value, unless a `name_overrides:` entry for
+    the model's vendor wins over the family default. A wire_family key OMITTED
+    from `names:` is a registry authoring error — fail loud (exit 2) with the
+    existing "omitted means not-checked" diagnostic, never treated as a skip.
+    An explicit null with no vendor override returns None: the row's parameter
+    has no request field at this model's wire family (D-02's checked-absence
+    marker) — the caller (expand_params(), via CR-01's fix) routes that to a
+    skipped-cells.yaml record with reason `no-request-field-for-vendor` rather
+    than reaching the emit path with nothing to emit."""
     wire_family = model["wire_family"]
     names = row.get("names") or {}
     if wire_family not in names:
@@ -325,10 +344,33 @@ def build_extra_params(row: dict, model: dict, inventory: dict, mode: str, value
     override_name = (row.get("name_overrides") or {}).get(model["vendor"])
     if override_name is not None:
         param_name = override_name
+    return param_name
 
-    extra: dict = {}
-    if param_name is not None:
-        extra[param_name] = value
+
+def build_extra_params(row: dict, model: dict, inventory: dict, mode: str, value) -> dict:
+    """extra_params = the row's per-family parameter name (resolve_param_name())
+    mapped to the probe value, merged with the axis fragment for that family
+    (with the vendor override applied when one exists). For a
+    thinking-on/thinking-off cell the axis fragment is always present; for
+    'default' it is absent (D-06).
+
+    CR-01 (plan 10-04): expand_params() routes a None-resolving (row, model)
+    pair to a skip record BEFORE calling this function, so `param_name is
+    None` here should be unreachable. The write below is unconditional, with a
+    fail-loud guard on that unreachable case, on purpose — a future regression
+    that re-introduces a silent `if param_name is not None:` omission turns
+    loud instead of shipping a zero-signal billed cell again."""
+    param_name = resolve_param_name(row, model)
+    if param_name is None:
+        _fail(
+            2,
+            f"row {row['id']!r}: resolve_param_name() returned None for model "
+            f"{model['slug']!r} inside build_extra_params() — expand_params() "
+            "should have routed this (row, model) pair to a "
+            "no-request-field-for-vendor skip before reaching here (CR-01)",
+        )
+
+    extra: dict = {param_name: value}
     if mode in _ALL_THINKING_MODES:
         # deepcopy: the same axis-shape fragment dict is looked up for every
         # (family, mode) pair across many entries — without a copy, every entry
@@ -411,6 +453,18 @@ def expand_params(inventory: dict, models: list[dict]) -> tuple[list[dict], list
         if not probe_values:
             _fail(2, f"row {row['id']!r}: status=swept, kind=parameter requires a non-empty probe_values list")
         for model in fire:
+            # CR-01 (plan 10-04): resolve the row's parameter name for this
+            # model BEFORE mode expansion. A None resolution (an explicit null
+            # in `names:` with no vendor override — D-02's checked-absence
+            # marker) means no request body key exists that could carry the
+            # parameter at all, for EVERY mode this (row, model) pair would
+            # otherwise fire. One record at mode `n/a` — a name that does not
+            # resolve is a property of the pair, not of a mode, mirroring the
+            # existing firing_models() scope-skip records above; recording it
+            # per mode would double-count the same cause.
+            if resolve_param_name(row, model) is None:
+                skipped_entries.append(_skip_record(row, model, "n/a", "no-request-field-for-vendor"))
+                continue
             emitted_modes, skip_pairs = modes_for_model(row, model)
             for skip_mode, reason in skip_pairs:
                 skipped_entries.append(_skip_record(row, model, skip_mode, reason))

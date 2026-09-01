@@ -10,8 +10,20 @@ checked: 2026-09-01
 skipped:
 - model: claude-fable-5
   param: frequency-penalty
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: frequency-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: frequency-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: frequency-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: frequency-penalty
   mode: thinking-off
@@ -42,12 +54,24 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: logit-bias
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: logit-bias
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: logit-bias
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: logit-bias
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: logit-bias
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: grok-4-5
   param: logit-bias
   mode: thinking-off
@@ -74,8 +98,20 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: logprobs
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: logprobs
   mode: thinking-off
@@ -106,8 +142,20 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: n
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: n
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: n
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: n
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: n
   mode: thinking-off
@@ -138,8 +186,20 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: presence-penalty
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: presence-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: presence-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: presence-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: presence-penalty
   mode: thinking-off
@@ -170,8 +230,20 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: seed
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: seed
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: seed
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: seed
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: seed
   mode: thinking-off
@@ -266,8 +338,20 @@ skipped:
   reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: top-logprobs
-  mode: thinking-off
-  reason: no-thinking-off-toggle
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: top-logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: top-logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: top-logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
   param: top-logprobs
   mode: thinking-off
@@ -392,6 +476,70 @@ skipped:
   param: anthropic-structured-output-output-format
   mode: n/a
   reason: wire-shape-incompatible
+- model: claude-fable-5
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-1-pro
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-fable-5
+  param: response-format
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: response-format
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: response-format
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: response-format
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-1-pro
+  param: stream
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-fable-5
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-opus-5
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-sonnet-5
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-haiku-4-5
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-1-pro
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-1-pro
+  param: tool-choice
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gpt-5-6-sol
   param: anthropic-thinking-object
   mode: n/a
@@ -528,6 +676,10 @@ skipped:
   param: qwen-enable-thinking
   mode: n/a
   reason: wire-shape-incompatible
+- model: gemini-3-1-pro
+  param: service-tier
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gpt-5-6-sol
   param: anthropic-thinking-budget-floor
   mode: n/a
