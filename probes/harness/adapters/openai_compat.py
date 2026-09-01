@@ -25,6 +25,22 @@ def build_request(api_model_id: str, prompt: str, max_tokens: int, extra_params:
     }
 
 
+def build_content_request(api_model_id: str, block: dict, max_tokens: int) -> dict:
+    """Chat-completions body from an already-substituted content-block template
+    (runner.py's `build_entry_request`, MODAL-01): `model`, `max_tokens`, and a
+    single-user-turn `messages` array whose `content` is `block["content"]` —
+    mirrors anthropic_messages.build_content_request's shape and call-site
+    signature exactly, so runner.py dispatches through ADAPTERS[wire_family] with
+    no vendor-name conditional. Never interprets an error body and never raises.
+    parse_usage() needs no companion change: a response's `usage` object has the
+    same shape regardless of what request content produced it."""
+    return {
+        "model": api_model_id,
+        "max_tokens": max_tokens,
+        "messages": [{"role": "user", "content": block["content"]}],
+    }
+
+
 def auth_headers(key: str) -> dict:
     """`Authorization: Bearer <key>` — the standard bearer shape every one of the six
     makers this module serves confirmed (RESEARCH.md § per-vendor wire facts)."""

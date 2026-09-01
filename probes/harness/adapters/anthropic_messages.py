@@ -21,6 +21,23 @@ def build_request(api_model_id: str, prompt: str, max_tokens: int, extra_params:
     }
 
 
+def build_content_request(api_model_id: str, block: dict, max_tokens: int) -> dict:
+    """Messages body from an already-substituted content-block template
+    (runner.py's `build_entry_request`, MODAL-01): `model`, `max_tokens`, and
+    `messages` as a single user turn whose `content` is `block["content"]`. Same
+    identical signature across all three adapters — the call-site-parity
+    convention build_request() above already holds — so runner.py dispatches
+    through ADAPTERS[wire_family] with no vendor-name conditional. Never
+    interprets an error body and never raises (this module's docstring's shared
+    rule). parse_usage() needs no companion change: a response's `usage` object
+    has the same shape regardless of what request content produced it."""
+    return {
+        "model": api_model_id,
+        "max_tokens": max_tokens,
+        "messages": [{"role": "user", "content": block["content"]}],
+    }
+
+
 def auth_headers(key: str) -> dict:
     """`x-api-key` + `anthropic-version` — not `Authorization: Bearer`, Anthropic's
     own auth shape (RESEARCH.md § Anthropic wire facts)."""

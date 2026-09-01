@@ -27,6 +27,24 @@ def build_request(api_model_id: str, prompt: str, max_tokens: int, extra_params:
     }
 
 
+def build_content_request(api_model_id: str, block: dict, max_tokens: int) -> dict:
+    """`contents` from an already-substituted content-block template (runner.py's
+    `build_entry_request`, MODAL-01): a single user turn whose `parts` is
+    `block["parts"]`, plus `generationConfig.maxOutputTokens`. Same identical
+    signature as the other two adapters' build_content_request — call-site parity
+    lets runner.py dispatch through ADAPTERS[wire_family] with no vendor-name
+    conditional. `api_model_id` is accepted for that parity but deliberately NOT
+    placed anywhere in the returned body — same convention build_request() above
+    already documents for this family alone. Never interprets an error body and
+    never raises. parse_usage() needs no companion change: a response's
+    `usageMetadata` object has the same shape regardless of what request content
+    produced it."""
+    return {
+        "contents": [{"role": "user", "parts": block["parts"]}],
+        "generationConfig": {"maxOutputTokens": max_tokens},
+    }
+
+
 def auth_headers(key: str) -> dict:
     """`x-goog-api-key` header — the current recommended method. The `?key=` query
     param still works for backward compatibility but is deliberately not used here:
