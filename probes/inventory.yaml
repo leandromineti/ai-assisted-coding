@@ -9,11 +9,21 @@
 #
 # INV-01: the union of every vendor's documented request parameters plus the
 # ~20-param cross-vendor canonical set. INV-02: no mode-dependent parameter may
-# collapse into a false flat verdict — every row that interacts with the thinking
-# axis (D-07) declares `axis: thinking` explicitly, enforced mechanically by the
-# generator's --check. INV-03: six named vendor exotics get their own traceable rows
-# (tracked by the generator's INV-03 validator, red-by-design until plan 10-03 adds
-# them — see the note on that validator below).
+# collapse into a false flat verdict — every row in the `sampling` group (D-07)
+# declares `axis: thinking` explicitly, enforced mechanically by the generator's
+# `check_axis_declaration` validator. INV-03: nine named vendor-exotic rows
+# (openai-verbosity, openai-prediction, openai-service-tier-values,
+# anthropic-thinking-budget-floor, gemini-media-resolution, gemini-candidate-count,
+# kimi-partial-mode, glm-do-sample, qwen-repetition-penalty) get their own traceable
+# rows, each requiring `requirement: INV-03` + `status: swept`.
+#
+# `--check`'s INV-03 traceability validator is RED BY DESIGN as of 2026-09-01
+# (plan 10-01 Task 2): none of the nine rows above exist yet — this row is the
+# only one plan 10-01 authors (D-01's tracer slice). Plans 10-02/10-03 author the
+# remaining canonical rows and the nine named exotics; `--check` should return to
+# clean (0 problems) once plan 10-03 completes. A red gate with a written, dated
+# reason is this repo's idiom (Phase 2 lint's red-by-design-at-622-findings
+# precedent) — a gate silently weakened to stay green is not.
 checked: 2026-09-01
 
 # --- axes -------------------------------------------------------------------------
