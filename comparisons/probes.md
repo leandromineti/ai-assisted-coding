@@ -72,7 +72,7 @@
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | openai-reasoning-effort | · | · | · | · | ? | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| anthropic-thinking-object | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
+| anthropic-thinking-object | — | — | — | — | · | · | · | · | · | · | · | · |
 | gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · |
 | qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ |
 
