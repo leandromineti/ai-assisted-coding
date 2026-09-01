@@ -1,0 +1,39 @@
+# probes/sets/tracer-cell.yaml — a single-entry probe set, plan 11-01 Task 3: the
+# one real cell that proves this phase's whole pipeline end to end (fire -> raw
+# JSONL -> classified YAML -> generated matrix) before any bulk firing begins.
+#
+# The entry below is byte-identical to the `gemini-temperature-range` /
+# `gemini-3-1-pro` / value `2.0` / mode `default` cell already declared in
+# probes/sets/generated/contract-sweep.yaml — extracted programmatically, not
+# retyped, so it hashes to the exact same probe_id and the later stage-1 sweep
+# run (SWEEP-DESIGN.md § Probe ordering) skips it as already logged rather than
+# re-billing it. Extraction command:
+#
+#   python3 -c "
+#   import yaml
+#   data = yaml.safe_load(open('probes/sets/generated/contract-sweep.yaml'))
+#   entries = [e for e in data['probes'] if e['param']=='gemini-temperature-range'
+#              and e['value']=='2.0' and e['model']=='gemini-3-1-pro']
+#   assert len(entries) == 1, entries
+#   print(yaml.safe_dump({'probes': entries}, sort_keys=False,
+#         default_flow_style=False, allow_unicode=True, width=100))
+#   "
+#
+# Why this cell: SWEEP-DESIGN.md § Probe ordering stage 1 predicts a 4xx for
+# Gemini's 2.0 temperature value (a rejected request bills $0) — the same
+# zero-cost-rejection discipline the bulk sweep's own firing order uses (rule
+# 5d: proves the classifier discriminates before any dollar is spent). Firing
+# it here first also proves the runner -> raw -> classify-probes.py ->
+# build-probe-matrix.py -> comparisons/probes.md pipeline end to end on a real
+# record before plans 11-02 through 11-06 build on it.
+checked: 2026-09-01
+
+probes:
+- model: gemini-3-1-pro
+  param: gemini-temperature-range
+  value: '2.0'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 200
+  extra_params:
+    temperature: 2.0

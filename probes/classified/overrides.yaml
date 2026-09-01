@@ -1,0 +1,17 @@
+# probes/classified/overrides.yaml — hand-kept (D-08). NEVER written by
+# scripts/classify-probes.py — that script only reads this file, loads it, and
+# applies every entry LAST, deterministically, after its own mechanical
+# classification. Regeneration of probes/classified/contract-sweep.yaml must
+# never lose an entry recorded here.
+#
+# Entry shape: `probe_id` (the exact id the entry overrides — `--check` reports a
+# finding if this resolves to no declared cell, so a stale override can never
+# silently do nothing), `state` (the four-state contract vocabulary value this
+# override replaces the mechanical verdict with), `date`, `reason`.
+#
+# YAML-1.1-bool-safe: PyYAML's default (YAML 1.1) implicit resolver turns bare
+# on/off/yes/no/true/false into Python booleans regardless of position — quote
+# any key or scalar value here that could collide with it.
+checked: 2026-09-01
+
+overrides: []
