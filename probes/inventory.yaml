@@ -919,6 +919,402 @@ params:
       value 0.7) — this row IS the boundary contract per D-03's carve-out,
       scoped to Gemini only via firing_scope: home-vendor.
 
+  # --- vendor exotics: the nine INV-03 named rows, the Kimi fixed-point ------
+  # boundary row, and OpenAI's low-signal long tail (plan 10-03 Task 1, D-11).
+  # Firing scope is D-11's rule: home vendor plus same wire family. A
+  # vendor-exotic parameter fired at every model sharing its wire family IS the
+  # compat-shim swallow test (does a sibling vendor silently accept and drop an
+  # OpenAI/Anthropic/Gemini-specific field it never documented?); a cell fired
+  # across families would only measure wire-shape incompatibility, so those
+  # cells are declared skips instead (skipped-cells.yaml, reason
+  # wire-shape-incompatible) — never actually fired. Every row here carries
+  # exactly one benign probe_values entry unless boundary_contract: true (D-03):
+  # a vendor exotic is worth a row because of its asymmetry, not a range sweep.
+  - id: openai-verbosity
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: verbosity
+    names:
+      anthropic_messages: null   # checked absence — no equivalent axis at
+        # Anthropic under any name.
+      openai_compat: verbosity
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family   # home family openai_compat — fires at all six
+      # OpenAI-compatible vendors, which IS the compat-shim swallow test: does
+      # xAI/DeepSeek/Kimi/Z.ai/Qwen silently accept and ignore a field only
+      # OpenAI's gpt-5.1+ line documents?
+    probe_values: [low]
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      A 2026 (gpt-5.1+) axis independent of `reasoning_effort` — two separate
+      dials, not one collapsed into the other. High-signal precisely because
+      it is OpenAI-exclusive in this set: an acceptance elsewhere is a
+      compat-shim swallow, a rejection is the honest contract.
+
+  - id: openai-prediction
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: prediction
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: prediction
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family   # home family openai_compat.
+    probe_values:
+      - type: content
+        content: hello
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Predicted Outputs — a speculative-decoding-style parameter unique to
+      OpenAI in this set (FEATURES.md § Differentiators). A minimal benign
+      prediction object (D-03): one content string, no attempt to verify the
+      speed-up itself, only contract acceptance.
+
+  - id: openai-service-tier-values
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: service_tier
+    names:
+      anthropic_messages: null   # checked absence under this row — the
+        # cross-vendor presence question is the swept `service-tier` row
+        # (plan 10-02); this row is OpenAI's value enumeration only.
+      openai_compat: service_tier
+      gemini: null   # checked absence.
+    name_overrides: {}
+    boundary_contract: true   # D-03: the finding IS the value enumeration,
+      # not a single presence check — that's the `service-tier` row's job.
+    probe_values: [flex, priority, auto, default]
+    firing_scope: wire-family   # home family openai_compat — the same
+      # compat-shim swallow test as the other OpenAI-exotic rows: does a
+      # sibling vendor silently accept an OpenAI-specific tier value?
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Value enumeration, not presence (FEATURES.md § Differentiators: "not
+      just fast/slow"). Cross-references the presence-only `service-tier` row
+      (plan 10-02) — that row probes ONE benign value (`auto`) at all twelve
+      models; this row probes all four documented OpenAI tier values at the
+      OpenAI-compatible family only. The request-vs-response vocabulary
+      asymmetry (conclusion 19: `priority`->`fast mode` is input-side only) is
+      BHV-06's job in Phase 12, not this contract-only row.
+
+  - id: anthropic-thinking-budget-floor
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: thinking_budget_floor
+    names:
+      anthropic_messages: thinking
+      openai_compat: null   # checked absence — the shape is Anthropic-only.
+      gemini: null   # checked absence.
+    name_overrides: {}
+    boundary_contract: true   # D-03: the finding IS the boundary contract —
+      # a sub-floor budget's HTTP status, not a range sweep.
+    probe_values:
+      - type: enabled
+        budget_tokens: 500   # below FEATURES.md's documented 1024-token floor
+          # (FEATURES.md § Differentiators) — the finding is whether this
+          # produces a 400 rejection or a silent clamp up to the floor.
+      - type: enabled
+        budget_tokens: 1024   # at the documented floor exactly — the other
+          # boundary side (edge: one step either side, per this plan's own
+          # must_haves truth).
+    firing_scope: wire-family   # home family anthropic_messages (Anthropic is
+      # this family's only vendor, so wire-family and home-vendor are
+      # equivalent here — wire-family matches this file's convention for
+      # single-vendor families, see axes.thinking.shapes.anthropic_messages).
+    confidence: high
+    source: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+    retrieved: 2026-08-26
+    note: >-
+      READ CAREFULLY (must_haves truth): INV-03's requirement phrase
+      "thinking-budget-floor 400 contract" names the expected HTTP STATUS —
+      400 — NOT a token count. 400 is not one of this row's probe_values; it
+      is the predicted response to the below-floor (500) probe_values entry.
+      FEATURES.md also states the floor's own constraint: `budget_tokens` must
+      be LESS THAN `max_tokens`. This registry's shared `defaults.max_tokens`
+      is 64 (see `defaults:` above), which is smaller than both probe values
+      here (500, 1024) — firing this row with the shared default would
+      confound the floor finding with a `max_tokens`-too-small rejection.
+      Phase 11 MUST raise `max_tokens` for this row specifically (there is no
+      per-row `max_tokens` override field in this generator as of 2026-09-01;
+      only a per-MODEL `defaults.max_tokens_overrides`) before firing — a
+      declared handoff, not a silent gap (see SWEEP-DESIGN.md § Handoffs to
+      Phase 11).
+
+  - id: gemini-media-resolution
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: media_resolution
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: null   # checked absence.
+      gemini: null   # unresolved at the family level on purpose (D-11) — this
+        # row's home vendor is narrowed via name_overrides below.
+    name_overrides:
+      gemini: mediaResolution
+    firing_scope: home-vendor
+    probe_values: [MEDIA_RESOLUTION_LOW]
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      A genuinely novel modality-cost-tradeoff knob none of the other eleven
+      models expose under any name (FEATURES.md § Differentiators) —
+      high-signal precisely because there is no cross-vendor comparison point.
+      Meaningful alongside media content in the general case; this row is
+      contract-only (accept/reject the field on a text-only request), not a
+      cost-tradeoff measurement.
+
+  - id: gemini-candidate-count
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: candidate_count
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: null   # checked absence.
+      gemini: null   # unresolved at the family level on purpose (D-11) —
+        # narrowed via name_overrides below.
+    name_overrides:
+      gemini: candidateCount
+    firing_scope: home-vendor
+    probe_values: [2]   # deliberately >1 (unlike the swept `n` row's own
+      # probe_values: [1]) — the finding here is the naming divergence itself
+      # (candidateCount IS n, under Gemini's own name), not a second presence
+      # check; a value >1 makes the pairing visible in the raw evidence.
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      FEATURES.md § Differentiators: "candidateCount is Gemini's name for n."
+      Cross-references the swept `n` row (plan 10-02) directly — the pair is
+      one naming-divergence finding split across two rows for traceability,
+      not two unrelated parameters.
+
+  - id: kimi-partial-mode
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: partial_mode
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: partial_mode
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family   # home family openai_compat — compat-shim
+      # swallow test across all six OpenAI-compatible vendors.
+    probe_values: [true]
+    confidence: high
+    source: https://platform.kimi.ai/docs/api/chat
+    retrieved: 2026-09-01
+    note: >-
+      Assistant-turn prefix continuation — not one of the twelve cross-vendor
+      concepts at all (FEATURES.md § Differentiators), genuinely
+      differentiating request shape unique to Moonshot/Kimi in this set.
+
+  - id: glm-do-sample
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: do_sample
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: do_sample
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family   # home family openai_compat.
+    probe_values: [true]
+    confidence: high
+    source: https://docs.z.ai/guides/llm/glm-5.3
+    retrieved: 2026-08-26
+    note: >-
+      A raw sampling toggle whose name comes from a different vocabulary
+      lineage than the OpenAI surface — closer to Hugging Face `generate()`
+      vocabulary than anything else probed in this set (FEATURES.md §
+      Differentiators).
+
+  - id: qwen-repetition-penalty
+    group: exotic
+    kind: parameter
+    status: swept
+    requirement: INV-03
+    canonical_name: repetition_penalty
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: repetition_penalty
+      gemini: null   # checked absence.
+    name_overrides: {}
+    axis: thinking   # D-07: one of the named sampling-family-shaped rows even
+      # though its group is `exotic` (check_axis_declaration only requires
+      # `axis:` on the `sampling` group; the generator's own mode expansion
+      # reads this key regardless of group) — its documented mode-dependence
+      # is exactly why (FEATURES.md § Differentiators: mode-dependent
+      # recommended values, 0.5 in thinking mode vs 1.5 otherwise).
+    firing_scope: wire-family   # home family openai_compat.
+    probe_values: [0.5]   # D-03: one benign value — the thinking-mode
+      # recommended figure; the off-mode recommended figure (1.5) is
+      # documented in this note, not swept as a second value.
+    confidence: high
+    source: https://docs.qwencloud.com/developer-guides/text-generation/thinking
+    retrieved: 2026-09-01
+    note: >-
+      DashScope's own name for what OpenAI calls `frequency_penalty`
+      (canonical `frequency-penalty` row, plan 10-02), with mode-dependent
+      recommended values per one vendor doc: 0.5 in thinking mode, 1.5
+      otherwise. Cross-references the canonical `frequency-penalty` row —
+      the naming divergence plus the mode-dependence together are this row's
+      whole finding.
+
+  - id: kimi-fixed-sampling-point
+    group: exotic
+    kind: parameter
+    status: swept
+    canonical_name: temperature
+    names:
+      anthropic_messages: null   # checked absence at this row (the canonical
+        # cross-vendor `temperature` row already covers presence everywhere).
+      openai_compat: null   # unresolved at the family level on purpose (D-11)
+        # — Kimi is this row's home vendor, narrowed via name_overrides below.
+      gemini: null   # checked absence at this row.
+    name_overrides:
+      kimi: temperature
+    boundary_contract: true   # D-03: the finding IS the boundary contract —
+      # a fixed-schedule rejection, not a range sweep.
+    probe_values: [0.3, 0.6]   # one off-schedule value (0.3) and one
+      # on-schedule value (0.6, the documented Kimi default) — see note for
+      # the confidence hedge on the exact schedule.
+    firing_scope: home-vendor
+    confidence: low
+    hypothesis: >-
+      FEATURES.md § Differentiators (D-03's second named boundary contract):
+      "Fixed-sampling-value rejection (K2.6 errors on off-schedule
+      temperature) — Moonshot/Kimi... rejects an otherwise-universal
+      parameter's value outside a mode-specific fixed point, rather than
+      clamping or ignoring it." The exact numeric schedule was not
+      independently re-verified against Kimi's current docs this pass (the
+      0.3/0.6 pair here is a plausible off-/on-schedule probe, not a
+      confirmed-exact schedule boundary) — Phase 11 should confirm the real
+      fixed point from `platform.kimi.ai/docs/api/chat` before firing, or
+      treat a 400 at 0.6 as evidence the assumed on-schedule value is itself
+      wrong (the wire settles it either way, D-15/conclusion 19).
+    source: https://platform.kimi.ai/docs/api/chat
+    retrieved: 2026-09-01
+    note: >-
+      A fourth support-state instance (reject / ignore / translate / clamp,
+      FEATURES.md § Prior-Art) alongside DeepSeek's silent-ignore list, xAI's
+      silent-translate degrade, and Moonshot's own documented
+      `enable_thinking` swallow (conclusion 19) — this vendor REJECTS an
+      off-schedule value for an otherwise-universal parameter instead.
+
+  # --- OpenAI's low-signal long tail (plan 10-03 Task 1, D-10) ---------------
+  # One cheap accept-or-reject call each. Firing these at the five other
+  # OpenAI-compatible vendors IS the compat-shim swallow test — the finding is
+  # whether a sibling vendor silently accepts and drops a field it never
+  # documented, exactly the same shape as the exotic rows above.
+  - id: openai-store
+    group: exotic
+    kind: parameter
+    status: swept
+    canonical_name: store
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: store
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family
+    probe_values: [true]
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Low probe cost, single accept/reject call (D-10, FEATURES.md §
+      Differentiators). Part of OpenAI's long tail swept family-wide as the
+      compat-shim swallow test.
+
+  - id: openai-metadata
+    group: exotic
+    kind: parameter
+    status: swept
+    canonical_name: metadata
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: metadata
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family
+    probe_values:
+      - probe: "true"
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Low probe cost, single accept/reject call with a trivial one-key object
+      (D-10, FEATURES.md § Differentiators). Same compat-shim swallow test as
+      the other long-tail rows.
+
+  - id: openai-safety-identifier
+    group: exotic
+    kind: parameter
+    status: swept
+    canonical_name: safety_identifier
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: safety_identifier
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family
+    probe_values: [probe-user-0001]
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Low probe cost, single accept/reject call with a trivial opaque
+      identifier string (D-10, FEATURES.md § Differentiators).
+
+  - id: openai-prompt-cache-key
+    group: exotic
+    kind: parameter
+    status: swept
+    canonical_name: prompt_cache_key
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: prompt_cache_key
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family
+    probe_values: [probe-cache-key-0001]
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-09-01
+    note: >-
+      Low probe cost, single accept/reject call (D-10). Additionally touches
+      the existing `prompt_caching` registry key (free-text, docs/feature-
+      taxonomy.yaml) — this is what makes the row worth its call: it upgrades
+      that key's evidence for OpenAI specifically, distinct from the
+      `anthropic-cache-control-block` content-block row (plan 10-03 Task 2),
+      which is the same registry key's Anthropic-side analogue under a wholly
+      different (content-block, not scalar) request shape.
+
   # --- deliberately excluded (plan 10-02 Task 2, D-15 vs FUT-01 tension) ------
   - id: max-tokens-semantics
     group: excluded

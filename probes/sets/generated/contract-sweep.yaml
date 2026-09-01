@@ -2591,6 +2591,90 @@ probes:
   max_tokens: 64
   extra_params:
     service_tier: auto
+- model: claude-fable-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 500}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: &id009
+      type: enabled
+      budget_tokens: 500
+- model: claude-fable-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 1024}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: &id010
+      type: enabled
+      budget_tokens: 1024
+- model: claude-opus-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 500}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id009
+- model: claude-opus-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 1024}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id010
+- model: claude-sonnet-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 500}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id009
+- model: claude-sonnet-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 1024}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id010
+- model: claude-haiku-4-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 500}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id009
+- model: claude-haiku-4-5
+  param: anthropic-thinking-budget-floor
+  value: '{''type'': ''enabled'', ''budget_tokens'': 1024}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinking: *id010
+- model: gemini-3-1-pro
+  param: gemini-candidate-count
+  value: '2'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 200
+  extra_params:
+    candidateCount: 2
+- model: gemini-3-1-pro
+  param: gemini-media-resolution
+  value: MEDIA_RESOLUTION_LOW
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 200
+  extra_params:
+    mediaResolution: MEDIA_RESOLUTION_LOW
 - model: gemini-3-1-pro
   param: gemini-temperature-range
   value: '1.0'
@@ -2607,3 +2691,767 @@ probes:
   max_tokens: 200
   extra_params:
     temperature: 2.0
+- model: gpt-5-6-sol
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: grok-4-5
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: kimi-k3
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: deepseek-v4
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: glm-5.3
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: qwen3.8-max
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: qwen3.8-flash
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: kimi-k3
+  param: kimi-fixed-sampling-point
+  value: '0.3'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.3
+- model: kimi-k3
+  param: kimi-fixed-sampling-point
+  value: '0.6'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.6
+- model: gpt-5-6-sol
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: grok-4-5
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: kimi-k3
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: deepseek-v4
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: glm-5.3
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: qwen3.8-max
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: qwen3.8-flash
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
+- model: gpt-5-6-sol
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: &id011
+      probe: 'true'
+- model: grok-4-5
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: kimi-k3
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: deepseek-v4
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: glm-5.3
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: qwen3.8-max
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: qwen3.8-flash
+  param: openai-metadata
+  value: '{''probe'': ''true''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
+- model: gpt-5-6-sol
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: &id012
+      type: content
+      content: hello
+- model: grok-4-5
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: kimi-k3
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: deepseek-v4
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: glm-5.3
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: qwen3.8-max
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: qwen3.8-flash
+  param: openai-prediction
+  value: '{''type'': ''content'', ''content'': ''hello''}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
+- model: gpt-5-6-sol
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: grok-4-5
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: kimi-k3
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: deepseek-v4
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: glm-5.3
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: qwen3.8-max
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: qwen3.8-flash
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
+- model: gpt-5-6-sol
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: grok-4-5
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: kimi-k3
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: deepseek-v4
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: glm-5.3
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: qwen3.8-max
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: qwen3.8-flash
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: gpt-5-6-sol
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: gpt-5-6-sol
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: gpt-5-6-sol
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: gpt-5-6-sol
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: grok-4-5
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: grok-4-5
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: grok-4-5
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: grok-4-5
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: kimi-k3
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: kimi-k3
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: kimi-k3
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: kimi-k3
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: deepseek-v4
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: deepseek-v4
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: deepseek-v4
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: deepseek-v4
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: glm-5.3
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: glm-5.3
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: glm-5.3
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: glm-5.3
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: qwen3.8-max
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: qwen3.8-max
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: qwen3.8-max
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: qwen3.8-max
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: qwen3.8-flash
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: qwen3.8-flash
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: qwen3.8-flash
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: qwen3.8-flash
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: gpt-5-6-sol
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: grok-4-5
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: kimi-k3
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: deepseek-v4
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: glm-5.3
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: qwen3.8-max
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: qwen3.8-flash
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: gpt-5-6-sol
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: grok-4-5
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: kimi-k3
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: deepseek-v4
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: glm-5.3
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: qwen3.8-max
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: qwen3.8-flash
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: gpt-5-6-sol
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-off
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    reasoning_effort: none
+- model: gpt-5-6-sol
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    reasoning_effort: low
+- model: grok-4-5
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    reasoning_effort: low
+- model: glm-5.3
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    thinking:
+      type: enabled
+- model: qwen3.8-max
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-off
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    enable_thinking: false
+- model: qwen3.8-max
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    enable_thinking: true
+- model: qwen3.8-flash
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-off
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    enable_thinking: false
+- model: qwen3.8-flash
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    enable_thinking: true
