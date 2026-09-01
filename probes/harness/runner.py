@@ -90,6 +90,22 @@ _ORG_IDENTIFYING_RESPONSE_HEADERS = {
                                  # never observed on the wire, kept as a defensive
                                  # guess for a differently-shaped account signal
     "x-organization-id",
+    # Added 2026-09-01, Phase 11 plan 11-03 (Rule 2 deviation): OBSERVED live at
+    # Moonshot AI (Kimi) in probes/raw/kimi.jsonl's Phase 9 smoke-test record
+    # (probe_id kimi-k3--baseline--none--default--b3540b5c), found while
+    # authoring probes/audit-evidence.py's D-05 scanner — reading that exact
+    # record per this plan's own instructions surfaced a whole `Msh-*` header
+    # family carrying org/user/project/group identifiers this filter never
+    # covered (WR-04's exact gap, now closed for this one additional vendor;
+    # the pre-existing record itself predates this fix and is flagged by the
+    # scanner, not retroactively cleaned — see 11-03-SUMMARY.md). `msh-request-id`
+    # and `x-msh-trace-id` are request-tracing, not account-identifying, and
+    # stay unfiltered, matching every other vendor's kept rate-limit/request-id
+    # headers.
+    "msh-org-id",
+    "msh-uid",
+    "msh-project-id",
+    "msh-gid",
 }
 
 
@@ -848,20 +864,24 @@ def selftest() -> tuple[int, int]:
     except SystemExit:
         pass
 
-    # --- filter_response_headers: org headers dropped, rate-limit/request-id kept ---
+    # --- filter_response_headers: org headers dropped, rate-limit/request-id
+    #     kept — extended Phase 11 plan 11-03 with Kimi's Msh-* family
+    #     (observed live, see the constant's own comment above) ---
     cases += 1
     raw_headers = {
         "openai-organization": "org-should-not-appear",
         "anthropic-workspace-id": "wrkspc-should-not-appear",
+        "msh-org-id": "org-should-not-appear-2",
         "retry-after": "5",
         "request-id": "req_abc",
+        "msh-request-id": "req-should-be-kept",
         "anthropic-ratelimit-requests-remaining": "99",
     }
     filtered = filter_response_headers(raw_headers)
-    if "openai-organization" in filtered or "anthropic-workspace-id" in filtered:
+    if "openai-organization" in filtered or "anthropic-workspace-id" in filtered or "msh-org-id" in filtered:
         problems += 1
         print("FAIL filter_response_headers: an org/account header was not dropped", file=sys.stderr)
-    if "retry-after" not in filtered or "request-id" not in filtered:
+    if "retry-after" not in filtered or "request-id" not in filtered or "msh-request-id" not in filtered:
         problems += 1
         print("FAIL filter_response_headers: rate-limit/request-id header incorrectly dropped", file=sys.stderr)
 
