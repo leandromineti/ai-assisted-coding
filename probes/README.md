@@ -3,9 +3,14 @@
 **Front door only — read `.planning/phases/09-harness-adapters/09-RESEARCH.md` and
 `docs/methodology.md` for the full design and rationale.**
 
-`probes/` is v3.0's API parameter-surface instrument: a small, stdlib-only harness
-that fires declared HTTP probes against the 12 active tracked models across three
-wire families, logs every request/response verbatim, and ledgers every dollar spent.
+`probes/` is v3.0's API parameter-surface instrument: a small harness — stdlib-only on
+the wire transport/retry path (`probes/harness/client.py`, no vendor SDK, no
+third-party HTTP or retry library) — that fires declared HTTP probes against the 12
+active tracked models across three wire families, logs every request/response
+verbatim, and ledgers every dollar spent. Config/probe-declaration parsing
+(`models.yaml`, `prices.yaml`, `ceilings.yaml`, `probes/sets/*.yaml`) is a scoped,
+documented exception: `runner.py` imports PyYAML (WR-01, phase-09 code review
+2026-09-01) — that dependency must be installed in the environment this runs in.
 It mirrors this repo's existing registry-driven docs pipeline
 (`docs/feature-taxonomy.yaml` → `comparisons/*.md`): a raw evidence stage, a
 classified stage, and a generated matrix — this directory owns only the raw stage.

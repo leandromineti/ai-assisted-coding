@@ -19,6 +19,13 @@ never accepts a header VALUE into the record — only a header NAME. After a rec
 serialized and before it is written, assert_no_secrets() greps the serialized form for
 every one of the eight loaded key values (not just the vendor being probed) and aborts
 the whole run on a hit (D-09, T-09-01).
+
+Stdlib-only scope (WR-01, phase-09 code review 2026-09-01): client.py's "no vendor SDK,
+no third-party HTTP or retry library" claim is about the WIRE TRANSPORT/RETRY path
+only. This module imports PyYAML (`import yaml`, not part of the standard library) to
+parse models.yaml, prices.yaml, ceilings.yaml, and every probes/sets/*.yaml file —
+config/probe-declaration parsing is a scoped, documented exception to the stdlib-only
+principle, not covered by it. PyYAML must be installed in the environment this runs in.
 """
 from __future__ import annotations
 
