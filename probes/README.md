@@ -16,6 +16,17 @@ It mirrors this repo's existing registry-driven docs pipeline
 classified stage, and a generated matrix — this directory owns only the raw stage.
 
 ```
+probes/inventory.yaml            Phase 10 — the parameter registry (D-01); the
+                                  generator INPUT, never fired directly
+        ↓
+probes/inventory-to-sets.py      Phase 10 — expands the registry into declared probe
+                                  sets: firing scope, mode-cell expansion, content-
+                                  block routing (--check/--selftest)
+        ↓
+probes/sets/generated/*.yaml     Phase 10 — GENERATED probe-set declarations (rule 3:
+                                  never hand-edited; drift-checked against the
+                                  registry)
+        ↓
 probes/raw/{vendor}.jsonl        one JSONL file per vendor — every request/response
                                   verbatim, written by probes/harness/runner.py
         ↓
@@ -33,7 +44,11 @@ comparisons/probes.md            Phase 13 — GENERATED probe matrix (rule 3: ne
 | `probes/harness/` | the runner, the stdlib HTTP client, the append-only ledger, and one adapter module per wire family (`probes/harness/adapters/`) |
 | `probes/harness/models.yaml` | wire facts for all 12 active tracked models (D-01) — self-contained, never parses `tools/1-models/` prose at runtime |
 | `probes/harness/prices.yaml` | per-token USD prices for the same 12 models, each row dated and sourced (D-02) |
-| `probes/sets/*.yaml` | declarative probe-set files the runner consumes (D-03) |
+| `probes/inventory.yaml` | the parameter registry (Phase 10, D-01) — one row per parameter or content-block, each carrying `source:`/`retrieved:`; a GENERATOR INPUT, never fired directly |
+| `probes/inventory-to-sets.py` | the registry -> probe-set generator (Phase 10) — reads `inventory.yaml` + `harness/models.yaml`, writes `sets/generated/*.yaml`; `--check` (drift + registry validators) and `--selftest` (embedded fixtures) |
+| `probes/sets/generated/` | GENERATED probe-set declarations (rule 3: **never hand-edited** — same discipline `comparisons/` carries elsewhere in this repo). `contract-sweep.yaml` (scalar parameter probes, runner.py's `probes:` grammar), `content-blocks.yaml` (image/cache-control rows, deliberately keyed `content_block_probes:` so the runner refuses it, D-12), `skipped-cells.yaml` (every declared skip with its reason, D-11) |
+| `probes/sets/*.yaml` (hand-authored) | declarative probe-set files the runner consumes directly (D-03) — distinct from the generated sets above |
+| `probes/SWEEP-DESIGN.md` | the contract sweep's design (Phase 10): probe firing order, a cell count derived from the generator's own printed summary, per-vendor dollar envelopes, and dated Phase-11 handoffs — NOT the rule-5 preregistration, which is authored at Phase 11 start |
 | `probes/raw/{vendor}.jsonl` | append-only wire evidence, one file per vendor (D-08) |
 | `probes/ledger.jsonl` | append-only spend log, one line per billed attempt (D-07) |
 
