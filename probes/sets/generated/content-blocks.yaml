@@ -11,4 +11,80 @@
 # 11's work (MODAL-01), not this generator's.
 
 checked: 2026-09-01
-content_block_probes: []
+content_block_probes:
+- model: claude-fable-5
+  param: anthropic-cache-control-block
+  body_template: &id001
+    anthropic_messages:
+      content:
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+        cache_control:
+          type: ephemeral
+- model: claude-opus-5
+  param: anthropic-cache-control-block
+  body_template: *id001
+- model: claude-sonnet-5
+  param: anthropic-cache-control-block
+  body_template: *id001
+- model: claude-haiku-4-5
+  param: anthropic-cache-control-block
+  body_template: *id001
+- model: claude-fable-5
+  param: image-input
+  body_template: &id002
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
+- model: claude-opus-5
+  param: image-input
+  body_template: *id002
+- model: claude-sonnet-5
+  param: image-input
+  body_template: *id002
+- model: claude-haiku-4-5
+  param: image-input
+  body_template: *id002
+- model: gpt-5-6-sol
+  param: image-input
+  body_template: *id002
+- model: gemini-3-1-pro
+  param: image-input
+  body_template: *id002
+- model: grok-4-5
+  param: image-input
+  body_template: *id002
+- model: kimi-k3
+  param: image-input
+  body_template: *id002
+- model: deepseek-v4
+  param: image-input
+  body_template: *id002
+- model: glm-5.3
+  param: image-input
+  body_template: *id002
+- model: qwen3.8-max
+  param: image-input
+  body_template: *id002
+- model: qwen3.8-flash
+  param: image-input
+  body_template: *id002

@@ -1347,3 +1347,293 @@ params:
       row, which covers the contract-level naming question only.
     source: https://infron.ai/blog/openai-api-compatibility-gaps
     retrieved: 2026-09-01
+
+  # --- content-block probes (plan 10-03 Task 2, D-12) -------------------------
+  # NOT scalar parameters — never forced into the accept/reject scalar
+  # template (the `kind: content-block` marker is what stops that; the
+  # generator routes these to content-blocks.yaml under `content_block_probes`,
+  # a key runner.py's `load_probe_set` refuses, exit 2, rather than firing an
+  # image/cache-control row as plain text — proven by this plan's own verify
+  # step). `names:` is present (required unconditionally, see
+  # REQUIRED_ROW_FIELDS) but all-null: the request-shape divergence for a
+  # content block lives entirely in `body_template`, not a single flat field
+  # name per family. `probes/harness/runner.py` has no content-block request
+  # path yet — adding it is Phase 11's work (MODAL-01), a declared, dated
+  # handoff (see SWEEP-DESIGN.md § Handoffs to Phase 11), not a silent gap.
+  - id: image-input
+    group: content-block
+    kind: content-block
+    status: swept
+    requirement: MODAL-01
+    canonical_name: image_input
+    names:
+      anthropic_messages: null   # N/A — content-block, not a flat field name.
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    firing_scope: all   # every one of the twelve models, per PROJECT.md's own
+      # "one tiny image, all 12" scoping.
+    body_template:
+      anthropic_messages:
+        content:
+          - type: image
+            source:
+              type: base64
+              media_type: image/png
+              data: "{{IMAGE_BASE64_PLACEHOLDER}}"   # NOT a real image — the
+                # Phase 11 runner substitutes a tiny real base64 PNG payload at
+                # fire time. No image bytes belong in this registry.
+          - type: text
+            text: "Reply with exactly one word: hello."
+      openai_compat:
+        content:
+          - type: image_url
+            image_url:
+              url: "data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}"
+          - type: text
+            text: "Reply with exactly one word: hello."
+      gemini:
+        parts:
+          - inlineData:
+              mimeType: image/png
+              data: "{{IMAGE_BASE64_PLACEHOLDER}}"
+          - text: "Reply with exactly one word: hello."
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      MODAL-01's target — universal among the twelve as message-*content*, not
+      as a scalar request parameter (FEATURES.md § Table Stakes: "flagging
+      here only so the harness doesn't try to force it into the same
+      accept/reject probe shape as everything else"). Per-family content shape:
+      Anthropic's base64 `image` content block, the OpenAI-compatible family's
+      `image_url` content part, and Gemini's `inlineData` part — three
+      genuinely different message-content shapes, not one parameter with three
+      names. The billed input-token count read from the response usage field
+      is the second half of MODAL-01 (accept/reject is the first); reading it
+      is Phase 11's job, not this registry row's.
+
+  - id: anthropic-cache-control-block
+    group: content-block
+    kind: content-block
+    status: swept
+    canonical_name: cache_control
+    names:
+      anthropic_messages: null   # N/A — content-block, not a flat field name.
+      openai_compat: null
+      gemini: null
+    name_overrides:
+      anthropic: cache_control
+    firing_scope: home-vendor   # Anthropic-only content-block marker.
+    body_template:
+      anthropic_messages:
+        content:
+          - type: text
+            text: "Reply with exactly one word: hello."
+            cache_control:
+              type: ephemeral
+    confidence: high
+    source: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+    retrieved: 2026-08-26
+    note: >-
+      The `cache_control` marker on a content block, not a scalar parameter
+      (D-12) — links to the existing `prompt_caching` registry key
+      (docs/feature-taxonomy.yaml, free-text) and to the swept
+      `openai-prompt-cache-key` row (plan 10-03 Task 1), the OpenAI-side
+      analogue and deliberately a separate, scalar row: OpenAI's cache key is
+      a flat request field, Anthropic's cache control is a per-content-block
+      marker — genuinely different request shapes for the same registry
+      concept, not a naming variant of one shape.
+
+  # --- deliberately excluded (plan 10-03 Task 2, D-09) -------------------------
+  # Every deliberately excluded parameter is a VISIBLE dated row, never a
+  # silent omission (rule 1b) — this is what keeps INV-01's union claim
+  # mechanically checkable: a reader can confirm the parameter was seen and
+  # judged, not missed. The generator skips these rows by `status`, so an
+  # exclusion costs zero probes and zero dollars. `names:` is all-null on every
+  # row here since none of these are a specific vendor's field name — the
+  # exclusion is of the CONCEPT, not a name mapping.
+  - id: batch-endpoint
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: batch_endpoint
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      A separate ENDPOINT, not a chat/completions request parameter —
+      sweeping it would conflate two different assessed keys' evidence (this
+      milestone's `reasoning_effort`/`fast_mode`-style contract sweep vs the
+      existing free-text `batch_discount` registry key). FEATURES.md §
+      Anti-Features: "Batch is a separate endpoint... sweeping it conflates
+      two different assessed keys' evidence." REQUIREMENTS.md FUT-04:
+      "Batch-endpoint sweep (separate endpoint, separate assessed key)" —
+      offered, deferred.
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: logit-bias-exhaustive
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: logit_bias_exhaustive
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      Combinatorially unbounded — a full-vocabulary `logit_bias` sweep is a
+      distributional study, not a contract-acceptance question. The swept
+      `logit-bias` row (plan 10-02) already fires the one trivial single-token
+      bias this milestone needs; that row suffices. FEATURES.md §
+      Anti-Features: "Combinatorially unbounded; a contract sweep needs one
+      trivial accept/reject call, not a distributional study." REQUIREMENTS.md
+      Out of Scope: "Exhaustive logit_bias vocabulary sweeps."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: n-distinctness-scoring
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: n_distinctness_scoring
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      FUT-03. The swept `n` row (plan 10-02, probe_values: [1]) covers the
+      count-only contract check; scoring whether the N returned choices are
+      actually DISTINCT is a sampling-quality research question needing a
+      different instrument (a diff-based grader across completions), not an
+      accept/reject probe. FEATURES.md § Anti-Features: "distinctness scoring
+      is a sampling-quality research question, a different instrument
+      entirely." REQUIREMENTS.md FUT-03: "n>1 distinctness/diversity scoring."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: audio-video-modality
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: audio_video_modality
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      FUT-02. Non-image modalities stay docs-grade by project scope — the
+      `image-input` content-block row (this plan's Task 2, MODAL-01) is the
+      one modality probe this milestone runs; audio/video are symmetric in
+      shape but deliberately out of scope. FEATURES.md § Anti-Features:
+      "PROJECT.md explicitly scopes non-image modalities docs-only."
+      REQUIREMENTS.md FUT-02: "Audio/video modality behavioral probes."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: xai-search-parameters
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: search_parameters
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      Flagged ADR-0048-ambiguous by the research pass: xAI's live-web-search
+      parameter may or may not fall within the first-party-API-product
+      boundary the milestone's own constraint draws; default is do-not-probe
+      absent an explicit owner decision to extend the boundary.
+      FEATURES.md § Differentiators/Anti-Features: "Out of scope for a pure
+      parameter-surface sweep unless PROJECT.md's ADR-0048 first-party-API-
+      product boundary is read to include it; flag, don't probe by default."
+      REQUIREMENTS.md Out of Scope: "xAI search_parameters probing."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: json-schema-conformance-grading
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: json_schema_conformance_grading
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      A correctness-benchmark question (closer to category-1's "structural
+      completeness != runtime correctness," conclusion 4), not a
+      contract-acceptance question. The swept `response-format` row (plan
+      10-02) already covers presence/acceptance of the parameter; grading
+      whether the RETURNED JSON actually validates against an arbitrary
+      complex schema is a different, deferred instrument. FEATURES.md §
+      Anti-Features. REQUIREMENTS.md Out of Scope: "JSON-schema conformance
+      grading."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: malformed-request-fuzzing
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: malformed_request_fuzzing
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      API-robustness/conformance testing (wrong types, out-of-range floats,
+      negative token counts) is a different research question than "what is
+      the parameter surface and who supports what" — this milestone stays
+      within valid-shaped requests only. FEATURES.md § Anti-Features:
+      "Different research question... than llmprobe's territory."
+      REQUIREMENTS.md Out of Scope: "Malformed-request fuzzing."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01
+
+  - id: gateway-probe-targets
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: gateway_probe_targets
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: high
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      ADR-0048 restricts this milestone's probe TARGETS to first-party API
+      products only. OpenRouter/LiteLLM stay prior-art taxonomy SOURCES
+      (FEATURES.md § Prior-Art Support-State Taxonomies) — read for their own
+      published parameter lists, never fired against directly. FEATURES.md §
+      Anti-Features: "ADR-0048 restricts this milestone to first-party API
+      products." REQUIREMENTS.md Out of Scope: "Third-party gateway probe
+      targets (OpenRouter, LiteLLM)."
+    source: .planning/research/FEATURES.md § Anti-Features
+    retrieved: 2026-09-01

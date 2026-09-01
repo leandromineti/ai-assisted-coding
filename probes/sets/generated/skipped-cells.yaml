@@ -960,3 +960,35 @@ skipped:
   param: qwen-repetition-penalty
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-5-6-sol
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-1-pro
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: grok-4-5
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: kimi-k3
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: deepseek-v4
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: glm-5.3
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: qwen3.8-max
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: qwen3.8-flash
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
