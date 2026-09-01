@@ -343,7 +343,13 @@ def selftest() -> tuple[int, int]:
 
     # --- build_record: header VALUES never reach the serialized record, only NAMES ---
     cases += 1
-    fake_key = "sk-FAKE-SELFTEST-VALUE-not-a-real-key"
+    # Deliberately NOT prefixed `sk-`/`AIza` — the repo's own "no key VALUE in the
+    # registries" lint (`grep -rnE '(sk-|AIza)[A-Za-z0-9_-]{12,}' probes/harness/`)
+    # scans this whole directory tree, and a realistic-looking fixture secret here
+    # would false-positive that check. The tripwire logic under test only cares
+    # that an arbitrary string value is found in a serialized record — the prefix
+    # shape is irrelevant to what's being verified.
+    fake_key = "FAKESELFTESTVALUE-not-a-real-key-0000000000"
     record = build_record(
         pid="x--baseline--none--default--deadbeef",
         vendor="anthropic",

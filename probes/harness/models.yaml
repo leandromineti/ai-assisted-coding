@@ -3,15 +3,130 @@
 # runtime; a drift check against the reports' active-model set is deliberately
 # deferred to Phase 13's check-probe-drift.py.
 #
-# This Task 2 tracer commit adds only the one row the tracer probe actually fires
-# against; plan 09-01 Task 3 extends this file to all 12 rows across 3 wire families.
+# `vendor` is a lowercased short name derived mechanically from each model's
+# key_env_var infix (PERSONAL_<VENDOR>_KEY) — the one naming convention already fixed
+# by ~/.secrets/model-probes.env before this phase existed — and is what partitions
+# probes/raw/{vendor}.jsonl (D-08, 8 files for 8 makers).
 checked: 2026-09-01
 
 models:
+  - slug: claude-fable-5
+    maker: Anthropic
+    vendor: anthropic
+    wire_family: anthropic_messages
+    api_model_id: claude-fable-5
+    base_url: https://api.anthropic.com/v1
+    key_env_var: PERSONAL_ANTHROPIC_KEY
+
+  - slug: claude-opus-5
+    maker: Anthropic
+    vendor: anthropic
+    wire_family: anthropic_messages
+    api_model_id: claude-opus-5
+    base_url: https://api.anthropic.com/v1
+    key_env_var: PERSONAL_ANTHROPIC_KEY
+
+  - slug: claude-sonnet-5
+    maker: Anthropic
+    vendor: anthropic
+    wire_family: anthropic_messages
+    api_model_id: claude-sonnet-5
+    base_url: https://api.anthropic.com/v1
+    key_env_var: PERSONAL_ANTHROPIC_KEY
+
   - slug: claude-haiku-4-5
     maker: Anthropic
     vendor: anthropic
     wire_family: anthropic_messages
-    api_model_id: claude-haiku-4-5-20251001
+    api_model_id: claude-haiku-4-5-20251001   # dated snapshot suffix — unlike the
+                                                # other 3 Claude ids above, which are
+                                                # undated aliases
     base_url: https://api.anthropic.com/v1
     key_env_var: PERSONAL_ANTHROPIC_KEY
+
+  - slug: gpt-5-6-sol
+    maker: OpenAI
+    vendor: openai
+    wire_family: openai_compat
+    api_model_id: gpt-5.6-sol
+    base_url: https://api.openai.com/v1
+    key_env_var: PERSONAL_OPENAI_KEY
+
+  - slug: gemini-3-1-pro
+    maker: Google
+    vendor: gemini
+    wire_family: gemini
+    api_model_id: gemini-3.1-pro   # the report frontmatter appends "(Preview)"; the
+                                     # API path segment is the bare id without that
+                                     # suffix
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    key_env_var: PERSONAL_GEMINI_KEY
+
+  - slug: grok-4-5
+    maker: xAI
+    vendor: xai
+    wire_family: openai_compat
+    api_model_id: grok-4.5   # WITH A DOT — grok-4-5 with a dash 404s as
+                               # model-not-found; the dash form only appears in doc
+                               # URLs/slugs (RESEARCH.md, [CITED])
+    base_url: https://api.x.ai/v1
+    key_env_var: PERSONAL_XAI_KEY
+
+  - slug: kimi-k3
+    maker: Moonshot AI
+    vendor: kimi
+    wire_family: openai_compat
+    api_model_id: kimi-k3
+    base_url: https://api.moonshot.ai/v1   # tried first — the more specific citation
+    fallback_base_url: https://api.kimi.ai/v1   # 2026-09-01: the API host is
+      # contested between two independent third-party sources (RESEARCH.md
+      # Pitfall B) — the console/platform domain rebrand
+      # (platform.moonshot.ai -> platform.kimi.ai) does NOT imply the API host
+      # moved too. Resolved by plan 09-03 Task 1's live probe: try
+      # api.moonshot.ai first, fall back to api.kimi.ai if it 404s/DNS-fails,
+      # and update this comment with the observed answer.
+    key_env_var: PERSONAL_KIMI_KEY
+
+  - slug: deepseek-v4
+    maker: DeepSeek
+    vendor: dseek
+    wire_family: openai_compat
+    api_model_id: deepseek-v4-pro   # 2026-09-01: this ONE row represents BOTH
+      # DeepSeek API model ids — tools/1-models/deepseek-v4.md is one report but
+      # names two API-callable ids (deepseek-v4-pro, deepseek-v4-flash).
+      # deepseek-v4-flash is an available sibling, NOT separately tracked here
+      # (RESEARCH.md Open Question 1, resolved to its own recommendation) — this
+      # is what keeps this file at 12 rows matching "12 active models" rather
+      # than silently becoming 13.
+    base_url: https://api.deepseek.com
+    key_env_var: PERSONAL_DSEEK_KEY
+
+  - slug: glm-5.3
+    maker: Z.ai (Zhipu AI)
+    vendor: zai
+    wire_family: openai_compat
+    api_model_id: glm-5.3
+    base_url: https://api.z.ai/api/paas/v4
+    key_env_var: PERSONAL_ZAI_KEY
+
+  - slug: qwen3.8-max
+    maker: Alibaba (Qwen team)
+    vendor: qwen
+    wire_family: openai_compat   # DashScope International, "compatible-mode"
+    api_model_id: qwen3.8-max
+    base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+    key_env_var: PERSONAL_QWEN_KEY   # 2026-09-01: DashScope keys are
+      # region-specific — a China-region key returns a 401 against this
+      # International endpoint that is indistinguishable from a bad key
+      # (RESEARCH.md, [CITED]).
+
+  - slug: qwen3.8-flash
+    maker: Alibaba (Qwen team)
+    vendor: qwen
+    wire_family: openai_compat   # DashScope International, "compatible-mode"
+    api_model_id: qwen3.8-flash
+    base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+    key_env_var: PERSONAL_QWEN_KEY
+# The superseded Qwen coder entry (see tools/1-models/README.md's own superseded
+# note) is deliberately absent from this list — never re-added without a fresh
+# owner decision.

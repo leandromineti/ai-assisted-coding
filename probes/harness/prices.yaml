@@ -1,16 +1,89 @@
 # probes/harness/prices.yaml — per-token USD prices for the 12 active tracked models
 # (D-02). One row per model, keyed by the same slug as models.yaml. Every row carries
-# its own retrieved: date and source: URL, transcribed from the model report's own
-# pricing: block, so a stale price is auditable and every ledger dollar figure is
-# recomputable from raw token counts.
-#
-# This Task 2 tracer commit adds only the one row the tracer probe actually fires
-# against; plan 09-01 Task 3 extends this file to all 12 rows.
+# a `retrieved` date and a `source` URL, transcribed from the model report's own
+# pricing: block and url: field, so a stale price is auditable and every ledger dollar
+# figure is recomputable from raw token counts.
 checked: 2026-09-01
 
 prices:
+  - slug: claude-fable-5
+    input_usd_per_mtok: 10
+    output_usd_per_mtok: 50
+    retrieved: 2026-08-17
+    source: https://platform.claude.com/docs/en/about-claude/models/overview
+
+  - slug: claude-opus-5
+    input_usd_per_mtok: 5
+    output_usd_per_mtok: 25
+    retrieved: 2026-08-17
+    source: https://platform.claude.com/docs/en/about-claude/models/overview
+
+  - slug: claude-sonnet-5
+    input_usd_per_mtok: 2
+    output_usd_per_mtok: 10
+    retrieved: 2026-08-17
+    source: https://platform.claude.com/docs/en/about-claude/models/overview
+
   - slug: claude-haiku-4-5
     input_usd_per_mtok: 1
     output_usd_per_mtok: 5
     retrieved: 2026-09-01
     source: https://platform.claude.com/docs/en/about-claude/models/overview
+
+  - slug: gpt-5-6-sol
+    input_usd_per_mtok: 5
+    output_usd_per_mtok: 30
+    retrieved: 2026-08-17
+    source: https://developers.openai.com/api/docs/models
+    # Sol tier's base rate only — the report also carries a >272k-input-token
+    # multiplier (2x in / 1.5x out) this flat rate does not capture; not modeled
+    # here, since the tracer/registry only need the base $/MTok pair (D-02).
+
+  - slug: gemini-3-1-pro
+    input_usd_per_mtok: 2
+    output_usd_per_mtok: 12
+    retrieved: 2026-08-17
+    source: https://ai.google.dev/gemini-api/docs/models
+    # <=200k-token tier only — the report also carries a >200k tier ($4/$18); not
+    # modeled here, same rationale as the gpt-5-6-sol row above.
+
+  - slug: grok-4-5
+    input_usd_per_mtok: 2
+    output_usd_per_mtok: 6
+    retrieved: 2026-08-17
+    source: https://docs.x.ai/docs/models
+    # <200k-token tier only — the report also carries a >=200k tier ($4/$12).
+
+  - slug: kimi-k3
+    input_usd_per_mtok: 3
+    output_usd_per_mtok: 15
+    retrieved: 2026-08-17
+    source: https://huggingface.co/moonshotai/Kimi-K3
+
+  - slug: deepseek-v4
+    input_usd_per_mtok: 1.32
+    output_usd_per_mtok: 3.96
+    retrieved: 2026-08-17
+    source: https://api-docs.deepseek.com/quick_start/pricing
+    # Pro peak rate — the report's headline/primary pricing figures, matching the
+    # deepseek-v4-pro representative api_model_id chosen in models.yaml. Off-peak
+    # halves both rates; deepseek-v4-flash's separate (cheaper) rate is not
+    # tracked here, same one-row decision as models.yaml's.
+
+  - slug: glm-5.3
+    input_usd_per_mtok: 1.4
+    output_usd_per_mtok: 4.4
+    retrieved: 2026-08-26
+    source: https://docs.z.ai/guides/llm/glm-5.3
+
+  - slug: qwen3.8-max
+    input_usd_per_mtok: 2.0
+    output_usd_per_mtok: 6.0
+    retrieved: 2026-08-27
+    source: https://www.qwencloud.com/models/qwen3.8-max
+
+  - slug: qwen3.8-flash
+    input_usd_per_mtok: 0.15
+    output_usd_per_mtok: 0.47
+    retrieved: 2026-08-27
+    source: https://www.qwencloud.com/models/qwen3.8-flash
