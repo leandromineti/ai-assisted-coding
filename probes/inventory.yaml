@@ -68,10 +68,63 @@ axes:
           # "Both cells resolved 2026-08-26 (issue #38)" against this exact page —
           # the per-model configuration table naming `thinking: {type: "disabled"}`
           # as the accept shape for a Default-On model.
-        vendor_overrides: {}   # none yet — Anthropic is a single-vendor wire family
-          # (all four Claude rows share `vendor: anthropic`), so no per-vendor split
-          # is possible within this family. Present for schema-shape symmetry with
-          # the two multi-vendor families below.
+        vendor_overrides:   # 2026-09-01, Phase 11 plan 11-04, D-09 "fix-before-fire":
+          # this shape's own `"on"` fragment above is STALE for 3 of Anthropic's 4
+          # models. Calibration-batch evidence (probes/PREREGISTRATION.md Run log,
+          # plan 11-04 Task 1 Stage 2 — the `anthropic-thinking-object` row's own
+          # probe against all 4 Claude models): claude-fable-5/claude-opus-5/
+          # claude-sonnet-5 each 400'd with `"thinking.type.enabled" is not
+          # supported for this model. Use "thinking.type.adaptive" and
+          # "output_config.effort" to control thinking behavior.` — confirmed by
+          # each model's own report (tools/1-models/claude-{fable-5,opus-5,
+          # sonnet-5}.md § Reasoning surface, `output_config.effort`, retrieved
+          # 2026-08-26). claude-haiku-4-5 ("opt-in", legacy extended thinking, "the
+          # only current model without adaptive thinking" per
+          # tools/1-models/claude-haiku-4-5.md) is NOT in this vendor_overrides
+          # mapping — it keeps the shared family shape above unchanged (still
+          # accepted, per the calibration batch's own haiku record, once paired
+          # with a sufficient max_tokens — see the `anthropic-thinking-object` row's
+          # own `max_tokens_override`).
+          #
+          # These three entries are keyed by MODEL SLUG, not `model["vendor"]"] —
+          # every pre-existing vendor_overrides entry in this file (qwen/zai/dseek/
+          # kimi, below) is vendor-keyed, because those are genuinely single-model
+          # vendors within this milestone's 12 tracked models. Anthropic is not: its
+          # 4 models share one `vendor: anthropic` key, and this is the first case
+          # where a SINGLE vendor's own models diverge from each other. Rather than
+          # invent a second, parallel per-model override dict, this file keeps
+          # `vendor_overrides`'s existing dict shape and widens ONLY the lookup:
+          # inventory-to-sets.py's resolve_vendor_override() now tries
+          # `model["slug"]` before falling back to `model["vendor"]` — a minimal,
+          # documented extension (Rule 3 deviation), not a new mechanism.
+          #
+          # Only the "on" key is overridden below — no evidence from this
+          # calibration batch says the "off" shape (`{type:"disabled"}`) is broken
+          # for opus-5/sonnet-5 (their own reports confirm `disabled` IS accepted:
+          # claude-opus-5.md "accepts `disabled` at effort `high` or below";
+          # claude-sonnet-5.md "`disabled` is accepted, with none of Opus 5's
+          # effort-dependent restriction"), and fable-5 never fires a thinking-off
+          # cell at all (`reasoning_toggle: always-on`, models.yaml). Per D-06/rule
+          # 1b, only the response-visible/documented finding is encoded — the "off"
+          # shape is left as the unmodified family default for all three.
+          claude-fable-5:
+            "on":
+              thinking:
+                type: adaptive
+              output_config:
+                effort: high
+          claude-opus-5:
+            "on":
+              thinking:
+                type: adaptive
+              output_config:
+                effort: high
+          claude-sonnet-5:
+            "on":
+              thinking:
+                type: adaptive
+              output_config:
+                effort: high
       openai_compat:
         "on":
           reasoning_effort: low
@@ -758,6 +811,45 @@ params:
     probe_values:
       - type: enabled
         budget_tokens: 1024
+    max_tokens_override: 1025   # 2026-09-01, Phase 11 plan 11-04, D-09
+      # "fix-before-fire": the calibration batch's own claude-haiku-4-5 record
+      # for THIS row 400'd on the shared registry default (max_tokens: 64) with
+      # the budget-floor confound (`` `max_tokens` must be greater than
+      # `thinking.budget_tokens` `` — probes/PREREGISTRATION.md Run log, plan
+      # 11-04 Task 1 Stage 2), the same confound
+      # anthropic-thinking-budget-floor's own max_tokens_override (plan 11-02)
+      # already closed for that row. Row-level, so it applies to all 4 firing
+      # models uniformly (matching that row's precedent) — harmless for the 3
+      # models below, whose overridden probe value carries no budget_tokens
+      # field to confound with max_tokens at all.
+    probe_value_overrides:   # 2026-09-01, Phase 11 plan 11-04, D-09
+      # "fix-before-fire": 3 of 4 Claude models rejected this row's shared
+      # probe value outright — `"thinking.type.enabled" is not supported for
+      # this model. Use "thinking.type.adaptive" and "output_config.effort" to
+      # control thinking behavior.` (same calibration-batch record cited
+      # above). claude-haiku-4-5 is deliberately NOT in this map — its own
+      # 400 named a DIFFERENT field (`thinking.budget_tokens`, the confound
+      # `max_tokens_override` above closes), so its shared probe_values entry
+      # (the legacy enabled/budget_tokens shape) is correct as-is and is left
+      # unmodified; tools/1-models/claude-haiku-4-5.md confirms it "rejects
+      # `adaptive`" and is "the only current model without adaptive thinking."
+      # `effort: high` matches the Anthropic API's own documented default
+      # (tools/1-models/claude-opus-5.md: "Setting `effort` to `"high"`
+      # produces exactly the same behavior as omitting the `effort` parameter
+      # entirely") — the choice that changes this row's tested intent
+      # (thinking ON) the least.
+      claude-fable-5:
+        value: {type: adaptive}
+        extra_fields:
+          output_config: {effort: high}
+      claude-opus-5:
+        value: {type: adaptive}
+        extra_fields:
+          output_config: {effort: high}
+      claude-sonnet-5:
+        value: {type: adaptive}
+        extra_fields:
+          output_config: {effort: high}
     confidence: high
     source: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
     retrieved: 2026-08-26
@@ -767,7 +859,10 @@ params:
       for the floor itself as its own boundary-contract finding). This row's
       one benign probe_values entry (D-03) is the ON shape; the OFF shape
       (`{type:"disabled"}`) is exercised through the thinking-off mode cells
-      on the sampling family, not through this row's own probe_values.
+      on the sampling family, not through this row's own probe_values. This
+      shared probe_values entry now fires ONLY at claude-haiku-4-5 —
+      probe_value_overrides above replaces it for the other 3 models
+      (calibration finding, 2026-09-01, plan 11-04: stale for those 3).
 
   - id: gemini-thinking-config
     group: reasoning-toggle

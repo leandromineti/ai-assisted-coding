@@ -70,6 +70,17 @@ models:
     base_url: https://api.openai.com/v1
     key_env_var: PERSONAL_OPENAI_KEY
     reasoning_toggle: default-on
+    max_tokens_field: max_completion_tokens   # 2026-09-01, Phase 11 plan 11-04,
+      # D-09 "fix-before-fire": this model rejects the openai_compat family's
+      # default `max_tokens` field outright — calibration-batch 400: "Unsupported
+      # parameter: 'max_tokens' is not supported with this model. Use
+      # 'max_completion_tokens' instead." (`param: "max_tokens"` in the error
+      # JSON, probes/PREREGISTRATION.md Run log, plan 11-04 Task 1 Stage 2).
+      # Consumed by probes/harness/runner.py's apply_max_tokens_field_override()
+      # — a per-model request-field rename applied AFTER adapter.build_request(),
+      # deliberately outside openai_compat.py (whose own docstring forbids a
+      # per-vendor/per-model conditional inside the adapter itself). Every other
+      # model in this file omits the field and is unaffected (no-op).
 
   - slug: gemini-3-1-pro
     maker: Google

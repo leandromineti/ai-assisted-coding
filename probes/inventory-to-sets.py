@@ -180,10 +180,26 @@ REQUIRED_ROW_FIELDS = {"id", "group", "kind", "status", "canonical_name", "names
 # — added 2026-09-01, Phase 11 plan 11-02, closing SWEEP-DESIGN Handoff #5 —
 # `max_tokens_override` (positive int): a per-row max_tokens ceiling that the
 # scalar branch of expand_params() uses in place of
-# max_tokens_for(defaults, model_slug) when present. Currently set only on
-# anthropic-thinking-budget-floor, to satisfy Anthropic's documented
-# `budget_tokens < max_tokens` constraint; validated by
-# check_max_tokens_override() below, generic over row shape.
+# max_tokens_for(defaults, model_slug) when present. Currently set on
+# anthropic-thinking-budget-floor (to satisfy Anthropic's documented
+# `budget_tokens < max_tokens` constraint) and anthropic-thinking-object
+# (see below); validated by check_max_tokens_override() below, generic over
+# row shape.
+# — added 2026-09-01, Phase 11 plan 11-04, D-09 "fix-before-fire" (a
+# calibration-batch instrument repair, same class as max_tokens_override
+# above): `probe_value_overrides` (mapping of MODEL SLUG -> {value,
+# extra_fields?}). The existing `vendor_overrides` mechanisms are keyed by
+# `model["vendor"]` — insufficient the moment a single vendor's models
+# diverge from each other, which is exactly what the calibration batch
+# found: 3 of Anthropic's 4 models moved to a new thinking-toggle shape
+# (`thinking.type.adaptive` + `output_config.effort`) while the 4th
+# (claude-haiku-4-5) kept the old `{type:"enabled",budget_tokens:N}` shape.
+# `probe_value_overrides[model_slug].value` REPLACES the row's shared
+# probe_values entry for that model; `.extra_fields` (optional) is merged
+# into extra_params at the top level (e.g. `output_config`, which lives
+# beside `thinking`, not inside it). See resolve_probe_value_override()
+# below. Minimal, deliberate extension — no existing mechanism expressed a
+# per-model (not per-vendor) split; documented as a Rule 3 deviation.
 REQUIRED_WIRE_FAMILIES = {"anthropic_messages", "openai_compat", "gemini"}
 STATUS_ENUM = {"swept", "excluded"}
 CONFIDENCE_ENUM = {"high", "medium", "low"}
@@ -312,6 +328,24 @@ def modes_for_model(row: dict, model: dict) -> tuple[list[str], list[tuple[str, 
     return emitted, skipped
 
 
+def resolve_vendor_override(shape: dict, model: dict) -> dict | None:
+    """(D-08/plan 10-02; extended 2026-09-01, Phase 11 plan 11-04, D-09
+    "fix-before-fire") `vendor_overrides` entries are looked up by MODEL
+    SLUG first, falling back to `model["vendor"]` — the family default's
+    original vendor-keyed lookup, unchanged for every pre-existing entry
+    (qwen/zai/dseek/kimi, all single-model-per-vendor within this milestone's
+    12 tracked models). The slug-first lookup is what lets a SINGLE vendor's
+    models diverge from each other (Anthropic: 3 of 4 Claude models moved to
+    a new thinking-toggle shape, the 4th kept the old one) without a second,
+    parallel override dict — `vendor_overrides` keeps its one dict shape;
+    only the lookup key search widens. A dict keyed by both a real model
+    slug and a real vendor name that could each match the same model is not
+    possible in this registry (no model slug collides with a vendor name),
+    so the two lookups can never disagree in a way that matters."""
+    vendor_overrides = shape.get("vendor_overrides") or {}
+    return vendor_overrides.get(model.get("slug")) or vendor_overrides.get(model["vendor"])
+
+
 def axis_fragment_availability(row: dict, model: dict, inventory: dict, mode: str) -> tuple[bool, str | None]:
     """(D-08/T-10-06, plan 10-02) Whether a REAL request fragment can be
     constructed for this row's axis at this model's wire family + vendor +
@@ -326,8 +360,7 @@ def axis_fragment_availability(row: dict, model: dict, inventory: dict, mode: st
     if shape is None:
         return False, "wire-shape-incompatible"
     key = "on" if mode == "thinking-on" else "off"
-    vendor_overrides = shape.get("vendor_overrides") or {}
-    override = vendor_overrides.get(model["vendor"])
+    override = resolve_vendor_override(shape, model)
     if override is not None and key in override and override[key] is None:
         reason = override.get("reason")
         if reason not in SKIP_REASONS:
@@ -351,8 +384,7 @@ def axis_fragment(row: dict, model: dict, inventory: dict, mode: str) -> dict:
     if shape is None:
         _fail(2, f"row {row['id']!r}: no axis shape declared for wire_family={wire_family!r}")
     key = "on" if mode == "thinking-on" else "off"
-    vendor_overrides = shape.get("vendor_overrides") or {}
-    override = vendor_overrides.get(model["vendor"])
+    override = resolve_vendor_override(shape, model)
     if override is not None and key in override:
         return override[key]
     return shape[key]
@@ -382,6 +414,29 @@ def resolve_param_name(row: dict, model: dict) -> str | None:
     if override_name is not None:
         param_name = override_name
     return param_name
+
+
+def resolve_probe_value_override(row: dict, model: dict, value):
+    """(Phase 11 plan 11-04, D-09 "fix-before-fire" deviation) A row may
+    declare `probe_value_overrides`, keyed by MODEL SLUG (see the field's
+    header comment near REQUIRED_ROW_FIELDS for why slug rather than
+    vendor). When the firing model's slug has an entry, its `value` REPLACES
+    the row's own shared probe_values entry passed in, and its
+    `extra_fields` (a dict, optional) is returned alongside for the caller
+    to merge into extra_params at the top level. Absent (the default for
+    every row that doesn't declare the field): returns (value, {})
+    unchanged — this function is a no-op for the rest of the registry."""
+    overrides = row.get("probe_value_overrides") or {}
+    override = overrides.get(model.get("slug"))
+    if override is None:
+        return value, {}
+    if "value" not in override:
+        _fail(
+            2,
+            f"row {row['id']!r}: probe_value_overrides[{model['slug']!r}] is "
+            "missing its required `value` key",
+        )
+    return override["value"], (override.get("extra_fields") or {})
 
 
 def build_extra_params(row: dict, model: dict, inventory: dict, mode: str, value) -> dict:
@@ -551,17 +606,26 @@ def expand_params(inventory: dict, models: list[dict]) -> tuple[list[dict], list
                     if not available:
                         skipped_entries.append(_skip_record(row, model, mode, reason))
                         continue
-                override = row.get("max_tokens_override")
-                row_max_tokens = override if override is not None else max_tokens_for(defaults, model["slug"])
+                mt_override = row.get("max_tokens_override")
+                row_max_tokens = mt_override if mt_override is not None else max_tokens_for(defaults, model["slug"])
                 for value in probe_values:
+                    # D-09 "fix-before-fire" (plan 11-04): resolve any
+                    # per-model probe_value_overrides BEFORE building the
+                    # entry, so both the rendered `value:` field (and its
+                    # probe_id hash input) and extra_params reflect the
+                    # SAME resolved value — never the shared row value for
+                    # one and the override for the other.
+                    resolved_value, extra_fields = resolve_probe_value_override(row, model, value)
+                    extra_params = build_extra_params(row, model, inventory, mode, resolved_value)
+                    extra_params.update(extra_fields)
                     scalar_entries.append({
                         "model": model["slug"],
                         "param": row["id"],
-                        "value": render_value(value),
+                        "value": render_value(resolved_value),
                         "mode": mode,
                         "prompt": prompt,
                         "max_tokens": row_max_tokens,
-                        "extra_params": build_extra_params(row, model, inventory, mode, value),
+                        "extra_params": extra_params,
                     })
 
     def sort_key(entry: dict) -> tuple:

@@ -522,6 +522,33 @@ def substitute_image_payload(block, payload: str):
     return block
 
 
+def apply_max_tokens_field_override(request_body: dict, row: dict) -> dict:
+    """(Phase 11 plan 11-04, D-09 "fix-before-fire" deviation) A models.yaml
+    row may declare `max_tokens_field`: the request body key that model's
+    wire family's `max_tokens` value must actually be sent under, when the
+    family default field name is rejected outright by that ONE model —
+    gpt-5-6-sol's calibration-batch 400: "Unsupported parameter: 'max_tokens'
+    is not supported with this model. Use 'max_completion_tokens' instead."
+    (`param: "max_tokens"` in the error JSON).
+
+    The rename happens HERE, in the runner's per-entry request assembly,
+    deliberately OUTSIDE the wire-family adapter modules — those modules'
+    own docstrings state no per-vendor/per-model conditional belongs inside
+    them (openai_compat.py: "No conditional in this file branches on a
+    vendor or maker name"). A per-model field-name override is exactly that
+    kind of conditional, so it lives in the one place that already varies
+    per (entry, row) pair: this function, called right after
+    adapter.build_request()/build_content_request() return, before
+    apply_omit(). Absent (the default, every model but gpt-5-6-sol): the
+    request body is returned unchanged, so this is a no-op everywhere else."""
+    field = row.get("max_tokens_field")
+    if field is None or field == "max_tokens" or "max_tokens" not in request_body:
+        return request_body
+    request_body = dict(request_body)
+    request_body[field] = request_body.pop("max_tokens")
+    return request_body
+
+
 def build_entry_request(entry: dict, row: dict, adapter) -> dict:
     """Pure (Phase 11 plan 11-03, MODAL-01): the final request body for either
     grammar a probes/sets/*.yaml entry can carry.
@@ -539,7 +566,12 @@ def build_entry_request(entry: dict, row: dict, adapter) -> dict:
     body.
 
     Scalar entry (no `body_template`): the existing
-    adapter.build_request(...) + apply_omit(...) construction, unchanged."""
+    adapter.build_request(...) + apply_omit(...) construction, unchanged.
+
+    Both branches route their final body through
+    apply_max_tokens_field_override() (plan 11-04) before returning — a
+    per-model request-field rename, a no-op for every model that doesn't
+    declare one."""
     wire_family = row["wire_family"]
 
     if "body_template" in entry:
@@ -562,12 +594,14 @@ def build_entry_request(entry: dict, row: dict, adapter) -> dict:
                 f"key {content_key!r} for wire_family={wire_family!r}: "
                 f"model={entry.get('model')!r} param={entry.get('param')!r}",
             )
-        return adapter.build_content_request(row["api_model_id"], block, entry["max_tokens"])
+        request_body = adapter.build_content_request(row["api_model_id"], block, entry["max_tokens"])
+        return apply_max_tokens_field_override(request_body, row)
 
     prompt = entry.get("prompt", "Reply with one word.")
     max_tokens = entry.get("max_tokens", 16)
     extra_params = entry.get("extra_params") or {}
     request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
+    request_body = apply_max_tokens_field_override(request_body, row)
     return apply_omit(request_body, entry.get("omit"))
 
 
@@ -1346,6 +1380,35 @@ def selftest() -> tuple[int, int]:
         if e.code != 2:
             problems += 1
             print(f"FAIL build_entry_request: expected exit code 2, got {e.code}", file=sys.stderr)
+
+    # --- apply_max_tokens_field_override: a row declaring max_tokens_field
+    #     renames the key; absent (every model but gpt-5-6-sol) is a no-op
+    #     (Phase 11 plan 11-04, D-09 "fix-before-fire") ---
+    cases += 1
+    body_before = {"model": "m", "max_tokens": 64, "messages": []}
+    overridden_row = {"max_tokens_field": "max_completion_tokens"}
+    body_after = apply_max_tokens_field_override(body_before, overridden_row)
+    if "max_tokens" in body_after or body_after.get("max_completion_tokens") != 64:
+        problems += 1
+        print(
+            f"FAIL apply_max_tokens_field_override: expected max_tokens renamed to "
+            f"max_completion_tokens, got {body_after!r}",
+            file=sys.stderr,
+        )
+    if body_before != {"model": "m", "max_tokens": 64, "messages": []}:
+        problems += 1
+        print("FAIL apply_max_tokens_field_override: mutated the caller's original dict in place", file=sys.stderr)
+
+    cases += 1
+    no_override_row = {"wire_family": "anthropic_messages"}
+    body_unchanged = apply_max_tokens_field_override(body_before, no_override_row)
+    if body_unchanged != body_before:
+        problems += 1
+        print(
+            f"FAIL apply_max_tokens_field_override: a row with no max_tokens_field "
+            f"should be a no-op, got {body_unchanged!r}",
+            file=sys.stderr,
+        )
 
     # --- load_content_block_set: fail-loud paths — empty list, absent key,
     #     entry missing a required key (mirrors load_probe_set's own battery

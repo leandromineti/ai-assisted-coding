@@ -143,29 +143,51 @@ def resolve_cell(
     exact_index: dict,
     skip_by_mode_index: dict,
     skip_universal_index: dict,
+    model_mode_index: dict | None = None,
 ) -> dict:
     """One (param, model) pair may carry several cells (one per mode/value the
     row's axis expands to) or exactly one skip cell that applies regardless of
     mode/value (a pair-level `no-request-field-for-vendor`/`wire-shape-incompatible`
-    skip never carries a mode or value of its own). Three-tier lookup, in order:
+    skip never carries a mode or value of its own). Lookup, in order:
     1. An exact (param, model, mode, value) match — a real fired/unfired cell.
+       Skipped entirely when `value is None` (see tier 4 below).
     2. A skip recorded at the SAME mode (a per-mode toggle skip, e.g.
        `no-thinking-off-toggle` at mode `thinking-off`) — skip cells never carry a
        value, so this tier ignores `value`.
     3. A universal (pair-level, mode `n/a`) skip — applies to every mode/value row
        for this param, since the model never fires this parameter at all.
-    D-11 guarantees every (param, model) pair resolves at one of these three tiers
-    — a resolution failure is a structural registry/generator defect, not a
+    4. (2026-09-01, Phase 11 plan 11-04, D-09 "fix-before-fire") When `value is
+       None` — row_keys_for_param()'s PER-MODEL-DIVERGENT sentinel, emitted only
+       when a param's models genuinely fired different values at the same mode
+       (not a shared boundary-contract value set) — resolve this model's own
+       single cell for (param, mode) directly from `model_mode_index`, ignoring
+       the now-meaningless shared value dimension. More than one candidate here
+       is an ambiguity this fallback cannot resolve and fails loud, same as an
+       unresolvable pair.
+    D-11 guarantees every (param, model) pair resolves at one of these tiers —
+    a resolution failure is a structural registry/generator defect, not a
     renderable state, so it fails loud rather than rendering a guessed glyph."""
-    cell = exact_index.get((param, model, mode, value))
-    if cell is not None:
-        return cell
+    if value is not None:
+        cell = exact_index.get((param, model, mode, value))
+        if cell is not None:
+            return cell
     cell = skip_by_mode_index.get((param, model, mode))
     if cell is not None:
         return cell
     cell = skip_universal_index.get((param, model))
     if cell is not None:
         return cell
+    if value is None:
+        candidates = (model_mode_index or {}).get((param, model, mode)) or []
+        if len(candidates) == 1:
+            return candidates[0]
+        if len(candidates) > 1:
+            _fail(
+                2,
+                f"resolve_cell: per-model-divergent fallback is ambiguous for "
+                f"param={param!r} model={model!r} mode={mode!r} — {len(candidates)} "
+                "candidate cells, expected exactly 1",
+            )
     _fail(
         2,
         f"resolve_cell: no cell resolves for param={param!r} model={model!r} mode={mode!r} "
@@ -174,18 +196,23 @@ def resolve_cell(
     )
 
 
-def build_indexes(cells: list[dict]) -> tuple[dict, dict, dict]:
+def build_indexes(cells: list[dict]) -> tuple[dict, dict, dict, dict]:
     exact_index: dict = {}
     skip_by_mode_index: dict = {}
     skip_universal_index: dict = {}
+    model_mode_index: dict = defaultdict(list)   # (param, model, mode) -> [cell, ...]
+    # (plan 11-04) the resolve_cell() tier-4 fallback for a per-model-divergent
+    # row (see row_keys_for_param()) — never consulted for any pre-existing row,
+    # where the tier-1 exact match always succeeds.
     for c in cells:
         key = (c["param"], c["model"], c["mode"], c["value"])
         exact_index[key] = c
+        model_mode_index[(c["param"], c["model"], c["mode"])].append(c)
         if c["state"] == "skipped":
             skip_by_mode_index[(c["param"], c["model"], c["mode"])] = c
             if c["mode"] in (None, "n/a"):
                 skip_universal_index[(c["param"], c["model"])] = c
-    return exact_index, skip_by_mode_index, skip_universal_index
+    return exact_index, skip_by_mode_index, skip_universal_index, dict(model_mode_index)
 
 
 def row_keys_for_param(cells_for_param: list[dict]) -> list[tuple]:
@@ -194,13 +221,50 @@ def row_keys_for_param(cells_for_param: list[dict]) -> list[tuple]:
     already the classified YAML's own declared order: mode/value ascending within
     the param). A param whose every cell is a skip (should not happen per D-11 —
     every swept row fires at least one model) falls back to its skip cells' own
-    (mode, value) pairs so the row is still rendered rather than silently dropped."""
+    (mode, value) pairs so the row is still rendered rather than silently dropped.
+
+    PER-MODEL-DIVERGENT modes (2026-09-01, Phase 11 plan 11-04, D-09
+    "fix-before-fire"): every row before this one shared ONE value (or a
+    boundary-contract row's small shared value SET, D-03) identically across
+    every firing model at a mode — each value's own model-set equals the
+    FULL set of models firing this (param, mode), so the (mode, value) key
+    was safe to treat as global. The calibration batch broke that invariant
+    for `anthropic-thinking-object`: 3 of Anthropic's 4 models moved to a
+    genuinely different probe value than the 4th, at the same mode
+    (`default`) — the "adaptive" value's model-set (3 models) is a PROPER
+    SUBSET of the mode's full model-set (4 models), not the whole thing, and
+    likewise for the 4th model's own value. Detected generically: at a given
+    mode, if ANY value's model-set is not equal to the union of every
+    model-set at that mode (i.e. not every firing model fired every declared
+    value), the mode is divergent — this correctly leaves a real
+    boundary-contract row (every value fired at every model, so each
+    value's model-set trivially equals the full union) on the ordinary
+    per-value path unchanged, whether the values are shared by all models
+    (boundary contract) or, degenerate case, each model has its own entirely
+    unique value (len(models)==1 for every value, also a subset unless there
+    is only one model total). Such a mode's row key becomes `(mode, None)` —
+    a sentinel resolve_cell() reads to resolve each model's own cell
+    directly (its model_mode_index tier), rather than a nominal shared value
+    that would only be true for SOME of the row's models."""
+    values_by_mode: dict = defaultdict(lambda: defaultdict(set))
+    for c in cells_for_param:
+        if c["state"] == "skipped":
+            continue
+        values_by_mode[c["mode"]][c["value"]].add(c["model"])
+    divergent_modes = set()
+    for mode, models_by_value in values_by_mode.items():
+        if len(models_by_value) <= 1:
+            continue
+        all_models_at_mode = set().union(*models_by_value.values())
+        if any(models != all_models_at_mode for models in models_by_value.values()):
+            divergent_modes.add(mode)
+
     keys: list[tuple] = []
     seen: set[tuple] = set()
     for c in cells_for_param:
         if c["state"] == "skipped":
             continue
-        key = (c["mode"], c["value"])
+        key = (c["mode"], None) if c["mode"] in divergent_modes else (c["mode"], c["value"])
         if key not in seen:
             seen.add(key)
             keys.append(key)
@@ -229,7 +293,7 @@ def render_matrix(classified: dict) -> str:
 
     models = model_column_order(cells)
     groups = group_order(cells)
-    exact_index, skip_by_mode_index, skip_universal_index = build_indexes(cells)
+    exact_index, skip_by_mode_index, skip_universal_index, model_mode_index = build_indexes(cells)
 
     by_param: dict[str, list[dict]] = defaultdict(list)
     param_group: dict[str, str] = {}
@@ -268,7 +332,11 @@ def render_matrix(classified: dict) -> str:
             for mode, value in row_keys:
                 label = param
                 if multi:
-                    label = f"{param} (mode={mode}, value={value})"
+                    # value is None for a per-model-divergent row (plan
+                    # 11-04) — no single value is true for the whole row, so
+                    # the label says so plainly instead of printing "None".
+                    shown_value = "varies by model" if value is None else value
+                    label = f"{param} (mode={mode}, value={shown_value})"
                 row_cells = [label]
                 for model in models:
                     cell = resolve_cell(
@@ -279,6 +347,7 @@ def render_matrix(classified: dict) -> str:
                         exact_index=exact_index,
                         skip_by_mode_index=skip_by_mode_index,
                         skip_universal_index=skip_universal_index,
+                        model_mode_index=model_mode_index,
                     )
                     row_cells.append(glyph_for(cell))
                 lines.append("| " + " | ".join(row_cells) + " |")
@@ -422,10 +491,11 @@ def selftest() -> tuple[int, int]:
 
     # --- resolve_cell: three-tier lookup — exact, per-mode skip, universal skip ---
     cases += 1
-    exact_index, skip_by_mode_index, skip_universal_index = build_indexes(fixture_cells)
+    exact_index, skip_by_mode_index, skip_universal_index, model_mode_index = build_indexes(fixture_cells)
     exact_hit = resolve_cell(
         param="p2", model="m1", mode="thinking-on", value="v2",
         exact_index=exact_index, skip_by_mode_index=skip_by_mode_index, skip_universal_index=skip_universal_index,
+        model_mode_index=model_mode_index,
     )
     if exact_hit["state"] != "accepted-unverified":
         problems += 1
@@ -465,6 +535,43 @@ def selftest() -> tuple[int, int]:
     if keys != [("thinking-on", "v2")]:
         problems += 1
         print(f"FAIL row_keys_for_param: expected [('thinking-on', 'v2')], got {keys}", file=sys.stderr)
+
+    # --- row_keys_for_param / resolve_cell: PER-MODEL-DIVERGENT row (plan
+    #     11-04, D-09 "fix-before-fire") — two models each fire a DIFFERENT
+    #     value at the same mode (no shared value, unlike a boundary-contract
+    #     row where every value fires at every model). row_keys_for_param()
+    #     must collapse this to a single (mode, None) sentinel row, and
+    #     resolve_cell() must resolve EACH model's own cell via the
+    #     model_mode_index fallback rather than failing loud. ---
+    cases += 1
+    divergent_cells = [
+        {"param": "p-div", "group": "g1", "model": "m1", "mode": "default", "value": "va",
+         "state": "unfired", "probe_id": None, "override": None},
+        {"param": "p-div", "group": "g1", "model": "m2", "mode": "default", "value": "vb",
+         "state": "rejected", "probe_id": "z", "override": None},
+    ]
+    divergent_keys = row_keys_for_param(divergent_cells)
+    if divergent_keys != [("default", None)]:
+        problems += 1
+        print(f"FAIL row_keys_for_param(divergent): expected [('default', None)], got {divergent_keys}", file=sys.stderr)
+    div_exact, div_skip_mode, div_skip_universal, div_model_mode = build_indexes(divergent_cells)
+    div_hit_m1 = resolve_cell(
+        param="p-div", model="m1", mode="default", value=None,
+        exact_index=div_exact, skip_by_mode_index=div_skip_mode, skip_universal_index=div_skip_universal,
+        model_mode_index=div_model_mode,
+    )
+    div_hit_m2 = resolve_cell(
+        param="p-div", model="m2", mode="default", value=None,
+        exact_index=div_exact, skip_by_mode_index=div_skip_mode, skip_universal_index=div_skip_universal,
+        model_mode_index=div_model_mode,
+    )
+    if div_hit_m1["state"] != "unfired" or div_hit_m2["state"] != "rejected":
+        problems += 1
+        print(
+            f"FAIL resolve_cell(divergent): expected (unfired, rejected), got "
+            f"({div_hit_m1['state']}, {div_hit_m2['state']})",
+            file=sys.stderr,
+        )
 
     # --- render_matrix: deterministic, byte-identical for identical input ---
     cases += 1
