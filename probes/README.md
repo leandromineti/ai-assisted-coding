@@ -25,7 +25,12 @@ probes/inventory-to-sets.py      Phase 10 — expands the registry into declared
         ↓
 probes/sets/generated/*.yaml     Phase 10 — GENERATED probe-set declarations (rule 3:
                                   never hand-edited; drift-checked against the
-                                  registry)
+                                  registry). Two grammars, two runner.py flags:
+                                  contract-sweep.yaml (`probes:`, --set) and
+                                  content-blocks.yaml (`content_block_probes:`,
+                                  --content-block-set, MODAL-01, Phase 11) — the
+                                  runner refuses each grammar under the other
+                                  flag loudly, exit 2
         ↓
 probes/raw/{vendor}.jsonl        one JSONL file per vendor — every request/response
                                   verbatim, written by probes/harness/runner.py
@@ -41,7 +46,8 @@ comparisons/probes.md            Phase 13 — GENERATED probe matrix (rule 3: ne
 
 | Path | Contents |
 |---|---|
-| `probes/harness/` | the runner, the stdlib HTTP client, the append-only ledger, and one adapter module per wire family (`probes/harness/adapters/`) |
+| `probes/harness/` | the runner (two probe-set grammars: `--set` for scalar parameter cells, `--content-block-set` for the image-input/cache-control content-block cells, MODAL-01, Phase 11 plan 11-03 — schema in `probes/inventory.yaml`, not restated here), the stdlib HTTP client, the append-only ledger, and one adapter module per wire family (`probes/harness/adapters/`) |
+| `probes/harness/fixtures.py` | the pinned tiny-PNG test payload the content-block firing path sends (Phase 11 plan 11-03, MODAL-01) — `TINY_PNG_BASE64`, provenance-only `make_tiny_png()`, `--selftest` |
 | `probes/harness/models.yaml` | wire facts for all 12 active tracked models (D-01) — self-contained, never parses `tools/1-models/` prose at runtime |
 | `probes/harness/prices.yaml` | per-token USD prices for the same 12 models, each row dated and sourced (D-02) |
 | `probes/inventory.yaml` | the parameter registry (Phase 10, D-01) — one row per parameter or content-block, each carrying `source:`/`retrieved:`; a GENERATOR INPUT, never fired directly |
@@ -87,6 +93,11 @@ Full field-by-field evidence: [`SMOKE-TEST-2026-09-01.md`](SMOKE-TEST-2026-09-01
    absent (rule 1b).** No 429/5xx occurred against any of the five probes fired this
    phase; the 429/5xx retry-with-backoff half of HARN-04 stays unit-verified only
    (`client.py --selftest`) until a live rate-limit response is actually encountered.
+6. **Content-block cells' `max_tokens` — closed 2026-09-01, Phase 11 plan 11-03
+   (not the 09-03 smoke test above): each `content-blocks.yaml` entry now carries
+   its own per-model `max_tokens`,** the same registry-driven value the scalar
+   cells use (`gemini-3-1-pro`'s 200-token override reaches its image cell too) —
+   schema in `probes/inventory.yaml`, not restated here.
 
 ## Append-only rule
 

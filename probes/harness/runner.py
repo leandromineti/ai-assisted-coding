@@ -30,6 +30,7 @@ principle, not covered by it. PyYAML must be installed in the environment this r
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import inspect
 import json
@@ -42,6 +43,7 @@ from pathlib import Path
 import yaml
 
 import client
+import fixtures
 import ledger
 from adapters import ADAPTERS
 
@@ -374,6 +376,29 @@ def build_skipped_ceiling_record(
 REQUIRED_PROBE_ENTRY_KEYS = {"model", "param", "value", "mode"}
 OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit"}
 
+# Content-block entry keys (Phase 11 plan 11-03, MODAL-01), the second grammar
+# runner.py recognizes alongside REQUIRED_PROBE_ENTRY_KEYS/OPTIONAL_PROBE_ENTRY_KEYS
+# above — both grammars declared beside each other so the full recognized
+# vocabulary is visible in one place. `max_tokens` is REQUIRED here (unlike the
+# scalar grammar, where it's optional with a 16-token default): a content-block
+# probe's max_tokens is always generator-emitted (inventory-to-sets.py's
+# max_tokens_for()/max_tokens_override), never defaulted by the runner. No
+# optional content-block entry keys exist today.
+REQUIRED_CONTENT_BLOCK_KEYS = {"model", "param", "value", "mode", "max_tokens", "body_template"}
+OPTIONAL_CONTENT_BLOCK_KEYS: set[str] = set()
+
+# Each wire family's content key inside a substituted body_template block —
+# anthropic_messages and openai_compat both carry `content` (a content-block
+# list), gemini carries `parts`. Table-driven, matching _WIRE_FAMILY_URL_SUFFIX's
+# idiom above — no vendor-name conditional anywhere on this path.
+_WIRE_FAMILY_CONTENT_KEY = {
+    "anthropic_messages": "content",
+    "openai_compat": "content",
+    "gemini": "parts",
+}
+
+CONTENT_BLOCK_IMAGE_PLACEHOLDER = "{{IMAGE_BASE64_PLACEHOLDER}}"
+
 
 def apply_omit(request_body: dict, omit_keys: list[str] | None) -> dict:
     """D-04 extension (plan 09-03): remove the listed top-level keys from a built
@@ -430,8 +455,13 @@ def endpoint_url(wire_family: str, base_url: str, api_model_id: str) -> str:
 def load_content_block_set(path=CONTENT_BLOCKS_GENERATED_PATH) -> list[dict]:
     """Like load_probe_set, but for probes/sets/generated/content-blocks.yaml's
     deliberately-different `content_block_probes:` top-level key — the file
-    load_probe_set refuses loudly (D-12). --check-stages (Phase 11 plan 11-02)
-    is the one caller that needs to READ this file without firing it."""
+    load_probe_set refuses loudly (D-12). Mirrors load_probe_set's fail-loud
+    contract exactly: a missing/empty `content_block_probes:` list, or an entry
+    missing a required key (REQUIRED_CONTENT_BLOCK_KEYS above), aborts before
+    any HTTP request is sent — exit 2, a diagnostic naming the file and the
+    missing key, zero new JSONL lines. --check-stages (Phase 11 plan 11-02) and
+    the `--content-block-set` firing path (Phase 11 plan 11-03, MODAL-01) are
+    this loader's two callers."""
     try:
         text = Path(path).read_text()
     except OSError as e:
@@ -443,7 +473,75 @@ def load_content_block_set(path=CONTENT_BLOCKS_GENERATED_PATH) -> list[dict]:
     entries = (data or {}).get("content_block_probes") if isinstance(data, dict) else None
     if not isinstance(entries, list) or not entries:
         _fail(2, f"{path}: `content_block_probes:` must be a non-empty list")
+    for entry in entries:
+        missing = REQUIRED_CONTENT_BLOCK_KEYS - set(entry)
+        if missing:
+            _fail(2, f"{path}: content-block entry missing required key(s) {sorted(missing)}: {entry}")
     return entries
+
+
+def substitute_image_payload(block, payload: str):
+    """Pure (Phase 11 plan 11-03, MODAL-01): returns a NEW structure with every
+    occurrence of CONTENT_BLOCK_IMAGE_PLACEHOLDER replaced by `payload`, walking
+    mappings, lists, and strings generically. Never mutates its argument — the
+    cache-control entries carry no placeholder at all and pass through
+    unchanged, byte-for-byte, as a NEW (not aliased) structure all the same."""
+    if isinstance(block, dict):
+        return {k: substitute_image_payload(v, payload) for k, v in block.items()}
+    if isinstance(block, list):
+        return [substitute_image_payload(v, payload) for v in block]
+    if isinstance(block, str):
+        return block.replace(CONTENT_BLOCK_IMAGE_PLACEHOLDER, payload)
+    return block
+
+
+def build_entry_request(entry: dict, row: dict, adapter) -> dict:
+    """Pure (Phase 11 plan 11-03, MODAL-01): the final request body for either
+    grammar a probes/sets/*.yaml entry can carry.
+
+    Content-block entry (carries `body_template`): deep-copy
+    entry["body_template"][row["wire_family"]] FIRST — unconditionally,
+    regardless of what plan 11-02 fixed at generation time, because a
+    hand-authored or older set file can still alias (RESEARCH.md Pattern 2) —
+    then substitute fixtures.TINY_PNG_BASE64 for the placeholder token, assert
+    the substituted block carries its family's expected content key
+    (_WIRE_FAMILY_CONTENT_KEY), and dispatch through
+    adapter.build_content_request(). A family key absent from body_template is
+    a registry defect (inventory-to-sets.py's firing_scope should make this
+    unreachable) — fail loud (exit 2), naming the entry, never a silently-empty
+    body.
+
+    Scalar entry (no `body_template`): the existing
+    adapter.build_request(...) + apply_omit(...) construction, unchanged."""
+    wire_family = row["wire_family"]
+
+    if "body_template" in entry:
+        content_key = _WIRE_FAMILY_CONTENT_KEY.get(wire_family)
+        if content_key is None:
+            _fail(2, f"no content key registered for wire_family={wire_family!r} (entry: {entry})")
+        template = entry["body_template"].get(wire_family)
+        if template is None:
+            _fail(
+                2,
+                f"content-block entry has no body_template for wire_family={wire_family!r}: "
+                f"model={entry.get('model')!r} param={entry.get('param')!r}",
+            )
+        block = copy.deepcopy(template)
+        block = substitute_image_payload(block, fixtures.TINY_PNG_BASE64)
+        if content_key not in block:
+            _fail(
+                2,
+                f"content-block entry's substituted body is missing its family's expected "
+                f"key {content_key!r} for wire_family={wire_family!r}: "
+                f"model={entry.get('model')!r} param={entry.get('param')!r}",
+            )
+        return adapter.build_content_request(row["api_model_id"], block, entry["max_tokens"])
+
+    prompt = entry.get("prompt", "Reply with one word.")
+    max_tokens = entry.get("max_tokens", 16)
+    extra_params = entry.get("extra_params") or {}
+    request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
+    return apply_omit(request_body, entry.get("omit"))
 
 
 REQUIRED_STAGE_KEYS = {"stage", "name", "set", "expect_cells", "selectors"}
@@ -1139,6 +1237,108 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL selftest: --stage 9 (out of range) printed nothing to stderr", file=sys.stderr)
 
+    # --- substitute_image_payload: pure, replaces the token at any nesting
+    #     depth, never mutates its argument (Phase 11 plan 11-03, MODAL-01) ---
+    cases += 1
+    original_block = {
+        "content": [
+            {"type": "image", "source": {"type": "base64", "data": "{{IMAGE_BASE64_PLACEHOLDER}}"}},
+            {"type": "text", "text": "hi"},
+        ]
+    }
+    before_snapshot = copy.deepcopy(original_block)
+    substituted_block = substitute_image_payload(original_block, "PAYLOAD")
+    if original_block != before_snapshot:
+        problems += 1
+        print("FAIL substitute_image_payload: mutated its argument in place", file=sys.stderr)
+    if substituted_block["content"][0]["source"]["data"] != "PAYLOAD":
+        problems += 1
+        print("FAIL substitute_image_payload: token not substituted at a nested depth", file=sys.stderr)
+    if "{{IMAGE_BASE64_PLACEHOLDER}}" in json.dumps(substituted_block):
+        problems += 1
+        print("FAIL substitute_image_payload: placeholder token survived substitution", file=sys.stderr)
+
+    # --- build_entry_request: two entries sharing the SAME body_template object
+    #     (the exact YAML-anchor-sharing hazard, RESEARCH.md Pattern 2) must
+    #     produce independent bodies — mutating one must never leak into the
+    #     other, and the shared source object itself must stay unmutated ---
+    cases += 1
+    shared_template = {
+        "anthropic_messages": {
+            "content": [{"type": "image", "source": {"type": "base64", "data": "{{IMAGE_BASE64_PLACEHOLDER}}"}}]
+        }
+    }
+    aliased_entry_a = {
+        "model": "m", "param": "image-input", "value": "content-block", "mode": "default",
+        "max_tokens": 64, "body_template": shared_template,
+    }
+    aliased_entry_b = {
+        "model": "m", "param": "image-input", "value": "content-block", "mode": "default",
+        "max_tokens": 64, "body_template": shared_template,
+    }
+    fake_row = {"wire_family": "anthropic_messages", "api_model_id": "m-api"}
+    fake_adapter = ADAPTERS["anthropic_messages"]
+    body_a = build_entry_request(aliased_entry_a, fake_row, fake_adapter)
+    body_b = build_entry_request(aliased_entry_b, fake_row, fake_adapter)
+    body_a["messages"][0]["content"][0]["source"]["data"] = "MUTATED"
+    if body_b["messages"][0]["content"][0]["source"]["data"] == "MUTATED":
+        problems += 1
+        print("FAIL build_entry_request: two entries sharing one body_template object leaked a mutation", file=sys.stderr)
+    if "{{IMAGE_BASE64_PLACEHOLDER}}" not in json.dumps(shared_template):
+        problems += 1
+        print("FAIL build_entry_request: mutated the original shared body_template object", file=sys.stderr)
+
+    # --- build_entry_request: a family key absent from body_template is a
+    #     registry defect — fail loud (exit 2), naming the entry, never a
+    #     silently-empty body (Phase 11 plan 11-03) ---
+    cases += 1
+    entry_missing_family = {
+        "model": "m", "param": "image-input", "value": "content-block", "mode": "default",
+        "max_tokens": 64, "body_template": {"gemini": {"parts": [{"text": "hi"}]}},
+    }
+    try:
+        build_entry_request(entry_missing_family, fake_row, fake_adapter)
+        problems += 1
+        print(
+            "FAIL build_entry_request: expected a fail-loud exit when the family key "
+            "is absent from body_template",
+            file=sys.stderr,
+        )
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_entry_request: expected exit code 2, got {e.code}", file=sys.stderr)
+
+    # --- load_content_block_set: fail-loud paths — empty list, absent key,
+    #     entry missing a required key (mirrors load_probe_set's own battery
+    #     above, Phase 11 plan 11-03) ---
+    for label, content in [
+        ("no content_block_probes key", "not_content_block_probes: []\n"),
+        ("empty content_block_probes list", "content_block_probes: []\n"),
+        (
+            "entry missing required key",
+            "content_block_probes:\n  - model: x\n    param: image-input\n",
+        ),
+    ]:
+        cases += 1
+        with tempfile.TemporaryDirectory() as td:
+            bad = Path(td) / "bad.yaml"
+            bad.write_text(content)
+            try:
+                load_content_block_set(bad)
+                problems += 1
+                print(
+                    f"FAIL load_content_block_set({label}): expected a fail-loud exit, got a return",
+                    file=sys.stderr,
+                )
+            except SystemExit as e:
+                if e.code != 2:
+                    problems += 1
+                    print(
+                        f"FAIL load_content_block_set({label}): expected exit code 2, got {e.code}",
+                        file=sys.stderr,
+                    )
+
     return cases, problems
 
 
@@ -1146,9 +1346,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         prog="runner.py",
         usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--stage N] [--refire-exhausted] "
-        "[--refire-ceiling-skipped] | --check-stages | --selftest",
+        "[--refire-ceiling-skipped] | runner.py --content-block-set <probes/sets/generated/"
+        "content-blocks.yaml> [--dry-run] [--stage N] | --check-stages | --selftest",
     )
     parser.add_argument("--set", dest="set_path")
+    parser.add_argument(
+        "--content-block-set",
+        dest="content_block_set_path",
+        help="fire probes/sets/generated/content-blocks.yaml's content_block_probes: "
+        "grammar (MODAL-01, image-input/anthropic-cache-control-block) — mutually "
+        "exclusive with --set, which refuses this grammar loudly",
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--selftest", action="store_true")
     parser.add_argument(
@@ -1201,15 +1409,27 @@ def main() -> int:
         print(f"{problems} problem(s)")
         return 1 if problems else 0
 
-    if not args.set_path:
+    if args.set_path and args.content_block_set_path:
+        _fail(2, "--set and --content-block-set are mutually exclusive")
+
+    if not args.set_path and not args.content_block_set_path:
         print(
             "usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--stage N] "
-            "[--refire-exhausted] [--refire-ceiling-skipped] | --check-stages | --selftest",
+            "[--refire-exhausted] [--refire-ceiling-skipped] | runner.py --content-block-set "
+            "<probes/sets/generated/content-blocks.yaml> [--dry-run] [--stage N] | "
+            "--check-stages | --selftest",
             file=sys.stderr,
         )
         return 2
 
-    probes = load_probe_set(args.set_path)
+    # Either grammar's file path is used identically downstream for the
+    # `set_file` field every JSONL record carries (D-08) — the loader called
+    # above is the only place the two grammars actually diverge.
+    active_set_path = args.content_block_set_path or args.set_path
+    if args.content_block_set_path:
+        probes = load_content_block_set(args.content_block_set_path)
+    else:
+        probes = load_probe_set(args.set_path)
 
     if args.stage is not None:
         stages_doc = load_sweep_stages()
@@ -1248,12 +1468,15 @@ def main() -> int:
             problems += 1
             continue
 
-        prompt = entry.get("prompt", "Reply with one word.")
-        max_tokens = entry.get("max_tokens", 16)
-        extra_params = entry.get("extra_params") or {}
-
-        request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
-        request_body = apply_omit(request_body, entry.get("omit"))
+        # build_entry_request (Phase 11 plan 11-03, MODAL-01) is the single point
+        # where either grammar's request body is built — a content-block entry
+        # (carries body_template) or a scalar entry (adapter.build_request() +
+        # apply_omit(), unchanged). Everything below this line is shared by both
+        # paths unmodified: probe_id, the dry-run print, the resume-skip scan,
+        # the vendor-skip record, the send, the per-attempt header filter,
+        # build_record, assert_no_secrets, the JSONL append, the ledger append
+        # and the between-probes ceiling check.
+        request_body = build_entry_request(entry, row, adapter)
         pid = probe_id(model_slug, entry["param"], entry["value"], entry["mode"], request_body)
 
         # Rule 1 fix (plan 09-02): dry-run is checked BEFORE the resume-skip scan, not
@@ -1287,7 +1510,7 @@ def main() -> int:
                 model_slug=model_slug,
                 api_model_id=row["api_model_id"],
                 wire_family=wire_family,
-                set_file=str(args.set_path),
+                set_file=str(active_set_path),
                 param=entry["param"],
                 value=entry["value"],
                 mode=entry["mode"],
@@ -1344,7 +1567,7 @@ def main() -> int:
             model_slug=model_slug,
             api_model_id=row["api_model_id"],
             wire_family=wire_family,
-            set_file=str(args.set_path),
+            set_file=str(active_set_path),
             param=entry["param"],
             value=entry["value"],
             mode=entry["mode"],
