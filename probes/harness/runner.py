@@ -4,7 +4,7 @@ each declared probe through the wire-family adapter registered in adapters/, fir
 the request via client.py, and writes the result as one JSONL record per vendor
 (D-08) plus one ledger line per billed attempt (D-07).
 
-    python3 probes/harness/runner.py --set probes/sets/smoke.yaml [--dry-run] [--refire-exhausted]
+    python3 probes/harness/runner.py --set probes/sets/smoke.yaml [--dry-run] [--refire-exhausted] [--refire-ceiling-skipped]
     python3 probes/harness/runner.py --selftest
 
 Exit codes: 0 clean, 1 problems recorded (a probe errored, exhausted its retry budget,
@@ -106,7 +106,9 @@ def probe_id(model_slug: str, param: str, value: str, mode: str, request_body: d
     return f"{model_slug}--{param}--{value}--{mode}--{body_hash}"
 
 
-def seen_probe_ids(path: Path, *, refire_exhausted: bool = False) -> set[str]:
+def seen_probe_ids(
+    path: Path, *, refire_exhausted: bool = False, refire_ceiling_skipped: bool = False
+) -> set[str]:
     """Scan `probes/raw/{vendor}.jsonl` for already-logged probe_ids (D-08, HARN-02).
     A missing file, a zero-byte file, and a file whose final line is a truncated
     partial record are all handled without raising — every complete line populates
@@ -119,7 +121,18 @@ def seen_probe_ids(path: Path, *, refire_exhausted: bool = False) -> set[str]:
     full retry budget against (for example) a still-in-effect spend-cap 429. Pass
     `refire_exhausted=True` to exclude those specific ids from the seen-set instead,
     so a transient rate-limit window can be re-attempted deliberately via
-    `--refire-exhausted` rather than by accident on every ordinary run."""
+    `--refire-exhausted` rather than by accident on every ordinary run.
+
+    Same idea for `terminal == "skipped_ceiling"` (WR-02, phase-09 code review
+    2026-09-01): a probe dropped by a vendor sub-ceiling breach was never actually
+    fired, but by default its probe_id still permanently populates the seen-set —
+    without this flag it can never be re-attempted even after `ceilings.yaml` is
+    raised specifically to unblock it, forcing a hand-edit of the append-only JSONL
+    file this repo's own conventions forbid. Pass `refire_ceiling_skipped=True`
+    (`--refire-ceiling-skipped`) to exclude those ids from the seen-set instead — a
+    separate flag from `refire_exhausted` because the two failure modes have
+    different root causes (a transient rate limit vs. a budget policy someone
+    deliberately raised) and a caller may want to refire only one of them."""
     p = Path(path)
     seen: set[str] = set()
     if not p.exists() or p.stat().st_size == 0:
@@ -137,7 +150,10 @@ def seen_probe_ids(path: Path, *, refire_exhausted: bool = False) -> set[str]:
         pid = rec.get("probe_id")
         if not pid:
             continue
-        if refire_exhausted and rec.get("terminal") == "retry_exhausted":
+        terminal = rec.get("terminal")
+        if refire_exhausted and terminal == "retry_exhausted":
+            continue
+        if refire_ceiling_skipped and terminal == "skipped_ceiling":
             continue
         seen.add(pid)
     return seen
@@ -778,6 +794,32 @@ def selftest() -> tuple[int, int]:
             problems += 1
             print("FAIL seen_probe_ids: refire_exhausted=True must exclude retry_exhausted ids from the seen-set", file=sys.stderr)
 
+    # --- resume (WR-02): a terminal:skipped_ceiling record is skipped by default,
+    #     re-included via --refire-ceiling-skipped's refire_ceiling_skipped=True, and
+    #     the two refire flags are independent (each excludes only its own terminal) ---
+    cases += 1
+    with tempfile.TemporaryDirectory() as td:
+        ceiling_fixture = Path(td) / "vendor.jsonl"
+        ceiling_pid = "z--baseline--none--default--cccccccc"
+        exhausted_pid2 = "y--baseline--none--default--eeeeeeee"
+        ceiling_fixture.write_text(
+            json.dumps({"probe_id": ceiling_pid, "terminal": "skipped_ceiling"}) + "\n"
+            + json.dumps({"probe_id": exhausted_pid2, "terminal": "retry_exhausted"}) + "\n"
+        )
+
+        default_seen = seen_probe_ids(ceiling_fixture)
+        if ceiling_pid not in default_seen:
+            problems += 1
+            print("FAIL seen_probe_ids: a skipped_ceiling record must be in the default seen-set (resume-skipped)", file=sys.stderr)
+
+        refire_ceiling_seen = seen_probe_ids(ceiling_fixture, refire_ceiling_skipped=True)
+        if ceiling_pid in refire_ceiling_seen:
+            problems += 1
+            print("FAIL seen_probe_ids: refire_ceiling_skipped=True must exclude skipped_ceiling ids from the seen-set", file=sys.stderr)
+        if exhausted_pid2 not in refire_ceiling_seen:
+            problems += 1
+            print("FAIL seen_probe_ids: refire_ceiling_skipped=True must NOT also exclude retry_exhausted ids (independent flags)", file=sys.stderr)
+
     # --- build_skipped_ceiling_record: terminal + a reason naming vendor and threshold ---
     cases += 1
     skip_reason = "zai total $1.500000 reached its $1.50 soft sub-ceiling"
@@ -826,7 +868,8 @@ def selftest() -> tuple[int, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="runner.py",
-        usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] | --selftest",
+        usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] "
+        "[--refire-ceiling-skipped] | --selftest",
     )
     parser.add_argument("--set", dest="set_path")
     parser.add_argument("--dry-run", action="store_true")
@@ -838,6 +881,14 @@ def main() -> int:
         "so a probe that spent its full retry budget can be deliberately re-fired "
         "(default: those ids stay in the seen-set and are skipped, HARN-04)",
     )
+    parser.add_argument(
+        "--refire-ceiling-skipped",
+        action="store_true",
+        help="exclude terminal:skipped_ceiling probe_ids from the resume-skip set, "
+        "so a probe dropped by a vendor sub-ceiling breach can be deliberately "
+        "re-fired after ceilings.yaml is raised (default: those ids stay in the "
+        "seen-set and are permanently skipped, WR-02)",
+    )
     args = parser.parse_args()
 
     if args.selftest:
@@ -846,7 +897,11 @@ def main() -> int:
         return 1 if problems else 0
 
     if not args.set_path:
-        print("usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] | --selftest", file=sys.stderr)
+        print(
+            "usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] "
+            "[--refire-ceiling-skipped] | --selftest",
+            file=sys.stderr,
+        )
         return 2
 
     probes = load_probe_set(args.set_path)
@@ -897,7 +952,11 @@ def main() -> int:
             continue
 
         raw_path = RAW_DIR / f"{vendor}.jsonl"
-        seen = seen_probe_ids(raw_path, refire_exhausted=args.refire_exhausted)
+        seen = seen_probe_ids(
+            raw_path,
+            refire_exhausted=args.refire_exhausted,
+            refire_ceiling_skipped=args.refire_ceiling_skipped,
+        )
         if pid in seen:
             print(f"SKIP {pid} (already logged)")
             continue
