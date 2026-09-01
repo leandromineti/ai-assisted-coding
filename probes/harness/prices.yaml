@@ -1,0 +1,16 @@
+# probes/harness/prices.yaml — per-token USD prices for the 12 active tracked models
+# (D-02). One row per model, keyed by the same slug as models.yaml. Every row carries
+# its own retrieved: date and source: URL, transcribed from the model report's own
+# pricing: block, so a stale price is auditable and every ledger dollar figure is
+# recomputable from raw token counts.
+#
+# This Task 2 tracer commit adds only the one row the tracer probe actually fires
+# against; plan 09-01 Task 3 extends this file to all 12 rows.
+checked: 2026-09-01
+
+prices:
+  - slug: claude-haiku-4-5
+    input_usd_per_mtok: 1
+    output_usd_per_mtok: 5
+    retrieved: 2026-09-01
+    source: https://platform.claude.com/docs/en/about-claude/models/overview

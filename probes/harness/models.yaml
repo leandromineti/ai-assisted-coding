@@ -1,0 +1,17 @@
+# probes/harness/models.yaml — the sole source of truth for wire facts across the 12
+# active tracked models (D-01). Self-contained: never parses tools/1-models/ prose at
+# runtime; a drift check against the reports' active-model set is deliberately
+# deferred to Phase 13's check-probe-drift.py.
+#
+# This Task 2 tracer commit adds only the one row the tracer probe actually fires
+# against; plan 09-01 Task 3 extends this file to all 12 rows across 3 wire families.
+checked: 2026-09-01
+
+models:
+  - slug: claude-haiku-4-5
+    maker: Anthropic
+    vendor: anthropic
+    wire_family: anthropic_messages
+    api_model_id: claude-haiku-4-5-20251001
+    base_url: https://api.anthropic.com/v1
+    key_env_var: PERSONAL_ANTHROPIC_KEY

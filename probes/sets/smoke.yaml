@@ -1,0 +1,14 @@
+# probes/sets/smoke.yaml — the tracer's one declared probe (D-03). One entry, one
+# live request: the cheapest tracked Anthropic model, a sixteen-token reply, proving
+# every harness layer end-to-end (probe-set YAML -> runner -> adapter -> stdlib HTTP
+# client -> per-vendor JSONL -> append-only ledger) before any other wire family or
+# vendor is wired in (plan 09-01 Task 2).
+checked: 2026-09-01
+
+probes:
+  - model: claude-haiku-4-5
+    param: baseline
+    value: none
+    mode: default
+    prompt: "Reply with exactly one word: hello."
+    max_tokens: 16
