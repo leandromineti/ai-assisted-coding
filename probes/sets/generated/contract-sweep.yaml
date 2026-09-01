@@ -1987,7 +1987,7 @@ probes:
   value: '{"budget_tokens":500,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: &id009
       type: enabled
@@ -1997,7 +1997,7 @@ probes:
   value: '{"budget_tokens":1024,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: &id010
       type: enabled
@@ -2007,7 +2007,7 @@ probes:
   value: '{"budget_tokens":500,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id009
 - model: claude-opus-5
@@ -2015,7 +2015,7 @@ probes:
   value: '{"budget_tokens":1024,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id010
 - model: claude-sonnet-5
@@ -2023,7 +2023,7 @@ probes:
   value: '{"budget_tokens":500,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id009
 - model: claude-sonnet-5
@@ -2031,7 +2031,7 @@ probes:
   value: '{"budget_tokens":1024,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id010
 - model: claude-haiku-4-5
@@ -2039,7 +2039,7 @@ probes:
   value: '{"budget_tokens":500,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id009
 - model: claude-haiku-4-5
@@ -2047,7 +2047,7 @@ probes:
   value: '{"budget_tokens":1024,"type":"enabled"}'
   mode: default
   prompt: 'Reply with exactly one word: hello.'
-  max_tokens: 64
+  max_tokens: 1025
   extra_params:
     thinking: *id010
 - model: gemini-3-1-pro

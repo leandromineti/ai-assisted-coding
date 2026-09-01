@@ -162,6 +162,21 @@ INV03_ROW_IDS = frozenset({
 # byte-exact equality is the only equality that applies.
 ROW_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 REQUIRED_ROW_FIELDS = {"id", "group", "kind", "status", "canonical_name", "names", "source", "retrieved"}
+
+# Optional row fields the generator recognizes (not required, but documented
+# rather than merely tolerated, matching the required-fields list above):
+# `boundary_contract` (bool, D-03 — required when a row declares >1
+# probe_values), `confidence` (CONFIDENCE_ENUM), `axis` (AXIS_ENUM, required
+# for `sampling`-group rows per D-07), `firing_scope` (FIRING_SCOPES),
+# `name_overrides` (per-vendor name-override map), `excluded_reason`/
+# `excluded_at` (status=excluded), `body_template` (kind=content-block), and
+# — added 2026-09-01, Phase 11 plan 11-02, closing SWEEP-DESIGN Handoff #5 —
+# `max_tokens_override` (positive int): a per-row max_tokens ceiling that the
+# scalar branch of expand_params() uses in place of
+# max_tokens_for(defaults, model_slug) when present. Currently set only on
+# anthropic-thinking-budget-floor, to satisfy Anthropic's documented
+# `budget_tokens < max_tokens` constraint; validated by
+# check_max_tokens_override() below, generic over row shape.
 REQUIRED_WIRE_FAMILIES = {"anthropic_messages", "openai_compat", "gemini"}
 STATUS_ENUM = {"swept", "excluded"}
 CONFIDENCE_ENUM = {"high", "medium", "low"}
@@ -507,6 +522,8 @@ def expand_params(inventory: dict, models: list[dict]) -> tuple[list[dict], list
                     if not available:
                         skipped_entries.append(_skip_record(row, model, mode, reason))
                         continue
+                override = row.get("max_tokens_override")
+                row_max_tokens = override if override is not None else max_tokens_for(defaults, model["slug"])
                 for value in probe_values:
                     scalar_entries.append({
                         "model": model["slug"],
@@ -514,7 +531,7 @@ def expand_params(inventory: dict, models: list[dict]) -> tuple[list[dict], list
                         "value": render_value(value),
                         "mode": mode,
                         "prompt": prompt,
-                        "max_tokens": max_tokens_for(defaults, model["slug"]),
+                        "max_tokens": row_max_tokens,
                         "extra_params": build_extra_params(row, model, inventory, mode, value),
                     })
 
@@ -711,6 +728,49 @@ def check_names_map(rows: list[dict]) -> tuple[int, int]:
     return checks, problems
 
 
+def check_max_tokens_override(rows: list[dict]) -> tuple[int, int]:
+    """(Phase 11 plan 11-02, closing SWEEP-DESIGN Handoff #5) A row declaring
+    `max_tokens_override` must set a positive integer, and — when any of its
+    probe_values entries is a mapping carrying a `budget_tokens` key (the
+    boundary-contract shape anthropic-thinking-budget-floor uses) — the
+    override must be STRICTLY GREATER than the largest such value, matching
+    Anthropic's documented `budget_tokens < max_tokens` constraint exactly
+    (at-or-above is not enough). Generic over row shape — any row declaring
+    the field is checked the same way, not hardcoded to one row id. A row
+    with no override at all is not checked (absence is not a finding)."""
+    checks = 0
+    problems = 0
+    for row in rows:
+        override = row.get("max_tokens_override")
+        if override is None:
+            continue
+        checks += 1
+        if not isinstance(override, int) or isinstance(override, bool) or override <= 0:
+            problems += 1
+            print(
+                f"FAIL max_tokens_override: row {row.get('id', '?')!r} declares "
+                f"max_tokens_override={override!r}, expected a positive integer",
+                file=sys.stderr,
+            )
+            continue
+        budget_values = [
+            v["budget_tokens"]
+            for v in (row.get("probe_values") or [])
+            if isinstance(v, dict) and "budget_tokens" in v
+        ]
+        if budget_values:
+            largest = max(budget_values)
+            if override <= largest:
+                problems += 1
+                print(
+                    f"FAIL max_tokens_override: row {row.get('id', '?')!r} declares "
+                    f"max_tokens_override={override} which is not strictly greater "
+                    f"than its largest budget_tokens probe value {largest}",
+                    file=sys.stderr,
+                )
+    return checks, problems
+
+
 def check_boundary_contract(rows: list[dict]) -> tuple[int, int]:
     """(D-03) A swept parameter row with more than one probe_values entry but no
     boundary_contract: true is flagged — extra values are allowed only where the
@@ -792,6 +852,7 @@ def run_registry_checks(inventory: dict) -> tuple[int, int]:
         check_enums,
         check_names_map,
         check_boundary_contract,
+        check_max_tokens_override,
         check_axis_declaration,
         check_inv03_traceability,
     ):
@@ -1071,6 +1132,43 @@ def selftest() -> tuple[int, int]:
     if p != 0:
         problems += 1
         print("FAIL selftest: check_boundary_contract flagged a row that declares boundary_contract: true", file=sys.stderr)
+
+    # --- max_tokens_override (Phase 11 plan 11-02): an override equal to its
+    #     largest budget_tokens probe value is flagged (strictly-greater, not
+    #     at-or-above); a strictly-greater override is accepted; a row with no
+    #     override at all is not checked (absence is not a finding) ---
+    cases += 1
+    override_at_floor_row = _valid_row(
+        max_tokens_override=1024,
+        probe_values=[{"type": "enabled", "budget_tokens": 1024}],
+    )
+    _, p = check_max_tokens_override([override_at_floor_row])
+    if p != 1:
+        problems += 1
+        print(
+            "FAIL selftest: check_max_tokens_override did not flag an override "
+            "equal to its largest budget_tokens probe value",
+            file=sys.stderr,
+        )
+    override_above_floor_row = _valid_row(
+        max_tokens_override=1025,
+        probe_values=[{"type": "enabled", "budget_tokens": 1024}],
+    )
+    _, p = check_max_tokens_override([override_above_floor_row])
+    if p != 0:
+        problems += 1
+        print(
+            "FAIL selftest: check_max_tokens_override flagged a strictly-greater override",
+            file=sys.stderr,
+        )
+    no_override_row = _valid_row(probe_values=[0.7])
+    _, p = check_max_tokens_override([no_override_row])
+    if p != 0:
+        problems += 1
+        print(
+            "FAIL selftest: check_max_tokens_override flagged a row with no override at all",
+            file=sys.stderr,
+        )
 
     # --- axis declaration: a sampling-group row with no `axis` key is flagged —
     #     and REMOVING the axis key from a passing fixture flips it to a finding,

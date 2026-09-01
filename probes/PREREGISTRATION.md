@@ -207,3 +207,76 @@ cell: **$0.00003** (read from `probes/ledger.jsonl`, never assumed). Running glo
 ledger total after this cell (carrying forward Phase 9's $0.000584 smoke-test spend):
 **$0.000614** — far under every ceiling in force (D-02/D-03: $10 hard / $8 warn /
 $0.50 per-vendor soft). No ceiling verdict fired.
+
+## Amendment, 2026-09-01, plan 11-02 Task 1 (pre-run — appended below the protocol,
+which is not edited above this line)
+
+**Registry change.** `probes/inventory.yaml`'s `anthropic-thinking-budget-floor` row
+now carries `max_tokens_override: 1025` — the smallest integer strictly greater than
+that row's largest `budget_tokens` probe value (1024), satisfying Anthropic's
+documented `budget_tokens < max_tokens` constraint at the lowest billed ceiling. This
+closes SWEEP-DESIGN.md's Handoff #5 and 11-RESEARCH.md's Pitfall 1: firing this row's
+two probe values (500, 1024) at the registry's shared `defaults.max_tokens` (64) would
+have confounded the floor-rejection finding with an unrelated max_tokens-too-small
+rejection, and specifically would have corrupted 4 of Stage 1's 6 zero-cost
+calibration cells (the below-floor 500-token value fires at all 4 Claude models).
+`probes/inventory-to-sets.py`'s scalar branch of `expand_params()` now reads a row's
+`max_tokens_override` in place of `max_tokens_for(defaults, model_slug)` when
+present; a new registry validator, `check_max_tokens_override()`, enforces the
+strictly-greater rule generically for any row that declares the field.
+
+**The re-derived envelope, and the expression each figure came from.** Every scalar
+probe assumes 9 input tokens (SWEEP-DESIGN.md's own `chars/4`-rounded-up convention)
+and an output token count equal to the cell's own `max_tokens` (the same
+100%-acceptance, full-`max_tokens` over-count SWEEP-DESIGN's whole envelope already
+assumes) — cost per cell = `(9 * input_usd_per_mtok + max_tokens * output_usd_per_mtok)
+/ 1e6`, at `probes/harness/prices.yaml`'s per-model rates, rounded up to the cent once
+per vendor (summing every model's raw per-probe cost first), matching SWEEP-DESIGN.md
+§ "Dollar envelopes"'s stated rounding direction exactly. Recomputed directly from
+`probes/harness/prices.yaml` and the regenerated `probes/sets/generated/*.yaml` (only
+this row's 8 cells changed `max_tokens`; every other cell's cost is unchanged from
+SWEEP-DESIGN.md's own table, cross-checked cell-for-cell against that table's
+per-vendor cell counts).
+
+- The 8 `anthropic-thinking-budget-floor` cells (4 Claude models × 2 probe values)
+  move from `max_tokens: 64` to `1025`. Raw cost per cell:
+  `(9*input_rate + 1025*output_rate)/1e6`, summed × 2 probe values per model.
+  Old 8-cell raw total: `$0.011844` (at `max_tokens: 64`, cross-checked against
+  SWEEP-DESIGN.md's implied per-row contribution). New 8-cell raw total:
+  `$0.184824`. Delta: `+$0.17298`.
+- **Anthropic's vendor envelope** (73 cells total: 65 scalar, including this
+  row's own 8, plus 8 content-block, unchanged by this fix): raw cost
+  = old anthropic raw (`$0.1026`, SWEEP-DESIGN.md's own table) − old 8-cell raw
+  (`$0.011844`) + new 8-cell raw (`$0.184824`) = **`$0.2756`**, rounds up to
+  **`$0.28`** (was `$0.11`). No other vendor's cells changed max_tokens (this row
+  fires only at Anthropic's 4 models), so every other vendor's rounded envelope
+  figure in SWEEP-DESIGN.md's table is unchanged: dseek `$0.01`, gemini `$0.05`,
+  kimi `$0.03`, openai `$0.09`, qwen `$0.02`, xai `$0.02`, zai `$0.02`.
+- **The sweep total**, following SWEEP-DESIGN.md's own documented convention —
+  the "Total" column is the SUM of each vendor's already-rounded figure, not a
+  single round of the summed raw total (verified against the old table:
+  `0.11+0.01+0.05+0.03+0.09+0.02+0.02+0.02 = 0.35`, matching its stated `$0.35`
+  exactly, not `round($0.3114, 2) = $0.31`). Applying the same sum-of-rounded
+  method to the new figures: `0.28+0.01+0.05+0.03+0.09+0.02+0.02+0.02 =
+  **$0.52**`. Equivalently: old total (`$0.35`) − old anthropic rounded (`$0.11`)
+  + new anthropic rounded (`$0.28`) = `$0.52`.
+
+**This exceeds D-01's signed-off `≤$0.35` envelope.** The prior sign-off ("Spend
+signed off, 2026-09-01: the ≤$0.35 envelope for the full 345-cell sweep is approved")
+was scored against the pre-fix figures; the honest, re-derived total for the same 345
+cells is **`$0.52`**, `$0.17` over the approved envelope. This change is not hidden
+inside a later spend report — it is written down here, before it is spent.
+
+**Consequence: stage 5 must not fire until the owner has approved the revised `$0.52`
+figure at the D-09 checkpoint in plan 11-04.** Stage 5 (`exotics`, per
+`probes/sweep-stages.yaml`, plan 11-02 Task 3) is where the on-floor 1024-value
+budget-floor cells actually fire and bill at the new 1025-token ceiling; every dollar
+of the `+$0.17298` delta above is billed there, not in Stages 1–2.
+
+**Stages 1–2 remain unaffected.** The Stage 1 budget-floor cells are the below-floor
+`{"budget_tokens":500,"type":"enabled"}` value — SWEEP-DESIGN.md § Probe ordering
+predicts a 4xx rejection for this value regardless of `max_tokens`, and a rejected
+request bills nothing (conclusion 19's economics point, restated in SWEEP-DESIGN.md
+§ "Dollar envelopes"). Stage 1's own $0 cost is therefore unchanged by this
+amendment; only Stage 5's on-floor (1024) value, fired later and only after the
+owner's go, carries the new cost.

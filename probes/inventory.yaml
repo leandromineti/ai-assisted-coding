@@ -1027,6 +1027,11 @@ params:
     name_overrides: {}
     boundary_contract: true   # D-03: the finding IS the boundary contract —
       # a sub-floor budget's HTTP status, not a range sweep.
+    max_tokens_override: 1025   # 2026-09-01, Phase 11 plan 11-02, closing
+      # SWEEP-DESIGN Handoff #5: the smallest integer strictly greater than
+      # this row's largest budget_tokens probe value (1024), satisfying
+      # Anthropic's documented `budget_tokens < max_tokens` constraint at the
+      # lowest billed ceiling — not a round 4096.
     probe_values:
       - type: enabled
         budget_tokens: 500   # below FEATURES.md's documented 1024-token floor
@@ -1051,13 +1056,13 @@ params:
       FEATURES.md also states the floor's own constraint: `budget_tokens` must
       be LESS THAN `max_tokens`. This registry's shared `defaults.max_tokens`
       is 64 (see `defaults:` above), which is smaller than both probe values
-      here (500, 1024) — firing this row with the shared default would
-      confound the floor finding with a `max_tokens`-too-small rejection.
-      Phase 11 MUST raise `max_tokens` for this row specifically (there is no
-      per-row `max_tokens` override field in this generator as of 2026-09-01;
-      only a per-MODEL `defaults.max_tokens_overrides`) before firing — a
-      declared handoff, not a silent gap (see SWEEP-DESIGN.md § Handoffs to
-      Phase 11).
+      here (500, 1024) — firing this row with the shared default would have
+      confounded the floor finding with a `max_tokens`-too-small rejection.
+      Closed 2026-09-01 (Phase 11 plan 11-02): this row now carries its own
+      `max_tokens_override: 1025` (see above), so both probe values fire
+      strictly under a `max_tokens` ceiling that satisfies Anthropic's
+      constraint, and a sub-floor rejection can no longer be confounded with a
+      max_tokens-too-small rejection.
 
   - id: gemini-media-resolution
     group: exotic
