@@ -44,6 +44,11 @@ SECRETS_PATH = Path.home() / ".secrets" / "model-probes.env"
 
 HARNESS_VERSION = "0.1.0"
 
+# Default unconditional attempt cap for client.send_with_retry (HARN-04). Not a
+# per-vendor value — the same cap serves all three wire families; retry_decision's
+# classification (not this number) is what carries the family-agnostic discipline.
+DEFAULT_MAX_ATTEMPTS = 5
+
 # Each wire family's URL suffix, appended to models.yaml's base_url. Gemini embeds the
 # model id in the path instead and has no fixed suffix here — endpoint_url() below
 # dispatches to its adapter's own endpoint_url() when a family has no entry in this
@@ -91,11 +96,20 @@ def probe_id(model_slug: str, param: str, value: str, mode: str, request_body: d
     return f"{model_slug}--{param}--{value}--{mode}--{body_hash}"
 
 
-def seen_probe_ids(path: Path) -> set[str]:
+def seen_probe_ids(path: Path, *, refire_exhausted: bool = False) -> set[str]:
     """Scan `probes/raw/{vendor}.jsonl` for already-logged probe_ids (D-08, HARN-02).
     A missing file, a zero-byte file, and a file whose final line is a truncated
     partial record are all handled without raising — every complete line populates
-    the seen-set, the trailing partial line is ignored."""
+    the seen-set, the trailing partial line is ignored.
+
+    Default-skip choice for `terminal == "retry_exhausted"` (HARN-04 idempotency):
+    a retry-exhausted record is a LOGGED terminal outcome, not a dropped one — by
+    default it is included in the seen-set exactly like any other terminal record, so
+    re-running a probe set does not silently re-fire a probe that already spent its
+    full retry budget against (for example) a still-in-effect spend-cap 429. Pass
+    `refire_exhausted=True` to exclude those specific ids from the seen-set instead,
+    so a transient rate-limit window can be re-attempted deliberately via
+    `--refire-exhausted` rather than by accident on every ordinary run."""
     p = Path(path)
     seen: set[str] = set()
     if not p.exists() or p.stat().st_size == 0:
@@ -111,9 +125,25 @@ def seen_probe_ids(path: Path) -> set[str]:
             # complete line before it already populated `seen`.
             continue
         pid = rec.get("probe_id")
-        if pid:
-            seen.add(pid)
+        if not pid:
+            continue
+        if refire_exhausted and rec.get("terminal") == "retry_exhausted":
+            continue
+        seen.add(pid)
     return seen
+
+
+def derive_terminal(attempts: list[dict]) -> tuple[str, int]:
+    """From an ordered attempts list (client.send_with_retry's return shape), derive
+    the record's `terminal` — the FINAL attempt's action ('verdict' | 'exhausted' |
+    'fatal'; 'retry' never appears here, since a 'retry' action always causes the loop
+    to continue to a next attempt) — and `retries`, the count of non-terminal
+    ('retry') attempts. Pure and reused directly by main(); exercised directly by
+    --selftest so the derivation logic itself is covered, not only through a live
+    send_with_retry call."""
+    terminal = attempts[-1]["action"]
+    retries = sum(1 for a in attempts if a["action"] == "retry")
+    return terminal, retries
 
 
 def filter_response_headers(headers: dict) -> dict:
@@ -552,14 +582,90 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL openai_compat parse_usage: disagreeing cache signals must be flagged, not silently resolved", file=sys.stderr)
 
+    # --- derive_terminal / build_record: a synthetic multi-attempt result is stored
+    #     in attempt order, the terminal attempt last, retries = non-terminal count ---
+    cases += 1
+    synthetic_attempts = [
+        {"n": 1, "status": 429, "retryable": True, "action": "retry", "wait_s": 1.0,
+         "response_headers": {}, "response_body_raw": {}, "at": "2026-09-01T00:00:00Z"},
+        {"n": 2, "status": 429, "retryable": True, "action": "retry", "wait_s": 2.0,
+         "response_headers": {}, "response_body_raw": {}, "at": "2026-09-01T00:00:02Z"},
+        {"n": 3, "status": 200, "retryable": False, "action": "verdict", "wait_s": None,
+         "response_headers": {}, "response_body_raw": {"usage": {}}, "at": "2026-09-01T00:00:05Z"},
+    ]
+    syn_terminal, syn_retries = derive_terminal(synthetic_attempts)
+    if (syn_terminal, syn_retries) != ("verdict", 2):
+        problems += 1
+        print(f"FAIL derive_terminal: expected ('verdict', 2), got {(syn_terminal, syn_retries)}", file=sys.stderr)
+    syn_record = build_record(
+        pid="x--baseline--none--default--deadbeef",
+        vendor="anthropic",
+        model_slug="x",
+        api_model_id="x-api",
+        wire_family="anthropic_messages",
+        set_file="probes/sets/smoke.yaml",
+        param="baseline",
+        value="none",
+        mode="default",
+        method="POST",
+        url="https://api.example.com/v1/messages",
+        headers_sent={"x-api-key": "irrelevant-for-this-fixture"},
+        request_body={"model": "x", "max_tokens": 16, "messages": []},
+        attempts=synthetic_attempts,
+        terminal=syn_terminal,
+        retries=syn_retries,
+        usage={},
+        cost=None,
+    )
+    if syn_record["attempts"] != synthetic_attempts:
+        problems += 1
+        print("FAIL build_record: attempts array was not written in attempt order, unchanged", file=sys.stderr)
+    if syn_record["attempts"][-1]["action"] != "verdict":
+        problems += 1
+        print("FAIL build_record: the terminal attempt must be last in the attempts array", file=sys.stderr)
+    if syn_record["retries"] != 2:
+        problems += 1
+        print(f"FAIL build_record: retries should equal 2 (non-terminal attempts), got {syn_record['retries']}", file=sys.stderr)
+    if syn_record["terminal"] != "verdict":
+        problems += 1
+        print(f"FAIL build_record: terminal should name the final branch ('verdict'), got {syn_record['terminal']!r}", file=sys.stderr)
+
+    # --- resume: a terminal:retry_exhausted record is skipped by default, and
+    #     re-included via --refire-exhausted's refire_exhausted=True ---
+    cases += 1
+    with tempfile.TemporaryDirectory() as td:
+        exhausted_fixture = Path(td) / "vendor.jsonl"
+        exhausted_pid = "y--baseline--none--default--eeeeeeee"
+        exhausted_fixture.write_text(json.dumps({"probe_id": exhausted_pid, "terminal": "retry_exhausted"}) + "\n")
+
+        default_seen = seen_probe_ids(exhausted_fixture)
+        if exhausted_pid not in default_seen:
+            problems += 1
+            print("FAIL seen_probe_ids: a retry_exhausted record must be in the default seen-set (resume-skipped)", file=sys.stderr)
+
+        refire_seen = seen_probe_ids(exhausted_fixture, refire_exhausted=True)
+        if exhausted_pid in refire_seen:
+            problems += 1
+            print("FAIL seen_probe_ids: refire_exhausted=True must exclude retry_exhausted ids from the seen-set", file=sys.stderr)
+
     return cases, problems
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(prog="runner.py")
+    parser = argparse.ArgumentParser(
+        prog="runner.py",
+        usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] | --selftest",
+    )
     parser.add_argument("--set", dest="set_path")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--selftest", action="store_true")
+    parser.add_argument(
+        "--refire-exhausted",
+        action="store_true",
+        help="exclude terminal:retry_exhausted probe_ids from the resume-skip set, "
+        "so a probe that spent its full retry budget can be deliberately re-fired "
+        "(default: those ids stay in the seen-set and are skipped, HARN-04)",
+    )
     args = parser.parse_args()
 
     if args.selftest:
@@ -568,7 +674,7 @@ def main() -> int:
         return 1 if problems else 0
 
     if not args.set_path:
-        print("usage: runner.py --set <probes/sets/*.yaml> [--dry-run] | --selftest", file=sys.stderr)
+        print("usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] | --selftest", file=sys.stderr)
         return 2
 
     probes = load_probe_set(args.set_path)
@@ -612,7 +718,7 @@ def main() -> int:
             continue
 
         raw_path = RAW_DIR / f"{vendor}.jsonl"
-        seen = seen_probe_ids(raw_path)
+        seen = seen_probe_ids(raw_path, refire_exhausted=args.refire_exhausted)
         if pid in seen:
             print(f"SKIP {pid} (already logged)")
             continue
@@ -627,33 +733,29 @@ def main() -> int:
         headers_sent = {**adapter.auth_headers(key_value), "Content-Type": "application/json"}
         url = endpoint_url(wire_family, row["base_url"], row["api_model_id"])
 
-        status, resp_headers_dict, body_bytes, _resp_headers_msg = client.post_json(url, request_body, headers_sent)
-        at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        try:
-            resp_body = json.loads(body_bytes)
-        except json.JSONDecodeError:
-            resp_body = body_bytes.decode(errors="replace")
+        attempts = client.send_with_retry(url, request_body, headers_sent, max_attempts=DEFAULT_MAX_ATTEMPTS)
+        for a in attempts:
+            # D-09 header hygiene applies to EVERY attempt's response headers, not
+            # just the terminal one — an org/account-identifying header could arrive
+            # on a retried-away attempt just as easily as the final one.
+            a["response_headers"] = filter_response_headers(a["response_headers"])
 
-        attempt = {
-            "n": 1,
-            "status": status,
-            "retryable": False,
-            "wait_s": None,
-            "response_headers": filter_response_headers(resp_headers_dict),
-            "response_body_raw": resp_body,
-            "at": at,
-        }
+        last = attempts[-1]
+        status = last["status"]
+        resp_body = last["response_body_raw"]
+        at = last["at"]
+        terminal, retries = derive_terminal(attempts)
+        if terminal == "exhausted":
+            terminal = "retry_exhausted"
 
         usage: dict = {}
         cost = None
-        terminal = "verdict"
-        if status == 200 and isinstance(resp_body, dict):
+        if terminal == "verdict" and status == 200 and isinstance(resp_body, dict):
             usage = adapter.parse_usage(resp_body)
             price_row = prices.get(model_slug)
             if price_row:
                 cost = ledger.cost_usd(usage, price_row)
         else:
-            terminal = "error"
             problems += 1
 
         record = build_record(
@@ -670,9 +772,9 @@ def main() -> int:
             url=client.mask_url(url),
             headers_sent=headers_sent,
             request_body=request_body,
-            attempts=[attempt],
+            attempts=attempts,
             terminal=terminal,
-            retries=0,
+            retries=retries,
             usage=usage,
             cost=cost,
         )
@@ -697,7 +799,7 @@ def main() -> int:
                 "recorded_at": at,
             })
 
-        print(f"OK {pid} status={status} cost_usd={cost}")
+        print(f"OK {pid} status={status} terminal={terminal} retries={retries} cost_usd={cost}")
 
     return 1 if problems else 0
 
