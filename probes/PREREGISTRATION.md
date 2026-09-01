@@ -190,3 +190,20 @@ this section is never edited once committed (methodology rule 5). Each entry is
 dated. Empty at creation.
 
 <!-- Entries appended here as the sweep progresses. -->
+
+**2026-09-01, plan 11-01 Task 3 — tracer cell fired.** `probes/sets/tracer-cell.yaml`
+(`gemini-temperature-range` / `gemini-3-1-pro` / value `2.0` / mode `default`) fired
+against the live wire: `probe_id
+gemini-3-1-pro--gemini-temperature-range--2.0--default--0af9d352`, HTTP 200,
+`terminal: verdict`. **Result: ACCEPTED, not rejected** — this refutes, for this one
+cell, SWEEP-DESIGN.md § Probe ordering stage 1's prediction that Gemini's
+temperature-2.0 value would 4xx (the secondary source stating "Gemini accepts 0 to 1"
+is wrong, at least as observed live this session; settled on the wire, not by a third
+documentation pass, per D-15/conclusion 19). The classifier correctly recorded this as
+`accepted-unverified` with `honor_evidence: none` rather than misclassifying it —
+`scripts/classify-probes.py`'s own discrimination is what this record demonstrates,
+independent of which way the underlying hypothesis landed. Actual spend for this
+cell: **$0.00003** (read from `probes/ledger.jsonl`, never assumed). Running global
+ledger total after this cell (carrying forward Phase 9's $0.000584 smoke-test spend):
+**$0.000614** — far under every ceiling in force (D-02/D-03: $10 hard / $8 warn /
+$0.50 per-vendor soft). No ceiling verdict fired.
