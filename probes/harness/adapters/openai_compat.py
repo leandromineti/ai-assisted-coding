@@ -45,6 +45,20 @@ def parse_usage(response_body: dict) -> dict:
     vendor's own accounting and the family baseline is itself a finding this
     instrument exists to surface, not something to reconcile away.
 
+    `output_tokens` is reported NET of `reasoning_tokens` (WR-04, phase-09 code review
+    2026-09-01): this family's own `completion_tokens_details.reasoning_tokens` is
+    documented as a SUBSET of `completion_tokens`, not a sibling count — unlike
+    Gemini's `candidatesTokenCount`/`thoughtsTokenCount`, which are genuinely
+    separate. `ledger._OPTIONAL_TIERS` adds `reasoning_tokens * reasoning_usd_per_mtok`
+    ON TOP OF the base output rate; if this adapter passed `completion_tokens`
+    through unchanged, the moment any `prices.yaml` row gained a
+    `reasoning_usd_per_mtok` rate for this family, every reasoning token would be
+    double-billed — once inside the raw `output_tokens` base rate, once again as the
+    "optional tier." Subtracting here, once, at the adapter boundary, makes
+    `output_tokens` and `reasoning_tokens` additive from `cost_usd`'s point of view
+    for every wire family uniformly, matching the already-additive Gemini/Anthropic-
+    cache semantics `_OPTIONAL_TIERS` assumes.
+
     `cost_in_usd_ticks` (xAI-only, observed self-priced responses per conclusion 19)
     is captured for future use — `ledger.cost_usd()` does NOT yet consume it (WR-03,
     phase-09 code review 2026-09-01): the tick-to-USD divisor is not vendor-documented
@@ -73,10 +87,19 @@ def parse_usage(response_body: dict) -> dict:
             "vendor_cache_hit_tokens": cache_hit_tokens,
         }
 
+    completion_tokens = usage.get("completion_tokens")
+    reasoning_tokens = completion_details.get("reasoning_tokens")
+    if completion_tokens is not None and reasoning_tokens is not None:
+        # reasoning_tokens is a SUBSET of completion_tokens for this family — net
+        # them here so output_tokens/reasoning_tokens are additive downstream.
+        output_tokens = completion_tokens - reasoning_tokens
+    else:
+        output_tokens = completion_tokens
+
     return {
         "input_tokens": usage.get("prompt_tokens"),
-        "output_tokens": usage.get("completion_tokens"),
-        "reasoning_tokens": completion_details.get("reasoning_tokens"),
+        "output_tokens": output_tokens,
+        "reasoning_tokens": reasoning_tokens,
         "cached_tokens": cached_tokens,
         "cache_hit_tokens": cache_hit_tokens,
         "cache_miss_tokens": cache_miss_tokens,

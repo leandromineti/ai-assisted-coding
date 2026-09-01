@@ -658,7 +658,11 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL anthropic_messages parse_usage: an absent field must be None, not 0/other", file=sys.stderr)
 
-    # --- parse_usage: OpenAI-compatible fixture, normalized keys read correctly ---
+    # --- parse_usage: OpenAI-compatible fixture, normalized keys read correctly.
+    #     output_tokens (WR-04) is completion_tokens NET of reasoning_tokens (40 =
+    #     50 - 10), not the raw completion_tokens value — reasoning_tokens is a
+    #     SUBSET of completion_tokens for this family, so netting it here is what
+    #     keeps output_tokens/reasoning_tokens additive for ledger.cost_usd ---
     cases += 1
     oc_usage = ADAPTERS["openai_compat"].parse_usage({
         "usage": {
@@ -668,9 +672,20 @@ def selftest() -> tuple[int, int]:
             "prompt_tokens_details": {"cached_tokens": 20},
         }
     })
-    if (oc_usage["input_tokens"], oc_usage["output_tokens"], oc_usage["reasoning_tokens"], oc_usage["cached_tokens"]) != (100, 50, 10, 20):
+    if (oc_usage["input_tokens"], oc_usage["output_tokens"], oc_usage["reasoning_tokens"], oc_usage["cached_tokens"]) != (100, 40, 10, 20):
         problems += 1
         print(f"FAIL openai_compat parse_usage: wrong normalized counts, got {oc_usage}", file=sys.stderr)
+
+    # --- parse_usage: OpenAI-compatible fixture with NO reasoning_tokens reported —
+    #     output_tokens must pass completion_tokens through unchanged, never net
+    #     against a None it can't subtract ---
+    cases += 1
+    oc_usage_no_reasoning = ADAPTERS["openai_compat"].parse_usage({
+        "usage": {"prompt_tokens": 100, "completion_tokens": 50}
+    })
+    if oc_usage_no_reasoning["output_tokens"] != 50 or oc_usage_no_reasoning["reasoning_tokens"] is not None:
+        problems += 1
+        print(f"FAIL openai_compat parse_usage: no-reasoning case should pass completion_tokens through unchanged, got {oc_usage_no_reasoning}", file=sys.stderr)
 
     # --- parse_usage: Gemini fixture with thoughtsTokenCount present ---
     cases += 1
