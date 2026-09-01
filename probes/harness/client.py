@@ -62,7 +62,13 @@ def post_json(
     serialization into a log record.
 
     Never raises on a 4xx/5xx — `urllib.error.HTTPError` is itself a file-like object,
-    so `.read()` returns the error body even though `urlopen()` raised.
+    so `.read()` returns the error body even though `urlopen()` raised. Also never
+    raises on a connection-level failure (DNS, refused connection, TLS handshake,
+    socket timeout) — `urllib.error.URLError` (HTTPError's parent, not narrowed to
+    it), bare `OSError`, and `TimeoutError` are all caught and synthesized into a
+    `status=0` result so `send_with_retry`/`runner.py` can classify and log it
+    instead of the whole probe-set run crashing on one transient network blip
+    (CR-01, phase-09 code review 2026-09-01).
     """
     req = urllib.request.Request(
         url,
@@ -75,6 +81,13 @@ def post_json(
             return resp.status, dict(resp.headers), resp.read(), resp.headers
     except urllib.error.HTTPError as e:
         return e.code, dict(e.headers), e.read(), e.headers
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        # No HTTP response exists at all — status=0 is a sentinel `retry_decision`
+        # treats as retryable-shaped (same branch as a 5xx), never as a `verdict`.
+        body_bytes = json.dumps(
+            {"error": {"type": "connection_error", "message": str(e)}}
+        ).encode()
+        return 0, {}, body_bytes, Message()
 
 
 def _is_anthropic_spend_cap(body_bytes: bytes) -> bool:
@@ -144,8 +157,11 @@ def retry_decision(
        Phase 11's contract matrix with a false rejection; this branch never even
        inspects the body for retryable-shaped signals, because non-429/5xx status
        codes are never retryable regardless of body content.
-    3. A 429 or any status >= 500 is retryable-shaped. Anthropic's spend-cap 429 is
-       checked FIRST, independent of the attempt count — it returns `'fatal'` without
+    3. A 429, any status >= 500, or `status == 0` (post_json's sentinel for a
+       connection-level failure — no HTTP response exists at all: DNS, refused
+       connection, TLS handshake, or socket timeout) is retryable-shaped.
+       Anthropic's spend-cap 429 is checked FIRST, independent of the attempt count
+       — it returns `'fatal'` without
        spending the retry budget, because it carries no `Retry-After` and "keeps
        failing until access resumes" (possibly for days); burning attempts on it
        wastes wall-clock time for zero benefit.
@@ -158,7 +174,7 @@ def retry_decision(
     if 200 <= status < 300:
         return "verdict", 0.0
 
-    retryable = status == 429 or status >= 500
+    retryable = status == 0 or status == 429 or status >= 500
     if not retryable:
         return "verdict", 0.0
 
@@ -334,6 +350,40 @@ def selftest() -> tuple[int, int]:
         if action != "retry":
             problems += 1
             print(f"FAIL retry_decision({status}): expected 'retry', got {action}", file=sys.stderr)
+
+    # --- status=0 (post_json's connection-error sentinel, CR-01) -> retryable-shaped
+    #     exactly like a 5xx, not a silent 'verdict' that would drop the probe ---
+    cases += 1
+    action, wait = retry_decision(0, _hm(), 0, b'{"error": {"type": "connection_error"}}', 5)
+    if action != "retry":
+        problems += 1
+        print(f"FAIL retry_decision(0): expected 'retry', got {action}", file=sys.stderr)
+
+    # --- status=0 at the final permitted attempt -> exhausted, same as any other
+    #     retryable-shaped status, never crashes derive_terminal on an empty list ---
+    cases += 1
+    action, wait = retry_decision(0, _hm(), 4, b'{"error": {"type": "connection_error"}}', 5)
+    if (action, wait) != ("exhausted", 0.0):
+        problems += 1
+        print(f"FAIL retry_decision(0, attempt=4): expected exhausted, got {(action, wait)}", file=sys.stderr)
+
+    # --- post_json: a connection-level failure (unreachable host) is caught and
+    #     synthesized as status=0, never propagates as an uncaught exception (CR-01) ---
+    cases += 1
+    try:
+        status, resp_headers, body_bytes, _msg = post_json(
+            "http://127.0.0.1:1/unreachable-port-for-selftest", {}, {}, timeout=2
+        )
+        if status != 0:
+            problems += 1
+            print(f"FAIL post_json(unreachable): expected status=0, got {status}", file=sys.stderr)
+        parsed = json.loads(body_bytes)
+        if not isinstance(parsed, dict) or "error" not in parsed:
+            problems += 1
+            print(f"FAIL post_json(unreachable): expected a synthesized error body, got {body_bytes!r}", file=sys.stderr)
+    except Exception as e:
+        problems += 1
+        print(f"FAIL post_json(unreachable): raised {e!r}, must never raise on a connection-level failure", file=sys.stderr)
 
     # --- a retryable status at the final permitted attempt -> exhausted, WITH Retry-After ---
     cases += 1
