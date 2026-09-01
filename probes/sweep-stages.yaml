@@ -1,0 +1,150 @@
+# probes/sweep-stages.yaml — the contract sweep's firing order, machine-readable.
+#
+# HAND-KEPT, NOT GENERATED (Phase 11 plan 11-02). SWEEP-DESIGN.md § "Probe
+# ordering" describes this same six-stage order in prose and states the
+# reasoning for each stage's position; this file is the declaration
+# `probes/harness/runner.py --stage`/`--check-stages` actually enforces. If
+# the two documents ever disagree, SWEEP-DESIGN.md's reasoning is authoritative
+# and this file should be corrected to match it — never the other way around.
+#
+# Stage assignment is FIRST-MATCH-WINS in ascending `stage:` order: a cell is
+# assigned to the lowest-numbered stage whose selectors match it, even if a
+# later stage's selector would also match. This is why Stage 1's three
+# value-restricted selectors take precedence over Stage 5's unrestricted
+# selector for the same three rows — a cell counted once in Stage 1 is never
+# double-counted in Stage 5.
+#
+# Each `selectors:` entry carries `param` (a registry row id from
+# probes/inventory.yaml) and an optional `values:` list of RENDERED value
+# strings (i.e. the exact `value:` field a generated cell carries, per
+# inventory-to-sets.py's `render_value()` — a dict/list probe_value renders as
+# `json.dumps(value, sort_keys=True, separators=(",",":"))`, a scalar as
+# `str(value)`). A selector with no `values:` matches every cell of that row.
+# A selector with `values:` matches only cells whose `value` is IN the list.
+#
+# YAML 1.1 quoting rule (inventory.yaml's own header comment, restated here for
+# any new hand-authored YAML in this pipeline): PyYAML's default (YAML 1.1)
+# implicit resolver can silently coerce an unquoted scalar to a non-string
+# type (a bare `0.3`/`2.0` parses as a float, not the string
+# inventory-to-sets.py's render_value() actually emits; bare `on`/`off`/
+# `yes`/`no`/`true`/`false` parse as booleans). Every `values:` entry below is
+# therefore an explicit quoted string, so a loader comparing against a
+# generated cell's own (always-string) `value:` field compares string to
+# string, never string to a silently-coerced float or bool.
+checked: 2026-09-01
+
+stages:
+  - stage: 1
+    name: zero-cost-predicted-rejections
+    set: contract-sweep
+    expect_cells: 6
+    # SWEEP-DESIGN.md § Probe ordering, step 1: each of these three
+    # below-boundary probe values is PREDICTED to return a 4xx, and a
+    # rejected request bills nothing — firing them first is free AND is the
+    # rule-5d baseline-arm-first proof that the four-state classifier
+    # actually discriminates before a single dollar of ambiguous spend.
+    selectors:
+      - param: anthropic-thinking-budget-floor
+        values: ["{\"budget_tokens\":500,\"type\":\"enabled\"}"]
+      - param: kimi-fixed-sampling-point
+        values: ["0.3"]
+      - param: gemini-temperature-range
+        values: ["2.0"]
+
+  - stage: 2
+    name: reasoning-toggles
+    set: contract-sweep
+    expect_cells: 14
+    # SWEEP-DESIGN.md § Probe ordering, step 2 (D-08, load-bearing): fired
+    # before any axis-dependent sampling cell — a broken or mis-shaped toggle
+    # here invalidates every downstream thinking-on/thinking-off cell built
+    # on top of it, and catching it here costs nothing extra, while catching
+    # it after 160 sampling-family cells have already fired would mean
+    # re-spending all of them.
+    selectors:
+      - param: openai-reasoning-effort
+      - param: anthropic-thinking-object
+      - param: gemini-thinking-config
+      - param: qwen-enable-thinking
+
+  - stage: 3
+    name: sampling
+    set: contract-sweep
+    expect_cells: 110
+    # SWEEP-DESIGN.md § Probe ordering, step 3: the axis-dependent sampling
+    # cells, fired only after Stage 2 has confirmed the toggle mechanism
+    # itself works for every wire family these rows depend on.
+    selectors:
+      - param: temperature
+      - param: top-p
+      - param: top-k
+      - param: presence-penalty
+      - param: frequency-penalty
+      - param: logprobs
+      - param: top-logprobs
+      - param: seed
+      - param: n
+      - param: logit-bias
+
+  - stage: 4
+    name: structural-and-service-tier
+    set: contract-sweep
+    expect_cells: 99
+    # SWEEP-DESIGN.md § Probe ordering, step 4: a vendor's JSON-schema or
+    # streaming support does not change when reasoning is toggled, so these
+    # carry no ordering dependency on Stages 2-3.
+    selectors:
+      - param: max-tokens
+      - param: stop
+      - param: response-format
+      - param: tools
+      - param: tool-choice
+      - param: parallel-tool-calls
+      - param: stream
+      - param: stream-options-include-usage
+      - param: anthropic-structured-output-output-config
+      - param: anthropic-structured-output-output-format
+      - param: service-tier
+
+  - stage: 5
+    name: exotics
+    set: contract-sweep
+    expect_cells: 100
+    # SWEEP-DESIGN.md § Probe ordering, step 5: fired last among the scalar
+    # rows because their whole point is asymmetry — a rejection or an
+    # unexpected acceptance here is not corrected by any other cell, so there
+    # is no cost to firing them after everything that COULD invalidate a
+    # downstream reading already has. Unrestricted (no `values:`) — Stage 1's
+    # value-restricted selectors for anthropic-thinking-budget-floor,
+    # kimi-fixed-sampling-point, and gemini-temperature-range already own the
+    # 6 cells those three rows share with this stage's row list, so
+    # first-match precedence removes exactly those 6 from here (106 - 6 =
+    # 100).
+    selectors:
+      - param: gemini-temperature-range
+      - param: openai-verbosity
+      - param: openai-prediction
+      - param: openai-service-tier-values
+      - param: anthropic-thinking-budget-floor
+      - param: gemini-media-resolution
+      - param: gemini-candidate-count
+      - param: kimi-partial-mode
+      - param: glm-do-sample
+      - param: qwen-repetition-penalty
+      - param: kimi-fixed-sampling-point
+      - param: openai-store
+      - param: openai-metadata
+      - param: openai-safety-identifier
+      - param: openai-prompt-cache-key
+
+  - stage: 6
+    name: content-blocks
+    set: content-blocks
+    expect_cells: 16
+    # SWEEP-DESIGN.md § Probe ordering, step 6: fired last of all, and only
+    # once runner.py gains the content-block request path (MODAL-01, plan
+    # 11-03) — there is no ordering argument for firing them earlier, since
+    # nothing downstream depends on their result.
+    selectors:
+      - param: image-input
+      - param: anthropic-cache-control-block

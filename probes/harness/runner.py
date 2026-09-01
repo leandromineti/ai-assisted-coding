@@ -33,6 +33,7 @@ import argparse
 import hashlib
 import inspect
 import json
+import subprocess
 import sys
 import tempfile
 from datetime import datetime, timezone
@@ -48,6 +49,11 @@ PROBES_DIR = Path(__file__).resolve().parent.parent
 MODELS_PATH = PROBES_DIR / "harness" / "models.yaml"
 PRICES_PATH = PROBES_DIR / "harness" / "prices.yaml"
 CEILINGS_PATH = PROBES_DIR / "harness" / "ceilings.yaml"
+INVENTORY_PATH = PROBES_DIR / "inventory.yaml"
+SWEEP_STAGES_PATH = PROBES_DIR / "sweep-stages.yaml"
+GENERATED_DIR = PROBES_DIR / "sets" / "generated"
+CONTRACT_SWEEP_GENERATED_PATH = GENERATED_DIR / "contract-sweep.yaml"
+CONTENT_BLOCKS_GENERATED_PATH = GENERATED_DIR / "content-blocks.yaml"
 RAW_DIR = PROBES_DIR / "raw"
 LEDGER_PATH = PROBES_DIR / "ledger.jsonl"
 SECRETS_PATH = Path.home() / ".secrets" / "model-probes.env"
@@ -419,6 +425,176 @@ def endpoint_url(wire_family: str, base_url: str, api_model_id: str) -> str:
     if adapter is not None and hasattr(adapter, "endpoint_url"):
         return adapter.endpoint_url(base_url, api_model_id)
     raise ValueError(f"no endpoint_url rule for wire_family={wire_family}")
+
+
+def load_content_block_set(path=CONTENT_BLOCKS_GENERATED_PATH) -> list[dict]:
+    """Like load_probe_set, but for probes/sets/generated/content-blocks.yaml's
+    deliberately-different `content_block_probes:` top-level key — the file
+    load_probe_set refuses loudly (D-12). --check-stages (Phase 11 plan 11-02)
+    is the one caller that needs to READ this file without firing it."""
+    try:
+        text = Path(path).read_text()
+    except OSError as e:
+        _fail(2, f"cannot read {path}: {e}")
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        _fail(2, f"{path} is not valid YAML: {e}")
+    entries = (data or {}).get("content_block_probes") if isinstance(data, dict) else None
+    if not isinstance(entries, list) or not entries:
+        _fail(2, f"{path}: `content_block_probes:` must be a non-empty list")
+    return entries
+
+
+REQUIRED_STAGE_KEYS = {"stage", "name", "set", "expect_cells", "selectors"}
+STAGE_SET_NAMES = {"contract-sweep", "content-blocks"}
+
+
+def load_sweep_stages(path: Path = SWEEP_STAGES_PATH) -> dict:
+    """Parse probes/sweep-stages.yaml — the hand-kept, dated firing-order
+    declaration (Phase 11 plan 11-02). Same fail-loud idiom as load_ceilings:
+    read, parse, type-check the top-level mapping, check required keys,
+    _fail(2, ...) with a named diagnostic on anything malformed. Returns the
+    parsed document unchanged (`{"checked": ..., "stages": [...]}`)."""
+    try:
+        text = Path(path).read_text()
+    except OSError as e:
+        _fail(2, f"cannot read {path}: {e}")
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        _fail(2, f"{path} is not valid YAML: {e}")
+    if not isinstance(data, dict):
+        _fail(2, f"{path}: expected a top-level mapping")
+    missing = {"checked", "stages"} - set(data)
+    if missing:
+        _fail(2, f"{path}: missing required top-level key(s) {sorted(missing)}")
+    if not isinstance(data["stages"], list) or not data["stages"]:
+        _fail(2, f"{path}: `stages:` must be a non-empty list")
+    for stage in data["stages"]:
+        if not isinstance(stage, dict):
+            _fail(2, f"{path}: each stage entry must be a mapping, got {stage!r}")
+        missing_stage = REQUIRED_STAGE_KEYS - set(stage)
+        if missing_stage:
+            _fail(2, f"{path}: stage {stage.get('stage', '?')!r} missing required key(s) {sorted(missing_stage)}")
+        if stage["set"] not in STAGE_SET_NAMES:
+            _fail(
+                2,
+                f"{path}: stage {stage['stage']!r} has unknown set {stage['set']!r}, "
+                f"expected one of {sorted(STAGE_SET_NAMES)}",
+            )
+        if not isinstance(stage["selectors"], list) or not stage["selectors"]:
+            _fail(2, f"{path}: stage {stage['stage']!r} `selectors:` must be a non-empty list")
+        for sel in stage["selectors"]:
+            if not isinstance(sel, dict) or "param" not in sel:
+                _fail(2, f"{path}: stage {stage['stage']!r} has a selector missing `param`: {sel!r}")
+    return data
+
+
+def load_registry_row_ids(path: Path = INVENTORY_PATH) -> set[str]:
+    """The set of every row id declared in probes/inventory.yaml's `params:`
+    list (swept or excluded) — used only by --check-stages to catch a
+    sweep-stages.yaml selector naming a row id absent from the registry."""
+    try:
+        text = Path(path).read_text()
+    except OSError as e:
+        _fail(2, f"cannot read {path}: {e}")
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        _fail(2, f"{path} is not valid YAML: {e}")
+    if not isinstance(data, dict) or not isinstance(data.get("params"), list):
+        _fail(2, f"{path}: expected a top-level `params:` list")
+    return {row.get("id") for row in data["params"] if isinstance(row, dict)}
+
+
+def stage_for_entry(entry: dict, stages: list[dict]) -> int | None:
+    """Pure (Phase 11 plan 11-02): the first (ascending `stage:` order) stage
+    whose selectors match this probe-set entry, or None if no stage's
+    selectors match at all. A selector with no `values:` matches every cell
+    of that row; a selector with `values:` matches only cells whose `value`
+    is IN the list. First-match-wins: a cell matched by both a value-
+    restricted early stage and an unrestricted later stage belongs to the
+    earlier stage."""
+    for stage in sorted(stages, key=lambda s: s["stage"]):
+        for sel in stage["selectors"]:
+            if sel["param"] != entry.get("param"):
+                continue
+            values = sel.get("values")
+            if values is None or entry.get("value") in values:
+                return stage["stage"]
+    return None
+
+
+def check_stages(
+    contract_entries: list[dict],
+    content_block_entries: list[dict],
+    stages: list[dict],
+    registry_ids: set[str],
+) -> tuple[int, int, int, int]:
+    """--check-stages' core: partitions every declared cell (both generated
+    set files) across the declared stages and reports every violation named
+    by Phase 11 plan 11-02's own spec:
+      - any cell assigned to no stage (stage_for_entry returns None)
+      - any stage whose owned count differs from its declared expect_cells
+      - any selector naming a row id absent from the registry
+      - any stage whose matched cells were drawn from a set file other than
+        the one it declares (`set:` vs the entry's actual origin file)
+    Returns (checks, problems, total_cells, stage_count)."""
+    checks = 0
+    problems = 0
+    tagged = [(e, "contract-sweep") for e in contract_entries] + [
+        (e, "content-blocks") for e in content_block_entries
+    ]
+    total_cells = len(tagged)
+    stages_by_num = {s["stage"]: s for s in stages}
+    owned_counts: dict[int, int] = {s["stage"]: 0 for s in stages}
+
+    for entry, origin_set in tagged:
+        checks += 1
+        stage_num = stage_for_entry(entry, stages)
+        if stage_num is None:
+            problems += 1
+            print(
+                f"FAIL check-stages: cell model={entry.get('model')!r} "
+                f"param={entry.get('param')!r} value={entry.get('value')!r} "
+                f"mode={entry.get('mode')!r} (from {origin_set}) is owned by no declared stage",
+                file=sys.stderr,
+            )
+            continue
+        owned_counts[stage_num] += 1
+        stage_def = stages_by_num[stage_num]
+        if stage_def["set"] != origin_set:
+            problems += 1
+            print(
+                f"FAIL check-stages: stage {stage_num} ({stage_def['name']}) matched a cell "
+                f"from set={origin_set!r} but declares set={stage_def['set']!r}",
+                file=sys.stderr,
+            )
+
+    for s in stages:
+        checks += 1
+        actual = owned_counts.get(s["stage"], 0)
+        if actual != s["expect_cells"]:
+            problems += 1
+            print(
+                f"FAIL check-stages: stage {s['stage']} ({s['name']}) owns {actual} cells, "
+                f"expected {s['expect_cells']}",
+                file=sys.stderr,
+            )
+
+    for s in stages:
+        for sel in s["selectors"]:
+            checks += 1
+            if sel["param"] not in registry_ids:
+                problems += 1
+                print(
+                    f"FAIL check-stages: stage {s['stage']} ({s['name']}) selector names row id "
+                    f"{sel['param']!r}, absent from the registry",
+                    file=sys.stderr,
+                )
+
+    return checks, problems, total_cells, len(stages)
 
 
 def selftest() -> tuple[int, int]:
@@ -877,18 +1053,120 @@ def selftest() -> tuple[int, int]:
             file=sys.stderr,
         )
 
+    # --- stage_for_entry (Phase 11 plan 11-02): first-match-wins precedence —
+    #     a cell matched by BOTH an early value-restricted selector and a
+    #     later unrestricted selector for the same row belongs to the
+    #     EARLIER stage, never the later one ---
+    cases += 1
+    precedence_stages = [
+        {
+            "stage": 1,
+            "name": "early",
+            "set": "contract-sweep",
+            "expect_cells": 1,
+            "selectors": [{"param": "fixture-row", "values": ["500"]}],
+        },
+        {
+            "stage": 5,
+            "name": "late",
+            "set": "contract-sweep",
+            "expect_cells": 2,
+            "selectors": [{"param": "fixture-row"}],
+        },
+    ]
+    restricted_entry = {"model": "m1", "param": "fixture-row", "value": "500", "mode": "default"}
+    unrestricted_entry = {"model": "m1", "param": "fixture-row", "value": "999", "mode": "default"}
+    stage_num = stage_for_entry(restricted_entry, precedence_stages)
+    if stage_num != 1:
+        problems += 1
+        print(
+            f"FAIL stage_for_entry: a cell matched by both stage 1's restricted "
+            f"selector and stage 5's unrestricted selector expected stage 1, got {stage_num}",
+            file=sys.stderr,
+        )
+    stage_num2 = stage_for_entry(unrestricted_entry, precedence_stages)
+    if stage_num2 != 5:
+        problems += 1
+        print(
+            f"FAIL stage_for_entry: a cell matched only by stage 5's unrestricted "
+            f"selector expected stage 5, got {stage_num2}",
+            file=sys.stderr,
+        )
+
+    # --- stage_for_entry: a cell matched by no selector at all returns None ---
+    cases += 1
+    no_match_entry = {"model": "m1", "param": "no-such-row", "value": "1", "mode": "default"}
+    if stage_for_entry(no_match_entry, precedence_stages) is not None:
+        problems += 1
+        print("FAIL stage_for_entry: a cell matched by no selector should return None", file=sys.stderr)
+
+    # --- load_sweep_stages: fail-loud on a malformed file (missing required
+    #     top-level key) ---
+    cases += 1
+    with tempfile.TemporaryDirectory() as td:
+        bad_stages_path = Path(td) / "sweep-stages.yaml"
+        bad_stages_path.write_text("checked: 2026-09-01\n")
+        try:
+            load_sweep_stages(bad_stages_path)
+            problems += 1
+            print("FAIL selftest: load_sweep_stages did not abort on a file missing `stages:`", file=sys.stderr)
+        except SystemExit as e:
+            if e.code != 2:
+                problems += 1
+                print(f"FAIL selftest: load_sweep_stages(missing stages) expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- --stage: an out-of-range stage argument exits 2, a named diagnostic,
+    #     not a silently empty run — via subprocess so this never mutates this
+    #     process's own sys.argv or state ---
+    cases += 1
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(Path(__file__).resolve()),
+            "--set",
+            str(CONTRACT_SWEEP_GENERATED_PATH),
+            "--stage",
+            "9",
+            "--dry-run",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 2:
+        problems += 1
+        print(f"FAIL selftest: --stage 9 (out of range) expected exit 2, got {result.returncode}", file=sys.stderr)
+    if not result.stderr.strip():
+        problems += 1
+        print("FAIL selftest: --stage 9 (out of range) printed nothing to stderr", file=sys.stderr)
+
     return cases, problems
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="runner.py",
-        usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] "
-        "[--refire-ceiling-skipped] | --selftest",
+        usage="runner.py --set <probes/sets/*.yaml> [--dry-run] [--stage N] [--refire-exhausted] "
+        "[--refire-ceiling-skipped] | --check-stages | --selftest",
     )
     parser.add_argument("--set", dest="set_path")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--selftest", action="store_true")
+    parser.add_argument(
+        "--stage",
+        type=int,
+        help="filter the loaded --set probe set to only the cells "
+        "probes/sweep-stages.yaml assigns to this stage number, before firing "
+        "(combine with --dry-run to inspect the slice before it is billed)",
+    )
+    parser.add_argument(
+        "--check-stages",
+        action="store_true",
+        help="no-firing mode: load both generated set files plus "
+        "probes/sweep-stages.yaml and report any cell owned by no stage, any "
+        "stage whose owned count differs from its declared expect_cells, any "
+        "selector naming a row id absent from the registry, or any stage "
+        "drawing from a set file whose entries it cannot own",
+    )
     parser.add_argument(
         "--refire-exhausted",
         action="store_true",
@@ -911,15 +1189,37 @@ def main() -> int:
         print(f"{cases} cases run, {problems} problem(s)")
         return 1 if problems else 0
 
+    if args.check_stages:
+        stages_doc = load_sweep_stages()
+        registry_ids = load_registry_row_ids()
+        contract_entries = load_probe_set(str(CONTRACT_SWEEP_GENERATED_PATH))
+        content_block_entries = load_content_block_set(CONTENT_BLOCKS_GENERATED_PATH)
+        checks, problems, total_cells, stage_count = check_stages(
+            contract_entries, content_block_entries, stages_doc["stages"], registry_ids
+        )
+        print(f"{total_cells} cells across {stage_count} stages ({checks} checks run)")
+        print(f"{problems} problem(s)")
+        return 1 if problems else 0
+
     if not args.set_path:
         print(
-            "usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--refire-exhausted] "
-            "[--refire-ceiling-skipped] | --selftest",
+            "usage: runner.py --set <probes/sets/*.yaml> [--dry-run] [--stage N] "
+            "[--refire-exhausted] [--refire-ceiling-skipped] | --check-stages | --selftest",
             file=sys.stderr,
         )
         return 2
 
     probes = load_probe_set(args.set_path)
+
+    if args.stage is not None:
+        stages_doc = load_sweep_stages()
+        stage_numbers = sorted(s["stage"] for s in stages_doc["stages"])
+        if args.stage not in stage_numbers:
+            _fail(2, f"--stage {args.stage}: not a declared stage (declared stages: {stage_numbers})")
+        kept = [e for e in probes if stage_for_entry(e, stages_doc["stages"]) == args.stage]
+        print(f"--stage {args.stage}: kept {len(kept)} of {len(probes)} cells")
+        probes = kept
+
     models = load_models()
     prices = load_prices()
     ceilings = load_ceilings()
