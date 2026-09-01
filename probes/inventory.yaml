@@ -85,11 +85,55 @@ axes:
           # DeepSeek/Kimi/Z.ai/Qwen diverge from this default (thinking.type object,
           # or a boolean enable_thinking + budget) — captured as vendor_overrides by
           # plan 10-02, left empty here on purpose (see comment below).
-        vendor_overrides: {}   # dseek/kimi/zai/qwen overrides land in plan 10-02
-          # (D-08: rows first, then axis — the toggle rows themselves are ordinary
-          # inventory rows probed in their own right before this axis fragment is
-          # trusted for any of the four). Left empty, not omitted, so a reader sees
-          # the key exists before the divergent shapes are filled in.
+        vendor_overrides:   # plan 10-02, D-08: rows first, then axis — the four
+          # toggle rows below (openai-reasoning-effort, anthropic-thinking-object,
+          # gemini-thinking-config, qwen-enable-thinking, group reasoning-toggle)
+          # are ordinary inventory rows probed in their own right before any of
+          # these fragments is trusted. dseek/kimi carry an explicit null on/off
+          # fragment plus a `reason:` from the closed skip-reason vocabulary
+          # (inventory-to-sets.py SKIP_REASONS) — the generator emits no
+          # thinking-on/off cell it cannot actually construct (T-10-06): an
+          # admitted unknown, never an invented request body.
+          qwen:
+            "on":
+              enable_thinking: true
+            "off":
+              enable_thinking: false
+            source: https://docs.qwencloud.com/developer-guides/text-generation/thinking
+            retrieved: 2026-09-01
+          zai:
+            "on":
+              thinking:
+                type: enabled
+            "off":
+              thinking:
+                type: disabled
+            source: https://docs.z.ai/guides/llm/glm-5.3
+            retrieved: 2026-08-26   # tools/1-models/glm-5.3.md `checked:` date —
+              # the model report's own read pin for this maker.
+          dseek:
+            "on": null
+            "off": null
+            reason: toggle-not-a-request-parameter
+            source: https://api-docs.deepseek.com/guides/thinking_mode/
+            retrieved: 2026-09-01
+            note: >-
+              DeepSeek's thinking mode is selected by model id
+              (deepseek-v4-pro vs a non-reasoning sibling), not a per-request
+              toggle — no request fragment exists to construct. Every
+              thinking-on/off cell for this vendor is a declared skip (reason
+              above), never an invented fragment.
+          kimi:
+            "on": null
+            "off": null
+            reason: toggle-shape-unknown
+            source: https://platform.kimi.ai/docs/api/chat
+            retrieved: 2026-09-01
+            note: >-
+              FEATURES.md's research pass names no documented thinking-toggle
+              request shape for Kimi K3 (its reasoning_toggle is always-on in
+              models.yaml, so only a thinking-on cell would ever be attempted).
+              An admitted unknown (rule 1b), not a guessed fragment.
       gemini:
         "on":
           thinkingConfig:
@@ -660,3 +704,250 @@ params:
       presence only. The request-vs-response vocabulary asymmetry
       (conclusion 19: OpenAI's `priority`->`fast mode` rename is input-side
       only) is BHV-06's job in Phase 12, not this row.
+
+  # --- reasoning-toggle (plan 10-02 Task 2, D-08) -----------------------------
+  # The four thinking-toggle shapes as ordinary swept rows in their own right —
+  # circularity handled rows-first-then-axis: these are both the axis mechanism
+  # (axes.thinking.shapes above) AND parameters worth probing on their own, and
+  # they are the evidence upgrade for the existing reasoning_type/reasoning_effort
+  # registry keys. Sweep ordering probes these BEFORE any axis-dependent sampling
+  # cell, so a broken toggle is caught before it invalidates downstream mode
+  # cells (D-08).
+  - id: openai-reasoning-effort
+    group: reasoning-toggle
+    kind: parameter
+    status: swept
+    canonical_name: reasoning_effort
+    names:
+      anthropic_messages: null   # checked absence — Anthropic's shape is the
+        # `thinking:{...}` object (its own row below), not a string enum.
+      openai_compat: reasoning_effort
+      gemini: null   # checked absence — Gemini's shape is `thinkingConfig`
+        # (its own row below).
+    name_overrides: {}
+    firing_scope: wire-family   # home family openai_compat.
+    probe_values: [low]
+    confidence: high
+    source: https://developers.openai.com/api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      The OpenAI/xAI family-default shape for the thinking axis's own on/off
+      fragment. xAI documents a graceful degrade: an unsupported model given
+      reasoning_effort:"xhigh" silently coerces to "high"
+      (https://docs.x.ai/docs/guides/reasoning, fetched 2026-09-01) — a
+      pre-announced silent-translation instance, contrasting with DeepSeek's
+      pre-announced silent-ignore list for the sampling family in thinking
+      mode. DeepSeek/Kimi/Z.ai/Qwen diverge from this default shape; their
+      overrides live on axes.thinking.shapes.openai_compat.vendor_overrides,
+      authored in this same task.
+
+  - id: anthropic-thinking-object
+    group: reasoning-toggle
+    kind: parameter
+    status: swept
+    canonical_name: thinking
+    names:
+      anthropic_messages: thinking
+      openai_compat: null   # checked absence.
+      gemini: null   # checked absence.
+    name_overrides: {}
+    firing_scope: wire-family   # home family anthropic_messages.
+    probe_values:
+      - type: enabled
+        budget_tokens: 1024
+    confidence: high
+    source: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+    retrieved: 2026-08-26
+    note: >-
+      The enabled-object benign value at budget 1024 (Anthropic's documented
+      floor — see the anthropic-thinking-budget-floor INV-03 row, plan 10-03,
+      for the floor itself as its own boundary-contract finding). This row's
+      one benign probe_values entry (D-03) is the ON shape; the OFF shape
+      (`{type:"disabled"}`) is exercised through the thinking-off mode cells
+      on the sampling family, not through this row's own probe_values.
+
+  - id: gemini-thinking-config
+    group: reasoning-toggle
+    kind: parameter
+    status: swept
+    canonical_name: thinkingConfig
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: null   # checked absence.
+      gemini: null   # unresolved at the family level on purpose (D-11) — this
+        # row's home vendor is narrowed via name_overrides below, exercising
+        # the home-vendor firing-scope branch plan 10-01 left untested.
+    name_overrides:
+      gemini: thinkingConfig
+    firing_scope: home-vendor
+    probe_values:
+      - thinkingLevel: low
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      The documented `thinkingLevel`/`thinkingBudget` mutual exclusion is a
+      follow-up (its own INV-03/differentiator concern), not a value list on
+      this D-03-scoped row.
+
+  - id: qwen-enable-thinking
+    group: reasoning-toggle
+    kind: parameter
+    status: swept
+    canonical_name: enable_thinking
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: null   # unresolved at the family level (D-11) — Qwen is
+        # this row's home vendor, narrowed via name_overrides below.
+      gemini: null   # checked absence.
+    name_overrides:
+      qwen: enable_thinking
+    firing_scope: home-vendor
+    probe_values: [false]
+    confidence: high
+    source: https://docs.qwencloud.com/developer-guides/text-generation/thinking
+    retrieved: 2026-09-01
+    note: >-
+      Benign value false — "turn thinking off" is the exact intent conclusion
+      19 found three vendors handling three ways (Z.ai rejects, Qwen honors,
+      Moonshot swallows). The paired `thinking_budget` integer is noted but not
+      swept as its own row here (its mode-dependent recommended-value semantics
+      are a differentiator follow-up). The inline `/think`/`/no_think`
+      prompt-text toggle is a second, informal control surface — NOT a request
+      parameter, and therefore not a row.
+
+  # --- LOW-confidence hypothesis rows (plan 10-02 Task 2, D-15) ---------------
+  # FEATURES.md's three LOW-confidence claims, settled by the probe rather than
+  # a third documentation pass (conclusion 19: the wire outranks docs).
+  - id: anthropic-structured-output-output-config
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: output_config
+    names:
+      anthropic_messages: null   # unresolved at the family level on purpose —
+        # narrowed via name_overrides below (this row's whole purpose is the
+        # naming ambiguity itself).
+      openai_compat: null
+      gemini: null
+    name_overrides:
+      anthropic: output_config
+    firing_scope: home-vendor
+    probe_values:
+      - type: object
+        properties:
+          answer:
+            type: string
+        required: [answer]
+    confidence: low
+    hypothesis: >-
+      Two candidate field names for Anthropic's Structured Outputs beta are
+      stated by different secondary sources (Tessl.io and Towards Data Science
+      writeups, cited via FEATURES.md § Table Stakes structured-output row):
+      `output_config` (this row) vs `output_format` (its sibling row below).
+      Whichever field the API actually accepts settles the name; a 400 on this
+      field with a working sibling settles it just as definitively — the wire,
+      not a third documentation pass (D-15).
+    source: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+    retrieved: 2026-09-01
+    note: >-
+      Fires only at Anthropic (home-vendor). Structured Outputs landed 2026 on
+      a subset of models only (Sonnet 4.5/Opus 4.1, Haiku 4.5 "to follow" per
+      one third-party source, FEATURES.md § Table Stakes) — a rejection here
+      may reflect the field name OR the model-gating, a confound Phase 11/12
+      should record separately.
+
+  - id: anthropic-structured-output-output-format
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: output_format
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides:
+      anthropic: output_format
+    firing_scope: home-vendor
+    probe_values:
+      - type: object
+        properties:
+          answer:
+            type: string
+        required: [answer]
+    confidence: low
+    hypothesis: >-
+      The sibling candidate field name to anthropic-structured-output-output-config
+      above — whichever of the two the API accepts settles Anthropic's real
+      field name for Structured Outputs; the other's rejection is the evidence,
+      not a documentation re-read (D-15).
+    source: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+    retrieved: 2026-09-01
+    note: >-
+      Sibling of anthropic-structured-output-output-config above (see its note
+      for the model-gating confound).
+
+  - id: gemini-temperature-range
+    group: exotic   # not `sampling` on purpose — this is a single-vendor
+      # boundary-contract row, not a mode-dependence probe (check_axis_declaration
+      # only requires `axis:` on the sampling group, D-07).
+    kind: parameter
+    status: swept
+    canonical_name: temperature
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null   # unresolved at the family level on purpose — narrowed via
+        # name_overrides below (D-11 home-vendor branch).
+    name_overrides:
+      gemini: temperature
+    boundary_contract: true   # D-03: the row's finding IS the boundary contract.
+    probe_values: [1.0, 2.0]
+    firing_scope: home-vendor
+    confidence: low
+    hypothesis: >-
+      A single 2026 secondary source (Infron: OpenAI API Compatibility Gaps)
+      states flatly that most vendors accept temperature 0-2 but "Gemini
+      accepts 0 to 1" — contradicting the swept `temperature` row's own note,
+      which treats 0-2 as the cross-vendor range. A rejection at 2.0 confirms
+      the tighter Gemini ceiling; an acceptance at 2.0 refutes it. Settled on
+      the wire, not by a third documentation pass (D-15, conclusion 19).
+    source: https://infron.ai/blog/openai-api-compatibility-gaps
+    retrieved: 2026-09-01
+    note: >-
+      Distinct from the swept `temperature` row (group sampling, single benign
+      value 0.7) — this row IS the boundary contract per D-03's carve-out,
+      scoped to Gemini only via firing_scope: home-vendor.
+
+  # --- deliberately excluded (plan 10-02 Task 2, D-15 vs FUT-01 tension) ------
+  - id: max-tokens-semantics
+    group: excluded
+    kind: parameter
+    status: excluded
+    canonical_name: max_tokens_semantics
+    names:
+      anthropic_messages: null
+      openai_compat: null
+      gemini: null
+    name_overrides: {}
+    confidence: low
+    hypothesis: >-
+      Whether max_tokens/max_completion_tokens/maxOutputTokens bounds
+      output-only or total-including-hidden-reasoning tokens has, per one 2026
+      secondary source (Infron), diverged historically between OpenAI and
+      Anthropic. A rejected/accepted contract call cannot settle this — it
+      needs a successful call plus a usage-field read.
+    excluded_at: 2026-09-01
+    excluded_reason: >-
+      D-15 lists max_tokens semantics among the hypothesis rows the probe
+      settles, but settling output-only-vs-total-including-reasoning semantics
+      needs a successful call plus a usage read — a behavioral check, Phase 12
+      territory, not this contract-only phase. .planning/REQUIREMENTS.md
+      carries the same check as FUT-01, "offered, unselected 2026-09-01". The
+      row stays visible so the parameter is demonstrably seen and judged
+      rather than missed (rule 1b); flipping status to swept plus adding a
+      benign probe_values/firing_scope is a one-field-plus-regeneration change
+      if the owner decides otherwise. Cross-references the swept `max-tokens`
+      row, which covers the contract-level naming question only.
+    source: https://infron.ai/blog/openai-api-compatibility-gaps
+    retrieved: 2026-09-01

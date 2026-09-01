@@ -61,6 +61,24 @@ SKIP_REASON_BY_TOGGLE = {
 }
 _ALL_THINKING_MODES = {"thinking-on", "thinking-off"}
 
+# D-08/D-11/T-10-06 (plan 10-02): the closed vocabulary of every reason a
+# param x model x mode cell can be skipped instead of emitted. The first three
+# come from firing_models()/modes_for_model() (unchanged from plan 10-01); the
+# last two are new here — a `vendor_overrides` entry whose "on"/"off" fragment
+# is an explicit null means no request fragment can be constructed: an admitted
+# unknown (`toggle-shape-unknown`, e.g. Kimi — no documented shape) or a vendor
+# whose thinking mode is not a request parameter at all
+# (`toggle-not-a-request-parameter`, e.g. DeepSeek — selected by model id).
+# Enforced, not free text — axis_fragment_availability() aborts generation
+# (fail-loud) if a null-fragment override names a reason outside this set.
+SKIP_REASONS = frozenset({
+    "no-thinking-off-toggle",
+    "no-thinking-capability",
+    "wire-shape-incompatible",
+    "toggle-shape-unknown",
+    "toggle-not-a-request-parameter",
+})
+
 # Generated-file headers — module-level constants so write_generated_files() (the
 # writer) and check_generated_drift() (the --check re-render-and-compare gate) share
 # exactly one copy of each header string. A header defined twice would let the two
@@ -244,6 +262,35 @@ def modes_for_model(row: dict, model: dict) -> tuple[list[str], list[tuple[str, 
     return emitted, skipped
 
 
+def axis_fragment_availability(row: dict, model: dict, inventory: dict, mode: str) -> tuple[bool, str | None]:
+    """(D-08/T-10-06, plan 10-02) Whether a REAL request fragment can be
+    constructed for this row's axis at this model's wire family + vendor +
+    mode, BEFORE axis_fragment() is called. A `vendor_overrides` entry whose
+    on/off value is an explicit null means no fragment exists — the caller
+    must record a skipped cell with the override's own declared `reason`
+    instead of emitting one. Never called for a row with no axis (or a
+    'default' mode); only thinking-on/thinking-off cells reach here."""
+    wire_family = model["wire_family"]
+    shapes = inventory["axes"][row["axis"]]["shapes"]
+    shape = shapes.get(wire_family)
+    if shape is None:
+        return False, "wire-shape-incompatible"
+    key = "on" if mode == "thinking-on" else "off"
+    vendor_overrides = shape.get("vendor_overrides") or {}
+    override = vendor_overrides.get(model["vendor"])
+    if override is not None and key in override and override[key] is None:
+        reason = override.get("reason")
+        if reason not in SKIP_REASONS:
+            _fail(
+                2,
+                f"row {row['id']!r}: vendor override for {model['vendor']!r} declares "
+                f"a null {key!r} fragment but its `reason:` {reason!r} is not in the "
+                f"closed skip-reason vocabulary {sorted(SKIP_REASONS)}",
+            )
+        return False, reason
+    return True, None
+
+
 def axis_fragment(row: dict, model: dict, inventory: dict, mode: str) -> dict:
     """The fixed request fragment (D-08) for this wire family + mode, with any
     vendor override applied. Only called for a thinking-on/thinking-off mode —
@@ -368,6 +415,14 @@ def expand_params(inventory: dict, models: list[dict]) -> tuple[list[dict], list
             for skip_mode, reason in skip_pairs:
                 skipped_entries.append(_skip_record(row, model, skip_mode, reason))
             for mode in emitted_modes:
+                if mode in _ALL_THINKING_MODES:
+                    # D-08/T-10-06 (plan 10-02): a vendor override may declare
+                    # no real fragment (null on/off) — skip with its own
+                    # reason rather than crash or invent a request body.
+                    available, reason = axis_fragment_availability(row, model, inventory, mode)
+                    if not available:
+                        skipped_entries.append(_skip_record(row, model, mode, reason))
+                        continue
                 for value in probe_values:
                     scalar_entries.append({
                         "model": model["slug"],
@@ -942,6 +997,76 @@ def selftest() -> tuple[int, int]:
                 f"expected {(expected_emitted, expected_skipped)}, got {(emitted, skipped)}",
                 file=sys.stderr,
             )
+
+    # --- axis fragment availability: a vendor override with an explicit null
+    #     on/off fragment is unavailable and reports its own declared reason,
+    #     one case per new reason (T-10-06, plan 10-02 D-08) — never a crash,
+    #     never an invented fragment ---
+    cases += 1
+    avail_inventory = {
+        "axes": {
+            "thinking": {
+                "shapes": {
+                    "openai_compat": {
+                        "on": {"reasoning_effort": "low"},
+                        "off": {"reasoning_effort": "none"},
+                        "vendor_overrides": {
+                            "dseek": {"on": None, "off": None, "reason": "toggle-not-a-request-parameter"},
+                            "kimi": {"on": None, "off": None, "reason": "toggle-shape-unknown"},
+                        },
+                    },
+                },
+            },
+        },
+    }
+    avail_row = _valid_row(axis="thinking")
+    available, reason = axis_fragment_availability(avail_row, {"wire_family": "openai_compat", "vendor": "dseek"}, avail_inventory, "thinking-on")
+    if available or reason != "toggle-not-a-request-parameter":
+        problems += 1
+        print(
+            f"FAIL selftest: axis_fragment_availability(dseek) expected "
+            f"(False, 'toggle-not-a-request-parameter'), got {(available, reason)}",
+            file=sys.stderr,
+        )
+
+    cases += 1
+    available, reason = axis_fragment_availability(avail_row, {"wire_family": "openai_compat", "vendor": "kimi"}, avail_inventory, "thinking-on")
+    if available or reason != "toggle-shape-unknown":
+        problems += 1
+        print(
+            f"FAIL selftest: axis_fragment_availability(kimi) expected "
+            f"(False, 'toggle-shape-unknown'), got {(available, reason)}",
+            file=sys.stderr,
+        )
+
+    # --- a vendor with no override still gets a real fragment (family default) ---
+    cases += 1
+    available, reason = axis_fragment_availability(avail_row, {"wire_family": "openai_compat", "vendor": "openai"}, avail_inventory, "thinking-on")
+    if not available or reason is not None:
+        problems += 1
+        print(
+            f"FAIL selftest: axis_fragment_availability(openai, no override) "
+            f"expected (True, None), got {(available, reason)}",
+            file=sys.stderr,
+        )
+
+    # --- a null fragment whose reason is outside the closed vocabulary aborts
+    #     (exit 2) rather than silently accepting free text ---
+    cases += 1
+    bad_reason_inventory = {
+        "axes": {"thinking": {"shapes": {"openai_compat": {
+            "on": {"reasoning_effort": "low"}, "off": {"reasoning_effort": "none"},
+            "vendor_overrides": {"dseek": {"on": None, "off": None, "reason": "made-up-reason"}},
+        }}}},
+    }
+    try:
+        axis_fragment_availability(avail_row, {"wire_family": "openai_compat", "vendor": "dseek"}, bad_reason_inventory, "thinking-on")
+        problems += 1
+        print("FAIL selftest: axis_fragment_availability did not abort on an out-of-vocabulary skip reason", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL selftest: axis_fragment_availability(bad reason) expected exit 2, got {e.code}", file=sys.stderr)
 
     # --- --check detects a hand-edited generated file: it re-renders in memory
     #     and compares against what is on disk, flagging any difference ---
