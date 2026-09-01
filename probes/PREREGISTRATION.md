@@ -280,3 +280,104 @@ request bills nothing (conclusion 19's economics point, restated in SWEEP-DESIGN
 § "Dollar envelopes"). Stage 1's own $0 cost is therefore unchanged by this
 amendment; only Stage 5's on-floor (1024) value, fired later and only after the
 owner's go, carries the new cost.
+
+**2026-09-01, plan 11-04 Task 1 — Stage 1 fired (`python3 probes/harness/runner.py
+--set probes/sets/generated/contract-sweep.yaml --stage 1`).** 6 cells declared, 5
+fired live, 1 (`gemini-3-1-pro`/`gemini-temperature-range`/`2.0`) skipped as
+already-logged — it is the plan 11-01 tracer cell, sharing this same probe_id, and
+Stage 1's own selector deliberately owns that exact value per `sweep-stages.yaml`'s
+first-match-wins design. All 6 cells now have a `terminal: verdict` record on disk;
+none ended without a verdict. Outcomes: 5 of 6 REJECTED (HTTP 400) as
+SWEEP-DESIGN.md predicted, and the pre-existing 6th (Gemini temperature 2.0) stayed
+ACCEPTED (HTTP 200, recorded 11-01) — the prediction that cell already refuted.
+Every rejection's error body names its own tested parameter, not a confound: Kimi's
+`invalid temperature: only 1 is allowed for this model` (the `kimi-fixed-sampling-point`
+cell, value `0.3`) and all four Claude models' `thinking.enabled.budget_tokens: Input
+should be greater than or equal to 1024` (the `anthropic-thinking-budget-floor` cells,
+value `{"budget_tokens":500,"type":"enabled"}`) — this is the D-07 rejection-strictness
+signal Task 2's classifier reads. Actual spend for the 5 newly-fired cells: **$0.00**
+(all rejected, billed nothing — read via `python3 probes/harness/ledger.py`: global
+total unchanged at `$0.000614`, carrying forward Phase 9's smoke spend plus the 11-01
+tracer cell). No ceiling verdict fired. Stage 1's rule-5d discrimination check: 5/5
+newly-fired predicted-rejection cells landed as HTTP 4xx with the parameter named in
+the error body — the classifier's exact verdict (rejected vs. needs-review) is
+determined in Task 2 against this same evidence.
+
+**2026-09-01, plan 11-04 Task 1 — Stage 2 fired (`python3 probes/harness/runner.py
+--set probes/sets/generated/contract-sweep.yaml --stage 2`).** 14 cells declared (the
+four thinking-toggle rows: `openai-reasoning-effort` × 7 models,
+`anthropic-thinking-object` × 4 models, `gemini-thinking-config` × 1 model,
+`qwen-enable-thinking` × 2 models), all 14 fired live, all 14 landed
+`terminal: verdict` — none ended without a verdict, so D-10's refire branch was not
+needed. Outcomes by HTTP status: 10 ACCEPTED (200) — `gemini-thinking-config`
+(gemini-3-1-pro), `openai-reasoning-effort` at grok-4-5/kimi-k3/deepseek-v4/glm-5.3/
+qwen3.8-max/qwen3.8-flash, `qwen-enable-thinking` at qwen3.8-max/qwen3.8-flash. 4
+REJECTED (400) — `openai-reasoning-effort` at gpt-5-6-sol, and all four
+`anthropic-thinking-object` cells (claude-fable-5/opus-5/sonnet-5/haiku-4-5).
+
+**Two real, dated findings from this stage's rejections, neither a harness bug —
+recorded per rule 1b/5e (settled on the wire, not assumed), surfaced at the D-09
+checkpoint for the owner, not silently patched:**
+
+1. **`anthropic-thinking-object`'s probe value is stale for 3 of 4 Claude models.**
+   claude-fable-5/opus-5/sonnet-5 each returned: `"thinking.type.enabled" is not
+   supported for this model. Use "thinking.type.adaptive" and "output_config.effort"
+   to control thinking behavior.` — these three models have moved to a DIFFERENT
+   thinking-toggle shape (`type: adaptive` + a separate `output_config.effort` field)
+   than the row's probed `{"type":"enabled","budget_tokens":N}` shape. The 4th model,
+   claude-haiku-4-5, returned a DIFFERENT 400 instead: `` `max_tokens` must be greater
+   than `thinking.budget_tokens` `` — the same max_tokens-too-small confound
+   `anthropic-thinking-budget-floor` had (11-02's fix), but on THIS row, which never
+   received a `max_tokens_override` in 11-02 (only the budget-floor row did). Both
+   error bodies name their own tested field (`thinking.type.enabled` /
+   `thinking.budget_tokens`), so D-07's classifier will read these as legitimate
+   parameter-named rejections, not needs-review — but the underlying signal is exactly
+   what SWEEP-DESIGN's D-08 stage-2 gate exists to catch: **the anthropic-thinking
+   toggle is broken (in two different ways) for all 4 Claude models**, before any
+   sampling-family thinking-on cell fires downstream. No fix applied in this task —
+   this is presented at the D-09 checkpoint below (§ "whether all four thinking-toggle
+   shapes worked").
+2. **`gpt-5-6-sol` rejects `max_tokens` outright, unrelated to `openai-reasoning-effort`.**
+   Its 400 body: `Unsupported parameter: 'max_tokens' is not supported with this
+   model. Use 'max_completion_tokens' instead.` (`param: "max_tokens"` in the error
+   JSON) — the harness's `openai_compat` adapter sends `max_tokens` universally; this
+   model requires the newer `max_completion_tokens` field. The error names `max_tokens`,
+   NOT `reasoning_effort` — this is the exact D-07 boundary case (a non-429 4xx whose
+   body names a DIFFERENT field than the one under test), so Task 2's classifier must
+   route it to `needs-review`, never `rejected`. Left unfixed, every gpt-5-6-sol cell
+   in the eventual bulk sweep (44 scalar + 1 content-block, OpenAI's full envelope)
+   would 400 this same way regardless of what parameter each cell tests — a
+   systemic per-model harness/model-registry gap, not a per-cell finding. No fix
+   applied in this task (a per-model request-field override is a harness/registry
+   design decision, out of this task's scope) — surfaced at the D-09 checkpoint.
+
+**A genuine evidence-privacy finding, found and fixed within this task, before
+classification.** `probes/audit-evidence.py --check` against the enlarged evidence
+base initially reported 18 findings (exit 1): 7 were the already-known,
+already-tracked pre-existing debt from plans 11-01/11-03 (`.planning/WINDOWS.md` #2:
+Kimi's Phase-9 Msh-* header leak; #3: Gemini's documented `thoughtSignature` field,
+a false positive on the scanner's generic key-fragment pattern) — untouched, per
+that same precedent (append-only evidence, no second exemption, no pattern
+narrowing). The remaining 11 were a genuinely NEW leak class this task's own firing
+introduced: `set-cookie` response headers (Cloudflare's `__cf_bm` bot-management
+cookie at openai/kimi, Alibaba Cloud WAF's `acw_tc` anti-crawler cookie at
+qwen/zai) were never in `runner.py`'s `_ORG_IDENTIFYING_RESPONSE_HEADERS` denylist.
+Fixed structurally (both casings, `set-cookie`/`Set-Cookie`, added and selftested —
+`runner.py --selftest`: 42 cases, 0 problems) and the 5 already-captured records
+that carried it were redacted in place (the leaked cookie value removed from
+`response_headers`; `probe_id`/`terminal`/`usage`/`cost_usd` untouched — no
+re-firing, no re-spending on cells that already returned a valid verdict).
+Re-running `probes/audit-evidence.py --check` after the fix: 8 findings (the 7
+pre-existing plus one more instance of the same known `thoughtSignature` class,
+from this stage's own `gemini-thinking-config` cell) — the intended property (no
+NEW leak class in newly captured evidence) holds; the two pre-existing debt items
+remain exactly where 11-03 left them, for plan 11-06's evidence-commit decision.
+Recorded in `.planning/WINDOWS.md` (#4, marked fixed).
+
+Actual spend for Stage 2's 14 cells, read from `python3 probes/harness/ledger.py`
+(never estimated): global total **$0.002347** (up from $0.000614 after Stage 1,
+which billed $0), carrying forward Phase 9's smoke spend and the 11-01 tracer cell.
+By vendor: anthropic $0.000035 (unchanged, all 4 Stage 2 cells rejected), kimi
+$0.001041, gemini $0.00009, xai $0.00089, dseek $0.0000238, zai $0.0000412, qwen
+$0.000226. No ceiling verdict fired; every vendor's running total stayed far under
+the $0.50 sub-ceiling (highest, kimi, at ~0.2% of it).

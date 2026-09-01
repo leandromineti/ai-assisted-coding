@@ -106,6 +106,17 @@ _ORG_IDENTIFYING_RESPONSE_HEADERS = {
     "msh-uid",
     "msh-project-id",
     "msh-gid",
+    # Added 2026-09-01, Phase 11 plan 11-04 (Rule 2 deviation): OBSERVED live
+    # during the stage-1/2 calibration batch — `set-cookie` (and its
+    # capitalized `Set-Cookie` form at zai) carries edge/CDN
+    # session-tracking tokens (Cloudflare's `__cf_bm` bot-management cookie
+    # at openai/kimi; Alibaba Cloud WAF's `acw_tc` anti-crawler cookie at
+    # qwen/zai), never an account identifier by the header NAME this filter
+    # otherwise targets, but a per-session/per-request tracking value that is
+    # exactly the class probes/audit-evidence.py's D-05 tripwire exists to
+    # catch. Not request-tracing (unlike `msh-request-id`, kept above) — a
+    # session cookie is reusable state, not a static id naming this request.
+    "set-cookie",
 }
 
 
@@ -866,12 +877,16 @@ def selftest() -> tuple[int, int]:
 
     # --- filter_response_headers: org headers dropped, rate-limit/request-id
     #     kept — extended Phase 11 plan 11-03 with Kimi's Msh-* family
-    #     (observed live, see the constant's own comment above) ---
+    #     (observed live, see the constant's own comment above), and plan
+    #     11-04 with set-cookie (observed live: Cloudflare's __cf_bm at
+    #     openai/kimi, Alibaba WAF's acw_tc at qwen/zai — both casings) ---
     cases += 1
     raw_headers = {
         "openai-organization": "org-should-not-appear",
         "anthropic-workspace-id": "wrkspc-should-not-appear",
         "msh-org-id": "org-should-not-appear-2",
+        "set-cookie": "__cf_bm=should-not-appear; path=/; HttpOnly",
+        "Set-Cookie": "acw_tc=should-not-appear-2; path=/; HttpOnly",
         "retry-after": "5",
         "request-id": "req_abc",
         "msh-request-id": "req-should-be-kept",
@@ -881,6 +896,9 @@ def selftest() -> tuple[int, int]:
     if "openai-organization" in filtered or "anthropic-workspace-id" in filtered or "msh-org-id" in filtered:
         problems += 1
         print("FAIL filter_response_headers: an org/account header was not dropped", file=sys.stderr)
+    if "set-cookie" in filtered or "Set-Cookie" in filtered:
+        problems += 1
+        print("FAIL filter_response_headers: a set-cookie header was not dropped", file=sys.stderr)
     if "retry-after" not in filtered or "request-id" not in filtered or "msh-request-id" not in filtered:
         problems += 1
         print("FAIL filter_response_headers: rate-limit/request-id header incorrectly dropped", file=sys.stderr)
