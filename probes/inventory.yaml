@@ -17,13 +17,16 @@
 # kimi-partial-mode, glm-do-sample, qwen-repetition-penalty) get their own traceable
 # rows, each requiring `requirement: INV-03` + `status: swept`.
 #
-# `--check`'s INV-03 traceability validator is RED BY DESIGN as of 2026-09-01
-# (plan 10-01 Task 2): none of the nine rows above exist yet — this row is the
-# only one plan 10-01 authors (D-01's tracer slice). Plans 10-02/10-03 author the
-# remaining canonical rows and the nine named exotics; `--check` should return to
-# clean (0 problems) once plan 10-03 completes. A red gate with a written, dated
-# reason is this repo's idiom (Phase 2 lint's red-by-design-at-622-findings
-# precedent) — a gate silently weakened to stay green is not.
+# `--check`'s INV-03 traceability validator reported findings as of 2026-09-01
+# (plan 10-01 Task 2): none of the nine rows above existed yet — this row was
+# the only one plan 10-01 authored (D-01's tracer slice). Plans 10-02/10-03
+# authored the remaining canonical rows and the nine named exotics, and the
+# gate went green (0 problems) once plan 10-03 landed the last of them —
+# scored here, dated, rather than left as a dangling present-tense claim (this
+# repo's "forward-looking claims get scored at the next re-read" discipline).
+# A gate carrying a written, dated reason for a finding is this repo's idiom
+# (Phase 2 lint's finding-at-622-count precedent) — a gate silently weakened
+# to stay green is not.
 checked: 2026-09-01
 
 # --- axes -------------------------------------------------------------------------

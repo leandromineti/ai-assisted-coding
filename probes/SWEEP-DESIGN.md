@@ -80,58 +80,164 @@ summary, run against the registry as of this plan's last commit:
 
 ```
 params rows: 51 total (excluded=9, swept=42)
-emitted scalar probes (one row x model x mode x value expansion each): 396
+emitted scalar probes (one row x model x mode x value expansion each): 329
 emitted content-block probes: 16
-skipped cells (param x model pairs never emitted, D-11): 246 (no-thinking-off-toggle=53, toggle-not-a-request-parameter=22, toggle-shape-unknown=11, wire-shape-incompatible=160)
+skipped cells (param x model pairs never emitted, D-11): 284 (no-request-field-for-vendor=46, no-thinking-off-toggle=45, toggle-not-a-request-parameter=22, toggle-shape-unknown=11, wire-shape-incompatible=160)
 ```
+
+**Dated 2026-09-01, plan 10-04, closing CR-01:** plan 10-03's version of this section
+read 396 (before-fix) for the scalar total and 246 (before-fix) for the skip total.
+Plan 10-04's own § CR-01 closure subsection (below) explains why; every count in this
+section is re-derived
+from the current generator output, not hand-adjusted from the earlier figures.
 
 **The 42 swept rows, by group** (`python3 -c` over `probes/inventory.yaml`'s own
 `params:` list, grouping by `(group, status)`): sampling=10, structural=10,
 reasoning-toggle=4, service-tier=1, exotic=15, content-block=2 — sums to 42, matching
 the printed `swept=42`. Plus 9 `excluded` rows (never emitted, D-09) = 51 total rows.
+Unchanged by plan 10-04 — no registry row was added, removed, or reclassified; the
+`no-request-field-for-vendor` fix moves cells from "emitted" to "skipped" without
+touching a single row's group or status.
 
 **The derivation, by group, cross-checked against the actual generated file
 (`python3 -c` over `probes/sets/generated/contract-sweep.yaml`'s `probes:` list,
 grouping each entry by its row's `group`):**
 
-- **structural: 104.** Eight `firing_scope: all` rows × 12 models × 1 mode (no axis)
-  = 96, plus the two `anthropic-structured-output-output-*` rows'
+- **structural: 88** (was 104). Eight `firing_scope: all` rows × 12 models × 1 mode (no
+  axis) = 96, plus the two `anthropic-structured-output-output-*` rows'
   `firing_scope: home-vendor` narrowing each to the 4 Anthropic models × 1 mode = 8.
-  96 + 8 = 104.
-- **service-tier: 12.** One `firing_scope: all` row, no axis, × 12 models = 12.
-- **reasoning-toggle: 14.** `openai-reasoning-effort` (wire-family, home
+  96 + 8 = 104 candidate cells — **before** the CR-01 fix. Five of those eight
+  `firing_scope: all` rows carry an explicit null `names:` entry at one or both of
+  `anthropic_messages`/`gemini` with no vendor override, and now route those (row,
+  model) pairs to a `no-request-field-for-vendor` skip instead of emitting a no-op
+  cell: `response-format` (−4, the 4 Claude models), `parallel-tool-calls` (−4 Claude,
+  −1 gemini-3-1-pro), `stream` (−1 gemini-3-1-pro), `stream-options-include-usage` (−4
+  Claude, −1 gemini-3-1-pro), `tool-choice` (−1 gemini-3-1-pro). Total loss: 4+5+1+5+1
+  = 16. 104 − 16 = 88.
+- **service-tier: 11** (was 12). One `firing_scope: all` row, no axis, × 12 models = 12
+  candidate cells; its `names:` map is null at `gemini`, so gemini-3-1-pro's cell is now
+  a `no-request-field-for-vendor` skip. 12 − 1 = 11.
+- **reasoning-toggle: 14** (unchanged). `openai-reasoning-effort` (wire-family, home
   `openai_compat`, 7 models) + `anthropic-thinking-object` (wire-family, home
   `anthropic_messages`, 4 models) + `gemini-thinking-config` (home-vendor, 1 model) +
-  `qwen-enable-thinking` (home-vendor, 2 models) = 7 + 4 + 1 + 2 = 14.
-- **sampling: 160.** The per-model mode multiplier implied by each `reasoning_toggle`
-  value (D-06): `always-on` and `none` each emit exactly ONE real cell (5 models are
-  `always-on` in this registry: claude-fable-5, gemini-3-1-pro, grok-4-5, kimi-k3,
-  glm-5.3 — no model is currently `none`); `default-on` and `opt-in` each emit BOTH
-  cells (6 models `default-on`: claude-opus-5, claude-sonnet-5, gpt-5-6-sol,
-  deepseek-v4, qwen3.8-max, qwen3.8-flash; 1 model `opt-in`: claude-haiku-4-5). Per
-  sampling row: 5×1 + 6×2 + 1×2 = 19 cells; × 10 sampling rows = 190 candidate cells
-  before availability skips. `axis_fragment_availability()` then removes every cell a
-  `vendor_overrides` entry admits it cannot construct (D-08): DeepSeek's null
-  `toggle-not-a-request-parameter` override removes both modes × 10 rows = 20; Kimi's
-  null `toggle-shape-unknown` override removes its one always-on-model mode × 10 rows
-  = 10. 190 − 20 − 10 = 160, matching the generated file exactly.
-- **exotic: 106.** The 15 exotic-group rows' mixed `firing_scope` (`wire-family` fires
-  at 4–7 models depending on home family; `home-vendor` fires at 1–4; `all` for
-  `gemini-temperature-range`'s sibling-scope none — it is itself `home-vendor`), summed
-  directly from the generated file rather than re-derived arithmetically here, since
-  the group mixes three different firing scopes and one boundary-contract row with two
-  probe values — the same reason this section states the COMMAND that produced the
-  number rather than a hand-typed total (CLAUDE.md: a count carries its measure).
-- **Total scalar: 104 + 12 + 14 + 160 + 106 = 396**, matching
-  `emitted scalar probes: 396` exactly.
-- **content-block: 16.** `image-input` (`firing_scope: all`, 12 models) +
+  `qwen-enable-thinking` (home-vendor, 2 models) = 7 + 4 + 1 + 2 = 14. None of these
+  four rows carries a null `names:` entry at a wire family it fires at, so CR-01 does
+  not touch this group.
+- **sampling: 110** (was 160). Of the 10 sampling rows, 7 carry a null `names:` entry
+  at `anthropic_messages` (`presence-penalty`, `frequency-penalty`, `logprobs`,
+  `top-logprobs`, `seed`, `n`) and, for `logit-bias` alone, at `gemini` as well; the
+  other 3 (`temperature`, `top-p`, `top-k`) carry a real name at every wire family and
+  are untouched by this fix. The pre-CR-01 per-row candidate count (D-06's
+  reasoning_toggle mode multiplier: `always-on`/`none` emit 1 cell, `default-on`/
+  `opt-in` emit 2, minus DeepSeek's and Kimi's null-toggle removal) was 16 for every
+  one of the 10 rows. For the 6 rows null only at `anthropic_messages`, all 4 Claude
+  models' cells (claude-fable-5 always-on ×1, claude-opus-5/claude-sonnet-5 default-on
+  ×2 each, claude-haiku-4-5 opt-in ×2) — 1+2+2+2 = 7 cells — are now
+  `no-request-field-for-vendor` skips: 16 − 7 = 9 cells each, × 6 rows = 54. For
+  `logit-bias` (null at both `anthropic_messages` and `gemini`), the same 7 Claude
+  cells plus gemini-3-1-pro's 1 always-on cell = 8 cells removed: 16 − 8 = 8. The 3
+  untouched rows keep their pre-fix 16 each = 48. Total: 48 + 54 + 8 = 110.
+- **exotic: 106** (unchanged). The 15 exotic-group rows' mixed `firing_scope`
+  (`wire-family` fires at 4–7 models depending on home family; `home-vendor` fires at
+  1–4), summed directly from the generated file rather than re-derived arithmetically
+  here, since the group mixes several firing scopes and one boundary-contract row with
+  two probe values. None of the 15 rows carries a null `names:` entry at a wire family
+  it fires at (D-11's home-vendor/wire-family scoping means these rows never reach a
+  wire family their own `names:` map doesn't cover in the first place) — CR-01 does not
+  touch this group, the same reason it does not touch reasoning-toggle.
+- **Total scalar: 88 + 11 + 14 + 110 + 106 = 329**, matching
+  `emitted scalar probes: 329` exactly (was 396; net change −67, matching the 67 no-op
+  cells CR-01 closes).
+- **content-block: 16** (unchanged). `image-input` (`firing_scope: all`, 12 models) +
   `anthropic-cache-control-block` (`firing_scope: home-vendor`, 4 Anthropic models) =
-  12 + 4 = 16, matching `emitted content-block probes: 16` exactly.
+  12 + 4 = 16, matching `emitted content-block probes: 16` exactly. Content-block rows
+  carry no `names:` map (D-12's `body_template` shape instead), so CR-01 cannot reach
+  them.
 
-**412 total probe cells** (396 scalar + 16 content-block) will be fired by the sweep as
-currently designed, plus 246 cells that are declared skips and never fired at all
-(D-11) — every param × model pair is therefore either an emitted cell or a
+**345 total probe cells** (329 scalar + 16 content-block, was 412) will be fired by the
+sweep as currently designed, plus 284 cells that are declared skips and never fired at
+all (D-11, was 246) — every param × model pair is therefore either an emitted cell or a
 skipped-cells.yaml entry with a reason, never a silent absence.
+
+**The accounting-shape change, and why emitted-plus-skipped is not conserved across
+this fix (dated 2026-09-01).** A `no-request-field-for-vendor` skip is recorded ONCE per
+(row, model) pair, at mode `n/a` — mirroring the existing `wire-shape-incompatible`
+scope-skip, because a name that does not resolve is a property of the pair, not of a
+mode. A toggle skip (`no-thinking-off-toggle`/`no-thinking-capability`), by contrast, is
+recorded per MODE. For a sampling-group (row, model) pair where the model's
+`reasoning_toggle` is `always-on` or `none`, the pre-fix registry ALREADY emitted one
+no-op cell (the one real mode) and recorded one toggle skip (the missing mode) for that
+same pair — CR-01's fix replaces BOTH of those with a single pair-level
+`no-request-field-for-vendor` record. That is why the skip-reason table does not simply
+gain 67 new entries: 67 emitted cells and 8 mode-level `no-thinking-off-toggle` skips
+(53 → 45, the always-on/none sampling-row pairs affected) collapse into 46 pair-level
+`no-request-field-for-vendor` records (46 − 8 replaced-in-place = 38 pairs that had no
+prior skip at all, mostly the axis-`none` structural/service-tier rows, where a single
+mode was emitted and there was never a second mode to skip). A reader who tries to
+reconcile the before-fix 396 + 246 = 642 against the current 329 + 284 = 613 without
+this paragraph will conclude one of the two totals is wrong; neither is — they are
+counting different things (modes vs pairs) for the 8 pairs where both apply.
+
+## CR-01 closure, dated 2026-09-01 (plan 10-04)
+
+10-REVIEW.md's CR-01 found that `firing_scope: all` fired regardless of whether a row's
+`names:` map actually resolved a request-body key at the model's wire family: for 13
+canonical rows (`presence-penalty`, `frequency-penalty`, `logprobs`, `top-logprobs`,
+`seed`, `n`, `logit-bias`, `response-format`, `tool-choice`, `parallel-tool-calls`,
+`stream`, `stream-options-include-usage`, `service-tier`) an explicit null at
+`anthropic_messages` and/or `gemini` (D-02's checked-absence marker) meant the emitted
+cell's request body never contained the parameter it claimed to test — 67 of the
+before-fix 396 emitted scalar cells, billed and indistinguishable on the wire from any
+other row's cell at the same model/mode.
+
+**Decision: all 13 rows keep their explicit null and route to a declared skip; no row's
+`names:` map was re-authored.** The reviewer offered a second closure — re-author the
+null to the family-default canonical name and let the compat-shim swallow the request,
+the pattern `top-k` already uses — but the evidence says that applies to none of these
+13: (1) every null carries its own dated, sourced `source:`/`retrieved:` pair recording a
+genuine checked absence, and re-authoring it to make a generator bug disappear would
+falsify a sourced registry fact; (2) `top-k` carries a REAL non-null name at all three
+wire families, so there is no "send the family default where the family has no field"
+intent to preserve here — none of the 13 express that intent; (3) the compat-shim
+swallow test (D-10) lives INSIDE the `openai_compat` family, where these rows' names stay
+non-null and keep firing; the nulls sit at `anthropic_messages`/`gemini`, a genuine
+wire-shape mismatch that would measure the wire format, not the parameter; (4) no
+hypothesis coverage is lost — the three LOW-confidence FEATURES.md claims already live in
+their own dedicated home-vendor rows.
+
+**What now prevents recurrence:** two audits plus a validator, in `probes/inventory-to-sets.py`.
+The no-op audit (`emitted N no-op M`, run against `probes/sets/generated/contract-sweep.yaml`
+cross-referenced with each entry's row `names:`/`name_overrides`) read before-fix `emitted 396 no-op 67`; after, `emitted 329 no-op 0`. The partition audit (every
+unresolvable-name (row, model) pair either doesn't emit or carries a closed-vocabulary
+skip reason) read 46 violating pairs before and 0 after. `check_emitted_carries_param()`
+(new, wired into `--check`) re-resolves every emitted entry's parameter name and fails
+the gate if it is ever absent from that entry's `extra_params` — confirmed to discriminate
+by locally reverting the fix (not committed) and observing `--check` report the defect
+again, naming CR-01, before the revert was discarded.
+
+## Coverage gap: DeepSeek and Kimi get zero cells across the whole sampling family
+
+Named, dated 2026-09-01 (10-REVIEW.md WR-02) — not merely an arithmetic term feeding the
+cell count above, a real hole in INV-01's "union of every vendor's documented request
+parameters" claim for these two vendors specifically. Both DeepSeek's and Kimi's
+`axes.thinking.shapes.openai_compat.vendor_overrides` entries declare BOTH `on` and `off`
+as an explicit null (`toggle-not-a-request-parameter` for DeepSeek — thinking mode is
+selected by model id, not a request field; `toggle-shape-unknown` for Kimi — no
+documented request shape exists at all). Because every sampling-group row carries
+`axis: thinking` (D-07) and there is no fallback path that fires a row once in a
+mode-agnostic "default" state when a vendor's toggle can't be constructed, EVERY mode
+candidate for these two vendors on EVERY one of the 10 sampling rows (`temperature`,
+`top-p`, `top-k`, `presence-penalty`, `frequency-penalty`, `logprobs`, `top-logprobs`,
+`seed`, `n`, `logit-bias`) is a declared skip — `deepseek-v4` and `kimi-k3` fire zero
+sampling-family cells in the entire sweep. This is declared (every skip carries a
+closed-vocabulary reason in `skipped-cells.yaml`, never silent, D-11) and
+dollar-accounted-for (their envelope figures above already reflect it), but a reader of
+this document would otherwise have to notice the gap themselves by cross-referencing the
+skip-reason table against `models.yaml`. No fix is proposed in this plan — the same
+"admitted unknown beats invented fragment" reasoning (rule 1b) that produced the null
+overrides in the first place argues against inventing a fallback fragment just to fill
+this hole; a future plan authoring a real DeepSeek/Kimi thinking-toggle shape (if one is
+ever documented) is what closes it, not a generator change.
 
 ## Dollar envelopes, per vendor
 
@@ -170,28 +276,41 @@ these, and only these):**
   model's raw per-probe cost first, then rounding the vendor total) — never per-probe,
   which would compound rounding error across the higher-volume vendors.
 
-**Per-vendor envelope** (from `probes/harness/prices.yaml`'s per-model rates × the
-assumed 9 input / model-specific output tokens, summed across every scalar AND
-content-block cell that vendor's models fire, per the § Expected cell count
-derivation):
+**Per-vendor envelope, dated 2026-09-01, recomputed after plan 10-04's CR-01 fix**
+(from `probes/harness/prices.yaml`'s per-model rates × the assumed 9 input /
+model-specific output tokens, summed across every scalar AND content-block cell that
+vendor's models fire, per the § Expected cell count derivation). Only `anthropic` and
+`gemini` cell counts changed — they are the two wire families the 13 CR-01 rows carry an
+explicit null at; the other six vendors are byte-identical to the pre-fix figures:
 
 | Vendor | Emitted cells (scalar + content-block) | Raw cost | Envelope (rounded up) |
 |---|---|---|---|
-| anthropic | 126 + 8 = 134 | $0.1803 | **$0.19** |
+| anthropic | 65 + 8 = 73 (was 126 + 8 = 134) | $0.1026 | **$0.11** (was $0.19) |
 | dseek | 22 + 1 = 23 | $0.0061 | **$0.01** |
-| gemini | 24 + 1 = 25 | $0.0605 | **$0.07** |
+| gemini | 18 + 1 = 19 (was 24 + 1 = 25) | $0.0459 | **$0.05** (was $0.07) |
 | kimi | 24 + 1 = 25 | $0.0247 | **$0.03** |
 | openai | 44 + 1 = 45 | $0.0884 | **$0.09** |
 | qwen | 90 + 2 = 92 | $0.0199 | **$0.02** |
 | xai | 33 + 1 = 34 | $0.0137 | **$0.02** |
 | zai | 33 + 1 = 34 | $0.0100 | **$0.02** |
-| **Total (sum of rounded)** | **412** | **$0.4036** | **$0.45** |
+| **Total (sum of rounded)** | **345** (was 412) | **$0.3114** (was $0.4036) | **$0.35** (was $0.45) |
 
-This envelope's total ($0.45, an over-count upper bound per the assumptions above) is
-under 5% of the milestone's $10 global hard ceiling (HARN-03) and under 5% of even the
-CURRENT $1.50 per-vendor soft default — the contract sweep, as designed, is not close
-to threatening either ceiling. That headroom is exactly what the next section proposes
-tightening, as a falsifiable prediction rather than an applied change.
+This envelope's total ($0.35, an over-count upper bound per the assumptions above, and
+itself an over-count relative to the pre-fix $0.45 figure — see the dated note below) is
+under 4% of the milestone's $10 global hard ceiling (HARN-03) and under a quarter of
+even the CURRENT $1.50 per-vendor soft default — the contract sweep, as designed, is not
+close to threatening either ceiling. That headroom is exactly what the next section
+proposes tightening, as a falsifiable prediction rather than an applied change.
+
+**Dated 2026-09-01 (plan 10-04): the pre-fix $0.45 envelope was an over-estimate for a
+reason this document did not know at the time.** 67 of the 396 cells the earlier
+envelope priced never carried their own parameter (CR-01) — they were still real,
+billable HTTP requests (a rejected-vs-accepted verdict on SOME cell would still have
+been returned and billed), so the earlier total wasn't wrong about what would be spent,
+but it was wrong about what that spend would have PURCHASED: 67 of the priced cells
+would have returned a verdict about the WRONG thing (thinking-toggle or JSON-schema
+plumbing, not the row's own parameter). The corrected $0.35 is the honest price of the
+345 cells that actually test what they claim to.
 
 ## Proposed sub-ceiling adjustments (dated prediction, NOT applied)
 
@@ -201,8 +320,16 @@ only at Phase 11 start, under the owner's explicit spend sign-off (D-16). Everyt
 this section is a proposal and a dated (2026-09-01) falsifiable prediction, not an
 applied number.
 
+**Dated 2026-09-01 (plan 10-04): re-derived from the post-CR-01 envelope, not
+re-typed.** The pre-fix version of this section derived its $0.50 proposal from
+anthropic's then-highest $0.19 envelope (~2.6x headroom). Anthropic is still the
+highest-spending vendor after the fix, but its own figure dropped to $0.11 (removing 61
+zero-signal cells) — a strictly LARGER margin under the same proposed $0.50 ceiling than
+the earlier derivation assumed, so the proposal itself does not need to change, only its
+derivation's numbers do.
+
 **Proposal: lower `vendor_soft_usd_default` from $1.50 to $0.50.** Derivation: the
-highest per-vendor envelope above (anthropic, $0.19) leaves roughly 2.6x headroom under
+highest per-vendor envelope above (anthropic, $0.11) leaves roughly 4.5x headroom under
 a $0.50 sub-ceiling — enough margin to absorb the assumptions' known slack (higher real
 acceptance rate than a naive worst case, the unmodeled content-block image-token cost)
 without nuisance-tripping mid-sweep, while catching a genuine per-vendor billing
@@ -214,9 +341,10 @@ far higher than the worst-case-100%-accepted assumption already used above (whic
 would be strange, since that assumption is already a ceiling), the true per-probe
 token counts exceed `max_tokens` (a metering surprise this document's assumptions
 explicitly rule out as impossible, since `max_tokens` is stated as a hard cap), or an
-unanticipated retry storm inflated the attempt count well past 412. Confirmed if real
+unanticipated retry storm inflated the attempt count well past 345. Confirmed if real
 per-vendor spend across the full Phase 11 sweep stays under $0.50 for all eight
-vendors, matching the ~10x-to-2.6x headroom this document derives.
+vendors, matching the ~50x-to-4.5x headroom (dseek's $0.01 lowest to anthropic's $0.11
+highest) this document derives.
 
 **No per-vendor override table is proposed.** `probes/harness/ceilings.yaml`'s own
 comment (2026-09-01) names kimi and zai as "the most plausible candidates to need a
@@ -246,25 +374,30 @@ from a known list rather than rediscovering them mid-sweep.
    refuses it loudly (exit 2) rather than firing an image/cache-control row through the
    scalar accept/reject template — proven by this plan's own Task 2 verification. The
    16 content-block cells stay unfired until this path exists.
-2. **The two open Phase 9 robustness findings from `09-REVIEW`** — CR-01 (a
-   connection-level `URLError`/timeout uncaught in `client.py`: one flaky network
-   moment crashes a whole sweep) and CR-02 (`_find_vendor_breach` reports only the
-   FIRST breaching vendor, masking later breaches) — remain unfixed as of this plan.
-   Neither bit Phase 9's 5-probe smoke; both are far more likely to bite Phase 11's
-   412-cell, 8-vendor sweep. Fix via `/gsd-code-review 9 --fix` or fold into Phase 11
-   planning before firing begins.
+2. **The two open Phase 9 robustness findings from `09-REVIEW`** — note: Phase 9's
+   `09-REVIEW` numbers this same finding-id `CR-01`, distinct from THIS plan's CR-01
+   (`10-REVIEW.md`'s no-request-field-for-vendor fix) — a connection-level
+   `URLError`/timeout uncaught in `client.py` (one flaky network moment crashes a whole
+   sweep) and CR-02 (`_find_vendor_breach` reports only the FIRST breaching vendor,
+   masking later breaches) — remain unfixed as of this plan. Neither bit Phase 9's
+   5-probe smoke; both are far more likely to bite Phase 11's 345-cell, 8-vendor sweep.
+   Fix via `/gsd-code-review 9 --fix` or fold into Phase 11 planning before firing
+   begins.
 3. **The evidence-commit policy for `probes/raw/` and `probes/ledger.jsonl` is
    provisional** (owner checkpoint `gitignore-evidence`, 2026-09-01, "maybe I will
    change it later" — `.planning/STATE.md` § Blockers/Concerns). Its revisit gate is
-   Phase 11, before the sweep's 412 real HTTP responses become the evidence base this
+   Phase 11, before the sweep's 345 real HTTP responses become the evidence base this
    milestone's promotion phase (Phase 13) relies on.
 4. **The skip-reason vocabulary this phase's plans introduced** (`SKIP_REASONS` in
    `probes/inventory-to-sets.py`: `no-thinking-off-toggle`, `no-thinking-capability`,
-   `wire-shape-incompatible`, `toggle-shape-unknown`, `toggle-not-a-request-parameter`)
-   is what lets Phase 11 satisfy "every param × model cell is either an emitted probe
-   or an explicit, reasoned skip" — the 246 skipped-cells.yaml entries are already
-   proof this holds at design time; Phase 11 should not need a sixth reason unless a
-   genuinely new admitted-unknown shape shows up mid-sweep.
+   `wire-shape-incompatible`, `toggle-shape-unknown`, `toggle-not-a-request-parameter`,
+   and — added 2026-09-01, plan 10-04, closing CR-01 — `no-request-field-for-vendor`:
+   the row's parameter has no request field at this model's wire family, an explicit
+   null in `names:` with no vendor override supplying one) is what lets Phase 11
+   satisfy "every param × model cell is either an emitted probe or an explicit,
+   reasoned skip" — the 284 skipped-cells.yaml entries (was 246 before plan 10-04's
+   fix) are already proof this holds at design time; Phase 11 should not need a
+   seventh reason unless a genuinely new admitted-unknown shape shows up mid-sweep.
 5. **`anthropic-thinking-budget-floor` needs a per-row `max_tokens` raise before
    firing.** Its two probe values (500, 1024 budget_tokens) both exceed the registry's
    shared `defaults.max_tokens` (64) — firing this row with the shared default would

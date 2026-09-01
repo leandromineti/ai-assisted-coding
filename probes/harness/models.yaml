@@ -5,8 +5,8 @@
 #
 # `vendor` is a lowercased short name derived mechanically from each model's
 # key_env_var infix (PERSONAL_<VENDOR>_KEY) — the one naming convention already fixed
-# by ~/.secrets/model-probes.env before this phase existed — and is what partitions
-# probes/raw/{vendor}.jsonl (D-08, 8 files for 8 makers).
+# by this repo's local secrets convention before this phase existed — and is what
+# partitions probes/raw/{vendor}.jsonl (D-08, 8 files for 8 makers).
 #
 # `reasoning_toggle` (added 2026-09-01, Phase 10 plan 10-01, D-06): closed enum
 # always-on | default-on | opt-in | none, transcribed verbatim from each model's own

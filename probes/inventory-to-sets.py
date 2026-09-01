@@ -62,16 +62,27 @@ SKIP_REASON_BY_TOGGLE = {
 }
 _ALL_THINKING_MODES = {"thinking-on", "thinking-off"}
 
-# D-08/D-11/T-10-06 (plan 10-02): the closed vocabulary of every reason a
-# param x model x mode cell can be skipped instead of emitted. The first three
-# come from firing_models()/modes_for_model() (unchanged from plan 10-01); the
-# next two are from plan 10-02 — a `vendor_overrides` entry whose "on"/"off"
-# fragment is an explicit null means no request fragment can be constructed: an
-# admitted unknown (`toggle-shape-unknown`, e.g. Kimi — no documented shape) or
-# a vendor whose thinking mode is not a request parameter at all
-# (`toggle-not-a-request-parameter`, e.g. DeepSeek — selected by model id).
-# Enforced, not free text — axis_fragment_availability() aborts generation
-# (fail-loud) if a null-fragment override names a reason outside this set.
+# D-08/D-11/T-10-06 (plan 10-02); extended plan 10-04 (CR-01) — the closed
+# vocabulary of every reason a param x model x mode cell can be skipped
+# instead of emitted. All six, named:
+#
+#   `no-thinking-off-toggle` / `no-thinking-capability` — from
+#     modes_for_model(): a model's reasoning_toggle (always-on / none) only
+#     supports one real thinking mode; the other mode is a declared skip.
+#   `wire-shape-incompatible` — from firing_models(): a firing_scope of
+#     wire-family or home-vendor never reaches a model outside that scope, or
+#     (from axis_fragment_availability()) no axis shape exists for a model's
+#     wire family at all. (These first three come from plan 10-01, unchanged.)
+#   `toggle-shape-unknown` — a `vendor_overrides` entry declares an explicit
+#     null on/off fragment because no documented request shape exists (e.g.
+#     Kimi — an admitted unknown, not a guessed fragment).
+#   `toggle-not-a-request-parameter` — a `vendor_overrides` entry declares an
+#     explicit null on/off fragment because the vendor's thinking mode is not
+#     a request parameter at all (e.g. DeepSeek — selected by model id).
+#     (These last two are plan 10-02's — axis_fragment_availability() aborts
+#     generation (fail-loud) if a null-fragment override names a reason
+#     outside this set.)
+#   `no-request-field-for-vendor` — plan 10-04's, closing CR-01: see below.
 #
 # `no-request-field-for-vendor` (added 2026-09-01, plan 10-04, closing CR-01):
 # the row's parameter has no request field at this model's wire family — an
@@ -130,8 +141,11 @@ SKIPPED_HEADER = (
 )
 
 # INV-03's nine named vendor-exotic rows (plan 10-01 Task 2) — each must exist with
-# requirement: INV-03 and status: swept once plans 10-02/10-03 author them. Red by
-# design until then (probes/inventory.yaml's header comment records this, dated).
+# requirement: INV-03 and status: swept. check_inv03_traceability() reported
+# findings when plan 10-01 wrote this comment (none of the nine rows existed
+# yet, deliberately, per that plan's own dated note); the gate went green
+# 2026-09-01 when plan 10-03 landed all nine (probes/inventory.yaml's header
+# comment records the same scoring, dated).
 INV03_ROW_IDS = frozenset({
     "openai-verbosity",
     "openai-prediction",
