@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import json
 import re
 import subprocess
 import sys
@@ -384,9 +385,24 @@ def build_extra_params(row: dict, model: dict, inventory: dict, mode: str, value
 def render_value(value) -> str:
     """Probe value rendered as a string for the `value:` entry field (matching
     probes/sets/*.yaml's existing string-value convention, e.g. `value: none`,
-    `value: invalid-negative`) and for probe_id's canonical hash input."""
+    `value: invalid-negative`) and for probe_id's canonical hash input.
+
+    A non-scalar value (dict/list — logit-bias, stream-options-include-usage,
+    and other rows whose probe_values are containers) renders via
+    `json.dumps(value, sort_keys=True, separators=(",", ":"))` (WR-01, plan
+    10-04), not `str(value)`. The rendered string is therefore deterministic
+    across Python versions BECAUSE it is JSON — a fixed, spec-defined text
+    format — rather than a CPython container repr (`str(dict)`/`str(list)`),
+    whose quoting (single vs double), capitalization (`True` vs `true`), and
+    key order have no cross-version or cross-implementation guarantee. Scalars
+    (str, int, float) still render via `str(value)` unchanged; bool keeps its
+    existing lowercase `true`/`false` branch (runner.py's probe-set
+    convention), which `json.dumps` would also produce for a bare bool but the
+    explicit branch is kept so this function's scalar path is unchanged."""
     if isinstance(value, bool):
         return "true" if value else "false"
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, sort_keys=True, separators=(",", ":"))
     return str(value)
 
 
