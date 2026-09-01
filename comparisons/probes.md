@@ -5,7 +5,7 @@
 # probes/classified/contract-sweep.yaml, rendered
 
 `checked:` 2026-09-01  
-`evidence_through:` 2026-09-01T21:44:17Z
+`evidence_through:` 2026-09-01T22:38:53Z
 
 ## Legend
 
@@ -71,10 +71,10 @@
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| openai-reasoning-effort | · | · | · | · | — | · | — | — | — | — | — | — |
-| anthropic-thinking-object | — | — | — | — | · | · | · | · | · | · | · | · |
-| gemini-thinking-config | · | · | · | · | · | — | · | · | · | · | · | · |
-| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | — | — |
+| openai-reasoning-effort | · | · | · | · | ? | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| anthropic-thinking-object | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
+| gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · |
+| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ |
 
 ## exotic
 
@@ -89,14 +89,14 @@
 | openai-service-tier-values (mode=default, value=flex) | · | · | · | · | — | · | — | — | — | — | — | — |
 | openai-service-tier-values (mode=default, value=priority) | · | · | · | · | — | · | — | — | — | — | — | — |
 | anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":1024,"type":"enabled"}) | — | — | — | — | · | · | · | · | · | · | · | · |
-| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":500,"type":"enabled"}) | — | — | — | — | · | · | · | · | · | · | · | · |
+| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":500,"type":"enabled"}) | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
 | gemini-media-resolution | · | · | · | · | · | — | · | · | · | · | · | · |
 | gemini-candidate-count | · | · | · | · | · | — | · | · | · | · | · | · |
 | kimi-partial-mode | · | · | · | · | — | · | — | — | — | — | — | — |
 | glm-do-sample | · | · | · | · | — | · | — | — | — | — | — | — |
 | qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | — | · | · | · | · | · | — | — |
 | qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | — | · | — | · | · | — | — | — |
-| kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | — | · | · | · | · |
+| kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
 | kimi-fixed-sampling-point (mode=default, value=0.6) | · | · | · | · | · | · | · | — | · | · | · | · |
 | openai-store | · | · | · | · | — | · | — | — | — | — | — | — |
 | openai-metadata | · | · | · | · | — | · | — | — | — | — | — | — |
@@ -109,3 +109,9 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | image-input | — | — | — | — | — | — | — | — | — | — | — | — |
 | anthropic-cache-control-block | — | — | — | — | · | · | · | · | · | · | · | · |
+
+## Hazards
+
+Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` — the silent-acceptance hazard class SWP-02 requires stay visually and structurally distinct from a clean accept (conclusion 19, docs/conclusions.md).
+
+None yet — no cell has classified as `accepted-ignored` or `silently-translated`.

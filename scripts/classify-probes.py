@@ -87,6 +87,324 @@ HONOR_EVIDENCE = frozenset({
     "n/a",
 })
 
+# Fixed hazard text (SWP-02), a constant PER STATE so regeneration stays byte-stable
+# (never derived from the cell's own live fields). Conclusion 19
+# (docs/conclusions.md #19) is the origin of the silent-acceptance hazard class this
+# names: Moonshot's `enable_thinking: false` accepted-and-ignored, and xAI's
+# priority-tier degrade (accepted-and-silently-translated) are the two real,
+# documented instances this schema generalizes into two first-class states.
+HAZARD_TEXT = {
+    "accepted-ignored": (
+        "Silent acceptance (conclusion 19): the request was accepted (2xx) but the "
+        "response carries no evidence the parameter had any effect — the vendor may "
+        "have silently dropped it."
+    ),
+    "silently-translated": (
+        "Silent acceptance (conclusion 19): the request was accepted (2xx) but the "
+        "vendor's response reports a DIFFERENT value than the one requested — the "
+        "vendor rewrote it rather than honoring or rejecting it."
+    ),
+}
+
+
+def hazard_for(state: str) -> str | None:
+    """SWP-02: the hazard note for a FINAL rendered state — non-null for the two
+    silent-acceptance states, null for every other state (including
+    accepted-honored, which must never be confused with the two hazard states in
+    either the classified YAML or the rendered matrix)."""
+    return HAZARD_TEXT.get(state)
+
+# Plan 11-04, Task 2 (D-06's honor-evidence rule made mechanical): every swept
+# registry row id (`probes/inventory.yaml`'s `params:` list, `status: swept`) maps
+# to exactly one detector NAME below — coverage is total and `--check`-gated
+# (check_honor_detector_coverage()). Dispatch is on ROW ID, never on vendor/wire
+# family — the detector functions themselves branch on wire_family internally where
+# the response shape actually differs. `"none"` is an explicit, deliberate claim
+# ("checked: no single-response signal exists for this row's contract"), not an
+# omission — it covers the majority of the sampling family (a bare `temperature`/
+# `top-p`/etc. value is never echoed or reflected in any response field any of the
+# three wire families expose) plus every row whose only single-response signal
+# would be too ambiguous to assert honestly (see `detect_finish_reason`'s own
+# docstring for why `stop` itself resolves to `"none"`, not a dedicated detector).
+HONOR_DETECTORS: dict[str, str] = {
+    # sampling group (10 rows) — only `logprobs` and `n` have a single-response
+    # signal; the other 8 (temperature/top-p/top-k/presence-penalty/
+    # frequency-penalty/top-logprobs/seed/logit-bias) have no response-visible
+    # trace of their own value at all, at any of the three wire families.
+    "temperature": "none",
+    "top-p": "none",
+    "top-k": "none",
+    "presence-penalty": "none",
+    "frequency-penalty": "none",
+    "logprobs": "logprobs",
+    "top-logprobs": "none",  # requires ALSO enabling logprobs; this row alone
+    # (probe value 3, no accompanying logprobs:true) has no reliable per-token
+    # signal to examine — a narrower, row-specific claim than the `logprobs` row's
+    # own detector, which tests the simpler boolean-enable contract.
+    "seed": "none",  # no wire family echoes the requested seed value in its
+    # response body; determinism itself (same seed -> same output) is a REPEAT-based
+    # behavioral check, explicitly Phase 12's job (PREREGISTRATION.md § Sample size).
+    "n": "candidate-count",
+    "logit-bias": "none",
+    # structural group (10 rows)
+    "max-tokens": "usage",
+    "stop": "none",  # SEE detect_finish_reason()'s docstring: openai_compat/gemini's
+    # shared "stop"/"STOP" finish reason is emitted for BOTH a natural completion
+    # and a triggered stop sequence — genuinely ambiguous from one response at those
+    # two wire families; only anthropic_messages' dedicated "stop_sequence" value is
+    # unambiguous, and the row's own probe value (stop=["the"], prompt "...hello.")
+    # is unlikely to ever trigger regardless of honoring — an admitted unknown, not
+    # an invented signal (rule 1b).
+    "response-format": "structured-output",
+    "tools": "none",
+    "tool-choice": "none",
+    "parallel-tool-calls": "none",
+    "stream": "none",
+    "stream-options-include-usage": "none",
+    "anthropic-structured-output-output-config": "structured-output",
+    "anthropic-structured-output-output-format": "structured-output",
+    # service-tier group (1 row) — OpenAI-family responses echo the resolved
+    # service_tier field at the top level (conclusion 15/19's priority->fast
+    # rename precedent is exactly this row's own contract).
+    "service-tier": "echo",
+    # reasoning-toggle group (4 rows) — a single accepted response's
+    # `usage.reasoning_tokens` count alone cannot establish whether the SPECIFIC
+    # requested level (e.g. "low" vs the vendor's own default) was honored, only
+    # that reasoning happened at all; no repeat/comparison request exists to
+    # disambiguate (Phase 12's job, out of scope here) — Stage 2's own purpose
+    # (whether the toggle MECHANISM works, i.e. is it accepted at all) is already
+    # served by the classify_cell rejected/accepted split, not honor_evidence.
+    "openai-reasoning-effort": "none",
+    "anthropic-thinking-object": "none",
+    "gemini-thinking-config": "none",
+    "qwen-enable-thinking": "none",
+    # exotic group (15 rows) — boundary-contract / vendor-specific rows. Only
+    # `gemini-candidate-count` has a clean single-response signal (the candidates
+    # array length, the same contract `n` tests for other vendors) and
+    # `openai-service-tier-values` (the same echoed service_tier field `service-tier`
+    # already covers, tested here across its full enum instead of just `auto`).
+    "gemini-temperature-range": "none",
+    "openai-verbosity": "none",
+    "openai-prediction": "none",
+    "openai-service-tier-values": "echo",
+    "anthropic-thinking-budget-floor": "none",
+    "gemini-media-resolution": "none",
+    "gemini-candidate-count": "candidate-count",
+    "kimi-partial-mode": "none",
+    "glm-do-sample": "none",
+    "qwen-repetition-penalty": "none",
+    "kimi-fixed-sampling-point": "none",
+    "openai-store": "none",
+    "openai-metadata": "none",
+    "openai-safety-identifier": "none",
+    "openai-prompt-cache-key": "none",
+    # content-block group (2 rows) — MODAL-01: the billed usage object is the
+    # ENTIRE contract signal for both (the image payload's own input-token cost;
+    # whether Anthropic's cache_creation/cache_read fields moved at all).
+    "image-input": "usage",
+    "anthropic-cache-control-block": "usage",
+}
+
+
+def _safe_get(fn):
+    """Wrap a response-shape accessor so a malformed/unexpected body degrades to
+    None (no signal) rather than raising — every detector below is a CLAIM about a
+    specific field's presence, and a body that doesn't have the expected shape at
+    all is honestly 'no signal', never a crash."""
+    def wrapped(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except (KeyError, IndexError, TypeError, AttributeError):
+            return None
+    return wrapped
+
+
+@_safe_get
+def _get_message_text(response_body: dict, wire_family: str) -> str | None:
+    """The single assistant-visible text output, across all 3 wire families."""
+    if wire_family == "anthropic_messages":
+        for block in response_body["content"]:
+            if block.get("type") == "text":
+                return block["text"]
+        return None
+    if wire_family == "openai_compat":
+        return response_body["choices"][0]["message"]["content"]
+    if wire_family == "gemini":
+        for part in response_body["candidates"][0]["content"]["parts"]:
+            if "text" in part:
+                return part["text"]
+        return None
+    return None
+
+
+@_safe_get
+def _get_finish_reason(response_body: dict, wire_family: str) -> str | None:
+    if wire_family == "anthropic_messages":
+        return response_body.get("stop_reason")
+    if wire_family == "openai_compat":
+        return response_body["choices"][0].get("finish_reason")
+    if wire_family == "gemini":
+        return response_body["candidates"][0].get("finishReason")
+    return None
+
+
+@_safe_get
+def _get_candidate_count(response_body: dict, wire_family: str) -> int | None:
+    if wire_family == "anthropic_messages":
+        return 1  # Anthropic never accepts n>1 (names[anthropic_messages] is null
+        # on every row that would test it) — a defensive fallback, unreached today.
+    if wire_family == "openai_compat":
+        return len(response_body.get("choices") or [])
+    if wire_family == "gemini":
+        return len(response_body.get("candidates") or [])
+    return None
+
+
+@_safe_get
+def _get_logprobs_present(response_body: dict, wire_family: str) -> bool:
+    if wire_family == "openai_compat":
+        content = ((response_body.get("choices") or [{}])[0].get("logprobs") or {}).get("content")
+        return bool(content)
+    if wire_family == "gemini":
+        # Gemini's documented field for per-token logprobs (responseLogprobs:true
+        # in the request) is `logprobsResult` on the candidate; `avgLogprobs` alone
+        # (present even without the request flag on some models) is NOT treated as
+        # evidence of honoring — only the dedicated per-token result is.
+        cand = (response_body.get("candidates") or [{}])[0]
+        return bool(cand.get("logprobsResult"))
+    return False
+
+
+@_safe_get
+def _get_field_value(response_body: dict, field_name: str):
+    """Top-level response field lookup, by name — the echo detector's own
+    accessor. Every row this detector serves (service-tier,
+    openai-service-tier-values) echoes at the TOP level of the response body in
+    every wire family that supports it (no wire family nests service_tier)."""
+    return response_body.get(field_name, _MISSING)
+
+
+_MISSING = object()
+
+
+def detect_none(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                 requested_value: str, usage: dict) -> tuple[str, str]:
+    """The explicit no-signal claim (D-06): every accepted cell this detector
+    serves is 'accepted-unverified' with honor_evidence 'none' — never an invented
+    honor claim from a response this schema knows has nothing to examine."""
+    return "accepted-unverified", "none"
+
+
+def detect_logprobs(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                     requested_value: str, usage: dict) -> tuple[str, str]:
+    present = _get_logprobs_present(response_body, wire_family)
+    if present:
+        return "accepted-honored", "logprobs-content"
+    return "accepted-ignored", "logprobs-content"
+
+
+def detect_candidate_count(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                            requested_value: str, usage: dict) -> tuple[str, str]:
+    count = _get_candidate_count(response_body, wire_family)
+    try:
+        requested_n = int(requested_value)
+    except (TypeError, ValueError):
+        return "accepted-unverified", "none"
+    if count is None:
+        return "accepted-unverified", "none"
+    if count == requested_n:
+        return "accepted-honored", "candidate-count"
+    if count == 1 and requested_n > 1:
+        return "accepted-ignored", "candidate-count"
+    return "accepted-unverified", "none"
+
+
+def detect_structured_output(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                              requested_value: str, usage: dict) -> tuple[str, str]:
+    text = _get_message_text(response_body, wire_family)
+    if text is None:
+        return "accepted-unverified", "none"
+    try:
+        json.loads(text)
+    except (json.JSONDecodeError, TypeError):
+        return "accepted-ignored", "json-validity"
+    return "accepted-honored", "json-validity"
+
+
+def detect_echo(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                 requested_value: str, usage: dict) -> tuple[str, str]:
+    if not resolved_field:
+        return "accepted-unverified", "none"
+    actual = _get_field_value(response_body, resolved_field)
+    if actual is _MISSING or actual is None:
+        return "accepted-ignored", "echoed-field"
+    if str(actual) == str(requested_value):
+        return "accepted-honored", "echoed-field"
+    return "silently-translated", "translated-field"
+
+
+def detect_finish_reason(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                          requested_value: str, usage: dict) -> tuple[str, str]:
+    """Only `stop` would dispatch here (see HONOR_DETECTORS' own comment for why
+    every OTHER structural row stays on `none`) — kept as its own named function
+    per the plan's own detector list, even though HONOR_DETECTORS currently routes
+    no row to it (the `stop` row itself resolves to `none` for the documented
+    ambiguity reason, below). Anthropic's dedicated `stop_sequence` finish reason
+    is the one wire-family signal genuinely unambiguous from a single response;
+    openai_compat/gemini's shared `stop`/`STOP` value is emitted for both a
+    natural completion and a triggered stop string, so this function falls back to
+    `accepted-unverified`/`none` for those two families rather than overclaiming
+    either honored or ignored from an inherently ambiguous field."""
+    reason = _get_finish_reason(response_body, wire_family)
+    if wire_family == "anthropic_messages" and reason == "stop_sequence":
+        return "accepted-honored", "usage-delta"
+    return "accepted-unverified", "none"
+
+
+def detect_usage(response_body: dict, *, row_id: str, wire_family: str, resolved_field: str | None,
+                  requested_value: str, usage: dict) -> tuple[str, str]:
+    """Dispatches on `row_id`, the two rows this detector serves having genuinely
+    different contracts to examine on the SAME `usage` object:
+
+    `max-tokens` — honored when the record's own parsed `usage.output_tokens` is
+    present and does not exceed the requested cap (a cap exceeded would be a
+    structural anomaly no vendor in this set should ever produce, but is read as
+    accepted-ignored rather than asserted impossible).
+
+    `image-input`/`anthropic-cache-control-block` — honored whenever the relevant
+    usage field is present AT ALL (MODAL-01's billed-input-token reading for the
+    image row; Anthropic's cache_creation/cache_read token fields for the
+    cache-control row) — presence itself is the whole contract signal for these
+    two rows; there is no 'wrong value' to compare against, only presence vs
+    absence."""
+    if row_id == "max-tokens":
+        output_tokens = usage.get("output_tokens")
+        if output_tokens is None:
+            return "accepted-unverified", "none"
+        try:
+            cap = int(requested_value)
+        except (TypeError, ValueError):
+            return "accepted-unverified", "none"
+        if output_tokens <= cap:
+            return "accepted-honored", "usage-delta"
+        return "accepted-ignored", "usage-delta"
+    # image-input / anthropic-cache-control-block
+    if usage.get("input_tokens") is not None or usage.get("cache_creation_input_tokens") is not None \
+            or usage.get("cache_read_input_tokens") is not None:
+        return "accepted-honored", "usage-delta"
+    return "accepted-unverified", "none"
+
+
+DETECTOR_FUNCS = {
+    "none": detect_none,
+    "logprobs": detect_logprobs,
+    "candidate-count": detect_candidate_count,
+    "structured-output": detect_structured_output,
+    "echo": detect_echo,
+    "finish-reason": detect_finish_reason,
+    "usage": detect_usage,
+}
+
 # Closed needs-review reason vocabulary (D-07's rejection-strictness rule). Every
 # non-`rejected` non-429 4xx and every non-verdict/rate-limited terminal lands in
 # `needs-review` with one of these, never a silent default.
@@ -260,13 +578,16 @@ def scalar_probe_id(entry: dict, models: dict[str, dict]) -> str:
     return harness_runner.probe_id(entry["model"], entry["param"], entry["value"], entry["mode"], request_body)
 
 
-def classify_cell(record: dict | None, row: dict, model: dict) -> tuple[str, str | None, int | None, str]:
+def classify_cell(
+    record: dict | None, row: dict, model: dict, requested_value: str | None = None
+) -> tuple[str, str | None, int | None, str]:
     """Pure classification (D-06/D-07) of ONE scalar cell given its matched raw
-    record (or None if unfired), its probes/inventory.yaml row, and its
-    probes/harness/models.yaml row. No I/O, no mutation — testable the same
-    boundary-first way probes/harness/ledger.py's ceiling_verdict() selftest
-    already demonstrates. Returns (state, needs_review_reason_or_None,
-    http_status_or_None, honor_evidence).
+    record (or None if unfired), its probes/inventory.yaml row, its
+    probes/harness/models.yaml row, and the cell's own requested (rendered)
+    value. No I/O, no mutation — testable the same boundary-first way
+    probes/harness/ledger.py's ceiling_verdict() selftest already demonstrates.
+    Returns (state, needs_review_reason_or_None, http_status_or_None,
+    honor_evidence).
 
     Rules, in order:
     1. No matched record -> 'unfired'.
@@ -280,8 +601,13 @@ def classify_cell(record: dict | None, row: dict, model: dict) -> tuple[str, str
        rejection-strictness rule).
     5. Any other non-429 4xx -> 'needs-review', '4xx-not-param-named' — never
        merged into 'rejected'.
-    6. A 2xx -> 'accepted-unverified' with honor_evidence 'none' (D-06: no honor
-       claim is invented from a response carrying no signal).
+    6. A 2xx -> dispatch to this row's HONOR_DETECTORS entry (Task 2, plan
+       11-04): the detector returns (state, honor_evidence) itself — one of
+       accepted-honored/accepted-ignored/silently-translated/accepted-unverified,
+       each with an evidence tag from the closed HONOR_EVIDENCE vocabulary. A row
+       whose contract cannot be judged from one response resolves to the `none`
+       detector, which always returns accepted-unverified/none (D-06: no honor
+       claim is ever invented from a response carrying no signal).
     A terminal='verdict' record with any other status is a structural anomaly
     client.py's retry_decision() should never produce (it only ever assigns
     'verdict' to a 2xx or a non-429/5xx/0 4xx) — fails loud rather than silently
@@ -303,7 +629,24 @@ def classify_cell(record: dict | None, row: dict, model: dict) -> tuple[str, str
             return "rejected", None, http_status, "n/a"
         return "needs-review", "4xx-not-param-named", http_status, "n/a"
     if isinstance(http_status, int) and 200 <= http_status < 300:
-        return "accepted-unverified", None, http_status, "none"
+        row_id = row["id"]
+        detector_name = HONOR_DETECTORS.get(row_id)
+        if detector_name is None:
+            _fail(2, f"classify_cell: row id {row_id!r} is missing from HONOR_DETECTORS — coverage must be total")
+        detector = DETECTOR_FUNCS[detector_name]
+        response_body = last.get("response_body_raw") or {}
+        wire_family = model["wire_family"]
+        resolved_field = resolve_param_name(row, model)
+        usage = record.get("usage") or {}
+        state, honor_evidence = detector(
+            response_body,
+            row_id=row_id,
+            wire_family=wire_family,
+            resolved_field=resolved_field,
+            requested_value=requested_value,
+            usage=usage,
+        )
+        return state, None, http_status, honor_evidence
     _fail(
         2,
         f"classify_cell: unexpected http_status {http_status!r} with terminal='verdict' "
@@ -360,11 +703,15 @@ def build_rows(
         model = models[entry["model"]]
         pid = scalar_probe_id(entry, models)
         record = raw_records.get(pid)
-        state, reason, http_status, honor_evidence = classify_cell(record, row, model)
+        state, reason, http_status, honor_evidence = classify_cell(record, row, model, entry["value"])
+        usage_input = usage_output = None
         if record is not None:
             used_probe_ids.add(pid)
             if record.get("recorded_at"):
                 joined_recorded_at.append(record["recorded_at"])
+            usage = record.get("usage") or {}
+            usage_input = usage.get("input_tokens")
+            usage_output = usage.get("output_tokens")
         out_rows.append({
             "param": entry["param"],
             "group": row["group"],
@@ -376,16 +723,21 @@ def build_rows(
             "http_status": http_status,
             "honor_evidence": honor_evidence,
             "hazard": None,
+            "usage_input_tokens": usage_input,
+            "usage_output_tokens": usage_output,
             "skip_reason": None,
             "reason": reason,
             "override": None,
         })
 
     for entry in content_block_data["content_block_probes"]:
-        # No content-block firing path exists yet (MODAL-01 lands in plan 11-03) —
-        # every content-block cell is honestly 'unfired' in this plan, regardless
-        # of what probe_id scheme a future runner path assigns it. `mode`/`value`
-        # (2026-09-01, Phase 11 plan 11-02) now come straight from the generated
+        # The --content-block-set firing path exists as of plan 11-03 (MODAL-01),
+        # but Stage 6 (SWEEP-DESIGN.md § Probe ordering) fires last, after the
+        # D-09 checkpoint this very plan's Task 3 gates — zero content-block
+        # records exist in probes/raw/*.jsonl as of this task (confirmed:
+        # `grep -l image-input probes/raw/*.jsonl` matches nothing). Every
+        # content-block cell is therefore honestly 'unfired' today; `mode`/`value`
+        # (2026-09-01, Phase 11 plan 11-02) come straight from the generated
         # entry — fixed strings `default`/`content-block` per
         # inventory-to-sets.py's content-block branch — rather than a hardcoded
         # null, now that the generator actually emits them.
@@ -401,6 +753,8 @@ def build_rows(
             "http_status": None,
             "honor_evidence": "n/a",
             "hazard": None,
+            "usage_input_tokens": None,
+            "usage_output_tokens": None,
             "skip_reason": None,
             "reason": None,
             "override": None,
@@ -426,12 +780,22 @@ def build_rows(
             "http_status": None,
             "honor_evidence": "n/a",
             "hazard": None,
+            "usage_input_tokens": None,
+            "usage_output_tokens": None,
             "skip_reason": reason,
             "reason": None,
             "override": None,
         })
 
     unmatched_overrides = apply_overrides(out_rows, overrides)
+
+    # SWP-02's hazard note, computed LAST — after overrides — so hazard always
+    # reflects the FINAL rendered state (an override moving a cell OUT of a
+    # hazard state clears its hazard text; one moving a cell INTO one sets it).
+    # A fixed constant per state (HAZARD_TEXT), never derived from the cell's own
+    # live fields, keeps regeneration byte-stable.
+    for r in out_rows:
+        r["hazard"] = hazard_for(r["state"])
 
     def sort_key(r: dict) -> tuple:
         return (row_order[r["param"]], model_order[r["model"]], r["mode"] or "", r["value"] or "")
@@ -441,6 +805,15 @@ def build_rows(
     evidence_through = max(joined_recorded_at) if joined_recorded_at else None
     ignored_records = len(raw_records) - len(used_probe_ids)
     return out_rows, evidence_through, unmatched_overrides, ignored_records
+
+
+def check_honor_detector_coverage(inventory: dict) -> list[str]:
+    """`--check` gate (Task 2's must_haves truth): every swept registry row id
+    must resolve to a HONOR_DETECTORS entry — an omission is a finding, never a
+    silent default to 'none'. Returns the sorted list of missing row ids (empty
+    when coverage is total)."""
+    swept_ids = {row["id"] for row in inventory["params"] if row.get("status") == "swept"}
+    return sorted(swept_ids - set(HONOR_DETECTORS))
 
 
 def render_classified_file(*, checked, evidence_through: str | None, rows: list[dict]) -> str:
@@ -521,6 +894,16 @@ def check_generated_drift(raw_dir: Path = DEFAULT_RAW_DIR) -> tuple[int, int]:
             file=sys.stderr,
         )
 
+    checks += 1
+    missing_detectors = check_honor_detector_coverage(load_inventory())
+    if missing_detectors:
+        problems += 1
+        print(
+            f"FAIL honor-detector coverage: {len(missing_detectors)} swept registry row id(s) "
+            f"missing from HONOR_DETECTORS: {missing_detectors} — coverage must be total (D-06)",
+            file=sys.stderr,
+        )
+
     return checks, problems
 
 
@@ -536,7 +919,12 @@ def selftest() -> tuple[int, int]:
     cases = 0
 
     fixture_row = {
-        "id": "fixture-param",
+        # "temperature" is a real swept row id, mapped to the "none" honor
+        # detector — needed since plan 11-04's classify_cell() now dispatches on
+        # row["id"] for the 2xx branch and fails loud on any id absent from
+        # HONOR_DETECTORS (coverage is total by design); every fixture below that
+        # doesn't specifically exercise a NON-none detector uses this row.
+        "id": "temperature",
         "names": {"anthropic_messages": "fixture_param", "openai_compat": "fixture_param", "gemini": None},
         "name_overrides": {"gemini": "fixture_override_param"},
     }
@@ -749,6 +1137,194 @@ def selftest() -> tuple[int, int]:
     if "not-a-real-reason" in SKIP_REASONS:
         problems += 1
         print("FAIL SKIP_REASONS: fixture sentinel unexpectedly already a member", file=sys.stderr)
+
+    # =========================================================================
+    # Plan 11-04, Task 2 — the honor-detector dispatch, D-07's rejection-
+    # strictness rule against REAL captured evidence, hazard notes, and honor-
+    # detector coverage.
+    # =========================================================================
+
+    model_openai = {"wire_family": "openai_compat", "vendor": "openai"}
+
+    # --- D-07, against a REAL captured error body (this task's own Stage 1
+    #     firing, 2026-09-01): the anthropic-thinking-budget-floor row's Claude
+    #     400 names its own resolved field ("thinking") -> rejected ---
+    cases += 1
+    real_budget_floor_row = {
+        "id": "anthropic-thinking-budget-floor",
+        "names": {"anthropic_messages": "thinking", "openai_compat": None, "gemini": None},
+        "name_overrides": {},
+    }
+    real_anthropic_400_body = {
+        "type": "error",
+        "error": {
+            "type": "invalid_request_error",
+            "message": "thinking.enabled.budget_tokens: Input should be greater than or equal to 1024",
+        },
+        "request_id": "req_011CedX83aWSLycJzR2NDJ9R",
+    }
+    rec = {"terminal": "verdict", "attempts": [{"status": 400, "response_body_raw": real_anthropic_400_body}]}
+    state, reason, status, honor = classify_cell(rec, real_budget_floor_row, fixture_model_anthropic)
+    if state != "rejected" or reason is not None:
+        problems += 1
+        print(f"FAIL classify_cell(real anthropic 400, param named): got {(state, reason)}", file=sys.stderr)
+
+    # --- D-07 companion: the SAME status, a body naming a DIFFERENT field ->
+    #     needs-review, never merged into rejected ---
+    cases += 1
+    companion_body = {
+        "type": "error",
+        "error": {"type": "invalid_request_error", "message": "max_tokens: Input should be a valid integer"},
+    }
+    rec = {"terminal": "verdict", "attempts": [{"status": 400, "response_body_raw": companion_body}]}
+    state, reason, status, honor = classify_cell(rec, real_budget_floor_row, fixture_model_anthropic)
+    if (state, reason) != ("needs-review", "4xx-not-param-named"):
+        problems += 1
+        print(f"FAIL classify_cell(real anthropic 400, param NOT named): got {(state, reason)}", file=sys.stderr)
+
+    # --- detect_logprobs: content present -> honored; absent -> ignored ---
+    cases += 1
+    logprobs_row = {
+        "id": "logprobs",
+        "names": {"anthropic_messages": None, "openai_compat": "logprobs", "gemini": "responseLogprobs"},
+        "name_overrides": {},
+    }
+    rec = {
+        "terminal": "verdict",
+        "attempts": [{"status": 200, "response_body_raw": {
+            "choices": [{"message": {"content": "hello"}, "logprobs": {"content": [{"token": "hello", "logprob": -0.1}]}}]
+        }}],
+        "usage": {},
+    }
+    state, reason, status, honor = classify_cell(rec, logprobs_row, model_openai, "True")
+    if (state, honor) != ("accepted-honored", "logprobs-content"):
+        problems += 1
+        print(f"FAIL detect_logprobs(present): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {
+        "terminal": "verdict",
+        "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "hello"}, "logprobs": None}]}}],
+        "usage": {},
+    }
+    state, reason, status, honor = classify_cell(rec, logprobs_row, model_openai, "True")
+    if (state, honor) != ("accepted-ignored", "logprobs-content"):
+        problems += 1
+        print(f"FAIL detect_logprobs(absent): got {(state, honor)}", file=sys.stderr)
+
+    # --- detect_candidate_count: exact match -> honored; collapsed to 1 -> ignored ---
+    cases += 1
+    n_row = {"id": "n", "names": {"anthropic_messages": None, "openai_compat": "n", "gemini": "candidateCount"}, "name_overrides": {}}
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"choices": [{}, {}]}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, n_row, model_openai, "2")
+    if (state, honor) != ("accepted-honored", "candidate-count"):
+        problems += 1
+        print(f"FAIL detect_candidate_count(match): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"choices": [{}]}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, n_row, model_openai, "2")
+    if (state, honor) != ("accepted-ignored", "candidate-count"):
+        problems += 1
+        print(f"FAIL detect_candidate_count(collapsed): got {(state, honor)}", file=sys.stderr)
+
+    # --- detect_structured_output: valid JSON -> honored; not JSON -> ignored ---
+    cases += 1
+    rf_row = {"id": "response-format", "names": {"anthropic_messages": None, "openai_compat": "response_format", "gemini": "responseMimeType"}, "name_overrides": {}}
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": '{"a":1}'}}]}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, rf_row, model_openai, '{"type":"json_object"}')
+    if (state, honor) != ("accepted-honored", "json-validity"):
+        problems += 1
+        print(f"FAIL detect_structured_output(valid): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "not json"}}]}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, rf_row, model_openai, '{"type":"json_object"}')
+    if (state, honor) != ("accepted-ignored", "json-validity"):
+        problems += 1
+        print(f"FAIL detect_structured_output(invalid): got {(state, honor)}", file=sys.stderr)
+
+    # --- detect_echo: same value -> honored; different value -> silently-
+    #     translated; absent -> ignored (all three states this detector reaches) ---
+    cases += 1
+    st_row = {"id": "service-tier", "names": {"anthropic_messages": "service_tier", "openai_compat": "service_tier", "gemini": None}, "name_overrides": {}}
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"service_tier": "auto"}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, st_row, model_openai, "auto")
+    if (state, honor) != ("accepted-honored", "echoed-field"):
+        problems += 1
+        print(f"FAIL detect_echo(same value): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {"service_tier": "default"}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, st_row, model_openai, "auto")
+    if (state, honor) != ("silently-translated", "translated-field"):
+        problems += 1
+        print(f"FAIL detect_echo(different value): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, st_row, model_openai, "auto")
+    if (state, honor) != ("accepted-ignored", "echoed-field"):
+        problems += 1
+        print(f"FAIL detect_echo(absent field): got {(state, honor)}", file=sys.stderr)
+
+    # --- detect_usage (max-tokens): output within the cap -> honored; over the
+    #     cap -> ignored (a structural anomaly this repo's vendors shouldn't
+    #     produce, but read honestly rather than asserted impossible) ---
+    cases += 1
+    mt_row = {"id": "max-tokens", "names": {"anthropic_messages": "max_tokens", "openai_compat": "max_tokens", "gemini": "maxOutputTokens"}, "name_overrides": {}}
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {}}], "usage": {"output_tokens": 40}}
+    state, reason, status, honor = classify_cell(rec, mt_row, model_openai, "64")
+    if (state, honor) != ("accepted-honored", "usage-delta"):
+        problems += 1
+        print(f"FAIL detect_usage(max-tokens, within cap): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {}}], "usage": {"output_tokens": 100}}
+    state, reason, status, honor = classify_cell(rec, mt_row, model_openai, "64")
+    if (state, honor) != ("accepted-ignored", "usage-delta"):
+        problems += 1
+        print(f"FAIL detect_usage(max-tokens, over cap): got {(state, honor)}", file=sys.stderr)
+
+    # --- detect_usage (image-input, MODAL-01): billed input tokens present ->
+    #     honored; absent -> unverified (no invented claim) ---
+    cases += 1
+    img_row = {"id": "image-input", "names": {"anthropic_messages": None, "openai_compat": None, "gemini": None}, "name_overrides": {}}
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {}}], "usage": {"input_tokens": 300}}
+    state, reason, status, honor = classify_cell(rec, img_row, model_openai, "content-block")
+    if (state, honor) != ("accepted-honored", "usage-delta"):
+        problems += 1
+        print(f"FAIL detect_usage(image-input, present): got {(state, honor)}", file=sys.stderr)
+    cases += 1
+    rec = {"terminal": "verdict", "attempts": [{"status": 200, "response_body_raw": {}}], "usage": {}}
+    state, reason, status, honor = classify_cell(rec, img_row, model_openai, "content-block")
+    if (state, honor) != ("accepted-unverified", "none"):
+        problems += 1
+        print(f"FAIL detect_usage(image-input, absent): got {(state, honor)}", file=sys.stderr)
+
+    # --- hazard_for: the two silent-acceptance states carry non-null hazard text;
+    #     every other state (incl. accepted-honored) carries null (SWP-02) ---
+    cases += 1
+    if hazard_for("accepted-ignored") is None or hazard_for("silently-translated") is None:
+        problems += 1
+        print("FAIL hazard_for: a hazard state returned null hazard text", file=sys.stderr)
+    if hazard_for("accepted-honored") is not None or hazard_for("accepted-unverified") is not None \
+            or hazard_for("rejected") is not None or hazard_for("needs-review") is not None:
+        problems += 1
+        print("FAIL hazard_for: a non-hazard state returned non-null hazard text", file=sys.stderr)
+
+    # --- check_honor_detector_coverage: a swept row id absent from
+    #     HONOR_DETECTORS is reported; a real row id is not; the REAL registry
+    #     (probes/inventory.yaml) has TOTAL coverage today (0 missing) ---
+    cases += 1
+    fake_inventory = {"params": [
+        {"id": "temperature", "status": "swept"},
+        {"id": "totally-fake-row-11-04", "status": "swept"},
+        {"id": "some-excluded-row", "status": "excluded"},
+    ]}
+    missing = check_honor_detector_coverage(fake_inventory)
+    if missing != ["totally-fake-row-11-04"]:
+        problems += 1
+        print(f"FAIL check_honor_detector_coverage(fixture): expected only the fake row flagged, got {missing}", file=sys.stderr)
+    cases += 1
+    missing_real = check_honor_detector_coverage(load_inventory())
+    if missing_real:
+        problems += 1
+        print(f"FAIL check_honor_detector_coverage(real inventory): expected total coverage, missing {missing_real}", file=sys.stderr)
 
     return cases, problems
 

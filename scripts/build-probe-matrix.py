@@ -213,6 +213,15 @@ def row_keys_for_param(cells_for_param: list[dict]) -> list[tuple]:
     return keys
 
 
+def hazard_listing_rows(cells: list[dict]) -> list[dict]:
+    """Every hazard-bearing cell (SWP-02: `hazard` is non-null — states
+    accepted-ignored/silently-translated), in the classified YAML's own declared
+    order (never re-sorted) — the plain-language section listing them by
+    parameter, model and probe_id that this repo's own human legibility check
+    (this plan's <verify> § Human check) reads alongside the glyph table."""
+    return [c for c in cells if c.get("hazard")]
+
+
 def render_matrix(classified: dict) -> str:
     cells = classified["cells"]
     checked = classified.get("checked")
@@ -274,6 +283,30 @@ def render_matrix(classified: dict) -> str:
                     row_cells.append(glyph_for(cell))
                 lines.append("| " + " | ".join(row_cells) + " |")
         lines.append("")
+
+    # SWP-02: every hazard-bearing cell listed explicitly, plainly, by name — a
+    # reader must be able to find every silent-acceptance instance without
+    # cross-referencing the classified YAML alongside this file.
+    hazards = hazard_listing_rows(cells)
+    lines.append("## Hazards")
+    lines.append("")
+    lines.append(
+        "Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` — "
+        "the silent-acceptance hazard class SWP-02 requires stay visually and "
+        "structurally distinct from a clean accept (conclusion 19, docs/conclusions.md)."
+    )
+    lines.append("")
+    if hazards:
+        lines.append("| Parameter | Model | State | probe_id | Hazard |")
+        lines.append("|---|---|---|---|---|")
+        for c in hazards:
+            lines.append(
+                f"| {c['param']} | {c['model']} | {glyph_for(c)} {c['state']} | "
+                f"{c.get('probe_id') or '—'} | {c['hazard']} |"
+            )
+    else:
+        lines.append("None yet — no cell has classified as `accepted-ignored` or `silently-translated`.")
+    lines.append("")
 
     return "\n".join(lines).rstrip("\n") + "\n"
 
@@ -449,6 +482,45 @@ def selftest() -> tuple[int, int]:
     if rendered.count("HAZARD") != 2:
         problems += 1
         print(f"FAIL render_matrix: expected exactly 2 'HAZARD' mentions in the legend, got {rendered.count('HAZARD')}", file=sys.stderr)
+
+    # --- hazard_listing_rows: only hazard-bearing cells (non-null `hazard`),
+    #     never re-sorted from the classified YAML's own declared order (SWP-02) ---
+    cases += 1
+    hazard_fixture_cells = [
+        {"param": "p1", "group": "g1", "model": "m1", "mode": "default", "value": "v1", "state": "accepted-ignored",
+         "probe_id": "haz1", "hazard": "silent acceptance text", "override": None},
+        {"param": "p1", "group": "g1", "model": "m2", "mode": "default", "value": "v1", "state": "accepted-honored",
+         "probe_id": "clean1", "hazard": None, "override": None},
+        {"param": "p2", "group": "g1", "model": "m1", "mode": "default", "value": "v2", "state": "silently-translated",
+         "probe_id": "haz2", "hazard": "translated text", "override": None},
+        {"param": "p2", "group": "g1", "model": "m2", "mode": "default", "value": "v2", "state": "accepted-honored",
+         "probe_id": "clean2", "hazard": None, "override": None},
+    ]
+    haz_rows = hazard_listing_rows(hazard_fixture_cells)
+    if [c["probe_id"] for c in haz_rows] != ["haz1", "haz2"]:
+        problems += 1
+        print(f"FAIL hazard_listing_rows: expected [haz1, haz2] in declared order, got {[c.get('probe_id') for c in haz_rows]}", file=sys.stderr)
+
+    # --- render_matrix: the ## Hazards section lists every hazard-bearing cell's
+    #     probe_id and omits the clean accept — a reader must be able to find it
+    #     without opening the classified YAML alongside this file ---
+    cases += 1
+    haz_doc = {"checked": "2026-09-01", "evidence_through": None, "cells": hazard_fixture_cells}
+    haz_rendered = render_matrix(haz_doc)
+    if "## Hazards" not in haz_rendered or "haz1" not in haz_rendered or "haz2" not in haz_rendered:
+        problems += 1
+        print("FAIL render_matrix: ## Hazards section missing or missing a hazard-bearing probe_id", file=sys.stderr)
+    if "clean1" in haz_rendered.split("## Hazards")[1]:
+        problems += 1
+        print("FAIL render_matrix: a clean accept (accepted-honored) leaked into the ## Hazards section", file=sys.stderr)
+
+    # --- render_matrix: a classified doc with NO hazard-bearing cells renders an
+    #     explicit "None" line, never an empty/missing section ---
+    cases += 1
+    clean_rendered = render_matrix(fixture_doc)
+    if "## Hazards" not in clean_rendered or "None yet" not in clean_rendered:
+        problems += 1
+        print("FAIL render_matrix: expected an explicit 'None' Hazards section for a hazard-free doc", file=sys.stderr)
 
     return cases, problems
 

@@ -8,7 +8,7 @@
 # (probes/sets/generated/skipped-cells.yaml, 284) — 629 rows total (MTX-01).
 
 checked: 2026-09-01
-evidence_through: '2026-09-01T21:44:17Z'
+evidence_through: '2026-09-01T22:38:53Z'
 cells:
 - param: temperature
   group: sampling
@@ -20,6 +20,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -33,6 +35,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -46,6 +50,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -59,6 +65,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -72,6 +80,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -85,6 +95,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -98,6 +110,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -111,6 +125,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -124,6 +140,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -137,6 +155,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -150,6 +170,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -163,6 +185,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -176,6 +200,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -189,6 +215,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -202,6 +230,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -215,6 +245,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -228,6 +260,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -241,6 +275,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -254,6 +290,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -267,6 +305,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -280,6 +320,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -293,6 +335,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -306,6 +350,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -319,6 +365,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -332,6 +380,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -345,6 +395,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -358,6 +410,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -371,6 +425,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -384,6 +440,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -397,6 +455,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -410,6 +470,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -423,6 +485,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -436,6 +500,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -449,6 +515,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -462,6 +530,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -475,6 +545,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -488,6 +560,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -501,6 +575,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -514,6 +590,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -527,6 +605,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -540,6 +620,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -553,6 +635,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -566,6 +650,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -579,6 +665,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -592,6 +680,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -605,6 +695,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -618,6 +710,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -631,6 +725,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -644,6 +740,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -657,6 +755,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -670,6 +770,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -683,6 +785,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -696,6 +800,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -709,6 +815,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -722,6 +830,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -735,6 +845,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -748,6 +860,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -761,6 +875,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -774,6 +890,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -787,6 +905,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -800,6 +920,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -813,6 +935,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -826,6 +950,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -839,6 +965,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -852,6 +980,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -865,6 +995,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -878,6 +1010,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -891,6 +1025,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -904,6 +1040,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -917,6 +1055,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -930,6 +1070,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -943,6 +1085,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -956,6 +1100,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -969,6 +1115,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -982,6 +1130,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -995,6 +1145,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1008,6 +1160,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1021,6 +1175,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1034,6 +1190,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1047,6 +1205,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1060,6 +1220,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1073,6 +1235,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1086,6 +1250,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1099,6 +1265,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -1112,6 +1280,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1125,6 +1295,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1138,6 +1310,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1151,6 +1325,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1164,6 +1340,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1177,6 +1355,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1190,6 +1370,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1203,6 +1385,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1216,6 +1400,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1229,6 +1415,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1242,6 +1430,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1255,6 +1445,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1268,6 +1460,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1281,6 +1475,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1294,6 +1490,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1307,6 +1505,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1320,6 +1520,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1333,6 +1535,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1346,6 +1550,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1359,6 +1565,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -1372,6 +1580,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1385,6 +1595,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1398,6 +1610,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1411,6 +1625,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1424,6 +1640,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1437,6 +1655,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1450,6 +1670,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1463,6 +1685,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1476,6 +1700,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1489,6 +1715,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1502,6 +1730,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1515,6 +1745,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1528,6 +1760,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1541,6 +1775,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1554,6 +1790,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1567,6 +1805,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1580,6 +1820,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1593,6 +1835,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1606,6 +1850,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1619,6 +1865,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -1632,6 +1880,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1645,6 +1895,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1658,6 +1910,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1671,6 +1925,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1684,6 +1940,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1697,6 +1955,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1710,6 +1970,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1723,6 +1985,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1736,6 +2000,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1749,6 +2015,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1762,6 +2030,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1775,6 +2045,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -1788,6 +2060,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1801,6 +2075,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1814,6 +2090,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1827,6 +2105,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1840,6 +2120,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1853,6 +2135,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1866,6 +2150,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1879,6 +2165,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -1892,6 +2180,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1905,6 +2195,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -1918,6 +2210,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -1931,6 +2225,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1944,6 +2240,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1957,6 +2255,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1970,6 +2270,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1983,6 +2285,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1996,6 +2300,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2009,6 +2315,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2022,6 +2330,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2035,6 +2345,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2048,6 +2360,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2061,6 +2375,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2074,6 +2390,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2087,6 +2405,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2100,6 +2420,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2113,6 +2435,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2126,6 +2450,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2139,6 +2465,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -2152,6 +2480,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2165,6 +2495,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2178,6 +2510,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2191,6 +2525,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2204,6 +2540,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2217,6 +2555,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2230,6 +2570,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2243,6 +2585,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2256,6 +2600,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2269,6 +2615,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2282,6 +2630,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2295,6 +2645,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2308,6 +2660,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2321,6 +2675,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2334,6 +2690,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2347,6 +2705,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2360,6 +2720,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2373,6 +2735,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2386,6 +2750,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2399,6 +2765,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -2412,6 +2780,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2425,6 +2795,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2438,6 +2810,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2451,6 +2825,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2464,6 +2840,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2477,6 +2855,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2490,6 +2870,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2503,6 +2885,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2516,6 +2900,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2529,6 +2915,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2542,6 +2930,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2555,6 +2945,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2568,6 +2960,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2581,6 +2975,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2594,6 +2990,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -2607,6 +3005,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2620,6 +3020,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2633,6 +3035,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2646,6 +3050,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -2659,6 +3065,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2672,6 +3080,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -2685,6 +3095,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -2698,6 +3110,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2711,6 +3125,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2724,6 +3140,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2737,6 +3155,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2750,6 +3170,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2763,6 +3185,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2776,6 +3200,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2789,6 +3215,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2802,6 +3230,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2815,6 +3245,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2828,6 +3260,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2841,6 +3275,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2854,6 +3290,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2867,6 +3305,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2880,6 +3320,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2893,6 +3335,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2906,6 +3350,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2919,6 +3365,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2932,6 +3380,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2945,6 +3395,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2958,6 +3410,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2971,6 +3425,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2984,6 +3440,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2997,6 +3455,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3010,6 +3470,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3023,6 +3485,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3036,6 +3500,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3049,6 +3515,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3062,6 +3530,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3075,6 +3545,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3088,6 +3560,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3101,6 +3575,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3114,6 +3590,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3127,6 +3605,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3140,6 +3620,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3153,6 +3635,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3166,6 +3650,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3179,6 +3665,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3192,6 +3680,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3205,6 +3695,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3218,6 +3710,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3231,6 +3725,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3244,6 +3740,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3257,6 +3755,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3270,6 +3770,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3283,6 +3785,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3296,6 +3800,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3309,6 +3815,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3322,6 +3830,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3335,6 +3845,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3348,6 +3860,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3361,6 +3875,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3374,6 +3890,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3387,6 +3905,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3400,6 +3920,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3413,6 +3935,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3426,6 +3950,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3439,6 +3965,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3452,6 +3980,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3465,6 +3995,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3478,6 +4010,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3491,6 +4025,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3504,6 +4040,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3517,6 +4055,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3530,6 +4070,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3543,6 +4085,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3556,6 +4100,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3569,6 +4115,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3582,6 +4130,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3595,6 +4145,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3608,6 +4160,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3621,6 +4175,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3634,6 +4190,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3647,6 +4205,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3660,6 +4220,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3673,6 +4235,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3686,6 +4250,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3699,6 +4265,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3712,6 +4280,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3725,6 +4295,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3738,6 +4310,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3751,6 +4325,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3764,6 +4340,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3777,6 +4355,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3790,6 +4370,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3803,6 +4385,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3816,6 +4400,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3829,6 +4415,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3842,6 +4430,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3855,6 +4445,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3868,6 +4460,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3881,6 +4475,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3894,6 +4490,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3907,6 +4505,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3920,6 +4520,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -3933,6 +4535,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3946,6 +4550,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3959,6 +4565,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3972,6 +4580,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3985,6 +4595,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -3998,6 +4610,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4011,6 +4625,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4024,6 +4640,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4037,6 +4655,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4050,6 +4670,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4063,6 +4685,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4076,6 +4700,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-request-field-for-vendor
   reason: null
   override: null
@@ -4089,6 +4715,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4102,6 +4730,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4115,6 +4745,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4128,6 +4760,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4141,6 +4775,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4154,6 +4790,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4167,6 +4805,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4180,6 +4820,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4193,6 +4835,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4206,6 +4850,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4214,13 +4860,15 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: gpt-5-6-sol--openai-reasoning-effort--low--default--b4647333
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
-  reason: null
+  reason: 4xx-not-param-named
   override: null
 - param: openai-reasoning-effort
   group: reasoning-toggle
@@ -4232,6 +4880,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4240,11 +4890,13 @@ cells:
   model: grok-4-5
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-reasoning-effort--low--default--5728b015
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -19
   skip_reason: null
   reason: null
   override: null
@@ -4253,11 +4905,13 @@ cells:
   model: kimi-k3
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-reasoning-effort--low--default--54d36c33
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 94
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -4266,11 +4920,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-reasoning-effort--low--default--fb7fb3bb
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 12
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4279,11 +4935,13 @@ cells:
   model: glm-5.3
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-reasoning-effort--low--default--d1ccf5f7
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4292,11 +4950,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-reasoning-effort--low--default--70ebdf2d
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 57
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4305,11 +4965,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-reasoning-effort--low--default--f45c7994
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 57
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4318,11 +4980,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--anthropic-thinking-object--{"budget_tokens":1024,"type":"enabled"}--default--89ae6d62
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4331,11 +4995,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--anthropic-thinking-object--{"budget_tokens":1024,"type":"enabled"}--default--86a6750f
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4344,11 +5010,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--anthropic-thinking-object--{"budget_tokens":1024,"type":"enabled"}--default--4c34b7a3
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4357,11 +5025,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--anthropic-thinking-object--{"budget_tokens":1024,"type":"enabled"}--default--43ff4fbb
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4375,6 +5045,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4388,6 +5060,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4401,6 +5075,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4414,6 +5090,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4427,6 +5105,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4440,6 +5120,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4453,6 +5135,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4466,6 +5150,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4479,6 +5165,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4492,6 +5180,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4505,6 +5195,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4518,6 +5210,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4531,6 +5225,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4539,11 +5235,13 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '{"thinkingLevel":"low"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--gemini-thinking-config--{"thinkingLevel":"low"}--default--43fc2490
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -4557,6 +5255,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4570,6 +5270,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4583,6 +5285,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4596,6 +5300,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4609,6 +5315,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4622,6 +5330,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4635,6 +5345,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4648,6 +5360,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4661,6 +5375,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4674,6 +5390,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4687,6 +5405,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4700,6 +5420,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4713,6 +5435,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4726,6 +5450,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4739,6 +5465,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4752,6 +5480,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4760,11 +5490,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--qwen-enable-thinking--false--default--a0f3a881
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -4773,11 +5505,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--qwen-enable-thinking--false--default--e60aacc3
+  http_status: 200
+  honor_evidence: none
   hazard: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -4791,6 +5525,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4804,6 +5540,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4817,6 +5555,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4830,6 +5570,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4843,6 +5585,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4856,6 +5600,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4869,6 +5615,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4882,6 +5630,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4895,6 +5645,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4908,6 +5660,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4921,6 +5675,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4934,6 +5690,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -4947,6 +5705,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4960,6 +5720,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4973,6 +5735,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4986,6 +5750,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -4999,6 +5765,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5012,6 +5780,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5025,6 +5795,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5038,6 +5810,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5051,6 +5825,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5064,6 +5840,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5077,6 +5855,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5090,6 +5870,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5103,6 +5885,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5116,6 +5900,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5129,6 +5915,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5142,6 +5930,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5155,6 +5945,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5168,6 +5960,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5181,6 +5975,8 @@ cells:
   http_status: 200
   honor_evidence: none
   hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -5194,6 +5990,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5207,6 +6005,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5220,6 +6020,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5233,6 +6035,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5246,6 +6050,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5259,6 +6065,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5272,6 +6080,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5285,6 +6095,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5298,6 +6110,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5311,6 +6125,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5324,6 +6140,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5337,6 +6155,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5350,6 +6170,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5363,6 +6185,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5376,6 +6200,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5389,6 +6215,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5402,6 +6230,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5415,6 +6245,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5428,6 +6260,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5441,6 +6275,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5454,6 +6290,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5467,6 +6305,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5480,6 +6320,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5493,6 +6335,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5506,6 +6350,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5519,6 +6365,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5532,6 +6380,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5545,6 +6395,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5558,6 +6410,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5571,6 +6425,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5584,6 +6440,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5597,6 +6455,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5610,6 +6470,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5623,6 +6485,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5636,6 +6500,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5649,6 +6515,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5662,6 +6530,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5675,6 +6545,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5688,6 +6560,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -5701,6 +6575,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5714,6 +6590,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5727,6 +6605,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5740,6 +6620,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5753,6 +6635,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5766,6 +6650,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5779,6 +6665,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5792,6 +6680,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5805,6 +6695,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5818,6 +6710,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5831,6 +6725,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5844,6 +6740,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5857,6 +6755,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5870,6 +6770,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5883,6 +6785,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5896,6 +6800,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5909,6 +6815,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5922,6 +6830,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5935,6 +6845,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5948,6 +6860,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5961,6 +6875,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5974,6 +6890,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -5987,6 +6905,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6000,6 +6920,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6013,6 +6935,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6021,11 +6945,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"budget_tokens":500,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--36558a15
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6039,6 +6965,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6047,11 +6975,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"budget_tokens":500,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--07c97df3
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6065,6 +6995,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6073,11 +7005,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"budget_tokens":500,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--f59cc6c6
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6091,6 +7025,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6099,11 +7035,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"budget_tokens":500,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--b05e92b5
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6117,6 +7055,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6130,6 +7070,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6143,6 +7085,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6156,6 +7100,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6169,6 +7115,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6182,6 +7130,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6195,6 +7145,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6208,6 +7160,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6221,6 +7175,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6234,6 +7190,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6247,6 +7205,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6260,6 +7220,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6273,6 +7235,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6286,6 +7250,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6299,6 +7265,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6312,6 +7280,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6325,6 +7295,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6338,6 +7310,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6351,6 +7325,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6364,6 +7340,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6377,6 +7355,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6390,6 +7370,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6403,6 +7385,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6416,6 +7400,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6429,6 +7415,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6442,6 +7430,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6455,6 +7445,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6468,6 +7460,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6481,6 +7475,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6494,6 +7490,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6507,6 +7505,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6520,6 +7520,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6533,6 +7535,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6546,6 +7550,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6559,6 +7565,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6572,6 +7580,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6585,6 +7595,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6598,6 +7610,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6611,6 +7625,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6624,6 +7640,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6637,6 +7655,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6650,6 +7670,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6663,6 +7685,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6676,6 +7700,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6689,6 +7715,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6702,6 +7730,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6715,6 +7745,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6728,6 +7760,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6741,6 +7775,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6754,6 +7790,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6767,6 +7805,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6780,6 +7820,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6793,6 +7835,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6806,6 +7850,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6819,6 +7865,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6832,6 +7880,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6845,6 +7895,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6858,6 +7910,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6871,6 +7925,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6884,6 +7940,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6897,6 +7955,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6910,6 +7970,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6923,6 +7985,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -6936,6 +8000,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -6949,6 +8015,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -6962,6 +8030,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -6975,6 +8045,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-shape-unknown
   reason: null
   override: null
@@ -6988,6 +8060,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -7001,6 +8075,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
   reason: null
   override: null
@@ -7014,6 +8090,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: no-thinking-off-toggle
   reason: null
   override: null
@@ -7027,6 +8105,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7040,6 +8120,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7053,6 +8135,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7066,6 +8150,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7079,6 +8165,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7092,6 +8180,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7105,6 +8195,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7118,6 +8210,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7131,6 +8225,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7144,6 +8240,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7157,6 +8255,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7170,6 +8270,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7178,11 +8280,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '0.3'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: kimi-k3--kimi-fixed-sampling-point--0.3--default--c6b0f5d8
+  http_status: 400
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7196,6 +8300,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7209,6 +8315,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7222,6 +8330,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7235,6 +8345,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7248,6 +8360,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7261,6 +8375,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7274,6 +8390,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7287,6 +8405,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7300,6 +8420,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7313,6 +8435,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7326,6 +8450,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7339,6 +8465,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7352,6 +8480,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7365,6 +8495,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7378,6 +8510,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7391,6 +8525,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7404,6 +8540,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7417,6 +8555,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7430,6 +8570,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7443,6 +8585,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7456,6 +8600,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7469,6 +8615,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7482,6 +8630,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7495,6 +8645,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7508,6 +8660,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7521,6 +8675,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7534,6 +8690,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7547,6 +8705,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7560,6 +8720,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7573,6 +8735,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7586,6 +8750,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7599,6 +8765,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7612,6 +8780,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7625,6 +8795,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7638,6 +8810,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7651,6 +8825,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7664,6 +8840,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7677,6 +8855,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7690,6 +8870,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7703,6 +8885,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7716,6 +8900,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7729,6 +8915,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7742,6 +8930,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7755,6 +8945,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7768,6 +8960,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7781,6 +8975,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7794,6 +8990,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -7807,6 +9005,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7820,6 +9020,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7833,6 +9035,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7846,6 +9050,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7859,6 +9065,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7872,6 +9080,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7885,6 +9095,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7898,6 +9110,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7911,6 +9125,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7924,6 +9140,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7937,6 +9155,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7950,6 +9170,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7963,6 +9185,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7976,6 +9200,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -7989,6 +9215,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8002,6 +9230,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8015,6 +9245,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8028,6 +9260,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8041,6 +9275,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8054,6 +9290,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8067,6 +9305,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8080,6 +9320,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -8093,6 +9335,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8106,6 +9350,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8119,6 +9365,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8132,6 +9380,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8145,6 +9395,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8158,6 +9410,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8171,6 +9425,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
@@ -8184,6 +9440,8 @@ cells:
   http_status: null
   honor_evidence: n/a
   hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: wire-shape-incompatible
   reason: null
   override: null
