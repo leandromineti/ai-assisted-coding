@@ -4,13 +4,14 @@ each declared probe through the wire-family adapter registered in adapters/, fir
 the request via client.py, and writes the result as one JSONL record per vendor
 (D-08) plus one ledger line per billed attempt (D-07).
 
-    python3 probes/harness/runner.py --set probes/sets/smoke.yaml [--dry-run]
+    python3 probes/harness/runner.py --set probes/sets/smoke.yaml [--dry-run] [--refire-exhausted]
     python3 probes/harness/runner.py --selftest
 
-Exit codes: 0 clean, 1 problems recorded (a probe errored, or a ceiling-adjacent issue
-— see plan 09-02 for ceiling enforcement itself), 2 bad invocation (including a
-malformed probes/sets/*.yaml, models.yaml, or prices.yaml — the fail-loud path never
-returns a partial work list).
+Exit codes: 0 clean, 1 problems recorded (a probe errored, exhausted its retry budget,
+was dropped by a vendor sub-ceiling breach, or the global ceiling stopped the run — D-06,
+ledger.ceiling_verdict consulted strictly BETWEEN probes, never mid-flight), 2 bad
+invocation (including a malformed probes/sets/*.yaml, models.yaml, prices.yaml, or
+ceilings.yaml — the fail-loud path never returns a partial work list).
 
 Secrets: keys are loaded once via client.load_keys() into a single in-process dict;
 auth_headers() (in each adapter) is the only consumer of a key VALUE. build_record()
@@ -23,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import inspect
 import json
 import sys
 import tempfile
@@ -38,6 +40,7 @@ from adapters import ADAPTERS
 PROBES_DIR = Path(__file__).resolve().parent.parent
 MODELS_PATH = PROBES_DIR / "harness" / "models.yaml"
 PRICES_PATH = PROBES_DIR / "harness" / "prices.yaml"
+CEILINGS_PATH = PROBES_DIR / "harness" / "ceilings.yaml"
 RAW_DIR = PROBES_DIR / "raw"
 LEDGER_PATH = PROBES_DIR / "ledger.jsonl"
 SECRETS_PATH = Path.home() / ".secrets" / "model-probes.env"
@@ -262,6 +265,73 @@ def load_prices(path: Path = PRICES_PATH) -> dict[str, dict]:
             _fail(2, f"{path}: price row missing required key(s) {sorted(missing)}: {row}")
         rows[row["slug"]] = row
     return rows
+
+
+def load_ceilings(path: Path = CEILINGS_PATH) -> dict:
+    """Parse ceilings.yaml -> the thresholds mapping ledger.ceiling_verdict() expects.
+    Required keys: global_hard_usd, global_warn_usd, vendor_soft_usd_default,
+    vendor_soft_usd. Fails loud (exit 2) on any parse or validation error — D-05: no
+    dollar figure is ever hardcoded as a Python fallback if the file is malformed."""
+    try:
+        text = Path(path).read_text()
+    except OSError as e:
+        _fail(2, f"cannot read {path}: {e}")
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        _fail(2, f"{path} is not valid YAML: {e}")
+    if not isinstance(data, dict):
+        _fail(2, f"{path}: expected a top-level mapping")
+    required = {"global_hard_usd", "global_warn_usd", "vendor_soft_usd_default", "vendor_soft_usd"}
+    missing = required - set(data)
+    if missing:
+        _fail(2, f"{path}: missing required key(s) {sorted(missing)}")
+    return data
+
+
+def flatten_totals(raw_totals: dict) -> dict:
+    """ledger.totals()'s own return shape is nested (`{"global": {"cost_usd": ...},
+    "by_vendor": {vendor: {"cost_usd": ...}}}`) — that shape and its recompute-by-
+    summing contract are plan 09-01's and are never touched here. ceiling_verdict()
+    takes the simpler flat shape `{"global_usd": float, "by_vendor": {vendor:
+    float}}` instead; this is the one-line adapter between the two, called fresh
+    every time totals() is recomputed (D-07: no cached total anywhere)."""
+    return {
+        "global_usd": raw_totals["global"]["cost_usd"],
+        "by_vendor": {v: d["cost_usd"] for v, d in raw_totals["by_vendor"].items()},
+    }
+
+
+def build_skipped_ceiling_record(
+    *, pid: str, vendor: str, model_slug: str, api_model_id: str, wire_family: str,
+    set_file: str, param: str, value: str, mode: str, reason: str,
+) -> dict:
+    """One record for a probe DROPPED by a vendor sub-ceiling breach (D-06) — never
+    fired, so there is no request/response to log. `attempts` is empty and `terminal`
+    is `skipped_ceiling`; `reason` names the vendor and the numeric threshold that
+    triggered the skip (D-06: a skipped probe is visible evidence, never a silent
+    absence — the whole point of writing a record here instead of just not writing
+    one)."""
+    return {
+        "probe_id": pid,
+        "recorded_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "vendor": vendor,
+        "model_slug": model_slug,
+        "api_model_id": api_model_id,
+        "wire_family": wire_family,
+        "set_file": set_file,
+        "param": param,
+        "value": value,
+        "mode": mode,
+        "request": None,
+        "attempts": [],
+        "terminal": "skipped_ceiling",
+        "retries": 0,
+        "usage": {},
+        "cost_usd": None,
+        "reason": reason,
+        "harness_version": HARNESS_VERSION,
+    }
 
 
 def load_probe_set(path) -> list[dict]:
@@ -648,6 +718,48 @@ def selftest() -> tuple[int, int]:
             problems += 1
             print("FAIL seen_probe_ids: refire_exhausted=True must exclude retry_exhausted ids from the seen-set", file=sys.stderr)
 
+    # --- build_skipped_ceiling_record: terminal + a reason naming vendor and threshold ---
+    cases += 1
+    skip_reason = "zai total $1.500000 reached its $1.50 soft sub-ceiling"
+    skip_record = build_skipped_ceiling_record(
+        pid="s--baseline--none--default--ffffffff",
+        vendor="zai",
+        model_slug="glm-5.3",
+        api_model_id="glm-5.3",
+        wire_family="openai_compat",
+        set_file="probes/sets/smoke.yaml",
+        param="baseline",
+        value="none",
+        mode="default",
+        reason=skip_reason,
+    )
+    if skip_record["terminal"] != "skipped_ceiling":
+        problems += 1
+        print(f"FAIL build_skipped_ceiling_record: terminal should be 'skipped_ceiling', got {skip_record['terminal']!r}", file=sys.stderr)
+    if "zai" not in skip_record["reason"] or "1.5" not in skip_record["reason"]:
+        problems += 1
+        print(f"FAIL build_skipped_ceiling_record: reason must name the vendor and the numeric threshold, got {skip_record['reason']!r}", file=sys.stderr)
+    if skip_record["attempts"] != []:
+        problems += 1
+        print("FAIL build_skipped_ceiling_record: a dropped probe was never fired, attempts must be empty", file=sys.stderr)
+
+    # --- structural: ceiling_verdict is consulted AFTER both the JSONL append and
+    #     the ledger append in the same loop body (D-06 — evidence is always logged
+    #     and counted before any ceiling check can act on it) ---
+    cases += 1
+    main_src = inspect.getsource(main)
+    jsonl_write_idx = main_src.find('with raw_path.open("a") as f:\n            f.write(serialized')
+    ledger_append_idx = main_src.find("ledger.append(LEDGER_PATH")
+    ceiling_check_idx = main_src.find("ledger.ceiling_verdict(")
+    if not (0 <= jsonl_write_idx < ledger_append_idx < ceiling_check_idx):
+        problems += 1
+        print(
+            "FAIL main(): ledger.ceiling_verdict must be consulted strictly AFTER "
+            "both the JSONL append and the ledger append in the same loop body "
+            f"(indices: jsonl={jsonl_write_idx}, ledger={ledger_append_idx}, ceiling={ceiling_check_idx})",
+            file=sys.stderr,
+        )
+
     return cases, problems
 
 
@@ -680,9 +792,15 @@ def main() -> int:
     probes = load_probe_set(args.set_path)
     models = load_models()
     prices = load_prices()
+    ceilings = load_ceilings()
 
     all_keys = client.load_keys(SECRETS_PATH)
     all_key_values = list(all_keys.values())
+
+    # Vendor -> the skip_vendor reason that triggered dropping its remaining probes
+    # (D-06). Populated only by a ceiling check between probes, below; never
+    # pre-populated, since the whole point is that this is discovered mid-run.
+    skipped_vendors: dict[str, str] = {}
 
     problems = 0
     for entry in probes:
@@ -721,6 +839,33 @@ def main() -> int:
         seen = seen_probe_ids(raw_path, refire_exhausted=args.refire_exhausted)
         if pid in seen:
             print(f"SKIP {pid} (already logged)")
+            continue
+
+        if vendor in skipped_vendors:
+            # D-06: this vendor's sub-ceiling was already breached by an earlier
+            # probe in this same run — drop this one WITHOUT firing it, but write a
+            # record so the skip is visible evidence, never a silent absence.
+            skip_reason = skipped_vendors[vendor]
+            skip_record = build_skipped_ceiling_record(
+                pid=pid,
+                vendor=vendor,
+                model_slug=model_slug,
+                api_model_id=row["api_model_id"],
+                wire_family=wire_family,
+                set_file=str(args.set_path),
+                param=entry["param"],
+                value=entry["value"],
+                mode=entry["mode"],
+                reason=skip_reason,
+            )
+            skip_serialized = json.dumps(skip_record)
+            assert_no_secrets(skip_serialized, all_key_values)
+            RAW_DIR.mkdir(parents=True, exist_ok=True)
+            with raw_path.open("a") as f:
+                f.write(skip_serialized + "\n")
+                f.flush()
+            print(f"SKIP-CEILING {pid}: {skip_reason}")
+            problems += 1
             continue
 
         key_env_var = row["key_env_var"]
@@ -800,6 +945,27 @@ def main() -> int:
             })
 
         print(f"OK {pid} status={status} terminal={terminal} retries={retries} cost_usd={cost}")
+
+        # Ceiling check strictly BETWEEN probes (D-06) — this line runs only after
+        # BOTH the JSONL record and (when applicable) the ledger line for THIS probe
+        # are already flushed to disk above, never before: a ceiling breach must
+        # never discard a response the harness already paid for. totals() recomputes
+        # by summing the whole ledger file (D-07) — no running total is carried
+        # across the loop.
+        raw_totals = ledger.totals(LEDGER_PATH)
+        verdict_action, verdict_reason = ledger.ceiling_verdict(flatten_totals(raw_totals), ceilings)
+        if verdict_action == "stop_global":
+            print(f"STOP (global ceiling breached): {verdict_reason}", file=sys.stderr)
+            print(json.dumps(raw_totals, indent=2, default=str))
+            return 1
+        elif verdict_action == "skip_vendor":
+            # ceiling_verdict's documented convention: the reason's first word is the
+            # breaching vendor's short name (ledger.py's ceiling_verdict docstring).
+            breach_vendor = verdict_reason.split(" ", 1)[0]
+            skipped_vendors[breach_vendor] = verdict_reason
+            print(f"CEILING skip_vendor: {verdict_reason}", file=sys.stderr)
+        elif verdict_action == "warn":
+            print(f"CEILING warn: {verdict_reason}", file=sys.stderr)
 
     return 1 if problems else 0
 

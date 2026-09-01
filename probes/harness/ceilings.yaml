@@ -1,0 +1,29 @@
+# probes/harness/ceilings.yaml — the tunable spend-ceiling configuration (D-05):
+# global hard/warn thresholds plus a default per-vendor soft sub-ceiling, with
+# per-vendor overrides. ledger.ceiling_verdict() takes these as a parameter — no
+# dollar figure is ever hardcoded in Python. Every comparison breaches AT equality,
+# not strictly above a threshold (selftested on both sides of each boundary).
+checked: 2026-09-01
+
+# Global hard ceiling (HARN-03): a global total that reaches this stops all firing
+# entirely and exits with a ledger report.
+global_hard_usd: 10.00
+
+# Global warning threshold (HARN-03): a global total that reaches this prints to
+# stderr and continues firing.
+global_warn_usd: 8.00
+
+# Default per-vendor soft sub-ceiling (D-05): a vendor total that reaches this skips
+# that vendor's remaining probes and continues with the other seven — contains one
+# vendor's runaway billing without stopping the whole run. The discretionary number
+# this file exists to make tunable without a code edit; the mechanism (three
+# thresholds, skip-vendor vs stop-global) is D-05/D-06's decision, this figure is not.
+vendor_soft_usd_default: 1.50
+
+# Per-vendor overrides, empty at creation — add a `<vendor>: <usd>` entry here to
+# override the default for one maker. Likeliest first overrides (RESEARCH.md,
+# 2026-09-01): kimi (Moonshot AI / Kimi K3) and zai (Z.ai / GLM-5.3) both default
+# `reasoning_effort` to `max` — the most expensive default reasoning setting among
+# the 8 makers in this sweep — and are the most plausible candidates to need a
+# lower (or a deliberately raised) sub-ceiling once real sweep spend starts.
+vendor_soft_usd: {}
