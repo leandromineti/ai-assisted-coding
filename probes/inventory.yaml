@@ -1,0 +1,218 @@
+# probes/inventory.yaml — the parameter registry driving Phase 11's contract sweep
+# (D-01). This file is a GENERATOR INPUT, read only by
+# probes/inventory-to-sets.py — it is never fired directly. Its rendered output,
+# probes/sets/generated/*.yaml, is GENERATED and never hand-edited (rule 3): a hand
+# edit there is caught by the generator's --check drift gate. One row per parameter
+# (or content-block), each carrying `source:` + `retrieved:` (D-13) so every emitted
+# probe traces back to the vendor doc it was transcribed from — the same discipline
+# probes/harness/prices.yaml already established for per-model dollar rates.
+#
+# INV-01: the union of every vendor's documented request parameters plus the
+# ~20-param cross-vendor canonical set. INV-02: no mode-dependent parameter may
+# collapse into a false flat verdict — every row that interacts with the thinking
+# axis (D-07) declares `axis: thinking` explicitly, enforced mechanically by the
+# generator's --check. INV-03: six named vendor exotics get their own traceable rows
+# (tracked by the generator's INV-03 validator, red-by-design until plan 10-03 adds
+# them — see the note on that validator below).
+checked: 2026-09-01
+
+# --- axes -------------------------------------------------------------------------
+# D-05: one axis this milestone — thinking on/off. Every documented mode-dependent
+# contract behavior in the evidence base (DeepSeek's thinking-mode ignore list,
+# Qwen's mode-dependent repetition_penalty, Kimi's mode-specific fixed sampling
+# points) is thinking-related; no other axis has earned its place yet (rule 5d).
+#
+# Each wire-family shape below is a FIXED REQUEST FRAGMENT (D-08): the generator
+# merges it into a row's own extra_params when emitting a thinking-on/thinking-off
+# cell for that family. `vendor_overrides` lets a specific vendor within a wire
+# family diverge from the family default without forking the whole shape — populated
+# for qwen/zai/dseek/kimi by plan 10-02; left present-but-empty here with a comment
+# so the schema shape is visible before those rows exist.
+#
+# NOTE for future rows (plan 10-02/10-03): `on`/`off` MUST be quoted ("on"/"off")
+# in this file. PyYAML's default (YAML 1.1) implicit resolver treats the bare
+# tokens on/off/yes/no/true/false as booleans regardless of position — an
+# unquoted `on:` key silently becomes the boolean key `True`, not the string "on",
+# which breaks every downstream `shapes[family]["on"]` lookup without raising.
+axes:
+  thinking:
+    description: >-
+      Whether the model is asked to produce hidden reasoning tokens before its
+      visible output. The one interaction axis this milestone probes (D-05) — every
+      sampling-family row (D-07) is expanded once per REAL mode cell a model
+      actually supports, per its models.yaml `reasoning_toggle` (D-06).
+    shapes:
+      anthropic_messages:
+        "on":
+          thinking:
+            type: enabled
+            budget_tokens: 1024
+        "off":
+          thinking:
+            type: disabled
+        source: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+        retrieved: 2026-08-26   # tools/1-models/claude-opus-5.md § Reasoning surface:
+          # "Both cells resolved 2026-08-26 (issue #38)" against this exact page —
+          # the per-model configuration table naming `thinking: {type: "disabled"}`
+          # as the accept shape for a Default-On model.
+        vendor_overrides: {}   # none yet — Anthropic is a single-vendor wire family
+          # (all four Claude rows share `vendor: anthropic`), so no per-vendor split
+          # is possible within this family. Present for schema-shape symmetry with
+          # the two multi-vendor families below.
+      openai_compat:
+        "on":
+          reasoning_effort: low
+        "off":
+          reasoning_effort: none
+        source: https://developers.openai.com/api/docs/models
+        retrieved: 2026-08-17   # tools/1-models/gpt-5-6-sol.md § Reasoning surface,
+          # verified 2026-08-17: "disable per-request via `reasoning.effort: none`" —
+          # "The only model in the sweep where the off switch lives *inside* the
+          # effort enum rather than beside it." This is the FAMILY DEFAULT shape
+          # (OpenAI/xAI's reasoning_effort string enum) — xAI shares it unmodified
+          # (docs.x.ai/docs/guides/reasoning, FEATURES.md Sources, confirms the same
+          # low/medium/high[/xhigh] enum with a documented xhigh-to-high degrade).
+          # DeepSeek/Kimi/Z.ai/Qwen diverge from this default (thinking.type object,
+          # or a boolean enable_thinking + budget) — captured as vendor_overrides by
+          # plan 10-02, left empty here on purpose (see comment below).
+        vendor_overrides: {}   # dseek/kimi/zai/qwen overrides land in plan 10-02
+          # (D-08: rows first, then axis — the toggle rows themselves are ordinary
+          # inventory rows probed in their own right before this axis fragment is
+          # trusted for any of the four). Left empty, not omitted, so a reader sees
+          # the key exists before the divergent shapes are filled in.
+      gemini:
+        "on":
+          thinkingConfig:
+            thinkingLevel: low
+        "off":
+          thinkingConfig:
+            thinkingBudget: 0
+        source: https://ai.google.dev/gemini-api/docs/models
+        retrieved: 2026-08-17   # tools/1-models/gemini-3-1-pro.md § Reasoning
+          # surface, verified 2026-08-17: "`thinking_level` caps depth; legacy
+          # `thinking_budget` mutually exclusive with it" — `thinkingLevel` is the
+          # current dial (this shape), `thinkingBudget: 0` is the legacy numeric
+          # escape hatch used here only for the OFF cell, since gemini-3-1-pro's
+          # `reasoning_toggle: always-on` means this OFF cell is never actually
+          # emitted for it (D-06) — the shape is recorded for the family's other
+          # rows and for any future always-on-elsewhere model in this family.
+        vendor_overrides: {}
+
+# --- groups -------------------------------------------------------------------------
+# Mirrors docs/feature-taxonomy.yaml's grouped-registry idiom: id/title/order/blurb,
+# entries reference a group id rather than inventing a second grouping mechanism.
+# `order` sorts rows within the generator's deterministic emission order (group
+# order, then row id, then models.yaml row index, then mode label).
+groups:
+  - id: sampling
+    title: Sampling
+    order: 10
+    blurb: >-
+      The parameters that shape token selection — temperature, top_p, top_k,
+      presence/frequency penalties, logprobs, seed, n, repetition_penalty. D-07:
+      this whole family carries the thinking axis, not only the rows a vendor
+      happened to document as mode-dependent — probing only where vendors
+      documented mode-dependence would re-trust vendor docs, the exact thing
+      conclusion 19 forbids.
+  - id: structural
+    title: Structural / format
+    order: 20
+    blurb: >-
+      Request shape rather than sampling behavior — stop sequences, max_tokens
+      family, response_format/structured output, tools/tool_choice, streaming.
+      These stay flat (no thinking-axis expansion, D-07): a vendor's JSON schema
+      support does not change when reasoning is toggled.
+  - id: reasoning-toggle
+    title: Reasoning toggle
+    order: 30
+    blurb: >-
+      The four thinking-toggle shapes themselves (D-08): OpenAI/xAI
+      `reasoning_effort`, Anthropic `thinking:{...}`, Gemini `thinkingConfig`, Qwen
+      `enable_thinking`+`thinking_budget`. Ordinary inventory rows probed in their
+      own right — they are also the evidence upgrade for the existing
+      `reasoning_type`/`reasoning_effort` registry keys — and sweep ordering probes
+      these BEFORE any axis-dependent sampling cell, so a broken toggle is caught
+      before it invalidates downstream mode cells.
+  - id: service-tier
+    title: Service tier / speed
+    order: 40
+    blurb: >-
+      Fast-lane / priority-serving parameters at the 3 of 8 makers that expose one
+      (Anthropic, OpenAI, Google) — the request-parameter evidence behind the
+      existing `fast_mode` registry key, including the request-vs-response
+      vocabulary asymmetry conclusion 19 already found at OpenAI.
+  - id: exotic
+    title: Vendor exotics
+    order: 50
+    blurb: >-
+      Single-vendor, non-cross-vendor parameters worth probing precisely because
+      they're asymmetric (INV-03's nine named rows plus further differentiators):
+      OpenAI's `prediction`/`verbosity`/`service_tier` values, Anthropic's
+      thinking-budget floor, Gemini's `mediaResolution`/`candidateCount`, Kimi's
+      `partial_mode` and fixed-sampling rejection, Z.ai's `do_sample`, Qwen's
+      `repetition_penalty`.
+  - id: content-block
+    title: Content-block probes
+    order: 60
+    blurb: >-
+      Not scalar parameters at all (D-12) — image-input message-content shapes and
+      cache-control blocks. Marked `kind: content-block` so the generator routes
+      them to their own file (content-blocks.yaml) instead of forcing them into the
+      scalar accept/reject template.
+  - id: excluded
+    title: Deliberately excluded
+    order: 70
+    blurb: >-
+      Parameters seen and judged out of scope, never silently missed (D-09, rule
+      1b): batch endpoint, exhaustive logit_bias sweeps, non-image modalities, xAI
+      `search_parameters`. Each row carries `excluded_reason` + `excluded_at`
+      instead of `probe_values` — the generator skips rows by status, and the
+      visible row is what makes the union claim mechanically checkable.
+
+# --- defaults -----------------------------------------------------------------------
+defaults:
+  prompt: "Reply with exactly one word: hello."   # same one-word smoke-set prompt
+    # (probes/sets/smoke.yaml) — cheap, deterministic-shaped, nothing about a
+    # parameter contract test needs a longer prompt.
+  max_tokens: 64
+  max_tokens_overrides:
+    gemini-3-1-pro: 200   # 2026-09-01, plan 09-03 finding: gemini-3-1-pro's
+      # always-on reasoning consumed a 16-token budget entirely before any output
+      # text was produced (empty content, finishReason: MAX_TOKENS) — the smoke
+      # set's own fix, carried here so every generated cell for this model leaves
+      # room for real output after thinking (probes/README.md § Wire questions #4).
+
+# --- params ---------------------------------------------------------------------
+# Exactly ONE row for this task (Task 1's tracer slice) — temperature, proven
+# end-to-end through the generator into a real dry-run request body. Plans 10-02 and
+# 10-03 author the remaining ~19 canonical rows, the six INV-03 exotics (nine named
+# rows, some vendor-exotic ids already reserved above), and the excluded rows.
+params:
+  - id: temperature
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: temperature
+    names:
+      anthropic_messages: temperature
+      openai_compat: temperature
+      gemini: temperature   # merged into generationConfig by the adapter — never
+        # nested by this row; probes/harness/adapters/gemini.py's build_request
+        # already puts every extra_params key inside generationConfig.
+    name_overrides: {}   # no vendor within any family renames temperature away
+      # from its family default — the divergence for this row is RANGE, not name
+      # (see note below), which is exactly why it stays a name_overrides no-op.
+    axis: thinking   # D-07: sampling family carries the axis broadly, not only
+      # where a vendor documented mode-dependence.
+    probe_values: [0.7]   # D-03: one benign in-range value.
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Universal across all 12 models in some form, but the RANGE is not uniform:
+      OpenAI/Anthropic/most OpenAI-compatible vendors accept 0-2; at least one
+      third-party technical writeup states Gemini's practical range differs
+      (reported as 0-1). That disagreement is its own hypothesis row in plan 10-02
+      (D-15), not a value list on this row — D-03 scopes this row to one benign
+      in-range probe value only.

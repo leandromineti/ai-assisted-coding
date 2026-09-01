@@ -7,6 +7,15 @@
 # key_env_var infix (PERSONAL_<VENDOR>_KEY) — the one naming convention already fixed
 # by ~/.secrets/model-probes.env before this phase existed — and is what partitions
 # probes/raw/{vendor}.jsonl (D-08, 8 files for 8 makers).
+#
+# `reasoning_toggle` (added 2026-09-01, Phase 10 plan 10-01, D-06): closed enum
+# always-on | default-on | opt-in | none, transcribed verbatim from each model's own
+# report frontmatter `model_features.reasoning_type` in tools/1-models/<slug>.md, read
+# 2026-09-01. Deliberately a docs-grade duplicate the harness owns (matching this
+# file's own self-containment note above) — never parsed from the reports at runtime.
+# Phase 13's check-probe-drift.py later confronts this field against the reports'
+# `reasoning_type` key (string equality, not a mapping, since this file reuses the
+# reports' own four-value enum instead of D-06's proposed three classes).
 checked: 2026-09-01
 
 models:
@@ -17,6 +26,7 @@ models:
     api_model_id: claude-fable-5
     base_url: https://api.anthropic.com/v1
     key_env_var: PERSONAL_ANTHROPIC_KEY
+    reasoning_toggle: always-on
 
   - slug: claude-opus-5
     maker: Anthropic
@@ -25,6 +35,12 @@ models:
     api_model_id: claude-opus-5
     base_url: https://api.anthropic.com/v1
     key_env_var: PERSONAL_ANTHROPIC_KEY
+    reasoning_toggle: default-on   # 2026-09-01: the report marks toggleability as
+      # CONDITIONAL on effort level — accepts thinking:{type:"disabled"} only at
+      # effort <= high; xhigh/max + disabled returns 400 (tools/1-models/claude-opus-5.md
+      # § Reasoning surface, "Opus 5 is the sweep's only conditionally-toggleable
+      # model, and it strains the enum"). This flat default-on value is a
+      # simplification the sweep itself may refute at the thinking-toggle axis rows.
 
   - slug: claude-sonnet-5
     maker: Anthropic
@@ -33,6 +49,7 @@ models:
     api_model_id: claude-sonnet-5
     base_url: https://api.anthropic.com/v1
     key_env_var: PERSONAL_ANTHROPIC_KEY
+    reasoning_toggle: default-on
 
   - slug: claude-haiku-4-5
     maker: Anthropic
@@ -43,6 +60,7 @@ models:
                                                 # undated aliases
     base_url: https://api.anthropic.com/v1
     key_env_var: PERSONAL_ANTHROPIC_KEY
+    reasoning_toggle: opt-in
 
   - slug: gpt-5-6-sol
     maker: OpenAI
@@ -51,6 +69,7 @@ models:
     api_model_id: gpt-5.6-sol
     base_url: https://api.openai.com/v1
     key_env_var: PERSONAL_OPENAI_KEY
+    reasoning_toggle: default-on
 
   - slug: gemini-3-1-pro
     maker: Google
@@ -65,6 +84,7 @@ models:
       # RESEARCH.md § Google — Gemini generateContent family; recorded as a finding.
     base_url: https://generativelanguage.googleapis.com/v1beta
     key_env_var: PERSONAL_GEMINI_KEY
+    reasoning_toggle: always-on
 
   - slug: grok-4-5
     maker: xAI
@@ -75,6 +95,7 @@ models:
                                # URLs/slugs (RESEARCH.md, [CITED])
     base_url: https://api.x.ai/v1
     key_env_var: PERSONAL_XAI_KEY
+    reasoning_toggle: always-on
 
   - slug: kimi-k3
     maker: Moonshot AI
@@ -92,6 +113,7 @@ models:
       # source was wrong for the API host (still correct that the CONSOLE domain
       # rebranded); never tried live since the primary host answered cleanly.
     key_env_var: PERSONAL_KIMI_KEY
+    reasoning_toggle: always-on
 
   - slug: deepseek-v4
     maker: DeepSeek
@@ -106,6 +128,7 @@ models:
       # than silently becoming 13.
     base_url: https://api.deepseek.com
     key_env_var: PERSONAL_DSEEK_KEY
+    reasoning_toggle: default-on
 
   - slug: glm-5.3
     maker: Z.ai (Zhipu AI)
@@ -114,6 +137,7 @@ models:
     api_model_id: glm-5.3
     base_url: https://api.z.ai/api/paas/v4
     key_env_var: PERSONAL_ZAI_KEY
+    reasoning_toggle: always-on
 
   - slug: qwen3.8-max
     maker: Alibaba (Qwen team)
@@ -125,6 +149,7 @@ models:
       # region-specific — a China-region key returns a 401 against this
       # International endpoint that is indistinguishable from a bad key
       # (RESEARCH.md, [CITED]).
+    reasoning_toggle: default-on
 
   - slug: qwen3.8-flash
     maker: Alibaba (Qwen team)
@@ -133,6 +158,7 @@ models:
     api_model_id: qwen3.8-flash
     base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
     key_env_var: PERSONAL_QWEN_KEY
+    reasoning_toggle: default-on
 # The superseded Qwen coder entry (see tools/1-models/README.md's own superseded
 # note) is deliberately absent from this list — never re-added without a fresh
 # owner decision.
