@@ -41,17 +41,32 @@ pricing figures — with `deepseek-v4-flash` named as an available sibling that 
 separately tracked. This is what keeps the registry at 12 rows matching "12 active
 models" rather than silently becoming 13.
 
-## Two open wire questions plan 09-03 settles
+## Wire questions — settled by plan 09-03's smoke test
 
-1. **Kimi K3's actual API host.** Two independent sources disagree
-   (`api.moonshot.ai` vs `api.kimi.ai`); the console-domain rebrand
-   (`platform.moonshot.ai` → `platform.kimi.ai`) does not by itself confirm the API
-   host followed. `models.yaml`'s Kimi row tries `api.moonshot.ai` first and falls
-   back to `api.kimi.ai`; plan 09-03 Task 1's live probe settles which one actually
-   answers and updates that row's comment with the observed result.
-2. **Whether Anthropic's `max_tokens` is genuinely required on the Messages API**, or
-   merely conventional. The tracer sends it unconditionally either way; plan 09-03
-   observes the wire result.
+Full field-by-field evidence: [`SMOKE-TEST-2026-09-01.md`](SMOKE-TEST-2026-09-01.md).
+
+1. **Kimi K3's actual API host — SETTLED 2026-09-01: `api.moonshot.ai`.** The primary
+   candidate answered directly with HTTP 200 on the first live attempt (`probe_id
+   kimi-k3--baseline--none--default--b3540b5c`); the fallback (`api.kimi.ai`) was
+   never needed and stays an untested, documented candidate in `models.yaml`.
+2. **Whether Anthropic's `max_tokens` is required on the Messages API — SETTLED
+   2026-09-01: yes, required.** A live probe that deliberately omits the field via
+   the runner's `omit` key received HTTP 400, `"max_tokens: Field required"`
+   (`probe_id claude-haiku-4-5--max-tokens--omitted--default--869449db`).
+3. **Gemini's actual API model id — a contradiction of the milestone research,
+   settled 2026-09-01: `gemini-3.1-pro-preview`, not the bare `gemini-3.1-pro`.** The
+   bare id 404s; a zero-cost ListModels call confirmed the Preview suffix is part of
+   the API path segment for this still-Preview model. `models.yaml`'s Gemini row now
+   carries the corrected id, dated.
+4. **Whether `gemini-3.1-pro`'s `thoughtsTokenCount` field is ever absent —
+   OBSERVED present on both live fires this session.** What DID go absent under a
+   too-small `max_tokens` budget was `candidatesTokenCount` (the output-token
+   field), when the model's always-on reasoning consumed the whole budget before any
+   output text — see the artifact for the full read.
+5. **Whether a `Retry-After` header was ever seen — NOT OBSERVED, not confirmed
+   absent (rule 1b).** No 429/5xx occurred against any of the five probes fired this
+   phase; the 429/5xx retry-with-backoff half of HARN-04 stays unit-verified only
+   (`client.py --selftest`) until a live rate-limit response is actually encountered.
 
 ## Append-only rule
 
