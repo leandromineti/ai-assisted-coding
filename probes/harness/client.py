@@ -37,8 +37,9 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.message import Message
+from email.utils import format_datetime, parsedate_to_datetime
 from pathlib import Path
 
 _BACKOFF_CAP_S = 60.0
@@ -112,9 +113,19 @@ def _is_anthropic_spend_cap(body_bytes: bytes) -> bool:
 def _retry_after_wait(headers_message: Message | None) -> float | None:
     """Read `Retry-After` through the case-insensitive `Message` object's `.get()` —
     never a plain dict subscript, which loses that property. Returns None (never
-    raises) when the header is absent or its value doesn't parse as a non-negative
-    number, so the caller falls back to backoff instead of crashing on a malformed
-    vendor header."""
+    raises) when the header is absent or its value doesn't parse in EITHER form RFC
+    9110 §10.2.3 allows, so the caller falls back to backoff instead of crashing on a
+    malformed vendor header.
+
+    Two forms are tried in order (WR-05, phase-09 code review 2026-09-01): the
+    numeric delay-seconds form first (`float(raw)`), then — only when that fails —
+    the HTTP-date form (e.g. `Wed, 01 Sep 2026 13:00:00 GMT`) via stdlib's
+    `email.utils.parsedate_to_datetime`, converted to a delta from now. Without the
+    date-form fallback, a vendor legitimately sending a far-future date-form
+    Retry-After (e.g. during an extended incident) would silently fall through to
+    exponential backoff and be retried far too soon relative to what the vendor
+    asked for. A date already in the past yields a negative delta, clamped to None
+    same as the numeric form — never a negative sleep."""
     if headers_message is None:
         return None
     raw = headers_message.get("Retry-After")
@@ -122,9 +133,21 @@ def _retry_after_wait(headers_message: Message | None) -> float | None:
         return None
     try:
         wait = float(raw)
+        return wait if wait >= 0 else None
+    except (TypeError, ValueError):
+        pass
+    try:
+        dt = parsedate_to_datetime(raw)
     except (TypeError, ValueError):
         return None
-    return wait if wait >= 0 else None
+    if dt.tzinfo is None:
+        # parsedate_to_datetime returns a naive datetime for an obsolete
+        # two-digit-year date form (RFC 9110 deprecates but doesn't forbid it) —
+        # RFC 9110's Retry-After is always meant as GMT/UTC, so assume that rather
+        # than comparing naive-vs-aware and raising.
+        dt = dt.replace(tzinfo=timezone.utc)
+    delta = (dt - datetime.now(timezone.utc)).total_seconds()
+    return delta if delta >= 0 else None
 
 
 def _backoff_wait(attempt: int) -> float:
@@ -342,6 +365,33 @@ def selftest() -> tuple[int, int]:
     if action != "retry" or not (0 < wait <= 60):
         problems += 1
         print(f"FAIL retry_decision(429, unparseable header): expected retry with 0<wait<=60, got {(action, wait)}", file=sys.stderr)
+
+    # --- 429 with an HTTP-date-form Retry-After (RFC 9110 §10.2.3's other allowed
+    #     form) -> retry, honoring roughly that delay, not a numeric parse failure
+    #     silently falling back to backoff (WR-05) ---
+    cases += 1
+    future_date = format_datetime(datetime.now(timezone.utc) + timedelta(seconds=30))
+    action, wait = retry_decision(429, _hm(Retry_After=future_date), 0, b"{}", 5)
+    if action != "retry" or not (20 <= wait <= 40):
+        problems += 1
+        print(f"FAIL retry_decision(429, HTTP-date Retry-After ~30s out): expected retry with wait~30, got {(action, wait)}", file=sys.stderr)
+
+    # --- 429 with an HTTP-date-form Retry-After already in the past -> falls back
+    #     to backoff, never a negative sleep ---
+    cases += 1
+    past_date = format_datetime(datetime.now(timezone.utc) - timedelta(seconds=30))
+    action, wait = retry_decision(429, _hm(Retry_After=past_date), 0, b"{}", 5)
+    if action != "retry" or not (0 < wait <= 60):
+        problems += 1
+        print(f"FAIL retry_decision(429, HTTP-date Retry-After in the past): expected retry with 0<wait<=60 (backoff fallback), got {(action, wait)}", file=sys.stderr)
+
+    # --- 429 with a garbage string that is neither numeric nor an HTTP-date ->
+    #     falls back to backoff, never raises ---
+    cases += 1
+    action, wait = retry_decision(429, _hm(Retry_After="not a date either"), 0, b"{}", 5)
+    if action != "retry" or not (0 < wait <= 60):
+        problems += 1
+        print(f"FAIL retry_decision(429, garbage Retry-After): expected retry with 0<wait<=60 (backoff fallback), got {(action, wait)}", file=sys.stderr)
 
     # --- 500, 502, 503, 529 -> retry ---
     for status in (500, 502, 503, 529):
