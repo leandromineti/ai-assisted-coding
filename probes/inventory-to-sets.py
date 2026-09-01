@@ -808,6 +808,48 @@ def check_generated_drift(inventory: dict, models: list[dict], generated_dir: Pa
     return checks, problems
 
 
+def _carries_param_problems(rows_by_id: dict, models_by_slug: dict, entries: list[dict]) -> tuple[int, int]:
+    """The pure check underlying check_emitted_carries_param() — takes an
+    already-built scalar entry list directly, so --selftest can hand it a
+    synthetic no-op cell without routing it through expand_params() (which
+    now refuses to produce one, CR-01). One check counted per entry."""
+    checks = 0
+    problems = 0
+    for entry in entries:
+        checks += 1
+        row = rows_by_id[entry["param"]]
+        model = models_by_slug[entry["model"]]
+        resolved_name = resolve_param_name(row, model)
+        if resolved_name is None or resolved_name not in (entry.get("extra_params") or {}):
+            problems += 1
+            print(
+                f"FAIL emitted carries param (CR-01): row {entry['param']!r} at "
+                f"model {entry['model']!r}, mode {entry.get('mode')!r} — resolved "
+                f"parameter name {resolved_name!r} is not a key of extra_params "
+                f"{entry.get('extra_params')!r}",
+                file=sys.stderr,
+            )
+    return checks, problems
+
+
+def check_emitted_carries_param(inventory: dict, models: list[dict]) -> tuple[int, int]:
+    """(CR-01, plan 10-04) Every emitted scalar entry must carry its own row's
+    resolved parameter name as a key in `extra_params` — the class of defect
+    this check exists to catch closed with an escaped no-op cell (67 of 396
+    emitted scalar cells carried no trace of their own parameter, silently,
+    because `firing_scope: all` fired regardless of whether the row's `names:`
+    map resolved for the model's wire family).
+
+    Expands the registry in memory via expand_params() (mirroring
+    check_generated_drift()'s in-memory re-render), then delegates the actual
+    per-entry check to _carries_param_problems() — the shared pure function
+    --selftest also exercises directly with synthetic entries."""
+    rows_by_id = {row["id"]: row for row in inventory["params"]}
+    models_by_slug = {m["slug"]: m for m in models}
+    scalar_entries, _content_block_entries, _skipped_entries = expand_params(inventory, models)
+    return _carries_param_problems(rows_by_id, models_by_slug, scalar_entries)
+
+
 # -----------------------------------------------------------------------------------
 # --selftest (plan 10-01 Task 2) — embedded fixtures, no external test framework,
 # following probes/harness/ledger.py's and runner.py's own selftest() house style:
@@ -927,8 +969,14 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL selftest: check_names_map flagged an explicit null wire_family value", file=sys.stderr)
 
-    # --- names map with explicit null produces a skipped cell for that family
-    #     (not a silent omission) when actually expanded ---
+    # --- names map with explicit null produces a DECLARED SKIP for that family
+    #     (CR-01, plan 10-04) — zero scalar entries for the null-family model,
+    #     exactly one skipped record with reason no-request-field-for-vendor at
+    #     mode n/a, and the non-null-family model still carrying its parameter.
+    #     (Pre-CR-01 this case asserted only "gemini_entries emit no `x` key" —
+    #     satisfied vacuously once the fix landed, since gemini_entries becomes
+    #     an empty list. Rewritten to pin the real post-fix contract instead of
+    #     a check that now passes for free.) ---
     cases += 1
     with tempfile.TemporaryDirectory() as td:
         null_family_row = _valid_row(
@@ -948,9 +996,20 @@ def selftest() -> tuple[int, int]:
         ]
         scalar, _cb, skipped = expand_params(fixture_inventory, fixture_models)
         gemini_entries = [e for e in scalar if e["model"] == "m-gemini"]
-        if any("x" in e["extra_params"] for e in gemini_entries):
+        if gemini_entries:
             problems += 1
-            print("FAIL selftest: a null names entry emitted the parameter anyway instead of omitting it", file=sys.stderr)
+            print("FAIL selftest: a null names entry emitted a scalar cell instead of a declared skip", file=sys.stderr)
+        gemini_skips = [
+            s for s in skipped
+            if s["model"] == "m-gemini" and s["param"] == "null-family-param"
+        ]
+        if len(gemini_skips) != 1 or gemini_skips[0]["reason"] != "no-request-field-for-vendor" or gemini_skips[0]["mode"] != "n/a":
+            problems += 1
+            print(
+                f"FAIL selftest: expected exactly one no-request-field-for-vendor "
+                f"skip at mode n/a for the null-family model, got {gemini_skips}",
+                file=sys.stderr,
+            )
         anthropic_entries = [e for e in scalar if e["model"] == "m-anthropic"]
         if not anthropic_entries or "x" not in anthropic_entries[0]["extra_params"]:
             problems += 1
@@ -1149,6 +1208,60 @@ def selftest() -> tuple[int, int]:
             problems += 1
             print("FAIL selftest: check_generated_drift did not flag a hand-edited generated file", file=sys.stderr)
 
+    # --- check_emitted_carries_param has teeth (CR-01, plan 10-04): a synthetic
+    #     scalar entry list containing one cell whose extra_params omits its
+    #     row's resolved name is flagged; the same fixture with the parameter
+    #     key present is not. Hand-built directly against the shared
+    #     _carries_param_problems() helper (not routed through expand_params(),
+    #     which now refuses to produce a no-op cell) — a validator that only
+    #     ever sees green output is not a validator. ---
+    cases += 1
+    teeth_row = _valid_row(id="teeth-param", names={"anthropic_messages": "x", "openai_compat": "x", "gemini": "x"})
+    teeth_model = {"slug": "m-teeth", "vendor": "anthropic", "wire_family": "anthropic_messages", "reasoning_toggle": "none"}
+    teeth_rows_by_id = {"teeth-param": teeth_row}
+    teeth_models_by_slug = {"m-teeth": teeth_model}
+    missing_entry = {"model": "m-teeth", "param": "teeth-param", "mode": "default", "extra_params": {}}
+    _, p_missing = _carries_param_problems(teeth_rows_by_id, teeth_models_by_slug, [missing_entry])
+    if p_missing != 1:
+        problems += 1
+        print(
+            f"FAIL selftest: check_emitted_carries_param did not flag a "
+            f"synthetic cell whose extra_params omits its resolved name "
+            f"(expected 1 problem, got {p_missing})",
+            file=sys.stderr,
+        )
+    present_entry = {"model": "m-teeth", "param": "teeth-param", "mode": "default", "extra_params": {"x": 1}}
+    _, p_present = _carries_param_problems(teeth_rows_by_id, teeth_models_by_slug, [present_entry])
+    if p_present != 0:
+        problems += 1
+        print(
+            f"FAIL selftest: check_emitted_carries_param flagged a cell "
+            f"whose extra_params DOES carry its resolved name "
+            f"(expected 0 problems, got {p_present})",
+            file=sys.stderr,
+        )
+
+    # --- emit-site fail-loud guard (CR-01, plan 10-04): calling
+    #     build_extra_params() directly with a row whose name resolves to None
+    #     for the given model raises SystemExit(2) — the branch expand_params()'s
+    #     routing is meant to make unreachable stays loud if it is ever reached
+    #     anyway, rather than silently regressing to the old `if param_name is
+    #     not None:` omission. ---
+    cases += 1
+    null_name_row = _valid_row(
+        id="null-name-param",
+        names={"anthropic_messages": None, "openai_compat": "x", "gemini": "x"},
+    )
+    null_name_model = {"slug": "m-null", "vendor": "anthropic", "wire_family": "anthropic_messages", "reasoning_toggle": "none"}
+    try:
+        build_extra_params(null_name_row, null_name_model, {"axes": {}}, "default", 1)
+        problems += 1
+        print("FAIL selftest: build_extra_params did not abort on a None-resolving param_name", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL selftest: build_extra_params(None-resolving) expected exit 2, got {e.code}", file=sys.stderr)
+
     # --- bad invocation: --check and --selftest together, and an unrecognized
     #     flag, both exit 2 with a usage line on stderr — via subprocess so this
     #     never mutates this process's own sys.argv or state ---
@@ -1197,6 +1310,9 @@ def main() -> int:
         d_checks, d_problems = check_generated_drift(inventory, models)
         checks += d_checks
         problems += d_problems
+        c_checks, c_problems = check_emitted_carries_param(inventory, models)
+        checks += c_checks
+        problems += c_problems
         print(f"{problems} problem(s)")
         return 1 if problems else 0
 
