@@ -1,6 +1,6 @@
 # Conclusions
 
-`checked: 2026-08-26`
+`checked: 2026-09-01`
 
 The repo's actual output: the running answer to "what did I actually learn?"
 Numbered, dated, each traceable to a note — a conclusion without a linked note is
@@ -487,3 +487,34 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     (codex, dsh, gemini-cli) already ship the surface and would only need to arm it. →
     [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) § absorption table,
     `measured_gates` · [ADR-0011](../adrs/0011-graded-gate-enforcement.md)
+19. **The served API outranks its own documentation, and the tiebreak costs nothing**
+    (2026-08-31, the issue-#42 probe campaign — eight makers, thin HTTP client, no SDK,
+    total spend under $0.02). Category-1 facts were being verified against vendor *pages*
+    (dated-docs grade); the first campaign that verified them against the *wire* found the
+    pages wrong, silent, or misleading five independent ways in one day:
+    the Qwen3.8 model pages advertise Batch cards for two models the Batch API rejects by
+    name (`model_not_found` — the marketing surface contradicted by the serving surface);
+    Qwen states its flagship's thinking default nowhere, and one paramless request answers
+    it (`default-on`, closing the sweep's only deliberately-blank enum cell);
+    Moonshot **accepts `enable_thinking: false` and silently ignores it** — three vendors
+    now span reject-with-error (Z.ai, whose refusal names its own level set), honor
+    (Qwen), and swallow (Moonshot) for the same parameter intent;
+    Anthropic's fast-mode waitlist framing did not gate a plain pay-as-you-go key (stated
+    access process ≠ enforced one); and OpenAI's priority→fast rename is input-side only —
+    the response still reports `"priority"`, so a caller reading the field would conclude
+    the rename never happened (conclusion 15's name-drift problem, from the response side).
+    The economics are the point: **rejected requests bill nothing**, so the highest-grade
+    evidence for absence claims is also the cheapest — three of the five findings cost $0.
+    Where behavior is observable, docs-grade cells should escalate to probes; vocabulary
+    markers for vendor silence (`not-stated`) remain right only for facts no request can
+    reach (cutoffs, dates). Bonus specimen, same sitting: Grok bills 497 prompt tokens on
+    a three-word message and is the sweep's only API whose responses price themselves
+    (`cost_in_usd_ticks`) — billed-input-per-request is a cost-axis fact no list price
+    carries. →
+    [`tools/1-models/README.md`](../tools/1-models/README.md) · the OBSERVED cell notes in
+    [`qwen3.8-max`](../tools/1-models/qwen3.8-max.md),
+    [`qwen3.8-flash`](../tools/1-models/qwen3.8-flash.md),
+    [`kimi-k3`](../tools/1-models/kimi-k3.md), [`glm-5.3`](../tools/1-models/glm-5.3.md),
+    [`grok-4-5`](../tools/1-models/grok-4-5.md) § Probed,
+    [`claude-opus-5`](../tools/1-models/claude-opus-5.md) § Probed ·
+    [issue #42](https://github.com/leandromineti/ai-assisted-coding/issues/42)
