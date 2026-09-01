@@ -28,4 +28,16 @@ references/cards/pdf/*
 # never worth committing and never worth repairing: delete and rebuild.
 comparisons/repo.db
 
+# Probe wire evidence (Phase 9, D-09 one-way-door checkpoint). RESEARCH/ARCHITECTURE's
+# default was "committed, not gitignored" (dated primary evidence, like experiments/
+# logs), but on 2026-09-01 the owner declined that default for now: "I am not
+# comfortable right now. Can we gitignore it now? Maybe I will change it later."
+# PROVISIONAL — revisit at Phase 11 before the contract sweep commits its evidence
+# base. Consequence accepted meanwhile: rule-4 traceability for probe_id citations is
+# broken until this policy flips — a probe_id in Phase 11's classified YAML may not be
+# resolvable by a repo reader. probes/harness/ (code) and probes/sets/ (declarations)
+# are NOT covered by this rule and are committed normally.
+probes/raw/
+probes/ledger.jsonl
+
 __pycache__/
