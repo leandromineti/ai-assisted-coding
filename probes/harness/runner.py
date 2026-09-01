@@ -44,9 +44,10 @@ SECRETS_PATH = Path.home() / ".secrets" / "model-probes.env"
 
 HARNESS_VERSION = "0.1.0"
 
-# Each wire family's URL suffix, appended to models.yaml's base_url. Gemini (plan
-# 09-02) embeds the model id in the path instead and dispatches through its own
-# adapter's endpoint_url() — not needed by this tracer, which only fires Anthropic.
+# Each wire family's URL suffix, appended to models.yaml's base_url. Gemini embeds the
+# model id in the path instead and has no fixed suffix here — endpoint_url() below
+# dispatches to its adapter's own endpoint_url() when a family has no entry in this
+# table (checked via hasattr, never a vendor-name conditional).
 _WIRE_FAMILY_URL_SUFFIX = {
     "anthropic_messages": "/messages",
     "openai_compat": "/chat/completions",
@@ -414,6 +415,143 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL filter_response_headers: rate-limit/request-id header incorrectly dropped", file=sys.stderr)
 
+    # --- ADAPTERS dispatch: every models.yaml row resolves to a registered adapter ---
+    cases += 1
+    for slug, row in load_models().items():
+        if row["wire_family"] not in ADAPTERS:
+            problems += 1
+            print(f"FAIL ADAPTERS dispatch: {slug} wire_family={row['wire_family']!r} not registered", file=sys.stderr)
+
+    # --- ADAPTERS dispatch: an unknown wire_family is never silently substituted ---
+    cases += 1
+    if ADAPTERS.get("not-a-real-wire-family") is not None:
+        problems += 1
+        print("FAIL ADAPTERS dispatch: unknown wire_family unexpectedly resolved to an adapter", file=sys.stderr)
+
+    # --- endpoint_url: an unknown wire_family raises rather than defaulting ---
+    cases += 1
+    try:
+        endpoint_url("not-a-real-wire-family", "https://example.com", "x")
+        problems += 1
+        print("FAIL endpoint_url: unknown wire_family should raise, not default", file=sys.stderr)
+    except ValueError:
+        pass
+
+    # --- endpoint_url: exact base_url + family suffix, one model per family ---
+    url_cases = [
+        ("anthropic_messages", "https://api.anthropic.com/v1", "claude-x",
+         "https://api.anthropic.com/v1/messages"),
+        ("openai_compat", "https://api.openai.com/v1", "gpt-x",
+         "https://api.openai.com/v1/chat/completions"),
+        ("gemini", "https://generativelanguage.googleapis.com/v1beta", "gemini-x",
+         "https://generativelanguage.googleapis.com/v1beta/models/gemini-x:generateContent"),
+    ]
+    for family, base, model_id, expected in url_cases:
+        cases += 1
+        got = endpoint_url(family, base, model_id)
+        if got != expected:
+            problems += 1
+            print(f"FAIL endpoint_url({family}): expected {expected}, got {got}", file=sys.stderr)
+
+    # --- Gemini puts the model id in the URL path, NOT the request body ---
+    cases += 1
+    gem_body = ADAPTERS["gemini"].build_request("gemini-x", "hi", 16, {})
+    if "model" in gem_body:
+        problems += 1
+        print("FAIL gemini build_request: body must not carry a top-level model field", file=sys.stderr)
+    gem_url = ADAPTERS["gemini"].endpoint_url("https://example.com", "gemini-x")
+    if "gemini-x" not in gem_url:
+        problems += 1
+        print("FAIL gemini endpoint_url: model id missing from the URL path", file=sys.stderr)
+
+    # --- The other two families put the model id in the body, NOT the URL path ---
+    cases += 1
+    for family in ("anthropic_messages", "openai_compat"):
+        body = ADAPTERS[family].build_request("model-x", "hi", 16, {})
+        if body.get("model") != "model-x":
+            problems += 1
+            print(f"FAIL {family} build_request: body must carry model at the top level", file=sys.stderr)
+
+    # --- parse_usage: Anthropic fixture, absent cache fields are None, never 0 ---
+    cases += 1
+    anth_usage = ADAPTERS["anthropic_messages"].parse_usage({"usage": {"input_tokens": 8, "output_tokens": 4}})
+    if anth_usage["input_tokens"] != 8 or anth_usage["output_tokens"] != 4:
+        problems += 1
+        print(f"FAIL anthropic_messages parse_usage: wrong base counts, got {anth_usage}", file=sys.stderr)
+    if anth_usage["cache_creation_input_tokens"] is not None or anth_usage["cache_read_input_tokens"] is not None:
+        problems += 1
+        print("FAIL anthropic_messages parse_usage: an absent field must be None, not 0/other", file=sys.stderr)
+
+    # --- parse_usage: OpenAI-compatible fixture, normalized keys read correctly ---
+    cases += 1
+    oc_usage = ADAPTERS["openai_compat"].parse_usage({
+        "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "completion_tokens_details": {"reasoning_tokens": 10},
+            "prompt_tokens_details": {"cached_tokens": 20},
+        }
+    })
+    if (oc_usage["input_tokens"], oc_usage["output_tokens"], oc_usage["reasoning_tokens"], oc_usage["cached_tokens"]) != (100, 50, 10, 20):
+        problems += 1
+        print(f"FAIL openai_compat parse_usage: wrong normalized counts, got {oc_usage}", file=sys.stderr)
+
+    # --- parse_usage: Gemini fixture with thoughtsTokenCount present ---
+    cases += 1
+    gem_usage_full = ADAPTERS["gemini"].parse_usage({
+        "usageMetadata": {
+            "promptTokenCount": 12,
+            "candidatesTokenCount": 6,
+            "thoughtsTokenCount": 3,
+            "cachedContentTokenCount": 0,
+        }
+    })
+    if gem_usage_full["reasoning_tokens"] != 3:
+        problems += 1
+        print(f"FAIL gemini parse_usage: thoughtsTokenCount not read, got {gem_usage_full}", file=sys.stderr)
+
+    # --- parse_usage: Gemini fixture with thoughtsTokenCount ABSENT -> None, never 0 ---
+    cases += 1
+    gem_usage_absent = ADAPTERS["gemini"].parse_usage({
+        "usageMetadata": {"promptTokenCount": 12, "candidatesTokenCount": 6}
+    })
+    if gem_usage_absent["reasoning_tokens"] is not None:
+        problems += 1
+        print("FAIL gemini parse_usage: absent thoughtsTokenCount must be None, not 0", file=sys.stderr)
+
+    # --- parse_usage: OpenAI-compatible fed a DeepSeek-shaped body, agreeing cache signals ---
+    cases += 1
+    dseek_agree = ADAPTERS["openai_compat"].parse_usage({
+        "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "prompt_tokens_details": {"cached_tokens": 20},
+            "prompt_cache_hit_tokens": 20,
+            "prompt_cache_miss_tokens": 80,
+        }
+    })
+    if dseek_agree["cache_hit_tokens"] != 20 or dseek_agree["cache_miss_tokens"] != 80 or dseek_agree["cached_tokens"] != 20:
+        problems += 1
+        print(f"FAIL openai_compat parse_usage: DeepSeek dual-cache fields not read, got {dseek_agree}", file=sys.stderr)
+    if dseek_agree.get("cache_disagreement") is not None:
+        problems += 1
+        print("FAIL openai_compat parse_usage: agreeing cache signals must not be flagged as a disagreement", file=sys.stderr)
+
+    # --- parse_usage: OpenAI-compatible fed a DeepSeek-shaped body, DISAGREEING cache signals ---
+    cases += 1
+    dseek_disagree = ADAPTERS["openai_compat"].parse_usage({
+        "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "prompt_tokens_details": {"cached_tokens": 20},
+            "prompt_cache_hit_tokens": 15,
+            "prompt_cache_miss_tokens": 85,
+        }
+    })
+    if dseek_disagree.get("cache_disagreement") is None:
+        problems += 1
+        print("FAIL openai_compat parse_usage: disagreeing cache signals must be flagged, not silently resolved", file=sys.stderr)
+
     return cases, problems
 
 
@@ -463,15 +601,20 @@ def main() -> int:
         request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
         pid = probe_id(model_slug, entry["param"], entry["value"], entry["mode"], request_body)
 
+        # Rule 1 fix (plan 09-02): dry-run is checked BEFORE the resume-skip scan, not
+        # after. Dry-run never touches disk, so an already-logged probe_id has nothing
+        # to protect it from — showing every declared entry's would-be request is the
+        # whole point of --dry-run, including one whose live record already exists
+        # (e.g. the smoke set's claude-haiku-4-5 entry, fired in plan 09-01).
+        if args.dry_run:
+            print(f"DRY-RUN {pid}")
+            print(json.dumps(request_body, sort_keys=True, separators=(",", ":")))
+            continue
+
         raw_path = RAW_DIR / f"{vendor}.jsonl"
         seen = seen_probe_ids(raw_path)
         if pid in seen:
             print(f"SKIP {pid} (already logged)")
-            continue
-
-        if args.dry_run:
-            print(f"DRY-RUN {pid}")
-            print(json.dumps(request_body, sort_keys=True, separators=(",", ":")))
             continue
 
         key_env_var = row["key_env_var"]

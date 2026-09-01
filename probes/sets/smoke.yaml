@@ -1,12 +1,29 @@
-# probes/sets/smoke.yaml — the tracer's one declared probe (D-03). One entry, one
-# live request: the cheapest tracked Anthropic model, a sixteen-token reply, proving
-# every harness layer end-to-end (probe-set YAML -> runner -> adapter -> stdlib HTTP
-# client -> per-vendor JSONL -> append-only ledger) before any other wire family or
-# vendor is wired in (plan 09-01 Task 2).
+# probes/sets/smoke.yaml — one declared probe per wire family (D-03), proving every
+# harness layer end-to-end (probe-set YAML -> runner -> adapter -> stdlib HTTP client
+# -> per-vendor JSONL -> append-only ledger) across anthropic_messages, openai_compat
+# and gemini before any other sweep spend. The first entry fired live in plan 09-01
+# (Task 2's tracer) and its record already exists in probes/raw/anthropic.jsonl — it
+# resume-skips on every subsequent run. The other two entries are added here by plan
+# 09-02 but are NOT fired by this plan (dry-run only) — plan 09-03 owns their live
+# calls, including Kimi's host-resolution probe (RESEARCH.md Pitfall B).
 checked: 2026-09-01
 
 probes:
   - model: claude-haiku-4-5
+    param: baseline
+    value: none
+    mode: default
+    prompt: "Reply with exactly one word: hello."
+    max_tokens: 16
+
+  - model: kimi-k3
+    param: baseline
+    value: none
+    mode: default
+    prompt: "Reply with exactly one word: hello."
+    max_tokens: 16
+
+  - model: gemini-3-1-pro
     param: baseline
     value: none
     mode: default
