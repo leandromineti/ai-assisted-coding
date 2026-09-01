@@ -193,10 +193,12 @@ defaults:
       # room for real output after thinking (probes/README.md § Wire questions #4).
 
 # --- params ---------------------------------------------------------------------
-# Exactly ONE row for this task (Task 1's tracer slice) — temperature, proven
-# end-to-end through the generator into a real dry-run request body. Plans 10-02 and
-# 10-03 author the remaining ~19 canonical rows, the six INV-03 exotics (nine named
-# rows, some vendor-exotic ids already reserved above), and the excluded rows.
+# Plan 10-01 authored exactly one row (temperature, the tracer slice). Plan 10-02
+# (this plan) adds the remaining table-stakes rows: the sampling family (axis:
+# thinking per D-07), the structural family (flat), the service-tier presence row,
+# the four thinking-toggle shapes (group: reasoning-toggle, D-08), and the three
+# LOW-confidence hypothesis rows from FEATURES.md (D-15). Plan 10-03 authors the
+# nine named INV-03 exotics and the remaining excluded rows.
 params:
   - id: temperature
     group: sampling
@@ -226,3 +228,435 @@ params:
       (reported as 0-1). That disagreement is its own hypothesis row in plan 10-02
       (D-15), not a value list on this row — D-03 scopes this row to one benign
       in-range probe value only.
+
+  # --- sampling family (plan 10-02 Task 1) --------------------------------------
+  # D-07: this whole family carries the thinking axis, not only the rows a vendor
+  # happened to document as mode-dependent — probing only where vendors documented
+  # mode-dependence would re-trust vendor docs, the exact thing conclusion 19
+  # forbids. All nine rows below plus `temperature` above make the ten sampling
+  # rows this group's INV-02 acceptance criterion counts.
+  - id: top-p
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: top_p
+    names:
+      anthropic_messages: top_p
+      openai_compat: top_p
+      gemini: topP
+    name_overrides: {}   # no vendor within any family renames top_p away from its
+      # family default.
+    axis: thinking
+    probe_values: [0.9]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      DeepSeek's reasoning-mode models document top_p as silently ignored in
+      thinking mode (https://api-docs.deepseek.com/guides/thinking_mode/, fetched
+      2026-09-01) — a pre-documented instance of the exact silent-no-op hazard
+      class conclusion 19 already found. The thinking axis on this row is what
+      lets Phase 11 confirm or falsify that specific claim on the wire.
+
+  - id: top-k
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: top_k
+    names:
+      anthropic_messages: top_k
+      openai_compat: top_k
+      gemini: topK
+    name_overrides: {}   # deliberately no per-vendor null override at
+      # openai/xai even though they lack top_k (see note) — the row still fires
+      # at all twelve models under the family default name, D-03/D-11.
+    axis: thinking
+    probe_values: [40]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Documented absent from OpenAI's and xAI's OpenAI-compatible surface
+      (checked, not an unchecked omission — D-02) — present at Anthropic, Gemini
+      (`topK`), and Alibaba/Qwen with mode-dependent recommended values
+      (FEATURES.md § Table Stakes). Firing this row at all twelve models anyway
+      is the point: the reject-vs-silently-dropped contrast at the two absent
+      vendors IS the finding, not a reason to skip them.
+
+  - id: presence-penalty
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: presence_penalty
+    names:
+      anthropic_messages: null   # checked absence, not omitted (D-02) — Anthropic
+        # does not expose presence_penalty under this or any name.
+      openai_compat: presence_penalty
+      gemini: presencePenalty
+    name_overrides: {}
+    axis: thinking
+    probe_values: [0.1]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Same DeepSeek thinking-mode silent-ignore list documented for top_p applies
+      here too (FEATURES.md § Table Stakes). Anthropic's absence is a clean,
+      checked fact to record, not a bug.
+
+  - id: frequency-penalty
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: frequency_penalty
+    names:
+      anthropic_messages: null   # checked absence (D-02).
+      openai_compat: frequency_penalty
+      gemini: frequencyPenalty
+    name_overrides: {}
+    axis: thinking
+    probe_values: [0.1]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Same DeepSeek thinking-mode silent-ignore list applies (FEATURES.md §
+      Table Stakes). Anthropic's absence is checked, not an unchecked omission.
+
+  - id: logprobs
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: logprobs
+    names:
+      anthropic_messages: null   # checked absence — Anthropic's Messages API has
+        # no logprobs surface.
+      openai_compat: logprobs
+      gemini: responseLogprobs   # Gemini's generationConfig splits this concept
+        # in two: `responseLogprobs` (bool, turns it on) and `logprobs` (int,
+        # the count — see the top-logprobs row's own name-collision note).
+    name_overrides: {}
+    axis: thinking
+    probe_values: [true]
+    firing_scope: all
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      DeepSeek documents logprobs as unsupported in thinking mode — worth
+      confirming this is an actual rejection rather than a silent 200 with empty
+      data (FEATURES.md § Table Stakes). Paired with top-logprobs (its own row,
+      not collapsed into this one).
+
+  - id: top-logprobs
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: top_logprobs
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: top_logprobs
+      gemini: logprobs   # Gemini's own field named `logprobs` is the COUNT
+        # parameter (an int) — a name collision with openai_compat's boolean
+        # `logprobs` field (this row's sibling above), worth flagging rather
+        # than normalizing away.
+    name_overrides: {}
+    axis: thinking
+    probe_values: [3]
+    firing_scope: all
+    confidence: high
+    source: https://ai.google.dev/gemini-api/docs/models
+    retrieved: 2026-08-17
+    note: >-
+      Only meaningful alongside logprobs (the sibling row above) — declared as
+      its own row per the plan rather than collapsed into one, so the
+      Gemini name-collision (this row's `logprobs` vs the sibling's
+      `responseLogprobs`) stays visible.
+
+  - id: seed
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: seed
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: seed
+      gemini: seed
+    name_overrides: {}
+    axis: thinking
+    probe_values: [42]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      "Best-effort" determinism is the industry-standard hedge at the vendors
+      that expose seed. Whether it does anything at all is a Phase 12 behavioral
+      check (two identical calls, diff) — out of scope for this contract-only
+      row.
+
+  - id: n
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: n
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: n
+      gemini: candidateCount   # FEATURES.md § Differentiators: "candidateCount
+        # is Gemini's name for n".
+    name_overrides: {}
+    axis: thinking
+    probe_values: [1]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Some reasoning-first vendors have deprecated or never shipped n>1
+      (FEATURES.md § Table Stakes). This row probes contract presence at n=1
+      only — distinct-count/diversity scoring is FUT-03, out of scope this
+      milestone.
+
+  - id: logit-bias
+    group: sampling
+    kind: parameter
+    status: swept
+    canonical_name: logit_bias
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: logit_bias
+      gemini: null   # checked absence — no equivalent under any name.
+    name_overrides: {}
+    axis: thinking
+    probe_values:
+      - "1734": 5
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Contract-only by design — a full-vocabulary sweep is combinatorially
+      unbounded (FEATURES.md § Anti-Features). This row fires exactly one
+      trivial single-token bias, accept/reject only, never a distributional
+      study.
+
+  # --- structural family (plan 10-02 Task 1) --------------------------------------
+  # D-07: request shape rather than sampling behavior — no axis expansion. A
+  # vendor's JSON schema support does not change when reasoning is toggled.
+  - id: max-tokens
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: max_tokens
+    names:
+      anthropic_messages: max_tokens
+      openai_compat: max_tokens
+      gemini: maxOutputTokens
+    name_overrides:
+      openai: max_completion_tokens   # OpenAI alone diverges from the rest of
+        # the openai_compat family (xai/kimi/dseek/zai/qwen keep `max_tokens`).
+    probe_values: [64]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Contract presence only. The output-only-vs-total-including-reasoning
+      semantic question is its own excluded hypothesis row, `max-tokens-semantics`
+      (this plan's Task 2) — cross-referenced there.
+
+  - id: stop
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: stop
+    names:
+      anthropic_messages: stop_sequences
+      openai_compat: stop
+      gemini: stopSequences
+    name_overrides: {}
+    probe_values:
+      - - the
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Naming split only (OpenAI `stop`, Anthropic `stop_sequences`, Gemini
+      `stopSequences`) — trivial contract question. Whether the model actually
+      stops there, and whether `stop_reason` says so honestly, is a Phase 12
+      cheap-behavioral-verification target, not this contract-only row.
+
+  - id: response-format
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: response_format
+    names:
+      anthropic_messages: null   # the family-level canonical name is genuinely
+        # unresolved (two candidate spellings disagree) — settled by the two
+        # hypothesis rows in this plan's Task 2, not by this row (D-15).
+      openai_compat: response_format
+      gemini: responseMimeType   # paired with `responseSchema` for full
+        # schema-conformance (not swept here — contract presence only).
+    name_overrides: {}
+    probe_values:
+      - type: json_object
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Anthropic's Structured Outputs beta (2026, model-gated) is the exact
+      table-stakes-with-a-gap FEATURES.md flags — its field name is unresolved
+      pending the probe (see anthropic-structured-output-output-config/-format,
+      Task 2).
+
+  - id: tools
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: tools
+    names:
+      anthropic_messages: tools
+      openai_compat: tools
+      gemini: tools
+    name_overrides: {}
+    probe_values:
+      - - name: get_weather
+          description: Get the current weather for a location
+          parameters:
+            type: object
+            properties:
+              location:
+                type: string
+            required: [location]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Already partially covered by existing category-2 harness work, but the raw
+      contract (schema acceptance model-by-model) has not been swept. Presence
+      and schema-acceptance only — tool_choice forcing and an empty `tools:[]`
+      are the tool-choice row's and a future row's job respectively.
+
+  - id: tool-choice
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: tool_choice
+    names:
+      anthropic_messages: tool_choice
+      openai_compat: tool_choice
+      gemini: null   # checked — Gemini's equivalent lives under the nested
+        # `toolConfig.functionCallingConfig.mode` shape, not a flat tool_choice
+        # field; not applicable under this literal name (D-02).
+    name_overrides: {}
+    probe_values: [auto]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      D-03 scopes this row to the one benign "auto" value — whether
+      `tool_choice:"required"` exists, and whether object-forcing
+      (`{type:"function",name:...}`) exists, are follow-up value questions, not
+      this row's job.
+
+  - id: parallel-tool-calls
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: parallel_tool_calls
+    names:
+      anthropic_messages: null   # checked absence — a documented design choice
+        # (Claude's tool loop is sequential-by-default with a different
+        # mechanism), recorded honestly rather than forcing an equivalence.
+      openai_compat: parallel_tool_calls
+      gemini: null   # checked absence — no equivalent flag under this name.
+    name_overrides: {}
+    probe_values: [true]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      FEATURES.md § Table Stakes: absence at Anthropic is a documented design
+      choice, not a gap to force-normalize.
+
+  - id: stream
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: stream
+    names:
+      anthropic_messages: stream
+      openai_compat: stream
+      gemini: null   # checked absence under this name — Gemini controls
+        # streaming via a distinct endpoint (`:streamGenerateContent`) rather
+        # than a request-body flag.
+    name_overrides: {}
+    probe_values: [false]
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      Kept false: a streaming response changes the response-body shape the
+      harness parses, and streaming is not an interaction axis this milestone
+      adopted (D-05).
+
+  - id: stream-options-include-usage
+    group: structural
+    kind: parameter
+    status: swept
+    canonical_name: stream_options_include_usage
+    names:
+      anthropic_messages: null   # checked absence.
+      openai_compat: stream_options   # flat param_name; the nested
+        # `include_usage` key lives in the probe VALUE below, matching this
+        # registry's existing pattern for object-valued parameters.
+      gemini: null   # checked absence.
+    name_overrides: {}
+    probe_values:
+      - include_usage: true
+    firing_scope: all
+    confidence: high
+    source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
+    retrieved: 2026-09-01
+    note: >-
+      The nested `stream_options.include_usage` shape — Anthropic and Gemini
+      expose no equivalent under any name (both checked absences, D-02).
+      llmprobe (FEATURES.md prior art) scores exactly this as one of its
+      Extended-tier checks.
+
+  # --- service-tier (plan 10-02 Task 1) --------------------------------------
+  - id: service-tier
+    group: service-tier
+    kind: parameter
+    status: swept
+    canonical_name: service_tier
+    names:
+      anthropic_messages: service_tier
+      openai_compat: service_tier
+      gemini: null   # checked absence — not present at Google/Gemini yet
+        # (FEATURES.md § Table Stakes: 3 of 8 makers so far).
+    name_overrides: {}
+    probe_values: [auto]
+    firing_scope: all
+    confidence: high
+    source: https://platform.claude.com/docs/en/api/service-tiers
+    retrieved: 2026-09-01
+    note: >-
+      Value enumeration (`flex`/`priority`/`auto`/`default` at OpenAI,
+      `auto`/`standard_only` at Anthropic) is a separate INV-03 row,
+      `openai-service-tier-values`, authored in plan 10-03 — this row probes
+      presence only. The request-vs-response vocabulary asymmetry
+      (conclusion 19: OpenAI's `priority`->`fast mode` rename is input-side
+      only) is BHV-06's job in Phase 12, not this row.
