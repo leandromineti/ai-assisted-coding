@@ -46,8 +46,14 @@ def parse_usage(response_body: dict) -> dict:
     instrument exists to surface, not something to reconcile away.
 
     `cost_in_usd_ticks` (xAI-only, observed self-priced responses per conclusion 19)
-    is passed through when present so the ledger can prefer a vendor-reported cost
-    over a derived one."""
+    is captured for future use — `ledger.cost_usd()` does NOT yet consume it (WR-03,
+    phase-09 code review 2026-09-01): the tick-to-USD divisor is not vendor-documented
+    anywhere this repo has found (`tools/1-models/grok-4-5.md` § Probed records only
+    an arithmetic inference, $1e-10/tick, explicitly not treated as vendor fact), so
+    wiring an unconfirmed divisor into spend-ceiling accounting would risk silently
+    mis-stating real spend rather than fixing it. `ledger.cost_usd()` still derives
+    cost from `input_tokens`/`output_tokens` x the flat `prices.yaml` rate for every
+    vendor, including xAI, until the divisor is confirmed from vendor docs."""
     usage = response_body.get("usage") or {}
     prompt_details = usage.get("prompt_tokens_details") or {}
     completion_details = usage.get("completion_tokens_details") or {}

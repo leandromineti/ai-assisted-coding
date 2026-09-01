@@ -87,7 +87,14 @@ def cost_usd(usage: dict, price_row: dict) -> float | None:
     never a misleading 0.0 — when a base token count price_row needs (input/output)
     is absent from the usage object, or when price_row lacks a base rate. Optional
     tiers (cache write/read, reasoning) are added only when both the usage object and
-    price_row carry them."""
+    price_row carry them.
+
+    Does NOT read `usage.get("cost_in_usd_ticks")` (WR-03, phase-09 code review
+    2026-09-01) even though `openai_compat.parse_usage()` passes it through: xAI's
+    tick-to-USD divisor is not vendor-documented anywhere this repo has confirmed
+    (see `openai_compat.py`'s `parse_usage` docstring), so every vendor — including
+    xAI — is priced from the flat `prices.yaml` rate here, never a vendor-reported
+    figure, until that divisor is confirmed from vendor docs."""
     input_tokens = usage.get("input_tokens")
     output_tokens = usage.get("output_tokens")
     if input_tokens is None or output_tokens is None:
