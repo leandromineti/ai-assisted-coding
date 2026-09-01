@@ -1,0 +1,25 @@
+# probes/sets/contract-zero-cost.yaml — two zero-cost contract probes against the
+# cheapest Claude row (claude-haiku-4-5), added by plan 09-03 Task 1. Neither entry
+# is a real generation call in the normal sense: entry one deliberately OMITS
+# `max_tokens` via the runner's `omit` key (D-04 extension) to settle on the wire
+# whether Anthropic's Messages API genuinely requires it (RESEARCH.md Open
+# Question 3); entry two sends a deliberately invalid `max_tokens: -1`, guaranteed
+# to be rejected before any generation happens, putting a genuine non-429 4xx
+# verdict (retries: 0, terminal: verdict) into the evidence — the wire-observable
+# half of roadmap success criterion 4 / HARN-04.
+checked: 2026-09-01
+
+probes:
+  - model: claude-haiku-4-5
+    param: max-tokens
+    value: omitted
+    mode: default
+    prompt: "Reply with exactly one word: hello."
+    omit: [max_tokens]
+
+  - model: claude-haiku-4-5
+    param: max-tokens
+    value: invalid-negative
+    mode: default
+    prompt: "Reply with exactly one word: hello."
+    max_tokens: -1

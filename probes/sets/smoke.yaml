@@ -28,4 +28,13 @@ probes:
     value: none
     mode: default
     prompt: "Reply with exactly one word: hello."
-    max_tokens: 16
+    max_tokens: 200   # 2026-09-01, plan 09-03 Task 1: raised from 16. A first live
+      # fire at max_tokens=16 returned HTTP 200 with usageMetadata.thoughtsTokenCount=12,
+      # candidatesTokenCount ABSENT, and an empty content object (finishReason:
+      # MAX_TOKENS) — gemini-3.1-pro's always-on reasoning (report frontmatter:
+      # reasoning_type: always-on, cannot be disabled) consumed the entire small
+      # budget before any output text could be generated. A 200 with no real content
+      # is exactly the rule-5e hazard this instrument exists to catch, not evidence
+      # of a working smoke probe — the empty record was discarded (uncommitted,
+      # gitignored probes/raw/, this same task) and re-fired at a budget large
+      # enough to leave room for actual output after thinking.

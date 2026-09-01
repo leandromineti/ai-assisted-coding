@@ -51,7 +51,7 @@ _KEY_PARAM_RE = re.compile(r"(?i)\b(key|api_key|access_token)=[^&]+")
 
 
 def post_json(
-    url: str, body: dict, headers: dict, timeout: int = 60
+    url: str, body: dict, headers: dict, timeout: int = 120
 ) -> tuple[int, dict, bytes, Message]:
     """POST `body` as JSON to `url` with `headers`. Single-attempt send.
 

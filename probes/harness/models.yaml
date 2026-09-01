@@ -56,9 +56,13 @@ models:
     maker: Google
     vendor: gemini
     wire_family: gemini
-    api_model_id: gemini-3.1-pro   # the report frontmatter appends "(Preview)"; the
-                                     # API path segment is the bare id without that
-                                     # suffix
+    api_model_id: gemini-3.1-pro-preview   # 2026-09-01, plan 09-03 Task 1: the bare
+      # id 404s ("models/gemini-3.1-pro is not found ... or is not supported for
+      # generateContent"). RESEARCH.md's assumption — that the report frontmatter's
+      # "(Preview)" suffix is display-only and the API path segment is the bare id —
+      # is WRONG for this still-Preview model: `GET /v1beta/models` (zero-cost
+      # ListModels call, ~$0) lists it as `models/gemini-3.1-pro-preview`. Contradicts
+      # RESEARCH.md § Google — Gemini generateContent family; recorded as a finding.
     base_url: https://generativelanguage.googleapis.com/v1beta
     key_env_var: PERSONAL_GEMINI_KEY
 
@@ -77,14 +81,16 @@ models:
     vendor: kimi
     wire_family: openai_compat
     api_model_id: kimi-k3
-    base_url: https://api.moonshot.ai/v1   # tried first — the more specific citation
-    fallback_base_url: https://api.kimi.ai/v1   # 2026-09-01: the API host is
-      # contested between two independent third-party sources (RESEARCH.md
-      # Pitfall B) — the console/platform domain rebrand
-      # (platform.moonshot.ai -> platform.kimi.ai) does NOT imply the API host
-      # moved too. Resolved by plan 09-03 Task 1's live probe: try
-      # api.moonshot.ai first, fall back to api.kimi.ai if it 404s/DNS-fails,
-      # and update this comment with the observed answer.
+    base_url: https://api.moonshot.ai/v1   # SETTLED 2026-09-01, plan 09-03 Task 1's
+      # live probe (probe_id kimi-k3--baseline--none--default--b3540b5c): fired
+      # against api.moonshot.ai/v1/chat/completions and answered directly with
+      # HTTP 200 on the first attempt — no DNS/connection failure, no fallback
+      # needed. api.moonshot.ai is the real API host; the console-domain rebrand
+      # to platform.kimi.ai (conclusion 19) did NOT carry the API host with it.
+    fallback_base_url: https://api.kimi.ai/v1   # kept as a documented
+      # tried-and-unneeded candidate — RESEARCH.md Pitfall B's second, less-cited
+      # source was wrong for the API host (still correct that the CONSOLE domain
+      # rebranded); never tried live since the primary host answered cleanly.
     key_env_var: PERSONAL_KIMI_KEY
 
   - slug: deepseek-v4

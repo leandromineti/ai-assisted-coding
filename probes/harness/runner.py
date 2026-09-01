@@ -334,11 +334,38 @@ def build_skipped_ceiling_record(
     }
 
 
+# Probe-set entry keys, split required vs optional (plan 09-03 documentation aid —
+# load_probe_set only enforces REQUIRED_PROBE_ENTRY_KEYS below; this set exists so a
+# reader can see the full recognized vocabulary in one place). `omit` is the newest
+# addition: a list of top-level request-body keys the runner removes from the
+# adapter's built body immediately before canonicalization and sending — it exists
+# so a probe can deliberately test the ABSENCE of a field, which is the only way to
+# settle whether a vendor requires one (D-04: the omission changes the canonical
+# body, so it changes the probe_id hash too).
+REQUIRED_PROBE_ENTRY_KEYS = {"model", "param", "value", "mode"}
+OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit"}
+
+
+def apply_omit(request_body: dict, omit_keys: list[str] | None) -> dict:
+    """D-04 extension (plan 09-03): remove the listed top-level keys from a built
+    request body, immediately before probe_id canonicalization and before sending —
+    the only way to settle on the wire whether a vendor requires a field. Never
+    mutates the caller's dict in place; always returns a fresh dict (even when
+    `omit_keys` is empty/None) so a caller can never accidentally alias the
+    adapter's returned body."""
+    if not omit_keys:
+        return dict(request_body)
+    return {k: v for k, v in request_body.items() if k not in omit_keys}
+
+
 def load_probe_set(path) -> list[dict]:
     """Parse a probes/sets/*.yaml declaration. A missing/empty `probes:` list, or an
     entry missing a required key, aborts before any HTTP request is sent: exit code
     2, a named diagnostic naming the file and the missing key, zero new JSONL lines
-    (HARN-01 empty)."""
+    (HARN-01 empty). See REQUIRED_PROBE_ENTRY_KEYS / OPTIONAL_PROBE_ENTRY_KEYS above
+    for the full recognized entry-key vocabulary — only the required subset is
+    enforced here; an unrecognized key is not an error (forward-compatible), it is
+    simply never read."""
     try:
         text = Path(path).read_text()
     except OSError as e:
@@ -350,9 +377,8 @@ def load_probe_set(path) -> list[dict]:
     probes = (data or {}).get("probes") if isinstance(data, dict) else None
     if not isinstance(probes, list) or not probes:
         _fail(2, f"{path}: `probes:` must be a non-empty list")
-    required = {"model", "param", "value", "mode"}
     for entry in probes:
-        missing = required - set(entry)
+        missing = REQUIRED_PROBE_ENTRY_KEYS - set(entry)
         if missing:
             _fail(2, f"{path}: probe entry missing required key(s) {sorted(missing)}: {entry}")
     return probes
@@ -394,6 +420,33 @@ def selftest() -> tuple[int, int]:
     if pid_c == pid_a:
         problems += 1
         print("FAIL probe_id: a single-character body change did not change the hash", file=sys.stderr)
+
+    # --- apply_omit: omitting a key changes the canonical body -> changes the
+    #     probe_id hash (D-04: this is the whole point — a probe can deliberately
+    #     test the ABSENCE of a field, and the omission must be visible as a
+    #     distinct, re-firable probe_id, never silently collapsed into the same id
+    #     as the with-the-key version) ---
+    cases += 1
+    body_full = {"model": "x", "max_tokens": 16, "messages": [{"role": "user", "content": "hi"}]}
+    body_omitted = apply_omit(body_full, ["max_tokens"])
+    if "max_tokens" in body_omitted:
+        problems += 1
+        print("FAIL apply_omit: the listed key was not removed", file=sys.stderr)
+    if body_full != {"model": "x", "max_tokens": 16, "messages": [{"role": "user", "content": "hi"}]}:
+        problems += 1
+        print("FAIL apply_omit: mutated the caller's original dict in place", file=sys.stderr)
+    pid_full = probe_id("x", "max-tokens", "present", "default", body_full)
+    pid_omitted = probe_id("x", "max-tokens", "omitted", "default", body_omitted)
+    if pid_full == pid_omitted:
+        problems += 1
+        print("FAIL apply_omit: omitting a key did not change the probe_id hash", file=sys.stderr)
+
+    # --- apply_omit: no omit_keys returns an equal-but-not-aliased dict ---
+    cases += 1
+    body_unomitted = apply_omit(body_full, None)
+    if body_unomitted != body_full or body_unomitted is body_full:
+        problems += 1
+        print("FAIL apply_omit: with no omit keys, expected an equal but distinct dict object", file=sys.stderr)
 
     # --- seen_probe_ids: nonexistent path / zero-byte file -> empty set, no raise ---
     cases += 1
@@ -823,6 +876,7 @@ def main() -> int:
         extra_params = entry.get("extra_params") or {}
 
         request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
+        request_body = apply_omit(request_body, entry.get("omit"))
         pid = probe_id(model_slug, entry["param"], entry["value"], entry["mode"], request_body)
 
         # Rule 1 fix (plan 09-02): dry-run is checked BEFORE the resume-skip scan, not
