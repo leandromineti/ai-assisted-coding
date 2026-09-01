@@ -381,3 +381,157 @@ By vendor: anthropic $0.000035 (unchanged, all 4 Stage 2 cells rejected), kimi
 $0.001041, gemini $0.00009, xai $0.00089, dseek $0.0000238, zai $0.0000412, qwen
 $0.000226. No ceiling verdict fired; every vendor's running total stayed far under
 the $0.50 sub-ceiling (highest, kimi, at ~0.2% of it).
+
+**2026-09-01, plan 11-04 Task 3 — the D-09 checkpoint, resolved.** The checkpoint
+presented three options (`approve-revised` / `approve-with-anthropic-cap` / `hold`)
+plus a surfaced fourth path — fixing the two instrument confounds Task 1's Stage 2
+found (§ "Two real, dated findings," above) before stage 3 fires — and recommended:
+approve-revised, and ask for both registry fixes before stage 3 fires (fire stages
+3–6 under the revised $0.52 envelope, default ceilings in force — $10 hard / $8
+warn / $0.50 per-vendor soft — no extra anthropic sub-cap, after fixing (a) the
+stale Anthropic thinking-toggle shape (+ Haiku max_tokens override) and (b) the
+gpt-5-6-sol max_tokens→max_completion_tokens override).
+
+The owner's reply, verbatim, quoted per the repo's sign-off convention:
+
+> Fix-before-fire
+
+Read in context (the reply to the recommendation above) as: approve-revised at the
+$0.52 envelope, WITH the fix-first rider — the two instrument fixes land before any
+further firing, and stages 3–6 do not fire in this plan. **No cell of stages 3–6 is
+fired by this task or the rest of plan 11-04** — the bulk fire is plan 11-05's job,
+gated on this fix having landed and verified clean, matching D-09's own "one
+calibration pause, then autonomous" design (the pause is now extended by exactly the
+two fixes below, not by a second human checkpoint).
+
+**Fix (a) — the Anthropic thinking-toggle shape, split per model.** Stage 2's own
+calibration record (§ "Two real, dated findings," above) showed
+`axes.thinking.shapes.anthropic_messages`'s `"on"` fragment
+(`{thinking:{type:"enabled",budget_tokens:1024}}`) is stale for 3 of Anthropic's 4
+models: claude-fable-5/claude-opus-5/claude-sonnet-5 each 400'd with `"thinking.type.enabled"
+is not supported for this model. Use "thinking.type.adaptive" and "output_config.effort"
+to control thinking behavior.` — confirmed against each model's own report
+(`tools/1-models/claude-{fable-5,opus-5,sonnet-5}.md` § Reasoning surface,
+`output_config.effort`, a level enum defaulting `high`, retrieved 2026-08-26).
+claude-haiku-4-5 ("opt-in", legacy extended thinking, "the only current model
+without adaptive thinking" per `tools/1-models/claude-haiku-4-5.md`) is unaffected —
+it keeps the old shape, but its own calibration record showed the SAME budget-floor
+confound plan 11-02 already fixed for `anthropic-thinking-budget-floor`
+(`` `max_tokens` must be greater than `thinking.budget_tokens` ``), unresolved for
+THIS row/shape.
+
+Registry change, `probes/inventory.yaml`:
+- `axes.thinking.shapes.anthropic_messages.vendor_overrides` gained three entries,
+  keyed by MODEL SLUG (`claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`) rather
+  than `model["vendor"]` — every pre-existing `vendor_overrides` entry in this file
+  is vendor-keyed because those are genuinely single-model vendors within this
+  milestone's 12 tracked models; Anthropic's 4 models sharing one `vendor: anthropic`
+  key is the first case where a single vendor's own models diverge from each other.
+  Rather than invent a second, parallel per-model override dict,
+  `probes/inventory-to-sets.py`'s `resolve_vendor_override()` (new) widens ONLY the
+  lookup — model slug first, vendor second — a minimal, documented extension
+  (deviation, Rule 3), not a new mechanism. Only the `"on"` key is overridden; no
+  calibration evidence says the `"off"` shape (`{type:"disabled"}`) is broken for
+  opus-5/sonnet-5 (their own reports confirm `disabled` IS accepted), and fable-5
+  never fires a thinking-off cell at all (`reasoning_toggle: always-on`).
+- The `anthropic-thinking-object` row itself (the row this stage's own probe fired)
+  gained `max_tokens_override: 1025` (row-level, the same mechanism plan 11-02 used
+  for `anthropic-thinking-budget-floor`, extended here to a second row) and a new
+  `probe_value_overrides` field (new, deviation, Rule 3): keyed by model slug,
+  `{value, extra_fields}` — `value` replaces the row's shared `probe_values` entry
+  for that model, `extra_fields` (`output_config: {effort: high}`) is merged into
+  `extra_params` at the top level, beside `thinking` rather than inside it.
+  `probes/inventory-to-sets.py` gained `resolve_probe_value_override()` (new),
+  consulted in `expand_params()`'s scalar loop before both the rendered `value:`
+  field and `extra_params` are built, so both reflect the same resolved value.
+  claude-haiku-4-5 is deliberately absent from `probe_value_overrides` — its shared
+  `probe_values` entry (the legacy enabled/budget_tokens shape) is correct as-is; only
+  its `max_tokens` needed raising, which the row-level override (applying to all 4
+  models uniformly, harmless for the other 3) already covers.
+
+`scripts/build-probe-matrix.py` needed a companion fix, discovered only once the
+registry change was regenerated and reclassified: every row before this one shared
+one value (or a boundary-contract row's small shared value set, D-03) identically
+across every firing model, so a (mode, value) row-key was safe to treat as global.
+`anthropic-thinking-object` is the first row where firing models genuinely diverge —
+3 of 4 fire one value, the 4th fires a different one, at the same mode. `resolve_cell()`
+failed loud (structural-defect diagnostic, by design) the first time this was
+regenerated. Fixed (deviation, Rule 1 — a real bug the registry change exposed, not
+introduced): `row_keys_for_param()` now detects a "per-model-divergent" mode (any
+value's firing-model-set is a proper subset of the mode's full firing-model-set,
+rather than every value applying to every model) and collapses it to a `(mode, None)`
+sentinel row; `resolve_cell()` gained a fourth fallback tier (`model_mode_index`) that
+resolves each model's OWN cell directly when the sentinel is in play. Every
+pre-existing row's rendering is provably unchanged (the sentinel path is only reached
+when the new detection condition is true, which was never true before this row
+existed) — `--check`/`--selftest` both confirm 0 problems, and the two new selftest
+cases (`row_keys_for_param`/`resolve_cell` on a synthetic two-model-two-value fixture)
+exercise the new tier directly.
+
+**Fix (b) — gpt-5-6-sol's `max_tokens` field rename.** Stage 2's own record: this
+model rejects `max_tokens` outright — `Unsupported parameter: 'max_tokens' is not
+supported with this model. Use 'max_completion_tokens' instead.` (`param:
+"max_tokens"` in the error JSON). `probes/harness/models.yaml`'s `gpt-5-6-sol` row
+gained `max_tokens_field: max_completion_tokens` (new field, deviation, Rule 3).
+`probes/harness/runner.py` gained `apply_max_tokens_field_override()` (new),
+called right after `adapter.build_request()`/`build_content_request()` return, in
+BOTH the scalar and content-block branches of `build_entry_request()` — deliberately
+OUTSIDE `probes/harness/adapters/openai_compat.py`, whose own docstring states "No
+conditional in this file branches on a vendor or maker name"; a per-model
+field-rename is exactly that kind of conditional, so it lives in the one place that
+already varies per (entry, row) pair instead. Absent (every model but gpt-5-6-sol):
+a no-op, verified by two new `runner.py --selftest` cases.
+
+**Verification, all read from the actual runs, none assumed:**
+- `python3 probes/inventory-to-sets.py` (regeneration): 329 scalar + 16
+  content-block = 345 declared cells, 284 skipped — byte-identical counts to before
+  either fix (neither fix changes which/how many cells fire, only what request body
+  4 of them carry).
+- `python3 probes/inventory-to-sets.py --check`: 0 problem(s).
+  `--selftest`: 23 cases run, 0 problem(s) — UNCHANGED count (verified against the
+  pre-task committed file, `git show HEAD:probes/inventory-to-sets.py`, run
+  standalone: also 23, 0 problems). The two new functions —
+  `resolve_vendor_override()`/`resolve_probe_value_override()` — are already
+  exercised end-to-end by the pre-existing fixture battery's own
+  drift/vendor-override/name-resolution cases (they run inside `expand_params()`,
+  which every one of those cases already calls); no new dedicated fixture was
+  needed to reach them.
+- `python3 probes/harness/runner.py --selftest`: 44 cases run, 0 problem(s) (was 42;
+  +2 for `apply_max_tokens_field_override()`).
+- `python3 probes/harness/runner.py --check-stages`: 345 cells across 6 stages
+  (396 checks run), 0 problem(s) — unchanged.
+- `python3 probes/harness/ledger.py --selftest`: 12 cases, 0 problem(s).
+  `python3 probes/harness/client.py --selftest`: 27 cases, 0 problem(s). Both
+  unchanged by this task (neither file was touched).
+- `python3 scripts/classify-probes.py` / `--check`: 0 problem(s). Regenerating over
+  UNCHANGED evidence with the fixed registry reclassifies exactly the 4 cells the fix
+  touches — `anthropic-thinking-object` at all 4 Claude models moves from `rejected`
+  (the pre-fix, confounded request) to `unfired` (a NEW probe_id: the corrected
+  request has never been fired). The 4 old raw records are NOT deleted (append-only,
+  rule 3) — they now show as "ignored raw records (no matching declared cell)" in the
+  regeneration summary, a correct, honest description: they are historical evidence
+  of the pre-fix confound, not evidence for the (now-different) declared cell. Every
+  other classified row is untouched.
+- `python3 scripts/build-probe-matrix.py` / `--check`: 0 problem(s) after the
+  companion fix above (2 attempts before green — the first surfaced the
+  per-model-divergent bug, the second fixed it; both within this task's own fix
+  scope, not a new deviation). `--selftest`: 14 cases run, 0 problem(s) (was 13; +1
+  for the new per-model-divergent fixture). `comparisons/probes.md`'s
+  `anthropic-thinking-object` row now renders one row (not "multi" — the sentinel
+  collapses to a single row-key), 4 Anthropic columns showing `—` (unfired) and the
+  other 8 vendor columns `·` (skipped, wire-shape-incompatible) — legible at a glance,
+  confirmed by direct inspection.
+- `python3 probes/audit-evidence.py --check`: exit 1, 8 findings — UNCHANGED from
+  Task 1's own post-fix count (§ "A genuine evidence-privacy finding," above): the 7
+  pre-existing findings (`.planning/WINDOWS.md` #2/#3) plus the 1 already-tracked
+  `thoughtSignature` instance from Stage 2's own `gemini-thinking-config` cell. No new
+  finding — expected, since this task fired nothing and touched no evidence-writing
+  code path.
+- `python3 scripts/check-taxonomy.py --check`: 133 files checked, 0 problem(s).
+
+**No API call was made in this task.** Every fix above is a registry/harness change,
+verified against the calibration batch's own already-captured evidence and each
+model's own already-read report — zero incremental spend. The global ledger total
+remains **$0.002347** (unchanged from the end of Task 1's Stage 2 entry, above).
+Stages 3–6 remain unfired; the bulk fire (D-09's approved-with-fixes go) is plan
+11-05's task.
