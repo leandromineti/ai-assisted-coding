@@ -1088,16 +1088,19 @@ def main() -> int:
         # by summing the whole ledger file (D-07) — no running total is carried
         # across the loop.
         raw_totals = ledger.totals(LEDGER_PATH)
-        verdict_action, verdict_reason = ledger.ceiling_verdict(flatten_totals(raw_totals), ceilings)
+        verdict_action, verdict_reason, verdict_vendors = ledger.ceiling_verdict(flatten_totals(raw_totals), ceilings)
         if verdict_action == "stop_global":
             print(f"STOP (global ceiling breached): {verdict_reason}", file=sys.stderr)
             print(json.dumps(raw_totals, indent=2, default=str))
             return 1
         elif verdict_action == "skip_vendor":
-            # ceiling_verdict's documented convention: the reason's first word is the
-            # breaching vendor's short name (ledger.py's ceiling_verdict docstring).
-            breach_vendor = verdict_reason.split(" ", 1)[0]
-            skipped_vendors[breach_vendor] = verdict_reason
+            # D-03 (2026-09-01, CR-02 fix): `verdict_vendors` is the authoritative,
+            # machine-readable breaching-vendor list — every one of them is added,
+            # never just a reason-string parse of the first (the retired
+            # first-word-of-the-reason-string convention silently dropped every
+            # simultaneous breach after the first).
+            for breach_vendor in verdict_vendors:
+                skipped_vendors[breach_vendor] = verdict_reason
             print(f"CEILING skip_vendor: {verdict_reason}", file=sys.stderr)
         elif verdict_action == "warn":
             print(f"CEILING warn: {verdict_reason}", file=sys.stderr)

@@ -18,7 +18,15 @@ global_warn_usd: 8.00
 # vendor's runaway billing without stopping the whole run. The discretionary number
 # this file exists to make tunable without a code edit; the mechanism (three
 # thresholds, skip-vendor vs stop-global) is D-05/D-06's decision, this figure is not.
-vendor_soft_usd_default: 1.50
+#
+# 2026-09-01 (D-02, Phase 11 plan 11-01): lowered from 1.50 to 0.50, the figure
+# `probes/SWEEP-DESIGN.md` § Proposed sub-ceiling adjustments proposes and dates as
+# a falsifiable prediction, adopted under D-01's owner spend sign-off (the ≤$0.35
+# envelope for the full 345-cell contract sweep). Adopting it is what makes that
+# prediction scoreable: SWEEP-DESIGN's own derivation leaves ~4.5x headroom under
+# this figure for the highest-spending vendor (anthropic, $0.11 envelope) — confirmed
+# if every vendor's real Phase 11 spend stays under $0.50; falsified if any exceeds it.
+vendor_soft_usd_default: 0.50
 
 # Per-vendor overrides, empty at creation — add a `<vendor>: <usd>` entry here to
 # override the default for one maker. Likeliest first overrides (RESEARCH.md,

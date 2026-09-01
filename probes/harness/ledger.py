@@ -113,19 +113,26 @@ def cost_usd(usage: dict, price_row: dict) -> float | None:
     return total
 
 
-def _find_vendor_breach(by_vendor: dict, vendor_default: float, vendor_overrides: dict):
-    """Module-private helper: the first vendor (in `by_vendor`'s iteration order)
-    whose total has reached its soft sub-ceiling, or None. Kept private —
+def _find_vendor_breach(by_vendor: dict, vendor_default: float, vendor_overrides: dict) -> list[tuple[str, float, float]]:
+    """Module-private helper: EVERY vendor (in `by_vendor`'s iteration order) whose
+    total has reached its soft sub-ceiling, as a list of `(vendor, vendor_usd,
+    sub_ceiling)` triples — an empty list when none has breached. Kept private —
     `ceiling_verdict` is this module's only intended export (D-05) — but factored out
-    so `ceiling_verdict`'s own precedence logic reads as a flat sequence of checks."""
+    so `ceiling_verdict`'s own precedence logic reads as a flat sequence of checks.
+
+    D-03 (2026-09-01, CR-02 fix): promoted from returning only the FIRST breaching
+    vendor to returning every one of them. The single-breach shape silently masked
+    any second-or-later simultaneously-breaching vendor — the $0.50 sub-ceiling
+    (D-02) makes that scenario materially more plausible for this sweep."""
+    breaches: list[tuple[str, float, float]] = []
     for vendor, vendor_usd in by_vendor.items():
         sub_ceiling = vendor_overrides.get(vendor, vendor_default)
         if vendor_usd >= sub_ceiling:
-            return vendor, vendor_usd, sub_ceiling
-    return None
+            breaches.append((vendor, vendor_usd, sub_ceiling))
+    return breaches
 
 
-def ceiling_verdict(totals: dict, thresholds: dict) -> tuple[str, str]:
+def ceiling_verdict(totals: dict, thresholds: dict) -> tuple[str, str, list[str]]:
     """Pure ceiling check (D-05/D-06) — no I/O, no ledger mutation; reads only the
     `totals` and `thresholds` it was handed. `totals` is the flat per-check shape
     `{"global_usd": float, "by_vendor": {vendor: float}}` (NOT this module's own
@@ -133,18 +140,27 @@ def ceiling_verdict(totals: dict, thresholds: dict) -> tuple[str, str]:
     `thresholds` is `ceilings.yaml`'s own mapping, loaded by the caller with the safe
     loader; no dollar figure is ever hardcoded here.
 
-    Returns `(action, reason)`. Actions, in precedence order (first match wins):
+    Returns `(action, reason, vendors)`. Actions, in precedence order (first match
+    wins):
 
     1. `'stop_global'` — the recomputed global total has reached (>=) the hard
        ceiling. Checked FIRST regardless of any vendor's status, because a global
-       breach must stop everything, not just one vendor.
-    2. `'skip_vendor'` — some vendor's recomputed total has reached (>=) its soft
-       sub-ceiling (its own override in `vendor_soft_usd`, or the file's
-       `vendor_soft_usd_default`). `reason` names that vendor as its FIRST word
-       (`f"{vendor} total ..."`), a fixed, documented convention the caller can parse
-       without a second exported function.
-    3. `'warn'` — the global total has reached (>=) the warning threshold.
-    4. `'ok'` — under every threshold.
+       breach must stop everything, not just one vendor. `vendors` is `[]`.
+    2. `'skip_vendor'` — one or more vendors' recomputed totals have reached (>=)
+       their soft sub-ceiling (its own override in `vendor_soft_usd`, or the file's
+       `vendor_soft_usd_default`). `vendors` is the AUTHORITATIVE, machine-readable
+       list of every breaching vendor's short name, in `by_vendor` iteration order —
+       the caller must add every one of them, never just the first. `reason` is
+       human-readable ONLY (D-03, 2026-09-01): it now enumerates every breaching
+       vendor rather than naming a single one, and is no longer a caller-parseable
+       convention — the "reason names that vendor as its FIRST word" contract this
+       docstring used to document is retired; `vendors` replaces it. (CR-02: the
+       retired convention meant a caller that string-parsed the reason could only
+       ever recover ONE breaching vendor per call, silently masking every other
+       simultaneous breach.)
+    3. `'warn'` — the global total has reached (>=) the warning threshold. `vendors`
+       is `[]`.
+    4. `'ok'` — under every threshold. `vendors` is `[]`.
 
     Every comparison breaches AT equality, never strictly above — a total landing
     exactly on a threshold IS a breach, pinned on both sides by --selftest."""
@@ -157,17 +173,21 @@ def ceiling_verdict(totals: dict, thresholds: dict) -> tuple[str, str]:
     by_vendor = totals.get("by_vendor") or {}
 
     if global_usd >= global_hard:
-        return "stop_global", f"global total ${global_usd:.6f} reached the ${global_hard:.2f} hard ceiling"
+        return "stop_global", f"global total ${global_usd:.6f} reached the ${global_hard:.2f} hard ceiling", []
 
-    breach = _find_vendor_breach(by_vendor, vendor_default, vendor_overrides)
-    if breach is not None:
-        vendor, vendor_usd, sub_ceiling = breach
-        return "skip_vendor", f"{vendor} total ${vendor_usd:.6f} reached its ${sub_ceiling:.2f} soft sub-ceiling"
+    breaches = _find_vendor_breach(by_vendor, vendor_default, vendor_overrides)
+    if breaches:
+        vendor_names = [vendor for vendor, _vendor_usd, _sub_ceiling in breaches]
+        reason = "; ".join(
+            f"{vendor} total ${vendor_usd:.6f} reached its ${sub_ceiling:.2f} soft sub-ceiling"
+            for vendor, vendor_usd, sub_ceiling in breaches
+        )
+        return "skip_vendor", reason, vendor_names
 
     if global_usd >= global_warn:
-        return "warn", f"global total ${global_usd:.6f} reached the ${global_warn:.2f} warning threshold"
+        return "warn", f"global total ${global_usd:.6f} reached the ${global_warn:.2f} warning threshold", []
 
-    return "ok", "under every threshold"
+    return "ok", "under every threshold", []
 
 
 def selftest() -> tuple[int, int]:
@@ -231,7 +251,7 @@ def selftest() -> tuple[int, int]:
 
     # --- ceiling_verdict: everything under every threshold -> ok ---
     cases += 1
-    action, _reason = ceiling_verdict({"global_usd": 0.02, "by_vendor": {"anthropic": 0.02}}, thresholds)
+    action, _reason, _vendors = ceiling_verdict({"global_usd": 0.02, "by_vendor": {"anthropic": 0.02}}, thresholds)
     if action != "ok":
         problems += 1
         print(f"FAIL ceiling_verdict(under everything): expected 'ok', got {action}", file=sys.stderr)
@@ -239,8 +259,8 @@ def selftest() -> tuple[int, int]:
     # --- ceiling_verdict: global total EXACTLY at the warn threshold -> warn; one
     #     cent below -> ok (breach is at equality, not strictly above) ---
     cases += 1
-    action_at, _ = ceiling_verdict({"global_usd": 8.00, "by_vendor": {"anthropic": 0.10}}, thresholds)
-    action_below, _ = ceiling_verdict({"global_usd": 7.99, "by_vendor": {"anthropic": 0.10}}, thresholds)
+    action_at, _, _ = ceiling_verdict({"global_usd": 8.00, "by_vendor": {"anthropic": 0.10}}, thresholds)
+    action_below, _, _ = ceiling_verdict({"global_usd": 7.99, "by_vendor": {"anthropic": 0.10}}, thresholds)
     if action_at != "warn":
         problems += 1
         print(f"FAIL ceiling_verdict(global==warn): expected 'warn', got {action_at}", file=sys.stderr)
@@ -251,8 +271,8 @@ def selftest() -> tuple[int, int]:
     # --- ceiling_verdict: global total EXACTLY at the hard ceiling -> stop_global;
     #     one cent below -> warn, not stop (equality boundary, hard-ceiling side) ---
     cases += 1
-    action_at, _ = ceiling_verdict({"global_usd": 10.00, "by_vendor": {"anthropic": 0.10}}, thresholds)
-    action_below, _ = ceiling_verdict({"global_usd": 9.99, "by_vendor": {"anthropic": 0.10}}, thresholds)
+    action_at, _, _ = ceiling_verdict({"global_usd": 10.00, "by_vendor": {"anthropic": 0.10}}, thresholds)
+    action_below, _, _ = ceiling_verdict({"global_usd": 9.99, "by_vendor": {"anthropic": 0.10}}, thresholds)
     if action_at != "stop_global":
         problems += 1
         print(f"FAIL ceiling_verdict(global==hard): expected 'stop_global', got {action_at}", file=sys.stderr)
@@ -261,24 +281,25 @@ def selftest() -> tuple[int, int]:
         print(f"FAIL ceiling_verdict(global==hard-0.01): expected 'warn', got {action_below}", file=sys.stderr)
 
     # --- ceiling_verdict: one vendor EXACTLY at its soft sub-ceiling -> skip_vendor
-    #     naming it; a SEPARATE call with only a well-under vendor still returns ok —
-    #     one vendor's breach must not leak into another vendor's status ---
+    #     naming it (in `reason`) and listing it (in `vendors`); a SEPARATE call with
+    #     only a well-under vendor still returns ok — one vendor's breach must not
+    #     leak into another vendor's status ---
     cases += 1
-    action, reason = ceiling_verdict({"global_usd": 2.00, "by_vendor": {"zai": 1.50, "openai": 0.01}}, thresholds)
-    if action != "skip_vendor" or "zai" not in reason:
+    action, reason, vendors = ceiling_verdict({"global_usd": 2.00, "by_vendor": {"zai": 1.50, "openai": 0.01}}, thresholds)
+    if action != "skip_vendor" or "zai" not in reason or vendors != ["zai"]:
         problems += 1
-        print(f"FAIL ceiling_verdict(vendor==soft): expected skip_vendor naming zai, got {(action, reason)}", file=sys.stderr)
-    action_other, _ = ceiling_verdict({"global_usd": 0.01, "by_vendor": {"openai": 0.01}}, thresholds)
-    if action_other != "ok":
+        print(f"FAIL ceiling_verdict(vendor==soft): expected skip_vendor naming/listing zai, got {(action, reason, vendors)}", file=sys.stderr)
+    action_other, _, vendors_other = ceiling_verdict({"global_usd": 0.01, "by_vendor": {"openai": 0.01}}, thresholds)
+    if action_other != "ok" or vendors_other != []:
         problems += 1
-        print(f"FAIL ceiling_verdict(other vendor alone): expected 'ok', got {action_other}", file=sys.stderr)
+        print(f"FAIL ceiling_verdict(other vendor alone): expected 'ok' with no vendors, got {(action_other, vendors_other)}", file=sys.stderr)
 
     # --- ceiling_verdict: a per-vendor override in ceilings.yaml's own shape takes
     #     precedence over vendor_soft_usd_default for THAT vendor only ---
     cases += 1
     override_thresholds = dict(thresholds, vendor_soft_usd={"kimi": 3.00})
-    action_kimi, _ = ceiling_verdict({"global_usd": 2.80, "by_vendor": {"kimi": 2.80}}, override_thresholds)
-    action_other_default, _ = ceiling_verdict({"global_usd": 1.60, "by_vendor": {"glm": 1.60}}, override_thresholds)
+    action_kimi, _, _ = ceiling_verdict({"global_usd": 2.80, "by_vendor": {"kimi": 2.80}}, override_thresholds)
+    action_other_default, _, _ = ceiling_verdict({"global_usd": 1.60, "by_vendor": {"glm": 1.60}}, override_thresholds)
     if action_kimi != "ok":
         problems += 1
         print(f"FAIL ceiling_verdict(override raises kimi's ceiling): expected 'ok' at 2.80 < 3.00 override, got {action_kimi}", file=sys.stderr)
@@ -295,6 +316,47 @@ def selftest() -> tuple[int, int]:
     if first != second or call_totals != {"global_usd": 5.00, "by_vendor": {"anthropic": 0.50}}:
         problems += 1
         print("FAIL ceiling_verdict: expected deterministic output and an unmutated totals argument", file=sys.stderr)
+
+    # --- ceiling_verdict: TWO vendors simultaneously at/over the sub-ceiling ->
+    #     skip_vendor naming AND listing BOTH (D-03, the exact scenario CR-02
+    #     masked: the pre-fix helper returned only the first-iterated vendor, so a
+    #     second simultaneous breach was silently dropped). Uses D-02's real $0.50
+    #     default (not this fixture block's $1.50) so the fixture mirrors the actual
+    #     Phase 11 ceiling configuration the bug would have shipped under. ---
+    cases += 1
+    multi_thresholds = dict(thresholds, vendor_soft_usd_default=0.50)
+    action_multi, reason_multi, vendors_multi = ceiling_verdict(
+        {"global_usd": 1.25, "by_vendor": {"zai": 0.50, "kimi": 0.75, "openai": 0.01}}, multi_thresholds
+    )
+    if action_multi != "skip_vendor" or sorted(vendors_multi) != ["kimi", "zai"]:
+        problems += 1
+        print(f"FAIL ceiling_verdict(two simultaneous breaches): expected skip_vendor listing both kimi and zai, got {(action_multi, vendors_multi)}", file=sys.stderr)
+    if "zai" not in reason_multi or "kimi" not in reason_multi:
+        problems += 1
+        print(f"FAIL ceiling_verdict(two simultaneous breaches): reason must name both vendors, got {reason_multi!r}", file=sys.stderr)
+
+    # --- ceiling_verdict: sequential-shape pin (D-03) — the exact shape CR-02
+    #     masked in runner.py's main() loop: a FIRST call reports one breaching
+    #     vendor (which the caller would record in skipped_vendors); a LATER call,
+    #     once totals show a second vendor has also breached, must still return that
+    #     second vendor — a caller that only ever recorded the first call's single
+    #     vendor (the pre-fix reason-string-first-word convention) would silently
+    #     let the second vendor keep firing past its own sub-ceiling. Same $0.50
+    #     default as the simultaneous-breach fixture above. ---
+    cases += 1
+    first_call_totals = {"global_usd": 0.60, "by_vendor": {"zai": 0.50, "kimi": 0.10}}
+    action_seq1, _reason_seq1, vendors_seq1 = ceiling_verdict(first_call_totals, multi_thresholds)
+    if action_seq1 != "skip_vendor" or vendors_seq1 != ["zai"]:
+        problems += 1
+        print(f"FAIL ceiling_verdict(sequential, first call): expected skip_vendor ['zai'], got {(action_seq1, vendors_seq1)}", file=sys.stderr)
+    second_call_totals = {"global_usd": 1.35, "by_vendor": {"zai": 0.50, "kimi": 0.75}}
+    action_seq2, reason_seq2, vendors_seq2 = ceiling_verdict(second_call_totals, multi_thresholds)
+    if action_seq2 != "skip_vendor" or "kimi" not in vendors_seq2:
+        problems += 1
+        print(f"FAIL ceiling_verdict(sequential, second call): expected skip_vendor including kimi, got {(action_seq2, vendors_seq2)}", file=sys.stderr)
+    if "kimi" not in reason_seq2:
+        problems += 1
+        print(f"FAIL ceiling_verdict(sequential, second call): reason must name kimi, got {reason_seq2!r}", file=sys.stderr)
 
     return cases, problems
 
