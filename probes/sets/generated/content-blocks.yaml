@@ -9,12 +9,22 @@
 # diagnostic) rather than firing an image/cache-control row through the
 # scalar accept/reject template. A content-block-aware loader is Phase
 # 11's work (MODAL-01), not this generator's.
+#
+# Each entry (extended 2026-09-01, Phase 11 plan 11-02): model, param,
+# value (fixed string 'content-block'), mode (fixed string 'default'),
+# max_tokens (row's max_tokens_override when present, else
+# max_tokens_for(defaults, model_slug) — the same call the scalar branch
+# uses), body_template (deep-copied per entry, never shared — 10-REVIEW
+# WR-01, load-bearing for MODAL-01's image substitution).
 
 checked: 2026-09-01
 content_block_probes:
 - model: claude-fable-5
   param: anthropic-cache-control-block
-  body_template: &id001
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
     anthropic_messages:
       content:
       - type: text
@@ -23,16 +33,46 @@ content_block_probes:
           type: ephemeral
 - model: claude-opus-5
   param: anthropic-cache-control-block
-  body_template: *id001
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+        cache_control:
+          type: ephemeral
 - model: claude-sonnet-5
   param: anthropic-cache-control-block
-  body_template: *id001
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+        cache_control:
+          type: ephemeral
 - model: claude-haiku-4-5
   param: anthropic-cache-control-block
-  body_template: *id001
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+        cache_control:
+          type: ephemeral
 - model: claude-fable-5
   param: image-input
-  body_template: &id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
     anthropic_messages:
       content:
       - type: image
@@ -57,34 +97,309 @@ content_block_probes:
       - text: 'Reply with exactly one word: hello.'
 - model: claude-opus-5
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: claude-sonnet-5
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: claude-haiku-4-5
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: gpt-5-6-sol
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: gemini-3-1-pro
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 200
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: grok-4-5
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: kimi-k3
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: deepseek-v4
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: glm-5.3
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: qwen3.8-max
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'
 - model: qwen3.8-flash
   param: image-input
-  body_template: *id002
+  value: content-block
+  mode: default
+  max_tokens: 64
+  body_template:
+    anthropic_messages:
+      content:
+      - type: image
+        source:
+          type: base64
+          media_type: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    openai_compat:
+      content:
+      - type: image_url
+        image_url:
+          url: data:image/png;base64,{{IMAGE_BASE64_PLACEHOLDER}}
+      - type: text
+        text: 'Reply with exactly one word: hello.'
+    gemini:
+      parts:
+      - inlineData:
+          mimeType: image/png
+          data: '{{IMAGE_BASE64_PLACEHOLDER}}'
+      - text: 'Reply with exactly one word: hello.'

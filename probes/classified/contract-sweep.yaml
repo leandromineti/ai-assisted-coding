@@ -7878,8 +7878,8 @@ cells:
 - param: image-input
   group: content-block
   model: claude-fable-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7891,8 +7891,8 @@ cells:
 - param: image-input
   group: content-block
   model: claude-opus-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7904,8 +7904,8 @@ cells:
 - param: image-input
   group: content-block
   model: claude-sonnet-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7917,8 +7917,8 @@ cells:
 - param: image-input
   group: content-block
   model: claude-haiku-4-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7930,8 +7930,8 @@ cells:
 - param: image-input
   group: content-block
   model: gpt-5-6-sol
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7943,8 +7943,8 @@ cells:
 - param: image-input
   group: content-block
   model: gemini-3-1-pro
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7956,8 +7956,8 @@ cells:
 - param: image-input
   group: content-block
   model: grok-4-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7969,8 +7969,8 @@ cells:
 - param: image-input
   group: content-block
   model: kimi-k3
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7982,8 +7982,8 @@ cells:
 - param: image-input
   group: content-block
   model: deepseek-v4
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -7995,8 +7995,8 @@ cells:
 - param: image-input
   group: content-block
   model: glm-5.3
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8008,8 +8008,8 @@ cells:
 - param: image-input
   group: content-block
   model: qwen3.8-max
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8021,8 +8021,8 @@ cells:
 - param: image-input
   group: content-block
   model: qwen3.8-flash
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8034,8 +8034,8 @@ cells:
 - param: anthropic-cache-control-block
   group: content-block
   model: claude-fable-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8047,8 +8047,8 @@ cells:
 - param: anthropic-cache-control-block
   group: content-block
   model: claude-opus-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8060,8 +8060,8 @@ cells:
 - param: anthropic-cache-control-block
   group: content-block
   model: claude-sonnet-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null
@@ -8073,8 +8073,8 @@ cells:
 - param: anthropic-cache-control-block
   group: content-block
   model: claude-haiku-4-5
-  mode: null
-  value: null
+  mode: default
+  value: content-block
   state: unfired
   probe_id: null
   http_status: null

@@ -384,14 +384,18 @@ def build_rows(
     for entry in content_block_data["content_block_probes"]:
         # No content-block firing path exists yet (MODAL-01 lands in plan 11-03) —
         # every content-block cell is honestly 'unfired' in this plan, regardless
-        # of what probe_id scheme a future runner path assigns it.
+        # of what probe_id scheme a future runner path assigns it. `mode`/`value`
+        # (2026-09-01, Phase 11 plan 11-02) now come straight from the generated
+        # entry — fixed strings `default`/`content-block` per
+        # inventory-to-sets.py's content-block branch — rather than a hardcoded
+        # null, now that the generator actually emits them.
         row = rows_by_id[entry["param"]]
         out_rows.append({
             "param": entry["param"],
             "group": row["group"],
             "model": entry["model"],
-            "mode": None,
-            "value": None,
+            "mode": entry["mode"],
+            "value": entry["value"],
             "state": "unfired",
             "probe_id": None,
             "http_status": None,
