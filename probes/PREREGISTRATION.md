@@ -638,3 +638,74 @@ owns `scripts/classify-probes.py` and its own read_first names this exact functi
 fixing `scalar_probe_id()` to also call `apply_max_tokens_field_override()` (mirroring
 `build_entry_request()`) is Task 3's first job before the coverage assertion can
 honestly read zero `unfired` rows.
+
+**2026-09-02, plan 11-05 Task 2 — Stage 6 fired (the 16 content-block cells,
+MODAL-01).** `python3 probes/harness/runner.py --content-block-set
+probes/sets/generated/content-blocks.yaml --stage 6`. All 16 declared cells fired
+live, all landed `terminal: verdict` — no stragglers.
+
+**4 `anthropic-cache-control-block` cells, all 4 Claude models, all ACCEPTED
+(200).** Not MODAL-01's own subject but the row that shares this stage; recorded
+for completeness.
+
+**12 `image-input` cells (one per active model), read directly from each
+response's own usage object — MODAL-01 answered for all 12:**
+
+| model | status | billed input tokens | delta vs. 9-token text baseline |
+|---|---|---|---|
+| claude-fable-5 | 200 accepted | 23 | +14 |
+| claude-opus-5 | 200 accepted | 23 | +14 |
+| claude-sonnet-5 | 200 accepted | 23 | +14 |
+| claude-haiku-4-5 | 200 accepted | 20 | +11 |
+| gpt-5-6-sol | 200 accepted | 15 | +6 |
+| gemini-3-1-pro | 200 accepted | **1098** | **+1089** |
+| kimi-k3 | 200 accepted | 102 | +93 |
+| grok-4-5 | 400 rejected | null (not reported) | n/a |
+| deepseek-v4 | 400 rejected | null (not reported) | n/a |
+| glm-5.3 | 400 rejected | null (not reported) | n/a |
+| qwen3.8-max | 400 rejected | null (not reported) | n/a |
+| qwen3.8-flash | 400 rejected | null (not reported) | n/a |
+
+7 of 12 accepted the image content block; 5 rejected it outright (all HTTP 400).
+Every rejected cell's `usage_input_tokens` is recorded null — explicitly
+not-reported, never a substituted zero or a documentation-sourced guess. Every
+accepted cell's figure is the response's own `usage`/`usageMetadata.promptTokenCount`
+field, already normalized by that vendor's `parse_usage()` — no new field, no
+separate accounting path, exactly as `PREREGISTRATION.md`'s own § Measurements
+specifies.
+
+**The finding SWEEP-DESIGN.md declared as an open gap (§ Dollar envelopes: "the
+image payload's own billed input-token cost is NOT modelled") is now closed with
+a real number, and it is not uniform.** Six models bill a modest, plausible
+per-tile overhead (+6 to +14 tokens for a 1x1 pixel PNG). Kimi bills +93. Gemini
+bills **+1089** — over two orders of magnitude more than every other vendor, and
+Gemini's own response makes the reason legible without inference:
+`usageMetadata.promptTokensDetails` breaks the 1098-token prompt down by modality
+directly — `{"modality":"IMAGE","tokenCount":1089}` and `{"modality":"TEXT","tokenCount":9}`
+— the 9-token TEXT figure independently confirms SWEEP-DESIGN's own text-only
+baseline assumption at this exact cell, and the 1089-token IMAGE figure is
+Gemini's documented fixed image-tiling minimum applied even to a 1x1 pixel input,
+not a harness defect or a mis-tokenized payload.
+
+**Wire questions #4's empty-content/MAX_TOKENS failure pattern was checked for
+and NOT observed at any of the 7 accepted cells** — every one carries real text
+content (`"hello"`/`"Hello"`/`"hello."`) and a normal completion stop reason
+(`end_turn` at all 4 Claude models, `stop` at gpt-5-6-sol/kimi-k3, `STOP` at
+gemini-3-1-pro). Nothing to note for this stage.
+
+Ledger after this stage: global **$0.055564** (delta **+$0.005435**), by vendor:
+anthropic $0.007895, kimi $0.009576, gemini $0.002586, xai $0.021964, dseek
+$0.002328, zai $0.001279, qwen $0.005940, openai $0.003995. No ceiling verdict
+fired.
+
+**`probes/audit-evidence.py --check` after this stage: 28 findings (up from 25
+after Task 1), +3 — confirmed to be exactly 3 more instances of the SAME two
+already-tracked false-positive classes (2 more anthropic `signature` hits, from
+`claude-fable-5`'s own cache-control and image cells; 1 more gemini
+`thoughtSignature` hit, from `gemini-3-1-pro`'s image cell), zero new finding
+classes.** This is the live confirmation T-11-02's own mitigation text names: the
+12 image records, each carrying the actual base64 tiny-PNG payload in its request
+body, produced **zero** findings on that payload itself — the `_EXEMPT_KEY_FRAGMENT_VALUES`
+named exemption (`fixtures.TINY_PNG_BASE64`) did its job and did not have to be
+widened. No new `.planning/WINDOWS.md` entry needed for this stage — #5/#3 already
+cover the two classes hit.
