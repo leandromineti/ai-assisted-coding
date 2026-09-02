@@ -106,7 +106,9 @@ FACET_FIELDS: tuple[str, ...] = (
 
 CLAIM_STATUSES = frozenset({"documented", "absent-from-docs", "docs-silent"})
 ACCEPTED_FAMILY = frozenset({"accepted-honored", "accepted-ignored", "silently-translated"})
-WIRE_STATES = ACCEPTED_FAMILY | frozenset({"rejected", "accepted-unverified", "skipped", "needs-review"})
+WIRE_STATES = ACCEPTED_FAMILY | frozenset(
+    {"rejected", "accepted-unverified", "skipped", "needs-review", "unfired"}
+)
 
 
 def _fail(code: int, msg: str) -> None:
@@ -162,7 +164,7 @@ def verdict_for(claim_status: str, wire_state: str | None) -> str:
         )
     if claim_status == "docs-silent":
         return "docs-silent"
-    if wire_state is None or wire_state in ("skipped", "needs-review"):
+    if wire_state is None or wire_state in ("skipped", "needs-review", "unfired"):
         return "docs-untested"
     if wire_state == "accepted-unverified":
         return "docs-undecidable"
@@ -560,6 +562,14 @@ def selftest() -> tuple[int, int]:
     if verdict_for("documented", "needs-review") != "docs-untested":
         problems += 1
         print("FAIL verdict_for(documented, needs-review): expected docs-untested", file=sys.stderr)
+
+    # --- verdict_for: unfired (declared cell, no evidence fired yet) -> docs-untested
+    #     — CR-01, a real recurring mid-sweep state classify-probes.py's own STATES
+    #     vocabulary includes; must not raise ---
+    cases += 1
+    if verdict_for("documented", "unfired") != "docs-untested":
+        problems += 1
+        print("FAIL verdict_for(documented, unfired): expected docs-untested", file=sys.stderr)
 
     # --- verdict_for: a docs-silent claim renders docs-silent whatever the wire
     #     state — claim status is resolved before wire state ---
