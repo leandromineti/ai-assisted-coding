@@ -39,7 +39,6 @@ scope: >-
   plan) seeds the schema, the archival mechanism, and Anthropic's full 51-row
   set; plans 02-03 add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini);
   plan 04 confronts this registry against Phase 11's wire evidence.
-
 sources:
 - id: anthropic-messages-api-ref
   vendor: anthropic
@@ -47,6 +46,27 @@ sources:
   title: Messages API — Create a Message / Count tokens in a Message (comprehensive parameter reference)
   url: https://platform.claude.com/docs/en/api/messages
   snapshot: https://web.archive.org/web/20260902183800/https://platform.claude.com/docs/en/api/messages
+  retrieved: '2026-09-02'
+- id: anthropic-thinking-troubleshooting
+  vendor: anthropic
+  first_party: true
+  title: Troubleshooting thinking — per-model thinking-type support/default/rejection table
+  url: https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+  snapshot: https://web.archive.org/web/20260902184038/https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting
+  retrieved: '2026-09-02'
+- id: anthropic-structured-outputs
+  vendor: anthropic
+  first_party: true
+  title: Structured outputs — output_config vs the legacy output_format transition
+  url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+  snapshot: https://web.archive.org/web/20260902184028/https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+  retrieved: '2026-09-02'
+- id: anthropic-service-tiers
+  vendor: anthropic
+  first_party: true
+  title: Service tiers — Priority Tier / auto / standard_only semantics
+  url: https://platform.claude.com/docs/en/api/service-tiers
+  snapshot: https://web.archive.org/web/20260902184100/https://platform.claude.com/docs/en/api/service-tiers
   retrieved: '2026-09-02'
 claims:
 - param: temperature
@@ -70,3 +90,863 @@ claims:
     claim''s 2026-09-02 retrieval: the documented range is now 0.0-1.0 (deprecated), non-1.0 values reject
     with 400 on newer models. Matches Phase 11''s own wire evidence (claude-fable-5 rejected temperature
     0.7 with HTTP 400) — a docs-corroborated finding, not a contradiction.'
+- param: top-p
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: top_p
+  documented_type: number
+  documented_range: 0.0 to 1.0 (deprecated; only >=0.99 accepted for backwards compatibility)
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Deprecated: models released after Claude Opus 4.6 do not support setting top_p. A value
+    >= 0.99 is accepted for backwards compatibility; all other values are rejected with a 400 error.'
+  quote: 'Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p.
+    A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with
+    a 400 error.'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: Cross-references the same deprecation family as temperature and top_k (see the temperature claim's
+    own note); inventory.yaml's own top-p row note assumed the broader 0-2 cross-vendor range, superseded
+    here for Anthropic specifically.
+- param: top-k
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: top_k
+  documented_type: number
+  documented_range: minimum 0 (deprecated)
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Deprecated: models released after Claude Opus 4.6 do not accept top_k; any value is
+    rejected with a 400 error.'
+  quote: 'Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value
+    will be rejected with a 400 error.'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: Cross-references the same deprecation family as temperature and top_p (see the temperature claim's
+    own note); inventory.yaml's own top-k row notes it is documented absent from OpenAI/xAI, present at
+    Anthropic -- this claim confirms presence at Anthropic and adds the deprecation/rejection contract
+    inventory.yaml did not capture.
+- param: presence-penalty
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: frequency-penalty
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: logprobs
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: top-logprobs
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: seed
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: n
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: Gemini's candidateCount (this row's own sibling row gemini-candidate-count) is a separate finding;
+    Anthropic has no completion-count parameter under any name.
+- param: logit-bias
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: max-tokens
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: max_tokens
+  documented_type: number
+  documented_range: minimum 0
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Required (not optional — no default). Note that models may stop before reaching this
+    maximum; this parameter only specifies the absolute maximum number of tokens to generate. Different
+    models have different maximum values.
+  quote: The maximum number of tokens to generate before stopping. Note that our models may stop before
+    reaching this maximum. This parameter only specifies the absolute maximum number of tokens to generate.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: Matches Phase 9's own wire-settled finding that max_tokens is required at Anthropic (400 'Field
+    required' when omitted).
+- param: stop
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: stop_sequences
+  documented_type: array of string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Custom text sequences that will cause the model to stop generating. ... If the model encounters
+    one of the custom sequences, the response stop_reason value will be "stop_sequence".
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: null
+- param: response-format
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: No flat response_format field. Anthropic's related concept is the nested output_config.format
+    field (see anthropic-structured-output-output-config claim) — a JSON-schema-typed object, not a response_format
+    enum string.
+- param: tools
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array of ToolUnion
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Definitions of tools that the model may use. If you include tools in your API request, the model
+    may return tool_use content blocks that represent the model's use of those tools.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: tool_choice
+  documented_type: object (ToolChoiceAuto | ToolChoiceAny | ToolChoiceTool | ...)
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: How the model should use the provided tools. The model can use a specific tool, any available
+    tool, decide by itself, or not use tools at all.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: null
+- param: parallel-tool-calls
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: 'No flat top-level parallel_tool_calls field. Anthropic exposes a related but differently-shaped
+    and differently-scoped control: disable_parallel_tool_use (boolean), nested inside tool_choice''s
+    ToolChoiceAuto/ToolChoiceAny variants, with inverted semantics (disables rather than enables) and
+    a different default (false). Not the same field, not silently normalized to it.'
+- param: stream
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: stream
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Whether to incrementally stream the response using server-sent events.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: No nested stream_options.include_usage shape found; Anthropic's SSE stream usage reporting (if
+    any) was not independently verified this session beyond this negative search.
+- param: service-tier
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: service_tier
+  documented_type: '"auto" or "standard_only"'
+  documented_range: null
+  documented_allowed_values:
+  - auto
+  - standard_only
+  documented_default: null
+  conditionality: null
+  quote: 'service_tier: optional "auto" or "standard_only"'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'Cross-references the anthropic-service-tiers source: as of this claim''s retrieval, that page
+    states ''Priority Tier capacity commitments are no longer available for purchase'' for new organizations
+    — a value-semantics nuance on what ''auto'' currently resolves to for most accounts, not this row''s
+    own job (that''s openai-service-tier-values'' and BHV-06''s territory) but worth recording here since
+    it directly bears on this claim''s vendor.'
+- param: openai-reasoning-effort
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: Anthropic's reasoning control is the nested thinking object (see anthropic-thinking-object claim)
+    and, in adaptive mode, output_config.effort — not a top-level reasoning_effort string enum.
+- param: anthropic-thinking-object
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: thinking
+  documented_type: object (ThinkingConfigEnabled | ThinkingConfigDisabled | ThinkingConfigAdaptive)
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Per-model: which thinking.type values are accepted/rejected/defaulted varies by model
+    (see the per-model table in the thinking-troubleshooting source) — Claude Fable 5/Mythos 5/Fable 5.1/Mythos
+    5.1 are adaptive-only (always on); Claude Opus 5/Sonnet 5 default on, adaptive, with narrower ''enabled''/''disabled''
+    rejection rules; Claude Opus 4.5/Haiku 4.5/Sonnet 4.5 are extended-only (reject ''adaptive'').'
+  quote: The table lists what each model supports, what it defaults to, and which thinking.type values
+    it rejects with a 400 error; any value not listed as rejected is accepted.
+  source_ref: anthropic-thinking-troubleshooting
+  searched_surface: null
+  note: The base object shape (ThinkingConfigEnabled with budget_tokens, ThinkingConfigDisabled, ThinkingConfigAdaptive
+    with display) is also documented on the anthropic-messages-api-ref source; this claim cites the troubleshooting
+    page instead because it is the one page that spells out the per-model conditionality inventory.yaml's
+    own axes.thinking.shapes.anthropic_messages.vendor_overrides comment already encodes for claude-fable-5/claude-opus-5/claude-sonnet-5.
+- param: gemini-thinking-config
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: Anthropic's reasoning-toggle shape is thinking (see anthropic-thinking-object claim), not a thinkingConfig
+    object.
+- param: qwen-enable-thinking
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: Anthropic's reasoning-toggle shape is thinking (see anthropic-thinking-object claim), not an enable_thinking
+    boolean.
+- param: anthropic-structured-output-output-config
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: output_config
+  documented_type: object {effort, format}
+  documented_range: null
+  documented_allowed_values:
+  - low
+  - medium
+  - high
+  - xhigh
+  - max
+  documented_default: null
+  conditionality: null
+  quote: Configuration options for the model's output, such as the output format.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'Settles RESEARCH.md Open Question/hypothesis: output_config is the current, documented top-level
+    field. See the sibling anthropic-structured-output-output-format claim for the OTHER candidate name''s
+    own status — both are in fact currently accepted, not mutually exclusive.'
+- param: anthropic-structured-output-output-format
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: output_format
+  documented_type: object (same shape as output_config.format)
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Deprecated/transitional: the output_format parameter has moved to output_config.format.
+    The API continues to accept the legacy output_format request field (and the old structured-outputs-2025-11-13
+    beta header) for a transition period, but the Python SDK (v1.0+) no longer accepts output_format={...}
+    on client.beta.messages.create()/count_tokens() and raises a TypeError.'
+  quote: Migrating from beta? The output_format parameter has moved to output_config.format, and beta
+    headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13)
+    and the output_format request field for a transition period.
+  source_ref: anthropic-structured-outputs
+  searched_surface: null
+  note: 'A genuine finding, not smoothed over: RESEARCH.md framed this row and its sibling as two competing
+    hypotheses where ''whichever the API accepts settles the name.'' The docs alone settle it without
+    needing the wire: BOTH are currently accepted — output_config is current/canonical, output_format
+    is legacy-transitional and API-level (not SDK-level for the Python client). Cross-references anthropic-structured-output-output-config.'
+- param: gemini-temperature-range
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: 'This row is a Gemini-scoped boundary-contract row (firing_scope: home-vendor). Anthropic''s own
+    temperature range is covered by the canonical temperature claim above; not restated here.'
+- param: openai-verbosity
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-prediction
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-service-tier-values
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: This row is OpenAI's own service-tier VALUE enumeration (flex/priority/auto/default). Anthropic's
+    own service_tier value enumeration (auto/standard_only) is the separate service-tier claim above —
+    a different, smaller set.
+- param: anthropic-thinking-budget-floor
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: thinking.budget_tokens
+  documented_type: number
+  documented_range: minimum 1024, must be less than max_tokens
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Must be >= 1024 and less than max_tokens.
+  quote: 'Determines how many tokens Claude can use for its internal reasoning process. ... Must be ≥
+    1024 and less than max_tokens. ... minimum: 1024'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'RESEARCH.md assumed the thinking-troubleshooting page carries this guide-level budget-floor detail
+    because the comprehensive reference page supposedly doesn''t spell it out. Independently checked this
+    session: the troubleshooting page contains ZERO occurrences of ''1024'' anywhere — the floor number
+    is stated only on the comprehensive reference page (anthropic-messages-api-ref), which is this claim''s
+    actual source_ref. Recorded as a correction, not smoothed over.'
+- param: gemini-media-resolution
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-partial-mode
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: glm-do-sample
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-repetition-penalty
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-fixed-sampling-point
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor, canonical_name temperature).
+    Anthropic''s own temperature contract is covered by the canonical temperature claim above.'
+- param: openai-store
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-metadata
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: metadata
+  documented_type: object {user_id}
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: An external identifier for the user associated with the request (should be a uuid, hash
+    value, or other opaque identifier; must not be identifying information).
+  quote: 'An object describing metadata about the request. ... user_id: optional string or null. An external
+    identifier for the user who is associated with the request. This should be a uuid, hash value, or
+    other opaque identifier.'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'A shape mismatch worth flagging, not a clean match: this inventory row probes OpenAI''s free-form
+    metadata object ({probe: "true"}, an arbitrary key-value bag). Anthropic''s metadata field shares
+    the field name but is a STRUCTURED object with exactly one documented key (user_id) — an arbitrary
+    second key like OpenAI''s probe shape is not documented as accepted.'
+- param: openai-safety-identifier
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-prompt-cache-key
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: Anthropic's own caching-control mechanism is cache_control (see anthropic-cache-control-block
+    claim) — a structurally different mechanism (explicit per-block/top-level breakpoint markers) rather
+    than an opaque cache-key string.
+- param: max-tokens-semantics
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: thinking tokens vs max_tokens
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Thinking tokens count toward max_tokens — a long thinking pass can consume the whole
+    budget before the text response completes.
+  quote: This happens because thinking tokens count toward max_tokens, so a long thinking pass can consume
+    the budget before the text response completes.
+  source_ref: anthropic-thinking-troubleshooting
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    The docs DO settle Anthropic''s own semantics: max_tokens is a TOTAL budget including hidden reasoning
+    tokens, not output-only — directly relevant to FUT-01/max-tokens-semantics, a genuine prior for Phase
+    12 even though this milestone excluded a behavioral check of it.'
+- param: image-input
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: 'ImageBlockParam (type: image, source: Base64ImageSource | URLImageSource | FileImageSource)'
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values:
+  - image/jpeg
+  - image/png
+  - image/gif
+  - image/webp
+  documented_default: null
+  conditionality: null
+  quote: 'Base64ImageSource object - data: string (format: byte) - media_type: "image/jpeg" or "image/png"
+    or "image/gif" or "image/webp" - type: "base64"'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own body_template for this row exactly (type: image, source.type: base64,
+    source.media_type, source.data).'
+- param: anthropic-cache-control-block
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: cache_control
+  documented_type: CacheControlEphemeral (per-content-block) or top-level automatic-caching field
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Create a cache control breakpoint at this content block.
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'Broader than inventory.yaml''s own row description, which frames cache_control purely as a per-content-block
+    marker. The messages-api-ref source ALSO documents a distinct top-level cache_control field (''Top-level
+    cache control automatically applies a cache_control marker to the last cacheable block in the request'')
+    — confirmed independently on the prompt-caching guide page (fetched but not added as a fourth sources:
+    entry, since the messages-api-ref quote already carries the finding): ''Add a single cache_control
+    field at the top level of your request... automatically applies the cache breakpoint to the last cacheable
+    block.'' Two genuinely different request shapes under one field name, not a duplicate.'
+- param: batch-endpoint
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Searched the four Anthropic pages fetched this session (Messages API reference, thinking-troubleshooting,
+    structured-outputs, service-tiers) for this concept — zero matches. A dedicated page for this concept
+    (if one exists) was not fetched this session; surface limited to these four pages, retrieved 2026-09-02.
+  note: The dedicated Anthropic Message Batches API endpoint documentation was not fetched this session
+    — this claim's absent-from-docs status is scoped to the four pages actually searched (rule 1b), not
+    a claim that Anthropic has no batch endpoint at all (it is well known to; batch is out of this milestone's
+    scope per this row's own excluded_reason, a separate endpoint).
+- param: logit-bias-exhaustive
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: n-distinctness-scoring
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: audio-video-modality
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Searched the four Anthropic pages fetched this session (Messages API reference, thinking-troubleshooting,
+    structured-outputs, service-tiers) for this concept — zero matches. A dedicated page for this concept
+    (if one exists) was not fetched this session; surface limited to these four pages, retrieved 2026-09-02.
+  note: null
+- param: xai-search-parameters
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: json-schema-conformance-grading
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: malformed-request-fuzzing
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: gateway-probe-targets
+  vendor: anthropic
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: anthropic-messages-api-ref
+  searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
+    top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
+    name — zero matches, retrieved 2026-09-02.
+  note: null
