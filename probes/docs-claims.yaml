@@ -51,6 +51,18 @@ scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in
   (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
   add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
   Phase 11''s wire evidence.'
+checked: 2026-09-02
+scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
+  judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
+  x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
+  exempt: nothing in-repo regenerates it, and it is validated — never generated — by probes/check-docs-claims.py.
+  It is NOT an extension of probes/inventory.yaml (a generator input inventory-to-sets.py reads; this
+  file is a terminal, hand-transcribed registry inventory-to-sets.py never touches). A claim that contradicts
+  one of inventory.yaml''s own third-party-sourced notes is recorded here in that claim''s own `note:`
+  field — probes/inventory.yaml itself is never edited by this phase (D-09, a phase boundary). Plan 01
+  (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
+  add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
+  Phase 11''s wire evidence.'
 sources:
 - id: anthropic-messages-api-ref
   vendor: anthropic
@@ -86,6 +98,13 @@ sources:
   title: Chat -- Create chat completion (comprehensive Body Parameters reference)
   url: https://developers.openai.com/api/reference/resources/chat
   snapshot: https://web.archive.org/web/20260902190529/https://developers.openai.com/api/reference/resources/chat
+  retrieved: '2026-09-02'
+- id: xai-chat-completions-ref
+  vendor: xai
+  first_party: true
+  title: 'Inference API -- Chat: POST /v1/chat/completions (Request Body, comprehensive)'
+  url: https://docs.x.ai/developers/rest-api-reference/inference/chat
+  snapshot: https://web.archive.org/web/20260902191232/https://docs.x.ai/developers/rest-api-reference/inference/chat
   retrieved: '2026-09-02'
 claims:
 - param: temperature
@@ -1881,4 +1900,956 @@ claims:
     redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
     top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
     -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: temperature
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: temperature
+  documented_type: number
+  documented_range: 0 to 2
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
+    more random, while lower values like 0.2 will make it more focused and deterministic.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: Matches OpenAI's own claim (this plan, Task 1) and inventory.yaml's cross-vendor 0-2 assumption
+    exactly.
+- param: top-p
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: top_p
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: An alternative to sampling with `temperature`, called nucleus sampling, where the model considers
+    the results of the tokens with `top_p` probability mass. So 0.1 means only the tokens comprising the
+    top 10% probability mass are considered. It is generally recommended to alter this or `temperature`
+    but not both.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: top-k
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: 'xAI''s /v1/chat/completions Request Body section (docs.x.ai/developers/rest-api-reference/inference/chat)
+    does NOT list top_k -- zero matches. top_k IS documented, but only on the sibling /v1/responses endpoint''s
+    Request Body on the same page ("Top-k sampling: only the top_k most probable tokens are considered
+    at each sampling step. Disabled when unset.") -- a DIFFERENT endpoint from the one this milestone''s
+    openai_compat wire family fires against. Retrieved 2026-09-02.'
+  note: 'A genuine product-boundary finding, the same shape as RESEARCH.md Pitfall 7''s Gemini Developer-API-vs-Vertex-AI
+    distinction, applied here to xAI''s own two chat-capable endpoints (/v1/chat/completions vs /v1/responses):
+    a field can be first-party-documented at one xAI endpoint and genuinely absent at another. This row''s
+    own claim is scoped to chat/completions, the endpoint actually probed.'
+- param: presence-penalty
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: presence_penalty
+  documented_type: number
+  documented_range: -2.0 to 2.0
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: (Not supported by grok-3 and reasoning models)
+  quote: (Not supported by `grok-3` and reasoning models) Number between -2.0 and 2.0. Positive values
+    penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood
+    to talk about new topics.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: frequency-penalty
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: frequency_penalty
+  documented_type: number
+  documented_range: -2.0 to 2.0
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: (Not supported by reasoning models)
+  quote: (Not supported by reasoning models) Number between -2.0 and 2.0. Positive values penalize new
+    tokens based on their existing frequency in the text so far, decreasing the model's likelihood to
+    repeat the same line verbatim.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: logprobs
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: logprobs
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Not supported by models grok-4.20 and newer; the field will be silently ignored if set.
+  quote: Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities
+    of each output token returned in the content of message. Not supported by models `grok-4.20` and newer;
+    the field will be silently ignored if set.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: A pre-announced SILENT-IGNORE contract, matching conclusion 19's hazard class directly in the
+    vendor's own docs -- this parameter is not rejected on newer models, it is accepted and silently dropped,
+    per the docs themselves (not a wire-inferred hazard).
+- param: top-logprobs
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: top_logprobs
+  documented_type: number
+  documented_range: 0 to 8
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: logprobs must be set to true if this parameter is used. Not supported by models grok-4.20
+    and newer; the field will be silently ignored if set.
+  quote: An integer between 0 and 8 specifying the number of most likely tokens to return at each token
+    position, each with an associated log probability. logprobs must be set to true if this parameter
+    is used. Not supported by models `grok-4.20` and newer; the field will be silently ignored if set.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: Range documented as 0 to 8 -- narrower than OpenAI's own documented 0 to 20 (this plan's Task
+    1 claim) for the SAME canonical parameter under the SAME wire-family field name. Same silent-ignore-on-newer-models
+    contract as the sibling logprobs claim.
+- param: seed
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: seed
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Best-effort determinism only -- not guaranteed; refer to system_fingerprint to monitor
+    backend changes.
+  quote: If specified, our system will make a best effort to sample deterministically, such that repeated
+    requests with the same `seed` and parameters should return the same result. Determinism is not guaranteed,
+    and you should refer to the `system_fingerprint` response parameter to monitor changes in the backend.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: n
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: n
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: How many chat completion choices to generate for each input message. Note that you will be charged
+    based on the number of generated tokens across all of the choices. Keep n as 1 to minimize costs.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: logit-bias
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: logit_bias
+  documented_type: object
+  documented_range: bias value -100 to 100 per token id
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: (Unsupported) -- listed in the request schema but explicitly marked unsupported by the
+    vendor's own docs.
+  quote: (Unsupported) A JSON object that maps tokens (specified by their token ID in the tokenizer) to
+    an associated bias value from -100 to 100. Mathematically, the bias is added to the logits generated
+    by the model prior to sampling. ... values like -100 or 100 should result in a ban or exclusive selection
+    of the relevant token.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: Genuinely different from OpenAI's own claim (this plan, Task 1) where logit_bias is documented
+    WITHOUT an unsupported disclaimer -- xAI accepts the field in its schema but documents it as inert.
+    A pre-announced silent-ignore-style contract, matching the same hazard class as this row's logprobs/top-logprobs
+    claims above.
+- param: max-tokens
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: max_completion_tokens (max_tokens is documented but DEPRECATED)
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 128,000 when unset
+  conditionality: max_tokens is [DEPRECATED] in favor of max_completion_tokens. max_completion_tokens
+    is an upper bound that ONLY applies to visible output tokens -- it does NOT apply to tokens used for
+    reasoning or function calls.
+  quote: 'max_completion_tokens: An upper bound for the number of tokens that can be generated for a completion,
+    only applies to visible output tokens (i.e. does not apply to tokens used for reasoning or function
+    calls). Defaults to 128,000 when unset; set a larger value to allow longer generations. ... max_tokens:
+    [DEPRECATED] The maximum number of tokens that can be generated in the chat completion. Deprecated
+    in favor of `max_completion_tokens`.'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: 'Same two-name divergence pattern as OpenAI''s own claim (max_completion_tokens current, max_tokens
+    deprecated) -- documented_name diverges from this row''s canonical_name (max_tokens) for the same
+    reason. But the SEMANTICS diverge sharply from both OpenAI''s and Anthropic''s own claims (this plan''s
+    Task 1, plan 01''s Anthropic claim): xAI documents max_completion_tokens as OUTPUT-ONLY (excludes
+    reasoning/function-call tokens), the OPPOSITE of OpenAI''s and Anthropic''s documented TOTAL-including-reasoning
+    semantics for the same-named field across the same wire-family default shape. See the max-tokens-semantics
+    claim below for the direct quote.'
+- param: stop
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: stop
+  documented_type: array
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: (Not supported by reasoning models). Up to 4 sequences.
+  quote: (Not supported by reasoning models) Up to 4 sequences where the API will stop generating further
+    tokens.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: response-format
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: response_format
+  documented_type: object (oneOf 3 variants)
+  documented_range: null
+  documented_allowed_values:
+  - text
+  - json_object
+  - json_schema
+  documented_default: null
+  conditionality: null
+  quote: Specify text response format, always "text". ... Specify json_object response format, always
+    `json_object`. Used for backward compatibility. Prefer to use "json_schema" instead of this. ... Specify
+    json_schema response format with a given schema. Type is always "json_schema". ... Response format
+    parameter for structured outputs.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: The rendered Request-Body markdown collapses this to "(object | object | object)" without expanding
+    the three variants inline -- this claim's quote is transcribed from the same page's underlying JSON
+    schema (visible via the page's plain HTML fetch, same URL, content-negotiated differently by Accept
+    header -- not a separate source).
+- param: tools
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: A max of 128 functions are supported.
+  quote: A list of tools the model may call in JSON-schema. Currently, only functions are supported as
+    a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128
+    functions are supported.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: tool_choice
+  documented_type: string or object
+  documented_range: null
+  documented_allowed_values:
+  - none
+  - auto
+  - required
+  documented_default: null
+  conditionality: null
+  quote: Controls tool access by the model. `"none"` makes model ignore tools, `"auto"` let the model
+    automatically decide whether to call a tool, `"required"` forces model to pick a tool to call.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: parallel-tool-calls
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: parallel_tool_calls
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: If set to false, the model can perform maximum one tool call.
+  quote: If set to false, the model can perform maximum one tool call.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: stream
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'If set, partial message deltas will be sent. Tokens will be sent as data-only server-sent events
+    as they become available, with the stream terminated by a `data: [DONE]` message.'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: stream_options.include_usage
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: required (once stream_options is provided) -- unlike OpenAI's optional field of the
+    same name.
+  quote: 'include_usage (boolean, required) -- Set an additional chunk to be streamed before the `data:
+    [DONE]` message. The other chunks will return `null` in `usage` field.'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: xAI documents this nested field as required within the stream_options object, contrasting with
+    OpenAI's own claim (this plan, Task 1) where the same field is optional.
+- param: service-tier
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: service_tier
+  documented_type: null
+  documented_range: null
+  documented_allowed_values:
+  - default
+  - priority
+  documented_default: null
+  conditionality: null
+  quote: '"default" | "priority"'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: Only 2 documented values -- no "auto" value appears anywhere in xAI's own schema for this field
+    (confirmed across all 4 occurrences in the fetched page's embedded schema). This row's own probe_values
+    ([auto]) probes a value xAI's docs never enumerate for service_tier -- a documented-value-set mismatch
+    worth flagging for plan 04's docs-vs-wire confrontation, distinct from OpenAI's own claim which documents
+    'auto' as the field's own default.
+- param: openai-reasoning-effort
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: string
+  documented_range: null
+  documented_allowed_values:
+  - none
+  - low
+  - medium
+  - high
+  documented_default: low
+  conditionality: Only supported by grok-4.3.
+  quote: Constrains how hard a reasoning model thinks before responding. Only supported by `grok-4.3`.
+    Possible values are `none` (disables reasoning completely), `low` (this is the default if not specified),
+    `medium` and `high` (uses the most reasoning tokens).
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: 'Four documented values (none/low/medium/high), fewer than OpenAI''s own documented seven-value
+    enum (this plan''s Task 1 claim: none/minimal/low/medium/high/xhigh/max) for the SAME wire-family
+    field name -- transcribed verbatim per this plan''s own instruction, not normalized to match OpenAI''s
+    set. inventory.yaml''s own note for this row already predicted an xhigh-to-high graceful-degrade at
+    xAI -- consistent with xhigh not appearing in this vendor''s own documented enum at all.'
+- param: anthropic-thinking-object
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-thinking-config
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-enable-thinking
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: anthropic-structured-output-output-config
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: xAI's own related concept is response_format (see the response-format claim above).
+- param: anthropic-structured-output-output-format
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-temperature-range
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Gemini-scoped boundary-contract row (firing_scope: home-vendor). xAI''s own temperature
+    range is covered by the canonical temperature claim above (0 to 2).'
+- param: openai-verbosity
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: No 'verbosity' field or concept anywhere on this page (searched both the /v1/chat/completions
+    and /v1/responses sections).
+- param: openai-prediction
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: No request-side 'prediction' input field documented anywhere on this page. A RESPONSE-side usage
+    field (accepted_prediction_tokens/rejected_prediction_tokens) is documented in Response Body sections,
+    but that is response telemetry, not a request-accepted prediction object -- a different concept from
+    OpenAI's own ChatCompletionPredictionContent request field (this plan's Task 1 claim).
+- param: openai-service-tier-values
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values:
+  - default
+  - priority
+  documented_default: null
+  conditionality: null
+  quote: 'service_tier: "default" | "priority". Processing tier for a request. Determines scheduling priority
+    and billing.'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: This row's own probe_values enumerates 4 values (flex, priority, auto, default); xAI's live docs
+    document only 2 (default, priority) -- HALF of this row's probed values (flex, auto) do not appear
+    in xAI's own documented enum at all, a sharper coverage gap than OpenAI's own claim (this plan's Task
+    1, which documents 6 of the 4 probed values as a subset). No request-vs-response vocabulary rename
+    (OpenAI's 'fast'->'priority') is documented for xAI on this page.
+- param: anthropic-thinking-budget-floor
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-media-resolution
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: xAI's own count parameter is n (see the swept n claim above), matching the openai_compat family
+    default name -- not a separate candidateCount-style field.
+- param: kimi-partial-mode
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: glm-do-sample
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-repetition-penalty
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-fixed-sampling-point
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor, canonical_name temperature).
+    xAI''s own temperature contract (0 to 2, no documented fixed-schedule rejection) is covered by the
+    canonical temperature claim above.'
+- param: openai-store
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI's /v1/chat/completions Request Body section does NOT list store -- zero matches.
+    store IS documented, but only on the sibling /v1/responses endpoint's Request Body on the same page
+    ("Whether to store the input message(s) and model response for later retrieval.") -- a different endpoint
+    from the one probed. Retrieved 2026-09-02.
+  note: 'Same product-boundary pattern as this row''s top_k sibling claim above: documented at /v1/responses,
+    absent from /v1/chat/completions specifically.'
+- param: openai-metadata
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI's /v1/chat/completions Request Body section does NOT list metadata -- zero matches.
+    metadata IS documented, but only on the sibling /v1/responses endpoint's Request Body on the same
+    page, and there it is explicitly marked "Not supported. Only maintained for compatibility reasons."
+    -- a different, already-inert endpoint field, not the chat/completions field this row probes. Retrieved
+    2026-09-02.
+  note: Same product-boundary pattern as top_k/store above -- and even at the endpoint where it IS listed,
+    xAI's own docs mark it explicitly unsupported/compatibility-only.
+- param: openai-safety-identifier
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: Searched both /v1/chat/completions and /v1/responses Request Body sections on the
+    fetched page for safety_identifier -- zero matches in either Request Body. The field appears only
+    in RESPONSE Body sections (echoed back, not accepted as a request parameter) for /v1/responses. Retrieved
+    2026-09-02.
+  note: Never documented as a REQUEST-accepted field on this page at all, at either endpoint -- distinct
+    from the top_k/store/metadata pattern above (those ARE genuinely accepted request fields at the sibling
+    endpoint).
+- param: openai-prompt-cache-key
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: prompt_cache_key
+  documented_type: string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A stable cache key for best-effort sticky routing / prompt-cache hits across requests sharing
+    a prompt prefix. Plumbed to `x-grok-conv-id`, same as on `/v1/responses`.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: 'Documented at chat/completions with wording distinct from OpenAI''s own claim (this plan''s Task
+    1: ''used by OpenAI to cache responses ... optimize cache hit rates'') -- xAI frames the same field
+    name around sticky routing via an internal header, not OpenAI''s caching-hit-rate framing. Same field
+    NAME, different documented mechanism.'
+- param: max-tokens-semantics
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: max_completion_tokens's own "only applies to visible output tokens" clause
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: max_completion_tokens is documented as OUTPUT-ONLY -- explicitly excluding reasoning
+    and function-call tokens from the budget.
+  quote: An upper bound for the number of tokens that can be generated for a completion, only applies
+    to visible output tokens (i.e. does not apply to tokens used for reasoning or function calls).
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    Directly CONTRADICTS the semantics OpenAI''s own claim and Anthropic''s own claim (plan 01) document
+    for the family-default max_tokens/max_completion_tokens shape: both of those document TOTAL-including-reasoning;
+    xAI documents OUTPUT-ONLY for the identically-named field. A genuine cross-vendor divergence for Phase
+    12/FUT-01, not a within-vendor contradiction (xAI''s own docs are internally consistent on this point).'
+- param: image-input
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: messages (multi-type array, image content supported)
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Create a chat response from text/image chat prompts. This is the endpoint for making requests
+    to chat and image understanding models. ... messages (array<object | object | object | object | object>)
+    -- A list of messages that make up the chat conversation. Different models support different message
+    types, such as image and text.
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: The endpoint's own description and the messages field's own description both explicitly document
+    image input as supported ("chat and image understanding models"), but the rendered Request Body markdown
+    does not expand the five message-content variant object shapes inline, so the exact per-field image_url/detail
+    schema (matching or diverging from inventory.yaml's own openai_compat body_template) was NOT independently
+    confirmed on this page -- an honest partial finding (rule 1b), not a body_template-match claim like
+    the OpenAI claim above makes.
+- param: anthropic-cache-control-block
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: No cache_control field or per-content-block cache marker documented. xAI's own caching mechanism
+    is the single-field prompt_cache_key (see the openai-prompt-cache-key claim above) -- a flat request
+    field, not Anthropic's per-content-block marker shape.
+- param: batch-endpoint
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: Searched the one xAI page fetched this session (Inference API reference, docs.x.ai/developers/rest-api-reference/inference/chat,
+    covering /v1/chat/completions, /v1/responses, /v1/responses/compact, GET/DELETE /v1/responses/{id},
+    GET /v1/chat/deferred-completion/{id}) for this concept -- zero matches. A dedicated Batch API page
+    (if one exists) was not fetched this session; surface limited to this one page, retrieved 2026-09-02.
+  note: null
+- param: logit-bias-exhaustive
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: n-distinctness-scoring
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: audio-video-modality
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: Searched the fetched page for audio as a REQUEST-side input modality -- zero matches
+    (the only 'audio' occurrences on the page are audio_tokens, a RESPONSE-side usage-accounting field,
+    and image_generation_calls, an unrelated concept). Retrieved 2026-09-02.
+  note: 'Contrast with OpenAI''s own claim (this plan, Task 1, documented): xAI''s chat/completions does
+    not document an audio INPUT/output request modality on this page, unlike OpenAI''s documented audio
+    ChatCompletionAudioParam.'
+- param: xai-search-parameters
+  vendor: xai
+  models: all
+  documented_status: documented
+  documented_name: search_parameters
+  documented_type: object
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'search_parameters (object). from_date (string | null) -- Date from which to consider the results
+    in ISO-8601 YYYY-MM-DD. max_search_results (integer | null) -- Maximum number of search results to
+    use. mode (string | null) -- Choose the mode to query realtime data: off: no search performed and
+    no external will be considered. on (default): the model will search in every sources for relevant
+    data. auto: the model choose whether to search data or not and where to search the data. return_citations
+    (boolean | null) -- Whether to return citations in the response or not. sources (array | null) --
+    List of sources to search in. If no sources specified, the model will look over the web and X by default.
+    to_date (string | null) -- Date up to which to consider the results in ISO-8601 YYYY-MM-DD.'
+  source_ref: xai-chat-completions-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep per its own excluded_reason (ADR-0048-ambiguous whether
+    live-web-search falls within the milestone''s first-party-API-product boundary; default is do-not-probe
+    absent an explicit owner decision). The parameter IS genuinely and richly documented at xAI''s own
+    chat/completions endpoint (home vendor) -- the exclusion is a project-scope decision, not a docs gap,
+    and this claim records the documented contract precisely so a future scope-extension decision has
+    the transcription ready rather than needing a fresh docs pass.'
+- param: json-schema-conformance-grading
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: 'No conformance-GRADING mechanism documented. A related but different concept IS documented: response_format''s
+    json_schema variant ("Response format parameter for structured outputs", see the response-format claim
+    above) constrains generation, it does not grade a returned payload after the fact.'
+- param: malformed-request-fuzzing
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gateway-probe-targets
+  vendor: xai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: xai-chat-completions-ref
+  searched_surface: xAI Chat Completions API reference (docs.x.ai/developers/rest-api-reference/inference/chat,
+    redirected from docs.x.ai/docs/api-reference), the /v1/chat/completions Request Body section read
+    end to end (also cross-checked against the sibling /v1/responses section on the same page for any
+    field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
+    name -- zero matches, retrieved 2026-09-02.
   note: null
