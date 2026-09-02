@@ -63,6 +63,18 @@ scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in
   (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
   add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
   Phase 11''s wire evidence.'
+checked: 2026-09-02
+scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
+  judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
+  x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
+  exempt: nothing in-repo regenerates it, and it is validated — never generated — by probes/check-docs-claims.py.
+  It is NOT an extension of probes/inventory.yaml (a generator input inventory-to-sets.py reads; this
+  file is a terminal, hand-transcribed registry inventory-to-sets.py never touches). A claim that contradicts
+  one of inventory.yaml''s own third-party-sourced notes is recorded here in that claim''s own `note:`
+  field — probes/inventory.yaml itself is never edited by this phase (D-09, a phase boundary). Plan 01
+  (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
+  add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
+  Phase 11''s wire evidence.'
 sources:
 - id: anthropic-messages-api-ref
   vendor: anthropic
@@ -105,6 +117,13 @@ sources:
   title: 'Inference API -- Chat: POST /v1/chat/completions (Request Body, comprehensive)'
   url: https://docs.x.ai/developers/rest-api-reference/inference/chat
   snapshot: https://web.archive.org/web/20260902191232/https://docs.x.ai/developers/rest-api-reference/inference/chat
+  retrieved: '2026-09-02'
+- id: dseek-chat-completions-ref
+  vendor: dseek
+  first_party: true
+  title: Create Chat Completion -- POST /chat/completions (comprehensive Request Body reference)
+  url: https://api-docs.deepseek.com/api/create-chat-completion
+  snapshot: https://web.archive.org/web/20260902191804/https://api-docs.deepseek.com/api/create-chat-completion/
   retrieved: '2026-09-02'
 claims:
 - param: temperature
@@ -2852,4 +2871,933 @@ claims:
     end to end (also cross-checked against the sibling /v1/responses section on the same page for any
     field absent from chat/completions but present there) plus an in-page text search for the canonical/wire-family
     name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: temperature
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: temperature
+  documented_type: number
+  documented_range: <= 2
+  documented_allowed_values: null
+  documented_default: '1'
+  conditionality: null
+  quote: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
+    more random, while lower values like 0.2 will make it more focused and deterministic. We generally
+    recommend altering this or `top_p` but not both.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Matches OpenAI's and xAI's own claims (this plan, Tasks 1-2) and inventory.yaml's cross-vendor
+    0-2 assumption -- word-for-word identical prose to OpenAI's own quote.
+- param: top-p
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: top_p
+  documented_type: number
+  documented_range: <= 1
+  documented_allowed_values: null
+  documented_default: '1'
+  conditionality: null
+  quote: An alternative to sampling with temperature, called nucleus sampling, where the model considers
+    the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the
+    top 10% probability mass are considered.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: top-k
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: presence-penalty
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: presence_penalty
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Deprecated -- no longer supported. It will not take effect if you pass it to the API.
+    No mode-conditionality is stated anywhere in this description.
+  quote: This parameter is no longer supported. It will not take effect if you pass it to the API.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: 'inventory.yaml''s own note for this row states "Same DeepSeek thinking-mode silent-ignore list
+    documented for top_p applies here too" -- a MODE-CONDITIONAL silent-ignore. The live docs state something
+    broader and unconditional: the parameter is deprecated and simply does not take effect, full stop,
+    with no thinking-mode qualifier anywhere in the description. Recorded as a contradiction of inventory.yaml''s
+    narrower mode-conditional assumption, not resolved by editing that file (D-09) -- confirms RESEARCH.md
+    Pitfall 5 exactly.'
+- param: frequency-penalty
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: frequency_penalty
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Deprecated -- no longer supported. It will not take effect if you pass it to the API.
+    No mode-conditionality is stated anywhere in this description.
+  quote: This parameter is no longer supported. It will not take effect if you pass it to the API.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: 'Same finding as the sibling presence_penalty claim above: inventory.yaml''s own note assumes
+    a mode-conditional silent-ignore ("Same DeepSeek thinking-mode silent-ignore list applies"); the live
+    docs state an unconditional deprecation with no stated mode-dependence. Recorded as a contradiction,
+    inventory.yaml left unedited (D-09).'
+- param: logprobs
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: logprobs
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities
+    of each output token returned in the `content` of `message`.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: top-logprobs
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: top_logprobs
+  documented_type: integer
+  documented_range: <= 20
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: logprobs must be set to true if this parameter is used.
+  quote: An integer between 0 and 20 specifying the number of most likely tokens to return at each token
+    position, each with an associated log probability. `logprobs` must be set to `true` if this parameter
+    is used.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Matches OpenAI's own documented 0-20 range (this plan's Task 1) -- narrower than none, wider than
+    xAI's own documented 0-8 range (this plan's Task 2).
+- param: seed
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: n
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Genuinely absent from the full 36-property Request Body list -- unlike OpenAI and xAI (both document
+    n, this plan's Tasks 1-2), DeepSeek's chat/completions endpoint does not document a completion-count
+    parameter under any name.
+- param: logit-bias
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: max-tokens
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: max_tokens
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: The total length of input tokens and generated tokens is limited by the model's context
+    length. For the value range and default value, refer to the separate pricing documentation page (not
+    fetched this session).
+  quote: The maximum number of tokens that can be generated in the chat completion. The total length of
+    input tokens and generated tokens is limited by the model's context length. For the value range and
+    default value, please refer to the documentation.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Unlike OpenAI's and xAI's own claims (this plan, Tasks 1-2), DeepSeek does NOT deprecate max_tokens
+    in favor of a differently-named field -- max_tokens is documented as this vendor's own CURRENT field
+    name, matching this row's canonical_name exactly (no documented_name divergence, contrast the OpenAI/xAI
+    two-name pattern).
+- param: stop
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: stop
+  documented_type: string or array of string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Up to 16 sequences where the API will stop generating further tokens.
+  quote: Up to 16 sequences where the API will stop generating further tokens.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Documents 16 sequences -- four times OpenAI's and xAI's own documented "up to 4 sequences" (this
+    plan, Tasks 1-2) for the same wire-family field name.
+- param: response-format
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: response_format
+  documented_type: object { type }
+  documented_range: null
+  documented_allowed_values:
+  - text
+  - json_object
+  documented_default: text
+  conditionality: null
+  quote: 'An object specifying the format that the model must output. Setting to { "type": "json_object"
+    } enables JSON Output, which guarantees the message the model generates is valid JSON. ... type: Must
+    be one of `text` or `json_object`.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Only 2 documented values (text, json_object) -- no json_schema/Structured-Outputs-style variant,
+    narrower than both OpenAI's and xAI's own documented 3-value enum (this plan, Tasks 1-2, both of which
+    add a json_schema option).
+- param: tools
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array of object
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Currently, only functions are supported as a tool. A max of 128 functions are supported.
+  quote: A list of tools the model may call. Currently, only functions are supported as a tool. Use this
+    to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are
+    supported.
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: tool_choice
+  documented_type: object
+  documented_range: null
+  documented_allowed_values:
+  - none
+  - auto
+  - required
+  documented_default: null
+  conditionality: null
+  quote: 'Controls which (if any) tool is called by the model. `none` means the model will not call any
+    tool and instead generates a message. `auto` means the model can pick between generating a message
+    or calling one or more tools. `required` means the model must call one or more tools. Specifying a
+    particular tool via {"type": "function", "function": {"name": "my_function"}} forces the model to
+    call that tool. `none` is the default when no tools are present. `auto` is the default if tools are
+    present.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: Word-for-word identical wording to OpenAI's own claim (this plan, Task 1).
+- param: parallel-tool-calls
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Genuinely absent -- unlike OpenAI (documented boolean) and xAI (documented boolean, this plan's
+    Tasks 1-2), DeepSeek's docs do not mention parallel tool calling as a controllable request field at
+    all.
+- param: stream
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: stream
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'If set, partial message deltas will be sent. Tokens will be sent as data-only server-sent events
+    (SSE) as they become available, with the stream terminated by a `data: [DONE]` message.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: stream_options.include_usage
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Only set stream_options when stream: true. include_usage itself is optional (not required),
+    contrasting with xAI''s own documented required field of the same name.'
+  quote: 'Options for streaming response. Only set this when you set `stream: true`. include_usage: If
+    set to true, all chunks in the stream will include a `usage` field, whose value is null on every chunk
+    except the last one. If omitted or set to false, the `usage` field is absent from all chunks except
+    the last one.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: service-tier
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Genuinely absent -- unlike OpenAI (6 documented values) and xAI (2 documented values, this plan's
+    Tasks 1-2), DeepSeek's docs do not mention a service_tier concept at all.
+- param: openai-reasoning-effort
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: string
+  documented_range: null
+  documented_allowed_values:
+  - low
+  - high
+  - max
+  documented_default: high
+  conditionality: For compatibility, medium and xhigh are mapped to high.
+  quote: 'Possible values: [low, high, max]. Controls the reasoning effort of the model. The default effort
+    is high. For compatibility, medium and xhigh are mapped to high.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: 'Three documented values (low/high/max), no `none` value -- reasoning_effort cannot disable thinking
+    at DeepSeek (contrast xAI''s own `none` value, this plan''s Task 2); disabling thinking is the separate
+    `thinking.type: disabled` field''s job (see the anthropic-thinking-object claim below, this row''s
+    own sibling finding). A DIFFERENT documented value set from both OpenAI''s 7-value enum and xAI''s
+    4-value enum (this plan, Tasks 1-2) for the identically-named wire-family field.'
+- param: anthropic-thinking-object
+  vendor: dseek
+  models:
+  - deepseek-v4
+  documented_status: documented
+  documented_name: thinking
+  documented_type: object { type }
+  documented_range: null
+  documented_allowed_values:
+  - enabled
+  - disabled
+  documented_default: enabled
+  conditionality: Controls the switch between thinking and non-thinking mode. If set to enabled, then
+    use thinking mode. If set to disabled, then use non-thinking model. Documented on the `model` enum's
+    `deepseek-v4-pro` variant (this milestone's tracked model, per probes/harness/models.yaml's api_model_id)
+    among the three model variants (deepseek-v4-flash, deepseek-v4-pro, deepseek-v4-flash-vision-exp)
+    this single Request Body schema covers.
+  quote: 'thinking (object, nullable) -- Controls the switch between thinking and non-thinking mode. type
+    (string) -- Possible values: [enabled, disabled]. Default value: enabled. If set to enabled, then
+    use thinking mode. If set to disabled, then use non-thinking model.'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: 'SETTLES RESEARCH.md''s Open Question 2 / assumption A2 by direct reading (not the research pass''s
+    single summarized fetch, per this task''s own instruction): DeepSeek''s chat/completions endpoint
+    DOES document a request-body `thinking` object with a `type` sub-field (enabled/disabled), scoped
+    to deepseek-v4-pro among the three documented model variants on this single schema page. This CONTRADICTS
+    inventory.yaml''s axes.thinking.shapes.openai_compat.vendor_overrides.dseek entry, which records `"on":
+    null, "off": null, reason: toggle-not-a-request-parameter` -- a checked-absence claim asserting DeepSeek''s
+    thinking mode is model-id-selected only, with no request field. The determination: the field IS documented
+    for the tracked model (outcome 1 of the task''s own three-way branch) -- found under the create-chat-completion
+    page''s top-level Request Body property list, directly after the `model` field. Unlike Anthropic''s
+    own `thinking` object (plan 01: type + budget_tokens), DeepSeek''s `thinking` object documents ONLY
+    the `type` sub-field -- no budget_tokens or other numeric control. inventory.yaml is left unedited
+    (D-09); this is recorded as a finding for plan 04''s docs-vs-wire confrontation, not resolved here.'
+- param: gemini-thinking-config
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-enable-thinking
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: DeepSeek's own reasoning-toggle field is named `thinking` (object with a `type` sub-field, see
+    the anthropic-thinking-object claim above) -- not a flat `enable_thinking` boolean under Qwen's own
+    name.
+- param: anthropic-structured-output-output-config
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: DeepSeek's own related concept is response_format (see the response-format claim above).
+- param: anthropic-structured-output-output-format
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-temperature-range
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Gemini-scoped boundary-contract row (firing_scope: home-vendor). DeepSeek''s own
+    temperature range is covered by the canonical temperature claim above (<= 2, default 1).'
+- param: openai-verbosity
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-prediction
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-service-tier-values
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Same underlying absence as the presence-only service-tier claim above -- DeepSeek's docs do not
+    mention service_tier under any name.
+- param: anthropic-thinking-budget-floor
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: DeepSeek's own `thinking` object (see the anthropic-thinking-object claim above) documents only
+    a `type` sub-field (enabled/disabled) -- no budget_tokens or any numeric budget-floor control is documented,
+    unlike Anthropic's own thinking.budget_tokens (plan 01, minimum 1024).
+- param: gemini-media-resolution
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: DeepSeek's docs document no completion-count parameter under any name (see the absent swept `n`
+    claim above) -- there is no candidateCount-equivalent either.
+- param: kimi-partial-mode
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'No literal partial_mode/partial field. DeepSeek''s own related-but-different feature is `prefix`
+    (Beta): a boolean on the assistant message that forces the model to continue from the supplied prefix
+    content, gated behind a separate beta base_url (https://api.deepseek.com/beta). Conceptually adjacent
+    (assistant-turn continuation) but a differently-named, differently-shaped, and differently-gated mechanism
+    -- not treated as the same field.'
+- param: glm-do-sample
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-repetition-penalty
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-fixed-sampling-point
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor, canonical_name temperature).
+    DeepSeek''s own temperature contract (<= 2, default 1, no documented fixed-schedule rejection) is
+    covered by the canonical temperature claim above.'
+- param: openai-store
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-metadata
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-safety-identifier
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-prompt-cache-key
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No prompt_cache_key (or similarly-named) request field documented on this page. DeepSeek is publicly
+    known for automatic disk-based context caching, but that mechanism (if documented) lives on a separate
+    guide page not fetched this session -- this claim's absence is scoped to the create-chat-completion
+    Request Body actually searched (rule 1b), not a claim that DeepSeek has no caching mechanism at all.
+- param: max-tokens-semantics
+  vendor: dseek
+  models: all
+  documented_status: docs-silent
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: The max_tokens field (see the swept max-tokens claim above) is documented on this
+    page, but its description states only that total input+generated tokens are limited by context length
+    and defers value range/default to a separate pricing page (not fetched this session) -- it does NOT
+    state whether hidden reasoning tokens count toward this budget (output-only vs total-including-reasoning),
+    the specific facet this row asks about. Retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    Unlike OpenAI''s and xAI''s own claims (this plan, Tasks 1-2), which both explicitly settle this question
+    (OpenAI: TOTAL-including-reasoning; xAI: OUTPUT-ONLY), DeepSeek''s docs are genuinely silent on it
+    -- an admitted unknown (rule 1b), not an inferred answer.'
+- param: image-input
+  vendor: dseek
+  models: all
+  documented_status: documented
+  documented_name: image_url content part
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values:
+  - image_url
+  documented_default: null
+  conditionality: null
+  quote: 'type: Possible values: [image_url]. The type of the content part, in this case image_url. ...
+    image_url (object).'
+  source_ref: dseek-chat-completions-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own openai_compat body_template exactly (type: image_url, nested image_url
+    object).'
+- param: anthropic-cache-control-block
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No cache_control field or per-content-block cache marker documented on this page. No single-field
+    caching mechanism (analogous to OpenAI's/xAI's prompt_cache_key) is documented here either (see the
+    openai-prompt-cache-key claim above).
+- param: batch-endpoint
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: Searched the one DeepSeek page fetched this session (Create Chat Completion reference,
+    api-docs.deepseek.com/api/create-chat-completion) for this concept -- zero matches. A dedicated Batch
+    API page (if one exists) was not fetched this session; surface limited to this one page, retrieved
+    2026-09-02.
+  note: null
+- param: logit-bias-exhaustive
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: n-distinctness-scoring
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: audio-video-modality
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Only the image_url content-part type is documented on this page (see the image-input claim above)
+    -- no audio input/output content-part type or field is documented.
+- param: xai-search-parameters
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: json-schema-conformance-grading
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: DeepSeek's response_format (see the response-format claim above) documents only text/json_object
+    -- no json_schema-style generation-time schema constraint is documented at all, so there is not even
+    the related-but-different generation-constraint concept OpenAI's and xAI's own claims (this plan,
+    Tasks 1-2) note for this row.
+- param: malformed-request-fuzzing
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gateway-probe-targets
+  vendor: dseek
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: dseek-chat-completions-ref
+  searched_surface: DeepSeek Chat Completions API reference (api-docs.deepseek.com/api/create-chat-completion),
+    the full Request Body property list (36 distinct property names across all nesting levels, confirmed
+    by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
   note: null
