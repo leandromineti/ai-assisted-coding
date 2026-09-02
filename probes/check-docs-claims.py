@@ -194,6 +194,9 @@ def check_source(source: dict) -> list[str]:
     (never returns at the first)."""
     findings: list[str] = []
 
+    if source.get("id") is None:
+        findings.append("missing-source-id")
+
     if source.get("first_party") is not True:
         findings.append("not-first-party")
 
@@ -277,7 +280,7 @@ def check_docs_claims(path: Path = DOCS_CLAIMS_PATH) -> list[dict]:
 
     sources = doc.get("sources") or []
     claims = doc.get("claims") or []
-    source_ids = {s.get("id") for s in sources}
+    source_ids = {s.get("id") for s in sources if s.get("id") is not None}
 
     findings: list[dict] = []
 
@@ -488,6 +491,29 @@ def selftest() -> tuple[int, int]:
     if "not-first-party" not in check_source(s):
         problems += 1
         print("FAIL: first_party: false did not fire not-first-party", file=sys.stderr)
+
+    # --- WR-02: a sources: entry missing id: fires missing-source-id ---
+    cases += 1
+    s = dict(base_source)
+    del s["id"]
+    if "missing-source-id" not in check_source(s):
+        problems += 1
+        print("FAIL: a source with no id: did not fire missing-source-id", file=sys.stderr)
+
+    # --- WR-02: an id-less sources: entry must not poison source_ids with None
+    #     — a claim whose own source_ref is missing/null must still fire
+    #     dangling-source-ref, not pass because None ended up in source_ids ---
+    cases += 1
+    id_less_source_ids = {s2.get("id") for s2 in [{"vendor": "anthropic", "first_party": True}] if s2.get("id") is not None}
+    if None in id_less_source_ids:
+        problems += 1
+        print("FAIL: source_ids construction still admits None for an id-less source", file=sys.stderr)
+    c = dict(base_claim)
+    del c["source_ref"]
+    findings_no_ref = check_claim(c, inventory_ids=fixture_inventory_ids, vendors=fixture_vendors, source_ids=id_less_source_ids)
+    if "dangling-source-ref" not in findings_no_ref:
+        problems += 1
+        print("FAIL: a claim with no source_ref did not fire dangling-source-ref even with an id-less source present", file=sys.stderr)
 
     # --- retrieved one day in the future fires; retrieved equal to today
     #     passes ---
