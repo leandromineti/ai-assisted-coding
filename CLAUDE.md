@@ -92,9 +92,6 @@ not just at the one-time evidence-commit decision.
 The fifth command is `probes/docs-claims.yaml`'s own gate (Phase 11.1, D-03): exit 0
 means clean, exit 1 means findings, exit 2 means a bad invocation. Like the fourth
 command, a finding is fixed in the claims data, never by narrowing the validator.
-Dated 2026-09-02: this command's completeness check is EXPECTED to report outstanding
-`(param, vendor)` pairs — a work queue, not a regression — until Phase 11.1 plan 03
-lands the remaining vendors' claims; plan 03 removes this sentence.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
