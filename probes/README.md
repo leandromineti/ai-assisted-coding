@@ -74,6 +74,8 @@ scripts themselves and in `probes/classified/*.yaml`'s own comments — not rest
 | `probes/audit-evidence.py` | D-05's fail-closed privacy scanner — a per-vendor `DENYLIST_FIELD_NAMES` (each entry annotated observed-live-with-vendor-and-date or documented-guess-with-searched-surface) plus pattern rules; non-empty `--check` findings block an evidence commit. In `CLAUDE.md`'s pre-commit lint battery |
 | `probes/classified/overrides.yaml` | hand-kept, dated hand-override entries (D-08) — probe_id + date + reason, applied last and deterministically by `scripts/classify-probes.py`; never edits to the generated classified YAML |
 | `probes/sweep-stages.yaml` | the firing-stage declarations `runner.py --stage N` reads (Phase 11 plan 11-02) — the machine-readable form of SWEEP-DESIGN.md § Probe ordering |
+| `probes/docs-claims.yaml` | Phase 11.1, D-02 — the first-party vendor-documentation claims registry: one `sources:` entry per vendor docs page fetched and archived, one `claims:` entry per (`inventory.yaml` row x in-scope vendor) pair. **Hand-kept, explicitly NOT generated and NOT an extension of `probes/inventory.yaml`** — rule 3 does not apply (it transcribes external references; nothing in-repo regenerates it) |
+| `probes/check-docs-claims.py` | Phase 11.1, D-03 — `docs-claims.yaml`'s fail-closed validator (`--check`/`--selftest`): completeness (every row x vendor pair present), first-party sourcing (DOCP-03), rule-1b searched-surface requirements. In `CLAUDE.md`'s pre-commit lint battery |
 
 ## The DeepSeek row
 

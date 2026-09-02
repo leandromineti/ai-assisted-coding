@@ -46,4 +46,13 @@ comparisons/repo.db
 # probes/harness/ (code) and probes/sets/ (declarations) were never covered by this
 # rule and always committed normally.
 
+# Docs-claims PDF fallback cache (Phase 11.1, D-02). A vendor docs page that Wayback's
+# Save Page Now genuinely cannot capture gets `snapshot: unarchivable` in
+# probes/docs-claims.yaml plus a local PDF copy here — the owner-approved fallback,
+# modeled on references/papers/pdf/'s gitignored-but-refetchable precedent: a data
+# cache, not the source of record. The claim's `note:`/quote is the record; this
+# copy is a convenience, same treatment as the papers/cards PDF caches above.
+probes/docs-pdf/*
+!probes/docs-pdf/.gitkeep
+
 __pycache__/

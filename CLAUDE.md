@@ -76,6 +76,7 @@ python3 scripts/build-tool-index.py --check   # pinned commits still match clone
 python3 scripts/build-refs-index.py --check   # frontmatter, unread-but-cited, dangling links
 python3 scripts/check-taxonomy.py --check     # deny-listed synonyms, stale category names/numbering, unregistered vocabulary, unapplied ADR decoders
 python3 probes/audit-evidence.py --check      # scans probes/raw/*.jsonl + ledger.jsonl for account-identifying leaks before they're committed
+python3 probes/check-docs-claims.py --check   # docs-claims.yaml completeness, first-party sourcing, rule-1b searched surfaces
 ```
 
 The fourth command is `probes/`'s own gate, D-05's fail-closed privacy scanner: exit 0
@@ -87,6 +88,13 @@ procedure below already models for a different lint). Since 2026-09-02,
 `probes/raw/*.jsonl` and `probes/ledger.jsonl` are tracked by git (Phase 11 plan
 11-06, D-04's revisit gate), so this scanner runs on every commit that touches them,
 not just at the one-time evidence-commit decision.
+
+The fifth command is `probes/docs-claims.yaml`'s own gate (Phase 11.1, D-03): exit 0
+means clean, exit 1 means findings, exit 2 means a bad invocation. Like the fourth
+command, a finding is fixed in the claims data, never by narrowing the validator.
+Dated 2026-09-02: this command's completeness check is EXPECTED to report outstanding
+`(param, vendor)` pairs — a work queue, not a regression — until Phase 11.1 plan 03
+lands the remaining vendors' claims; plan 03 removes this sentence.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned

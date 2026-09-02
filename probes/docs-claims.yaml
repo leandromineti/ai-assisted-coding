@@ -1,0 +1,72 @@
+# probes/docs-claims.yaml — the first-party vendor-documentation claims registry
+# (Phase 11.1, D-02). Opposite provenance from probes/inventory.yaml: this file is
+# HAND-KEPT and rule-3 EXEMPT — it transcribes external references (vendor API
+# docs pages), and nothing in-repo regenerates it. It is validated, not generated,
+# by probes/check-docs-claims.py (D-03), which joins its own pre-commit lint
+# battery gate (CLAUDE.md).
+#
+# One `sources:` entry per vendor docs page actually fetched and archived; one
+# `claims:` entry per (probes/inventory.yaml row x in-scope vendor) pair — the
+# claim records what that vendor's OWN docs say about that parameter, honestly,
+# including absence. `documented_status` (rationale, mirroring
+# probes/harness/models.yaml's per-field comment style): one of `documented` (the
+# page states the parameter's contract), `absent-from-docs` (the parameter does
+# not appear anywhere on the searched surface — rule 1b: an absence is only as
+# good as the surface searched, so `searched_surface` is REQUIRED and must name
+# the exact pages searched), or `docs-silent` (the parameter is listed but the
+# page states nothing about range/default/conditionality). `searched_surface`
+# (rationale): REQUIRED for every non-`documented` claim — the exact pages
+# searched plus the date, never a bare "not found." `source_ref` (rationale): a
+# `sources[].id`, never a bare URL — mirrors references/papers/'s
+# citekey-as-primary-key pattern, so a claim's provenance survives even if a
+# `sources:` entry's own fields are edited later.
+#
+# checked: 2026-09-02 — Phase 11.1 plan 01 (the tracer slice: schema + one
+# archived source + the full Anthropic 51-row claim set, D-08's plan sketch).
+checked: 2026-09-02
+scope: >-
+  One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope,
+  per D-09 — a parameter judged out of the contract sweep's own scope is not out
+  of THIS registry's scope; DOCP-01/DOCP-05) x each in-scope vendor
+  (probes/harness/models.yaml's 8-vendor set). This file is hand-kept and rule-3
+  exempt: nothing in-repo regenerates it, and it is validated — never
+  generated — by probes/check-docs-claims.py. It is NOT an extension of
+  probes/inventory.yaml (a generator input inventory-to-sets.py reads; this file
+  is a terminal, hand-transcribed registry inventory-to-sets.py never touches).
+  A claim that contradicts one of inventory.yaml's own third-party-sourced notes
+  is recorded here in that claim's own `note:` field — probes/inventory.yaml
+  itself is never edited by this phase (D-09, a phase boundary). Plan 01 (this
+  plan) seeds the schema, the archival mechanism, and Anthropic's full 51-row
+  set; plans 02-03 add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini);
+  plan 04 confronts this registry against Phase 11's wire evidence.
+
+sources:
+- id: anthropic-messages-api-ref
+  vendor: anthropic
+  first_party: true
+  title: Messages API — Create a Message / Count tokens in a Message (comprehensive parameter reference)
+  url: https://platform.claude.com/docs/en/api/messages
+  snapshot: https://web.archive.org/web/20260902183800/https://platform.claude.com/docs/en/api/messages
+  retrieved: '2026-09-02'
+claims:
+- param: temperature
+  vendor: anthropic
+  models: all
+  documented_status: documented
+  documented_name: temperature
+  documented_type: number
+  documented_range: 0.0 to 1.0 (deprecated)
+  documented_allowed_values: null
+  documented_default: '1.0'
+  conditionality: 'Deprecated: models released after Claude Opus 4.6 do not support setting temperature.
+    A value of 1.0 is accepted for backwards compatibility; all other values are rejected with a 400 error.'
+  quote: 'Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting temperature.
+    A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected
+    with a 400 error. ... Defaults to 1.0. Ranges from 0.0 to 1.0.'
+  source_ref: anthropic-messages-api-ref
+  searched_surface: null
+  note: 'inventory.yaml''s own note for this row (retrieved 2026-08-26/2026-09-01) states OpenAI/Anthropic/most
+    OpenAI-compatible vendors accept a 0-2 range — that assumption is superseded for Anthropic as of this
+    claim''s 2026-09-02 retrieval: the documented range is now 0.0-1.0 (deprecated), non-1.0 values reject
+    with 400 on newer models. Matches Phase 11''s own wire evidence (claude-fable-5 rejected temperature
+    0.7 with HTTP 400) — a docs-corroborated finding, not a contradiction.'
