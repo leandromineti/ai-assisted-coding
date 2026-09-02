@@ -39,6 +39,18 @@ scope: >-
   plan) seeds the schema, the archival mechanism, and Anthropic's full 51-row
   set; plans 02-03 add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini);
   plan 04 confronts this registry against Phase 11's wire evidence.
+checked: 2026-09-02
+scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
+  judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
+  x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
+  exempt: nothing in-repo regenerates it, and it is validated — never generated — by probes/check-docs-claims.py.
+  It is NOT an extension of probes/inventory.yaml (a generator input inventory-to-sets.py reads; this
+  file is a terminal, hand-transcribed registry inventory-to-sets.py never touches). A claim that contradicts
+  one of inventory.yaml''s own third-party-sourced notes is recorded here in that claim''s own `note:`
+  field — probes/inventory.yaml itself is never edited by this phase (D-09, a phase boundary). Plan 01
+  (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
+  add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
+  Phase 11''s wire evidence.'
 sources:
 - id: anthropic-messages-api-ref
   vendor: anthropic
@@ -67,6 +79,13 @@ sources:
   title: Service tiers — Priority Tier / auto / standard_only semantics
   url: https://platform.claude.com/docs/en/api/service-tiers
   snapshot: https://web.archive.org/web/20260902184100/https://platform.claude.com/docs/en/api/service-tiers
+  retrieved: '2026-09-02'
+- id: openai-chat-completions-ref
+  vendor: openai
+  first_party: true
+  title: Chat -- Create chat completion (comprehensive Body Parameters reference)
+  url: https://developers.openai.com/api/reference/resources/chat
+  snapshot: https://web.archive.org/web/20260902190529/https://developers.openai.com/api/reference/resources/chat
   retrieved: '2026-09-02'
 claims:
 - param: temperature
@@ -949,4 +968,917 @@ claims:
   searched_surface: Anthropic Messages API reference (platform.claude.com/docs/en/api/messages), full
     top-level Body parameters list read end to end plus an in-page text search for the canonical/wire-family
     name — zero matches, retrieved 2026-09-02.
+  note: null
+- param: temperature
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: temperature
+  documented_type: number
+  documented_range: 0 to 2
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: We generally recommend altering this or top_p but not both.
+  quote: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
+    more random, while lower values like 0.2 will make it more focused and deterministic. We generally
+    recommend altering this or `top_p` but not both.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: Matches inventory.yaml's own cross-vendor note ("OpenAI/Anthropic/most OpenAI-compatible vendors
+    accept 0-2") exactly for OpenAI specifically -- a docs-corroborated confirmation, not a contradiction
+    (contrast Anthropic's own claim, which records a superseding 0.0-1.0 deprecated range).
+- param: top-p
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: top_p
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: An alternative to sampling with temperature, called nucleus sampling, where the model considers
+    the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the
+    top 10% probability mass are considered. We generally recommend altering this or `temperature` but
+    not both.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: No explicit numeric range stated on this page (unlike temperature's explicit "between 0 and 2")
+    -- nucleus-sampling semantics imply (0, 1] but that is not the page's own wording, so documented_range
+    is left null rather than inferred.
+- param: top-k
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: Confirms inventory.yaml's own note ("Documented absent from OpenAI's ... OpenAI-compatible surface
+    (checked, not an unchecked omission)") -- this claim is the checked confirmation.
+- param: presence-penalty
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: presence_penalty
+  documented_type: number
+  documented_range: -2.0 to 2.0
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear
+    in the text so far, increasing the model's likelihood to talk about new topics.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: frequency-penalty
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: frequency_penalty
+  documented_type: number
+  documented_range: -2.0 to 2.0
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency
+    in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: logprobs
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: logprobs
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities
+    of each output token returned in the `content` of `message`.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: top-logprobs
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: top_logprobs
+  documented_type: number
+  documented_range: 0 to 20
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: logprobs must be set to true if this parameter is used.
+  quote: An integer between 0 and 20 specifying the maximum number of most likely tokens to return at
+    each token position, each with an associated log probability. In some cases, the number of returned
+    tokens may be fewer than requested. `logprobs` must be set to `true` if this parameter is used.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: seed
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: seed
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Beta feature. Best-effort determinism only -- not guaranteed; refer to the system_fingerprint
+    response field to monitor backend changes.
+  quote: This feature is in Beta. If specified, our system will make a best effort to sample deterministically,
+    such that repeated requests with the same `seed` and parameters should return the same result. Determinism
+    is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor
+    changes in the backend.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: n
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: n
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: How many chat completion choices to generate for each input message. Note that you will be charged
+    based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: logit-bias
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: logit_bias
+  documented_type: map[number]
+  documented_range: bias value -100 to 100 per token id
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Modify the likelihood of specified tokens appearing in the completion. Accepts a JSON object
+    that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100
+    to 100. ... values like -100 or 100 should result in a ban or exclusive selection of the relevant
+    token.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: max-tokens
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: max_completion_tokens (max_tokens is documented but Deprecated)
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: max_tokens is deprecated in favor of max_completion_tokens and is not compatible with
+    o-series (reasoning) models. max_completion_tokens is an upper bound for the number of tokens generated
+    for a completion, INCLUDING both visible output tokens and reasoning tokens.
+  quote: 'max_completion_tokens: An upper bound for the number of tokens that can be generated for a completion,
+    including visible output tokens and reasoning tokens. ... max_tokens: The maximum number of tokens
+    that can be generated in the chat completion. ... This value is now deprecated in favor of `max_completion_tokens`,
+    and is not compatible with o-series models.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'Settles the two-name question this row''s own inventory.yaml name_overrides.openai already assumed
+    (max_completion_tokens for OpenAI, vs the family-default max_tokens elsewhere): the docs confirm max_completion_tokens
+    is OpenAI''s current field and max_tokens is documented Deprecated -- documented_name diverges from
+    this row''s canonical_name (max_tokens) precisely because the vendor''s own current field has a different
+    name.'
+- param: stop
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: stop
+  documented_type: string or array of string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Not supported with latest reasoning models o3 and o4-mini. Up to 4 sequences where the
+    API will stop generating further tokens.
+  quote: Not supported with latest reasoning models `o3` and `o4-mini`. Up to 4 sequences where the API
+    will stop generating further tokens. The returned text will not contain the stop sequence.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: response-format
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: response_format
+  documented_type: ResponseFormatText or ResponseFormatJSONSchema or ResponseFormatJSONObject
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'An object specifying the format that the model must output. Setting to `{ "type": "json_schema",
+    "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied
+    JSON schema. ... Setting to `{ "type": "json_object" }` enables the older JSON mode, which ensures
+    the message the model generates is valid JSON. Using `json_schema` is preferred for models that support
+    it.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tools
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array of ChatCompletionTool
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A list of tools the model may call. You can provide either custom tools or function tools.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: tool_choice
+  documented_type: ChatCompletionToolChoiceOption
+  documented_range: null
+  documented_allowed_values:
+  - none
+  - auto
+  - required
+  documented_default: null
+  conditionality: null
+  quote: 'Controls which (if any) tool is called by the model. `none` means the model will not call any
+    tool and instead generates a message. `auto` means the model can pick between generating a message
+    or calling one or more tools. `required` means the model must call one or more tools. Specifying a
+    particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+    call that tool.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: parallel-tool-calls
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: parallel_tool_calls
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Whether to enable parallel function calling during tool use.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: stream
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: If set to true, the model response data will be streamed to the client as it is generated using
+    server-sent events.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: stream_options.include_usage
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: 'Only set this when you set stream: true.'
+  quote: 'include_usage: optional boolean. If set, an additional chunk will be streamed before the `data:
+    [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request,
+    and the `choices` field will always be an empty array. All other chunks will also include a `usage`
+    field, but with a null value.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: service-tier
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: service_tier
+  documented_type: '"auto" or "default" or "flex" or 3 more or null'
+  documented_range: null
+  documented_allowed_values:
+  - auto
+  - default
+  - flex
+  - scale
+  - priority
+  - fast
+  documented_default: null
+  conditionality: When not set, the default behavior is 'auto'.
+  quote: Specifies the processing type used for serving the request. ... To opt-in to Fast mode at the
+    request level, include the `service_tier=fast` or `service_tier=priority` parameter. The response
+    will show `service_tier=priority` regardless of if you specify `service_tier=fast` or `priority` in
+    your request.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: Cross-references the openai-service-tier-values claim below (this row is presence-only, one benign
+    value 'auto').
+- param: openai-reasoning-effort
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: ReasoningEffort
+  documented_range: null
+  documented_allowed_values:
+  - none
+  - minimal
+  - low
+  - medium
+  - high
+  - xhigh
+  - max
+  documented_default: null
+  conditionality: Not all reasoning models support every value; see the reasoning guide for model-specific
+    support.
+  quote: Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `minimal`,
+    `low`, `medium`, `high`, `xhigh`, and `max`. Reducing reasoning effort can result in faster responses
+    and fewer tokens used on reasoning in a response.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: Seven documented values, richer than the familiar three-level (low/medium/high) set this row's
+    own probe_values ([low]) exercises only one of -- transcribed verbatim per this plan's own instruction,
+    not normalized to the familiar three-level assumption.
+- param: anthropic-thinking-object
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: Anthropic's thinking object is not OpenAI's concept; OpenAI's own reasoning-toggle shape is reasoning_effort
+    (see openai-reasoning-effort claim above).
+- param: gemini-thinking-config
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-enable-thinking
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: anthropic-structured-output-output-config
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: OpenAI's own related concept is response_format (see the response-format claim above) -- a differently-named
+    and differently-shaped mechanism, not output_config.
+- param: anthropic-structured-output-output-format
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: Same as the sibling output_config claim above -- OpenAI's own field is response_format.
+- param: gemini-temperature-range
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Gemini-scoped boundary-contract row (firing_scope: home-vendor). OpenAI''s own
+    temperature range is covered by the canonical temperature claim above (0 to 2).'
+- param: openai-verbosity
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: verbosity
+  documented_type: '"low" or "medium" or "high" or null'
+  documented_range: null
+  documented_allowed_values:
+  - low
+  - medium
+  - high
+  documented_default: medium
+  conditionality: null
+  quote: Constrains the verbosity of the model's response. Lower values will result in more concise responses,
+    while higher values will result in more verbose responses. Currently supported values are `low`, `medium`,
+    and `high`. The default is `medium`.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-prediction
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: prediction
+  documented_type: ChatCompletionPredictionContent
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Static predicted output content, such as the content of a text file that is being regenerated.
+    ... type: "content". The type of the predicted content you want to provide. This type is currently
+    always `content`.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-service-tier-values
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: service_tier
+  documented_type: null
+  documented_range: null
+  documented_allowed_values:
+  - auto
+  - default
+  - flex
+  - scale
+  - priority
+  - fast
+  documented_default: null
+  conditionality: null
+  quote: 'service_tier: optional "auto" or "default" or "flex" or 3 more or null. ... - `"auto"` - `"default"`
+    - `"flex"` - `"scale"` - `"priority"` - `"fast"`'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'This row''s own probe_values enumerates only 4 values (flex, priority, auto, default) -- the
+    live docs list 6 (adding scale and fast). A coverage gap in the swept value set, not a documented_name
+    mismatch: fast and priority both resolve to a response service_tier of "priority" per the same page
+    ("regardless of if you specify service_tier=fast or priority"), which is exactly conclusion 19''s
+    request-vs-response vocabulary asymmetry (BHV-06''s own territory in Phase 12, not this contract-only
+    row).'
+- param: anthropic-thinking-budget-floor
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: Anthropic-only concept (thinking.budget_tokens floor); OpenAI's docs have no analogous reasoning-token
+    budget floor documented on this page.
+- param: gemini-media-resolution
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: Gemini's own name for n (see inventory.yaml's own cross-reference); OpenAI's own count parameter
+    is n (see the swept n claim above), not candidateCount.
+- param: kimi-partial-mode
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: glm-do-sample
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: qwen-repetition-penalty
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-fixed-sampling-point
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor, canonical_name temperature).
+    OpenAI''s own temperature contract is covered by the canonical temperature claim above.'
+- param: openai-store
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: store
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Whether or not to store the output of this chat completion request for use in our model distillation
+    or evals products. Supports text and image inputs. Note: image inputs over 8MB will be dropped.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-metadata
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: metadata
+  documented_type: Metadata (map[string]string)
+  documented_range: keys max 64 chars, values max 512 chars, max 16 pairs
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional
+    information about the object in a structured format, and querying for objects via API or the dashboard.
+    Keys are strings with a maximum length of 64 characters. Values are strings with a maximum length
+    of 512 characters.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'A shape match, unlike the corresponding Anthropic claim (plan 01): OpenAI''s own metadata field
+    is documented as an arbitrary key-value bag (up to 16 pairs), matching this row''s own free-form probe_values
+    ({probe: "true"}) directly.'
+- param: openai-safety-identifier
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: safety_identifier
+  documented_type: string
+  documented_range: max length 64 characters
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A stable identifier used to help detect users of your application that may be violating OpenAI's
+    usage policies. The IDs should be a string that uniquely identifies each user, with a maximum length
+    of 64 characters. We recommend hashing their username or email address, in order to avoid sending
+    us any identifying information.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-prompt-cache-key
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: prompt_cache_key
+  documented_type: string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Used by OpenAI to cache responses for similar requests to optimize your cache hit rates. Replaces
+    the `user` field.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: max-tokens-semantics
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: max_completion_tokens's own "including reasoning tokens" clause
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: max_completion_tokens is a TOTAL budget including hidden reasoning tokens, not output-only.
+  quote: An upper bound for the number of tokens that can be generated for a completion, including visible
+    output tokens and reasoning tokens.
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    The docs directly settle OpenAI''s own semantics as TOTAL-including-reasoning -- matching Anthropic''s
+    own claim (plan 01) on this same question, both makers'' docs agree: not output-only. A genuine prior
+    for Phase 12/FUT-01 even though this milestone excludes a behavioral check of it.'
+- param: image-input
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: image_url content part (ChatCompletionContentPartImage)
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'ChatCompletionContentPartImage object { image_url, type, prompt_cache_breakpoint }. image_url:
+    object { url, detail }. url: string. Either a URL of the image or the base64 encoded image data. type:
+    "image_url". The type of the content part.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own body_template for this row exactly (type: image_url, image_url.url
+    as a data: URI).'
+- param: anthropic-cache-control-block
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: 'No cache_control field under that literal name in OpenAI''s own docs. A structurally similar
+    (though differently named and differently scoped) mechanism IS documented: prompt_cache_breakpoint,
+    an optional object nested inside individual content parts (text/image_url/input_audio), marking "the
+    exact end of a reusable prompt prefix" -- and a separate top-level prompt_cache_options {mode, ttl}
+    controlling implicit vs explicit breakpoints overall. Genuinely analogous in SHAPE (per-content-part
+    marker) to Anthropic''s cache_control, but under a different name and with different semantics (prefix-boundary
+    marking vs Anthropic''s per-block cacheability marking) -- not silently treated as the same field.'
+- param: batch-endpoint
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: Searched the one OpenAI page fetched this session (Chat Completions API reference,
+    developers.openai.com/api/reference/resources/chat) for this concept -- zero matches. A dedicated
+    Batch API page (if one exists) was not fetched this session; surface limited to this one page, retrieved
+    2026-09-02.
+  note: The dedicated OpenAI Batch API endpoint documentation was not fetched this session -- this claim's
+    absent-from-docs status is scoped to the one page actually searched (rule 1b), not a claim that OpenAI
+    has no batch endpoint at all (it is well known to; batch is out of this milestone's scope per this
+    row's own excluded_reason, a separate endpoint).
+- param: logit-bias-exhaustive
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: n-distinctness-scoring
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: audio-video-modality
+  vendor: openai
+  models: all
+  documented_status: documented
+  documented_name: audio (ChatCompletionAudioParam) and modalities
+  documented_type: object / array of "text" or "audio"
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'audio: optional ChatCompletionAudioParam or null. Parameters for audio output. Required when
+    audio output is requested with `modalities: ["audio"]`. ... modalities: optional array of "text" or
+    "audio" or null. Output types that you would like the model to generate. Most models are capable of
+    generating text, which is the default: ["text"]. The gpt-4o-audio-preview model can also be used to
+    generate audio.'
+  source_ref: openai-chat-completions-ref
+  searched_surface: null
+  note: 'Contrast with the corresponding Anthropic claim (plan 01, absent-from-docs): OpenAI''s docs DO
+    document audio as a request modality (a specific model, gpt-4o-audio-preview, gates it) -- this row
+    is status: excluded from the sweep by project scope (image-input only, MODAL-01), not because the
+    modality is undocumented at every vendor.'
+- param: xai-search-parameters
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: json-schema-conformance-grading
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: 'No conformance-GRADING mechanism documented (no endpoint or field that scores a returned JSON
+    payload against a schema after the fact). A related but different concept IS documented: tools[].function.strict
+    / response_format''s json_schema mode, which constrains generation to match a schema going forward
+    ("ensures the model will match your supplied JSON schema") -- a generation-time guarantee, not a post-hoc
+    grading mechanism, and not this row''s own concept.'
+- param: malformed-request-fuzzing
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gateway-probe-targets
+  vendor: openai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: openai-chat-completions-ref
+  searched_surface: OpenAI Chat Completions API reference (developers.openai.com/api/reference/resources/chat,
+    redirected from the docs/api-reference/chat/create human-facing URL), full Body Parameters list (35
+    top-level parameters) read end to end plus an in-page text search for the canonical/wire-family name
+    -- zero matches, retrieved 2026-09-02.
   note: null
