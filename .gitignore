@@ -30,14 +30,20 @@ comparisons/repo.db
 
 # Probe wire evidence (Phase 9, D-09 one-way-door checkpoint). RESEARCH/ARCHITECTURE's
 # default was "committed, not gitignored" (dated primary evidence, like experiments/
-# logs), but on 2026-09-01 the owner declined that default for now: "I am not
-# comfortable right now. Can we gitignore it now? Maybe I will change it later."
-# PROVISIONAL — revisit at Phase 11 before the contract sweep commits its evidence
-# base. Consequence accepted meanwhile: rule-4 traceability for probe_id citations is
-# broken until this policy flips — a probe_id in Phase 11's classified YAML may not be
-# resolvable by a repo reader. probes/harness/ (code) and probes/sets/ (declarations)
-# are NOT covered by this rule and are committed normally.
-probes/raw/
-probes/ledger.jsonl
+# logs); on 2026-09-01 the owner declined that default provisionally, revisit gate
+# named as Phase 11. That revisit happened 2026-09-02 (Phase 11 plan 11-06, D-04's
+# revisit gate): the owner decided to commit, verbatim "I think i am ok with these
+# informations being public" — given after (a) confirming via `gh repo view` that
+# this repo is currently PUBLIC, so committing publishes the evidence immediately,
+# not provisionally, and (b) reviewing one full raw record per vendor (all 8) in
+# session, with the two things a public reader would learn flagged explicitly:
+# API-account rate-limit tiers (`x-ratelimit-limit-tokens` etc.) and the probing
+# server's rough region via CDN routing headers (CF-RAY PRG / X-Amz-Cf-Pop FRA56).
+# `probes/audit-evidence.py --check` is the fail-closed gate every future evidence
+# commit passes (D-05; wired into CLAUDE.md's pre-commit lint battery below) — a
+# finding blocks the commit until the evidence itself is fixed, never by narrowing
+# the scanner. Full context: probes/PREREGISTRATION.md's Run log, 2026-09-02 entry.
+# probes/harness/ (code) and probes/sets/ (declarations) were never covered by this
+# rule and always committed normally.
 
 __pycache__/
