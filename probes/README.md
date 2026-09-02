@@ -76,6 +76,28 @@ scripts themselves and in `probes/classified/*.yaml`'s own comments — not rest
 | `probes/sweep-stages.yaml` | the firing-stage declarations `runner.py --stage N` reads (Phase 11 plan 11-02) — the machine-readable form of SWEEP-DESIGN.md § Probe ordering |
 | `probes/docs-claims.yaml` | Phase 11.1, D-02 — the first-party vendor-documentation claims registry: one `sources:` entry per vendor docs page fetched and archived, one `claims:` entry per (`inventory.yaml` row x in-scope vendor) pair. **Hand-kept, explicitly NOT generated and NOT an extension of `probes/inventory.yaml`** — rule 3 does not apply (it transcribes external references; nothing in-repo regenerates it) |
 | `probes/check-docs-claims.py` | Phase 11.1, D-03 — `docs-claims.yaml`'s fail-closed validator (`--check`/`--selftest`): completeness (every row x vendor pair present), first-party sourcing (DOCP-03), rule-1b searched-surface requirements. In `CLAUDE.md`'s pre-commit lint battery |
+| `scripts/build-docs-vs-wire.py` | Phase 11.1, D-04 — the docs-vs-wire confrontation generator (`--check`/`--selftest`): reads `probes/docs-claims.yaml` (the claims) and `probes/classified/contract-sweep.yaml` (Phase 11's wire evidence) — plus `probes/harness/models.yaml` and `probes/inventory.yaml` for model-column and group-section order only, never a second hand-maintained list — and writes `comparisons/docs-vs-wire.md` (rule 3: never hand-edited). Its `--check` is deliberately NOT in `CLAUDE.md`'s pre-commit battery — same precedent as `scripts/build-probe-matrix.py`'s own drift check, run on demand rather than on every commit; the absence is a design choice, not an oversight |
+
+## DOCP-05 — the claims-before-generator ordering
+
+2026-09-02. The claims registry's first commit, `11691d5` (2026-09-02T18:50:56+00:00,
+`feat(11.1-01): docs-claims schema, validator, and one live-archived Anthropic claim
+(D-02/D-03)`), is strictly earlier than — and a different commit from — the
+docs-vs-wire confrontation generator's first commit, `c0dbfe6`
+(2026-09-02T20:15:01+00:00, `feat(11.1-04): docs-vs-wire generator, closed verdict
+vocabulary + anti-overclaiming (DOCP-04)`). Read directly from `git log --reverse --
+probes/docs-claims.yaml` and `git log --reverse -- scripts/build-docs-vs-wire.py
+comparisons/docs-vs-wire.md`, never asserted or manufactured. This is the only
+mechanical evidence that the 408-claim registry was recorded as a prior rather than
+reverse-engineered from the confrontation (D-06): for Phase 12's not-yet-fired
+behavioral runs, every claim already existed as a genuine expected value before any
+wire evidence for it exists; for Phase 11's already-fired 727-cell evidence, the
+confrontation in `comparisons/docs-vs-wire.md` is post-hoc and labelled as such in
+the artifact's own limitation note. Of the 612 rendered `(param, model)` pairs, the
+generator's own printed summary reports 79 `docs-contradicted`, 54
+`docs-corroborated`, 151 `docs-undecidable`, 324 `docs-untested` (includes every
+excluded-inventory-row x model pair, which has a claim but never a wire cell), and 4
+`docs-silent`.
 
 ## The DeepSeek row
 
