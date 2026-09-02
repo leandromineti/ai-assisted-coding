@@ -535,3 +535,106 @@ model's own already-read report — zero incremental spend. The global ledger to
 remains **$0.002347** (unchanged from the end of Task 1's Stage 2 entry, above).
 Stages 3–6 remain unfired; the bulk fire (D-09's approved-with-fixes go) is plan
 11-05's task.
+
+**2026-09-02, plan 11-05 Task 1 — Stages 3, 4 and 5 fired (the 309 scalar cells),
+under D-09's "Fix-before-fire" go.** Fired in order, as three separate commands, each
+read before the next started, spanning 2026-09-01T23:xx into 2026-09-02T00:20 UTC:
+
+```
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --stage 3
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --stage 4
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --stage 5
+```
+
+**Stage 3 (sampling, 110 declared cells).** All 110 fired live, all landed
+`terminal: verdict` — no stragglers. By HTTP status: 74×200, 36×400. Ledger after
+this stage (`python3 probes/harness/ledger.py`): global **$0.013738** (up from
+$0.002347 after Stage 2), by vendor: anthropic $0.000155, kimi $0.001041, gemini
+$0.000264, xai $0.007414, dseek $0.0000238, zai $0.0004004, qwen $0.0027294, openai
+$0.0017100. No ceiling verdict fired; every vendor's total stayed far under the
+$0.50 sub-ceiling (highest, xai, at ~1.5% of it).
+
+**Stage 4 (structural-and-service-tier, 99 declared cells).** All 99 fired live,
+all landed `terminal: verdict` — no stragglers. By HTTP status: 61×200, 37×400,
+1×422 (grok-4-5's `tools` cell — a structural-contract rejection, not a retry
+condition; `client.py`'s `retry_decision()` correctly treats a 422 as a non-retryable
+terminal verdict like any other non-429/5xx 4xx). Ledger after this stage: global
+**$0.029021** (delta **+$0.015283**), by vendor: anthropic $0.005167, kimi $0.004749,
+gemini $0.000324, xai $0.011132, dseek $0.000792, zai $0.000815, qwen $0.003761,
+openai $0.002280. No ceiling verdict fired; highest vendor (xai) at ~2.2% of its
+sub-ceiling.
+
+**Stage 5 (exotics, 100 declared cells — the on-floor `anthropic-thinking-budget-floor`
+1024-token cells' actual billing point, per the 11-02 amendment above).** 96 of 100
+landed `terminal: verdict`; 4 ended without a verdict (D-10: recorded, run continued,
+carried forward to Task 3's refire pass), all 4 real transient failures, not a
+harness defect — reproduced twice under manual `--dry-run` inspection of the same
+requests, ruling out a malformed body:
+
+- `kimi-k3--openai-metadata--{"probe":"true"}--default--f0fe2f92` — 429, `retry_exhausted` (4 attempts)
+- `kimi-k3--openai-service-tier-values--default--default--de496171` — 429, `retry_exhausted` (4 attempts)
+- `kimi-k3--openai-verbosity--low--default--dc48b7e4` — 429, `retry_exhausted` (4 attempts)
+- `qwen3.8-max--qwen-repetition-penalty--0.5--thinking-on--43fdcef3` — status 0 (synthesized
+  connection failure), `retry_exhausted` (4 attempts)
+
+By HTTP status of the 96 verdicts: 84×200, 12×400. Ledger after this stage: global
+**$0.050129** (delta **+$0.021108**), by vendor: anthropic $0.005421, kimi $0.009030,
+gemini $0.000366, xai $0.021964, dseek $0.002328, zai $0.001279, qwen $0.005940,
+openai $0.003800. No `CEILING skip_vendor` line printed at any point across all
+three stages; every vendor's running total stayed far under the $0.50 sub-ceiling
+(highest, xai, at ~4.4% of it after Stage 5) — Prediction 1 (SWEEP-DESIGN's $0.50
+sub-ceiling headroom) holds so far, scored fully once Stage 6 and the refire pass
+are in. Kimi ($0.009030) and zai ($0.001279) both stayed proportionate to their
+siblings — Prediction 2 (kimi/zai's `max_tokens` cap moots their expensive reasoning
+default) also holds so far.
+
+**Running total after Stages 3–5: distinct probe_ids on disk 334 (up from 20 after
+Stage 1–2), global ledger $0.050129.** Verified directly:
+`python3 -c "import json,glob,pathlib; print(len({json.loads(l)['probe_id'] for p in
+glob.glob('probes/raw/*.jsonl') for l in pathlib.Path(p).read_text().splitlines() if
+l.strip()}))"` → 334.
+
+**A genuine evidence-privacy finding for `probes/audit-evidence.py --check` — two
+new false-positive instances of the same class WINDOWS #3 already tracks, no new
+account-identifying leak.** `--check` against the enlarged evidence base reports 25
+findings (exit 1): 5 pre-existing (`.planning/WINDOWS.md` #2, Kimi's Msh-* header
+leak) + 12 pre-existing/already-tracked (#3, Gemini's `thoughtSignature` field,
+now hit by 12 records instead of 1 since Stage 3-5 fired many more Gemini cells) +
+5 anthropic + 3 dseek, both NEW. Read directly (not assumed): the 5 anthropic
+findings are all Claude's own documented `thinking` content block `signature` field
+(a base64 integrity token, present on every `claude-fable-5`/`claude-haiku-4-5`
+accepted response with thinking active — the FIRST time either model received a
+200 with thinking on, since every prior calibration-batch cell at these two models
+either rejected or omitted thinking). The 3 dseek findings are all DeepSeek's
+CloudFront-assigned `X-Amz-Cf-Id` response header — a per-request CDN routing id,
+not account-identifying, the same non-identifying class as the already-kept
+`request-id`/`msh-request-id` headers, just happening to match the generic
+long-base64-blob shape `PII_PATTERNS`' `vendor-key-fragment` rule catches. Neither
+is a real secret or an account identifier; both are the SAME structural
+false-positive class WINDOWS #3 already documents for Gemini's `thoughtSignature` —
+not resolved by widening the tiny-PNG exemption or narrowing the pattern (D-05's
+never-loosen-the-pattern rule), recorded as two new entries in `.planning/WINDOWS.md`
+(#5 anthropic `signature`, #6 dseek `X-Amz-Cf-Id`), both `open`, tracked for plan
+11-06's denylist/pattern-completeness review across all 8 vendors. No genuinely new
+account-identifying leak was found in Stages 3-5's evidence.
+
+**A genuine classify-probes.py join bug, discovered while verifying this task,
+scoped to Task 3 (its own declared file).** `scripts/classify-probes.py`'s
+`scalar_probe_id()` recomputes a declared cell's expected probe_id via
+`adapter.build_request()` + `apply_omit()` directly — it does NOT call
+`apply_max_tokens_field_override()`, the per-model request-field rename plan 11-04's
+fix (b) added to `runner.py`'s actual fire path (`build_entry_request()`). Every one
+of `gpt-5-6-sol`'s 44 non-content-block sampling/structural cells therefore fires
+with `max_completion_tokens` (correct, on the wire) but classifies as `unfired`
+(the join computes a different hash, since it still builds the request with
+`max_tokens`) — confirmed directly: re-deriving each Stage 3/4/5 declared cell's
+probe_id via the SAME path `main()` actually uses (`build_entry_request()`, not
+`scalar_probe_id()`'s shortcut) finds ZERO missing records — all 309 cells are
+correctly on disk under their real fired probe_id; this is a classification-time
+join defect, not a re-fire or re-bill risk (`seen_probe_ids()` reads raw records'
+own stored `probe_id` field directly, which IS correct, so a rerun or the refire
+pass will not re-bill any `gpt-5-6-sol` cell). Left unfixed in this task — Task 3
+owns `scripts/classify-probes.py` and its own read_first names this exact function;
+fixing `scalar_probe_id()` to also call `apply_max_tokens_field_override()` (mirroring
+`build_entry_request()`) is Task 3's first job before the coverage assertion can
+honestly read zero `unfired` rows.
