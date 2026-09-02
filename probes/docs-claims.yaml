@@ -143,6 +143,30 @@ sources:
   url: https://docs.z.ai/api-reference/llm/chat-completion
   snapshot: https://web.archive.org/web/20260902192957/https://docs.z.ai/api-reference/llm/chat-completion
   retrieved: '2026-09-02'
+- id: qwen-chat-api-ref
+  vendor: qwen
+  first_party: true
+  title: 'OpenAI chat -- POST /compatible-mode/v1/chat/completions (comprehensive OpenAPI
+    3.1 schema: ChatCompletionRequest, shared across Qwen/DeepSeek/GLM/Kimi models served
+    through the QwenCloud/DashScope platform)'
+  url: https://docs.qwencloud.com/api-reference/chat/openai-chat
+  snapshot: https://web.archive.org/web/20260902195142/https://docs.qwencloud.com/api-reference/chat/openai-chat
+  retrieved: '2026-09-02'
+- id: qwen-thinking-guide
+  vendor: qwen
+  first_party: true
+  title: Thinking -- enable_thinking/thinking_budget/reasoning_effort control surface guide
+  url: https://docs.qwencloud.com/developer-guides/text-generation/thinking
+  snapshot: https://web.archive.org/web/20260902195213/https://docs.qwencloud.com/developer-guides/text-generation/thinking
+  retrieved: '2026-09-02'
+- id: gemini-generate-content-ref
+  vendor: gemini
+  first_party: true
+  title: 'Method: models.generateContent -- comprehensive Request body / GenerationConfig
+    field reference'
+  url: https://ai.google.dev/api/generate-content
+  snapshot: https://web.archive.org/web/20260902170700/https://ai.google.dev/api/generate-content
+  retrieved: '2026-09-02'
 claims:
 - param: temperature
   vendor: anthropic
@@ -5744,3 +5768,2014 @@ claims:
     search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
   note: 'This row is status: excluded from the sweep. Not applicable to a first-party
     vendor reference page.'
+- param: temperature
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: '[0, 2)'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Set only one of temperature/top_p per the quote above; do not modify the default for
+    QVQ models.
+  quote: The sampling temperature controls the diversity of the generated text. Higher values increase
+    diversity, while lower values make the output more deterministic. The value must be greater than
+    or equal to 0 and less than 2. Both `temperature` and `top_p` control the diversity of the generated
+    text. Set only one of them. Do not modify the default temperature value for QVQ models.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: Range [0, 2) matches the cross-vendor 0-2 assumption in inventory.yaml's own note, unlike Anthropic's
+    and Z.ai's narrower 0.0-1.0 ceilings (plans 01/03 Task 1).
+- param: temperature
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: '[0.0, 2.0]'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. Controls the randomness of the output.
+
+    Note: The default value varies by model, see the Model.temperature attribute of the Model returned
+    from the getModel function.
+
+    Values can range from [0.0, 2.0].'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Directly settles the row ''gemini-temperature-range'' (this file, below): a single 2026 secondary
+    source (Infron) claimed Gemini''s practical range is narrower, 0 to 1 -- inventory.yaml''s own hypothesis
+    for that row. Gemini''s own first-party GenerationConfig reference states plainly ''[0.0, 2.0]'',
+    the SAME cross-vendor range as OpenAI/xAI/Qwen, not the tighter 0-1 ceiling the secondary source
+    claimed. Recorded here as the shared ''temperature'' row''s own claim (probed at the family-default
+    value 0.7); the boundary-contract row''s own claim below carries the full refutation note.'
+- param: top-p
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: (0, 1.0]
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Set only one of temperature/top_p per the quote above; do not modify the default for
+    QVQ models.
+  quote: 'The probability threshold for nucleus sampling. A higher `top_p` value produces more diverse
+    text. A lower `top_p` value produces more deterministic text. Value range: (0, 1.0]. Both `temperature`
+    and `top_p` control the diversity of the generated text. Set only one of them. Do not modify the
+    default `top_p` value for QVQ models.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: top-p
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. The maximum cumulative probability of tokens to consider when sampling.
+
+    The model uses combined Top-k and Top-p (nucleus) sampling.
+
+    Tokens are sorted based on their assigned probabilities so that only the most likely tokens are
+    considered. Top-k sampling directly limits the maximum number of tokens to consider, while Nucleus
+    sampling limits the number of tokens based on the cumulative probability.
+
+    Note: The default value varies by Model and is specified by theModel.top_p attribute returned from
+    the getModel function.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: No explicit numeric range stated on this page (unlike temperature's explicit [0.0, 2.0]) --
+    documented as a concept and type, docs-silent on the exact bound.
+- param: top-k
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: Model-dependent (10/40/1/50/20 across model families, per the quote)
+  conditionality: Setting top_k to null or >100 disables the top_k strategy entirely (only top_p then
+    applies).
+  quote: Specifies the number of candidate tokens to use for sampling during generation. A larger value
+    produces more random output, whereas a smaller value produces more deterministic output. If set
+    to `null` or a value greater than 100, the `top_k` strategy is disabled and only `top_p` takes effect.
+    The value must be an integer greater than or equal to 0.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: This is flagged 'not a standard OpenAI parameter' on the page (extra_body in the Python SDK),
+    consistent with inventory.yaml's own note that top_k is absent from OpenAI's/xAI's OpenAI-compatible
+    surface but present at Qwen under this exact family-default name.
+- param: top-k
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Some Gemini models run nucleus-only sampling and do not allow topK to be set on requests
+    at all -- a per-model presence/rejection split documented on the page itself, not merely a range
+    question.
+  quote: 'Optional. The maximum number of tokens to consider when sampling.
+
+    Gemini models use Top-p (nucleus) sampling or a combination of Top-k and nucleus sampling. Top-k
+    sampling considers the set of topK most probable tokens. Models running with nucleus sampling don''t
+    allow topK setting.
+
+    Note: The default value varies by Model...An empty topK attribute indicates that the model doesn''t
+    apply top-k sampling and doesn''t allow setting topK on requests.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: No explicit numeric range stated -- docs-silent on the exact bound, same as top-p.
+- param: presence-penalty
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: '[-2.0, 2.0]'
+  documented_allowed_values: null
+  documented_default: Model-dependent (0.0 to 1.5 across model families, per the quote)
+  conditionality: null
+  quote: 'Controls how strongly the model avoids repeating content. Valid values: -2.0 to 2.0. Positive
+    values reduce repetition. Negative values increase it. For creative writing or brainstorming, increase
+    this value. For technical documents or formal text, decrease this value.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: presence-penalty
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. Presence penalty applied to the next token''s logprobs if the token has already
+    been seen in the response.
+
+    This penalty is binary on/off and not dependant on the number of times the token is used (after
+    the first). Use frequencyPenalty for a penalty that increases with each use.
+
+    A positive penalty will discourage the use of tokens that have already been used in the response,
+    increasing the vocabulary.
+
+    A negative penalty will encourage the use of tokens that have already been used in the response,
+    decreasing the vocabulary.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: No explicit numeric range stated on this page (unlike Qwen's explicit -2.0 to 2.0, this claim's
+    sibling above) -- docs-silent on the exact bound.
+- param: frequency-penalty
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'No frequency_penalty field anywhere on the ChatCompletionRequest schema -- only presence_penalty
+    is documented (this file''s sibling claim above). A genuine cross-vendor asymmetry: Qwen documents
+    one of the two penalty concepts but not the other.'
+- param: frequency-penalty
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. Frequency penalty applied to the next token''s logprobs, multiplied by the number
+    of times each token has been seen in the respponse so far.
+
+    A positive penalty will discourage the use of tokens that have already been used, proportional to
+    the number of times the token has been used...
+
+    Caution: A negative penalty will encourage the model to reuse tokens proportional to the number
+    of times the token has been used. Small negative values will reduce the vocabulary of a response.
+    Larger negative values will cause the model to start repeating a common token until it hits the
+    maxOutputTokens limit.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: Unlike Qwen (which documents presence_penalty but not frequency_penalty, this file's sibling
+    claim above), Gemini documents BOTH -- the opposite asymmetry.
+- param: logprobs
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: Supported only by a named subset of models (Qwen-plus/Qwen-turbo snapshots excluding
+    the stable model, Qwen3-vl-plus/flash including the stable model, and Qwen3 open-source models)
+    -- not universal across the Qwen line.
+  quote: Specifies whether to return the log probabilities of the output tokens. Content generated during
+    the thinking phase (`reasoning_content`) does not include log probabilities.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: Thinking-phase content is explicitly excluded from logprobs even when the flag is set -- a documented
+    thinking-axis interaction (D-07), narrower than a simple accept/reject.
+- param: logprobs
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: responseLogprobs
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Optional. If true, export the logprobs results in response.
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own names.gemini: responseLogprobs for this row -- the boolean toggle
+    paired with the separate `logprobs` integer-count field (this file''s top-logprobs claim below).'
+- param: top-logprobs
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: '[0, 5]'
+  documented_allowed_values: null
+  documented_default: '0'
+  conditionality: Applies only if logprobs is set to true.
+  quote: 'The number of most likely candidate tokens to return at each generation step. Valid values:
+    0 to 5. This parameter applies only if `logprobs` is set to `true`.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: Range 0-5 is narrower than OpenAI's/DeepSeek's documented 0-20 (plan 02) and Gemini's own 0-20
+    (this file's sibling claim below) -- a third, genuinely different ceiling for the same concept.
+- param: top-logprobs
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: logprobs
+  documented_type: integer
+  documented_range: '[0, 20]'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Only valid if responseLogprobs=True.
+  quote: Optional. Only valid if responseLogprobs=True. This sets the number of top logprobs, including
+    the chosen candidate, to return at each decoding step in the Candidate.logprobs_result. The number
+    must be in the range of [0, 20].
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own names.gemini: logprobs for this row -- Gemini names the INT-count
+    field `logprobs` and the bool toggle `responseLogprobs`, the inverse of the openai_compat family''s
+    own `logprobs`(bool)/`top_logprobs`(int) naming -- the exact name-collision inventory.yaml''s own
+    note already flags.'
+- param: seed
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: '[0, 2^31-1]'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'The random number seed. Ensures reproducible results. If you use the same seed value and other
+    parameters remain unchanged, the model returns the same result whenever possible. Valid values:
+    [0, 2^31-1].'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: '''Whenever possible'' is the same best-effort hedge FEATURES.md already documented at other
+    vendors (inventory.yaml''s own note on this row) -- Qwen states the hedge explicitly rather than
+    silently.'
+- param: seed
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Optional. Seed used in decoding. If not set, the request uses a randomly generated seed.
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: No 'best-effort' hedge language on this page, unlike Qwen's explicit 'whenever possible' (this
+    file's sibling claim above) -- docs-silent on determinism strength, not a stronger guarantee.
+- param: n
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: integer
+  documented_range: '[1, 4]'
+  documented_allowed_values: null
+  documented_default: '1'
+  conditionality: 'Supported only by Qwen3 (non-thinking mode) models -- a genuine thinking-axis restriction
+    on this row (D-07''s whole point: the sampling family carries the thinking axis broadly). Also must
+    be 1 whenever `tools` is passed.'
+  quote: The number of responses to generate. Must be an integer in the range of 1-4. This is useful
+    for scenarios that require multiple candidate responses, such as creative writing or ad copy. Supported
+    only by Qwen3 (non-thinking mode) models. If you pass the `tools` parameter, set `n` to 1. Increasing
+    `n` increases output token consumption but does not affect input token consumption.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: A double conditionality (thinking-mode AND tool-use) neither of which inventory.yaml's own note
+    on this row anticipated -- both recorded here as documented facets, not assumed.
+- param: n
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: candidateCount
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: '1'
+  conditionality: Does not work for previous-generation (Gemini 1.0 family) models.
+  quote: Optional. Number of generated responses to return. If unset, this will default to 1. Please
+    note that this doesn't work for previous generation models (Gemini 1.0 family)
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'FEATURES.md''s own finding, restated from first-party docs: candidateCount is Gemini''s name
+    for n (matches inventory.yaml''s names.gemini: candidateCount for this row and cross-references
+    the gemini-candidate-count exotic claim below, which probes the same field at value 2 rather than
+    1).'
+- param: logit-bias
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No logit_bias field (or any per-token bias mechanism) anywhere on the ChatCompletionRequest
+    schema.
+- param: logit-bias
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No logit_bias field (or any per-token bias mechanism) anywhere on the GenerationConfig/GenerateContentRequest
+    schema -- matches inventory.yaml's own checked absence for this row.
+- param: max-tokens
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: max_tokens (deprecated) / max_completion_tokens (current)
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: max_tokens's own reasoning-inclusive-or-not semantics are documented as VARYING BY
+    MODEL on this single page -- not a single vendor-wide answer.
+  quote: '**Deprecated.** Use `max_completion_tokens` for new integrations.
+
+    The meaning of this parameter varies by model:
+
+    - `deepseek-v4-pro`, ...: The maximum number of tokens for the sum of the model''s answer and chain-of-thought
+    content...
+
+    - `glm-5.2`: When `thinking_budget` is not passed, `max_tokens` is the maximum number of tokens
+    for the sum of the model''s answer and chain-of-thought content...When `thinking_budget` is passed,
+    `max_tokens` is the maximum number of tokens for the model''s answer only...
+
+    - Other models: The maximum number of tokens for the model''s answer.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'Directly relevant to the excluded max-tokens-semantics row below: Qwen''s platform serves models
+    from multiple makers (Qwen/DeepSeek/GLM/Kimi) under one API, and documents that max_tokens''s semantics
+    genuinely differ PER MODEL rather than per vendor -- a finding neither OpenAI, Anthropic, xAI, nor
+    DeepSeek''s own single-vendor claims (plans 01-02) could have produced. The current field, max_completion_tokens,
+    is documented unconditionally as TOTAL-including-reasoning (see quote on the max-tokens-semantics
+    claim below) -- Qwen''s answer to the swept row''s own contract-naming question is ''both names
+    exist, deprecated one varies, current one is total''.'
+- param: max-tokens
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: maxOutputTokens
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. The maximum number of tokens to include in a response candidate.
+
+    Note: The default value varies by model, see the Model.output_token_limit attribute of the Model
+    returned from the getModel function.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: null
+- param: stop
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: stop
+  documented_type: string or array of strings
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Stop words. If a string or token specified in `stop` appears in the generated text, generation
+    stops immediately. If `stop` is an array, do not use a `token_id` and a string as elements simultaneously.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: stop
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: stopSequences
+  documented_type: array of strings
+  documented_range: up to 5 sequences
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Optional. The set of character sequences (up to 5) that will stop output generation. If specified,
+    the API will stop at the first appearance of a stop_sequence. The stop sequence will not be included
+    as part of the response.
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: The explicit 'up to 5' ceiling is a genuinely new boundary fact neither OpenAI's, Anthropic's,
+    xAI's, nor DeepSeek's own claims (plans 01-02) documented for their own stop-sequence fields.
+- param: response-format
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: response_format
+  documented_type: object
+  documented_range: null
+  documented_allowed_values: text | json_object | json_schema
+  documented_default: '{"type": "text"}'
+  conditionality: null
+  quote: 'The format of the response content. Defaults to `{"type": "text"}`.
+
+    Valid values:
+
+    - `{"type": "text"}`: Returns a plain text response.
+
+    - `{"type": "json_object"}`: Returns a JSON string that conforms to standard JSON syntax.
+
+    - `{"type": "json_schema", "json_schema": {...}}`: Returns a JSON string that conforms to a custom
+    schema.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: response-format
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: responseMimeType + responseSchema
+  documented_type: string + object
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: If responseSchema is set, a compatible responseMimeType (application/json) must also
+    be set.
+  quote: 'responseMimeType
+
+    string
+
+    Optional. MIME type of the generated candidate text. Supported MIME types are: text/plain: (default)
+    Text output. application/json: JSON response in the response candidates. text/x.enum: ENUM as a
+    string response in the response candidates.
+
+    responseSchema
+
+    (deprecated)
+
+    object (Schema)
+
+    Optional. Output schema of the generated candidate text...If set, a compatible responseMimeType
+    must also be set.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own names.gemini: responseMimeType for this row. responseSchema is
+    marked `(deprecated)` on the page in favor of the newer responseJsonSchema field -- a further structured-output
+    naming split beyond the row''s own Anthropic-scoped output_config/output_format hypothesis (this
+    file''s siblings below).'
+- param: tools
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: An array of one or more tool objects that the model can call in function calling. When `tools`
+    is set and the model determines that a tool needs to be called, the response returns tool information
+    in the `tool_calls` field.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: tools
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: tools
+  documented_type: array
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. A list of Tools the Model may use to generate the next response.
+
+    A Tool is a piece of code that enables the system to interact with external systems to perform an
+    action, or set of actions, outside of knowledge and scope of the Model. Supported Tools are Function
+    and codeExecution.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: tool_choice
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: 'auto | none | {type: function, function: {name: ...}}'
+  documented_default: auto
+  conditionality: Models in thinking mode do not support forcing a specific tool via the object-forcing
+    shape -- a further thinking-axis interaction on a structural row (D-07 notes the structural family
+    stays flat in general, but this is a documented exception).
+  quote: 'The tool selection policy. `auto` lets the model select. `none` disables tool calling. An
+    object with `{"type": "function", "function": {"name": "..."}}` forces a specific tool. Models in
+    thinking mode do not support forcing a specific tool.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'No flat `tool_choice`/`toolChoice` field anywhere in the GenerateContentRequest body -- matches
+    inventory.yaml''s own checked absence under this literal name. The genuinely equivalent mechanism
+    IS documented on this same page as a NESTED shape: the request''s own `toolConfig` field (object,
+    ToolConfig) carries a `functionCallingConfig.mode` (ANY/AUTO/NONE per this page''s own code samples
+    at lines ~1147-1150, 1324, 1474-1475) -- a structurally different (nested, not flat) shape, not
+    a name variant of the same field. Recorded as absent under the literal canonical name per rule 1b,
+    with the nested equivalent noted rather than silently substituted.'
+- param: parallel-tool-calls
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: parallel_tool_calls
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Specifies whether to enable parallel tool calling.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: parallel-tool-calls
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No parallel_tool_calls (or equivalent) field anywhere on this page -- matches inventory.yaml's
+    own checked absence for this row.
+- param: stream
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: stream
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Enables streaming output mode. When `true`, the model generates and sends output incrementally.
+    A data block (chunk) is returned as soon as part of the content is generated.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: stream
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `stream` request-body flag on this page. Gemini controls streaming via a DISTINCT method
+    entirely, `models.streamGenerateContent` (documented as its own top-level Method section on the
+    same reference), not a request-body boolean -- matches inventory.yaml's own checked absence for
+    this row and its own note on the mechanism.
+- param: stream-options-include-usage
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: stream_options.include_usage
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: Effective only when stream is set to true.
+  quote: 'Configuration options for streaming output. This parameter is effective only when `stream`
+    is set to `true`.
+
+    include_usage: Specifies whether to include token consumption information in the last data block
+    of the response.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No stream_options field or nested include_usage toggle anywhere on this page -- consistent with
+    streaming being a distinct method (streamGenerateContent) rather than a request-body flag on this
+    generateContent reference (this file's `stream` claim above).
+- param: service-tier
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: The literal string `service_tier` appears TWICE on this page, but only inside the RESPONSE object
+    schemas (ChatCompletion.service_tier and ChatCompletionChunk.service_tier), each described as 'Currently
+    fixed as `null`.' No REQUEST-body field of this name exists in ChatCompletionRequest -- Qwen echoes
+    the field name in responses (presumably for openai-client-library compatibility) but does not accept
+    or act on it as an input. Recorded as absent-from-docs for the REQUEST-side concept this row and
+    the wire probe actually test, with the response-side null field noted rather than silently smoothed
+    over rule 1b.
+- param: service-tier
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: serviceTier
+  documented_type: enum (ServiceTier)
+  documented_range: null
+  documented_allowed_values: unspecified | standard | flex | priority
+  documented_default: null
+  conditionality: null
+  quote: 'serviceTier
+
+    enum (ServiceTier)
+
+    Optional. The service tier of the request.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'CONTRADICTS inventory.yaml''s own checked-absence claim for this row (names.gemini: null, note:
+    ''not present at Google/Gemini yet ... 3 of 8 makers so far'', retrieved 2026-09-01). As of this
+    claim''s own retrieval (2026-09-02, one day later), Gemini''s own generateContent reference documents
+    a real serviceTier enum field with four values (unspecified/standard/flex/priority). inventory.yaml
+    is left unedited per D-09 -- this is exactly the kind of documentation drift this registry exists
+    to catch and record rather than silently reconcile. Whether Gemini actually HONORS a non-default
+    serviceTier value on the wire is Phase 12/BHV-06 territory, not this contract-only claim.'
+- param: openai-reasoning-effort
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: string
+  documented_range: null
+  documented_allowed_values: low | medium | high | xhigh | max
+  documented_default: null
+  conditionality: Cannot be set together with thinking_budget (mutually exclusive, causes an error if
+    both are set). Valid enum values and defaults vary per model family (Qwen3.8 series vs DeepSeek-V4/GLM
+    series vs ZHIPU/GLM-5.3/kimi-k3 vs kimi-k3-Moonshot, each documented with its own value set).
+  quote: 'Controls model reasoning effort.
+
+    **Qwen3.8 series:** Options: `low`, `medium`, `xhigh`. Default: `xhigh`. Cannot be set together
+    with thinking_budget -- setting both will cause an error...OpenAI standard value mapping: `max`
+    is mapped to xhigh, `high` is mapped to xhigh, `minimal` is mapped to low, and `none` is mapped
+    to enable_thinking=False.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'A genuinely significant contradiction of inventory.yaml''s own vendor_overrides.qwen assumption
+    (axes.thinking.shapes.openai_compat.vendor_overrides.qwen: only enable_thinking/thinking_budget,
+    no reasoning_effort). Qwen''s own docs document `reasoning_effort` as a REAL, independently accepted
+    field, with documented automatic conversion to/from thinking_budget -- not merely absent the way
+    DeepSeek''s/Kimi''s own vendor_overrides null entries are (this row''s own family-default note lists
+    Qwen among the vendors that ''diverge from this default shape''; the divergence is additive, not
+    exclusive: Qwen accepts BOTH shapes). inventory.yaml left unedited per D-09; flagged here as a finding
+    for Phase 12/the confrontation plan.'
+- param: openai-reasoning-effort
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No reasoning_effort string-enum field anywhere on this page. Gemini's own reasoning-intensity
+    control is the differently-named, differently-shaped thinkingConfig object (this file's gemini-thinking-config
+    claim below) -- matches inventory.yaml's own checked absence for this row.
+- param: anthropic-thinking-object
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field literally named `thinking` (as an {type, budget_tokens} object) anywhere on this page.
+    Qwen's own thinking controls are the separately-named enable_thinking (boolean) + thinking_budget
+    (integer) + reasoning_effort (string enum) fields -- see this file's qwen-enable-thinking and openai-reasoning-effort
+    claims above -- a genuinely different request shape, not a name variant of Anthropic's object.
+- param: anthropic-thinking-object
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field literally named `thinking` anywhere on this page. Gemini's own reasoning control is
+    the differently-named thinkingConfig object (this file's gemini-thinking-config claim below) --
+    matches inventory.yaml's own checked absence for this row.
+- param: gemini-thinking-config
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field literally named `thinkingConfig` (or `thinking_config`) anywhere on this page -- Qwen's
+    own equivalent mechanism uses independently-named fields (enable_thinking/thinking_budget/reasoning_effort,
+    this file's own claims above), not a nested Gemini-shaped object.
+- param: gemini-thinking-config
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: thinkingConfig
+  documented_type: object
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: thinkingLevel is recommended for Gemini 3+ models; using it with earlier models returns
+    an error -- a documented model-generation boundary.
+  quote: 'ThinkingConfig
+
+    Config for thinking features.
+
+    Fields
+
+    includeThoughts: boolean. Indicates whether to include thoughts in the response.
+
+    thinkingBudget: integer. The number of thoughts tokens that the model should generate.
+
+    thinkingLevel: enum (ThinkingLevel). Optional. Controls the maximum depth of the model''s internal
+    reasoning process...Recommended for Gemini 3 or later models. Use with earlier models results in
+    an error.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: ThinkingLevel's enum (UNSPECIFIED/MINIMAL/LOW/MEDIUM/HIGH) is a finer-grained set than inventory.yaml's
+    own axes.thinking.shapes.gemini fragment, which uses only 'low' for its ON cell -- the fragment's
+    own probe value is a genuine subset of the documented range, not the whole enum.
+- param: qwen-enable-thinking
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: enable_thinking
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: Default values differ by model; DeepSeek-V4 series enables thinking by default regardless
+    of this flag's own default.
+  quote: Enables the thinking mode for hybrid thinking models. This mode is available for the Qwen3.7,
+    Qwen3.6, Qwen3.5, Qwen3, Qwen3-Omni-Flash, and Qwen3-VL models, as well as the DeepSeek-V4-Pro/V4-Flash
+    series, DeepSeek-V3.2/V3.2-exp/V3.1 series, Kimi-K2.7-code (thinking model only), Kimi-K2.6/K2.5
+    series, and GLM series...When enabled, the thinking content is returned in the `reasoning_content`
+    field.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own axes.thinking.shapes.openai_compat.vendor_overrides.qwen entry
+    exactly (enable_thinking: true/false). Notably, this SAME field is documented as also applying to
+    DeepSeek and GLM models ''deployed on QwenCloud'' -- consistent with this page being a shared, multi-maker
+    platform reference, not a Qwen-exclusive one (see this file''s kimi-partial-mode and anthropic-cache-control-block
+    claims below for two further instances of the same pattern).'
+- param: qwen-enable-thinking
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field literally named `enable_thinking` anywhere on this page -- Gemini's own reasoning toggle
+    is the differently-shaped thinkingConfig object (this file's gemini-thinking-config claim above).
+- param: anthropic-structured-output-output-config
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `output_config` field anywhere on the ChatCompletionRequest schema -- Qwen's own structured-output
+    mechanism is `response_format` (this file's response-format claim above), a third naming convention
+    distinct from both of Anthropic's two candidate names.
+- param: anthropic-structured-output-output-config
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `output_config` (or `outputConfig`) field anywhere on this page -- Gemini's own structured-output
+    mechanism is responseMimeType/responseSchema/responseJsonSchema (this file's response-format claim
+    above), a fourth naming convention distinct from both Anthropic candidates and Qwen's response_format.
+- param: anthropic-structured-output-output-format
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `output_format` field anywhere on the ChatCompletionRequest schema -- see this row's sibling
+    claim above for Qwen's own actual mechanism (response_format).
+- param: anthropic-structured-output-output-format
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `output_format` (or `outputFormat`) field anywhere on this page -- see this row's sibling
+    claim above for Gemini's own actual mechanism.
+- param: gemini-temperature-range
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Gemini-scoped boundary-contract row (firing_scope: home-vendor). Qwen''s own
+    temperature range is documented as [0, 2) on this page (this file''s swept `temperature` claim above)
+    -- a different vendor''s own boundary, not evidence about Gemini''s.'
+- param: gemini-temperature-range
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: temperature
+  documented_type: number
+  documented_range: '[0.0, 2.0]'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Optional. Controls the randomness of the output.
+
+    Note: The default value varies by model, see the Model.temperature attribute of the Model returned
+    from the getModel function.
+
+    Values can range from [0.0, 2.0].'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'THIS is the row whose whole purpose is settling the Infron secondary-source hypothesis (''Gemini
+    accepts 0 to 1'', contradicting the swept temperature row''s own 0-2 cross-vendor assumption). Gemini''s
+    own first-party GenerationConfig reference states the range as ''[0.0, 2.0]'' in so many words --
+    REFUTING the tighter 0-1 hypothesis directly from first-party docs, before any wire probe result
+    is even consulted. D-15''s own framing (''the wire, not a third documentation pass'') predates this
+    milestone''s docs-as-prior insertion (Phase 11.1); this claim is exactly the kind of first-party
+    prior Phase 11.1 exists to gather ahead of the wire confrontation (plan 04). inventory.yaml is left
+    unedited (D-09) -- the hypothesis row itself, and the swept temperature row''s own probe_values:
+    [1.0, 2.0], remain as written; Phase 11''s own wire evidence (already fired, per the phase''s own
+    PREREGISTRATION.md Run log) is what plan 04 confronts this claim against.'
+- param: openai-verbosity
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `verbosity` field anywhere on the ChatCompletionRequest schema -- matches inventory.yaml's
+    own checked absence outside OpenAI itself.
+- param: openai-verbosity
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `verbosity` field anywhere on this page.
+- param: openai-prediction
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `prediction` (Predicted Outputs) field anywhere on the ChatCompletionRequest schema.
+- param: openai-prediction
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `prediction` field anywhere on this page (the string 'prediction' appears only in an unrelated
+    FunctionResponse description, 'based on model prediction', not as a request field).
+- param: openai-service-tier-values
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'Cross-references this file''s own `service-tier` claim above: the literal `service_tier` name
+    exists only as an always-null RESPONSE field on this page, never as a request-accepted enum with
+    documented values -- so there is no value enumeration to transcribe on the request side at all,
+    distinct from (and stricter than) a simple presence/absence finding.'
+- param: openai-service-tier-values
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: serviceTier
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: unspecified | standard | flex | priority
+  documented_default: null
+  conditionality: null
+  quote: 'ServiceTier
+
+    Service tier of the request.
+
+    Enums
+
+    unspecified: Default service tier, which is standard.
+
+    standard: Standard service tier.
+
+    flex: Flex service tier.
+
+    priority: Priority service tier.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Genuinely richly documented despite this row''s own home family being openai_compat (this claim
+    exists for registry completeness, D-09, not because the row fires at Gemini on the wire). Gemini''s
+    own 4-value enum shares TWO value names with OpenAI''s own 4-value enum (flex, priority) but not
+    the other two (Gemini: unspecified/standard vs OpenAI: auto/default) -- a genuine partial vocabulary
+    convergence worth flagging for Phase 12/the cross-vendor comparison, not a full match nor a full
+    mismatch.'
+- param: anthropic-thinking-budget-floor
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No documented minimum-token floor for thinking_budget on this page -- Qwen's own thinking_budget
+    field (this file's qwen-enable-thinking claim above) states only that the default is the model's
+    maximum chain-of-thought length, with no stated minimum. Not evidence that Qwen has no floor at
+    all, only that this page is silent on the specific 1024-token boundary Anthropic documents.
+- param: anthropic-thinking-budget-floor
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No documented minimum-token floor for thinkingBudget on this page -- ThinkingConfig's own field
+    description (this file's gemini-thinking-config claim above) states no minimum. Not evidence Gemini
+    has no floor, only that this page is silent on it.
+- param: gemini-media-resolution
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `mediaResolution` (or `media_resolution`) field anywhere on the ChatCompletionRequest schema.
+    Qwen's own related-but-different mechanism is `vl_high_resolution_images` (boolean) plus `min_pixels`/`max_pixels`/`total_pixels`
+    (integers, per-image-or-video pixel-count controls) -- a genuinely different cost/quality-tradeoff
+    shape (raw pixel budgets, not an enum), not a name variant of Gemini's field.
+- param: gemini-media-resolution
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: mediaResolution
+  documented_type: enum (MediaResolution)
+  documented_range: null
+  documented_allowed_values: MEDIA_RESOLUTION_UNSPECIFIED | MEDIA_RESOLUTION_LOW | MEDIA_RESOLUTION_MEDIUM
+    | MEDIA_RESOLUTION_HIGH
+  documented_default: null
+  conditionality: null
+  quote: 'mediaResolution
+
+    enum (MediaResolution)
+
+    Optional. If specified, the media resolution specified will be used.
+
+    ...
+
+    MEDIA_RESOLUTION_LOW: Media resolution set to low (64 tokens).
+
+    MEDIA_RESOLUTION_MEDIUM: Media resolution set to medium (256 tokens).
+
+    MEDIA_RESOLUTION_HIGH: Media resolution set to high (zoomed reframing with 256 tokens).'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Confirms this row''s own probe_values: [MEDIA_RESOLUTION_LOW] is a real, currently-documented
+    enum value, with token-cost figures (64/256/256) the row''s own note did not carry.'
+- param: gemini-candidate-count
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `candidateCount` field anywhere on the ChatCompletionRequest schema -- Qwen's own count concept
+    is the differently-named `n` field (this file's swept `n` claim above), not a name variant of Gemini's.
+- param: gemini-candidate-count
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: candidateCount
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: '1'
+  conditionality: null
+  quote: Optional. Number of generated responses to return. If unset, this will default to 1. Please
+    note that this doesn't work for previous generation models (Gemini 1.0 family)
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'Identical quote to this file''s own swept `n` claim above (same field, same page section) --
+    confirms FEATURES.md''s own naming-divergence finding: candidateCount IS n under Gemini''s name,
+    cross-referenced from both rows per inventory.yaml''s own convention for this pair.'
+- param: kimi-partial-mode
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: partial
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Specifies whether to enable partial mode.
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: THE SAME documented_name mismatch plan 03 Task 1 already found at Kimi's own docs (`partial`,
+    not `partial_mode`) -- Qwen's own Assistant-message schema documents an IDENTICALLY-NAMED `partial`
+    boolean field. Consistent with this page's own explicit mentions of Kimi models 'deployed on QwenCloud'
+    (kimi-k2.6, kimi-k2.7-code) elsewhere on the page -- this is very likely the SAME underlying platform
+    feature documented once, at the shared DashScope/QwenCloud schema level, rather than two vendors
+    independently converging on one field name. Recorded as its own claim per this registry's completeness
+    rule (D-09); inventory.yaml's own canonical_name (partial_mode) is still not substituted anywhere
+    (D-09).
+- param: kimi-partial-mode
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `partial`/`partial_mode` field (or any assistant-turn prefix-continuation mechanism) anywhere
+    on this page.
+- param: glm-do-sample
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `do_sample` field anywhere on the ChatCompletionRequest schema, despite this page documenting
+    GLM-series defaults elsewhere for other fields (e.g. temperature/top_p) -- the do_sample toggle
+    itself is not part of the shared QwenCloud-platform schema this page documents.
+- param: glm-do-sample
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `do_sample` field anywhere on this page.
+- param: qwen-repetition-penalty
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-thinking-guide
+  searched_surface: QwenCloud Thinking guide (docs.qwencloud.com/developer-guides/text-generation/thinking)
+    read end to end plus an in-page text search for the canonical/wire-family name -- zero matches,
+    retrieved 2026-09-02.
+  note: 'CONTRADICTS inventory.yaml''s own citation for this exact row: inventory.yaml''s source: field
+    names this SAME URL (docs.qwencloud.com/developer-guides/text-generation/thinking, retrieved 2026-09-01)
+    as documenting repetition_penalty with mode-dependent recommended values (0.5 thinking / 1.5 otherwise).
+    Re-fetched and re-read end to end today (2026-09-02, one day later): the thinking guide page no
+    longer mentions repetition_penalty anywhere, nor does the comprehensive Chat API reference (this
+    file''s own primary source) -- only presence_penalty is documented (this file''s presence-penalty
+    claim above), with NO repetition_penalty alias. Either the field was renamed/removed/relocated between
+    2026-09-01 and 2026-09-02, or the documentation drifted; both surfaces checked, both silent. inventory.yaml
+    left unedited per D-09 -- this is a genuine, dated documentation-drift finding, not a search failure
+    (rule 1b: an admitted absence beats a claim resting on a source this session could not itself confirm).'
+- param: qwen-repetition-penalty
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `repetition_penalty` field anywhere on this page -- Gemini's closer analog is frequencyPenalty
+    (this file's frequency-penalty claim above), a related-but-conceptually-different mechanism (proportional-to-count
+    penalty vs Qwen's own recommended-value-pair concept), not a name variant.
+- param: kimi-fixed-sampling-point
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor). No documented
+    fixed-schedule temperature rejection anywhere on Qwen''s own pages -- Qwen''s temperature is documented
+    as a continuous range [0, 2) with no fixed on-schedule points (this file''s swept temperature claim
+    above), a different contract shape from Kimi''s own alleged rejection behavior.'
+- param: kimi-fixed-sampling-point
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is a Kimi-scoped boundary-contract row (firing_scope: home-vendor). No documented
+    fixed-schedule temperature rejection anywhere on Gemini''s own pages -- Gemini''s temperature is
+    documented as a continuous range [0.0, 2.0] (this file''s gemini-temperature-range claim above),
+    a different contract shape.'
+- param: openai-store
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `store` field anywhere on the ChatCompletionRequest schema.
+- param: openai-store
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: store
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Optional. Configures the logging behavior for a given request. If set, it takes precedence
+    over the project-level logging config.
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'A genuine name convergence: Gemini''s own request body independently documents a field literally
+    named `store`, conceptually adjacent to OpenAI''s own `store` (both configure request-level logging
+    behavior) though this row''s own firing_scope is wire-family openai_compat (fires at the six OpenAI-compatible
+    vendors only, never at Gemini on the wire) -- recorded here for registry completeness (D-09) and
+    flagged for Phase 12/the cross-vendor naming-convergence findings list, since it is NOT a compat-shim
+    swallow (Gemini''s own field is independently documented, not a silently-accepted foreign field).'
+- param: openai-metadata
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No top-level `metadata` request field anywhere on the ChatCompletionRequest schema.
+- param: openai-metadata
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No top-level request-body `metadata` field. The string `metadata` DOES appear elsewhere on this
+    page, but as a differently-scoped union-type field on the `Part` object ('videoMetadata', governing
+    video-part preprocessing) -- a structurally unrelated, part-level concept, not a top-level opaque
+    key-value bag like OpenAI's own field.
+- param: openai-safety-identifier
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `safety_identifier` field anywhere on the ChatCompletionRequest schema.
+- param: openai-safety-identifier
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `safetyIdentifier`/`safety_identifier` field anywhere on this page. Gemini's own `safetySettings`
+    field IS documented, but it is a content-moderation THRESHOLD configuration (per-harm-category blocking
+    behavior), not an opaque per-end-user identifier for abuse monitoring -- a genuinely different concept
+    behind a superficially similar name, not a name variant.
+- param: openai-prompt-cache-key
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `prompt_cache_key` field anywhere on the ChatCompletionRequest schema. Qwen's own caching
+    mechanism visible on this page is response-side only (usage.prompt_tokens_details.cached_tokens/cache_creation,
+    reporting what was cached) plus the per-content-block `cache_control` marker (this file's anthropic-cache-control-block
+    claim below) -- no request-time opaque cache-key HINT field of OpenAI's own kind.
+- param: openai-prompt-cache-key
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `prompt_cache_key` (or `promptCacheKey`) field anywhere on this page. Gemini's own caching
+    mechanism is the differently-shaped `cachedContent` field (a request-body string naming a PRE-CREATED
+    cache resource by its own resource name, cachedContents/{cachedContent}) -- a genuinely different
+    mechanism (reference an existing named cache) from OpenAI's own opaque steering-hint key, not a
+    name variant.
+- param: max-tokens-semantics
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: max_completion_tokens is unconditionally TOTAL-including-reasoning; the older max_tokens
+    field's own inclusion-of-reasoning-tokens semantics instead VARY BY MODEL (see this file's max-tokens
+    claim above for the per-model table).
+  quote: 'max_completion_tokens: The maximum number of tokens in this response, including chain-of-thought
+    tokens. Generation stops when this limit is reached, and `finish_reason` is set to `length`. The
+    default and maximum values correspond to the model''s maximum output length.
+
+    **Difference from `max_tokens`:** `max_completion_tokens` limits the total length of both the chain-of-thought
+    and the final response, while `max_tokens` does not limit the chain-of-thought length. For reasoning
+    models, `max_completion_tokens` is recommended.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    Unlike OpenAI''s and Anthropic''s own claims (plan 01, TOTAL-including-reasoning) and xAI''s own
+    claim (plan 02, OUTPUT-ONLY), Qwen''s docs settle this DIFFERENTLY for its two field names: max_completion_tokens
+    is documented unconditionally TOTAL-including-reasoning (matching OpenAI''s own field-name semantics
+    exactly), while the older max_tokens field''s semantics VARY BY MODEL (this file''s max-tokens claim
+    above) -- a fourth, genuinely more nuanced answer among the vendors read so far, not a simple fourth
+    data point on the same two-way split.'
+- param: max-tokens-semantics
+  vendor: gemini
+  models: all
+  documented_status: docs-silent
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded rows equally).
+    maxOutputTokens''s own field description (this file''s max-tokens claim above) says nothing about
+    whether thinking/thoughts tokens count toward the limit -- genuinely silent on the specific question
+    this row asks, the same silence DeepSeek''s own claim recorded (plan 02), distinct from OpenAI''s/Anthropic''s/xAI''s
+    explicit answers.'
+- param: image-input
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: image_url content part
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'image_url: type: object. description: The input image information...properties: url: type:
+    string. description: The URL or Base64 Data URL of the image.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own openai_compat body_template for this row exactly (type: image_url,
+    image_url.url as a data: URI). Qwen''s Message content schema additionally documents `input_audio`
+    and `video`/`video_url` content types on the SAME oneOf list -- see this file''s audio-video-modality
+    claim below.'
+- param: image-input
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: inlineData (Blob)
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'Part
+
+    ...
+
+    inlineData
+
+    object (Blob)
+
+    Inline media bytes.
+
+    ...
+
+    Blob
+
+    Raw media bytes.
+
+    mimeType: string. The IANA standard MIME type of the source data. Examples of supported types: -
+    Images: image/png, image/jpeg...
+
+    data: string (bytes format). Raw bytes for media formats. A base64-encoded string.'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: Matches inventory.yaml's own gemini body_template for this row exactly (parts[].inlineData.mimeType/.data).
+- param: anthropic-cache-control-block
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: cache_control
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: ephemeral
+  documented_default: null
+  conditionality: null
+  quote: 'cache_control: type: object. description: Enables explicit caching. properties: type: type:
+    string. enum: [ephemeral]. description: Only `ephemeral` is supported.'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'A striking finding: Qwen''s own Message content-part schema documents a `cache_control` marker
+    IDENTICAL in shape to Anthropic''s own ({type: "ephemeral"}), nested per-content-part exactly like
+    Anthropic''s mechanism -- not the flat prompt_cache_key shape OpenAI''s own analogous field uses
+    (this file''s openai-prompt-cache-key claim above, absent at Qwen). This row''s own firing_scope
+    is home-vendor (Anthropic only) -- this claim exists for registry completeness (D-09), not because
+    the row fires at Qwen on the wire, and is flagged as a genuine cross-vendor shape convergence for
+    Phase 12/the comparison generator.'
+- param: anthropic-cache-control-block
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No `cache_control` field or per-content-part cache marker anywhere on this page. Gemini's own
+    caching mechanism is the request-level `cachedContent` field (this file's openai-prompt-cache-key
+    claim above) -- a named, pre-created cache resource referenced once per request, not a per-block
+    ephemeral marker -- a genuinely different mechanism (named external resource vs inline marker),
+    not a name variant.
+- param: batch-endpoint
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (a separate endpoint, not a chat/completions parameter,
+    D-09/FUT-04). No batch endpoint documented on this chat-completions reference page.'
+- param: batch-endpoint
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (a separate endpoint, not a chat/completions parameter,
+    D-09/FUT-04). This page''s own sidebar lists a ''Batch API'' navigation entry, but no batch-related
+    field or endpoint is documented on THIS reference page itself.'
+- param: logit-bias-exhaustive
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03/Anti-Features: combinatorially unbounded).
+    Consistent with the swept logit-bias claim above: no logit_bias field is documented at Qwen at all.'
+- param: logit-bias-exhaustive
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03/Anti-Features: combinatorially unbounded).
+    Consistent with the swept logit-bias claim above: no logit_bias field is documented at Gemini at
+    all.'
+- param: n-distinctness-scoring
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03, a sampling-quality research question,
+    not a contract question). Consistent with the swept `n` claim above: Qwen documents n''s range (1-4)
+    and its thinking-mode/tool-use conditionality, but says nothing about whether the N returned choices
+    are actually distinct.'
+- param: n-distinctness-scoring
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03, a sampling-quality research question,
+    not a contract question). Consistent with the swept `n`/candidateCount claim above: Gemini documents
+    the count-and-default facts but says nothing about distinctness of the returned candidates.'
+- param: audio-video-modality
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: content block (two further types)
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'type: enum [text, image_url, input_audio, video, video_url]. input_audio: "The input audio
+    information...Required when type is input_audio." video/video_url: "The video as an image list...The
+    input video file information."'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (FUT-02, PROJECT.md scopes non-image modalities
+    docs-only). BOTH audio and video ARE documented at Qwen -- wider than Kimi''s own video-only finding
+    (plan 03 Task 1): the Message content schema''s oneOf explicitly lists `input_audio` (data + format,
+    e.g. mp3/wav) AND `video`/`video_url` (an image-list or a video-file URL) as content types, alongside
+    `image_url` and `text`. Recorded honestly rather than smoothed into ''absent'' or forced to match
+    Kimi''s own narrower finding.'
+- param: audio-video-modality
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: content block (two further MIME families)
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'mimeType: string. The IANA standard MIME type of the source data. Examples of supported types:
+    - Images: image/png, image/jpeg... - Audio: audio/*, video/audio/s16le, video/audio/wav - Video:
+    video/*...'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (FUT-02, PROJECT.md scopes non-image modalities
+    docs-only). BOTH audio and video ARE documented at Gemini: the Part/Blob schema''s own mimeType
+    description explicitly lists ''Audio: audio/*, video/audio/s16le, video/audio/wav'' and ''Video:
+    video/*'' among its supported MIME-type families, alongside ''Images: image/png...''. Recorded honestly
+    per the same discipline as Qwen''s own claim above.'
+- param: xai-search-parameters
+  vendor: qwen
+  models: all
+  documented_status: documented
+  documented_name: enable_search + search_options
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: search_options takes effect only when enable_search is true.
+  quote: 'enable_search: type: boolean. default: false. description: Enables web search. Enabling web
+    search may increase token consumption.
+
+    search_options: type: object. description: The web search strategy. Takes effect only when `enable_search`
+    is `true`. Properties: forced_search (boolean, default false), search_strategy (string enum: turbo/max/agent/agent_max,
+    default turbo), enable_search_extension (boolean, default false).'
+  source_ref: qwen-chat-api-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (ADR-0048-ambiguous, xAI-named hypothesis row).
+    A THIRD vendor (after xAI itself and, per plan 02''s own finding, Gemini''s googleSearch tool below)
+    documents its own live-web-search knob -- under yet another, differently-shaped name (enable_search
+    boolean + a nested search_options object, not xAI''s own flat search_parameters object). Transcribed
+    precisely despite the exclusion, matching plan 02''s own precedent for this row, so a future scope-extension
+    decision has the transcription ready.'
+- param: xai-search-parameters
+  vendor: gemini
+  models: all
+  documented_status: documented
+  documented_name: googleSearch / googleSearchRetrieval (a Tool entry within tools[], not a flat search_parameters
+    object)
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'googleSearchRetrieval: object (GoogleSearchRetrieval). Optional. Retrieval tool that is powered
+    by Google search.
+
+    googleSearch: object (GoogleSearch). Optional. GoogleSearch tool type. Tool to support Google Search
+    in Model. Powered by Google.
+
+    GoogleSearchRetrieval fields: dynamicRetrievalConfig (mode: MODE_UNSPECIFIED | MODE_DYNAMIC, dynamicThreshold:
+    number).'
+  source_ref: gemini-generate-content-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (ADR-0048-ambiguous, xAI-named hypothesis row).
+    Gemini''s own live-web-search mechanism is a Tool-object ENTRY inside the request''s tools[] array
+    (googleSearch / the older googleSearchRetrieval), not a top-level flat field at all -- a structurally
+    different shape from both xAI''s own search_parameters object and Qwen''s own enable_search+search_options
+    pair (this file''s sibling claim above). Transcribed precisely despite the exclusion, matching plan
+    02''s own precedent.'
+- param: json-schema-conformance-grading
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (a correctness-benchmark question, not a contract-acceptance
+    question, Anti-Features). Qwen''s own response_format DOES document a json_schema mode with a `strict`
+    flag (see the response-format claim above) -- that claim already covers the presence question; this
+    row asks specifically about grading whether RETURNED JSON conforms, which is not documented anywhere
+    on this page.'
+- param: json-schema-conformance-grading
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (a correctness-benchmark question, not a contract-acceptance
+    question, Anti-Features). Gemini''s own responseSchema/responseJsonSchema DO document presence and
+    a subset-of-JSON-Schema feature list (see the response-format claim above) -- that claim already
+    covers the presence question; grading whether RETURNED JSON actually conforms is not documented
+    anywhere on this page.'
+- param: malformed-request-fuzzing
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (API-robustness/conformance testing, a different
+    research question, Anti-Features). No fuzzing/robustness-testing guidance documented on this reference
+    page.'
+- param: malformed-request-fuzzing
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (API-robustness/conformance testing, a different
+    research question, Anti-Features). No fuzzing/robustness-testing guidance documented on this reference
+    page.'
+- param: gateway-probe-targets
+  vendor: qwen
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: qwen-chat-api-ref
+  searched_surface: QwenCloud OpenAI-compatible Chat API reference (docs.qwencloud.com/api-reference/chat/openai-chat),
+    the full ChatCompletionRequest property list (comprehensive OpenAPI 3.1 schema) read end to end
+    plus an in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (ADR-0048 restricts probe targets to first-party
+    API products; third-party gateways are prior-art sources only, never probe targets). Not applicable
+    to a first-party vendor reference page.'
+- param: gateway-probe-targets
+  vendor: gemini
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: gemini-generate-content-ref
+  searched_surface: Gemini Developer API generateContent reference (ai.google.dev/api/generate-content),
+    the full GenerateContentRequest + GenerationConfig field list read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (ADR-0048 restricts probe targets to first-party
+    API products; third-party gateways are prior-art sources only, never probe targets). Not applicable
+    to a first-party vendor reference page.'

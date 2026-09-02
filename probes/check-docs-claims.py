@@ -107,11 +107,20 @@ FACET_FIELDS = (
 #   (the API host's own domain, RESEARCH.md/models.yaml: api.moonshot.ai) —
 #   both first-party, distinct domains for the same maker (Moonshot AI).
 # zai: z.ai — docs.z.ai is this vendor's docs subdomain.
-# qwen: alibabacloud.com — the conservative default (RESEARCH.md Pitfall 6 /
-#   assumption A1): unambiguously Alibaba-owned. `docs.qwencloud.com`'s
-#   ownership is UNCONFIRMED this session and is deliberately NOT admitted here
-#   — a decision point for plan 11.1-03's own checkpoint before Qwen's claims
-#   are written, not silently pre-decided by this allowlist.
+# qwen: alibabacloud.com AND qwencloud.com — settled 2026-09-02 by an owner
+#   decision at plan 11.1-03's Task 2 blocking-human checkpoint (reply, verbatim:
+#   "add-qwencloud"). `docs.qwencloud.com` carries no explicit ownership
+#   sentence of its own, but a live re-check of its footer/consent bundle
+#   resolves the qwencloud-tenant copyright to "Intelligent Cloud Computing
+#   (Singapore) Private Limited", lists aliyun/alibabacloud/qwencloud as sibling
+#   tenants, calls a consent API hosted on www.alibabacloud.com, and rides
+#   Alibaba CDN/analytics — inferred shared-Alibaba ownership (evidence grade:
+#   inferred-from-plumbing, not a direct attribution statement), accepted by
+#   owner decision rather than an independently confirmed fact. It also matches
+#   `inventory.yaml`'s existing `source:` citations for the qwen-repetition-penalty
+#   and Qwen thinking-toggle rows and the `dashscope-intl.aliyuncs.com` endpoints
+#   the harness actually calls. `alibabacloud.com` remains admitted too — both
+#   domains are first-party for this vendor from here on.
 FIRST_PARTY_DOMAINS: dict[str, tuple[str, ...]] = {
     "anthropic": ("claude.com", "anthropic.com"),
     "openai": ("openai.com",),
@@ -120,7 +129,7 @@ FIRST_PARTY_DOMAINS: dict[str, tuple[str, ...]] = {
     "dseek": ("deepseek.com",),
     "kimi": ("kimi.ai", "moonshot.ai"),
     "zai": ("z.ai",),
-    "qwen": ("alibabacloud.com",),
+    "qwen": ("alibabacloud.com", "qwencloud.com"),
 }
 
 
