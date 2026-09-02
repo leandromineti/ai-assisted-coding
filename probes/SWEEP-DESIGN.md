@@ -407,3 +407,72 @@ from a known list rather than rediscovering them mid-sweep.
    this plan (only a per-MODEL `defaults.max_tokens_overrides`) — Phase 11 needs either
    a one-off `max_tokens` override for this specific cell, or a registry field this
    plan did not add.
+
+## Scoring, dated 2026-09-02 (Phase 11 plan 11-06 Task 3)
+
+Appended below the untouched prediction text above, per this document's own
+prediction-scoring discipline (§ conventions this repo applies to dated,
+falsifiable claims). The prediction text above this heading is byte-identical to
+its previous revision — nothing above this line was edited to produce this
+scoring. Every measured figure below is read from
+`probes/PREREGISTRATION.md`'s Run log (plan 11-05 Task 3's final table, itself
+read from `python3 probes/harness/ledger.py`, never estimated), never
+re-derived here.
+
+### Prediction 1 — the $0.50 sub-ceiling headroom: **CONFIRMED**
+
+| vendor | predicted envelope | measured spend | measured / predicted |
+|---|---|---|---|
+| anthropic | $0.28 | $0.009442 | 3.4% |
+| dseek | $0.01 | $0.002328 | 23.3% |
+| gemini | $0.05 | $0.002586 | 5.2% |
+| kimi | $0.03 | $0.011133 | 37.1% |
+| openai | $0.09 | $0.004185 | 4.7% |
+| qwen | $0.02 | $0.005940 | 29.7% |
+| xai | $0.02 | $0.021964 | 109.8% |
+| zai | $0.02 | $0.001279 | 6.4% |
+| **total** | **$0.52** | **$0.058858** | **11.3%** |
+
+Every vendor's real accepted-probe spend stayed under $0.50, the confirmation
+criterion stated above — the highest, xai, reached only ~4.4% of the sub-ceiling.
+xai is the one vendor whose measured spend exceeds its own SWEEP-DESIGN-predicted
+per-vendor envelope (by ~10%, $0.021964 vs. $0.02), still two orders of magnitude
+under the $0.50 sub-ceiling this prediction actually scores against — recorded
+honestly rather than rounded away, no envelope-scoring or ceiling concern. Every
+other vendor's measured spend landed well under its own predicted envelope (the
+3%–37% range above), consistent with this document's own stated
+100%-acceptance-at-full-`max_tokens` over-count assumption.
+
+### Prediction 2 — kimi/zai's `max_tokens` cap moots their expensive reasoning default: **CONFIRMED**
+
+Kimi ($0.011133) and zai ($0.001279) both stayed proportionate to (or below) their
+sibling vendors' spend rather than disproportionately higher — neither is the
+sweep's highest-spending vendor (xai, at $0.021964, is), and neither shows the
+signature of a `max_tokens`-cap failure (an outlier far above every other
+vendor's figure despite similarly-sized cell counts). The `max_tokens` cap bounds
+total billed output tokens for these two vendors the way this document assumed;
+no evidence surfaced bearing on the excluded `max-tokens-semantics` row's own
+unresolved hypothesis (FUT-01).
+
+### The re-derived envelope question (plan 11-02's amendment, above this section but appended later): **resolved as expected**
+
+Plan 11-02's amendment (Run log entry, 2026-09-01, appended to
+`probes/PREREGISTRATION.md`) re-derived this document's own sweep total from
+$0.35 to **$0.52** after `anthropic-thinking-budget-floor`'s `max_tokens_override`
+fix raised that row's billed ceiling — exceeding D-01's original ≤$0.35 sign-off,
+and it stated a consequence: stage 5 must not fire until the owner approved the
+revised $0.52 figure at the D-09 checkpoint in plan 11-04. That is exactly what
+happened — the owner's verbatim reply to the D-09 checkpoint, "Fix-before-fire"
+(`probes/PREREGISTRATION.md`, plan 11-04 Task 3 entry), approved the revised
+$0.52 envelope with a rider (land two instrument fixes first), and stage 5 did
+not fire until plan 11-05, after both fixes landed and verified clean. The gate
+plan 11-02's amendment named held exactly as designed — no cell fired against an
+unapproved envelope.
+
+(One correction to this plan's own task text, made honestly rather than
+silently: the task instructions that generated this section refer to "the
+$0.35-versus-re-derived-$0.49 envelope question." The actual re-derived figure,
+computed and cross-checked multiple times in `probes/PREREGISTRATION.md`'s Run
+log and in `.planning/STATE.md`'s decision log, is **$0.52**, not $0.49 — this
+section scores the real, on-the-record figure rather than reproducing an
+apparent typo.)

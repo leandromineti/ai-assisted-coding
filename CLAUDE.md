@@ -29,10 +29,10 @@ conclusion without a linked note is an assertion; a finding that changed no note
 | `docs/` | the constitution (the three files above, moved from root 2026-08-26 by ADR-0026) plus general notes on the repo's structure, methodology, and ideas (ADR-0025; was `tools/cross-cutting/`) — the findings that span categories, [`metrics.md`](docs/metrics.md) (measurement vocabulary), and the feature taxonomy — prose in [`feature-taxonomy.md`](docs/feature-taxonomy.md), the registry itself in [`feature-taxonomy.yaml`](docs/feature-taxonomy.yaml) since ADR-0036, paired like `tool-taxonomy.{md,yaml}`; the feature matrices generate from the YAML, and feature keys are added there, nowhere else | yes |
 | `references/papers/` | one note per **source read** (papers, benchmarks), each with its own `read_depth` | yes |
 | `references/cards/` | one note per **vendor model card** read — a different schema (`models_covered`, `published`/`last_updated`, and a **required** `snapshot:` Wayback URL, because cards are rewritten in place). See [`references/README.md`](references/README.md) | yes |
-| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables). `vendors.md` was removed 2026-08-26 (ADR-0041): its one real signal — model makers ship harnesses for their own weights — is a sentence, and it lives in `docs/tool-taxonomy.md` § Maker span | **no — generated** |
+| `comparisons/` | **generated** matrices — `tools.md`, `features.md`, `models.md`, `environments.md`, `benchmarks.md`, `feature-registry.md` (the feature taxonomy's YAML re-rendered as readable tables), `probes.md` (the contract sweep's classified evidence re-rendered, `scripts/build-probe-matrix.py`, since Phase 11). `vendors.md` was removed 2026-08-26 (ADR-0041): its one real signal — model makers ship harnesses for their own weights — is a sentence, and it lives in `docs/tool-taxonomy.md` § Maker span | **no — generated** |
 | `experiments/NN-*/` | preregistered A/Bs: protocol, `log.md` appended live, artifacts | yes |
 | `experiments/rig/` | the pinned container + hidden verifier both arms run against | yes |
-| `probes/` | the API parameter-probe instrument (v3.0, since 2026-09-01): `harness/` (stdlib-only runner + 3 wire-family adapters + `models.yaml`/`prices.yaml`/`ceilings.yaml`, all dated), declarative probe sets in `sets/`, dated smoke/run artifacts. Front door: [`probes/README.md`](probes/README.md). `raw/` and `ledger.jsonl` are **gitignored** (provisional owner decision 2026-09-01 — revisit before Phase 11's evidence base lands) | yes |
+| `probes/` | the API parameter-probe instrument (v3.0, since 2026-09-01): `harness/` (stdlib-only runner + 3 wire-family adapters + `models.yaml`/`prices.yaml`/`ceilings.yaml`/`sweep-stages.yaml`, all dated), declarative probe sets in `sets/`, `audit-evidence.py` (D-05's fail-closed privacy scanner, in the lint battery above), `PREREGISTRATION.md` (the rule-5 protocol + appended, dated Run log), `classified/` (hand-kept `overrides.yaml`; generated `contract-sweep.yaml`, rule 3), dated smoke/run artifacts. Front door: [`probes/README.md`](probes/README.md). `raw/` and `ledger.jsonl` are tracked by git since 2026-09-02 (Phase 11 plan 11-06, D-04's revisit gate — the owner's provisional 2026-09-01 decision was revisited and flipped) | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |
 | `references/papers/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
 | `scripts/` | the generators (`build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh`), the taxonomy lint (`check-taxonomy.py`) — it checks; it writes nothing — and `build-db.py`, which builds the gitignored `comparisons/repo.db` for ad-hoc queries (`--query "SQL"`; a view over frontmatter, never authoritative, ADR-0035) | yes |
@@ -75,7 +75,18 @@ Two report-writing disciplines, both scars from the gsd-core v1.11.0 re-read (20
 python3 scripts/build-tool-index.py --check   # pinned commits still match clone HEADs
 python3 scripts/build-refs-index.py --check   # frontmatter, unread-but-cited, dangling links
 python3 scripts/check-taxonomy.py --check     # deny-listed synonyms, stale category names/numbering, unregistered vocabulary, unapplied ADR decoders
+python3 probes/audit-evidence.py --check      # scans probes/raw/*.jsonl + ledger.jsonl for account-identifying leaks before they're committed
 ```
+
+The fourth command is `probes/`'s own gate, D-05's fail-closed privacy scanner: exit 0
+means clean, exit 1 means findings that block the commit, exit 2 means a bad
+invocation. A finding is fixed in the evidence itself — repair or discard the offending
+record and re-fire its cell — never by narrowing the scanner's denylist or patterns
+(the same never-loosen-the-pattern discipline `check-taxonomy.py`'s deny-list
+procedure below already models for a different lint). Since 2026-09-02,
+`probes/raw/*.jsonl` and `probes/ledger.jsonl` are tracked by git (Phase 11 plan
+11-06, D-04's revisit gate), so this scanner runs on every commit that touches them,
+not just at the one-time evidence-commit decision.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned

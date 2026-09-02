@@ -35,12 +35,25 @@ probes/sets/generated/*.yaml     Phase 10 — GENERATED probe-set declarations (
 probes/raw/{vendor}.jsonl        one JSONL file per vendor — every request/response
                                   verbatim, written by probes/harness/runner.py
         ↓
-probes/classified/*.yaml         Phase 11 — hand-classified contract sweep verdicts
-                                  (rejected / accepted / echoed), cites probe_id
+scripts/classify-probes.py       Phase 11 — reads probes/raw/*.jsonl + this
+                                  directory's own overrides.yaml, joins them
+                                  against every declared cell, and emits the
+                                  four-state contract classification
         ↓
-comparisons/probes.md            Phase 13 — GENERATED probe matrix (rule 3: never
+probes/classified/*.yaml         Phase 11 — GENERATED classified evidence (rule 3:
+                                  never hand-edited; --check/--selftest). Cites
+                                  probe_id for every fired row. Hand-kept input:
+                                  probes/classified/overrides.yaml (D-08)
+        ↓
+scripts/build-probe-matrix.py    Phase 11 — reads probes/classified/*.yaml alone
+                                  and renders the matrix (--check/--selftest)
+        ↓
+comparisons/probes.md            Phase 11 — GENERATED probe matrix (rule 3: never
                                   hand-edited)
 ```
+
+Schemas for `scripts/classify-probes.py` and `scripts/build-probe-matrix.py` live in the
+scripts themselves and in `probes/classified/*.yaml`'s own comments — not restated here.
 
 ## Layout
 
@@ -54,9 +67,13 @@ comparisons/probes.md            Phase 13 — GENERATED probe matrix (rule 3: ne
 | `probes/inventory-to-sets.py` | the registry -> probe-set generator (Phase 10) — reads `inventory.yaml` + `harness/models.yaml`, writes `sets/generated/*.yaml`; `--check` (drift + registry validators) and `--selftest` (embedded fixtures) |
 | `probes/sets/generated/` | GENERATED probe-set declarations (rule 3: **never hand-edited** — same discipline `comparisons/` carries elsewhere in this repo). `contract-sweep.yaml` (scalar parameter probes, runner.py's `probes:` grammar), `content-blocks.yaml` (image/cache-control rows, deliberately keyed `content_block_probes:` so the runner refuses it, D-12), `skipped-cells.yaml` (every declared skip with its reason, D-11) |
 | `probes/sets/*.yaml` (hand-authored) | declarative probe-set files the runner consumes directly (D-03) — distinct from the generated sets above |
-| `probes/SWEEP-DESIGN.md` | the contract sweep's design (Phase 10): probe firing order, a cell count derived from the generator's own printed summary, per-vendor dollar envelopes, and dated Phase-11 handoffs — NOT the rule-5 preregistration, which is authored at Phase 11 start |
-| `probes/raw/{vendor}.jsonl` | append-only wire evidence, one file per vendor (D-08) |
-| `probes/ledger.jsonl` | append-only spend log, one line per billed attempt (D-07) |
+| `probes/SWEEP-DESIGN.md` | the contract sweep's design (Phase 10): probe firing order, a cell count derived from the generator's own printed summary, per-vendor dollar envelopes, and dated Phase-11 handoffs — NOT the rule-5 preregistration, which is authored at Phase 11 start. Its two dated 2026-09-01 falsifiable predictions are scored in an appended § Scoring section |
+| `probes/PREREGISTRATION.md` | the rule-5 preregistration (Phase 11): spend sign-off, falsification criteria, the preregistered execution path, and the append-only Run log — every dated entry from the tracer cell through the final evidence-commit decision |
+| `probes/raw/{vendor}.jsonl` | append-only wire evidence, one file per vendor (D-08) — tracked by git since 2026-09-02 (Phase 11 plan 11-06, D-04's revisit gate) |
+| `probes/ledger.jsonl` | append-only spend log, one line per billed attempt (D-07) — tracked by git since 2026-09-02, same gate |
+| `probes/audit-evidence.py` | D-05's fail-closed privacy scanner — a per-vendor `DENYLIST_FIELD_NAMES` (each entry annotated observed-live-with-vendor-and-date or documented-guess-with-searched-surface) plus pattern rules; non-empty `--check` findings block an evidence commit. In `CLAUDE.md`'s pre-commit lint battery |
+| `probes/classified/overrides.yaml` | hand-kept, dated hand-override entries (D-08) — probe_id + date + reason, applied last and deterministically by `scripts/classify-probes.py`; never edits to the generated classified YAML |
+| `probes/sweep-stages.yaml` | the firing-stage declarations `runner.py --stage N` reads (Phase 11 plan 11-02) — the machine-readable form of SWEEP-DESIGN.md § Probe ordering |
 
 ## The DeepSeek row
 
@@ -108,9 +125,10 @@ Superseded evidence stays visible rather than being cleaned up. No line in eithe
 file may originate from anything other than a real HTTP response — no simulated,
 hand-authored, back-filled, or replayed records.
 
-**Evidence commit policy (provisional, 2026-09-01):** `probes/raw/` and
-`probes/ledger.jsonl` are currently gitignored — the owner declined D-09's default
-(commit raw evidence to the repo) for now, revisit planned at Phase 11 before the
-contract sweep commits its evidence base. `probes/harness/` (code) and
-`probes/sets/` (declarations) are unaffected and commit normally. See `.gitignore`
-for the dated note.
+**Evidence commit policy (decided 2026-09-02):** `probes/raw/` and
+`probes/ledger.jsonl` are tracked by git — the owner's provisional 2026-09-01
+decision to gitignore them was revisited at Phase 11 (D-04's revisit gate) and
+flipped, conditional on `probes/audit-evidence.py --check` passing clean over the
+complete 8-vendor evidence base, which it does. `probes/harness/` (code) and
+`probes/sets/` (declarations) were never affected and always commit normally. See
+`.gitignore` and `probes/PREREGISTRATION.md`'s Run log for the dated record.

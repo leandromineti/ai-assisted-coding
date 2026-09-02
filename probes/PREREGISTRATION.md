@@ -1050,3 +1050,51 @@ Denylist/filter set-parity check: `DENYLIST PARITY OK 10`. All four open
 No API call was made in this task — every fix is a scanner/evidence-repair
 change, zero incremental spend. Global ledger total unchanged from the end of
 plan 11-05: **$0.058858**.
+
+**2026-09-02, plan 11-06 Task 2 — D-04's revisit gate resolved: the wire
+evidence is committed.** This is the decision the provisional 2026-09-01
+checkpoint (`gitignore-evidence`, quoted below) named Phase 11 as the revisit
+gate for — recorded here, in full, per this repo's sign-off convention. This
+entry **supersedes** the provisional decision; the earlier decision itself is
+never edited, only superseded, per the append-only discipline this document
+and `.planning/STATE.md` both follow.
+
+The provisional decision being superseded, verbatim (2026-09-01, quoted in
+`.planning/STATE.md` § Blockers/Concerns and `.gitignore`'s prior comment
+block): *"I am not comfortable right now. Can we gitignore it now? Maybe I
+will change it later."*
+
+Before the decision was asked for again, two things were established and
+presented to the owner: (a) `gh repo view leandromineti/ai-assisted-coding`
+confirmed this repo is currently **PUBLIC** — correcting the standing
+"private but may flip" framing the original checkpoint carried; committing
+and pushing therefore publishes the evidence immediately, not provisionally.
+(b) One full raw record per vendor (all 8) was printed in the session for
+direct inspection, with the two things a public reader would learn flagged
+explicitly: API-account rate-limit tiers (e.g. `x-ratelimit-limit-tokens`
+values) and the probing server's rough region via CDN routing headers
+(`CF-RAY` `PRG`, `X-Amz-Cf-Pop` `FRA56`). `probes/audit-evidence.py --check`
+had already been re-verified clean (0 problems, exit 0) immediately before
+this ask, per Task 1's own WR-04 closure above.
+
+The owner's reply, verbatim, quoted per the repo's sign-off convention:
+
+> I think i am ok with these informations being public
+
+Read as: `commit-evidence` — the option committing `probes/raw/*.jsonl` and
+`probes/ledger.jsonl` to the repository, restoring rule-4 `probe_id`
+traceability for every citation in `probes/classified/contract-sweep.yaml`.
+
+**Executed exactly as decided.** `.gitignore`'s `probes/raw/`/`probes/ledger.jsonl`
+entries were removed and its block comment replaced with a dated record of
+this decision (no longer labelled provisional). `probes/audit-evidence.py
+--check` was run once more immediately before staging (0 problems, exit 0)
+and the evidence committed in its own commit, `d022f36`, whose message names
+the decision and the scanner verdict. Verified after commit: `git ls-files
+probes/raw` lists all 8 vendor files; every one of the 345 `probe_id`s cited
+in `probes/classified/contract-sweep.yaml` resolves to a line in a tracked
+file (0 missing, checked directly by joining the classified YAML's cited
+probe_ids against every tracked raw record's own stored `probe_id` field).
+
+No API call was made in this task. Global ledger total unchanged:
+**$0.058858**.
