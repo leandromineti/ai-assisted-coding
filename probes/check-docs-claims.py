@@ -152,11 +152,23 @@ def _load_vendors(models: dict) -> set[str]:
     return {m["vendor"] for m in models["models"]}
 
 
-def check_claim(claim: dict, *, inventory_ids: set[str], vendors: set[str], source_ids: set[str]) -> list[str]:
+def check_claim(
+    claim: dict,
+    *,
+    inventory_ids: set[str],
+    vendors: set[str],
+    source_ids: set[str],
+    source_vendors: dict[str, str] | None = None,
+) -> list[str]:
     """Pure: classify ONE claim dict. Returns the list of every rule name that
     fired (collecting ALL violated rules — never returns at the first,
     DOCP-02/ordering must_haves truth: a claim breaking two rules produces two
-    findings, both named). Never mutates `claim`."""
+    findings, both named). Never mutates `claim`.
+
+    `source_vendors` (WR-03): a `sources[].id -> sources[].vendor` map, used to
+    flag a claim citing another vendor's docs page (`vendor-source-mismatch`).
+    Only checked when `source_ref` resolves — a dangling ref already fires its
+    own rule above and is not also scored as a mismatch."""
     findings: list[str] = []
 
     param = claim.get("param")
@@ -185,6 +197,8 @@ def check_claim(claim: dict, *, inventory_ids: set[str], vendors: set[str], sour
 
     if source_ref not in source_ids:
         findings.append("dangling-source-ref")
+    elif source_vendors is not None and source_vendors.get(source_ref) != vendor:
+        findings.append("vendor-source-mismatch")
 
     return findings
 
@@ -281,6 +295,7 @@ def check_docs_claims(path: Path = DOCS_CLAIMS_PATH) -> list[dict]:
     sources = doc.get("sources") or []
     claims = doc.get("claims") or []
     source_ids = {s.get("id") for s in sources if s.get("id") is not None}
+    source_vendors = {s.get("id"): s.get("vendor") for s in sources if s.get("id") is not None}
 
     findings: list[dict] = []
 
@@ -293,7 +308,9 @@ def check_docs_claims(path: Path = DOCS_CLAIMS_PATH) -> list[dict]:
 
     for c in claims:
         identifier = f"{c.get('param')}:{c.get('vendor')}"
-        for rule in check_claim(c, inventory_ids=inventory_ids, vendors=vendors, source_ids=source_ids):
+        for rule in check_claim(
+            c, inventory_ids=inventory_ids, vendors=vendors, source_ids=source_ids, source_vendors=source_vendors
+        ):
             findings.append({"scope": "claim", "identifier": identifier, "rule": rule})
 
     for param, vendor in check_duplicate_pairs(claims):
@@ -514,6 +531,36 @@ def selftest() -> tuple[int, int]:
     if "dangling-source-ref" not in findings_no_ref:
         problems += 1
         print("FAIL: a claim with no source_ref did not fire dangling-source-ref even with an id-less source present", file=sys.stderr)
+
+    # --- WR-03: a claim citing a source whose own vendor differs fires
+    #     vendor-source-mismatch; a matching vendor does not ---
+    fixture_source_vendors = {"src-a": "anthropic", "src-b": "openai"}
+    cases += 1
+    c = dict(base_claim, vendor="openai", source_ref="src-a")  # openai claim citing an anthropic source
+    findings_mismatch = check_claim(
+        c, inventory_ids=fixture_inventory_ids, vendors=fixture_vendors, source_ids=fixture_source_ids,
+        source_vendors=fixture_source_vendors,
+    )
+    if "vendor-source-mismatch" not in findings_mismatch:
+        problems += 1
+        print("FAIL: a claim citing another vendor's source did not fire vendor-source-mismatch", file=sys.stderr)
+    cases += 1
+    findings_match = check_claim(
+        dict(base_claim), inventory_ids=fixture_inventory_ids, vendors=fixture_vendors, source_ids=fixture_source_ids,
+        source_vendors=fixture_source_vendors,
+    )
+    if "vendor-source-mismatch" in findings_match:
+        problems += 1
+        print("FAIL: a claim citing its own vendor's source fired vendor-source-mismatch unexpectedly", file=sys.stderr)
+    cases += 1
+    c_dangling = dict(base_claim, source_ref="no-such-source")
+    findings_dangling = check_claim(
+        c_dangling, inventory_ids=fixture_inventory_ids, vendors=fixture_vendors, source_ids=fixture_source_ids,
+        source_vendors=fixture_source_vendors,
+    )
+    if "vendor-source-mismatch" in findings_dangling:
+        problems += 1
+        print("FAIL: a dangling source_ref also fired vendor-source-mismatch — should only fire dangling-source-ref", file=sys.stderr)
 
     # --- retrieved one day in the future fires; retrieved equal to today
     #     passes ---
