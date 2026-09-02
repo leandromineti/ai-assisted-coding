@@ -368,7 +368,7 @@ def render_contradictions(rows: list[dict]) -> list[str]:
         lines.append("|---|---|---|---|")
         for r in non_unanimous:
             contrib = "; ".join(
-                f"({c['mode']}, {c['value']}, {c['state']}, {c.get('probe_id') or '—'})" for c in r["cells"]
+                f"({c['mode']}, {c.get('value') or '—'}, {c['state']}, {c.get('probe_id') or '—'})" for c in r["cells"]
             )
             lines.append(f"| {r['param']} | {r['model']} | {r['verdict']} | {contrib} |")
     else:
