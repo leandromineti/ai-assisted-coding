@@ -28,12 +28,11 @@ probes/harness/runner.py's seen_probe_ids() already tolerates it.
     python3 probes/audit-evidence.py --check [--raw-dir DIR] [--ledger PATH]
     python3 probes/audit-evidence.py --selftest
 
-Not yet wired into CLAUDE.md's three-command pre-commit lint battery — that
-happens in plan 11-06, alongside the human-reviewed denylist-completeness pass
-against all 8 vendors' real response headers (only 3 of 8 have any captured
-evidence as of this plan; RESEARCH.md § Open Question 2). This script's code
-runs against whatever evidence exists at any point starting now — defense in
-depth from day one, completeness confirmed last.
+Wired into CLAUDE.md's four-command pre-commit lint battery as of plan 11-06,
+which also closed the human-reviewed denylist-completeness pass against all 8
+vendors' real captured response headers (WR-04, phase-09 code review) — see
+DENYLIST_FIELD_NAMES' own per-entry annotations below for the observed-live/
+documented-guess status of every name, each dated and sourced.
 """
 from __future__ import annotations
 
@@ -66,24 +65,70 @@ def _fail(code: int, msg: str) -> None:
 
 # Header/JSON-key NAMES that must never appear anywhere in a record, matched
 # case-insensitively against every recorded header name and every JSON key at
-# any depth. Seeded with the five names runner.py's own
-# `_ORG_IDENTIFYING_RESPONSE_HEADERS` already carries — carrying forward that
-# constant's own honesty comment here too, because this file is now where a
-# reader looks for it (Phase 11 plan 11-03): `anthropic-workspace-id` was
-# OBSERVED live at Anthropic (Phase 9's tracer probe); `openai-organization`,
-# `openai-project`, `anthropic-organization-id` and `x-organization-id` are
-# documented, never-observed-on-the-wire defensive guesses.
+# any depth.
 #
-# `msh-org-id`, `msh-uid`, `msh-project-id` and `msh-gid` were ADDED here
-# during THIS plan's own authoring (2026-09-01), reading
-# probes/raw/kimi.jsonl's real captured record end to end — this task's own
-# read_first instruction — and finding Moonshot AI's response carries a
-# `Msh-*` header family (org/user/project/group identifiers) that runner.py's
-# structural filter never covered: WR-04's exact gap (phase-09 code review),
-# now closed for this one additional vendor. `msh-request-id` and
-# `x-msh-trace-id` are request-tracing, not account-identifying, and are kept
-# — the same distinction D-09's refinement already draws for every other
-# vendor's rate-limit/request-id headers.
+# CLOSED 2026-09-02, Phase 11 plan 11-06, WR-04 (phase-09 code review): every
+# entry below is now annotated with its own status — OBSERVED-LIVE (a named
+# vendor and date it was actually seen on the wire) or a DOCUMENTED GUESS
+# (never seen, with the surface searched, per methodology rule 1b — an
+# absence is only as good as the surface you searched). The per-vendor
+# response-header inventory this review is read against was derived by
+# command, not hand-typed:
+#
+#   python3 -c "import json,glob,pathlib,collections; v=collections.defaultdict(set); \
+#   [v[json.loads(l)['vendor']].add(k.lower()) for p in glob.glob('probes/raw/*.jsonl') \
+#   for l in pathlib.Path(p).read_text().splitlines() if l.strip() \
+#   for a in json.loads(l).get('attempts',[]) for k in (a.get('response_headers') or {})]; \
+#   print(len(v), {k: sorted(s) for k,s in v.items()})"
+#
+# → 8 vendors, 359 captured raw records total (all 8 present as of 2026-09-02;
+# exact per-vendor line counts: anthropic 80, dseek 23, gemini 20, kimi 29,
+# openai 46, qwen 93, xai 34, zai 34). Every header name across all 8 vendors'
+# real captured evidence was read and classified into benign / org-account-
+# identifying / uncertain; this review found ZERO new org/account-identifying
+# names beyond what was already here — the two closest candidates, xAI's
+# `x-data-retention`/`x-zero-data-retention` (a boolean data-retention POLICY
+# flag, not an identifier naming who the account is), were classified benign,
+# the same class as `x-gemini-service-tier`'s subscription-tier flag — neither
+# names an organization/workspace/project/team/tenant/user. The one real gap
+# this review found was NOT a missing header name at all — it was
+# `set-cookie` (below), already present in runner.py's structural filter but
+# never mirrored into this scanner (a parity gap, not a coverage gap).
+#
+# - `openai-organization`, `openai-project`, `anthropic-organization-id`,
+#   `x-organization-id`: DOCUMENTED GUESSES, never observed on the wire.
+#   Searched: all 359 captured records / 8 vendors as of 2026-09-02 (the
+#   command above) — none of these four names appears anywhere in captured
+#   evidence. This is expected if they are ever sent, since runner.py's
+#   structural filter (`_ORG_IDENTIFYING_RESPONSE_HEADERS`) drops them before
+#   a record is ever built — this scanner's job is the second, independent
+#   layer that catches a name the filter doesn't yet know about, not to prove
+#   a filtered name was never sent.
+# - `anthropic-workspace-id`: OBSERVED LIVE at Anthropic, 2026-09-01 (Phase
+#   9's tracer probe, the finding that motivated D-05's whole scanner). Never
+#   seen again since — structurally filtered from every one of anthropic's 80
+#   captured records that followed.
+# - `msh-org-id`, `msh-uid`, `msh-project-id`, `msh-gid`: OBSERVED LIVE at
+#   Moonshot AI (Kimi), 2026-09-01 (Phase 9's smoke-test record, probe_id
+#   `kimi-k3--baseline--none--default--b3540b5c`), found reading
+#   probes/raw/kimi.jsonl's real captured record end to end during Phase 11
+#   plan 11-03's authoring of this scanner — WR-04's exact gap, closed for
+#   this vendor in 11-03. The one pre-existing record that leaked them was
+#   repaired (redacted in place) during THIS plan (11-06) — see the Run log
+#   entry in probes/PREREGISTRATION.md. `msh-request-id` and
+#   `x-msh-trace-id` are request-tracing, not account-identifying, and are
+#   kept — the same distinction drawn for every other vendor's rate-limit/
+#   request-id headers.
+# - `set-cookie`: OBSERVED LIVE at Cloudflare (openai, kimi — the `__cf_bm`
+#   bot-management cookie) and Alibaba Cloud WAF (qwen, zai — the `acw_tc`
+#   anti-crawler cookie), 2026-09-01, Phase 11 plan 11-04's stage-1/2
+#   calibration firing. Already added to runner.py's structural filter
+#   (`_ORG_IDENTIFYING_RESPONSE_HEADERS`) in 11-04, but never mirrored into
+#   THIS scanner's own denylist until now — this review's own set-parity
+#   check (this task's own `<verify>`) is what caught the gap. Three
+#   additional stale records this review found still carrying it (predating
+#   11-04's fix, missed by that task's own redaction pass) were repaired
+#   (redacted in place) during THIS plan — see the Run log entry.
 DENYLIST_FIELD_NAMES = frozenset({
     "openai-organization",
     "openai-project",
@@ -94,17 +139,43 @@ DENYLIST_FIELD_NAMES = frozenset({
     "msh-uid",
     "msh-project-id",
     "msh-gid",
+    "set-cookie",
 })
 
-# The ONE named exemption in this file (CLAUDE.md § Growing the deny-list: an
+# The two named exemptions in this file (CLAUDE.md § Growing the deny-list: an
 # exemption is a named constant with a written reason, never a loosened
-# pattern). MODAL-01's image payload is a long base64 string sent verbatim in
+# pattern — the vendor-key-fragment REGEX itself is never touched by either
+# exemption below; only a specific, documented VALUE or FIELD NAME is excluded
+# from it). MODAL-01's image payload is a long base64 string sent verbatim in
 # every image-input request body — PII_PATTERNS' vendor-key-fragment rule
 # below deliberately includes a generic long-base64-blob shape (the same shape
 # a real leaked key VALUE would have), so without this exemption the scanner
 # would fire on all 12 image records for carrying exactly the fixture payload
 # this repo itself generated, never a real secret.
 _EXEMPT_KEY_FRAGMENT_VALUES = frozenset({fixtures.TINY_PNG_BASE64})
+
+# Second named exemption, added 2026-09-02, Phase 11 plan 11-06 (WR-04's
+# denylist/pattern-completeness review — WINDOWS.md #3/#5/#6). Three
+# vendor-documented response fields happen to be long base64-shaped strings
+# that trip the SAME generic vendor-key-fragment pattern above, none of them a
+# secret: Anthropic's `signature` (a thinking-content-block integrity token,
+# present on every accepted response with thinking active), Gemini's
+# `thoughtSignature` (a documented reasoning-continuation token), and
+# DeepSeek's `X-Amz-Cf-Id` response header (a CloudFront per-request routing/
+# tracing id, the same non-identifying class as the already-kept
+# request-id/msh-request-id headers). Exempted BY FIELD NAME, not by value —
+# unlike the tiny-PNG constant above (one fixed, known value), these fields'
+# VALUES differ on every response, so only a name-scoped exemption can work;
+# the pattern itself keeps firing on a base64-shaped blob under any OTHER key,
+# including a key named `signature`/`thoughtSignature`/`x-amz-cf-id` that
+# happens to belong to a DIFFERENT vendor or a genuinely new leaked value —
+# scan_record() re-checks the value's shape every time, this only narrows
+# WHICH key names are exempt, never widens what counts as a match.
+_EXEMPT_KEY_FRAGMENT_FIELD_NAMES = frozenset({
+    "signature",
+    "thoughtsignature",
+    "x-amz-cf-id",
+})
 
 # Pattern-class rules (D-05): compiled regexes, each paired with a short rule
 # NAME used in the finding output so a reader knows which rule fired. Run
@@ -157,6 +228,25 @@ def _walk_field_names(obj):
             yield from _walk_field_names(item)
 
 
+def _walk_string_values(obj, parent_key: str | None = None):
+    """Yield (parent_key_lower_or_none, value) for every STRING leaf found at
+    any depth in `obj`, carrying the nearest enclosing dict key (lowercased) —
+    a list element inherits its containing dict's key (there is no per-element
+    key inside a list). Pure, read-only, never mutates `obj`. This is what lets
+    vendor-key-fragment's exemption be scoped BY FIELD NAME (see
+    `_EXEMPT_KEY_FRAGMENT_FIELD_NAMES` above) — `_walk_field_names` above only
+    yields key names, not the (key, value) pairing this needs."""
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            next_key = key.lower() if isinstance(key, str) else parent_key
+            yield from _walk_string_values(value, next_key)
+    elif isinstance(obj, list):
+        for item in obj:
+            yield from _walk_string_values(item, parent_key)
+    elif isinstance(obj, str):
+        yield (parent_key, obj)
+
+
 def scan_record(record: dict) -> list[str]:
     """Pure: classify ONE parsed JSON record against both rule classes.
     Returns a list of rule names that fired (empty when clean). Never edits
@@ -167,12 +257,27 @@ def scan_record(record: dict) -> list[str]:
         if name in DENYLIST_FIELD_NAMES:
             findings.append(f"denylisted-field-name:{name}")
 
+    # vendor-key-fragment is evaluated per STRING VALUE, with its nearest
+    # enclosing key name available, so a documented field can be exempted BY
+    # NAME (see _EXEMPT_KEY_FRAGMENT_FIELD_NAMES) without touching the
+    # regex — the same base64-blob shape under any other key still fires.
+    vendor_key_fragment_pattern = next(
+        pattern for rule_name, pattern in PII_PATTERNS if rule_name == "vendor-key-fragment"
+    )
+    for key, value in _walk_string_values(record):
+        for match in vendor_key_fragment_pattern.finditer(value):
+            fragment = match.group(0)
+            if fragment in _EXEMPT_KEY_FRAGMENT_VALUES:
+                continue
+            if key in _EXEMPT_KEY_FRAGMENT_FIELD_NAMES:
+                continue
+            findings.append("vendor-key-fragment")
+
     serialized = json.dumps(record)
     for rule_name, pattern in PII_PATTERNS:
+        if rule_name == "vendor-key-fragment":
+            continue  # handled per-value above, not on the serialized blob
         for match in pattern.finditer(serialized):
-            value = match.group(0)
-            if rule_name == "vendor-key-fragment" and value in _EXEMPT_KEY_FRAGMENT_VALUES:
-                continue
             findings.append(rule_name)
 
     return findings
@@ -299,6 +404,59 @@ def selftest() -> tuple[int, int]:
         if not any(f["rule"] == "vendor-key-fragment" for f in findings):
             problems += 1
             print("FAIL selftest: a vendor-key-shaped fragment was not reported", file=sys.stderr)
+
+    # --- a base64-shaped value under a documented, named-exempt field
+    #     (Anthropic's `signature`, Gemini's `thoughtSignature`, DeepSeek's
+    #     `X-Amz-Cf-Id`) produces NO finding — the second named exemption,
+    #     matched case-insensitively by key name (added 2026-09-02, plan
+    #     11-06, WR-04/WINDOWS.md #3/#5/#6) ---
+    cases += 1
+    with tempfile.TemporaryDirectory() as td:
+        raw = Path(td) / "raw"
+        raw.mkdir()
+        (raw / "vendor.jsonl").write_text(
+            json.dumps({
+                "probe_id": "x--baseline--none--default--12121212",
+                "attempts": [{
+                    "response_body_raw": {"content": [{"type": "thinking", "signature": "A" * 60}]},
+                    "response_headers": {"X-Amz-Cf-Id": "B" * 60},
+                }],
+            }) + "\n"
+        )
+        (raw / "vendor2.jsonl").write_text(
+            json.dumps({
+                "probe_id": "x--baseline--none--default--13131313",
+                "attempts": [{"response_body_raw": {"candidates": [{"content": {"parts": [
+                    {"thoughtSignature": "C" * 60}
+                ]}}]}}],
+            }) + "\n"
+        )
+        findings = scan_evidence(raw, Path(td) / "no-ledger.jsonl")
+        if findings:
+            problems += 1
+            print(f"FAIL selftest: a named-exempt field's base64-shaped value was reported: {findings}", file=sys.stderr)
+
+    # --- the SAME base64-shaped value under an UNRELATED key, even sitting
+    #     right next to an exempt field in the same record, STILL fires —
+    #     proves the field-name exemption narrows by name only, never widens
+    #     what counts as a match under any other key ---
+    cases += 1
+    with tempfile.TemporaryDirectory() as td:
+        raw = Path(td) / "raw"
+        raw.mkdir()
+        (raw / "vendor.jsonl").write_text(
+            json.dumps({
+                "probe_id": "x--baseline--none--default--14141414",
+                "attempts": [{"response_body_raw": {"content": [
+                    {"type": "thinking", "signature": "A" * 60},
+                    {"type": "other", "unrelated_field": "D" * 60},
+                ]}}],
+            }) + "\n"
+        )
+        findings = scan_evidence(raw, Path(td) / "no-ledger.jsonl")
+        if not any(f["rule"] == "vendor-key-fragment" for f in findings):
+            problems += 1
+            print("FAIL selftest: a base64-shaped value under a non-exempt key sitting beside an exempt field was not reported", file=sys.stderr)
 
     # --- a record whose only long base64 run is fixtures.TINY_PNG_BASE64
     #     produces NO finding — the one named exemption ---

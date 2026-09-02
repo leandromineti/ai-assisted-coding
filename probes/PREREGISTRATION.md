@@ -961,3 +961,92 @@ section calls for.
 **The complete evidence base is now classified.** Every one of the 629 rows
 carries a state from the closed vocabulary; the sweep's own coverage question
 (SWP-01) is answered mechanically, not asserted.
+
+**2026-09-02, plan 11-06 Task 1 — WR-04 closed: the D-05 scanner's denylist
+reviewed against all 8 vendors' real captured headers, all four open
+WINDOWS.md findings (#2, #3, #5, #6) resolved, `--check` now exits 0 over the
+complete evidence base.**
+
+Per-vendor captured-header inventory derived by command (not hand-typed):
+
+```
+python3 -c "import json,glob,pathlib,collections; v=collections.defaultdict(set); \
+[v[json.loads(l)['vendor']].add(k.lower()) for p in glob.glob('probes/raw/*.jsonl') \
+for l in pathlib.Path(p).read_text().splitlines() if l.strip() \
+for a in json.loads(l).get('attempts',[]) for k in (a.get('response_headers') or {})]; \
+print(len(v), {k: sorted(s) for k,s in v.items()})"
+```
+
+Result: **8 vendors**, 359 total captured raw records (anthropic 80, dseek 23,
+gemini 20, kimi 29, openai 46, qwen 93, xai 34, zai 34). Every header name
+across all 8 vendors was read and classified benign / org-account-identifying
+/ uncertain. **Finding: zero new org/account-identifying header names** —
+`probes/audit-evidence.py`'s `DENYLIST_FIELD_NAMES` already covered every
+genuinely account-identifying name this review found (the two borderline
+candidates, xAI's `x-data-retention`/`x-zero-data-retention`, are a boolean
+data-retention POLICY flag — not a name/id of who the account IS — and were
+classified benign, the same class as `x-gemini-service-tier`'s subscription
+flag). **Finding: a real parity gap, not a coverage gap** — `set-cookie` was
+already in `runner.py`'s structural filter (added 11-04) but was never
+mirrored into the SCANNER's own `DENYLIST_FIELD_NAMES`, exactly the failure
+mode this task's own set-parity `<verify>` command exists to catch. Fixed:
+`set-cookie` added to `DENYLIST_FIELD_NAMES`; every entry in the constant now
+carries its own observed-live-with-vendor-and-date or documented-guess-
+with-searched-surface annotation (see `probes/audit-evidence.py`'s own
+comment block). `runner.py`'s `_ORG_IDENTIFYING_RESPONSE_HEADERS` needed no
+change — it already carried every name the scanner now carries; set parity
+confirmed: `DENYLIST PARITY OK 10`.
+
+**Three stale pre-existing records found still carrying a header-name leak
+already covered by the (pre-fix) filter/denylist, predating the plan that
+added that name — none discovered by 11-03's or 11-04's own narrower
+verification, only surfaced by this task's exhaustive per-vendor scan.**
+Repaired (redacted in place — the same precedent WINDOWS.md #4 already
+established for a header-value leak in an already-captured record:
+`probe_id`/`terminal`/`usage`/`cost_usd` untouched, only the leaked header
+VALUE removed, no re-fire, no re-spend on a cell that already returned a
+valid verdict):
+
+- `kimi-k3--baseline--none--default--b3540b5c` (Phase 9 smoke-test record,
+  not part of the contract-sweep's 629-row declared cell universe) — the
+  `set-cookie`, `Msh-Gid`, `Msh-Org-Id`, `Msh-Project-Id`, `Msh-Uid` header
+  values removed. This is WINDOWS.md #2's exact record.
+- `kimi-k3--kimi-fixed-sampling-point--0.3--default--c6b0f5d8` (Stage 1
+  declared cell, fired before 11-04's Task 1 discovered the cookie leak that
+  same day) — `set-cookie` removed.
+- `grok-4-5--openai-reasoning-effort--low--default--5728b015` (Stage 2
+  declared cell — NOT one of the 5 records 11-04's own redaction pass
+  covered, since that pass scoped itself to the records it had just fired in
+  its own task) — `set-cookie` removed.
+
+Line counts verified unchanged before/after (`wc -l probes/raw/kimi.jsonl`:
+29 both times; `probes/raw/xai.jsonl`: 34 both times) — repair only, no
+record added or removed, append-only convention honored.
+
+**A second named exemption added to `probes/audit-evidence.py`'s
+`vendor-key-fragment` pattern rule, scoped by FIELD NAME rather than by
+value** (WINDOWS.md #3 gemini `thoughtSignature`, #5 anthropic `signature`,
+#6 dseek `X-Amz-Cf-Id` — the same structural false-positive class, now closed
+together). `scan_record()` restructured to walk every string VALUE with its
+nearest enclosing KEY name (new `_walk_string_values()`), so the
+vendor-key-fragment rule can skip a match under a documented, named-exempt
+key (`signature`, `thoughtsignature`, `x-amz-cf-id`) while the SAME shaped
+value under any OTHER key still fires — demonstrated by two new selftest
+cases (the exempt-key case producing no finding; a base64-shaped value under
+an unrelated key, sitting beside an exempt field in the same record, still
+firing). D-05's never-loosen-the-pattern rule is honored: the regex itself
+is byte-identical; only which KEY NAMES are exempt from it changed, and that
+exemption is a named, documented, written-reason constant per CLAUDE.md §
+Growing the deny-list, exactly like the pre-existing tiny-PNG exemption.
+
+**Verification, all read from the actual runs:** `python3
+probes/audit-evidence.py --selftest`: 10 cases, 0 problem(s) (was 8 at the
+end of plan 11-03). `python3 probes/audit-evidence.py --check`: **0
+problem(s), exit 0** — down from 30 findings (8 real header-name leaks now
+repaired, 22 vendor-key-fragment false positives now exempted by name).
+Denylist/filter set-parity check: `DENYLIST PARITY OK 10`. All four open
+`.planning/WINDOWS.md` findings (#2, #3, #5, #6) marked fixed.
+
+No API call was made in this task — every fix is a scanner/evidence-repair
+change, zero incremental spend. Global ledger total unchanged from the end of
+plan 11-05: **$0.058858**.
