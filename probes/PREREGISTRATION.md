@@ -1098,3 +1098,71 @@ probe_ids against every tracked raw record's own stored `probe_id` field).
 
 No API call was made in this task. Global ledger total unchanged:
 **$0.058858**.
+
+## Amendment, 2026-09-02, plan 11-07 Task 2 (pre-run — appended below the protocol, which is not edited above this line)
+
+**New spend, beyond the original 345-cell sweep's D-01/11-02 sign-off ($0.52,
+approved 2026-09-01).** Plan 11-07 Task 1 closed UAT gap G-11-3 (the owner's own
+words, Test 3 of `11-UAT.md`: "I think every parameter we tried should be
+assessed by itself before exploring any relation to thinking mode.") by adding an
+unconditional mode-free `default` baseline cell to every `axis: thinking`
+registry row — the 10 sampling-group rows plus the exotic
+`qwen-repetition-penalty` row — keyed on `axis == "thinking"`, not `group ==
+"sampling"` (this plan's own decision_record states the three reasons this is
+the correct, generic scope). This declared 98 new scalar cells that did not
+exist in the original 345-cell design and were never part of D-01's or the
+11-02 amendment's sign-off. Per this repo's sign-off convention (a
+previously-approved number never covers a larger one, the same discipline the
+11-02 amendment itself applied when its own fix moved the envelope from $0.35
+to $0.52), Task 2 presented this new firing to the owner as a
+`checkpoint:decision` gated `blocking-human` before Task 3 could fire anything.
+
+**The new cell count, re-derived and pinned by Task 1's own verify against the
+actual regenerated files, not assumed:** 98 (91 across the 10 sampling-group
+rows, 7 for the exotic `qwen-repetition-penalty` row). `deepseek-v4` and
+`kimi-k3` — the only two of 12 tracked models with zero sampling-family evidence
+anywhere in the original sweep — each gain 11 (the 10 sampling rows + the shared
+exotic row, both `openai_compat`-family models).
+
+**The re-derived incremental envelope**, at the SAME convention SWEEP-DESIGN.md
+and the 11-02 amendment both use (9 assumed input tokens, output tokens = the
+cell's own `max_tokens`, a rejected request bills $0, round UP to the cent once
+per vendor summing raw cost first, then sum the rounded per-vendor figures) —
+read straight from Task 2's own presented context, not recomputed from scratch,
+since Task 1's own verify already pinned the cell counts this math is built on:
+
+| vendor | incremental envelope |
+|---|---|
+| anthropic | $0.02 |
+| dseek | $0.01 |
+| gemini | $0.03 |
+| kimi | $0.02 |
+| openai | $0.03 |
+| qwen | $0.01 |
+| xai | $0.01 |
+| zai | $0.01 |
+| **total** | **$0.14** |
+
+**The new combined sweep envelope:** $0.52 (original, already spent — final
+measured spend was $0.058858, 11.3% of that envelope) + $0.14 (this firing) =
+**about $0.66** worst-case total across the whole Phase 11 sweep including this
+gap closure — both figures deliberate over-counts (100% acceptance at full
+`max_tokens`), same as every prior envelope in this phase.
+
+**Current real spend at the time of this ask, read from
+`python3 probes/harness/ledger.py`, unchanged since Phase 11 closed:**
+**$0.058858** global total. Every vendor's per-vendor total after Phase 11
+stayed far under the $0.50 per-vendor soft ceiling (highest, xai, at ~4.4%) —
+the $0.14 incremental envelope leaves enormous headroom under every ceiling in
+force ($10 hard / $8 warn / $0.50 per-vendor soft, all unchanged).
+
+The owner's reply, verbatim, quoted per the repo's sign-off convention:
+
+> approve
+
+Read as `approve-fire` — the option approving the ~$0.14 incremental envelope
+and firing the 98 new cells. The approval covers exactly 98 cells at the
+~$0.14 envelope; if the regenerated set had declared more than 98 new cells,
+Task 3 would have had to stop and return a new checkpoint instead of firing —
+it did not (Task 1's own `--check-stages` confirms 443 cells across 6 stages,
+0 problems, matching this amendment's own 345 + 98 = 443 arithmetic exactly).
