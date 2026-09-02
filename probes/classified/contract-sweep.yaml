@@ -4,8 +4,8 @@
 # `python3 scripts/classify-probes.py`.
 #
 # One row per declared cell (probes/sets/generated/contract-sweep.yaml +
-# content-blocks.yaml, 345 cells) plus every declared skip
-# (probes/sets/generated/skipped-cells.yaml, 284) — 629 rows total (MTX-01).
+# content-blocks.yaml, 443 cells) plus every declared skip
+# (probes/sets/generated/skipped-cells.yaml, 284) — 727 rows total (MTX-01).
 
 checked: 2026-09-01
 evidence_through: '2026-09-02T14:40:23Z'
