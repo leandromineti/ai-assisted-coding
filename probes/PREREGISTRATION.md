@@ -1166,3 +1166,144 @@ and firing the 98 new cells. The approval covers exactly 98 cells at the
 Task 3 would have had to stop and return a new checkpoint instead of firing —
 it did not (Task 1's own `--check-stages` confirms 443 cells across 6 stages,
 0 problems, matching this amendment's own 345 + 98 = 443 arithmetic exactly).
+
+**2026-09-02, plan 11-07 Task 3 — the 98 new baseline cells fired, classified,
+audited, committed, and rendered. G-11-3 closed.**
+
+Fired, in order, per the owner's `approve-fire` reply above:
+
+```
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --stage 3
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --stage 5
+python3 probes/harness/runner.py --set probes/sets/generated/contract-sweep.yaml --refire-exhausted
+```
+
+**Stage 3 (sampling, 201 declared cells).** 110 already-logged from the
+original sweep (skipped, resumability), 91 fired new. All 91 landed
+`terminal: verdict` — no stragglers.
+
+**Stage 5 (exotics, 107 declared cells).** 100 already-logged (skipped), 7
+fired new. 6 landed `terminal: verdict`; 1 ended without a verdict
+(`qwen3.8-max--qwen-repetition-penalty--0.5--default--fa172ac1`, status 0,
+synthesized connection failure, `retry_exhausted` after 4 attempts) — D-10:
+recorded, run continued, carried to the refire pass.
+
+**Refire pass**, run once, unscoped (matching the preregistered execution
+path). `seen_probe_ids(refire_exhausted=True)` correctly attempted every
+non-verdict straggler currently on disk, which was 2, not 1: the new stage-5
+straggler above, AND `qwen3.8-max--qwen-repetition-penalty--0.5--thinking-on--
+43fdcef3` — a PRE-EXISTING straggler carried over from plan 11-05's own Task 3,
+which had already failed its one-time refire attempt there and was left in
+`needs-review` (no override, D-08). This plan did not re-fire that cell on
+purpose — the refire mechanism's seen-set exclusion is scoped to a terminal
+VALUE (`retry_exhausted`), not a stage or a plan, exactly as 11-05's own Run
+log entry already documented for its unplanned Stage-2 side effect. Both
+cells failed AGAIN, identically (status 0, `retry_exhausted`, 4 attempts) —
+genuine repeated transient failures at this one model/row, not a harness
+defect. Per D-10, the pass runs once; neither is retried further. The
+pre-existing cell's classified row is therefore untouched (same state,
+`needs-review`, as before this plan ran) — confirmed directly below, not
+merely asserted.
+
+**Full reconciliation: 98 new declared cells (91 stage 3 + 7 stage 5), 97
+landed a real verdict, 1 remains `needs-review`/non-verdict (the stage-5
+straggler above, its own SEPARATE probe_id from the pre-existing thinking-on
+straggler).** By HTTP status of the 98: 64×200, 33×400, 1×status-0
+(non-verdict). By classified state: `accepted-unverified` 51,
+`accepted-honored` 10, `accepted-ignored` 3, `rejected` 33 (28
+auto-classified + 5 via override, below), `needs-review` 1.
+
+**Every one of the 629 pre-existing classified rows is byte-identical after
+this task's regeneration** — verified directly by joining on
+`(param, model, mode, value)` against a pre-task snapshot
+(`git show HEAD:probes/classified/contract-sweep.yaml`, captured before this
+task's first commit): 0 changed, 0 missing. `rows emitted` reads **727**
+(629 pre-existing + 98 new), exactly as this plan's own must_haves require.
+
+**deepseek-v4 and kimi-k3 baseline coverage — the coverage gap this plan
+exists to close.** Filtering the classified YAML to `mode == 'default'` at
+these two models AND `param` in the 11 `axis: thinking` rows (the correct
+scope; a naive `mode == 'default'` filter without the axis restriction
+over-counts, since 48 pre-existing structural/service-tier rows at these two
+models already used `mode: default` unconditionally, having no thinking axis
+at all — see this plan's own SUMMARY.md for that verify-script correction):
+**22 cells, 11 apiece, every one carrying a real (non-null, non-unfired,
+non-skipped) state.** `deepseek-v4`'s 11: temperature/top-p/top-k/
+presence-penalty/frequency-penalty/seed/n/logit-bias/qwen-repetition-penalty
+`accepted-unverified` or `accepted-honored`, `logprobs` `accepted-honored`,
+`top-logprobs` `rejected`. `kimi-k3`'s 11: top-k/seed/n/qwen-repetition-penalty
+`accepted-unverified` or `accepted-honored`, temperature/presence-penalty/
+frequency-penalty/logprobs/top-logprobs/logit-bias `rejected`. Both vendors
+now have real, wire-verdicted sampling-family evidence for the first time in
+this milestone — the exact gap SWEEP-DESIGN.md and this document's own "Known
+contamination and confounds" section both named as "not fixed this phase."
+
+**`probes/audit-evidence.py --check` over the enlarged evidence base: exit 0,
+0 findings** — the WR-04/plan-11-06 fixes (the full denylist review, the
+named field-scoped exemptions) held clean against all 98 new records; no new
+leak class, no widened pattern, no widened exemption.
+
+`git add probes/raw probes/ledger.jsonl` — evidence committed by the
+already-executed D-04 standing policy (plan 11-06), routine continuation, not
+a new one-way ask.
+
+**5 new override entries written to `probes/classified/overrides.yaml`, each
+dated 2026-09-02, each read from that specific cell's own live error body
+before being written — the SAME already-documented reason class this phase's
+overrides.yaml already carries an entry for at the same param/model pair
+under `thinking-on` mode, now confirmed (not assumed) to repeat at the new
+`default`-mode sibling cell:**
+
+- `gemini-3-1-pro--presence-penalty--0.1--default--f7a5a8f7` → `rejected`.
+  Live body: `{"message": "Penalty is not enabled for this model"}`.
+- `grok-4-5--presence-penalty--0.1--default--8df0ceb0` → `rejected`. Live
+  body: `"Model grok-4.5 does not support parameter presencePenalty."`
+  (camelCase-alias mismatch, same as the thinking-on sibling).
+- `gemini-3-1-pro--frequency-penalty--0.1--default--741d014c` → `rejected`.
+  Live body: `{"message": "Penalty is not enabled for this model"}`.
+- `grok-4-5--frequency-penalty--0.1--default--e4628785` → `rejected`. Live
+  body: `"Model grok-4.5 does not support parameter frequencyPenalty."`
+- `gemini-3-1-pro--logprobs--true--default--82d54982` → `rejected`. Live
+  body: `{"message": "Logprobs is not enabled for this model"}`.
+
+**The 1 remaining `needs-review` cell is left unresolved, no override
+written** — `qwen3.8-max--qwen-repetition-penalty--0.5--default--fa172ac1`
+is a connection failure (`status 0`); no response body exists to read a
+verdict from at all, the identical honest-unresolvable class D-08 already
+established for this SAME row's `thinking-on` sibling in plan 11-05.
+
+**Ledger after this task, read from `python3 probes/harness/ledger.py`, never
+estimated: global $0.071612 (delta +$0.012754 from $0.058858).** By vendor
+(final total, delta from the pre-task figure in parentheses): anthropic
+$0.009552 (+$0.00011), dseek $0.003609 (+$0.001281), gemini $0.002706
+(+$0.00012), kimi $0.013209 (+$0.002076), openai $0.004565 (+$0.00038), qwen
+$0.007682 (+$0.001742), xai $0.028592 (+$0.006628), zai $0.001697
+(+$0.000418). Every vendor's delta stayed proportionate to its own $0.14-
+envelope share (no vendor disproportionately high relative to the others);
+the total delta ($0.012754) is 9.1% of the $0.14 approved incremental
+envelope, consistent with every prior firing in this phase landing far under
+its own predicted envelope. No `CEILING skip_vendor` line printed; every
+vendor's running total stayed far under the $0.50 sub-ceiling (highest, xai,
+at ~5.7% of it).
+
+`python3 scripts/build-probe-matrix.py`: regenerated `comparisons/probes.md`
+from the classified YAML alone (rule 3) — `cells read: 727`, `groups
+(sections): 6`. A second consecutive run produces zero further changes
+(byte-stable).
+
+**Verification, all read from the actual runs:**
+`python3 scripts/classify-probes.py --check`: 0 problem(s). `--selftest`: 35
+cases, 0 problem(s) (unchanged — no new fixture needed for this task's own
+override-application path, already exercised by the pre-existing battery).
+`python3 scripts/build-probe-matrix.py --check`/`--selftest`: 0 problem(s) /
+15 cases, 0 problem(s) (unchanged). `python3 probes/audit-evidence.py
+--check`: 0 problem(s), exit 0. `python3 probes/harness/runner.py
+--check-stages`: 443 cells across 6 stages, 0 problem(s). `python3
+scripts/check-taxonomy.py --check`: 133 files checked, 0 problem(s).
+
+UAT gap G-11-3 is closed: every swept sampling-family parameter (the 10
+sampling-group rows plus the exotic `qwen-repetition-penalty` row) now
+carries a mode-free baseline cell, mechanically guaranteed never to regress
+by `check_baseline_mode_coverage()` (Task 1), and every one of those cells
+that can resolve fired, classified, and rendered — including, for the first
+time in this milestone, `deepseek-v4` and `kimi-k3`.

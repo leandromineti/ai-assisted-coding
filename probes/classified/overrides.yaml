@@ -292,3 +292,34 @@ overrides:
     needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
     of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
     for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: gemini-3-1-pro--presence-penalty--0.1--default--f7a5a8f7
+  state: rejected
+  date: '2026-09-02'
+  reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above (same param,
+    same model, this plan''s new mode-free default cell). Response body: {"message": "Penalty is not
+    enabled for this model"} -- identical error class, read from this specific cell''s own live body,
+    not assumed from the sibling; unambiguously about presence-penalty; rejected.'
+- probe_id: grok-4-5--presence-penalty--0.1--default--8df0ceb0
+  state: rejected
+  date: '2026-09-02'
+  reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+    "Model grok-4.5 does not support parameter presencePenalty." -- same camelCase-alias mismatch, read
+    from this specific cell''s own live body; rejected.'
+- probe_id: gemini-3-1-pro--frequency-penalty--0.1--default--741d014c
+  state: rejected
+  date: '2026-09-02'
+  reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+    {"message": "Penalty is not enabled for this model"} -- same class as presence-penalty, read from
+    this specific cell''s own live body; about frequency-penalty; rejected.'
+- probe_id: grok-4-5--frequency-penalty--0.1--default--e4628785
+  state: rejected
+  date: '2026-09-02'
+  reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+    "Model grok-4.5 does not support parameter frequencyPenalty." -- same camelCase-alias mismatch, read
+    from this specific cell''s own live body; rejected.'
+- probe_id: gemini-3-1-pro--logprobs--true--default--82d54982
+  state: rejected
+  date: '2026-09-02'
+  reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+    {"message": "Logprobs is not enabled for this model"} -- read from this specific cell''s own live
+    body, not assumed from the sibling; unambiguously about logprobs; rejected.'

@@ -5,7 +5,7 @@
 # probes/classified/contract-sweep.yaml, rendered
 
 `checked:` 2026-09-01  
-`evidence_through:` 2026-09-02T00:38:53Z
+`evidence_through:` 2026-09-02T14:40:23Z
 
 ## Legend
 
@@ -25,24 +25,34 @@
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| temperature (mode=default, value=0.7) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ |
 | temperature (mode=thinking-on, value=0.7) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
 | temperature (mode=thinking-off, value=0.7) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
+| top-p (mode=default, value=0.9) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ |
 | top-p (mode=thinking-on, value=0.9) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
 | top-p (mode=thinking-off, value=0.9) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
+| top-k (mode=default, value=40) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
 | top-k (mode=thinking-on, value=40) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
 | top-k (mode=thinking-off, value=40) | · | ✗ | ✗ | ◐ | ✗ | · | · | · | · | · | ◐ | ◐ |
+| presence-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ |
 | presence-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
 | presence-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
+| frequency-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ |
 | frequency-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
 | frequency-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
+| logprobs (mode=default, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | ✗ | ✓ | ⚠ | ✓ | ⚠ |
 | logprobs (mode=thinking-off, value=true) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ⚠ |
 | logprobs (mode=thinking-on, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | · | · | ⚠ | ⚠ | ⚠ |
+| top-logprobs (mode=default, value=3) | · | · | · | · | ✗ | ✗ | ◐ | ✗ | ✗ | ◐ | ◐ | ◐ |
 | top-logprobs (mode=thinking-off, value=3) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
 | top-logprobs (mode=thinking-on, value=3) | · | · | · | · | ✗ | ✗ | ◐ | · | · | ◐ | ◐ | ◐ |
+| seed (mode=default, value=42) | · | · | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
 | seed (mode=thinking-off, value=42) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
 | seed (mode=thinking-on, value=42) | · | · | · | · | ◐ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
+| n (mode=default, value=1) | · | · | · | · | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | n (mode=thinking-off, value=1) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ✓ |
 | n (mode=thinking-on, value=1) | · | · | · | · | ✓ | ✓ | ✓ | · | · | ✓ | ✓ | ✓ |
+| logit-bias (mode=default, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | ✗ | ◐ | ◐ | ◐ | ◐ |
 | logit-bias (mode=thinking-off, value={"1734":5}) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
 | logit-bias (mode=thinking-on, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | · | · | ◐ | ◐ | ◐ |
 
@@ -94,6 +104,7 @@
 | gemini-candidate-count | · | · | · | · | · | ✗* | · | · | · | · | · | · |
 | kimi-partial-mode | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
 | glm-do-sample | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| qwen-repetition-penalty (mode=default, value=0.5) | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ? | ◐ |
 | qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
 | qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | ✗ | · | ◐ | · | · | ◐ | ? | ◐ |
 | kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
@@ -116,9 +127,12 @@ Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` �
 
 | Parameter | Model | State | probe_id | Hazard |
 |---|---|---|---|---|
+| logprobs | grok-4-5 | ⚠ accepted-ignored | grok-4-5--logprobs--true--default--ef457ebb | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | logprobs | grok-4-5 | ⚠ accepted-ignored | grok-4-5--logprobs--true--thinking-on--35ba6e5c | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | glm-5.3 | ⚠ accepted-ignored | glm-5.3--logprobs--true--default--426b7c7b | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | logprobs | glm-5.3 | ⚠ accepted-ignored | glm-5.3--logprobs--true--thinking-on--628e7c79 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | logprobs | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--logprobs--true--thinking-on--28f7639a | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--logprobs--true--default--04bf05c1 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | logprobs | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--logprobs--true--thinking-off--06cffcdf | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | logprobs | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--logprobs--true--thinking-on--7047d726 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | response-format | kimi-k3 | ⚠ accepted-ignored | kimi-k3--response-format--{"type":"json_object"}--default--4ec214df | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |

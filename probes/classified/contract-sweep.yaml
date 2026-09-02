@@ -8,8 +8,23 @@
 # (probes/sets/generated/skipped-cells.yaml, 284) — 629 rows total (MTX-01).
 
 checked: 2026-09-01
-evidence_through: '2026-09-02T00:38:53Z'
+evidence_through: '2026-09-02T14:40:23Z'
 cells:
+- param: temperature
+  group: sampling
+  model: claude-fable-5
+  mode: default
+  value: '0.7'
+  state: rejected
+  probe_id: claude-fable-5--temperature--0.7--default--be62cc19
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
 - param: temperature
   group: sampling
   model: claude-fable-5
@@ -32,6 +47,21 @@ cells:
   value: '0.7'
   state: rejected
   probe_id: claude-fable-5--temperature--0.7--thinking-on--b4a60676
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: claude-opus-5
+  mode: default
+  value: '0.7'
+  state: rejected
+  probe_id: claude-opus-5--temperature--0.7--default--65c8c160
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -73,6 +103,21 @@ cells:
 - param: temperature
   group: sampling
   model: claude-sonnet-5
+  mode: default
+  value: '0.7'
+  state: rejected
+  probe_id: claude-sonnet-5--temperature--0.7--default--276ef9f0
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: claude-sonnet-5
   mode: thinking-off
   value: '0.7'
   state: rejected
@@ -103,6 +148,21 @@ cells:
 - param: temperature
   group: sampling
   model: claude-haiku-4-5
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--temperature--0.7--default--a41444ed
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: claude-haiku-4-5
   mode: thinking-off
   value: '0.7'
   state: accepted-unverified
@@ -122,6 +182,21 @@ cells:
   value: '0.7'
   state: rejected
   probe_id: claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: gpt-5-6-sol
+  mode: default
+  value: '0.7'
+  state: rejected
+  probe_id: gpt-5-6-sol--temperature--0.7--default--f4a07a21
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -163,6 +238,21 @@ cells:
 - param: temperature
   group: sampling
   model: gemini-3-1-pro
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--temperature--0.7--default--e43c6725
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: gemini-3-1-pro
   mode: thinking-off
   value: null
   state: skipped
@@ -187,6 +277,21 @@ cells:
   hazard: null
   usage_input_tokens: 9
   usage_output_tokens: 1
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: grok-4-5
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: grok-4-5--temperature--0.7--default--b5cb9c7d
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -223,6 +328,21 @@ cells:
 - param: temperature
   group: sampling
   model: kimi-k3
+  mode: default
+  value: '0.7'
+  state: rejected
+  probe_id: kimi-k3--temperature--0.7--default--8d339aec
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: kimi-k3
   mode: thinking-off
   value: null
   state: skipped
@@ -253,6 +373,21 @@ cells:
 - param: temperature
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: deepseek-v4--temperature--0.7--default--1fe9123d
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -283,6 +418,21 @@ cells:
 - param: temperature
   group: sampling
   model: glm-5.3
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: glm-5.3--temperature--0.7--default--ce9724b9
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 5
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: glm-5.3
   mode: thinking-off
   value: null
   state: skipped
@@ -307,6 +457,21 @@ cells:
   hazard: null
   usage_input_tokens: 20
   usage_output_tokens: 0
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: qwen3.8-max
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--temperature--0.7--default--f0723f1e
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -343,6 +508,21 @@ cells:
 - param: temperature
   group: sampling
   model: qwen3.8-flash
+  mode: default
+  value: '0.7'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--temperature--0.7--default--0d5337bb
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: temperature
+  group: sampling
+  model: qwen3.8-flash
   mode: thinking-off
   value: '0.7'
   state: accepted-unverified
@@ -373,6 +553,21 @@ cells:
 - param: top-p
   group: sampling
   model: claude-fable-5
+  mode: default
+  value: '0.9'
+  state: rejected
+  probe_id: claude-fable-5--top-p--0.9--default--46fc779a
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: claude-fable-5
   mode: thinking-off
   value: null
   state: skipped
@@ -392,6 +587,21 @@ cells:
   value: '0.9'
   state: rejected
   probe_id: claude-fable-5--top-p--0.9--thinking-on--e76b925d
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: claude-opus-5
+  mode: default
+  value: '0.9'
+  state: rejected
+  probe_id: claude-opus-5--top-p--0.9--default--f69df470
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -433,6 +643,21 @@ cells:
 - param: top-p
   group: sampling
   model: claude-sonnet-5
+  mode: default
+  value: '0.9'
+  state: rejected
+  probe_id: claude-sonnet-5--top-p--0.9--default--7031a4ad
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: claude-sonnet-5
   mode: thinking-off
   value: '0.9'
   state: rejected
@@ -463,6 +688,21 @@ cells:
 - param: top-p
   group: sampling
   model: claude-haiku-4-5
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--top-p--0.9--default--5ec71278
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 15
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: claude-haiku-4-5
   mode: thinking-off
   value: '0.9'
   state: accepted-unverified
@@ -482,6 +722,21 @@ cells:
   value: '0.9'
   state: rejected
   probe_id: claude-haiku-4-5--top-p--0.9--thinking-on--b4ed50fa
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: gpt-5-6-sol
+  mode: default
+  value: '0.9'
+  state: rejected
+  probe_id: gpt-5-6-sol--top-p--0.9--default--70cbb966
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -523,6 +778,21 @@ cells:
 - param: top-p
   group: sampling
   model: gemini-3-1-pro
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--top-p--0.9--default--c5935aad
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: gemini-3-1-pro
   mode: thinking-off
   value: null
   state: skipped
@@ -547,6 +817,21 @@ cells:
   hazard: null
   usage_input_tokens: 9
   usage_output_tokens: 1
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: grok-4-5
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: grok-4-5--top-p--0.9--default--eda131df
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
   skip_reason: null
   reason: null
   override: null
@@ -583,6 +868,21 @@ cells:
 - param: top-p
   group: sampling
   model: kimi-k3
+  mode: default
+  value: '0.9'
+  state: rejected
+  probe_id: kimi-k3--top-p--0.9--default--a4348ce7
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: kimi-k3
   mode: thinking-off
   value: null
   state: skipped
@@ -613,6 +913,21 @@ cells:
 - param: top-p
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: deepseek-v4--top-p--0.9--default--3f02c9db
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -643,6 +958,21 @@ cells:
 - param: top-p
   group: sampling
   model: glm-5.3
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: glm-5.3--top-p--0.9--default--bd787484
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: glm-5.3
   mode: thinking-off
   value: null
   state: skipped
@@ -667,6 +997,21 @@ cells:
   hazard: null
   usage_input_tokens: 20
   usage_output_tokens: 0
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: qwen3.8-max
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-p--0.9--default--6a1de4dc
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -703,6 +1048,21 @@ cells:
 - param: top-p
   group: sampling
   model: qwen3.8-flash
+  mode: default
+  value: '0.9'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-p--0.9--default--79effb39
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-p
+  group: sampling
+  model: qwen3.8-flash
   mode: thinking-off
   value: '0.9'
   state: accepted-unverified
@@ -733,6 +1093,21 @@ cells:
 - param: top-k
   group: sampling
   model: claude-fable-5
+  mode: default
+  value: '40'
+  state: rejected
+  probe_id: claude-fable-5--top-k--40--default--4ab0bab1
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: claude-fable-5
   mode: thinking-off
   value: null
   state: skipped
@@ -752,6 +1127,21 @@ cells:
   value: '40'
   state: rejected
   probe_id: claude-fable-5--top-k--40--thinking-on--3ec00f1f
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: claude-opus-5
+  mode: default
+  value: '40'
+  state: rejected
+  probe_id: claude-opus-5--top-k--40--default--3bd43493
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -793,6 +1183,21 @@ cells:
 - param: top-k
   group: sampling
   model: claude-sonnet-5
+  mode: default
+  value: '40'
+  state: rejected
+  probe_id: claude-sonnet-5--top-k--40--default--7ea1483e
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: claude-sonnet-5
   mode: thinking-off
   value: '40'
   state: rejected
@@ -823,6 +1228,21 @@ cells:
 - param: top-k
   group: sampling
   model: claude-haiku-4-5
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--top-k--40--default--36e32dbe
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 15
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: claude-haiku-4-5
   mode: thinking-off
   value: '40'
   state: accepted-unverified
@@ -842,6 +1262,21 @@ cells:
   value: '40'
   state: rejected
   probe_id: claude-haiku-4-5--top-k--40--thinking-on--c8ec67cd
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: gpt-5-6-sol
+  mode: default
+  value: '40'
+  state: rejected
+  probe_id: gpt-5-6-sol--top-k--40--default--7c4201f5
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -883,6 +1318,21 @@ cells:
 - param: top-k
   group: sampling
   model: gemini-3-1-pro
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--top-k--40--default--426e453a
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: gemini-3-1-pro
   mode: thinking-off
   value: null
   state: skipped
@@ -907,6 +1357,21 @@ cells:
   hazard: null
   usage_input_tokens: 9
   usage_output_tokens: 1
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: grok-4-5
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: grok-4-5--top-k--40--default--771b03c5
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -19
   skip_reason: null
   reason: null
   override: null
@@ -943,6 +1408,21 @@ cells:
 - param: top-k
   group: sampling
   model: kimi-k3
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: kimi-k3--top-k--40--default--7319988b
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: kimi-k3
   mode: thinking-off
   value: null
   state: skipped
@@ -973,6 +1453,21 @@ cells:
 - param: top-k
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: deepseek-v4--top-k--40--default--a0b0d48e
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -998,6 +1493,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: glm-5.3--top-k--40--default--25bb1e86
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
+  skip_reason: null
   reason: null
   override: null
 - param: top-k
@@ -1033,6 +1543,21 @@ cells:
 - param: top-k
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-k--40--default--ce54a705
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '40'
   state: accepted-unverified
@@ -1057,6 +1582,21 @@ cells:
   hazard: null
   usage_input_tokens: 69
   usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-k
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '40'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-k--40--default--4f0d173a
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1153,6 +1693,21 @@ cells:
 - param: presence-penalty
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: gpt-5-6-sol--presence-penalty--0.1--default--a5cdfa92
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '0.1'
   state: accepted-unverified
@@ -1180,6 +1735,26 @@ cells:
   skip_reason: null
   reason: null
   override: null
+- param: presence-penalty
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: gemini-3-1-pro--presence-penalty--0.1--default--f7a5a8f7
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above (same param,
+      same model, this plan''s new mode-free default cell). Response body: {"message": "Penalty is not
+      enabled for this model"} -- identical error class, read from this specific cell''s own live body,
+      not assumed from the sibling; unambiguously about presence-penalty; rejected.'
 - param: presence-penalty
   group: sampling
   model: gemini-3-1-pro
@@ -1217,6 +1792,25 @@ cells:
 - param: presence-penalty
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: grok-4-5--presence-penalty--0.1--default--8df0ceb0
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+      "Model grok-4.5 does not support parameter presencePenalty." -- same camelCase-alias mismatch, read
+      from this specific cell''s own live body; rejected.'
+- param: presence-penalty
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -1251,6 +1845,21 @@ cells:
 - param: presence-penalty
   group: sampling
   model: kimi-k3
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: kimi-k3--presence-penalty--0.1--default--9ccce145
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: kimi-k3
   mode: thinking-off
   value: null
   state: skipped
@@ -1281,6 +1890,21 @@ cells:
 - param: presence-penalty
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: deepseek-v4--presence-penalty--0.1--default--10fc43b2
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -1306,6 +1930,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: glm-5.3--presence-penalty--0.1--default--323feaa7
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
+  skip_reason: null
   reason: null
   override: null
 - param: presence-penalty
@@ -1341,6 +1980,21 @@ cells:
 - param: presence-penalty
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--presence-penalty--0.1--default--97ba6552
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '0.1'
   state: accepted-unverified
@@ -1360,6 +2014,21 @@ cells:
   value: '0.1'
   state: accepted-unverified
   probe_id: qwen3.8-max--presence-penalty--0.1--thinking-on--5553cd8c
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: presence-penalty
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--presence-penalty--0.1--default--a960ec30
   http_status: 200
   honor_evidence: none
   hazard: null
@@ -1461,6 +2130,21 @@ cells:
 - param: frequency-penalty
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: gpt-5-6-sol--frequency-penalty--0.1--default--f25fac90
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '0.1'
   state: accepted-unverified
@@ -1488,6 +2172,25 @@ cells:
   skip_reason: null
   reason: null
   override: null
+- param: frequency-penalty
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: gemini-3-1-pro--frequency-penalty--0.1--default--741d014c
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+      {"message": "Penalty is not enabled for this model"} -- same class as presence-penalty, read from
+      this specific cell''s own live body; about frequency-penalty; rejected.'
 - param: frequency-penalty
   group: sampling
   model: gemini-3-1-pro
@@ -1524,6 +2227,25 @@ cells:
 - param: frequency-penalty
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: grok-4-5--frequency-penalty--0.1--default--e4628785
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+      "Model grok-4.5 does not support parameter frequencyPenalty." -- same camelCase-alias mismatch,
+      read from this specific cell''s own live body; rejected.'
+- param: frequency-penalty
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -1557,6 +2279,21 @@ cells:
 - param: frequency-penalty
   group: sampling
   model: kimi-k3
+  mode: default
+  value: '0.1'
+  state: rejected
+  probe_id: kimi-k3--frequency-penalty--0.1--default--ef909843
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: kimi-k3
   mode: thinking-off
   value: null
   state: skipped
@@ -1587,6 +2324,21 @@ cells:
 - param: frequency-penalty
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: deepseek-v4--frequency-penalty--0.1--default--62efc915
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -1612,6 +2364,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: glm-5.3--frequency-penalty--0.1--default--d28f0f57
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 5
+  skip_reason: null
   reason: null
   override: null
 - param: frequency-penalty
@@ -1647,6 +2414,21 @@ cells:
 - param: frequency-penalty
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--frequency-penalty--0.1--default--bf3e34da
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
+  skip_reason: null
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '0.1'
   state: accepted-unverified
@@ -1666,6 +2448,21 @@ cells:
   value: '0.1'
   state: accepted-unverified
   probe_id: qwen3.8-max--frequency-penalty--0.1--thinking-on--4fda1ca6
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: frequency-penalty
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '0.1'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--frequency-penalty--0.1--default--bbaf1200
   http_status: 200
   honor_evidence: none
   hazard: null
@@ -1767,6 +2564,21 @@ cells:
 - param: logprobs
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: 'true'
+  state: rejected
+  probe_id: gpt-5-6-sol--logprobs--true--default--c1192127
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: 'true'
   state: accepted-honored
@@ -1794,6 +2606,25 @@ cells:
   skip_reason: null
   reason: null
   override: null
+- param: logprobs
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: 'true'
+  state: rejected
+  probe_id: gemini-3-1-pro--logprobs--true--default--82d54982
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
+      {"message": "Logprobs is not enabled for this model"} -- read from this specific cell''s own live
+      body, not assumed from the sibling; unambiguously about logprobs; rejected.'
 - param: logprobs
   group: sampling
   model: gemini-3-1-pro
@@ -1830,6 +2661,22 @@ cells:
 - param: logprobs
   group: sampling
   model: grok-4-5
+  mode: default
+  value: 'true'
+  state: accepted-ignored
+  probe_id: grok-4-5--logprobs--true--default--ef457ebb
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 502
+  usage_output_tokens: -32
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -1855,6 +2702,21 @@ cells:
     no evidence the parameter had any effect — the vendor may have silently dropped it.'
   usage_input_tokens: 502
   usage_output_tokens: -12
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: kimi-k3
+  mode: default
+  value: 'true'
+  state: rejected
+  probe_id: kimi-k3--logprobs--true--default--b9b3e6f3
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -1891,6 +2753,21 @@ cells:
 - param: logprobs
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: 'true'
+  state: accepted-honored
+  probe_id: deepseek-v4--logprobs--true--default--3e9e0cfd
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -1916,6 +2793,22 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: 'true'
+  state: accepted-ignored
+  probe_id: glm-5.3--logprobs--true--default--426b7c7b
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 3
+  skip_reason: null
   reason: null
   override: null
 - param: logprobs
@@ -1952,6 +2845,21 @@ cells:
 - param: logprobs
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: 'true'
+  state: accepted-honored
+  probe_id: qwen3.8-max--logprobs--true--default--8c88fc79
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: 'true'
   state: accepted-honored
@@ -1977,6 +2885,22 @@ cells:
     no evidence the parameter had any effect — the vendor may have silently dropped it.'
   usage_input_tokens: 69
   usage_output_tokens: 3
+  skip_reason: null
+  reason: null
+  override: null
+- param: logprobs
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: 'true'
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--logprobs--true--default--04bf05c1
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2075,6 +2999,21 @@ cells:
 - param: top-logprobs
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '3'
+  state: rejected
+  probe_id: gpt-5-6-sol--top-logprobs--3--default--96b7b9c7
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '3'
   state: rejected
@@ -2094,6 +3033,21 @@ cells:
   value: '3'
   state: rejected
   probe_id: gpt-5-6-sol--top-logprobs--3--thinking-on--55fa5a45
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: '3'
+  state: rejected
+  probe_id: gemini-3-1-pro--top-logprobs--3--default--9a6b3b69
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -2135,6 +3089,21 @@ cells:
 - param: top-logprobs
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '3'
+  state: accepted-unverified
+  probe_id: grok-4-5--top-logprobs--3--default--ee0a3b87
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -2159,6 +3128,21 @@ cells:
   hazard: null
   usage_input_tokens: 502
   usage_output_tokens: -12
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: kimi-k3
+  mode: default
+  value: '3'
+  state: rejected
+  probe_id: kimi-k3--top-logprobs--3--default--f4467171
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
   skip_reason: null
   reason: null
   override: null
@@ -2195,6 +3179,21 @@ cells:
 - param: top-logprobs
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '3'
+  state: rejected
+  probe_id: deepseek-v4--top-logprobs--3--default--b4e6062b
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -2220,6 +3219,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '3'
+  state: accepted-unverified
+  probe_id: glm-5.3--top-logprobs--3--default--fd546fdf
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 2
+  skip_reason: null
   reason: null
   override: null
 - param: top-logprobs
@@ -2255,6 +3269,21 @@ cells:
 - param: top-logprobs
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '3'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-logprobs--3--default--5c386652
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '3'
   state: accepted-unverified
@@ -2274,6 +3303,21 @@ cells:
   value: '3'
   state: accepted-unverified
   probe_id: qwen3.8-max--top-logprobs--3--thinking-on--9cdee6cc
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: top-logprobs
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '3'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-logprobs--3--default--416a489a
   http_status: 200
   honor_evidence: none
   hazard: null
@@ -2375,6 +3419,21 @@ cells:
 - param: seed
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--seed--42--default--77f68fc6
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '42'
   state: accepted-unverified
@@ -2399,6 +3458,21 @@ cells:
   hazard: null
   usage_input_tokens: 14
   usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--seed--42--default--18c16086
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2435,6 +3509,21 @@ cells:
 - param: seed
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: grok-4-5--seed--42--default--89d4c1d4
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -18
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -2459,6 +3548,21 @@ cells:
   hazard: null
   usage_input_tokens: 502
   usage_output_tokens: -12
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: kimi-k3
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: kimi-k3--seed--42--default--992d750b
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -2495,6 +3599,21 @@ cells:
 - param: seed
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: deepseek-v4--seed--42--default--4176a0f2
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -2520,6 +3639,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: glm-5.3--seed--42--default--f05c74a2
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 1
+  skip_reason: null
   reason: null
   override: null
 - param: seed
@@ -2555,6 +3689,21 @@ cells:
 - param: seed
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--seed--42--default--5c475384
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '42'
   state: accepted-unverified
@@ -2574,6 +3723,21 @@ cells:
   value: '42'
   state: accepted-unverified
   probe_id: qwen3.8-max--seed--42--thinking-on--24f6a48a
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: seed
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '42'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--seed--42--default--1fd7386e
   http_status: 200
   honor_evidence: none
   hazard: null
@@ -2675,6 +3839,21 @@ cells:
 - param: n
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--n--1--default--863ce1df
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '1'
   state: accepted-honored
@@ -2699,6 +3878,21 @@ cells:
   hazard: null
   usage_input_tokens: 14
   usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: gemini-3-1-pro
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: gemini-3-1-pro--n--1--default--d43cbc30
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2735,6 +3929,21 @@ cells:
 - param: n
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: grok-4-5--n--1--default--5e8e1f8d
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -39
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -2759,6 +3968,21 @@ cells:
   hazard: null
   usage_input_tokens: 502
   usage_output_tokens: -12
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: kimi-k3
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: kimi-k3--n--1--default--c3e51607
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -2795,6 +4019,21 @@ cells:
 - param: n
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: deepseek-v4--n--1--default--8bc5ddbc
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -2820,6 +4059,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: glm-5.3--n--1--default--0ca6130e
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
+  skip_reason: null
   reason: null
   override: null
 - param: n
@@ -2855,6 +4109,21 @@ cells:
 - param: n
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: qwen3.8-max--n--1--default--9c3a18b3
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '1'
   state: accepted-honored
@@ -2874,6 +4143,21 @@ cells:
   value: '1'
   state: accepted-honored
   probe_id: qwen3.8-max--n--1--thinking-on--9d50415f
+  http_status: 200
+  honor_evidence: candidate-count
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: n
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '1'
+  state: accepted-honored
+  probe_id: qwen3.8-flash--n--1--default--1c550e6f
   http_status: 200
   honor_evidence: candidate-count
   hazard: null
@@ -2975,6 +4259,21 @@ cells:
 - param: logit-bias
   group: sampling
   model: gpt-5-6-sol
+  mode: default
+  value: '{"1734":5}'
+  state: rejected
+  probe_id: gpt-5-6-sol--logit-bias--{"1734":5}--default--23d52aa5
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '{"1734":5}'
   state: rejected
@@ -3020,6 +4319,21 @@ cells:
 - param: logit-bias
   group: sampling
   model: grok-4-5
+  mode: default
+  value: '{"1734":5}'
+  state: rejected
+  probe_id: grok-4-5--logit-bias--{"1734":5}--default--ab30f188
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -3039,6 +4353,21 @@ cells:
   value: '{"1734":5}'
   state: rejected
   probe_id: grok-4-5--logit-bias--{"1734":5}--thinking-on--b5079fdd
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: kimi-k3
+  mode: default
+  value: '{"1734":5}'
+  state: rejected
+  probe_id: kimi-k3--logit-bias--{"1734":5}--default--d48627ac
   http_status: 400
   honor_evidence: n/a
   hazard: null
@@ -3080,6 +4409,21 @@ cells:
 - param: logit-bias
   group: sampling
   model: deepseek-v4
+  mode: default
+  value: '{"1734":5}'
+  state: accepted-unverified
+  probe_id: deepseek-v4--logit-bias--{"1734":5}--default--9b45fd22
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -3105,6 +4449,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: glm-5.3
+  mode: default
+  value: '{"1734":5}'
+  state: accepted-unverified
+  probe_id: glm-5.3--logit-bias--{"1734":5}--default--1672ba57
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
+  skip_reason: null
   reason: null
   override: null
 - param: logit-bias
@@ -3140,6 +4499,21 @@ cells:
 - param: logit-bias
   group: sampling
   model: qwen3.8-max
+  mode: default
+  value: '{"1734":5}'
+  state: accepted-unverified
+  probe_id: qwen3.8-max--logit-bias--{"1734":5}--default--c332ae4f
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: qwen3.8-max
   mode: thinking-off
   value: '{"1734":5}'
   state: accepted-unverified
@@ -3159,6 +4533,21 @@ cells:
   value: '{"1734":5}'
   state: accepted-unverified
   probe_id: qwen3.8-max--logit-bias--{"1734":5}--thinking-on--efe9a541
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
+  override: null
+- param: logit-bias
+  group: sampling
+  model: qwen3.8-flash
+  mode: default
+  value: '{"1734":5}'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--logit-bias--{"1734":5}--default--61641ce5
   http_status: 200
   honor_evidence: none
   hazard: null
@@ -8218,6 +9607,21 @@ cells:
 - param: qwen-repetition-penalty
   group: exotic
   model: gpt-5-6-sol
+  mode: default
+  value: '0.5'
+  state: rejected
+  probe_id: gpt-5-6-sol--qwen-repetition-penalty--0.5--default--a1d7b034
+  http_status: 400
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: null
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: gpt-5-6-sol
   mode: thinking-off
   value: '0.5'
   state: rejected
@@ -8263,6 +9667,21 @@ cells:
 - param: qwen-repetition-penalty
   group: exotic
   model: grok-4-5
+  mode: default
+  value: '0.5'
+  state: accepted-unverified
+  probe_id: grok-4-5--qwen-repetition-penalty--0.5--default--e18aa90e
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
+  skip_reason: null
+  reason: null
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: grok-4-5
   mode: thinking-off
   value: null
   state: skipped
@@ -8287,6 +9706,21 @@ cells:
   hazard: null
   usage_input_tokens: 502
   usage_output_tokens: -12
+  skip_reason: null
+  reason: null
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: kimi-k3
+  mode: default
+  value: '0.5'
+  state: accepted-unverified
+  probe_id: kimi-k3--qwen-repetition-penalty--0.5--default--723d5c88
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -8323,6 +9757,21 @@ cells:
 - param: qwen-repetition-penalty
   group: exotic
   model: deepseek-v4
+  mode: default
+  value: '0.5'
+  state: accepted-unverified
+  probe_id: deepseek-v4--qwen-repetition-penalty--0.5--default--64a49b17
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
+  skip_reason: null
+  reason: null
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: deepseek-v4
   mode: thinking-off
   value: null
   state: skipped
@@ -8348,6 +9797,21 @@ cells:
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: toggle-not-a-request-parameter
+  reason: null
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: glm-5.3
+  mode: default
+  value: '0.5'
+  state: accepted-unverified
+  probe_id: glm-5.3--qwen-repetition-penalty--0.5--default--431bd993
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
+  skip_reason: null
   reason: null
   override: null
 - param: qwen-repetition-penalty
@@ -8383,6 +9847,21 @@ cells:
 - param: qwen-repetition-penalty
   group: exotic
   model: qwen3.8-max
+  mode: default
+  value: '0.5'
+  state: needs-review
+  probe_id: qwen3.8-max--qwen-repetition-penalty--0.5--default--fa172ac1
+  http_status: 0
+  honor_evidence: n/a
+  hazard: null
+  usage_input_tokens: null
+  usage_output_tokens: null
+  skip_reason: null
+  reason: non-verdict-terminal
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: qwen3.8-max
   mode: thinking-off
   value: '0.5'
   state: accepted-unverified
@@ -8409,6 +9888,21 @@ cells:
   usage_output_tokens: null
   skip_reason: null
   reason: non-verdict-terminal
+  override: null
+- param: qwen-repetition-penalty
+  group: exotic
+  model: qwen3.8-flash
+  mode: default
+  value: '0.5'
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--qwen-repetition-penalty--0.5--default--d41a25cf
+  http_status: 200
+  honor_evidence: none
+  hazard: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
+  skip_reason: null
+  reason: null
   override: null
 - param: qwen-repetition-penalty
   group: exotic
