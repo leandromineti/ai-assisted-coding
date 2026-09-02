@@ -5,7 +5,7 @@
 # probes/classified/contract-sweep.yaml, rendered
 
 `checked:` 2026-09-01  
-`evidence_through:` 2026-09-01T22:38:53Z
+`evidence_through:` 2026-09-02T00:38:53Z
 
 ## Legend
 
@@ -25,54 +25,54 @@
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| temperature (mode=thinking-on, value=0.7) | — | — | — | — | — | — | — | · | · | — | — | — |
-| temperature (mode=thinking-off, value=0.7) | · | — | — | — | — | · | · | · | · | · | — | — |
-| top-p (mode=thinking-on, value=0.9) | — | — | — | — | — | — | — | · | · | — | — | — |
-| top-p (mode=thinking-off, value=0.9) | · | — | — | — | — | · | · | · | · | · | — | — |
-| top-k (mode=thinking-on, value=40) | — | — | — | — | — | — | — | · | · | — | — | — |
-| top-k (mode=thinking-off, value=40) | · | — | — | — | — | · | · | · | · | · | — | — |
-| presence-penalty (mode=thinking-off, value=0.1) | · | · | · | · | — | · | · | · | · | · | — | — |
-| presence-penalty (mode=thinking-on, value=0.1) | · | · | · | · | — | — | — | · | · | — | — | — |
-| frequency-penalty (mode=thinking-off, value=0.1) | · | · | · | · | — | · | · | · | · | · | — | — |
-| frequency-penalty (mode=thinking-on, value=0.1) | · | · | · | · | — | — | — | · | · | — | — | — |
-| logprobs (mode=thinking-off, value=true) | · | · | · | · | — | · | · | · | · | · | — | — |
-| logprobs (mode=thinking-on, value=true) | · | · | · | · | — | — | — | · | · | — | — | — |
-| top-logprobs (mode=thinking-off, value=3) | · | · | · | · | — | · | · | · | · | · | — | — |
-| top-logprobs (mode=thinking-on, value=3) | · | · | · | · | — | — | — | · | · | — | — | — |
-| seed (mode=thinking-off, value=42) | · | · | · | · | — | · | · | · | · | · | — | — |
-| seed (mode=thinking-on, value=42) | · | · | · | · | — | — | — | · | · | — | — | — |
-| n (mode=thinking-off, value=1) | · | · | · | · | — | · | · | · | · | · | — | — |
-| n (mode=thinking-on, value=1) | · | · | · | · | — | — | — | · | · | — | — | — |
-| logit-bias (mode=thinking-off, value={"1734":5}) | · | · | · | · | — | · | · | · | · | · | — | — |
-| logit-bias (mode=thinking-on, value={"1734":5}) | · | · | · | · | — | · | — | · | · | — | — | — |
+| temperature (mode=thinking-on, value=0.7) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
+| temperature (mode=thinking-off, value=0.7) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
+| top-p (mode=thinking-on, value=0.9) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
+| top-p (mode=thinking-off, value=0.9) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
+| top-k (mode=thinking-on, value=40) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
+| top-k (mode=thinking-off, value=40) | · | ✗ | ✗ | ◐ | ✗ | · | · | · | · | · | ◐ | ◐ |
+| presence-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
+| presence-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
+| frequency-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
+| frequency-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
+| logprobs (mode=thinking-off, value=true) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ⚠ |
+| logprobs (mode=thinking-on, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | · | · | ⚠ | ⚠ | ⚠ |
+| top-logprobs (mode=thinking-off, value=3) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
+| top-logprobs (mode=thinking-on, value=3) | · | · | · | · | ✗ | ✗ | ◐ | · | · | ◐ | ◐ | ◐ |
+| seed (mode=thinking-off, value=42) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
+| seed (mode=thinking-on, value=42) | · | · | · | · | ◐ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
+| n (mode=thinking-off, value=1) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ✓ |
+| n (mode=thinking-on, value=1) | · | · | · | · | ✓ | ✓ | ✓ | · | · | ✓ | ✓ | ✓ |
+| logit-bias (mode=thinking-off, value={"1734":5}) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
+| logit-bias (mode=thinking-on, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | · | · | ◐ | ◐ | ◐ |
 
 ## structural
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| max-tokens | — | — | — | — | — | — | — | — | — | — | — | — |
-| stop | — | — | — | — | — | — | — | — | — | — | — | — |
-| response-format | · | · | · | · | — | — | — | — | — | — | — | — |
-| tools | — | — | — | — | — | — | — | — | — | — | — | — |
-| tool-choice | — | — | — | — | — | · | — | — | — | — | — | — |
-| parallel-tool-calls | · | · | · | · | — | · | — | — | — | — | — | — |
-| stream | — | — | — | — | — | · | — | — | — | — | — | — |
-| stream-options-include-usage | · | · | · | · | — | · | — | — | — | — | — | — |
-| anthropic-structured-output-output-config | — | — | — | — | · | · | · | · | · | · | · | · |
-| anthropic-structured-output-output-format | — | — | — | — | · | · | · | · | · | · | · | · |
+| max-tokens | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| stop | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| response-format | · | · | · | · | ✗ | ? | ✓ | ⚠ | ✗ | ⚠ | ✗ | ✗ |
+| tools | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* |
+| tool-choice | ✗ | ✗ | ✗ | ✗ | ✗ | · | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| parallel-tool-calls | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| stream | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| stream-options-include-usage | · | · | · | · | ✗ | · | ◐ | ◐ | ✗ | ◐ | ✗ | ✗ |
+| anthropic-structured-output-output-config | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
+| anthropic-structured-output-output-format | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
 
 ## service-tier
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| service-tier | — | — | — | — | — | · | — | — | — | — | — | — |
+| service-tier | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
 
 ## reasoning-toggle
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| openai-reasoning-effort | · | · | · | · | ? | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| anthropic-thinking-object | — | — | — | — | · | · | · | · | · | · | · | · |
+| openai-reasoning-effort | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| anthropic-thinking-object | ◐ | ◐ | ◐ | ◐ | · | · | · | · | · | · | · | · |
 | gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · |
 | qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ |
 
@@ -80,38 +80,80 @@
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gemini-temperature-range (mode=default, value=1.0) | · | · | · | · | · | — | · | · | · | · | · | · |
+| gemini-temperature-range (mode=default, value=1.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · |
 | gemini-temperature-range (mode=default, value=2.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| openai-verbosity | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-prediction | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-service-tier-values (mode=default, value=auto) | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-service-tier-values (mode=default, value=default) | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-service-tier-values (mode=default, value=flex) | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-service-tier-values (mode=default, value=priority) | · | · | · | · | — | · | — | — | — | — | — | — |
-| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":1024,"type":"enabled"}) | — | — | — | — | · | · | · | · | · | · | · | · |
+| openai-verbosity | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| openai-prediction | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| openai-service-tier-values (mode=default, value=auto) | · | · | · | · | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
+| openai-service-tier-values (mode=default, value=default) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
+| openai-service-tier-values (mode=default, value=flex) | · | · | · | · | ✓ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
+| openai-service-tier-values (mode=default, value=priority) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
+| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":1024,"type":"enabled"}) | ✗ | ✗ | ✗ | ◐ | · | · | · | · | · | · | · | · |
 | anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":500,"type":"enabled"}) | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
-| gemini-media-resolution | · | · | · | · | · | — | · | · | · | · | · | · |
-| gemini-candidate-count | · | · | · | · | · | — | · | · | · | · | · | · |
-| kimi-partial-mode | · | · | · | · | — | · | — | — | — | — | — | — |
-| glm-do-sample | · | · | · | · | — | · | — | — | — | — | — | — |
-| qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | — | · | · | · | · | · | — | — |
-| qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | — | · | — | · | · | — | — | — |
+| gemini-media-resolution | · | · | · | · | · | ◐ | · | · | · | · | · | · |
+| gemini-candidate-count | · | · | · | · | · | ✗* | · | · | · | · | · | · |
+| kimi-partial-mode | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| glm-do-sample | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
+| qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | ✗ | · | ◐ | · | · | ◐ | ? | ◐ |
 | kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
-| kimi-fixed-sampling-point (mode=default, value=0.6) | · | · | · | · | · | · | · | — | · | · | · | · |
-| openai-store | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-metadata | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-safety-identifier | · | · | · | · | — | · | — | — | — | — | — | — |
-| openai-prompt-cache-key | · | · | · | · | — | · | — | — | — | — | — | — |
+| kimi-fixed-sampling-point (mode=default, value=0.6) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
+| openai-store | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| openai-metadata | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ? | ◐ | ◐ |
+| openai-safety-identifier | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| openai-prompt-cache-key | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
 
 ## content-block
 
 | Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| image-input | — | — | — | — | — | — | — | — | — | — | — | — |
-| anthropic-cache-control-block | — | — | — | — | · | · | · | · | · | · | · | · |
+| image-input | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗* | ✓ | ✗* | ✗* | ✗* | ✗* |
+| anthropic-cache-control-block | ✓ | ✓ | ✓ | ✓ | · | · | · | · | · | · | · | · |
 
 ## Hazards
 
 Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` — the silent-acceptance hazard class SWP-02 requires stay visually and structurally distinct from a clean accept (conclusion 19, docs/conclusions.md).
 
-None yet — no cell has classified as `accepted-ignored` or `silently-translated`.
+| Parameter | Model | State | probe_id | Hazard |
+|---|---|---|---|---|
+| logprobs | grok-4-5 | ⚠ accepted-ignored | grok-4-5--logprobs--true--thinking-on--35ba6e5c | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | glm-5.3 | ⚠ accepted-ignored | glm-5.3--logprobs--true--thinking-on--628e7c79 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--logprobs--true--thinking-on--28f7639a | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--logprobs--true--thinking-off--06cffcdf | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| logprobs | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--logprobs--true--thinking-on--7047d726 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| response-format | kimi-k3 | ⚠ accepted-ignored | kimi-k3--response-format--{"type":"json_object"}--default--4ec214df | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| response-format | glm-5.3 | ⚠ accepted-ignored | glm-5.3--response-format--{"type":"json_object"}--default--c48d84f0 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | claude-fable-5 | ⚠ accepted-ignored | claude-fable-5--service-tier--auto--default--aa7ed336 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | claude-opus-5 | ⚠ accepted-ignored | claude-opus-5--service-tier--auto--default--4b23e6d5 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | claude-sonnet-5 | ⚠ accepted-ignored | claude-sonnet-5--service-tier--auto--default--60274a16 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | claude-haiku-4-5 | ⚠ accepted-ignored | claude-haiku-4-5--service-tier--auto--default--6ba13904 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | gpt-5-6-sol | ⇄ silently-translated | gpt-5-6-sol--service-tier--auto--default--edca588c | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| service-tier | grok-4-5 | ⇄ silently-translated | grok-4-5--service-tier--auto--default--50701f55 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| service-tier | kimi-k3 | ⚠ accepted-ignored | kimi-k3--service-tier--auto--default--24465b09 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | deepseek-v4 | ⚠ accepted-ignored | deepseek-v4--service-tier--auto--default--1d5f1f91 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | glm-5.3 | ⚠ accepted-ignored | glm-5.3--service-tier--auto--default--39f1ca62 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--service-tier--auto--default--21c5dfa8 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--service-tier--auto--default--db747a31 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | gpt-5-6-sol | ⇄ silently-translated | gpt-5-6-sol--openai-service-tier-values--auto--default--edca588c | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| openai-service-tier-values | grok-4-5 | ⇄ silently-translated | grok-4-5--openai-service-tier-values--auto--default--50701f55 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| openai-service-tier-values | grok-4-5 | ⇄ silently-translated | grok-4-5--openai-service-tier-values--flex--default--5807985b | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| openai-service-tier-values | kimi-k3 | ⚠ accepted-ignored | kimi-k3--openai-service-tier-values--auto--default--24465b09 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | kimi-k3 | ⚠ accepted-ignored | kimi-k3--openai-service-tier-values--default--default--de496171 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | kimi-k3 | ⚠ accepted-ignored | kimi-k3--openai-service-tier-values--flex--default--36d31bfe | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | kimi-k3 | ⚠ accepted-ignored | kimi-k3--openai-service-tier-values--priority--default--0cf72278 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | deepseek-v4 | ⚠ accepted-ignored | deepseek-v4--openai-service-tier-values--auto--default--1d5f1f91 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | deepseek-v4 | ⚠ accepted-ignored | deepseek-v4--openai-service-tier-values--default--default--69b1f613 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | deepseek-v4 | ⚠ accepted-ignored | deepseek-v4--openai-service-tier-values--flex--default--7487ab7e | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | deepseek-v4 | ⚠ accepted-ignored | deepseek-v4--openai-service-tier-values--priority--default--632b821f | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | glm-5.3 | ⚠ accepted-ignored | glm-5.3--openai-service-tier-values--auto--default--39f1ca62 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | glm-5.3 | ⚠ accepted-ignored | glm-5.3--openai-service-tier-values--default--default--99bfdc53 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | glm-5.3 | ⚠ accepted-ignored | glm-5.3--openai-service-tier-values--flex--default--238ac791 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | glm-5.3 | ⚠ accepted-ignored | glm-5.3--openai-service-tier-values--priority--default--d07ab247 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--openai-service-tier-values--auto--default--21c5dfa8 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--openai-service-tier-values--default--default--13acc63b | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--openai-service-tier-values--flex--default--0951e501 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--openai-service-tier-values--priority--default--664b13e1 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--auto--default--db747a31 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--default--default--8a573bf7 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--flex--default--23b17587 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--priority--default--4bed4339 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |

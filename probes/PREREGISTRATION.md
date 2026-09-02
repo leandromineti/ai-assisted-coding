@@ -709,3 +709,255 @@ body, produced **zero** findings on that payload itself — the `_EXEMPT_KEY_FRA
 named exemption (`fixtures.TINY_PNG_BASE64`) did its job and did not have to be
 widened. No new `.planning/WINDOWS.md` entry needed for this stage — #5/#3 already
 cover the two classes hit.
+
+**2026-09-02, plan 11-05 Task 3 — the refire pass (D-10), two classify-probes.py
+join fixes, the systemic `tools`-row confound finding, the complete
+classification, and the coverage assertion.**
+
+**Refire pass.** `python3 probes/harness/runner.py --set
+probes/sets/generated/contract-sweep.yaml --refire-exhausted`, run once, over the
+whole declared set (no `--stage` filter, matching the preregistered execution
+path above). `seen_probe_ids(refire_exhausted=True)` correctly excluded ONLY the
+4 Task-1 stragglers from the seen-set (the 330 already-verdict cells and the 16
+already-fired content-block cells stayed skipped — confirmed: 57 `SKIP (already
+logged)` lines). 3 of the 4 stragglers succeeded on refire: `kimi-k3`'s
+`openai-metadata`, `openai-service-tier-values`(`default`), and
+`openai-verbosity` cells all landed `terminal: verdict, status: 200`. The 4th
+(`qwen3.8-max--qwen-repetition-penalty--0.5--thinking-on`) failed AGAIN
+(`status: 0`, synthesized connection failure, `retry_exhausted`, 4 attempts) —
+per D-10, the pass runs once; this cell is recorded as a genuine non-verdict cell
+and classified accordingly (`needs-review`/`non-verdict-terminal`), not retried a
+third time.
+
+**An unplanned, welcome side effect of running the refire pass unscoped by
+stage**, exactly as PREREGISTRATION's own preregistered command names it: 5 cells
+from Stage 2 that 11-04's fix-before-fire registry changes had made "unfired"
+under a NEW, corrected probe_id (the pre-fix confounded request never having
+existed under that hash) were ALSO fired for the first time by this same pass —
+`--refire-exhausted`'s seen-set exclusion is scoped to a TERMINAL VALUE
+(`retry_exhausted`), not a stage, so a genuinely-never-fired cell anywhere in the
+declared set fires normally regardless of which stage owns it. All 5 landed
+`terminal: verdict, status: 200`:
+`claude-fable-5`/`claude-opus-5`/`claude-sonnet-5`/`claude-haiku-4-5`'s
+`anthropic-thinking-object` cells (the corrected `thinking.type.adaptive` +
+`output_config.effort` shape for the first 3, the raised `max_tokens` for the
+4th) and `gpt-5-6-sol`'s `openai-reasoning-effort` cell (the
+`max_completion_tokens` field rename). **This is live wire confirmation that
+both of 11-04's fix-before-fire repairs work correctly** — the exact proof the
+D-09 checkpoint's fix-first rider was designed to obtain, now obtained. The 5
+pre-fix confounded records (4 anthropic-thinking-object + 1 openai-reasoning-effort)
+remain on disk, unmodified (append-only, rule 3), and are correctly excluded from
+the classified join as "ignored raw records" — historical evidence of the
+pre-fix confound, not evidence for the now-different declared cell (same
+treatment 11-04-SUMMARY already established for its own 4).
+
+Ledger after the refire pass: global **$0.058858** (delta **+$0.003294** from the
+end of Task 2's $0.055564), by vendor: anthropic $0.009442, kimi $0.011133,
+gemini $0.002586, xai $0.021964, dseek $0.002328, zai $0.001279, qwen $0.005940,
+openai $0.004185. No ceiling verdict fired.
+
+**Full reconciliation of the declared cell universe after the refire pass**
+(recomputing each declared cell's exact fire-time probe_id via
+`runner.build_entry_request()` — the same path `main()` uses — rather than
+trusting the classifier's own join, to catch a join bug independently of a
+classification bug): all 329 scalar + 16 content-block = 345 declared cells
+resolve to a record on disk; **zero are genuinely missing.** 344 carry
+`terminal: verdict`; exactly 1 (`qwen3.8-max`'s repetition-penalty cell above)
+carries `terminal: retry_exhausted` and no verdict. This is the complete,
+final, non-verdict accounting D-10 requires.
+
+**Two classify-probes.py join bugs, both Rule 1 fixes, both discovered while
+verifying the coverage assertion below — neither a re-fire or re-bill risk
+(`seen_probe_ids()` reads each record's own STORED probe_id directly, which was
+always correct; only the classifier's independent RE-derivation of the expected
+probe_id was wrong):**
+
+1. **`scalar_probe_id()` never called `apply_max_tokens_field_override()`**
+   (flagged as a finding in Task 1's own Run log entry, above; fixed now, in
+   Task 3, which owns this file). Every one of `gpt-5-6-sol`'s 44 scalar cells
+   was classifying `unfired` despite being correctly recorded on disk. Fixed by
+   inserting the identical call `runner.build_entry_request()`'s own scalar
+   branch makes, in the same position (between `build_request()` and
+   `apply_omit()`). A new `--selftest` case (a synthetic `max_tokens_field`-carrying
+   model row) exercises the fix directly. `--selftest`: 35 cases, 0 problems
+   (was 33 before this task's two new cases).
+2. **Every content-block cell was hard-coded `state: "unfired"` in `build_rows()`**
+   — written in plan 11-01/11-02, honestly describing reality at the time (zero
+   content-block records existed before Stage 6 ever fired). Stage 6 fired live
+   for the first time in this plan's Task 2, and the join was never updated to
+   actually classify against real evidence. Fixed by adding
+   `content_block_probe_id()` (delegates the WHOLE request-body construction to
+   `runner.build_entry_request()` itself, rather than reimplementing the
+   body_template substitution — a stronger single-source-of-truth than even
+   `scalar_probe_id()`'s own mirrored-reimplementation approach) and running the
+   exact same join+classify+usage-extraction logic the scalar loop already uses.
+   All 16 content-block cells now classify correctly (verified: MODAL-01's own
+   check below).
+
+After both fixes: `ignored raw records (no matching declared cell)` fell from 26
+to 10 — the 10 are exactly the 5 pre-fix Stage-2 confounded records (above) plus
+5 historical Phase-9 smoke-test records (`claude-haiku-4-5`/`gemini-3-1-pro`/`kimi-k3`
+`baseline` and `claude-haiku-4-5` `max-tokens` invalid/omitted probes) that were
+never part of the contract-sweep declared cell universe by design — a fully
+accounted-for, honestly-described residual, not a mystery.
+
+**A genuine, sweep-wide instrument confound, found while reading every
+`needs-review` cell's own error body per D-08 — the `tools` row's shared probe
+value is malformed for EVERY tested vendor's CURRENT tools API contract, at
+both wire families, confounding all 12/12 `tools` cells.** Read directly, not
+assumed:
+
+- All 6 `openai_compat` vendors that auto-classified `rejected` report the SAME
+  missing-`type`-field defect in different words: `gpt-5-6-sol`
+  `"Missing required parameter: 'tools[0].type'"`, `grok-4-5`/`deepseek-v4`
+  `"missing field \`type\`"`, `glm-5.3` `"type cannot be empty"`, `qwen3.8-max`/
+  `qwen3.8-flash` `"'type' is a required property"`.
+- `kimi-k3` (the one cell the auto-classifier correctly could not string-match,
+  landing it honestly in `needs-review`) reports the identical defect in its own
+  words: `"unknown tool type: "`.
+- All 4 Anthropic models report a DIFFERENT but equally structural defect —
+  their newer tools schema requires a `tools[0].custom.input_schema` wrapper the
+  probe value never sends: `"tools.0.custom.input_schema: Field required"`.
+- `gemini-3-1-pro` reports a THIRD structural defect — the harness placed
+  `tools` inside `generationConfig` instead of at the request body's top level:
+  `"Unknown name \"tools\" at 'generation_config': Cannot find field"`.
+
+None of these 12 responses is evidence that any vendor rejects (or accepts)
+tool-calling as a capability — each is evidence the harness's `tools` probe
+value (`probes/inventory.yaml`) is stale against every tested vendor's actual
+current request shape. D-07's string-match rule mechanically caught 11 of 12 as
+a FALSE `rejected` (their error text happened to contain the literal resolved
+field name, even though the true story is a shape defect, not a rejection) and
+correctly missed the 12th (kimi's phrasing), landing it in `needs-review` on its
+own. Per SWP-02/SWP-03 and the plan's own explicit prohibition against ever
+resolving a `needs-review` cell by widening the auto-classification RULE — this
+is the opposite direction (a hand judgment correcting 11 cells the rule
+over-eagerly classified), made through the sanctioned override escape hatch
+(D-08), not a rule change. All 12 `tools` cells are overridden to
+`needs-review`, each carrying a dated, reasoned entry naming the specific defect
+observed at that model. **Not fixed or re-fired in this task** — correcting
+`probes/inventory.yaml`'s `tools` probe value per wire family and re-testing is
+out of Task 3's declared file scope and is new registry work, not routine
+classification; flagged in `.planning/WINDOWS.md` (entry #7) for a future phase.
+
+**23 total override entries written to `probes/classified/overrides.yaml`,
+each dated 2026-09-02, each carrying probe_id/state/date/reason:**
+
+- **12 → `needs-review`**: the systemic `tools`-row confound above (all 12
+  models).
+- **6 → `rejected`** (auto-classification missed these on a literal string-match
+  technicality, but a human reading the error body has no doubt): `presence-penalty`
+  and `frequency-penalty` at `gemini-3-1-pro` (`"Penalty is not enabled for this
+  model"`) and `grok-4-5` (`"does not support parameter presencePenalty/frequencyPenalty"`
+  — a camelCase-vs-snake_case alias the registry's names map doesn't carry),
+  `logprobs` at `gemini-3-1-pro` (`"Logprobs is not enabled for this model"`),
+  and `gemini-candidate-count` at `gemini-3-1-pro` (`"Multiple candidates is not
+  enabled for this model"`).
+- **5 → `rejected`** (MODAL-01's own accept/reject requirement for all 12 image
+  cells): `grok-4-5` and `qwen3.8-max`/`qwen3.8-flash` reject the tiny 1x1 test
+  image on a stated MINIMUM-DIMENSION constraint (`"Image dimensions 1x1 are too
+  small... at least 8 pixels"` / `"...must be larger than 10"`) — a caveat
+  recorded here, since these vendors evidently DO support image input generally,
+  just not this specific tiny probe image; `deepseek-v4`
+  (`"This model does not support image"`) and `glm-5.3`
+  (`"messages.content.type is invalid, allowed values: ['text']"`) reject it
+  outright, unambiguously.
+
+**3 cells intentionally left unresolved in `needs-review`, no override written
+(D-08: "leave any cell you cannot honestly resolve in the bucket") — each named
+here with its reason:**
+
+1. `qwen3.8-max`'s `qwen-repetition-penalty` (thinking-on) cell — the connection
+   failure above; no response body exists to read a verdict from at all.
+2. `glm-5.3`'s `openai-metadata` cell — response body `"Invalid API parameter,
+   please check the documentation."`, genuinely too generic to attribute to the
+   `metadata` field specifically versus some other request detail; cannot be
+   honestly resolved either way.
+3. `gemini-3-1-pro`'s `response-format` cell — a SECOND, smaller instance of the
+   same class of confound as the `tools` finding above (not folded into the same
+   override batch since it is isolated to one cell, not a 12-cell systemic
+   pattern): the harness sent `responseMimeType: {"type":"json_object"}` (an
+   OpenAI-shaped object) where Gemini's actual API expects `responseMimeType` to
+   be a plain STRING mime type; the error confirms this exactly (`"Invalid value
+   at 'generation_config' (response_mime_type), Starting an object on a scalar
+   field"`). This is a harness/registry shape defect for Gemini's
+   `response-format` row, not evidence Gemini rejects structured output (its own
+   `responseSchema`/`responseMimeType` structured-output surface is documented
+   separately). Flagged in `.planning/WINDOWS.md` (entry #7, same finding as the
+   `tools` confound — both are "the cross-vendor probe value doesn't match every
+   vendor's actual current wire shape" instances) for a future phase.
+
+**The complete, final coverage tally — every count below printed by the command
+named beside it, per rule 4's "a count carries its measure":**
+
+`python3 scripts/classify-probes.py`:
+```
+declared cells: 345 (scalar=329 content-block=16)
+declared skips: 284
+rows emitted: 629
+  accepted-honored: 40
+  accepted-ignored: 36
+  accepted-unverified: 167
+  needs-review: 15
+  rejected: 82
+  silently-translated: 5
+  skipped: 284
+ignored raw records (no matching declared cell): 10
+stale overrides (probe_id resolves to no row): 0
+```
+
+629 = 345 declared + 284 declared skips (exact). Zero `unfired` rows (not printed
+in the tally above — the state's count is 0). Every fired row (345 = 40+36+167+
+15+82+5) carries a non-null `probe_id` and `http_status`; the count of rejection
+rows (82) without a resolvable probe_id is **0**.
+
+`python3 scripts/classify-probes.py --check` / `--selftest`: 0 problem(s) / 35
+cases, 0 problem(s). `python3 scripts/build-probe-matrix.py --check` / `--selftest`:
+0 problem(s) / 14 cases, 0 problem(s). Both generators regenerate byte-identically
+over the now-committed evidence + overrides (verified via a second `git status
+--porcelain` after the commit below). `python3 probes/audit-evidence.py --check`:
+exit 1, 30 findings — all four already-tracked classes
+(`.planning/WINDOWS.md` #2 kimi Msh-*, #3 gemini `thoughtSignature`, #5 anthropic
+`signature`, #6 dseek `X-Amz-Cf-Id`), zero new leak classes introduced by this
+task's refire firing. `python3 probes/harness/runner.py --check-stages`: 345
+cells across 6 stages (396 checks run), 0 problem(s) — unchanged.
+`runner.py`/`ledger.py`/`client.py --selftest`: 44/12/27 cases, 0 problem(s) each.
+`probes/inventory-to-sets.py --check`: 0 problem(s). `scripts/check-taxonomy.py
+--check`: 133 files checked, 0 problem(s).
+
+**Measured per-vendor spend (final, after the refire pass) beside
+SWEEP-DESIGN.md's predicted per-vendor envelope (the re-derived $0.52 table from
+the 11-02 amendment above), so plan 11-06 can score the predictions without
+re-deriving anything:**
+
+| vendor | predicted | measured | measured / predicted |
+|---|---|---|---|
+| anthropic | $0.28 | $0.009442 | 3.4% |
+| dseek | $0.01 | $0.002328 | 23.3% |
+| gemini | $0.05 | $0.002586 | 5.2% |
+| kimi | $0.03 | $0.011133 | 37.1% |
+| openai | $0.09 | $0.004185 | 4.7% |
+| qwen | $0.02 | $0.005940 | 29.7% |
+| xai | $0.02 | $0.021964 | **109.8%** |
+| zai | $0.02 | $0.001279 | 6.4% |
+| **total** | **$0.52** | **$0.058858** | **11.3%** |
+
+Every figure read from `python3 probes/harness/ledger.py`, never estimated.
+**Every vendor stayed under its $0.50 per-vendor soft ceiling** (highest, xai, at
+~4.4% of the ceiling) — Prediction 1 (the $0.50 sub-ceiling headroom) CONFIRMED.
+**xai is the one vendor whose measured spend exceeds its SWEEP-DESIGN-predicted
+envelope** (by ~10%, $0.021964 vs. $0.02 predicted) — still two orders of
+magnitude under the sub-ceiling, so no envelope-scoring or ceiling concern, but
+recorded honestly rather than rounded away; every other vendor's measured spend
+came in well under its prediction (the range 3%–37%), consistent with
+SWEEP-DESIGN's own stated 100%-acceptance-at-full-`max_tokens` over-count
+assumption. **kimi ($0.011133) and zai ($0.001279) both stayed proportionate to
+(or below) their sibling vendors** rather than disproportionately high —
+Prediction 2 (kimi/zai's `max_tokens` cap moots their expensive reasoning
+default) CONFIRMED. Both predictions are now fully scoreable; plan 11-06 owns
+the formal FAILED/CONFIRMED write-up SWEEP-DESIGN's own falsification-criteria
+section calls for.
+
+**The complete evidence base is now classified.** Every one of the 629 rows
+carries a state from the closed vocabulary; the sweep's own coverage question
+(SWP-01) is answered mechanically, not asserted.

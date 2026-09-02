@@ -565,16 +565,40 @@ def load_raw_records(raw_dir: Path = DEFAULT_RAW_DIR) -> dict[str, dict]:
 
 def scalar_probe_id(entry: dict, models: dict[str, dict]) -> str:
     """Recompute the EXACT probe_id runner.py's main() would have assigned this
-    declared scalar entry — same adapter.build_request() call, same apply_omit(),
-    same probe_id() hash, so this can never independently drift from the harness
-    that produced the evidence being joined against (MTX-01's own key_link)."""
+    declared scalar entry — same adapter.build_request() call, same
+    apply_max_tokens_field_override() (plan 11-04's per-model request-field rename,
+    a no-op for every model that doesn't declare one — Rule 1 fix, plan 11-05: this
+    call was missing here, so every gpt-5-6-sol cell classified 'unfired' despite
+    being correctly recorded on disk under its real fired probe_id), same
+    apply_omit(), same probe_id() hash — mirroring runner.build_entry_request()'s
+    own scalar branch step-for-step, so this can never independently drift from the
+    harness that produced the evidence being joined against (MTX-01's own key_link)."""
     model = models[entry["model"]]
     adapter = ADAPTERS[model["wire_family"]]
     prompt = entry.get("prompt", "Reply with one word.")
     max_tokens = entry.get("max_tokens", 16)
     extra_params = entry.get("extra_params") or {}
     request_body = adapter.build_request(model["api_model_id"], prompt, max_tokens, extra_params)
+    request_body = harness_runner.apply_max_tokens_field_override(request_body, model)
     request_body = harness_runner.apply_omit(request_body, entry.get("omit"))
+    return harness_runner.probe_id(entry["model"], entry["param"], entry["value"], entry["mode"], request_body)
+
+
+def content_block_probe_id(entry: dict, models: dict[str, dict]) -> str:
+    """Recompute the EXACT probe_id runner.py's main() would have assigned this
+    declared content-block entry (Rule 1 fix, plan 11-05: every content-block cell
+    hard-coded 'unfired' in main()'s classification loop below — written in plan
+    11-01/11-02, before the --content-block-set firing path existed; stage 6 fired
+    live for the first time in this plan's Task 2, so the join was never exercised
+    against real evidence until now). Delegates the WHOLE request-body construction
+    to `runner.build_entry_request()` itself — the body_template deep-copy, the tiny-PNG
+    substitution, `adapter.build_content_request()`, and
+    `apply_max_tokens_field_override()` — rather than reimplementing any of it here,
+    so a future change to that construction can never independently drift from this
+    join (the same MTX-01 key_link scalar_probe_id() already relies on)."""
+    model = models[entry["model"]]
+    adapter = ADAPTERS[model["wire_family"]]
+    request_body = harness_runner.build_entry_request(entry, model, adapter)
     return harness_runner.probe_id(entry["model"], entry["param"], entry["value"], entry["mode"], request_body)
 
 
@@ -731,32 +755,42 @@ def build_rows(
         })
 
     for entry in content_block_data["content_block_probes"]:
-        # The --content-block-set firing path exists as of plan 11-03 (MODAL-01),
-        # but Stage 6 (SWEEP-DESIGN.md § Probe ordering) fires last, after the
-        # D-09 checkpoint this very plan's Task 3 gates — zero content-block
-        # records exist in probes/raw/*.jsonl as of this task (confirmed:
-        # `grep -l image-input probes/raw/*.jsonl` matches nothing). Every
-        # content-block cell is therefore honestly 'unfired' today; `mode`/`value`
-        # (2026-09-01, Phase 11 plan 11-02) come straight from the generated
-        # entry — fixed strings `default`/`content-block` per
-        # inventory-to-sets.py's content-block branch — rather than a hardcoded
-        # null, now that the generator actually emits them.
+        # The --content-block-set firing path exists as of plan 11-03 (MODAL-01);
+        # Stage 6 (SWEEP-DESIGN.md § Probe ordering) fires last, after the D-09
+        # checkpoint — and fired live for the first time in plan 11-05's Task 2.
+        # Joined against real evidence exactly like a scalar entry (Rule 1 fix,
+        # plan 11-05): this loop hard-coded every content-block cell 'unfired'
+        # from plan 11-01/11-02 until now, honestly reflecting that zero
+        # content-block records existed in probes/raw/*.jsonl at that time — the
+        # join itself was never exercised against real evidence until this task.
         row = rows_by_id[entry["param"]]
+        model = models[entry["model"]]
+        pid = content_block_probe_id(entry, models)
+        record = raw_records.get(pid)
+        state, reason, http_status, honor_evidence = classify_cell(record, row, model, entry["value"])
+        usage_input = usage_output = None
+        if record is not None:
+            used_probe_ids.add(pid)
+            if record.get("recorded_at"):
+                joined_recorded_at.append(record["recorded_at"])
+            usage = record.get("usage") or {}
+            usage_input = usage.get("input_tokens")
+            usage_output = usage.get("output_tokens")
         out_rows.append({
             "param": entry["param"],
             "group": row["group"],
             "model": entry["model"],
             "mode": entry["mode"],
             "value": entry["value"],
-            "state": "unfired",
-            "probe_id": None,
-            "http_status": None,
-            "honor_evidence": "n/a",
+            "state": state,
+            "probe_id": pid if state != "unfired" else None,
+            "http_status": http_status,
+            "honor_evidence": honor_evidence,
             "hazard": None,
-            "usage_input_tokens": None,
-            "usage_output_tokens": None,
+            "usage_input_tokens": usage_input,
+            "usage_output_tokens": usage_output,
             "skip_reason": None,
-            "reason": None,
+            "reason": reason,
             "override": None,
         })
 
@@ -1119,6 +1153,56 @@ def selftest() -> tuple[int, int]:
     if got_pid != expected_pid:
         problems += 1
         print(f"FAIL scalar_probe_id: expected {expected_pid}, got {got_pid}", file=sys.stderr)
+
+    # --- scalar_probe_id: a model row declaring max_tokens_field (plan 11-04's
+    #     gpt-5-6-sol rename) must be reflected in the recomputed probe_id, the
+    #     same way runner.build_entry_request() applies it before hashing — the
+    #     Rule 1 fix, plan 11-05: this call was missing, so every gpt-5-6-sol cell
+    #     classified 'unfired' despite being correctly recorded on disk ---
+    cases += 1
+    models_fixture_override = {
+        "gpt-5-6-sol": {
+            "wire_family": "openai_compat",
+            "api_model_id": "gpt-5.6-sol",
+            "vendor": "openai",
+            "max_tokens_field": "max_completion_tokens",
+            "_order": 5,
+        }
+    }
+    entry_override = {
+        "model": "gpt-5-6-sol",
+        "param": "fixture-param",
+        "value": "1",
+        "mode": "default",
+        "prompt": "Reply with exactly one word: hello.",
+        "max_tokens": 64,
+        "extra_params": {"fixture_param": 1},
+    }
+    got_pid_override = scalar_probe_id(entry_override, models_fixture_override)
+    expected_body_override = ADAPTERS["openai_compat"].build_request(
+        "gpt-5.6-sol", entry_override["prompt"], entry_override["max_tokens"], entry_override["extra_params"]
+    )
+    expected_body_override = harness_runner.apply_max_tokens_field_override(
+        expected_body_override, models_fixture_override["gpt-5-6-sol"]
+    )
+    expected_body_override = harness_runner.apply_omit(expected_body_override, None)
+    expected_pid_override = harness_runner.probe_id(
+        "gpt-5-6-sol", "fixture-param", "1", "default", expected_body_override
+    )
+    if got_pid_override != expected_pid_override:
+        problems += 1
+        print(
+            f"FAIL scalar_probe_id (max_tokens_field override): expected {expected_pid_override}, "
+            f"got {got_pid_override}",
+            file=sys.stderr,
+        )
+    if "max_tokens" in expected_body_override or "max_completion_tokens" not in expected_body_override:
+        problems += 1
+        print(
+            f"FAIL scalar_probe_id (max_tokens_field override): expected body to carry "
+            f"max_completion_tokens not max_tokens, got {expected_body_override!r}",
+            file=sys.stderr,
+        )
 
     # --- render_classified_file: deterministic — two calls with identical input
     #     are byte-identical (idempotent regeneration, MTX-01's own criterion) ---

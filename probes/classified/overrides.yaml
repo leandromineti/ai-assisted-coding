@@ -12,6 +12,283 @@
 # YAML-1.1-bool-safe: PyYAML's default (YAML 1.1) implicit resolver turns bare
 # on/off/yes/no/true/false into Python booleans regardless of position — quote
 # any key or scalar value here that could collide with it.
-checked: 2026-09-01
+checked: 2026-09-02
 
-overrides: []
+overrides:
+- probe_id: gemini-3-1-pro--presence-penalty--0.1--thinking-on--bd32f0f1
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Auto-classification missed this (string-match: resolved field name not literally in the generic
+    error text). Response body: {"message": "Penalty is not enabled for this model"} -- unambiguously
+    about the presence-penalty parameter under test; a human reading this calls it rejected.'
+- probe_id: grok-4-5--presence-penalty--0.1--thinking-on--6bacebdb
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Auto-classification missed this (resolved field is snake_case presence_penalty; grok''s error
+    text uses camelCase presencePenalty). Response body: "Model grok-4.5 does not support parameter presencePenalty."
+    -- unambiguously the tested parameter; rejected.'
+- probe_id: gemini-3-1-pro--frequency-penalty--0.1--thinking-on--b9645bdc
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Same class as presence-penalty above. Response body: {"message": "Penalty is not enabled for
+    this model"} -- about frequency-penalty; rejected.'
+- probe_id: grok-4-5--frequency-penalty--0.1--thinking-on--8e6d2115
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Same camelCase-alias mismatch as presence-penalty above. Response body: "Model grok-4.5 does
+    not support parameter frequencyPenalty." -- rejected.'
+- probe_id: gemini-3-1-pro--logprobs--true--thinking-on--01fa68c7
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Response body: {"message": "Logprobs is not enabled for this model"} -- unambiguously about
+    logprobs; rejected.'
+- probe_id: gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857
+  state: rejected
+  date: '2026-09-02'
+  reason: 'Response body: {"message": "Multiple candidates is not enabled for this model"} -- unambiguously
+    about candidateCount (n>1); rejected.'
+- probe_id: grok-4-5--image-input--content-block--default--49f4b593
+  state: rejected
+  date: '2026-09-02'
+  reason: 'MODAL-01: response body: "Image dimensions 1x1 are too small. Both width and height must be
+    at least 8 pixels." -- the model DOES support image input generally; it rejected THIS specific 1x1
+    test image on a minimum-dimension constraint. Classified rejected per MODAL-01''s accept/reject requirement;
+    the size-constraint caveat (not a blanket no-image-support finding) is recorded in the Run log for
+    the report.'
+- probe_id: deepseek-v4--image-input--content-block--default--8662bdb7
+  state: rejected
+  date: '2026-09-02'
+  reason: 'MODAL-01: response body: "This model does not support image" -- explicit, unambiguous; rejected.'
+- probe_id: glm-5.3--image-input--content-block--default--2496f2f7
+  state: rejected
+  date: '2026-09-02'
+  reason: 'MODAL-01: response body: "messages.content.type is invalid, allowed values: [''text'']" --
+    confirms no image content-block support in this API surface; rejected.'
+- probe_id: qwen3.8-max--image-input--content-block--default--3838e6c6
+  state: rejected
+  date: '2026-09-02'
+  reason: 'MODAL-01: response body: "The image length and width do not meet the model restrictions. [height:1
+    or width:1 must be larger than 10]" -- same minimum-dimension class as grok-4-5 above, not a blanket
+    no-image-support finding; classified rejected per MODAL-01''s accept/reject requirement, caveat recorded
+    in the Run log.'
+- probe_id: qwen3.8-flash--image-input--content-block--default--d63a3150
+  state: rejected
+  date: '2026-09-02'
+  reason: 'MODAL-01: same minimum-dimension rejection as qwen3.8-max above (identical error body); rejected,
+    caveat recorded in the Run log.'
+- probe_id: claude-fable-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--7366e8a4
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: claude-opus-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--43d9bda1
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: claude-sonnet-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e2eaf97d
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: claude-haiku-4-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--f81d5e53
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: gpt-5-6-sol--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e4301128
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: gemini-3-1-pro--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e7f0dd7a
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: grok-4-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--fc9815b0
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: deepseek-v4--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e8916d39
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: glm-5.3--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--9538e1ac
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: qwen3.8-max--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e4024e92
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: qwen3.8-flash--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--6c5add85
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'
+- probe_id: kimi-k3--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--d7143652
+  state: needs-review
+  date: '2026-09-02'
+  reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared tools
+    row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+    current tools contract -- openai_compat vendors all report the same missing required type field on
+    the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+    "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a required
+    property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer schema''s missing
+    wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the tools field was sent
+    nested inside generationConfig instead of at the top level ("Unknown name \"tools\" at ''generation_config''").
+    All 12/12 tools cells hit this same one bug -- none constitutes real evidence the vendor rejects (or
+    accepts) tool-calling as a capability. Not auto-classified (D-07''s string-match rule happened to
+    catch 11/12 as a false ''rejected'' since their error text technically contained the resolved field
+    name; kimi''s phrasing did not, correctly landing in needs-review on its own). Overridden here to
+    needs-review across all 12 for an honest, consistent finding -- not fixed/re-fired in this task (out
+    of Task 3''s declared scope, a probes/inventory.yaml registry change); flagged in .planning/WINDOWS.md
+    for a future phase to correct the tools probe value per wire family and re-test.'

@@ -8,7 +8,7 @@
 # (probes/sets/generated/skipped-cells.yaml, 284) — 629 rows total (MTX-01).
 
 checked: 2026-09-01
-evidence_through: '2026-09-01T22:38:53Z'
+evidence_through: '2026-09-02T00:38:53Z'
 cells:
 - param: temperature
   group: sampling
@@ -30,9 +30,9 @@ cells:
   model: claude-fable-5
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--temperature--0.7--thinking-on--b4a60676
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -45,9 +45,9 @@ cells:
   model: claude-opus-5
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--temperature--0.7--thinking-off--291faabe
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -60,9 +60,9 @@ cells:
   model: claude-opus-5
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--temperature--0.7--thinking-on--1b78320a
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -75,9 +75,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--temperature--0.7--thinking-off--61a79899
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -90,9 +90,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--temperature--0.7--thinking-on--4582e140
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -105,13 +105,13 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--temperature--0.7--thinking-off--df4c6c49
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -120,9 +120,9 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -135,13 +135,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--temperature--0.7--thinking-off--b4358295
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -150,9 +150,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--temperature--0.7--thinking-on--ed5fbf8b
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -180,13 +180,13 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--temperature--0.7--thinking-on--02b9cf38
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -210,13 +210,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--temperature--0.7--thinking-on--3ac6a690
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -300,13 +300,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--temperature--0.7--thinking-on--53041129
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
   skip_reason: null
   reason: null
   override: null
@@ -315,13 +315,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--temperature--0.7--thinking-off--fad064eb
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -330,13 +330,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--temperature--0.7--thinking-on--eb6323db
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -345,13 +345,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--temperature--0.7--thinking-off--ce3ba5da
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -360,13 +360,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '0.7'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--temperature--0.7--thinking-on--599ae71f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -390,9 +390,9 @@ cells:
   model: claude-fable-5
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--top-p--0.9--thinking-on--e76b925d
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -405,9 +405,9 @@ cells:
   model: claude-opus-5
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--top-p--0.9--thinking-off--adca4040
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -420,9 +420,9 @@ cells:
   model: claude-opus-5
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--top-p--0.9--thinking-on--1d14320b
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -435,9 +435,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--top-p--0.9--thinking-off--8d91dba2
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -450,9 +450,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--top-p--0.9--thinking-on--acb6d7ff
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -465,13 +465,13 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--top-p--0.9--thinking-off--aed7cd1f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -480,9 +480,9 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--top-p--0.9--thinking-on--b4ed50fa
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -495,13 +495,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--top-p--0.9--thinking-off--65ee57fd
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -510,9 +510,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--top-p--0.9--thinking-on--aa641c79
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -540,13 +540,13 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--top-p--0.9--thinking-on--83aee3e0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -570,13 +570,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--top-p--0.9--thinking-on--cfd70c39
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -660,13 +660,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--top-p--0.9--thinking-on--3f4880d0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
   skip_reason: null
   reason: null
   override: null
@@ -675,13 +675,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-p--0.9--thinking-off--d2f552d2
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -690,13 +690,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-p--0.9--thinking-on--23a53093
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -705,13 +705,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-p--0.9--thinking-off--68a7f7eb
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -720,13 +720,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '0.9'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-p--0.9--thinking-on--09e62712
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -750,9 +750,9 @@ cells:
   model: claude-fable-5
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--top-k--40--thinking-on--3ec00f1f
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -765,9 +765,9 @@ cells:
   model: claude-opus-5
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--top-k--40--thinking-off--eaee98d1
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -780,9 +780,9 @@ cells:
   model: claude-opus-5
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--top-k--40--thinking-on--d6c59667
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -795,9 +795,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--top-k--40--thinking-off--f2d6432b
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -810,9 +810,9 @@ cells:
   model: claude-sonnet-5
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--top-k--40--thinking-on--babbfb05
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -825,13 +825,13 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--top-k--40--thinking-off--76a43fa6
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -840,9 +840,9 @@ cells:
   model: claude-haiku-4-5
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--top-k--40--thinking-on--c8ec67cd
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -855,9 +855,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--top-k--40--thinking-off--94c4a424
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -870,9 +870,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--top-k--40--thinking-on--17022bc7
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -900,13 +900,13 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--top-k--40--thinking-on--d075a5b7
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -930,13 +930,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--top-k--40--thinking-on--f206c026
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -1020,13 +1020,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--top-k--40--thinking-on--1261b5b9
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
   skip_reason: null
   reason: null
   override: null
@@ -1035,13 +1035,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-k--40--thinking-off--80daee48
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1050,13 +1050,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-k--40--thinking-on--f13ee7ba
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1065,13 +1065,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-k--40--thinking-off--657eb641
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1080,13 +1080,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '40'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-k--40--thinking-on--b696b38b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1155,13 +1155,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--presence-penalty--0.1--thinking-off--34f12a58
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1170,9 +1170,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--presence-penalty--0.1--thinking-on--068b93ac
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -1200,16 +1200,20 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gemini-3-1-pro--presence-penalty--0.1--thinking-on--bd32f0f1
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Auto-classification missed this (string-match: resolved field name not literally in the generic
+      error text). Response body: {"message": "Penalty is not enabled for this model"} -- unambiguously
+      about the presence-penalty parameter under test; a human reading this calls it rejected.'
 - param: presence-penalty
   group: sampling
   model: grok-4-5
@@ -1230,16 +1234,20 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--presence-penalty--0.1--thinking-on--6bacebdb
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Auto-classification missed this (resolved field is snake_case presence_penalty; grok''s error
+      text uses camelCase presencePenalty). Response body: "Model grok-4.5 does not support parameter
+      presencePenalty." -- unambiguously the tested parameter; rejected.'
 - param: presence-penalty
   group: sampling
   model: kimi-k3
@@ -1320,13 +1328,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--presence-penalty--0.1--thinking-on--afa1cbe0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1335,13 +1343,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--presence-penalty--0.1--thinking-off--8ca5dd2f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1350,13 +1358,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--presence-penalty--0.1--thinking-on--5553cd8c
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1365,13 +1373,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--presence-penalty--0.1--thinking-off--428edae5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1380,13 +1388,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--presence-penalty--0.1--thinking-on--9e474ad6
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1455,13 +1463,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--frequency-penalty--0.1--thinking-off--8468a27a
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1470,9 +1478,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--frequency-penalty--0.1--thinking-on--3164b8b5
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -1500,16 +1508,19 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gemini-3-1-pro--frequency-penalty--0.1--thinking-on--b9645bdc
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Same class as presence-penalty above. Response body: {"message": "Penalty is not enabled
+      for this model"} -- about frequency-penalty; rejected.'
 - param: frequency-penalty
   group: sampling
   model: grok-4-5
@@ -1530,16 +1541,19 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--frequency-penalty--0.1--thinking-on--8e6d2115
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Same camelCase-alias mismatch as presence-penalty above. Response body: "Model grok-4.5 does
+      not support parameter frequencyPenalty." -- rejected.'
 - param: frequency-penalty
   group: sampling
   model: kimi-k3
@@ -1620,13 +1634,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--frequency-penalty--0.1--thinking-on--2da738e5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1635,13 +1649,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--frequency-penalty--0.1--thinking-off--f7d6132e
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1650,13 +1664,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--frequency-penalty--0.1--thinking-on--4fda1ca6
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1665,13 +1679,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--frequency-penalty--0.1--thinking-off--57674cb6
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1680,13 +1694,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '0.1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--frequency-penalty--0.1--thinking-on--a28dedc4
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1755,13 +1769,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab
+  http_status: 200
+  honor_evidence: logprobs-content
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -1770,9 +1784,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--logprobs--true--thinking-on--9a1116de
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -1800,16 +1814,19 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gemini-3-1-pro--logprobs--true--thinking-on--01fa68c7
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Response body: {"message": "Logprobs is not enabled for this model"} -- unambiguously about
+      logprobs; rejected.'
 - param: logprobs
   group: sampling
   model: grok-4-5
@@ -1830,13 +1847,14 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: grok-4-5--logprobs--true--thinking-on--35ba6e5c
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -1920,13 +1938,14 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--logprobs--true--thinking-on--628e7c79
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1935,13 +1954,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac
+  http_status: 200
+  honor_evidence: logprobs-content
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1950,13 +1969,14 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--logprobs--true--thinking-on--28f7639a
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -1965,13 +1985,14 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--logprobs--true--thinking-off--06cffcdf
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -1980,13 +2001,14 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--logprobs--true--thinking-on--7047d726
+  http_status: 200
+  honor_evidence: logprobs-content
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2055,9 +2077,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--top-logprobs--3--thinking-off--61aa55f8
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -2070,9 +2092,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--top-logprobs--3--thinking-on--55fa5a45
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -2100,9 +2122,9 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gemini-3-1-pro--top-logprobs--3--thinking-on--be5e9528
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -2130,13 +2152,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--top-logprobs--3--thinking-on--d69aefff
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -2220,13 +2242,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--top-logprobs--3--thinking-on--1d956dd8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -2235,13 +2257,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-logprobs--3--thinking-off--3e87a714
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2250,13 +2272,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--top-logprobs--3--thinking-on--9cdee6cc
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2265,13 +2287,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2280,13 +2302,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '3'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2355,13 +2377,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--seed--42--thinking-off--8b908098
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2370,13 +2392,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--seed--42--thinking-on--5fc0feba
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2400,13 +2422,13 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--seed--42--thinking-on--8c6fbf64
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -2430,13 +2452,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--seed--42--thinking-on--6616bf14
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -2520,13 +2542,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--seed--42--thinking-on--b26aacae
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -2535,13 +2557,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--seed--42--thinking-off--2efa84af
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2550,13 +2572,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--seed--42--thinking-on--24f6a48a
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2565,13 +2587,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--seed--42--thinking-off--f1f964f8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2580,13 +2602,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '42'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--seed--42--thinking-on--d57bdc51
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2655,13 +2677,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--n--1--thinking-off--fc136d5b
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2670,13 +2692,13 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--n--1--thinking-on--a8da944b
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2700,13 +2722,13 @@ cells:
   model: gemini-3-1-pro
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gemini-3-1-pro--n--1--thinking-on--fc807d30
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -2730,13 +2752,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: grok-4-5--n--1--thinking-on--0630c8f0
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -2820,13 +2842,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: glm-5.3--n--1--thinking-on--5e5cec7c
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2835,13 +2857,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-max--n--1--thinking-off--c5012317
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2850,13 +2872,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-max--n--1--thinking-on--9d50415f
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2865,13 +2887,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-flash--n--1--thinking-off--36888d9d
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -2880,13 +2902,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '1'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-flash--n--1--thinking-on--f10e55a8
+  http_status: 200
+  honor_evidence: candidate-count
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -2955,9 +2977,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--logit-bias--{"1734":5}--thinking-off--96d67740
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -2970,9 +2992,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--logit-bias--{"1734":5}--thinking-on--4909d7a0
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3015,9 +3037,9 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--logit-bias--{"1734":5}--thinking-on--b5079fdd
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3105,13 +3127,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--logit-bias--{"1734":5}--thinking-on--a01f2102
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3120,13 +3142,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--logit-bias--{"1734":5}--thinking-off--5cef6d5d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -3135,13 +3157,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--logit-bias--{"1734":5}--thinking-on--efe9a541
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3150,13 +3172,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-off
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--logit-bias--{"1734":5}--thinking-off--7d9624c8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -3165,13 +3187,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '{"1734":5}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--logit-bias--{"1734":5}--thinking-on--a1ee33e7
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3180,13 +3202,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-fable-5--max-tokens--64--default--dcfa45a1
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -3195,13 +3217,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-opus-5--max-tokens--64--default--2dd2ad5d
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -3210,13 +3232,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-sonnet-5--max-tokens--64--default--fcf73795
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3225,13 +3247,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-haiku-4-5--max-tokens--64--default--30a03208
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -3240,13 +3262,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--max-tokens--64--default--626cc0dc
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3255,13 +3277,13 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gemini-3-1-pro--max-tokens--64--default--ac6eff4b
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -3270,13 +3292,13 @@ cells:
   model: grok-4-5
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: grok-4-5--max-tokens--64--default--d151dedd
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -33
   skip_reason: null
   reason: null
   override: null
@@ -3285,13 +3307,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: kimi-k3--max-tokens--64--default--7b21b467
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -3300,13 +3322,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: deepseek-v4--max-tokens--64--default--dd75e336
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -3315,13 +3337,13 @@ cells:
   model: glm-5.3
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: glm-5.3--max-tokens--64--default--4b62b04d
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3330,13 +3352,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-max--max-tokens--64--default--646779fa
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3345,13 +3367,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '64'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: qwen3.8-flash--max-tokens--64--default--0572a485
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3360,13 +3382,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-fable-5--stop--["the"]--default--926d4aa2
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -3375,13 +3397,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-opus-5--stop--["the"]--default--65f40119
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3390,13 +3412,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-sonnet-5--stop--["the"]--default--ae6a988e
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3405,13 +3427,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--stop--["the"]--default--4d142f9f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -3420,9 +3442,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--stop--["the"]--default--6a86352a
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3435,13 +3457,13 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--stop--["the"]--default--d095d860
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -3450,9 +3472,9 @@ cells:
   model: grok-4-5
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--stop--["the"]--default--ee1a658f
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3465,13 +3487,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--stop--["the"]--default--1ad26313
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -3480,13 +3502,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--stop--["the"]--default--6071ec70
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -3495,13 +3517,13 @@ cells:
   model: glm-5.3
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--stop--["the"]--default--91a52d67
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3510,13 +3532,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--stop--["the"]--default--4beda551
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3525,13 +3547,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '["the"]'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--stop--["the"]--default--474e64aa
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3600,9 +3622,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--response-format--{"type":"json_object"}--default--d2e1e02b
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3615,28 +3637,28 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: gemini-3-1-pro--response-format--{"type":"json_object"}--default--aa6259b8
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
+  reason: 4xx-not-param-named
   override: null
 - param: response-format
   group: structural
   model: grok-4-5
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: grok-4-5--response-format--{"type":"json_object"}--default--0af9b0d3
+  http_status: 200
+  honor_evidence: json-validity
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 522
+  usage_output_tokens: -232
   skip_reason: null
   reason: null
   override: null
@@ -3645,13 +3667,14 @@ cells:
   model: kimi-k3
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--response-format--{"type":"json_object"}--default--4ec214df
+  http_status: 200
+  honor_evidence: json-validity
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 140
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -3660,9 +3683,9 @@ cells:
   model: deepseek-v4
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: deepseek-v4--response-format--{"type":"json_object"}--default--0d7a1753
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3675,13 +3698,14 @@ cells:
   model: glm-5.3
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--response-format--{"type":"json_object"}--default--c48d84f0
+  http_status: 200
+  honor_evidence: json-validity
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 81
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -3690,9 +3714,9 @@ cells:
   model: qwen3.8-max
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-max--response-format--{"type":"json_object"}--default--8f134cfa
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3705,9 +3729,9 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '{"type":"json_object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-flash--response-format--{"type":"json_object"}--default--48a9aef1
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3720,189 +3744,393 @@ cells:
   model: claude-fable-5
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: claude-fable-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--7366e8a4
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: claude-opus-5
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: claude-opus-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--43d9bda1
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: claude-sonnet-5
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: claude-sonnet-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e2eaf97d
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: claude-haiku-4-5
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: claude-haiku-4-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--f81d5e53
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: gpt-5-6-sol
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: gpt-5-6-sol--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e4301128
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: gemini-3-1-pro
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: gemini-3-1-pro--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e7f0dd7a
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: grok-4-5
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: grok-4-5--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--fc9815b0
+  http_status: 422
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: kimi-k3
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: kimi-k3--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--d7143652
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: deepseek-v4
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: deepseek-v4--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e8916d39
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: glm-5.3
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: glm-5.3--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--9538e1ac
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: qwen3.8-max
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: qwen3.8-max--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--e4024e92
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tools
   group: structural
   model: qwen3.8-flash
   mode: default
   value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: qwen3.8-flash--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--6c5add85
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
   reason: null
-  override: null
+  override:
+    date: '2026-09-02'
+    reason: 'Systemic instrument confound, not evidence about vendor tool-calling support: the shared
+      tools row probe value (probes/inventory.yaml) sends a JSON-schema shape that matches NO tested vendor''s
+      current tools contract -- openai_compat vendors all report the same missing required type field
+      on the tool entry (e.g. gpt-5-6-sol: "Missing required parameter: ''tools[0].type''"; grok-4-5/deepseek-v4:
+      "missing field type"; glm-5.3: "type cannot be empty"; qwen3.8-max/qwen3.8-flash: "''type'' is a
+      required property"; kimi-k3: "unknown tool type: "), Anthropic''s 4 models all report the newer
+      schema''s missing wrapper ("tools.0.custom.input_schema: Field required"), and Gemini reports the
+      tools field was sent nested inside generationConfig instead of at the top level ("Unknown name \"tools\"
+      at ''generation_config''"). All 12/12 tools cells hit this same one bug -- none constitutes real
+      evidence the vendor rejects (or accepts) tool-calling as a capability. Not auto-classified (D-07''s
+      string-match rule happened to catch 11/12 as a false ''rejected'' since their error text technically
+      contained the resolved field name; kimi''s phrasing did not, correctly landing in needs-review on
+      its own). Overridden here to needs-review across all 12 for an honest, consistent finding -- not
+      fixed/re-fired in this task (out of Task 3''s declared scope, a probes/inventory.yaml registry change);
+      flagged in .planning/WINDOWS.md for a future phase to correct the tools probe value per wire family
+      and re-test.'
 - param: tool-choice
   group: structural
   model: claude-fable-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--tool-choice--auto--default--4ee9a900
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3915,9 +4143,9 @@ cells:
   model: claude-opus-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--tool-choice--auto--default--e0fefe25
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3930,9 +4158,9 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--tool-choice--auto--default--6e2ebbd0
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3945,9 +4173,9 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--tool-choice--auto--default--56132667
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3960,9 +4188,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--tool-choice--auto--default--14171b90
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -3990,9 +4218,9 @@ cells:
   model: grok-4-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--tool-choice--auto--default--a3047aac
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4005,13 +4233,13 @@ cells:
   model: kimi-k3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--tool-choice--auto--default--90c467a0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4020,13 +4248,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--tool-choice--auto--default--c869f6ae
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4035,13 +4263,13 @@ cells:
   model: glm-5.3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--tool-choice--auto--default--19793344
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -4050,13 +4278,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--tool-choice--auto--default--41471781
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4065,13 +4293,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--tool-choice--auto--default--964b6cd5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4140,9 +4368,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--parallel-tool-calls--true--default--72fef3a5
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4170,13 +4398,13 @@ cells:
   model: grok-4-5
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--parallel-tool-calls--true--default--37b59995
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
   skip_reason: null
   reason: null
   override: null
@@ -4185,13 +4413,13 @@ cells:
   model: kimi-k3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--parallel-tool-calls--true--default--aec6fa53
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -4200,13 +4428,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--parallel-tool-calls--true--default--a2ae4a44
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4215,13 +4443,13 @@ cells:
   model: glm-5.3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--parallel-tool-calls--true--default--8a2b6428
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4230,13 +4458,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--parallel-tool-calls--true--default--83acd32d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4245,13 +4473,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--parallel-tool-calls--true--default--17b37390
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4260,13 +4488,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-fable-5--stream--false--default--a42dc398
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 17
   skip_reason: null
   reason: null
   override: null
@@ -4275,13 +4503,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-opus-5--stream--false--default--90d59cd3
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4290,13 +4518,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-sonnet-5--stream--false--default--b9e3a6e4
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4305,13 +4533,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--stream--false--default--e89a87b9
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -4320,13 +4548,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--stream--false--default--9889b7ec
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4350,13 +4578,13 @@ cells:
   model: grok-4-5
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--stream--false--default--1eddbb1e
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
   skip_reason: null
   reason: null
   override: null
@@ -4365,13 +4593,13 @@ cells:
   model: kimi-k3
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--stream--false--default--90973147
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -4380,13 +4608,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--stream--false--default--cb6fc4e8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4395,13 +4623,13 @@ cells:
   model: glm-5.3
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--stream--false--default--f96c57fc
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4410,13 +4638,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--stream--false--default--a171d425
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4425,13 +4653,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'false'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--stream--false--default--f942ac73
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4500,9 +4728,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--stream-options-include-usage--{"include_usage":true}--default--35a5d258
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4530,13 +4758,13 @@ cells:
   model: grok-4-5
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--stream-options-include-usage--{"include_usage":true}--default--53b405be
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -4545,13 +4773,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--stream-options-include-usage--{"include_usage":true}--default--3046c608
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4560,9 +4788,9 @@ cells:
   model: deepseek-v4
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: deepseek-v4--stream-options-include-usage--{"include_usage":true}--default--249e714d
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4575,13 +4803,13 @@ cells:
   model: glm-5.3
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--stream-options-include-usage--{"include_usage":true}--default--c5e82006
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4590,9 +4818,9 @@ cells:
   model: qwen3.8-max
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-max--stream-options-include-usage--{"include_usage":true}--default--114e72ff
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4605,9 +4833,9 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '{"include_usage":true}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-flash--stream-options-include-usage--{"include_usage":true}--default--d1d18f35
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -4620,13 +4848,14 @@ cells:
   model: claude-fable-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: claude-fable-5--service-tier--auto--default--aa7ed336
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 19
+  usage_output_tokens: 10
   skip_reason: null
   reason: null
   override: null
@@ -4635,13 +4864,14 @@ cells:
   model: claude-opus-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: claude-opus-5--service-tier--auto--default--4b23e6d5
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 19
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -4650,13 +4880,14 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: claude-sonnet-5--service-tier--auto--default--60274a16
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4665,13 +4896,14 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: claude-haiku-4-5--service-tier--auto--default--6ba13904
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -4680,13 +4912,15 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: silently-translated
+  probe_id: gpt-5-6-sol--service-tier--auto--default--edca588c
+  http_status: 200
+  honor_evidence: translated-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor''s response
+    reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting
+    it.'
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4710,13 +4944,15 @@ cells:
   model: grok-4-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: silently-translated
+  probe_id: grok-4-5--service-tier--auto--default--50701f55
+  http_status: 200
+  honor_evidence: translated-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor''s response
+    reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting
+    it.'
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -4725,13 +4961,14 @@ cells:
   model: kimi-k3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--service-tier--auto--default--24465b09
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -4740,13 +4977,14 @@ cells:
   model: deepseek-v4
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: deepseek-v4--service-tier--auto--default--1d5f1f91
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -4755,13 +4993,14 @@ cells:
   model: glm-5.3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--service-tier--auto--default--39f1ca62
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -4770,13 +5009,14 @@ cells:
   model: qwen3.8-max
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--service-tier--auto--default--21c5dfa8
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -4785,13 +5025,14 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--service-tier--auto--default--db747a31
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -4860,15 +5101,15 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: low
-  state: needs-review
-  probe_id: gpt-5-6-sol--openai-reasoning-effort--low--default--b4647333
-  http_status: 400
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--openai-reasoning-effort--low--default--19262344
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
-  reason: 4xx-not-param-named
+  reason: null
   override: null
 - param: openai-reasoning-effort
   group: reasoning-toggle
@@ -4980,13 +5221,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"type":"adaptive"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-fable-5--anthropic-thinking-object--{"type":"adaptive"}--default--494289db
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -4995,13 +5236,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"type":"adaptive"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-opus-5--anthropic-thinking-object--{"type":"adaptive"}--default--2bce2187
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -5010,13 +5251,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"type":"adaptive"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-sonnet-5--anthropic-thinking-object--{"type":"adaptive"}--default--4a4e48f4
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -5025,13 +5266,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--anthropic-thinking-object--{"budget_tokens":1024,"type":"enabled"}--default--2ea979db
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 44
+  usage_output_tokens: 43
   skip_reason: null
   reason: null
   override: null
@@ -5520,9 +5761,9 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--45945513
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5535,9 +5776,9 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--520a890e
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5550,9 +5791,9 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--8766bbae
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5565,9 +5806,9 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--1ee0e860
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5700,9 +5941,9 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--b3a82b3b
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5715,9 +5956,9 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--fb44ff7d
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5730,9 +5971,9 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--23e2e42a
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5745,9 +5986,9 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-haiku-4-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--8f76ea85
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -5955,12 +6196,12 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '1.0'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--gemini-temperature-range--1.0--default--82788ba7
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
+  usage_input_tokens: 9
   usage_output_tokens: null
   skip_reason: null
   reason: null
@@ -6135,13 +6376,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--openai-verbosity--low--default--77e336fc
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6165,13 +6406,13 @@ cells:
   model: grok-4-5
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-verbosity--low--default--776e2cac
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -6180,13 +6421,13 @@ cells:
   model: kimi-k3
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-verbosity--low--default--dc48b7e4
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -6195,13 +6436,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-verbosity--low--default--51c9a2c5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6210,13 +6451,13 @@ cells:
   model: glm-5.3
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-verbosity--low--default--16d63fb5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6225,13 +6466,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-verbosity--low--default--1fe82a07
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6240,13 +6481,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: low
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-verbosity--low--default--aff6394c
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6315,9 +6556,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--openai-prediction--{"content":"hello","type":"content"}--default--1bd2232f
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -6345,13 +6586,13 @@ cells:
   model: grok-4-5
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-prediction--{"content":"hello","type":"content"}--default--f3b273b9
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -38
   skip_reason: null
   reason: null
   override: null
@@ -6360,13 +6601,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-prediction--{"content":"hello","type":"content"}--default--5ac71adf
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -6375,13 +6616,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-prediction--{"content":"hello","type":"content"}--default--ba39d3a8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6390,13 +6631,13 @@ cells:
   model: glm-5.3
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-prediction--{"content":"hello","type":"content"}--default--0fe66a8f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6405,13 +6646,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-prediction--{"content":"hello","type":"content"}--default--9b36fc30
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6420,13 +6661,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '{"content":"hello","type":"content"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-prediction--{"content":"hello","type":"content"}--default--5815c8be
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6495,13 +6736,15 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: silently-translated
+  probe_id: gpt-5-6-sol--openai-service-tier-values--auto--default--edca588c
+  http_status: 200
+  honor_evidence: translated-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor''s response
+    reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting
+    it.'
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6510,13 +6753,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--openai-service-tier-values--default--default--3a9bd29a
+  http_status: 200
+  honor_evidence: echoed-field
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6525,13 +6768,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--openai-service-tier-values--flex--default--6ec108ca
+  http_status: 200
+  honor_evidence: echoed-field
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6540,13 +6783,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--openai-service-tier-values--priority--default--6e1b1fd7
+  http_status: 200
+  honor_evidence: echoed-field
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6570,13 +6813,15 @@ cells:
   model: grok-4-5
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: silently-translated
+  probe_id: grok-4-5--openai-service-tier-values--auto--default--50701f55
+  http_status: 200
+  honor_evidence: translated-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor''s response
+    reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting
+    it.'
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -6585,13 +6830,13 @@ cells:
   model: grok-4-5
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: grok-4-5--openai-service-tier-values--default--default--d49043e3
+  http_status: 200
+  honor_evidence: echoed-field
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
   skip_reason: null
   reason: null
   override: null
@@ -6600,13 +6845,15 @@ cells:
   model: grok-4-5
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: silently-translated
+  probe_id: grok-4-5--openai-service-tier-values--flex--default--5807985b
+  http_status: 200
+  honor_evidence: translated-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor''s response
+    reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting
+    it.'
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -6615,13 +6862,13 @@ cells:
   model: grok-4-5
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: grok-4-5--openai-service-tier-values--priority--default--b146d009
+  http_status: 200
+  honor_evidence: echoed-field
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -6630,13 +6877,14 @@ cells:
   model: kimi-k3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--openai-service-tier-values--auto--default--24465b09
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 93
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -6645,13 +6893,14 @@ cells:
   model: kimi-k3
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--openai-service-tier-values--default--default--de496171
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -6660,13 +6909,14 @@ cells:
   model: kimi-k3
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--openai-service-tier-values--flex--default--36d31bfe
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -6675,13 +6925,14 @@ cells:
   model: kimi-k3
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: kimi-k3--openai-service-tier-values--priority--default--0cf72278
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 93
+  usage_output_tokens: 14
   skip_reason: null
   reason: null
   override: null
@@ -6690,13 +6941,14 @@ cells:
   model: deepseek-v4
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: deepseek-v4--openai-service-tier-values--auto--default--1d5f1f91
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6705,13 +6957,14 @@ cells:
   model: deepseek-v4
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: deepseek-v4--openai-service-tier-values--default--default--69b1f613
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6720,13 +6973,14 @@ cells:
   model: deepseek-v4
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: deepseek-v4--openai-service-tier-values--flex--default--7487ab7e
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6735,13 +6989,14 @@ cells:
   model: deepseek-v4
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: deepseek-v4--openai-service-tier-values--priority--default--632b821f
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6750,13 +7005,14 @@ cells:
   model: glm-5.3
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--openai-service-tier-values--auto--default--39f1ca62
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6765,13 +7021,14 @@ cells:
   model: glm-5.3
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--openai-service-tier-values--default--default--99bfdc53
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -6780,13 +7037,14 @@ cells:
   model: glm-5.3
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--openai-service-tier-values--flex--default--238ac791
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6795,13 +7053,14 @@ cells:
   model: glm-5.3
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: glm-5.3--openai-service-tier-values--priority--default--d07ab247
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6810,13 +7069,14 @@ cells:
   model: qwen3.8-max
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--openai-service-tier-values--auto--default--21c5dfa8
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6825,13 +7085,14 @@ cells:
   model: qwen3.8-max
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--openai-service-tier-values--default--default--13acc63b
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6840,13 +7101,14 @@ cells:
   model: qwen3.8-max
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--openai-service-tier-values--flex--default--0951e501
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6855,13 +7117,14 @@ cells:
   model: qwen3.8-max
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-max--openai-service-tier-values--priority--default--664b13e1
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6870,13 +7133,14 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: auto
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--openai-service-tier-values--auto--default--db747a31
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6885,13 +7149,14 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: default
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--openai-service-tier-values--default--default--8a573bf7
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6900,13 +7165,14 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: flex
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--openai-service-tier-values--flex--default--23b17587
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -6915,13 +7181,14 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: priority
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
-  hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  state: accepted-ignored
+  probe_id: qwen3.8-flash--openai-service-tier-values--priority--default--4bed4339
+  http_status: 200
+  honor_evidence: echoed-field
+  hazard: 'Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries
+    no evidence the parameter had any effect — the vendor may have silently dropped it.'
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -6930,9 +7197,9 @@ cells:
   model: claude-fable-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-fable-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--c46872c2
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -6960,9 +7227,9 @@ cells:
   model: claude-opus-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-opus-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--a67c7cca
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -6990,9 +7257,9 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: claude-sonnet-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--13364893
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -7020,13 +7287,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: '{"budget_tokens":1024,"type":"enabled"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: claude-haiku-4-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--2ea979db
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 44
+  usage_output_tokens: 42
   skip_reason: null
   reason: null
   override: null
@@ -7245,13 +7512,13 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: MEDIA_RESOLUTION_LOW
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gemini-3-1-pro--gemini-media-resolution--MEDIA_RESOLUTION_LOW--default--ecbfbbdf
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 9
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -7425,16 +7692,19 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: '2'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'Response body: {"message": "Multiple candidates is not enabled for this model"} -- unambiguously
+      about candidateCount (n>1); rejected.'
 - param: gemini-candidate-count
   group: exotic
   model: grok-4-5
@@ -7590,9 +7860,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--kimi-partial-mode--true--default--297f1215
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -7620,13 +7890,13 @@ cells:
   model: grok-4-5
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--kimi-partial-mode--true--default--bdf96eb0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -42
   skip_reason: null
   reason: null
   override: null
@@ -7635,13 +7905,13 @@ cells:
   model: kimi-k3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--kimi-partial-mode--true--default--7871a42d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -7650,13 +7920,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--kimi-partial-mode--true--default--b7116c92
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -7665,13 +7935,13 @@ cells:
   model: glm-5.3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--kimi-partial-mode--true--default--fd3b5e5c
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -7680,13 +7950,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--kimi-partial-mode--true--default--db07761c
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -7695,13 +7965,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--kimi-partial-mode--true--default--6ad3f3f0
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -7770,9 +8040,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--glm-do-sample--true--default--5b0c5ae8
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -7800,13 +8070,13 @@ cells:
   model: grok-4-5
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--glm-do-sample--true--default--d01780fe
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -7815,13 +8085,13 @@ cells:
   model: kimi-k3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--glm-do-sample--true--default--d7f7b02f
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -7830,13 +8100,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--glm-do-sample--true--default--f189a270
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -7845,13 +8115,13 @@ cells:
   model: glm-5.3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--glm-do-sample--true--default--7c57d887
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -7860,13 +8130,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--glm-do-sample--true--default--76ae8fda
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -7875,13 +8145,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--glm-do-sample--true--default--82b4fc5b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -7950,9 +8220,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-off
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--qwen-repetition-penalty--0.5--thinking-off--84868aa2
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -7965,9 +8235,9 @@ cells:
   model: gpt-5-6-sol
   mode: thinking-on
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--qwen-repetition-penalty--0.5--thinking-on--44294548
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -8010,13 +8280,13 @@ cells:
   model: grok-4-5
   mode: thinking-on
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--qwen-repetition-penalty--0.5--thinking-on--4f7b217b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -8100,13 +8370,13 @@ cells:
   model: glm-5.3
   mode: thinking-on
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--qwen-repetition-penalty--0.5--thinking-on--4807db5d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -8115,13 +8385,13 @@ cells:
   model: qwen3.8-max
   mode: thinking-off
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--qwen-repetition-penalty--0.5--thinking-off--5366243d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -8130,28 +8400,28 @@ cells:
   model: qwen3.8-max
   mode: thinking-on
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: qwen3.8-max--qwen-repetition-penalty--0.5--thinking-on--43fdcef3
+  http_status: 0
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
+  reason: non-verdict-terminal
   override: null
 - param: qwen-repetition-penalty
   group: exotic
   model: qwen3.8-flash
   mode: thinking-off
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--qwen-repetition-penalty--0.5--thinking-off--b2d9a0a8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 33
+  usage_output_tokens: 1
   skip_reason: null
   reason: null
   override: null
@@ -8160,13 +8430,13 @@ cells:
   model: qwen3.8-flash
   mode: thinking-on
   value: '0.5'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--qwen-repetition-penalty--0.5--thinking-on--2d6c50e2
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -8295,9 +8565,9 @@ cells:
   model: kimi-k3
   mode: default
   value: '0.6'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: kimi-k3--kimi-fixed-sampling-point--0.6--default--27e68b85
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -8430,13 +8700,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--openai-store--true--default--cdf69e92
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8460,13 +8730,13 @@ cells:
   model: grok-4-5
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-store--true--default--bbac14a8
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -12
   skip_reason: null
   reason: null
   override: null
@@ -8475,13 +8745,13 @@ cells:
   model: kimi-k3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-store--true--default--8d6f0329
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -8490,13 +8760,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-store--true--default--a22f5112
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -8505,13 +8775,13 @@ cells:
   model: glm-5.3
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-store--true--default--1f4f0bc5
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 0
   skip_reason: null
   reason: null
   override: null
@@ -8520,13 +8790,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-store--true--default--ca924f2d
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8535,13 +8805,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: 'true'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-store--true--default--6ddbd3e2
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8610,9 +8880,9 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: gpt-5-6-sol--openai-metadata--{"probe":"true"}--default--f7f0d50c
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
@@ -8640,13 +8910,13 @@ cells:
   model: grok-4-5
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-metadata--{"probe":"true"}--default--ad3bea18
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -8655,13 +8925,13 @@ cells:
   model: kimi-k3
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-metadata--{"probe":"true"}--default--f0fe2f92
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -8670,13 +8940,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-metadata--{"probe":"true"}--default--1c729b78
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -8685,28 +8955,28 @@ cells:
   model: glm-5.3
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: needs-review
+  probe_id: glm-5.3--openai-metadata--{"probe":"true"}--default--9d1cdbd3
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
+  reason: 4xx-not-param-named
   override: null
 - param: openai-metadata
   group: exotic
   model: qwen3.8-max
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-metadata--{"probe":"true"}--default--66c56750
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8715,13 +8985,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: '{"probe":"true"}'
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-metadata--{"probe":"true"}--default--d8777f22
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8790,13 +9060,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--openai-safety-identifier--probe-user-0001--default--3c993f4a
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8820,13 +9090,13 @@ cells:
   model: grok-4-5
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-safety-identifier--probe-user-0001--default--8e54ffd7
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -32
   skip_reason: null
   reason: null
   override: null
@@ -8835,13 +9105,13 @@ cells:
   model: kimi-k3
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-safety-identifier--probe-user-0001--default--21cebdbc
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -8850,13 +9120,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-safety-identifier--probe-user-0001--default--fd90da1b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -8865,13 +9135,13 @@ cells:
   model: glm-5.3
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-safety-identifier--probe-user-0001--default--2249ec6b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -8880,13 +9150,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-safety-identifier--probe-user-0001--default--b8e93b98
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8895,13 +9165,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: probe-user-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-safety-identifier--probe-user-0001--default--27b7aa56
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -8970,13 +9240,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: gpt-5-6-sol--openai-prompt-cache-key--probe-cache-key-0001--default--e3cd3a68
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 14
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9000,13 +9270,13 @@ cells:
   model: grok-4-5
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: grok-4-5--openai-prompt-cache-key--probe-cache-key-0001--default--e3e17bb7
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 502
+  usage_output_tokens: -31
   skip_reason: null
   reason: null
   override: null
@@ -9015,13 +9285,13 @@ cells:
   model: kimi-k3
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: kimi-k3--openai-prompt-cache-key--probe-cache-key-0001--default--fa5d0de3
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 93
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -9030,13 +9300,13 @@ cells:
   model: deepseek-v4
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: deepseek-v4--openai-prompt-cache-key--probe-cache-key-0001--default--50a96f71
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 91
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -9045,13 +9315,13 @@ cells:
   model: glm-5.3
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: glm-5.3--openai-prompt-cache-key--probe-cache-key-0001--default--3b69490b
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 3
   skip_reason: null
   reason: null
   override: null
@@ -9060,13 +9330,13 @@ cells:
   model: qwen3.8-max
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-max--openai-prompt-cache-key--probe-cache-key-0001--default--944758fd
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9075,13 +9345,13 @@ cells:
   model: qwen3.8-flash
   mode: default
   value: probe-cache-key-0001
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-unverified
+  probe_id: qwen3.8-flash--openai-prompt-cache-key--probe-cache-key-0001--default--b9fa2877
+  http_status: 200
+  honor_evidence: none
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 69
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9090,13 +9360,13 @@ cells:
   model: claude-fable-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-fable-5--image-input--content-block--default--c29139b2
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 23
+  usage_output_tokens: 17
   skip_reason: null
   reason: null
   override: null
@@ -9105,13 +9375,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-opus-5--image-input--content-block--default--63a1528a
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 23
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -9120,13 +9390,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-sonnet-5--image-input--content-block--default--6629f054
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 23
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9135,13 +9405,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-haiku-4-5--image-input--content-block--default--14d5e0cc
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 20
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9150,13 +9420,13 @@ cells:
   model: gpt-5-6-sol
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gpt-5-6-sol--image-input--content-block--default--a688e2ea
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9165,13 +9435,13 @@ cells:
   model: gemini-3-1-pro
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: gemini-3-1-pro--image-input--content-block--default--64692847
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 1098
+  usage_output_tokens: 2
   skip_reason: null
   reason: null
   override: null
@@ -9180,28 +9450,34 @@ cells:
   model: grok-4-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: grok-4-5--image-input--content-block--default--49f4b593
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'MODAL-01: response body: "Image dimensions 1x1 are too small. Both width and height must
+      be at least 8 pixels." -- the model DOES support image input generally; it rejected THIS specific
+      1x1 test image on a minimum-dimension constraint. Classified rejected per MODAL-01''s accept/reject
+      requirement; the size-constraint caveat (not a blanket no-image-support finding) is recorded in
+      the Run log for the report.'
 - param: image-input
   group: content-block
   model: kimi-k3
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: kimi-k3--image-input--content-block--default--16286f83
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 102
+  usage_output_tokens: 16
   skip_reason: null
   reason: null
   override: null
@@ -9210,73 +9486,86 @@ cells:
   model: deepseek-v4
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: deepseek-v4--image-input--content-block--default--8662bdb7
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'MODAL-01: response body: "This model does not support image" -- explicit, unambiguous; rejected.'
 - param: image-input
   group: content-block
   model: glm-5.3
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: glm-5.3--image-input--content-block--default--2496f2f7
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'MODAL-01: response body: "messages.content.type is invalid, allowed values: [''text'']" --
+      confirms no image content-block support in this API surface; rejected.'
 - param: image-input
   group: content-block
   model: qwen3.8-max
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-max--image-input--content-block--default--3838e6c6
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'MODAL-01: response body: "The image length and width do not meet the model restrictions.
+      [height:1 or width:1 must be larger than 10]" -- same minimum-dimension class as grok-4-5 above,
+      not a blanket no-image-support finding; classified rejected per MODAL-01''s accept/reject requirement,
+      caveat recorded in the Run log.'
 - param: image-input
   group: content-block
   model: qwen3.8-flash
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
+  state: rejected
+  probe_id: qwen3.8-flash--image-input--content-block--default--d63a3150
+  http_status: 400
   honor_evidence: n/a
   hazard: null
   usage_input_tokens: null
   usage_output_tokens: null
   skip_reason: null
-  reason: null
-  override: null
+  reason: 4xx-not-param-named
+  override:
+    date: '2026-09-02'
+    reason: 'MODAL-01: same minimum-dimension rejection as qwen3.8-max above (identical error body); rejected,
+      caveat recorded in the Run log.'
 - param: anthropic-cache-control-block
   group: content-block
   model: claude-fable-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-fable-5--anthropic-cache-control-block--content-block--default--a853c589
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 10
   skip_reason: null
   reason: null
   override: null
@@ -9285,13 +9574,13 @@ cells:
   model: claude-opus-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-opus-5--anthropic-cache-control-block--content-block--default--65928972
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
@@ -9300,13 +9589,13 @@ cells:
   model: claude-sonnet-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-sonnet-5--anthropic-cache-control-block--content-block--default--03432879
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 19
+  usage_output_tokens: 4
   skip_reason: null
   reason: null
   override: null
@@ -9315,13 +9604,13 @@ cells:
   model: claude-haiku-4-5
   mode: default
   value: content-block
-  state: unfired
-  probe_id: null
-  http_status: null
-  honor_evidence: n/a
+  state: accepted-honored
+  probe_id: claude-haiku-4-5--anthropic-cache-control-block--content-block--default--bfbf9043
+  http_status: 200
+  honor_evidence: usage-delta
   hazard: null
-  usage_input_tokens: null
-  usage_output_tokens: null
+  usage_input_tokens: 15
+  usage_output_tokens: 5
   skip_reason: null
   reason: null
   override: null
