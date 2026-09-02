@@ -573,6 +573,57 @@ def selftest() -> tuple[int, int]:
             file=sys.stderr,
         )
 
+    # --- row_keys_for_param / resolve_cell: THREE coexisting modes on one param
+    #     row (G-11-3, plan 11-07) — the mode-free `default` baseline cell fix
+    #     means a single row can now carry `default`, `thinking-off`, AND
+    #     `thinking-on` cells simultaneously, the first time this shape exists
+    #     in real data. No production code change is expected here — this
+    #     fixture proves the existing generic (mode, value) row-key logic
+    #     already handles it, since each mode's own key is distinct and none
+    #     of the three modes' single-value/single-model sets triggers the
+    #     per-model-divergent path above. ---
+    cases += 1
+    three_mode_cells = [
+        {"param": "p-three-mode", "group": "g1", "model": "m1", "mode": "default", "value": "v1",
+         "state": "accepted-honored", "probe_id": "3m-default", "override": None},
+        {"param": "p-three-mode", "group": "g1", "model": "m1", "mode": "thinking-off", "value": "v1",
+         "state": "accepted-honored", "probe_id": "3m-off", "override": None},
+        {"param": "p-three-mode", "group": "g1", "model": "m1", "mode": "thinking-on", "value": "v1",
+         "state": "rejected", "probe_id": "3m-on", "override": None},
+    ]
+    three_mode_keys = row_keys_for_param(three_mode_cells)
+    if three_mode_keys != [("default", "v1"), ("thinking-off", "v1"), ("thinking-on", "v1")]:
+        problems += 1
+        print(
+            f"FAIL row_keys_for_param(three modes): expected default/thinking-off/"
+            f"thinking-on as three distinct rows, got {three_mode_keys}",
+            file=sys.stderr,
+        )
+    tm_exact, tm_skip_mode, tm_skip_universal, tm_model_mode = build_indexes(three_mode_cells)
+    tm_default_hit = resolve_cell(
+        param="p-three-mode", model="m1", mode="default", value="v1",
+        exact_index=tm_exact, skip_by_mode_index=tm_skip_mode, skip_universal_index=tm_skip_universal,
+        model_mode_index=tm_model_mode,
+    )
+    tm_off_hit = resolve_cell(
+        param="p-three-mode", model="m1", mode="thinking-off", value="v1",
+        exact_index=tm_exact, skip_by_mode_index=tm_skip_mode, skip_universal_index=tm_skip_universal,
+        model_mode_index=tm_model_mode,
+    )
+    tm_on_hit = resolve_cell(
+        param="p-three-mode", model="m1", mode="thinking-on", value="v1",
+        exact_index=tm_exact, skip_by_mode_index=tm_skip_mode, skip_universal_index=tm_skip_universal,
+        model_mode_index=tm_model_mode,
+    )
+    tm_hit_ids = (tm_default_hit["probe_id"], tm_off_hit["probe_id"], tm_on_hit["probe_id"])
+    if tm_hit_ids != ("3m-default", "3m-off", "3m-on"):
+        problems += 1
+        print(
+            f"FAIL resolve_cell(three modes): each mode must resolve to its own "
+            f"distinct cell, expected ('3m-default', '3m-off', '3m-on'), got {tm_hit_ids}",
+            file=sys.stderr,
+        )
+
     # --- render_matrix: deterministic, byte-identical for identical input ---
     cases += 1
     fixture_doc = {"checked": "2026-09-01", "evidence_through": None, "cells": fixture_cells}

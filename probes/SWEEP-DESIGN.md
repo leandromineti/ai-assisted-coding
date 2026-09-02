@@ -239,6 +239,21 @@ overrides in the first place argues against inventing a fallback fragment just t
 this hole; a future plan authoring a real DeepSeek/Kimi thinking-toggle shape (if one is
 ever documented) is what closes it, not a generator change.
 
+**Dated 2026-09-02, Phase 11 plan 11-07 — this gap is now closed by the mode-free
+baseline cell fix (UAT gap G-11-3).** DeepSeek's and Kimi's thinking toggle still has
+no constructible request fragment — nothing above changes — but the baseline cell
+`inventory-to-sets.py`'s `modes_for_model()` now emits for every axis:thinking row
+never needed an axis fragment in the first place: `build_extra_params()` only merges
+the axis fragment when `mode in _ALL_THINKING_MODES`, and the new `default` mode is
+not a member of that set. `deepseek-v4` and `kimi-k3` each gain **11 real cells**
+(recomputed directly from the regenerated `probes/sets/generated/contract-sweep.yaml`,
+not restated from this plan's own prose): the 10 sampling-group rows plus the shared
+`qwen-repetition-penalty` exotic row (INV-03, `firing_scope: wire-family`, fires at
+every `openai_compat` vendor and both DeepSeek and Kimi are `openai_compat`). SWP-01's
+"every inventory parameter x 12 models" claim now genuinely reaches these two vendors
+for the sampling family — where before this fix they contributed zero sampling-family
+evidence anywhere in the sweep.
+
 ## Dollar envelopes, per vendor
 
 **Stated assumptions (a reader must be able to recompute every figure below from

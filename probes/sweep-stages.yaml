@@ -31,7 +31,7 @@
 # therefore an explicit quoted string, so a loader comparing against a
 # generated cell's own (always-string) `value:` field compares string to
 # string, never string to a silently-coerced float or bool.
-checked: 2026-09-01
+checked: 2026-09-02
 
 stages:
   - stage: 1
@@ -70,10 +70,14 @@ stages:
   - stage: 3
     name: sampling
     set: contract-sweep
-    expect_cells: 110
+    expect_cells: 201
     # SWEEP-DESIGN.md § Probe ordering, step 3: the axis-dependent sampling
     # cells, fired only after Stage 2 has confirmed the toggle mechanism
-    # itself works for every wire family these rows depend on.
+    # itself works for every wire family these rows depend on. 201 = 110
+    # pre-existing thinking-on/thinking-off cells + 91 new mode-free
+    # `default` baseline cells (Phase 11 plan 11-07, G-11-3): every
+    # axis:thinking sampling row now also fires a mode-free reading, matched
+    # by these same param-only selectors (no `values:` filter needed).
     selectors:
       - param: temperature
       - param: top-p
@@ -109,7 +113,7 @@ stages:
   - stage: 5
     name: exotics
     set: contract-sweep
-    expect_cells: 100
+    expect_cells: 107
     # SWEEP-DESIGN.md § Probe ordering, step 5: fired last among the scalar
     # rows because their whole point is asymmetry — a rejection or an
     # unexpected acceptance here is not corrected by any other cell, so there
@@ -119,7 +123,10 @@ stages:
     # kimi-fixed-sampling-point, and gemini-temperature-range already own the
     # 6 cells those three rows share with this stage's row list, so
     # first-match precedence removes exactly those 6 from here (106 - 6 =
-    # 100).
+    # 100). 107 = 100 pre-existing + 7 new mode-free `default` baseline cells
+    # (Phase 11 plan 11-07, G-11-3), all from `qwen-repetition-penalty` — the
+    # one exotic-group row that also declares `axis: thinking` and shares
+    # this stage's existing unrestricted selector.
     selectors:
       - param: gemini-temperature-range
       - param: openai-verbosity

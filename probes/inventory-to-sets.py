@@ -313,7 +313,27 @@ def modes_for_model(row: dict, model: dict) -> tuple[list[str], list[tuple[str, 
     """(INV-02/D-06) A row with no axis (or axis: none) emits a single 'default'
     mode and never skips. A row with axis: thinking emits per the model's
     reasoning_toggle — see MODE_LABELS_BY_TOGGLE. Returns (emitted_modes,
-    [(skipped_mode, reason), ...])."""
+    [(skipped_mode, reason), ...]).
+
+    Dated 2026-09-02, Phase 11 plan 11-07: closes UAT gap G-11-3 (the owner's
+    own words, 11-UAT.md Test 3: "I think every parameter we tried should be
+    assessed by itself before exploring any relation to thinking mode"). Every
+    axis:thinking row now ALWAYS emits a mode-free `default` cell FIRST, ahead
+    of whichever thinking-on/thinking-off cells the model's reasoning_toggle
+    contributes — so a parameter's acceptance is assessable alone, before any
+    thinking-mode interaction cell is read. The missing-mode computation below
+    (`_ALL_THINKING_MODES - set(emitted)`) needs no change: `"default"` was
+    never a member of `_ALL_THINKING_MODES`, so its presence in `emitted` does
+    not affect that subtraction, and the baseline cell never needs an axis
+    fragment and never skips for a toggle reason — build_extra_params() only
+    merges the axis fragment when `mode in _ALL_THINKING_MODES`, which
+    `"default"` is not. No other function needs to change for this cell to be
+    correct. This is deliberately keyed on `axis == "thinking"`, NOT
+    `group == "sampling"` — see PLAN.md's decision_record for the three
+    reasons (D-07's own "sampling family carries the axis broadly" framing,
+    the owner's principle being general rather than group-scoped, and
+    avoiding a new per-row-shape special case) — a future reader should not
+    "fix" this into a group-gated special case."""
     axis = row.get("axis") or "none"
     if axis == "none":
         return ["default"], []
@@ -321,7 +341,7 @@ def modes_for_model(row: dict, model: dict) -> tuple[list[str], list[tuple[str, 
         _fail(2, f"row {row['id']!r}: unknown axis {axis!r}, expected 'none' or 'thinking'")
 
     toggle = model["reasoning_toggle"]
-    emitted = list(MODE_LABELS_BY_TOGGLE[toggle])
+    emitted = ["default", *MODE_LABELS_BY_TOGGLE[toggle]]
     reason = SKIP_REASON_BY_TOGGLE.get(toggle)
     missing = sorted(_ALL_THINKING_MODES - set(emitted))
     skipped = [(m, reason) for m in missing] if reason else []
@@ -1062,6 +1082,63 @@ def check_emitted_carries_param(inventory: dict, models: list[dict]) -> tuple[in
     return _carries_param_problems(rows_by_id, models_by_slug, scalar_entries)
 
 
+def _baseline_coverage_problems(
+    resolvable: set[tuple[str, str]], has_default: set[tuple[str, str]]
+) -> tuple[int, int]:
+    """(G-11-3, plan 11-07) The pure check underlying check_baseline_mode_coverage()
+    — takes the resolvable `(row_id, model_slug)` set (every axis:thinking row x
+    model pair whose parameter name resolves at that model's wire family) and the
+    set of `(row_id, model_slug)` pairs that actually received an emitted
+    `mode == "default"` cell, directly, mirroring _carries_param_problems()'s
+    shape so --selftest can hand it synthetic sets without routing through
+    expand_params(). One check counted per resolvable pair; a pair present in
+    `resolvable` but absent from `has_default` means the mode-free baseline cell
+    fix (modes_for_model()) regressed for that pair — exactly the class of
+    silent coverage hole G-11-3 exists to prevent from recurring."""
+    checks = 0
+    problems = 0
+    for row_id, model_slug in sorted(resolvable):
+        checks += 1
+        if (row_id, model_slug) not in has_default:
+            problems += 1
+            print(
+                f"FAIL baseline mode coverage (G-11-3): row {row_id!r} at model "
+                f"{model_slug!r} resolves a parameter name but has no "
+                "mode=='default' baseline cell",
+                file=sys.stderr,
+            )
+    return checks, problems
+
+
+def check_baseline_mode_coverage(inventory: dict, models: list[dict]) -> tuple[int, int]:
+    """(G-11-3, plan 11-07) Every swept row declaring axis=='thinking' must emit a
+    mode-free 'default' baseline cell for every model whose parameter name
+    resolves at that model's wire family — the mechanical guarantee that a
+    parameter's acceptance is assessable alone, before any thinking-mode
+    interaction cell (closing UAT gap G-11-3). Builds the resolvable set
+    directly from firing_models() + resolve_param_name() — the SAME resolution
+    order expand_params() itself uses before mode expansion — and the
+    has-default set from expand_params()'s own scalar_entries, then delegates
+    to _baseline_coverage_problems(). Wired into main()'s `--check` branch
+    alongside check_emitted_carries_param(), not into run_registry_checks()
+    (which only receives rows and cannot see models — the same reason
+    check_emitted_carries_param() is wired separately)."""
+    resolvable: set[tuple[str, str]] = set()
+    for row in inventory["params"]:
+        if row.get("status") != "swept" or row.get("kind", "parameter") != "parameter":
+            continue
+        if row.get("axis") != "thinking":
+            continue
+        fire, _scope_skips = firing_models(row, models)
+        for model in fire:
+            if resolve_param_name(row, model) is not None:
+                resolvable.add((row["id"], model["slug"]))
+
+    scalar_entries, _content_block_entries, _skipped_entries = expand_params(inventory, models)
+    has_default = {(e["param"], e["model"]) for e in scalar_entries if e.get("mode") == "default"}
+    return _baseline_coverage_problems(resolvable, has_default)
+
+
 # -----------------------------------------------------------------------------------
 # --selftest (plan 10-01 Task 2) — embedded fixtures, no external test framework,
 # following probes/harness/ledger.py's and runner.py's own selftest() house style:
@@ -1341,14 +1418,17 @@ def selftest() -> tuple[int, int]:
 
     # --- cell emission: always-on yields no thinking-off cell; none yields no
     #     thinking-on cell; default-on and opt-in yield both — each asserted
-    #     against a synthetic two-model fixture ---
+    #     against a synthetic two-model fixture. Every toggle ALSO always
+    #     yields a leading `default` cell (G-11-3, plan 11-07) — the mode-free
+    #     baseline never skips, regardless of which real thinking modes the
+    #     toggle supports. ---
     cases += 1
     axis_row = _valid_row(axis="thinking")
     toggle_expectations = {
-        "always-on": (["thinking-on"], [("thinking-off", "no-thinking-off-toggle")]),
-        "none": (["thinking-off"], [("thinking-on", "no-thinking-capability")]),
-        "default-on": (["thinking-off", "thinking-on"], []),
-        "opt-in": (["thinking-off", "thinking-on"], []),
+        "always-on": (["default", "thinking-on"], [("thinking-off", "no-thinking-off-toggle")]),
+        "none": (["default", "thinking-off"], [("thinking-on", "no-thinking-capability")]),
+        "default-on": (["default", "thinking-off", "thinking-on"], []),
+        "opt-in": (["default", "thinking-off", "thinking-on"], []),
     }
     for toggle, (expected_emitted, expected_skipped) in toggle_expectations.items():
         emitted, skipped = modes_for_model(axis_row, {"reasoning_toggle": toggle})
@@ -1547,6 +1627,36 @@ def selftest() -> tuple[int, int]:
             file=sys.stderr,
         )
 
+    # --- check_baseline_mode_coverage has teeth (G-11-3, plan 11-07): a
+    #     synthetic resolvable set whose every pair also appears in the
+    #     has-default set reports 0 problems; the same resolvable set with one
+    #     pair's default cell missing reports exactly 1. Hand-built directly
+    #     against the shared _baseline_coverage_problems() helper (not routed
+    #     through expand_params()), matching check_emitted_carries_param()'s
+    #     own selftest pattern above. ---
+    cases += 1
+    baseline_resolvable = {("row-a", "model-1"), ("row-b", "model-2")}
+    baseline_full = {("row-a", "model-1"), ("row-b", "model-2")}
+    _, p_baseline_full = _baseline_coverage_problems(baseline_resolvable, baseline_full)
+    if p_baseline_full != 0:
+        problems += 1
+        print(
+            f"FAIL selftest: _baseline_coverage_problems flagged a resolvable "
+            f"set where every pair has its default cell (expected 0 problems, got {p_baseline_full})",
+            file=sys.stderr,
+        )
+
+    cases += 1
+    baseline_missing = {("row-a", "model-1")}  # row-b/model-2's default cell missing
+    _, p_baseline_missing = _baseline_coverage_problems(baseline_resolvable, baseline_missing)
+    if p_baseline_missing != 1:
+        problems += 1
+        print(
+            f"FAIL selftest: _baseline_coverage_problems did not flag a "
+            f"resolvable pair missing its default cell (expected 1 problem, got {p_baseline_missing})",
+            file=sys.stderr,
+        )
+
     # --- emit-site fail-loud guard (CR-01, plan 10-04): calling
     #     build_extra_params() directly with a row whose name resolves to None
     #     for the given model raises SystemExit(2) — the branch expand_params()'s
@@ -1619,6 +1729,9 @@ def main() -> int:
         c_checks, c_problems = check_emitted_carries_param(inventory, models)
         checks += c_checks
         problems += c_problems
+        b_checks, b_problems = check_baseline_mode_coverage(inventory, models)
+        checks += b_checks
+        problems += b_problems
         _, cb_entries_for_check, _ = expand_params(inventory, models)
         cb_checks, cb_problems = check_content_block_independence(cb_entries_for_check)
         checks += cb_checks
