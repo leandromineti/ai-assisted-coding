@@ -24,46 +24,6 @@
 # checked: 2026-09-02 — Phase 11.1 plan 01 (the tracer slice: schema + one
 # archived source + the full Anthropic 51-row claim set, D-08's plan sketch).
 checked: 2026-09-02
-scope: >-
-  One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope,
-  per D-09 — a parameter judged out of the contract sweep's own scope is not out
-  of THIS registry's scope; DOCP-01/DOCP-05) x each in-scope vendor
-  (probes/harness/models.yaml's 8-vendor set). This file is hand-kept and rule-3
-  exempt: nothing in-repo regenerates it, and it is validated — never
-  generated — by probes/check-docs-claims.py. It is NOT an extension of
-  probes/inventory.yaml (a generator input inventory-to-sets.py reads; this file
-  is a terminal, hand-transcribed registry inventory-to-sets.py never touches).
-  A claim that contradicts one of inventory.yaml's own third-party-sourced notes
-  is recorded here in that claim's own `note:` field — probes/inventory.yaml
-  itself is never edited by this phase (D-09, a phase boundary). Plan 01 (this
-  plan) seeds the schema, the archival mechanism, and Anthropic's full 51-row
-  set; plans 02-03 add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini);
-  plan 04 confronts this registry against Phase 11's wire evidence.
-checked: 2026-09-02
-scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
-  judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
-  x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
-  exempt: nothing in-repo regenerates it, and it is validated — never generated — by probes/check-docs-claims.py.
-  It is NOT an extension of probes/inventory.yaml (a generator input inventory-to-sets.py reads; this
-  file is a terminal, hand-transcribed registry inventory-to-sets.py never touches). A claim that contradicts
-  one of inventory.yaml''s own third-party-sourced notes is recorded here in that claim''s own `note:`
-  field — probes/inventory.yaml itself is never edited by this phase (D-09, a phase boundary). Plan 01
-  (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
-  add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
-  Phase 11''s wire evidence.'
-checked: 2026-09-02
-scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
-  judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
-  x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
-  exempt: nothing in-repo regenerates it, and it is validated — never generated — by probes/check-docs-claims.py.
-  It is NOT an extension of probes/inventory.yaml (a generator input inventory-to-sets.py reads; this
-  file is a terminal, hand-transcribed registry inventory-to-sets.py never touches). A claim that contradicts
-  one of inventory.yaml''s own third-party-sourced notes is recorded here in that claim''s own `note:`
-  field — probes/inventory.yaml itself is never edited by this phase (D-09, a phase boundary). Plan 01
-  (this plan) seeds the schema, the archival mechanism, and Anthropic''s full 51-row set; plans 02-03
-  add the remaining 357 (openai/xai/dseek/kimi/zai/qwen/gemini); plan 04 confronts this registry against
-  Phase 11''s wire evidence.'
-checked: 2026-09-02
 scope: 'One claim per probes/inventory.yaml row (SWEPT AND EXCLUDED rows both in scope, per D-09 — a parameter
   judged out of the contract sweep''s own scope is not out of THIS registry''s scope; DOCP-01/DOCP-05)
   x each in-scope vendor (probes/harness/models.yaml''s 8-vendor set). This file is hand-kept and rule-3
