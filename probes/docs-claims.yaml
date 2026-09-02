@@ -125,6 +125,24 @@ sources:
   url: https://api-docs.deepseek.com/api/create-chat-completion
   snapshot: https://web.archive.org/web/20260902191804/https://api-docs.deepseek.com/api/create-chat-completion/
   retrieved: '2026-09-02'
+- id: kimi-chat-completions-ref
+  vendor: kimi
+  first_party: true
+  title: 'Chat Completions API -- POST /v1/chat/completions (comprehensive OpenAPI
+    schema: ChatRequestCommon/ChatRequestBase shared fields plus the KimiK3/KimiK2.7Code/KimiK2.6
+    model-discriminated request variants)'
+  url: https://platform.kimi.ai/docs/api/chat
+  snapshot: https://web.archive.org/web/20260902192830/https://platform.kimi.ai/docs/api/chat
+  retrieved: '2026-09-02'
+- id: zai-chat-completions-ref
+  vendor: zai
+  first_party: true
+  title: 'Chat Completion -- POST /paas/v4/chat/completions (comprehensive OpenAPI
+    schema: ChatCompletionTextRequest "Text Model" / ChatCompletionVisionRequest "Vision
+    Model")'
+  url: https://docs.z.ai/api-reference/llm/chat-completion
+  snapshot: https://web.archive.org/web/20260902192957/https://docs.z.ai/api-reference/llm/chat-completion
+  retrieved: '2026-09-02'
 claims:
 - param: temperature
   vendor: anthropic
@@ -3801,3 +3819,1928 @@ claims:
     by extracting every openapi-schema__property element from the page's HTML) read end to end plus an
     in-page text search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
   note: null
+- param: temperature
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Kimi's own OpenAPI reference documents no temperature field anywhere on this
+    page (checked, zero matches) -- the first of several core sampling-family parameters
+    (temperature, top_p, top_k, presence_penalty, frequency_penalty, seed, n, logit_bias)
+    genuinely absent from Kimi's own request-schema documentation, despite Phase 11's
+    wire evidence having already fired temperature at kimi-k3. This registry records
+    the documentation gap; whether the field is silently accepted/ignored on the wire
+    is what contract-sweep.yaml already shows, confronted in plan 04.
+- param: temperature
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: '[0.0, 1.0]'
+  documented_allowed_values: null
+  documented_default: 1.0 (GLM-5.3/5.2/5.1/5/4.7/4.6 series)
+  conditionality: 'Ignored when do_sample is false (see the glm-do-sample claim below):
+    "when do_sample is false, sampling strategy parameters such as temperature and
+    top_p will not take effect."'
+  quote: 'Sampling temperature, controls the randomness of the output, must be a positive
+    number within the range: `[0.0, 1.0]`. The GLM-5.3, GLM-5.2, GLM-5.1, GLM-5, GLM-4.7,
+    GLM-4.6 series default value is `1.0`, GLM-4.5 series default value is `0.6`,
+    GLM-4-32B-0414-128K default value is `0.75`.'
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: Range 0.0-1.0 is narrower than inventory.yaml's own cross-vendor 0-2 assumption
+    -- the same narrowing pattern plan 01 already found at Anthropic (0.0-1.0, deprecated
+    on newer models), a second vendor independently converging on a sub-1.0 ceiling
+    rather than the OpenAI-style 0-2 range.
+- param: top-p
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: top-p
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: number
+  documented_range: '[0.01, 1.0]'
+  documented_allowed_values: null
+  documented_default: 0.95 (GLM-5.3/5.2/5.1/5/4.7/4.6/4.5 series)
+  conditionality: Ignored when do_sample is false, per the same do_sample description
+    quoted on the temperature claim above.
+  quote: 'Another method of temperature sampling, value range is: `[0.01, 1.0]`. The
+    GLM-5.3, GLM-5.2, GLM-5.1, GLM-5, GLM-4.7, GLM-4.6, GLM-4.5 series default value
+    is `0.95`, GLM-4-32B-0414-128K default value is `0.9`.'
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: Documented facet, not a wire-tested behavior (D-05's anti-overclaiming rule)
+    -- the do_sample:false interaction was never fired on the wire, only do_sample:true
+    (the row's own benign probe_values).
+- param: top-k
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: top-k
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: presence-penalty
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: presence-penalty
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: frequency-penalty
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: frequency-penalty
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: logprobs
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: logprobs
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Whether to return log probabilities of the output tokens. If true, the log
+    probability of each output token is returned in the logprobs field of the response
+    message.
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: logprobs
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: top-logprobs
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: top_logprobs
+  documented_type: integer
+  documented_range: 0-20
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: logprobs must be set to true when this parameter is used.
+  quote: An integer between 0 and 20 specifying the number of most likely tokens to
+    return at each token position, each with an associated log probability. logprobs
+    must be set to true when this parameter is used.
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: top-logprobs
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: seed
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: seed
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: n
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: n
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: logit-bias
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: logit-bias
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: max-tokens
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: max_completion_tokens
+  documented_type: integer
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: varies by model -- 131072 for kimi-k3, settable up to 1048576
+  conditionality: null
+  quote: 'The maximum number of tokens to generate for the chat completion. The default
+    varies by model: for Kimi K3 it defaults to 131072 and can be set up to 1048576.
+    If the result reaches the maximum number of tokens without ending, the finish
+    reason will be "length"; otherwise, it will be "stop". This refers to the length
+    of tokens you expect us to return, not the total length of input plus output.
+    If input plus max_completion_tokens exceeds the model context window, the API
+    returns invalid_request_error.'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: 'Kimi''s own docs mark max_tokens itself Deprecated ("deprecated: true, description:
+    Deprecated, please refer to max_completion_tokens") -- the same max_tokens/max_completion_tokens
+    split plan 02 already recorded for OpenAI and xAI (documented_name divergence
+    from inventory.yaml''s canonical_name, which carries no kimi-specific name_override).'
+- param: max-tokens
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: max_tokens
+  documented_type: integer
+  documented_range: 1-131072
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: The maximum number of tokens for model output, the GLM-5.3, GLM-5.2, GLM-5.1,
+    GLM-5, GLM-4.7, GLM-4.6 series supports 128K maximum output, the GLM-4.5 series
+    supports 96K maximum output, the GLM-4.6v series supports 32K maximum output,
+    the GLM-4.5v series supports 16K maximum output, GLM-4-32B-0414-128K supports
+    16K maximum output.
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'No deprecation marker at Z.ai -- matches inventory.yaml''s own canonical_name
+    (max_tokens), unlike Kimi''s/OpenAI''s/xAI''s max_completion_tokens split. No
+    default value is stated (only an example: 1024) -- documented_default left null
+    rather than inferring the example as a default.'
+- param: stop
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: string | array of up to 5 strings
+  documented_range: max 5 strings, each <= 32 bytes
+  documented_allowed_values: null
+  documented_default: 'null'
+  conditionality: null
+  quote: Stop words, which will halt the output when a full match is found. The matched
+    words themselves will not be output. A maximum of 5 strings is allowed, and each
+    string must not exceed 32 bytes
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stop
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: array of strings
+  documented_range: 'schema maxItems: 4, but the field''s own prose states "only one
+    stop word is supported"'
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Stop word list. Generation stops when the model encounters any specified
+    string. Currently, only one stop word is supported, in the format ["stop_word1"].
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'A genuine within-vendor schema-vs-prose contradiction on Z.ai''s own docs
+    page: the OpenAPI schema declares maxItems: 4 but the field''s own description
+    text states only one stop word is currently supported. Recorded as found, not
+    resolved in either direction (rule 1b''s spirit applied to a documentation self-contradiction,
+    not a cross-vendor one).'
+- param: response-format
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: text | json_object | json_schema
+  documented_default: '{"type": "text"}'
+  conditionality: null
+  quote: 'Controls the model output format. Default is {"type": "text"} for plain
+    text output. Set to {"type": "json_object"} to enable JSON mode, ensuring output
+    is a valid JSON object (you must guide the model to output JSON in the prompt).
+    Set to {"type": "json_schema"} to enable Structured Output, constraining output
+    to match a specified JSON Schema (recommended, requires the json_schema field).'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: response-format
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: text | json_object
+  documented_default: text
+  conditionality: null
+  quote: 'Specifies the response format of the model. Defaults to text. Only text
+    models support this field. `type` converges to three values: `text` (plain text
+    output), `json_object` (JSON output).'
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'Another schema-vs-prose mismatch on Z.ai''s own page: the description says
+    "converges to three values" but the schema''s own enum lists only two (text, json_object)
+    -- no json_schema/structured-output mode exists at Z.ai at all, unlike Kimi''s
+    claim above.'
+- param: tools
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: 'array of ToolDefinition ({type: function, function: {name, description,
+    parameters, strict}})'
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A list of tools the model may call
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tools
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: max 128 functions
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A list of tools the model may call. Currently, only functions are supported
+    as a tool. Use this to provide a list of functions the model may generate JSON
+    inputs for. A max of 128 functions are supported.
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'A further schema-vs-prose mismatch: the description says "only functions
+    are supported as a tool", but the tools array''s own item schema is anyOf [FunctionToolSchema,
+    RetrievalToolSchema, WebSearchToolSchema] -- retrieval and web_search tool types
+    are structurally present in the same schema this description sits on. Recorded
+    as found, both facts stated as the page states them, not reconciled.'
+- param: tool-choice
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: 'auto | none | required | {type: "function", function:
+    {name}}'
+  documented_default: auto
+  conditionality: null
+  quote: 'Controls whether the model calls tools. `auto` (default): the model decides
+    whether to call tools; `none`: no tool calls; `required`: force a tool call; or
+    pass an object specifying a particular function to force that tool call.'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: tool-choice
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: auto (only)
+  documented_default: auto
+  conditionality: null
+  quote: Used to control how the model selects which function to call. This is only
+    applicable when the tool type is function. The default value is auto, and only
+    auto is supported.
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: Narrower than Kimi's and OpenAI's/xAI's/DeepSeek's own tool_choice claims
+    (this phase) -- Z.ai documents no none/required/forced-object values, only auto.
+    This row's own probed value (D-03) is exactly "auto", so this is a docs-corroborated
+    candidate for plan 04's confrontation, not a gap.
+- param: parallel-tool-calls
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: parallel-tool-calls
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: stream
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Whether to return the response in a streaming fashion. Default is false.
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: 'This parameter should be set to false or omitted when using synchronous
+    call. It indicates that the model returns all content at once after generating
+    all content. Default value is false. If set to true, the model will return the
+    generated content in chunks via standard Event Stream. When the Event Stream ends,
+    a `data: [DONE]` message will be returned.'
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: stream_options.include_usage
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: 'If set, an additional chunk will be streamed before the data: [DONE] message.
+    The usage field on this chunk shows the token usage statistics for the entire
+    request, and the choices field will always be an empty array. All other chunks
+    will also include a usage field, but with a null value. NOTE: If the stream is
+    interrupted, you may not receive the final usage chunk which contains the total
+    token usage for the request'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: stream-options-include-usage
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No stream_options field or nested include_usage-equivalent documented anywhere
+    on Z.ai's own reference.
+- param: service-tier
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: service-tier
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-reasoning-effort
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: low | high | max
+  documented_default: max
+  conditionality: null
+  quote: Kimi K3 always enables thinking with Preserved Thinking. Reasoning effort
+    supports low, high, and max, with max as the default.
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: 'No "none"/off value exists in the documented enum -- thinking cannot be disabled
+    for kimi-k3 per its own docs, consistent with models.yaml''s own reasoning_toggle:
+    always-on for this vendor. Cross-vendor asymmetry: OpenAI''s own family-default
+    shape (inventory.yaml axes.thinking.shapes.openai_compat) assumes an "off": {reasoning_effort:
+    "none"} fragment that has no documented Kimi K3 analog.'
+- param: openai-reasoning-effort
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: reasoning_effort
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: max | xhigh | high | medium | low | minimal | none (full
+    enum); GLM-5.3 the tracked model supports only low | high | max per the same field's
+    own description
+  documented_default: max
+  conditionality: Takes effect only when `thinking` is enabled (see the anthropic-thinking-object
+    claim below).
+  quote: Controls the model's reasoning effort level, takes effect when `thinking`
+    is enabled. Default is `max`, supported by `GLM-5.2` and above. For the `GLM-5.3`
+    `GLM-5.3-FLASH` model, only the `low` / `high` / `max` levels are supported. For
+    the `GLM-5.2` model, for compatibility with other protocols, passing `none` or
+    `minimal` will cause the model to skip thinking; `low` and `medium` will be mapped
+    to `high`; `xhigh` will be mapped to `max`.
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: The schema's enum lists 7 values but the same field's own prose narrows GLM-5.3
+    (the tracked model) to only 3 of them (low/high/max) -- a documented, model-scoped
+    subset, not a schema/prose contradiction like the stop/tools/response-format findings
+    above.
+- param: anthropic-thinking-object
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: 'Kimi''s OpenAPI schema''s own model discriminator (requestBody.oneOf,
+    keyed on the model field) read end to end: KimiK3ChatRequest (kimi-k3, the tracked
+    model) allOf''s ChatRequestCommon plus {model, messages, reasoning_effort} --
+    no `thinking` property anywhere in that composed schema. Retrieved 2026-09-02.'
+  note: 'A genuine model-boundary finding, the same shape as Pitfall 7''s Gemini-vs-Vertex
+    and plan 02''s xAI /v1/chat/completions-vs-/v1/responses findings: the `thinking`
+    object concept IS documented at Kimi, but only for the sibling KimiK26ChatRequest
+    (kimi-k2.6: thinking.type enabled|disabled, thinking.keep) and KimiK27CodeChatRequest
+    (kimi-k2.7-code: thinking.type enabled only) schemas -- neither is kimi-k3, the
+    tracked model. kimi-k3''s own reasoning control is the openai-reasoning-effort
+    row''s reasoning_effort field, not this row''s thinking object shape.'
+- param: anthropic-thinking-object
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: thinking
+  documented_type: 'object {type: "enabled" | "disabled", clear_thinking: boolean}'
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: '{"type": "enabled"}'
+  conditionality: Only supported by GLM-4.5 series and higher models. GLM-5.3/GLM-5.3-FLASH
+    (the tracked model, glm-5.3) can ONLY be enabled -- depth is controlled instead
+    by reasoning_effort; other listed model families (GLM-5.2/5.1/5/4.6/4.5) auto-determine
+    whether to think, and GLM-4.7/GLM-4.5V think compulsorily.
+  quote: 'Whether to enable the chain of thought(`GLM-5.3` `GLM-5.3-FLASH` can only
+    be enabled, and the thinking depth is controlled by `reasoning_effort`; for other
+    models, when enabled, GLM-5.2 GLM-5.1 GLM-5 GLM-4.6 GLM-4.5 and others will automatically
+    determine whether to think, while GLM-4.7 and GLM-4.5V will think compulsorily),
+    default: enabled'
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'LOAD-BEARING CONTRADICTION (recorded here, inventory.yaml left unedited per
+    D-09): Z.ai''s own current docs state GLM-5.3 (glm-5.3, the tracked model) "can
+    only be enabled" -- thinking cannot be disabled for this model per this quote.
+    This contradicts inventory.yaml''s axes.thinking.shapes.openai_compat.vendor_overrides.zai
+    entry, which documents an `off: {thinking: {type: "disabled"}}` fragment as though
+    disabling were possible. The same shape as plan 02''s DeepSeek A2 finding: a documented
+    request shape that may not actually be honored, settled by the wire (already fired
+    in Phase 11), not by a third documentation pass (D-15).'
+- param: gemini-thinking-config
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: gemini-thinking-config
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Z.ai's own thinking-toggle mechanism (the `thinking` object, see the anthropic-thinking-object
+    claim above) is documented under a different name and shape than Gemini's thinkingConfig
+    -- no field named thinkingConfig or thinkingLevel/thinkingBudget appears anywhere
+    on this page.
+- param: qwen-enable-thinking
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: qwen-enable-thinking
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field named enable_thinking documented -- Z.ai's own toggle is the differently-named/shaped
+    `thinking` object (see the anthropic-thinking-object claim above).
+- param: anthropic-structured-output-output-config
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Kimi's own Structured Output mechanism is response_format's json_schema mode
+    (see the response-format claim above), not a separate top-level output_config/output_format
+    field.
+- param: anthropic-structured-output-output-config
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Z.ai documents no json_schema mode at all (see the response-format claim above)
+    and no output_config/output_format field.
+- param: anthropic-structured-output-output-format
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Kimi's own Structured Output mechanism is response_format's json_schema mode
+    (see the response-format claim above), not a separate top-level output_config/output_format
+    field.
+- param: anthropic-structured-output-output-format
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Z.ai documents no json_schema mode at all (see the response-format claim above)
+    and no output_config/output_format field.
+- param: gemini-temperature-range
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Gemini-specific boundary-contract row; Kimi's own docs document no temperature
+    field at all (see the swept temperature claim above), so this row's more specific
+    range-ceiling question cannot even be reached.
+- param: gemini-temperature-range
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Gemini-specific boundary-contract row; Z.ai's own temperature claim above
+    already documents its own range [0.0, 1.0] under a different vendor's row (the
+    swept temperature claim), not this Gemini-specific one.
+- param: openai-verbosity
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: openai-verbosity
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-prediction
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: 'object {type: "content", content: string | array of content parts}'
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: Configuration for a Predicted Output, which can greatly improve response
+    times when large parts of the model response are known ahead of time (for example,
+    regenerating a file with only minor changes).
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-prediction
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-service-tier-values
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: openai-service-tier-values
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: anthropic-thinking-budget-floor
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Anthropic-specific boundary-contract row; Kimi's own thinking object (K2.6/K2.7-code,
+    not kimi-k3 -- see the anthropic-thinking-object claim above) has no documented
+    budget_tokens field or minimum-budget floor at all.
+- param: anthropic-thinking-budget-floor
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: Z.ai's own thinking object (see the anthropic-thinking-object claim above)
+    has no budget_tokens field or documented minimum -- only type and clear_thinking.
+- param: gemini-media-resolution
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: gemini-media-resolution
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: gemini-candidate-count
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-partial-mode
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: partial
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'false'
+  conditionality: null
+  quote: Enable Partial Mode by setting this to true in the last assistant message
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: 'THE documented_name mismatch RESEARCH.md Pitfall 4 flagged: Kimi''s own current
+    docs name this field `partial` (on the last assistant Message object), NOT `partial_mode`
+    -- inventory.yaml''s own canonical_name and its openai_compat wire-family name
+    are both `partial_mode`, the field Phase 11''s wire probe actually sent. The documented
+    name is recorded here as a finding, never substituted into inventory.yaml or anywhere
+    else (D-09) -- whether the wire''s `partial_mode` was silently ignored (consistent
+    with a stale/wrong field name) or honored anyway is plan 04''s confrontation to
+    settle, not this claim.'
+- param: kimi-partial-mode
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'Kimi-specific concept (firing_scope: wire-family, this milestone''s kimi/openai/xai/dseek
+    group) -- no equivalent prefix-continuation mechanism documented at Z.ai.'
+- param: glm-do-sample
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: Z.ai-specific concept -- no do_sample field or equivalent raw sampling toggle
+    documented anywhere on Kimi's own reference.
+- param: glm-do-sample
+  vendor: zai
+  models: all
+  documented_status: documented
+  documented_name: do_sample
+  documented_type: boolean
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'true'
+  conditionality: Controls whether temperature/top_p take effect at all -- see this
+    claim's own quote, cross-referenced onto the temperature and top_p claims above
+    per this task's own instruction.
+  quote: When do_sample is true, sampling strategy is enabled; when do_sample is false,
+    sampling strategy parameters such as temperature and top_p will not take effect.
+    Default value is `true`.
+  source_ref: zai-chat-completions-ref
+  searched_surface: null
+  note: 'RESEARCH.md Pitfall 8''s documented cross-parameter interaction, transcribed
+    here as this row''s own claim AND cross-referenced onto the temperature and top_p
+    claims'' own conditionality fields per this task''s instruction. This row''s own
+    probe_values entry (do_sample: true, the default) never exercises the do_sample:false
+    interaction on the wire -- a documented facet awaiting behavioral test (D-05),
+    Phase 12 input, never an existence-facet verdict input.'
+- param: qwen-repetition-penalty
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: qwen-repetition-penalty
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: kimi-fixed-sampling-point
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi's own OpenAPI reference (platform.kimi.ai/docs/api/chat),
+    searched for any mention of a fixed/quantized/off-schedule temperature value,
+    a documented rejection schedule, or the terms "fixed", "schedule", "quantiz" near
+    a sampling parameter -- zero matches. Retrieved 2026-09-02.
+  note: 'Mirrors this plan''s own swept `temperature` claim above: Kimi''s OpenAPI
+    schema documents no temperature field at all, so the hypothesis underlying this
+    boundary-contract row (a documented fixed-sampling-point schedule for K2.6) cannot
+    even be located to confirm or deny on the documentation surface searched. An honest
+    absence (rule 1b), not an inferred confirmation or denial -- Phase 11''s own wire
+    evidence (already fired) is what actually settles this row''s hypothesis, per
+    the row''s own note in inventory.yaml.'
+- param: kimi-fixed-sampling-point
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'Kimi-specific hypothesis row (firing_scope: home-vendor) -- no equivalent
+    fixed-sampling-schedule concept documented at Z.ai.'
+- param: openai-store
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: openai-store
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-metadata
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: null
+- param: openai-metadata
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: null
+- param: openai-safety-identifier
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: A stable identifier used to help detect users of your application that may
+    be violating usage policies. The ID should be a string that uniquely identifies
+    each user. It is recommended to hash the username or email address to avoid sending
+    any identifying information
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-safety-identifier
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field named safety_identifier documented. Z.ai's own docs DO document a
+    differently-named, differently-scoped `user_id` field ("Unique ID for the end
+    user, 6-128 characters. Avoid using sensitive information") -- similar abuse-detection
+    intent, genuinely different field name/shape, not silently treated as the same
+    concept.
+- param: openai-prompt-cache-key
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: null
+  documented_type: string
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: 'null'
+  conditionality: null
+  quote: Used to cache responses for similar requests to optimize cache hit rates.
+    For Coding Agents, this is typically a session id or task id representing a single
+    session; if the session is exited and later resumed, this value should remain
+    the same. For Kimi Code Plan, this field is required to improve cache hit rates.
+    For other agents involving multi-turn conversations, it is also recommended to
+    implement this field
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: null
+- param: openai-prompt-cache-key
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No field named prompt_cache_key or any documented caching-hint mechanism at
+    Z.ai. Z.ai documents an unrelated `request_id` field, but its own description
+    frames it as a per-request dedup identifier ("needs to be unique"), not a cache-hit-rate
+    optimization hint -- a different concept, not this row's field under a new name.
+- param: max-tokens-semantics
+  vendor: kimi
+  models: all
+  documented_status: docs-silent
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi's own max_completion_tokens description (see the swept max-tokens
+    claim above), read for whether it states output-only vs total-including-reasoning
+    semantics -- it states only an input+output boundary ("the length of tokens you
+    expect us to return, not the total length of input plus output"), never addressing
+    whether hidden reasoning tokens count toward the budget. Retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded
+    rows equally). Genuinely silent on the specific reasoning-inclusive-or-not question
+    this row asks, unlike OpenAI''s and Anthropic''s (plan 01) own claims, which both
+    explicitly settle it as TOTAL-including-reasoning, and xAI''s own claim (plan
+    02), which explicitly settles it as OUTPUT-ONLY.'
+- param: max-tokens-semantics
+  vendor: zai
+  models: all
+  documented_status: docs-silent
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai's own max_tokens description (see the swept max-tokens claim
+    above), read for the same output-only-vs-total question -- it states only "maximum
+    number of tokens for model output" per model series, with no statement about whether
+    hidden reasoning tokens are counted against that budget. Retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (DOCP-01 covers swept AND excluded
+    rows equally). Silent on the reasoning-inclusive question, matching DeepSeek''s
+    own claim (plan 02) rather than OpenAI''s/Anthropic''s/xAI''s explicit settlements.'
+- param: image-input
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: image_url content part (also video_url, a further modality -- see
+    audio-video-modality below)
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'For transmitting images. Supports object form {"url": "..."} or a URL string
+    directly'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: 'Matches inventory.yaml''s own openai_compat body_template for this row exactly
+    (type: image_url, image_url.url as a data: URI). The shared Message schema (image_url/video_url
+    content types) applies to kimi-k3''s own KimiK3Message via allOf/oneOf -- no model-boundary
+    restriction found for image content, unlike the thinking-object row above.'
+- param: image-input
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: 'Z.ai''s own requestBody schema (oneOf: ChatCompletionTextRequest
+    "Text Model" vs ChatCompletionVisionRequest "Vision Model") read end to end: glm-5.3
+    (the tracked model) is enumerated only under ChatCompletionTextRequest, whose
+    messages items'' content field is string-only (oneOf: [{type: string}]) -- no
+    image_url/video_url content-part type appears in that branch. Retrieved 2026-09-02.'
+  note: 'A genuine model-boundary finding, the same shape as Pitfall 7''s Gemini-vs-Vertex
+    and plan 02''s xAI /v1/chat/completions-vs-/v1/responses findings: image content
+    IS documented at Z.ai (VisionMultimodalContentItem, image_url/video_url/file types),
+    but only under the sibling ChatCompletionVisionRequest "Vision Model" branch (glm-5.3-flash,
+    glm-4.6v, and others) -- not glm-5.3''s own Text Model branch, the tracked model
+    actually probed.'
+- param: anthropic-cache-control-block
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: No cache_control field or per-content-block cache marker documented anywhere
+    on Kimi's reference. Kimi's own caching mechanism is the flat prompt_cache_key
+    field (see the openai-prompt-cache-key claim above), not a per-block marker shape.
+- param: anthropic-cache-control-block
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: No cache_control field, per-content-block cache marker, or any prompt-caching
+    mechanism documented anywhere on Z.ai's reference (unlike Kimi/OpenAI/xAI, Z.ai
+    documents no prompt_cache_key analog either -- see the openai-prompt-cache-key
+    claim above).
+- param: batch-endpoint
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (a separate endpoint, not a chat/completions
+    parameter, D-09/FUT-04). No batch endpoint documented on this chat-completions
+    reference page.'
+- param: batch-endpoint
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep (a separate endpoint, not a chat/completions
+    parameter, D-09/FUT-04). No batch endpoint documented on this chat-completions
+    reference page.'
+- param: logit-bias-exhaustive
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03/Anti-Features: combinatorially
+    unbounded). Consistent with the swept logit-bias claim above: no logit_bias field
+    is documented at Kimi at all.'
+- param: logit-bias-exhaustive
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep. Consistent with the swept logit-bias
+    claim above: no logit_bias field is documented at Z.ai at all.'
+- param: n-distinctness-scoring
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (FUT-03, a sampling-quality research
+    question, not a contract question). Consistent with the swept `n` claim above:
+    no n/choice-count field is documented at Kimi at all.'
+- param: n-distinctness-scoring
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep. Consistent with the swept `n`
+    claim above: no n/choice-count field is documented at Z.ai at all.'
+- param: audio-video-modality
+  vendor: kimi
+  models: all
+  documented_status: documented
+  documented_name: video_url content part
+  documented_type: content block
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: 'For transmitting videos. Supports object form {"url": "..."} or a URL string
+    directly'
+  source_ref: kimi-chat-completions-ref
+  searched_surface: null
+  note: 'This row is status: excluded from the sweep (FUT-02, PROJECT.md scopes non-image
+    modalities docs-only). Video IS genuinely documented at Kimi -- a further modality
+    beyond the milestone''s own image-only scope, recorded honestly rather than smoothed
+    into "absent". Audio is NOT documented: no audio/input_audio content type appears
+    anywhere in the Message content schema, only text/image_url/video_url.'
+- param: audio-video-modality
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: 'Z.ai''s own ChatCompletionVisionRequest schema (VisionMultimodalContentItem:
+    text/image_url/video_url/file types, including an explicit 200MB video size limit
+    and mp4/mkv/mov format list) read end to end, cross-checked against glm-5.3''s
+    own ChatCompletionTextRequest branch (the tracked model), whose messages items
+    are string-content-only. Retrieved 2026-09-02.'
+  note: 'This row is status: excluded from the sweep. Same model-boundary pattern
+    as the image-input claim above: video (and file) content IS richly documented
+    at Z.ai, but only under the Vision Model schema branch (glm-5.3-flash and others),
+    not glm-5.3''s own Text Model branch. No audio/input_audio content type is documented
+    under either branch.'
+- param: xai-search-parameters
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (ADR-0048-ambiguous, xAI-named
+    hypothesis row). No live-web-search parameter or tool documented anywhere on Kimi''s
+    own reference.'
+- param: xai-search-parameters
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: 'Z.ai''s own tools array item schema (anyOf: FunctionToolSchema,
+    RetrievalToolSchema, WebSearchToolSchema -> WebSearchObject) read end to end,
+    searched for a top-level field literally named search_parameters (matching xAI''s
+    own row/field name and shape) -- zero matches; no such top-level field exists
+    at Z.ai. Retrieved 2026-09-02.'
+  note: 'This row is status: excluded from the sweep (xAI-named, ADR-0048-ambiguous
+    hypothesis row). No field literally named/shaped like xAI''s search_parameters
+    exists, but Z.ai documents its own genuinely rich, differently-shaped live-search
+    mechanism: a `web_search` TOOL type (not a top-level request field) carrying a
+    WebSearchObject with enable/search_engine/search_query/count/search_domain_filter/search_recency_filter/content_size/result_sequence/search_result/require_search/search_prompt
+    sub-fields. Recorded as a related-but-differently-shaped mechanism, not silently
+    treated as this row''s own field under a new name (rule 1b).'
+- param: json-schema-conformance-grading
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (a correctness-benchmark question,
+    not a contract-acceptance question, Anti-Features). Kimi''s own response_format
+    DOES document a json_schema mode (see the response-format claim above) -- that
+    claim already covers the presence question; this row asks specifically about grading
+    whether RETURNED JSON conforms, which is not documented anywhere on this page.'
+- param: json-schema-conformance-grading
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep. Z.ai documents no json_schema
+    mode at all (see the response-format claim above), so even the underlying presence
+    question this row builds on does not apply at Z.ai.'
+- param: malformed-request-fuzzing
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (API-robustness/conformance testing,
+    a different research question, Anti-Features). No fuzzing/robustness-testing guidance
+    documented on this reference page.'
+- param: malformed-request-fuzzing
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep. No fuzzing/robustness-testing
+    guidance documented on this reference page.'
+- param: gateway-probe-targets
+  vendor: kimi
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: kimi-chat-completions-ref
+  searched_surface: Kimi/Moonshot Chat Completions API reference (platform.kimi.ai/docs/api/chat),
+    the full OpenAPI schema's ChatRequestCommon/ChatRequestBase property list (shared
+    by kimi-k3's own KimiK3ChatRequest schema, via allOf) read end to end plus an
+    in-page text search for the canonical/wire-family name -- zero matches, retrieved
+    2026-09-02.
+  note: 'This row is status: excluded from the sweep (ADR-0048 restricts probe targets
+    to first-party API products; third-party gateways are prior-art sources only,
+    never probe targets). Not applicable to a first-party vendor reference page.'
+- param: gateway-probe-targets
+  vendor: zai
+  models: all
+  documented_status: absent-from-docs
+  documented_name: null
+  documented_type: null
+  documented_range: null
+  documented_allowed_values: null
+  documented_default: null
+  conditionality: null
+  quote: null
+  source_ref: zai-chat-completions-ref
+  searched_surface: Z.ai Chat Completion API reference (docs.z.ai/api-reference/llm/chat-completion),
+    the full OpenAPI schema's ChatCompletionTextRequest property list (the schema
+    branch matching glm-5.3, the tracked model) read end to end plus an in-page text
+    search for the canonical/wire-family name -- zero matches, retrieved 2026-09-02.
+  note: 'This row is status: excluded from the sweep. Not applicable to a first-party
+    vendor reference page.'
