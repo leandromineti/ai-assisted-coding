@@ -55,6 +55,46 @@ comparisons/probes.md            Phase 11 — GENERATED probe matrix (rule 3: ne
 Schemas for `scripts/classify-probes.py` and `scripts/build-probe-matrix.py` live in the
 scripts themselves and in `probes/classified/*.yaml`'s own comments — not restated here.
 
+Phase 12 adds a second, parallel pipeline over the SAME raw evidence stage — a behavioral
+question ("does a repeated call vary, or match?") that the four-state contract
+classification above cannot answer, since that classification only ever fires each cell
+once:
+
+```
+probes/sets/behavioral/*.yaml    Phase 12 — hand-authored behavioral probe sets, one
+                                  file per test family (D-09's `repeat` coordinate;
+                                  runner.py reads only `probes:`)
+        ↓
+probes/raw/{vendor}.jsonl        the SAME raw evidence stage as above — a behavioral
+                                  repeat is one more `probe_id` line among the contract
+                                  sweep's, not a separate evidence file
+        ↓
+scripts/classify-behavioral.py   Phase 12 — reads every declared behavioral set +
+                                  probes/raw/*.jsonl, groups repeat entries, reduces
+                                  each group to a rate-with-count verdict against a
+                                  fail-loud-cited expectation (--check/--selftest)
+        ↓
+probes/classified/behavioral.yaml  Phase 12 — GENERATED classified behavioral evidence
+                                  (rule 3: never hand-edited; --check/--selftest).
+                                  Rate-with-count schema, never a bare boolean
+        ↓
+scripts/build-behavioral-matrix.py  Phase 12 — reads probes/classified/behavioral.yaml
+                                  alone and renders the matrix (--check/--selftest)
+        ↓
+comparisons/behavioral.md        Phase 12 — GENERATED behavioral matrix (rule 3: never
+                                  hand-edited)
+```
+
+Both `scripts/classify-behavioral.py --check` and `scripts/build-behavioral-matrix.py
+--check` are deliberately NOT in `CLAUDE.md`'s pre-commit battery — the same precedent
+`scripts/build-docs-vs-wire.py`'s own entry below already records for itself and
+`scripts/build-probe-matrix.py`: they are generator drift checks, run on demand, not on
+every commit, and the absence is a design choice, not an oversight. What DOES gate a
+commit touching this evidence, already in `CLAUDE.md`'s battery: `probes/audit-evidence.py
+--check` (the privacy scanner) and `probes/check-docs-claims.py --check` (the claims
+validator), both of which run over the extended evidence base this phase adds. This
+decision is recorded here so a future session does not re-litigate it from scratch.
+
 ## Layout
 
 | Path | Contents |
@@ -77,6 +117,15 @@ scripts themselves and in `probes/classified/*.yaml`'s own comments — not rest
 | `probes/docs-claims.yaml` | Phase 11.1, D-02 — the first-party vendor-documentation claims registry: one `sources:` entry per vendor docs page fetched and archived, one `claims:` entry per (`inventory.yaml` row x in-scope vendor) pair. **Hand-kept, explicitly NOT generated and NOT an extension of `probes/inventory.yaml`** — rule 3 does not apply (it transcribes external references; nothing in-repo regenerates it) |
 | `probes/check-docs-claims.py` | Phase 11.1, D-03 — `docs-claims.yaml`'s fail-closed validator (`--check`/`--selftest`): completeness (every row x vendor pair present), first-party sourcing (DOCP-03), rule-1b searched-surface requirements. In `CLAUDE.md`'s pre-commit lint battery |
 | `scripts/build-docs-vs-wire.py` | Phase 11.1, D-04 — the docs-vs-wire confrontation generator (`--check`/`--selftest`): reads `probes/docs-claims.yaml` (the claims) and `probes/classified/contract-sweep.yaml` (Phase 11's wire evidence) — plus `probes/harness/models.yaml` and `probes/inventory.yaml` for model-column and group-section order only, never a second hand-maintained list — and writes `comparisons/docs-vs-wire.md` (rule 3: never hand-edited). Its `--check` is deliberately NOT in `CLAUDE.md`'s pre-commit battery — same precedent as `scripts/build-probe-matrix.py`'s own drift check, run on demand rather than on every commit; the absence is a design choice, not an oversight |
+| `probes/sets/behavioral/` | Phase 12 — hand-authored behavioral probe sets, one file per test family (`control-arm.yaml`, `seed-determinism.yaml`, `temp0-repeatability.yaml`, `stop-truncation.yaml`, `n-candidate-count.yaml`, `logprobs-reverify.yaml`, `service-tier-audit.yaml`, `docs-drift-annex.yaml`). Each carries four top-level keys: the runner's own `probes:` list (the only key `probes/harness/runner.py` reads — a `repeat: 1..N` entry field marks a probe as one repeat of a repeat-based cell, joined and reduced by `scripts/classify-behavioral.py` below; a non-repeated entry has no `repeat` key at all), plus `expectations:`, `skips:`, and `cited_cells:` (Phase 12 plan 12-05 — an audit row resolved directly against an already-fired raw record by `probe_id`, no `probes:` entry required), which only `scripts/classify-behavioral.py` reads. Every `expectations:`/`skips:` citation carries exactly one of three prefixes: `docs-claims:<param>/<vendor>` (resolves against `probes/docs-claims.yaml`), `phase11:<probe_id>` (resolves against `probes/classified/contract-sweep.yaml`), or `prereg:<section anchor text>` (resolves against `probes/PREREGISTRATION.md`'s own Phase 12 section) — `prereg:` is accepted ONLY on a `design: control` row, since a calibration finding has no vendor doc or Phase 11 cell to cite, only the preregistration's own stated calibration design |
+| `scripts/classify-behavioral.py` | Phase 12 — reads every declared behavioral set plus `probes/raw/*.jsonl`, recomputes each declared entry's exact `probe_id` via `probes/harness/runner.py`'s own `probe_id()`/`apply_omit()` (never reimplemented), groups repeat entries, and reduces each group to a rate-with-count verdict against its declared expectation (`--check`/`--selftest`). Writes `probes/classified/behavioral.yaml`. Its citation gate is fail-loud: an expected value that resolves to nothing aborts generation — a behavioral row asserted from memory can never be generated into the classified file at all |
+| `probes/classified/behavioral.yaml` | Phase 12 — GENERATED classified behavioral evidence (rule 3: **never hand-edited**; `--check`/`--selftest`). Rate-with-count schema (e.g. `rate: "0/4"`, `rate_pct`, `distinct_outputs`) — no verdict, echo-relation, presence, or truncation-verdict field anywhere in the file is a bare boolean |
+| `scripts/build-behavioral-matrix.py` | Phase 12 — reads `probes/classified/behavioral.yaml` alone and renders `comparisons/behavioral.md` (rule 3: never hand-edited; `--check`/`--selftest`), one section per requirement with its own design-dispatched column layout |
+| `comparisons/behavioral.md` | Phase 12 — GENERATED behavioral matrix (rule 3: never hand-edited) |
+
+The two new drift checks' deliberate absence from the pre-commit battery, and what
+gates a commit over this evidence instead, is recorded once above (the behavioral
+pipeline diagram) rather than repeated per row.
 
 ## DOCP-05 — the claims-before-generator ordering
 
