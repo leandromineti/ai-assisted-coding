@@ -670,6 +670,18 @@ def build_entry_request(entry: dict, row: dict, adapter) -> dict:
     request_body = apply_max_tokens_field_override(request_body, row)
     top_level_params = entry.get("top_level_params") or {}
     if top_level_params:
+        # WR-03 (12-06): every other declarative-input path in this file
+        # fails loud on malformed input; a `top_level_params` entry naming a
+        # key the adapter already set at the top level must not silently
+        # overwrite it (invisible until the outgoing request looks wrong).
+        collisions = sorted(set(top_level_params) & set(request_body))
+        if collisions:
+            _fail(
+                2,
+                f"entry declares top_level_params key(s) {collisions!r} that collide with "
+                f"an existing request-body key: model={entry.get('model')!r} "
+                f"param={entry.get('param')!r}",
+            )
         request_body = {**request_body, **top_level_params}
     return apply_omit(request_body, entry.get("omit"))
 
@@ -1598,6 +1610,24 @@ def selftest() -> tuple[int, int]:
     if pid_without_tlp == pid_with_tlp:
         problems += 1
         print("FAIL build_entry_request(top_level_params): merging a top_level_params key did not change the probe_id hash", file=sys.stderr)
+
+    # --- build_entry_request: a `top_level_params` key that COLLIDES with an
+    #     existing request-body key fails loud (WR-03, 12-06) rather than
+    #     silently overwriting it — `generationConfig` is a key the fake
+    #     adapter above already sets at the top level. ---
+    cases += 1
+    entry_with_collision = {
+        "model": "g", "param": "service-tier-audit", "value": "standard", "mode": "default",
+        "max_tokens": 16, "top_level_params": {"generationConfig": "clobbered"},
+    }
+    try:
+        build_entry_request(entry_with_collision, tlp_row, _FakeGeminiAdapter)
+        problems += 1
+        print("FAIL build_entry_request: a top_level_params key colliding with an existing request-body key was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_entry_request(top_level_params collision): expected exit 2, got {e.code}", file=sys.stderr)
 
     # --- load_content_block_set: fail-loud paths — empty list, absent key,
     #     entry missing a required key (mirrors load_probe_set's own battery

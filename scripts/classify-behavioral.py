@@ -400,9 +400,19 @@ def compute_behavioral_probe_id(entry: dict, models: dict[str, dict]) -> str:
     # cells, the only entries in this plan that carry it) is merged at the
     # top level AFTER the max-tokens override and BEFORE apply_omit(), or
     # this function's recomputed probe_id would silently diverge from what
-    # the harness actually fired.
+    # the harness actually fired. WR-03 (12-06): the same collision guard
+    # runner.py's own build_entry_request() now enforces, mirrored here so
+    # this reimplementation can never diverge on the fail-loud path either.
     top_level_params = entry.get("top_level_params") or {}
     if top_level_params:
+        collisions = sorted(set(top_level_params) & set(request_body))
+        if collisions:
+            _fail(
+                2,
+                f"entry declares top_level_params key(s) {collisions!r} that collide with "
+                f"an existing request-body key: model={entry.get('model')!r} "
+                f"param={entry.get('param')!r}",
+            )
         request_body = {**request_body, **top_level_params}
     request_body = harness_runner.apply_omit(request_body, entry.get("omit"))
     return harness_runner.probe_id(
@@ -1977,6 +1987,25 @@ def selftest() -> tuple[int, int]:
         if e.code != 2:
             problems += 1
             print(f"FAIL build_rows(seed-pairs duplicate repeat indices): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- compute_behavioral_probe_id: a top_level_params key that COLLIDES
+    #     with an existing request-body key fails loud (WR-03, 12-06),
+    #     mirroring runner.py's own build_entry_request() collision guard —
+    #     `model` is a key adapters/anthropic_messages.py's build_request()
+    #     already sets at the top level. ---
+    cases += 1
+    collision_entry = {
+        "model": "m1", "param": "p", "value": "v", "mode": "default",
+        "prompt": "x", "max_tokens": 16, "top_level_params": {"model": "clobbered"},
+    }
+    try:
+        compute_behavioral_probe_id(collision_entry, fixture_models)
+        problems += 1
+        print("FAIL compute_behavioral_probe_id: a top_level_params key colliding with an existing request-body key was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL compute_behavioral_probe_id(top_level_params collision): expected exit 2, got {e.code}", file=sys.stderr)
 
     # --- build_rows: deterministic ordering — requirement, model order, cell_id
     #     — a re-run over shuffled input never reorders rows ---
