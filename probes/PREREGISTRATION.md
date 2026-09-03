@@ -1844,3 +1844,68 @@ anthropic $0.012142 (unchanged, no new anthropic calls this task), dseek
 $0.005421, gemini $0.004158, kimi $0.025179, openai $0.013060, qwen
 $0.009908, xai $0.033906, zai $0.003643 — every vendor far under its $0.50
 sub-ceiling (highest, xai, at ~6.8% of it).
+
+**2026-09-03, plan 12-02 Task 3 — the D-03 calibration pause, resolved.** This
+is the behavioral counterpart of Phase 11's own pre-bulk-fire pause (D-09
+there): the determinism cells (plan 12-03) do not fire until the control
+arm's ability to discriminate is confronted and on the record.
+
+Presented to the owner, all read from `probes/classified/behavioral.yaml`
+and the live ledger, none assumed:
+
+- **The per-model control-arm table (all nine applicable models, unchanged
+  since Task 2's own entry above):**
+
+  | Model | Rate | distinct_outputs | Verdict |
+  |---|---|---|---|
+  | claude-haiku-4-5 | 0/4 | 5 | varies |
+  | gpt-5-6-sol | 0/4 | 5 | varies |
+  | gemini-3-1-pro | 0/4 | 5 | varies |
+  | grok-4-5 | 0/4 | 5 | varies |
+  | kimi-k3 | 0/4 | 5 | varies |
+  | deepseek-v4 | 0/4 | 5 | varies |
+  | glm-5.3 | 0/4 | 5 | varies |
+  | qwen3.8-max | 0/4 | 5 | varies |
+  | qwen3.8-flash | 0/4 | 5 | varies |
+
+- **Models whose control arm did NOT vary: none.** Every one of the nine
+  applicable models fired 0/4 matches (5 distinct outputs each) — the
+  control prompt has real entropy at every model's own default sampling
+  settings, so no model's determinism cells would measure a prompt artifact.
+- **Spend so far**, read live (`python3 probes/harness/ledger.py
+  --totals`): global **$0.107418**, per-vendor anthropic $0.012142, dseek
+  $0.005421, gemini $0.004158, kimi $0.025179, openai $0.013060, qwen
+  $0.009908, xai $0.033906, zai $0.003643 — remaining headroom against the
+  approved $0.32 Phase 12 envelope is **$0.212582** (roughly 66% of the
+  envelope unspent).
+- **Budget correction made in Task 2:** `glm-5.3` and `kimi-k3` raised from
+  `max_tokens: 600` to `max_tokens: 1200` after both returned HTTP 200 with
+  EMPTY visible text at 600 tokens (reasoning consumed the entire budget
+  before producing answer text). The reason this changes what the prompt
+  costs at those two models: the correction roughly doubled their per-call
+  output-token ceiling, which is reflected in the per-vendor totals above
+  (kimi and, to a lesser extent, the reasoning-heavy vendors carry a larger
+  share of the $0.107418 spent so far than a flat 254-call/9-model split
+  would predict). The old 600-token empty-text records remain on disk
+  unmodified (10 records, append-only per rule 3) and are simply unjoined by
+  the classifier — historical evidence of the pre-fix attempt, not an
+  overwrite.
+
+The owner's reply, verbatim:
+
+> Proceed
+
+This is the `proceed` branch of Task 3's checkpoint: the control arm varied
+at every one of the nine applicable models (0/4 matches, 5 distinct outputs,
+`verdict: varies` — no exceptions), so per the decision's own `proceed`
+option ("The arm discriminates at every model — fire as preregistered"), the
+determinism cells in plan 12-03 fire as preregistered against this same
+prompt — no prompt redesign, no amendment to the Calibration design
+subsection above. D-03's calibration requirement (rule 5d: an instrument
+that cannot discriminate cannot measure a difference) is satisfied on the
+record before any determinism cell fires.
+
+**No paid call was fired by this task.** `git diff --stat probes/raw/
+probes/ledger.jsonl` is empty as of this entry — nothing new on disk under
+either path since Task 2. The global ledger total remains at
+**$0.107418**, unchanged by this entry.
