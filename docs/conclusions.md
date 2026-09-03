@@ -1,6 +1,6 @@
 # Conclusions
 
-`checked: 2026-09-01`
+`checked: 2026-09-03`
 
 The repo's actual output: the running answer to "what did I actually learn?"
 Numbered, dated, each traceable to a note — a conclusion without a linked note is
@@ -518,3 +518,68 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`grok-4-5`](../tools/1-models/grok-4-5.md) § Probed,
     [`claude-opus-5`](../tools/1-models/claude-opus-5.md) § Probed ·
     [issue #42](https://github.com/leandromineti/ai-assisted-coding/issues/42)
+    **Confirmed on the wire, and a second instance (2026-09-03, BHV-06).** This
+    conclusion's own OpenAI finding above is about a VALUE renamed between request and
+    response (`priority`→`fast`); a different fact in the same asymmetry class is now
+    confirmed directly, at a different maker — this one is about WHICH FIELD PATH the
+    response reports a value under, not what the value is called. Anthropic's documented
+    `service_tier` request field is never mirrored to the response's top level: every one
+    of `claude-haiku-4-5`'s own non-trap audit cells shows the field present only at
+    `usage.service_tier`, absent at the top level
+    (`claude-haiku-4-5--service-tier-audit--auto--default--613638b0`), and the asymmetry
+    carries its own trap — sending the response-vocabulary word `standard` as a request
+    value is rejected outright, HTTP 400, naming the field
+    (`claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53`) — so the "caller
+    reads the wrong field" hazard this conclusion's own title predicts is not
+    hypothetical. Gemini, with no shared code, exhibits the structurally identical shape —
+    request field `serviceTier` at the top level, response field `usageMetadata.serviceTier`
+    nested — across all 5 of its own audit cells
+    (`gemini-3-1-pro--service-tier-audit--flex--default`), suggesting the shape follows
+    from nesting billing metadata under a usage envelope rather than from one maker
+    copying another. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § The service-tier
+    field-location asymmetry, twice ·
+    [`probes/classified/behavioral.yaml`](../probes/classified/behavioral.yaml) BHV-06
+
+20. **Determinism is nearly absent on the live wire, and only two models show any of it**
+    (2026-09-03, ADR-0050's `seed_determinism` + `sampling_repeatability` keys). Requesting
+    the same `seed` across five repeats produces zero matches at every one of the 8 models
+    with a request-side `seed` field — 0/5 same-seed pairs, uniformly. Requesting
+    `temperature: 0` (or, at the 5 models that reject `temperature` outright in default
+    mode, the model's own default sampling) repeats at only 2 of the 12 tracked models:
+    `claude-haiku-4-5` (4/4 repeat pairs, the sweep's only fully deterministic cell) and
+    `gemini-3-1-pro` (2/4, partial); the remaining 10 show 0/4. A caller who sends `seed`
+    or `temperature: 0` and receives a 200 has purchased acceptance, not reproducibility,
+    almost everywhere this sweep reaches. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § Sampling determinism ·
+    [`adrs/0050-wire-behavior-promotion.md`](../adrs/0050-wire-behavior-promotion.md)
+21. **The compat dialect outlived its author, and the sweep's own harness papers over the
+    evidence for it** (2026-09-03, `probes/PREREGISTRATION.md:340-344`). `gpt-5-6-sol` —
+    OpenAI's own model — rejects the shared `openai_compat` family's `max_tokens` field
+    outright, the exact name every third-party sibling (`grok-4-5`, `kimi-k3`,
+    `deepseek-v4`, `glm-5.3`, `qwen3.8-max`, `qwen3.8-flash`) still accepts, because each
+    copied OpenAI's own legacy Chat Completions field name when building its own compat
+    surface. No classified row carries this fact: the harness applies a per-model
+    field-rename override before firing (`probes/harness/models.yaml:73-79`), so every
+    fired `max-tokens` cell already reads uniform `accepted-honored` — a reader who goes
+    looking for a contradicting cell will not find one, because the override masks the
+    split before any probe fires, not because the split isn't real. A harness author
+    copying a sibling vendor's field name from a shared adapter cannot assume the origin
+    vendor still accepts it. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § The compat dialect finding ·
+    [`probes/PREREGISTRATION.md`](../probes/PREREGISTRATION.md)
+22. **Where the wire had anything to say, it disagreed with the docs more than a quarter
+    of the time** (2026-09-03, `comparisons/docs-vs-wire.md`, 612 pairs). 79 of the 612
+    `(param, model)` pairs the sweep classified are contradicted by the vendor's own
+    documentation. Read over pairs the wire actually tested — 288, i.e. excluding the 324
+    `docs-untested` pairs no probe ever fired — the rate is 79/288 = 27.4%; read over all
+    612 pairs regardless of whether the wire had anything to say, it is 79/612 = 12.9%.
+    This document uses the narrower 288-pair denominator as its headline, because "how
+    often did the tested surface disagree" is the actionable question for a caller
+    deciding how much to trust a vendor's page; the wider 612-pair reading answers a
+    different, less actionable one. A caller should weight documentation below a caller's
+    own probe wherever a probe is affordable, at roughly 1-in-4 odds of being contradicted
+    at the surface this sweep actually reached. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § The docs-versus-wire
+    confrontation ·
+    [`comparisons/docs-vs-wire.md`](../comparisons/docs-vs-wire.md)
