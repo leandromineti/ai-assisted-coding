@@ -418,12 +418,20 @@ D-11's own candidate list names them, since no earlier document assigns a specif
 number to a specific candidate ahead of the mint itself (plan 13-05's own job) — this is the
 register's own ordering choice, stated so a reader does not mistake it for a locked assignment.
 
+**Reconciled 2026-09-03, after plan 13-05's mint landed.** The register holds 5 candidates
+total: 4 promoted (1 amendment to conclusion 19, 3 newly minted as conclusions 20/21/22) and 1
+parked, and 4 + 1 = 5. Every promoted row below now carries the conclusion number it actually
+landed as in `docs/conclusions.md`, not the "destined for" placeholder this document carried
+before the mint — the numbers match because the three-candidate ordering this register chose
+(seed/temp-0 determinism, compat dialect, docs-vs-wire contradiction rate) is the same order
+`docs/conclusions.md` minted them in.
+
 | Candidate | Disposition |
 |---|---|
-| Anthropic's documented request/response service-tier field asymmetry, confirmed on the wire (this document's own "service-tier field-location asymmetry" section above), plus Gemini's independent structurally identical second instance | **Amend conclusion 19** — extends its existing title ("The served API outranks its own documentation") with a second, distinct field-location fact; not a new number, per the owner's own gate decision |
-| Seed/`temperature: 0` determinism is nearly universally absent on the live wire (this document's own "sampling determinism" section above) | **Promote — destined for conclusion 20** |
-| The compat dialect outlived its author — `gpt-5-6-sol` rejects its own legacy `max_tokens` vocabulary while every third-party compat sibling still accepts it (this document's own "compat dialect" section above) | **Promote — destined for conclusion 21** |
-| The docs-vs-wire contradiction rate (79/288 = 27.4% of pairs the wire had anything to say about; this document's own "docs-versus-wire confrontation" section above) | **Promote — destined for conclusion 22** |
+| Anthropic's documented request/response service-tier field asymmetry, confirmed on the wire (this document's own "service-tier field-location asymmetry" section above), plus Gemini's independent structurally identical second instance | **Amended into conclusion 19** — extends its existing title ("The served API outranks its own documentation") with a second, distinct field-location fact; not a new number, per the owner's own gate decision |
+| Seed/`temperature: 0` determinism is nearly universally absent on the live wire (this document's own "sampling determinism" section above) | **Promoted as conclusion 20** |
+| The compat dialect outlived its author — `gpt-5-6-sol` rejects its own legacy `max_tokens` vocabulary while every third-party compat sibling still accepts it (this document's own "compat dialect" section above) | **Promoted as conclusion 21** |
+| The docs-vs-wire contradiction rate (79/288 = 27.4% of pairs the wire had anything to say about; this document's own "docs-versus-wire confrontation" section above) | **Promoted as conclusion 22** |
 | The uniform silent acceptance of five `openai-*` foreign fields across the compat family (this document's own "silent-acceptance hazard" section above) | **Parked** — per the owner's explicit Task 1 gate directive ("park the five silent openai-* fields"). It does not clear D-11's "changes what a reader should do" bar as cleanly as the three promoted candidates on its own; this document's own silent-acceptance section already states the reader-facing guidance directly ("an absent rejection is not evidence of support"), which is the disposition the owner chose over minting a fourth conclusion number |
 
 **Walked but not a distinct candidate.** `openai-metadata` (the excluded sixth field in the

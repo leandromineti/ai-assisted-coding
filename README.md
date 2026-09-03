@@ -154,6 +154,9 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 17. **The context-assembly position everyone assumed nobody held was held all along, by the oldest and most dormant tool in the set** (2026-08-27, aider — a tree-sitter symbol index ranked by PageRank, injected as source lines every turn, 71% of the assembled prompt; the claim had survived three deep-dives because all three were tool-dispatch harnesses)
 18. **A harness with no tool loop ships the strongest native verification gate in the set** (2026-08-27, aider — zero-config `--auto-lint` runs a real linter on every edit and feeds failures back; "runs something fresh" turns out not to require agentic dispatch)
 19. **The served API outranks its own documentation, and the tiebreak costs nothing** (2026-08-31, eight-maker probe campaign under $0.02 — docs found wrong, silent, or misleading five independent ways in one day; three of the five findings were free because rejected requests bill nothing)
+20. **Determinism is nearly absent on the live wire, and only two models show any of it** (2026-09-03, ADR-0050's `seed_determinism` + `sampling_repeatability` keys — 0/5 seed pairs at all 8 domain models, 0/4 sampling-repeatability pairs at 10 of 12)
+21. **The compat dialect outlived its author, and the sweep's own harness papers over the evidence for it** (2026-09-03, `gpt-5-6-sol` rejects the legacy `max_tokens` name every third-party compat sibling still accepts — no classified row shows it, the harness renames the field before firing)
+22. **Where the wire had anything to say, it disagreed with the docs more than a quarter of the time** (2026-09-03, `comparisons/docs-vs-wire.md` — 79/288 = 27.4% of tested pairs contradicted, headline; 79/612 = 12.9% over all pairs, the other reading)
 
 ## License
 
