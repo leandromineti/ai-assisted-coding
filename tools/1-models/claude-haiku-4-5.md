@@ -31,6 +31,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control), cell_id:`claude-haiku-4-5--stop-truncation--triggering--default`, probe_id:`claude-haiku-4-5--stop-truncation--triggering--default--19f5c60f`, promoted ADR-0050."
   seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-haiku-4-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
+  sampling_repeatability: "4/4 repeat pairs (deterministic) — OBSERVED 2026-09-03: unlike its three sibling Claude models, claude-haiku-4-5 accepts an explicit temperature value in default mode (HTTP 200) — a genuine temperature:0 test, not a default-config-repeatability substitute — and all four repeat comparisons matched, one distinct output across all five calls, cell_id:`claude-haiku-4-5--temperature--0--default`, probe_id:`claude-haiku-4-5--temperature--0--default--r1--4e298620`, promoted ADR-0050."
 checked: 2026-08-17
 depth: survey
 ---

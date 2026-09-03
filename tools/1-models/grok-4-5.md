@@ -31,6 +31,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   fast_mode: false   # checked and absent: the docs models page lists no serving-speed option for grok-4-5 — the only "fast" tokens there are separate voice model ids, which are siblings, not modes (verified 2026-08-27)
   stop_sequence_honesty: 'n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-03: stop returns HTTP 400 in default mode, so no honesty verdict is reachable, probe_id:`grok-4-5--stop--["the"]--default--ee1a658f`, promoted ADR-0050.'
   seed_determinism: "0/5 same-seed pairs (varies) — OBSERVED 2026-09-03: grok-4-5's seed field is accepted-unverified at the contract sweep; five same-seed repeat calls produced five distinct outputs, cell_id:`grok-4-5--seed--42--default`, probe_id:`grok-4-5--seed--42--default--r1--1d55da10`, promoted ADR-0050."
+  sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-03: grok-4-5 accepts an explicit temperature:0 value in default mode — a genuine temperature:0 test, not a substitute; all five repeat calls completed naturally with five distinct outputs, cell_id:`grok-4-5--temperature--0--default`, probe_id:`grok-4-5--temperature--0--default--r1--d2c464ce`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

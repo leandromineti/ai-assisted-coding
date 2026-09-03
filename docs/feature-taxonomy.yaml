@@ -505,6 +505,13 @@ features:
     value_type: string
     definition: "whether repeated requests carrying the same seed value produce byte-identical output, expressed as a match rate over repeated same-seed pairs. Rate head cell: `<N>/<M> same-seed pairs (<verdict>)`, verdict one of `varies` | `no-signal`, or the not-applicable form for a model with no request-side seed field"
     note: "promoted 2026-09-03 (ADR-0050). BHV-01: `seed` is uniformly accepted-unverified at the contract layer across its 8-model domain — a flat cell on its own — and uniformly 0/5 behaviorally; only the combined contract-plus-behavioral picture discriminates (D-01), since acceptance alone reads as a non-varying key"
+  - id: sampling_repeatability
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "whether repeated identical requests produce identical output under a fixed sampling configuration — either an explicit temperature:0 request where the model accepts one, or the model's own default (implicit) configuration where it rejects temperature outright in default mode (the `default-config-repeatability` substitute design, built so a temperature-rejecting model still answers the closest question its own accepted request surface allows). Rate head cell: `<N>/<M> repeat pairs (<verdict>)`, verdict one of `deterministic` | `partial` | `varies` | `no-signal`; the design that fired is always named in the cell's tail, never left to be inferred from the model name"
+    note: "promoted 2026-09-03 (ADR-0050). BHV-02: all 12 probed models get a cell — 7 real temperature:0 tests, 5 default-config-repeatability substitutes for the models that reject temperature outright in default mode. Only claude-haiku-4-5 (4/4) and gemini-3-1-pro (2/4 partial) show any repeatability signal at all; determinism is otherwise nearly universally absent on the live wire"
   - id: stop_sequence_honesty
     group: wire-behavior
     block: model_features
