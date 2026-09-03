@@ -82,24 +82,33 @@ REQUIREMENTS = frozenset({
     "BHV-01", "BHV-02", "BHV-03", "BHV-04", "BHV-05", "BHV-06", "calibration",
 })
 
-# Closed design vocabulary — starts with `control` and `repeats` (both
-# repeat-based, byte-comparison designs); grows in later plans (12-03..12-05)
-# as new cell shapes (single-observation BHV-03/04/05, presence-only BHV-06)
-# are added. Both currently-reachable designs share the SAME repeat-group
-# reduction (compare every repeat's visible text against repeat 1).
-DESIGNS = frozenset({"control", "repeats"})
+# Closed design vocabulary — `control` and `repeats` compare every repeat's
+# visible text against repeat 1 (the SAME reduction, shared); `seed-pairs`
+# (12-03, BHV-01) reduces ten same-seed repeats into FIVE DISJOINT PAIRS
+# instead — (r1,r2) (r3,r4) (r5,r6) (r7,r8) (r9,r10) — plus a different-seed
+# effect control compared against repeat 1 (D-01/D-06's own pair-plus-
+# effect-control design, distinct from the baseline-vs-N reduction the other
+# two designs share). Grows further in 12-04/12-05 as new cell shapes
+# (single-observation BHV-03/04/05, presence-only BHV-06) are added.
+DESIGNS = frozenset({"control", "repeats", "seed-pairs"})
 
-# Closed verdict vocabulary for a repeat-based design (control/repeats) — never
-# a bare boolean anywhere in the classified file (the plan's own must_haves
-# truth). `no-signal` when any repeat is missing, non-200, or carries empty
-# visible text — the denominator (`comparisons`) never silently shrinks to
-# match however many repeats actually joined.
+# Closed verdict vocabulary, shared by every repeat-based design (control/
+# repeats/seed-pairs) — never a bare boolean anywhere in the classified file
+# (the plan's own must_haves truth). `no-signal` when any repeat is missing,
+# non-200, or carries empty visible text — the denominator (`comparisons` for
+# control/repeats, the 5-pair denominator for seed-pairs) never silently
+# shrinks to match however many repeats actually joined.
 VERDICTS = frozenset({"deterministic", "varies", "partial", "no-signal"})
 
-# Closed skip-reason vocabulary — empty at this plan (no skips declared yet),
-# grows as later plans declare skips (mirrors scripts/classify-probes.py's own
-# SKIP_REASONS growth pattern, itself mirroring probes/inventory-to-sets.py's).
-SKIP_REASONS: frozenset[str] = frozenset()
+# Closed skip-reason vocabulary (12-03): one entry per declared-skip family
+# this plan's two probe sets carry. Grows as later plans declare skips
+# (mirrors scripts/classify-probes.py's own SKIP_REASONS growth pattern,
+# itself mirroring probes/inventory-to-sets.py's).
+SKIP_REASONS: frozenset[str] = frozenset({
+    "no-request-side-seed-field",
+    "wire-rejects-temperature-default-mode",
+    "deferred-thinking-mode-cross-product",
+})
 
 
 def _fail(code: int, msg: str) -> None:
@@ -352,6 +361,146 @@ def reduce_repeat_group(
     }
 
 
+def _join_seed_entry(
+    entry: dict, models: dict[str, dict], raw_records: dict[str, dict], wire_family: str,
+    *, joined_at: list[str],
+) -> tuple[str, str | None, int | None, str | None, int | None, str | None]:
+    """Join one declared repeat/effect-control entry to its raw evidence.
+    Returns (probe_id, text, status, finish_reason, output_tokens,
+    system_fingerprint). `text`/`status` are None when the probe never joined
+    (missing, non-200, or empty visible text) — the caller decides what that
+    means for its own no-signal flag; this helper never sets one itself,
+    since a missing EFFECT-CONTROL record does not by itself invalidate the
+    main same-seed rate (it only makes seed_effect_control itself
+    unreadable — reduce_seed_pair_group handles that distinction)."""
+    pid = compute_behavioral_probe_id(entry, models)
+    record = raw_records.get(pid)
+    if record is None:
+        return pid, None, None, None, None, None
+    if record.get("recorded_at"):
+        joined_at.append(record["recorded_at"])
+    terminal = record.get("terminal")
+    attempts = record.get("attempts") or []
+    last = attempts[-1] if attempts else {}
+    status = last.get("status")
+    response_body = last.get("response_body_raw") or {}
+    text = None
+    finish_reason = None
+    if terminal == "verdict":
+        text = _get_message_text(response_body, wire_family)
+        finish_reason = _get_finish_reason(response_body, wire_family)
+    usage = record.get("usage") or {}
+    system_fingerprint = response_body.get("system_fingerprint") if isinstance(response_body, dict) else None
+    if terminal != "verdict" or status != 200 or not text:
+        text = None
+    return pid, text, status, finish_reason, usage.get("output_tokens"), system_fingerprint
+
+
+def reduce_seed_pair_group(
+    entries: list[dict], effect_control_entry: dict, models: dict[str, dict], raw_records: dict[str, dict],
+) -> dict:
+    """D-01/D-06's seed-pairs reduction: the ten same-seed `entries` (repeat
+    1..10) are compared as FIVE DISJOINT PAIRS — (r1,r2) (r3,r4) (r5,r6)
+    (r7,r8) (r9,r10) — never a flat ten-way comparison against repeat 1 (that
+    is the `repeats` design's own baseline-vs-N reduction, used by BHV-02/D-03
+    instead, in `reduce_repeat_group` above). `effect_control_entry` is the
+    single different-seed probe (no `repeat` key) joined separately and
+    compared against repeat 1's own text: if a DIFFERENT seed still
+    reproduces repeat 1's exact text, the observed same-seed stability is not
+    seed-driven (D-06) — surfaced via `seed_effect_control` plus a `note` on
+    the misleading case (a full 5/5 pair-match rate whose effect control ALSO
+    matched). The 5-pair denominator NEVER shrinks on a missing repeat (same
+    denominator-preservation discipline as `reduce_repeat_group`'s own
+    `no-signal` path) — a missing repeat marks the WHOLE group `no-signal`,
+    it does not silently drop that repeat's pair from the count."""
+    model_slug = entries[0]["model"]
+    wire_family = models[model_slug]["wire_family"]
+    entries_sorted = sorted(entries, key=lambda e: e["repeat"])
+
+    probe_ids: list[str] = []
+    texts: dict[int, str | None] = {}
+    statuses: list[int | None] = []
+    finish_reasons: list[str | None] = []
+    output_tokens_list: list[int | None] = []
+    system_fingerprints: list[str | None] = []
+    joined_at: list[str] = []
+    no_signal = False
+
+    for e in entries_sorted:
+        pid, text, status, finish_reason, out_tokens, sysfp = _join_seed_entry(
+            e, models, raw_records, wire_family, joined_at=joined_at
+        )
+        probe_ids.append(pid)
+        texts[e["repeat"]] = text
+        statuses.append(status)
+        finish_reasons.append(finish_reason)
+        output_tokens_list.append(out_tokens)
+        system_fingerprints.append(sysfp)
+        if text is None:
+            no_signal = True
+
+    repeat_order = sorted(texts)
+    pairs = list(zip(repeat_order[0::2], repeat_order[1::2]))
+    matching_pairs = 0
+    for a, b in pairs:
+        ta, tb = texts.get(a), texts.get(b)
+        if ta is not None and tb is not None and ta == tb:
+            matching_pairs += 1
+
+    ec_pid, ec_text, ec_status, ec_finish, ec_out_tokens, ec_sysfp = _join_seed_entry(
+        effect_control_entry, models, raw_records, wire_family, joined_at=joined_at
+    )
+    baseline_repeat = repeat_order[0] if repeat_order else None
+    baseline_text = texts.get(baseline_repeat) if baseline_repeat is not None else None
+    if ec_text is None or baseline_text is None:
+        ec_result = "no-signal"
+    elif ec_text == baseline_text:
+        ec_result = "matched"
+    else:
+        ec_result = "differed"
+
+    if no_signal:
+        verdict = "no-signal"
+    elif matching_pairs == len(pairs):
+        verdict = "deterministic"
+    elif matching_pairs == 0:
+        verdict = "varies"
+    else:
+        verdict = "partial"
+
+    rate_pct = round(100 * matching_pairs / len(pairs), 1) if pairs else None
+
+    note = None
+    if verdict == "deterministic" and ec_result == "matched":
+        note = (
+            "Effect control matched repeat 1 despite firing with a different "
+            "seed value — a full same-seed pair-match rate here is NOT "
+            "demonstrated as seed-driven (the model reproduced repeat 1's "
+            "exact text under a different seed too, D-06)."
+        )
+
+    return {
+        "probe_ids": probe_ids,
+        "matching_pairs": matching_pairs,
+        "rate": f"{matching_pairs}/{len(pairs)}",
+        "rate_pct": rate_pct,
+        "verdict": verdict,
+        "seed_effect_control": {"result": ec_result, "probe_id": ec_pid},
+        "note": note,
+        "ancillary": {
+            "statuses": statuses,
+            "finish_reasons": finish_reasons,
+            "output_tokens": output_tokens_list,
+            "system_fingerprints": system_fingerprints,
+            "effect_control_status": ec_status,
+            "effect_control_finish_reason": ec_finish,
+            "effect_control_output_tokens": ec_out_tokens,
+            "effect_control_system_fingerprint": ec_sysfp,
+        },
+        "joined_at": joined_at,
+    }
+
+
 def build_rows(
     probes: list[dict],
     expectations: list[dict],
@@ -376,6 +525,35 @@ def build_rows(
             _fail(2, f"duplicate expectation declared for group {key!r}")
         expectations_by_key[key] = exp
 
+    # A `design: seed-pairs` expectation's `effect_control_value` names a
+    # SECOND declared probe group (same model/param/mode, a genuinely
+    # different `value`) that is the different-seed effect control for THIS
+    # expectation's own same-seed group — joined here via that field, never
+    # via a second `expectations:` entry (Task 1's own "one expectations:
+    # entry per model's same-seed group" design). Popped out of `groups`
+    # BEFORE the generic "every declared group needs a matching expectation"
+    # check below, so the effect-control group is never mistaken for an
+    # orphan.
+    effect_control_groups: dict[tuple, dict] = {}
+    for key, exp in expectations_by_key.items():
+        if exp.get("design") != "seed-pairs":
+            continue
+        ecv = exp.get("effect_control_value")
+        if ecv is None:
+            _fail(2, f"group {key!r}: a seed-pairs expectation requires `effect_control_value`")
+        model, param, _value, mode = key
+        ec_key = (model, param, ecv, mode)
+        if ec_key not in groups:
+            _fail(
+                2,
+                f"group {key!r}: no declared probe group for its effect_control_value "
+                f"{ecv!r} (expected group_key {ec_key!r})",
+            )
+        ec_entries = groups.pop(ec_key)
+        if len(ec_entries) != 1:
+            _fail(2, f"group {ec_key!r}: effect-control group must have exactly 1 entry, got {len(ec_entries)}")
+        effect_control_groups[key] = ec_entries[0]
+
     for key in groups:
         if key not in expectations_by_key:
             _fail(2, f"declared probe group {key!r} has no matching `expectations:` entry")
@@ -395,15 +573,6 @@ def build_rows(
             _fail(2, f"group {key!r}: requirement {requirement!r} is outside the closed vocabulary {sorted(REQUIREMENTS)}")
         if design not in DESIGNS:
             _fail(2, f"group {key!r}: design {design!r} is outside the closed vocabulary {sorted(DESIGNS)}")
-        declared_repeats = expectation.get("repeats")
-        if not isinstance(declared_repeats, int) or declared_repeats < 2:
-            _fail(2, f"group {key!r}: expectation `repeats` must be an int >= 2, got {declared_repeats!r}")
-        if len(entries) != declared_repeats:
-            _fail(
-                2,
-                f"group {key!r}: expectation declares repeats={declared_repeats} but "
-                f"{len(entries)} probe entr{'y' if len(entries) == 1 else 'ies'} were found",
-            )
         expected_source = expectation.get("expected_source")
         if not expected_source:
             _fail(2, f"group {key!r}: expectation missing required `expected_source`")
@@ -417,6 +586,59 @@ def build_rows(
         expected = expectation.get("expected")
         if not expected:
             _fail(2, f"group {key!r}: expectation missing required `expected`")
+
+        if design == "seed-pairs":
+            declared_calls = expectation.get("calls")
+            declared_pairs = expectation.get("pairs")
+            if not isinstance(declared_calls, int) or declared_calls < 2 or declared_calls % 2 != 0:
+                _fail(2, f"group {key!r}: seed-pairs expectation `calls` must be an even int >= 2, got {declared_calls!r}")
+            if declared_pairs != declared_calls // 2:
+                _fail(
+                    2,
+                    f"group {key!r}: seed-pairs expectation `pairs` must equal calls/2 "
+                    f"(calls={declared_calls!r}), got pairs={declared_pairs!r}",
+                )
+            if len(entries) != declared_calls:
+                _fail(
+                    2,
+                    f"group {key!r}: expectation declares calls={declared_calls} but "
+                    f"{len(entries)} probe entr{'y' if len(entries) == 1 else 'ies'} were found",
+                )
+            reduced = reduce_seed_pair_group(entries, effect_control_groups[key], models, raw_records)
+            all_joined_at.extend(reduced.pop("joined_at"))
+            cells.append({
+                "cell_id": f"{model}--{param}--{value}--{mode}",
+                "requirement": requirement,
+                "design": design,
+                "model": model,
+                "vendor": models[model]["vendor"],
+                "mode": mode,
+                "param": param,
+                "value": value,
+                "pairs": declared_pairs,
+                "calls": declared_calls,
+                "matching_pairs": reduced["matching_pairs"],
+                "rate": reduced["rate"],
+                "rate_pct": reduced["rate_pct"],
+                "verdict": reduced["verdict"],
+                "seed_effect_control": reduced["seed_effect_control"],
+                "expected": expected,
+                "expected_source": expected_source,
+                "probe_ids": reduced["probe_ids"],
+                "ancillary": reduced["ancillary"],
+                "note": reduced["note"],
+            })
+            continue
+
+        declared_repeats = expectation.get("repeats")
+        if not isinstance(declared_repeats, int) or declared_repeats < 2:
+            _fail(2, f"group {key!r}: expectation `repeats` must be an int >= 2, got {declared_repeats!r}")
+        if len(entries) != declared_repeats:
+            _fail(
+                2,
+                f"group {key!r}: expectation declares repeats={declared_repeats} but "
+                f"{len(entries)} probe entr{'y' if len(entries) == 1 else 'ies'} were found",
+            )
 
         reduced = reduce_repeat_group(entries, models, raw_records)
         all_joined_at.extend(reduced.pop("joined_at"))
@@ -599,6 +821,113 @@ def selftest() -> tuple[int, int]:
                 "usage": {"output_tokens": 10},
             }
         return entries, raw
+
+    def make_seed_group(
+        texts_10: list[str | None], ec_text: str | None,
+        statuses_10: list[int | None] | None = None, ec_status: int | None = None,
+    ) -> tuple[list[dict], dict, dict[str, dict]]:
+        """Ten same-seed (value=42) repeat entries plus one different-seed
+        (value=99) effect-control entry, mirroring make_group's shape for the
+        seed-pairs design. `texts_10`/`statuses_10` follow make_group's own
+        None-means-genuinely-missing convention; `ec_status` defaults to 200
+        when `ec_text` is given."""
+        entries = [
+            {
+                "model": "m1", "param": "seed", "value": 42, "mode": "default",
+                "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 42}, "repeat": r,
+            }
+            for r in range(1, 11)
+        ]
+        ec_entry = {
+            "model": "m1", "param": "seed", "value": 99, "mode": "default",
+            "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 99},
+        }
+        raw: dict[str, dict] = {}
+        for i, e in enumerate(entries):
+            pid = compute_behavioral_probe_id(e, fixture_models)
+            text = texts_10[i]
+            status = (statuses_10[i] if statuses_10 else 200) if text is not None else (statuses_10[i] if statuses_10 else None)
+            if text is None and status is None:
+                continue
+            raw[pid] = {
+                "terminal": "verdict" if status == 200 else "retry_exhausted",
+                "recorded_at": "2026-09-03T00:00:00Z",
+                "attempts": [{"status": status, "response_body_raw": {"content": [{"type": "text", "text": text}]} if text is not None else {}}],
+                "usage": {"output_tokens": 10},
+            }
+        ec_pid = compute_behavioral_probe_id(ec_entry, fixture_models)
+        if ec_text is not None or ec_status is not None:
+            st = ec_status if ec_status is not None else 200
+            raw[ec_pid] = {
+                "terminal": "verdict" if st == 200 else "retry_exhausted",
+                "recorded_at": "2026-09-03T00:00:00Z",
+                "attempts": [{"status": st, "response_body_raw": {"content": [{"type": "text", "text": ec_text}]} if ec_text is not None else {}}],
+                "usage": {"output_tokens": 10},
+            }
+        return entries, ec_entry, raw
+
+    # --- reduce_seed_pair_group: full match (5/5 deterministic), effect
+    #     control DIFFERS — no misleading note ---
+    cases += 1
+    entries, ec_entry, raw = make_seed_group(["a", "a", "b", "b", "c", "c", "d", "d", "e", "e"], "different-text")
+    reduced = reduce_seed_pair_group(entries, ec_entry, fixture_models, raw)
+    if reduced["rate"] != "5/5" or reduced["verdict"] != "deterministic":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(full match): got {reduced['rate']!r}/{reduced['verdict']!r}", file=sys.stderr)
+    if reduced["seed_effect_control"]["result"] != "differed":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(effect control differ): got {reduced['seed_effect_control']!r}", file=sys.stderr)
+    if reduced["note"] is not None:
+        problems += 1
+        print("FAIL reduce_seed_pair_group: note must be None when the effect control differs", file=sys.stderr)
+
+    # --- reduce_seed_pair_group: full match (5/5), effect control MATCHES —
+    #     the misleading case (D-06) sets a note ---
+    cases += 1
+    entries, ec_entry, raw = make_seed_group(["a", "a", "b", "b", "c", "c", "d", "d", "e", "e"], "a")
+    reduced = reduce_seed_pair_group(entries, ec_entry, fixture_models, raw)
+    if reduced["seed_effect_control"]["result"] != "matched":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(effect control match): got {reduced['seed_effect_control']!r}", file=sys.stderr)
+    if reduced["note"] is None:
+        problems += 1
+        print("FAIL reduce_seed_pair_group: a full-rate group whose effect control also matched must carry a note (D-06)", file=sys.stderr)
+
+    # --- reduce_seed_pair_group: zero match (0/5 varies) ---
+    cases += 1
+    entries, ec_entry, raw = make_seed_group(
+        ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"], "k"
+    )
+    reduced = reduce_seed_pair_group(entries, ec_entry, fixture_models, raw)
+    if reduced["rate"] != "0/5" or reduced["verdict"] != "varies":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(zero match): got {reduced['rate']!r}/{reduced['verdict']!r}", file=sys.stderr)
+
+    # --- reduce_seed_pair_group: middle value (2/5 partial) ---
+    cases += 1
+    entries, ec_entry, raw = make_seed_group(
+        ["a", "a", "b", "b", "c", "d", "e", "f", "g", "h"], "z"
+    )
+    reduced = reduce_seed_pair_group(entries, ec_entry, fixture_models, raw)
+    if reduced["rate"] != "2/5" or reduced["verdict"] != "partial":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(middle value): got {reduced['rate']!r}/{reduced['verdict']!r}", file=sys.stderr)
+
+    # --- reduce_seed_pair_group: a missing repeat -> no-signal, the 5-pair
+    #     denominator is NEVER silently shrunk ---
+    cases += 1
+    entries, ec_entry, raw = make_seed_group(
+        ["a", "a", "b", "b", "c", "c", "d", "d", "e", None],
+        "a",
+        statuses_10=[200] * 9 + [None],
+    )
+    reduced = reduce_seed_pair_group(entries, ec_entry, fixture_models, raw)
+    if reduced["verdict"] != "no-signal":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(missing repeat): expected no-signal, got {reduced['verdict']!r}", file=sys.stderr)
+    if reduced["rate"].split("/")[1] != "5":
+        problems += 1
+        print(f"FAIL reduce_seed_pair_group(missing repeat): denominator must stay 5, got {reduced['rate']!r}", file=sys.stderr)
 
     # --- reduce_repeat_group: full match (4/4 deterministic) ---
     cases += 1
@@ -877,6 +1206,96 @@ def selftest() -> tuple[int, int]:
             if e.code != 2:
                 problems += 1
                 print(f"FAIL build_rows(skip citation): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- skip validation: a skip citing EACH of the two citation forms
+    #     succeeds (12-03's own closed SKIP_REASONS vocabulary) ---
+    cases += 1
+    good_skip_pid = {
+        "model": "m1", "param": "temperature", "mode": "default",
+        "requirement": "BHV-02", "reason": "wire-rejects-temperature-default-mode",
+        "cited_probe_id": "m--p--v--default--deadbeef",
+    }
+    good_skip_src = {
+        "model": "m1", "param": "temperature", "mode": "thinking-on/thinking-off",
+        "requirement": "BHV-02", "reason": "deferred-thinking-mode-cross-product",
+        "cited_source": "docs-claims:temperature/anthropic",
+    }
+    try:
+        _cells, skip_rows, _ev = build_rows(
+            [], [], [good_skip_pid, good_skip_src], fixture_models, {},
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        if len(skip_rows) != 2:
+            problems += 1
+            print(f"FAIL build_rows(valid skips, both citation forms): expected 2 skip rows, got {len(skip_rows)}", file=sys.stderr)
+    except SystemExit as e:
+        problems += 1
+        print(f"FAIL build_rows(valid skips, both citation forms): unexpected SystemExit({e.code})", file=sys.stderr)
+
+    # --- build_rows: design=seed-pairs end to end — the effect-control group
+    #     is consumed via `effect_control_value`, never treated as an orphan
+    #     declared group needing its own `expectations:` entry ---
+    cases += 1
+    seed_probes = [
+        {
+            "model": "m1", "param": "seed", "value": 42, "mode": "default",
+            "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 42}, "repeat": r,
+        }
+        for r in range(1, 11)
+    ] + [
+        {
+            "model": "m1", "param": "seed", "value": 99, "mode": "default",
+            "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 99},
+        }
+    ]
+    seed_expectation = [{
+        "model": "m1", "param": "seed", "value": 42, "mode": "default",
+        "requirement": "BHV-01", "design": "seed-pairs", "pairs": 5, "calls": 10,
+        "effect_control_value": 99,
+        "expected": "x", "expected_source": "docs-claims:temperature/anthropic",
+    }]
+    seed_raw: dict[str, dict] = {}
+    for e in seed_probes:
+        pid = compute_behavioral_probe_id(e, fixture_models)
+        seed_raw[pid] = {
+            "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+            "attempts": [{"status": 200, "response_body_raw": {"content": [{"type": "text", "text": "same"}]}}],
+            "usage": {"output_tokens": 5},
+        }
+    try:
+        seed_cells, _skips, _ev = build_rows(
+            seed_probes, seed_expectation, [], fixture_models, seed_raw,
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        if (
+            len(seed_cells) != 1
+            or seed_cells[0]["design"] != "seed-pairs"
+            or seed_cells[0]["pairs"] != 5
+            or seed_cells[0]["calls"] != 10
+            or len(seed_cells[0]["probe_ids"]) != 10
+        ):
+            problems += 1
+            print(f"FAIL build_rows(seed-pairs e2e): unexpected cell shape {seed_cells!r}", file=sys.stderr)
+    except SystemExit as e:
+        problems += 1
+        print(f"FAIL build_rows(seed-pairs e2e): unexpected SystemExit({e.code})", file=sys.stderr)
+
+    # --- build_rows: a seed-pairs expectation missing `effect_control_value`
+    #     fails loud (no effect control to join means no cell can be built) ---
+    cases += 1
+    bad_seed_expectation = [dict(seed_expectation[0])]
+    del bad_seed_expectation[0]["effect_control_value"]
+    try:
+        build_rows(
+            seed_probes, bad_seed_expectation, [], fixture_models, seed_raw,
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        problems += 1
+        print("FAIL build_rows: a seed-pairs expectation missing effect_control_value was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_rows(missing effect_control_value): expected exit 2, got {e.code}", file=sys.stderr)
 
     return cases, problems
 

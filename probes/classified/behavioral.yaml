@@ -3,11 +3,1311 @@
 # probes/raw/*.jsonl — do not edit by hand. Regenerate with
 # `python3 scripts/classify-behavioral.py`.
 #
-# 9 behavioral cell(s), 0 declared skip(s) (9 rows total).
+# 29 behavioral cell(s), 10 declared skip(s) (39 rows total).
 
 checked: 2026-09-03
-evidence_through: '2026-09-03T00:43:34Z'
+evidence_through: '2026-09-03T01:46:18Z'
 cells:
+- cell_id: gpt-5-6-sol--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: gpt-5-6-sol--seed--99--default--a12ea958
+  expected: 'OpenAI documents seed as an explicit best-effort determinism feature at gpt-5-6-sol''s own
+    vendor: "our system will make a best effort to sample deterministically, such that repeated requests
+    with the same seed and parameters should return the same result. Determinism is not guaranteed, and
+    you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+    Expect a mid-to-high same-seed pair-match rate, not a guaranteed 5/5, with each pair''s system_fingerprint
+    recorded alongside it for exactly the drift-monitoring purpose the vendor''s own hedge names.'
+  expected_source: docs-claims:seed/openai
+  probe_ids:
+  - gpt-5-6-sol--seed--42--default--r1--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r2--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r3--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r4--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r5--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r6--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r7--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r8--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r9--b19cbdbe
+  - gpt-5-6-sol--seed--42--default--r10--b19cbdbe
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 55
+    - 57
+    - 53
+    - 54
+    - 50
+    - 55
+    - 55
+    - 55
+    - 52
+    - 53
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 58
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: gemini-3-1-pro--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: gemini-3-1-pro--seed--99--default--2818d0c6
+  expected: 'Gemini''s own GenerateContent reference carries NO best-effort hedge at all for gemini-3-1-pro:
+    "Optional. Seed used in decoding. If not set, the request uses a randomly generated seed" — silent
+    on determinism strength once a seed IS set, unlike every hedged vendor in this file. This unhedged
+    framing sets a HIGHER bar than the best-effort vendors: per this plan''s own Falsification criteria,
+    a same-seed pair-match rate materially below 5/5 here refutes the documentation more sharply than
+    a partial rate would at a vendor that explicitly disclaims a guarantee.'
+  expected_source: docs-claims:seed/gemini
+  probe_ids:
+  - gemini-3-1-pro--seed--42--default--r1--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r2--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r3--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r4--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r5--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r6--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r7--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r8--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r9--4d896ab5
+  - gemini-3-1-pro--seed--42--default--r10--4d896ab5
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    output_tokens:
+    - 24
+    - 20
+    - 24
+    - 20
+    - 24
+    - 20
+    - 24
+    - 20
+    - 24
+    - 20
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: MAX_TOKENS
+    effect_control_output_tokens: 19
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: grok-4-5--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: grok-4-5--seed--99--default--1445c402
+  expected: 'xAI documents seed for grok-4-5 with the identical best-effort hedge wording as OpenAI''s
+    own claim: "our system will make a best effort to sample deterministically, such that repeated requests
+    with the same seed and parameters should return the same result. Determinism is not guaranteed, and
+    you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+    Expect a mid-to-high same-seed pair-match rate, not a guaranteed 5/5, with system_fingerprint recorded
+    alongside each pair.'
+  expected_source: docs-claims:seed/xai
+  probe_ids:
+  - grok-4-5--seed--42--default--r1--1d55da10
+  - grok-4-5--seed--42--default--r2--1d55da10
+  - grok-4-5--seed--42--default--r3--1d55da10
+  - grok-4-5--seed--42--default--r4--1d55da10
+  - grok-4-5--seed--42--default--r5--1d55da10
+  - grok-4-5--seed--42--default--r6--1d55da10
+  - grok-4-5--seed--42--default--r7--1d55da10
+  - grok-4-5--seed--42--default--r8--1d55da10
+  - grok-4-5--seed--42--default--r9--1d55da10
+  - grok-4-5--seed--42--default--r10--1d55da10
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 13
+    - 9
+    - 10
+    - 5
+    - 13
+    - 31
+    - 1
+    - 13
+    - 3
+    - 6
+    system_fingerprints:
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 7
+    effect_control_system_fingerprint: fp_a39489019fa99b6e
+  note: null
+- cell_id: kimi-k3--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: no-signal
+  seed_effect_control:
+    result: no-signal
+    probe_id: kimi-k3--seed--99--default--306b7fa9
+  expected: Kimi/Moonshot's own OpenAPI Chat Completions schema documents no seed field at all for kimi-k3
+    (absent-from-docs, checked-absence per rule 1b — the full ChatRequestCommon/ChatRequestBase property
+    list read end to end, zero matches). This vendor has NO seed contract to confront, so ANY same-seed
+    pair-match rate here — high or low — is a FIRST DISCOVERY about undocumented behavior, not a corroboration
+    or a refutation of a stated prior.
+  expected_source: docs-claims:seed/kimi
+  probe_ids:
+  - kimi-k3--seed--42--default--r1--785f1743
+  - kimi-k3--seed--42--default--r2--785f1743
+  - kimi-k3--seed--42--default--r3--785f1743
+  - kimi-k3--seed--42--default--r4--785f1743
+  - kimi-k3--seed--42--default--r5--785f1743
+  - kimi-k3--seed--42--default--r6--785f1743
+  - kimi-k3--seed--42--default--r7--785f1743
+  - kimi-k3--seed--42--default--r8--785f1743
+  - kimi-k3--seed--42--default--r9--785f1743
+  - kimi-k3--seed--42--default--r10--785f1743
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - length
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 89
+    - 82
+    - 75
+    - 82
+    - 108
+    - 3
+    - 90
+    - 93
+    - 93
+    - 90
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: length
+    effect_control_output_tokens: 3
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: deepseek-v4--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: deepseek-v4--seed--99--default--4f8b2d81
+  expected: DeepSeek's own Chat Completions reference documents no seed field at all for deepseek-v4 (absent-from-docs,
+    checked-absence per rule 1b — the full 36-property request body read end to end, zero matches). This
+    vendor has NO seed contract to confront, so ANY same-seed pair-match rate here — high or low — is
+    a FIRST DISCOVERY, not a corroboration or a refutation of a stated prior.
+  expected_source: docs-claims:seed/dseek
+  probe_ids:
+  - deepseek-v4--seed--42--default--r1--b26d4485
+  - deepseek-v4--seed--42--default--r2--b26d4485
+  - deepseek-v4--seed--42--default--r3--b26d4485
+  - deepseek-v4--seed--42--default--r4--b26d4485
+  - deepseek-v4--seed--42--default--r5--b26d4485
+  - deepseek-v4--seed--42--default--r6--b26d4485
+  - deepseek-v4--seed--42--default--r7--b26d4485
+  - deepseek-v4--seed--42--default--r8--b26d4485
+  - deepseek-v4--seed--42--default--r9--b26d4485
+  - deepseek-v4--seed--42--default--r10--b26d4485
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 59
+    - 59
+    - 66
+    - 59
+    - 69
+    - 60
+    - 69
+    - 56
+    - 56
+    - 65
+    system_fingerprints:
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 55
+    effect_control_system_fingerprint: a307abda487cd1b463329ccb945ce396
+  note: null
+- cell_id: glm-5.3--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: no-signal
+  seed_effect_control:
+    result: differed
+    probe_id: glm-5.3--seed--99--default--eabe8bce
+  expected: Z.ai's own Chat Completion API reference documents no seed field at all for glm-5.3 (absent-from-docs,
+    checked-absence per rule 1b — the ChatCompletionTextRequest schema branch matching this tracked model
+    read end to end, zero matches). This vendor has NO seed contract to confront, so ANY same-seed pair-match
+    rate here — high or low — is a FIRST DISCOVERY, not a corroboration or a refutation of a stated prior.
+  expected_source: docs-claims:seed/zai
+  probe_ids:
+  - glm-5.3--seed--42--default--r1--5d9fe9d0
+  - glm-5.3--seed--42--default--r2--5d9fe9d0
+  - glm-5.3--seed--42--default--r3--5d9fe9d0
+  - glm-5.3--seed--42--default--r4--5d9fe9d0
+  - glm-5.3--seed--42--default--r5--5d9fe9d0
+  - glm-5.3--seed--42--default--r6--5d9fe9d0
+  - glm-5.3--seed--42--default--r7--5d9fe9d0
+  - glm-5.3--seed--42--default--r8--5d9fe9d0
+  - glm-5.3--seed--42--default--r9--5d9fe9d0
+  - glm-5.3--seed--42--default--r10--5d9fe9d0
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - length
+    - length
+    - length
+    - stop
+    - stop
+    output_tokens:
+    - 69
+    - 76
+    - 86
+    - 76
+    - 71
+    - 0
+    - 2
+    - 2
+    - 74
+    - 61
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 71
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: qwen3.8-max--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: qwen3.8-max--seed--99--default--d16ff1a6
+  expected: 'Qwen documents its own explicit hedge for qwen3.8-max, worded differently from OpenAI/xAI''s
+    system_fingerprint-pointer wording: "the model returns the same result whenever possible" — a best-effort
+    contract stated in the vendor''s own terms, with no system_fingerprint pointer to monitor drift. Expect
+    a mid-to-high same-seed pair-match rate, not a guaranteed 5/5.'
+  expected_source: docs-claims:seed/qwen
+  probe_ids:
+  - qwen3.8-max--seed--42--default--r1--497b033d
+  - qwen3.8-max--seed--42--default--r2--497b033d
+  - qwen3.8-max--seed--42--default--r3--497b033d
+  - qwen3.8-max--seed--42--default--r4--497b033d
+  - qwen3.8-max--seed--42--default--r5--497b033d
+  - qwen3.8-max--seed--42--default--r6--497b033d
+  - qwen3.8-max--seed--42--default--r7--497b033d
+  - qwen3.8-max--seed--42--default--r8--497b033d
+  - qwen3.8-max--seed--42--default--r9--497b033d
+  - qwen3.8-max--seed--42--default--r10--497b033d
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 45
+    - 42
+    - 43
+    - 42
+    - 43
+    - 41
+    - 40
+    - 43
+    - 46
+    - 44
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 44
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: qwen3.8-flash--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 0
+  rate: 0/5
+  rate_pct: 0.0
+  verdict: varies
+  seed_effect_control:
+    result: differed
+    probe_id: qwen3.8-flash--seed--99--default--194b7288
+  expected: 'Qwen''s seed claim applies to every model in the family including its flash-tier sibling
+    qwen3.8-flash: "the model returns the same result whenever possible" — the same explicit, vendor-worded
+    best-effort hedge cited for qwen3.8-max above (this file''s own vendor-level claim, one row shared
+    by both tracked Qwen models), with no system_fingerprint pointer. Expect a mid-to-high same-seed pair-match
+    rate at this smaller/cheaper model too, not a guaranteed 5/5.'
+  expected_source: docs-claims:seed/qwen
+  probe_ids:
+  - qwen3.8-flash--seed--42--default--r1--714d17f5
+  - qwen3.8-flash--seed--42--default--r2--714d17f5
+  - qwen3.8-flash--seed--42--default--r3--714d17f5
+  - qwen3.8-flash--seed--42--default--r4--714d17f5
+  - qwen3.8-flash--seed--42--default--r5--714d17f5
+  - qwen3.8-flash--seed--42--default--r6--714d17f5
+  - qwen3.8-flash--seed--42--default--r7--714d17f5
+  - qwen3.8-flash--seed--42--default--r8--714d17f5
+  - qwen3.8-flash--seed--42--default--r9--714d17f5
+  - qwen3.8-flash--seed--42--default--r10--714d17f5
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 45
+    - 47
+    - 45
+    - 48
+    - 48
+    - 47
+    - 44
+    - 42
+    - 47
+    - 45
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 59
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: claude-fable-5--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: claude-fable-5
+  vendor: anthropic
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'Anthropic''s own documented temperature contract explains why this model gets a substitute
+    cell rather than a real temperature-0 cell: "models released after Claude Opus 4.6 do not support
+    setting temperature ... all other values are rejected with a 400 error" — confirmed on the wire (claude-fable-5--temperature--0.7--default--be62cc19,
+    HTTP 400). This default-config-repeatability cell instead asks whether claude-fable-5''s own DEFAULT
+    (implicit) sampling is repeatable across five identical requests with no temperature parameter sent
+    at all — the closest behavioral question this model''s own accepted request surface can answer.'
+  expected_source: docs-claims:temperature/anthropic
+  probe_ids:
+  - claude-fable-5--default-config-repeatability--no-temperature--default--r1--bbdda63f
+  - claude-fable-5--default-config-repeatability--no-temperature--default--r2--bbdda63f
+  - claude-fable-5--default-config-repeatability--no-temperature--default--r3--bbdda63f
+  - claude-fable-5--default-config-repeatability--no-temperature--default--r4--bbdda63f
+  - claude-fable-5--default-config-repeatability--no-temperature--default--r5--bbdda63f
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    output_tokens:
+    - 162
+    - 149
+    - 145
+    - 151
+    - 149
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: claude-opus-5--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: claude-opus-5
+  vendor: anthropic
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 2
+  verdict: no-signal
+  expected: The same Anthropic deprecation contract applies to claude-opus-5, confirmed on its own wire
+    evidence (claude-opus-5--temperature--0.7--default--65c8c160, HTTP 400). This default-config-repeatability
+    cell asks whether claude-opus-5's own default (implicit) sampling is repeatable across five identical
+    requests with no temperature parameter sent at all.
+  expected_source: docs-claims:temperature/anthropic
+  probe_ids:
+  - claude-opus-5--default-config-repeatability--no-temperature--default--r1--08c093fe
+  - claude-opus-5--default-config-repeatability--no-temperature--default--r2--08c093fe
+  - claude-opus-5--default-config-repeatability--no-temperature--default--r3--08c093fe
+  - claude-opus-5--default-config-repeatability--no-temperature--default--r4--08c093fe
+  - claude-opus-5--default-config-repeatability--no-temperature--default--r5--08c093fe
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - end_turn
+    - max_tokens
+    - max_tokens
+    - max_tokens
+    - max_tokens
+    output_tokens:
+    - 229
+    - 300
+    - 300
+    - 300
+    - 300
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: claude-sonnet-5--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: claude-sonnet-5
+  vendor: anthropic
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: The same Anthropic deprecation contract applies to claude-sonnet-5, confirmed on its own wire
+    evidence (claude-sonnet-5--temperature--0.7--default--276ef9f0, HTTP 400). This default-config-repeatability
+    cell asks whether claude-sonnet-5's own default (implicit) sampling is repeatable across five identical
+    requests with no temperature parameter sent at all.
+  expected_source: docs-claims:temperature/anthropic
+  probe_ids:
+  - claude-sonnet-5--default-config-repeatability--no-temperature--default--r1--d227311d
+  - claude-sonnet-5--default-config-repeatability--no-temperature--default--r2--d227311d
+  - claude-sonnet-5--default-config-repeatability--no-temperature--default--r3--d227311d
+  - claude-sonnet-5--default-config-repeatability--no-temperature--default--r4--d227311d
+  - claude-sonnet-5--default-config-repeatability--no-temperature--default--r5--d227311d
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    output_tokens:
+    - 118
+    - 100
+    - 101
+    - 124
+    - 137
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: claude-haiku-4-5--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 4
+  rate: 4/4
+  rate_pct: 100.0
+  distinct_outputs: 1
+  verdict: deterministic
+  expected: Anthropic's own Messages API reference documents temperature as deprecated on newer Claude
+    models (default 1.0, range 0.0-1.0), but Phase 11's own wire evidence shows claude-haiku-4-5 specifically
+    ACCEPTING an explicit non-default temperature value in `default` mode (claude-haiku-4-5--temperature--0.7--default--a41444ed,
+    HTTP 200) — unlike its three sibling Claude models, all of which reject it outright. Expect a high
+    match rate (near or at 4/4) at temperature 0, the closest thing to a cross-vendor prior this check
+    has (minimizing sampling variance).
+  expected_source: docs-claims:temperature/anthropic
+  probe_ids:
+  - claude-haiku-4-5--temperature--0--default--r1--4e298620
+  - claude-haiku-4-5--temperature--0--default--r2--4e298620
+  - claude-haiku-4-5--temperature--0--default--r3--4e298620
+  - claude-haiku-4-5--temperature--0--default--r4--4e298620
+  - claude-haiku-4-5--temperature--0--default--r5--4e298620
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    output_tokens:
+    - 96
+    - 96
+    - 96
+    - 96
+    - 96
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gpt-5-6-sol--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: OpenAI's own vendor-level documentation states a general 0-2 accepted range with no per-model
+    exception language, but gpt-5-6-sol's own wire evidence rejects an explicit temperature value in `default`
+    mode (gpt-5-6-sol--temperature--0.7--default--f4a07a21, HTTP 400) — a model-specific restriction the
+    vendor-level doc does not capture (reasoning-tuned models commonly restrict sampling parameters the
+    base API surface otherwise allows). This default-config-repeatability cell asks whether gpt-5-6-sol's
+    own default sampling is repeatable across five identical requests with no temperature parameter sent
+    at all.
+  expected_source: docs-claims:temperature/openai
+  probe_ids:
+  - gpt-5-6-sol--default-config-repeatability--no-temperature--default--r1--87b44491
+  - gpt-5-6-sol--default-config-repeatability--no-temperature--default--r2--87b44491
+  - gpt-5-6-sol--default-config-repeatability--no-temperature--default--r3--87b44491
+  - gpt-5-6-sol--default-config-repeatability--no-temperature--default--r4--87b44491
+  - gpt-5-6-sol--default-config-repeatability--no-temperature--default--r5--87b44491
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 59
+    - 51
+    - 64
+    - 53
+    - 56
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gemini-3-1-pro--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 2
+  rate: 2/4
+  rate_pct: 50.0
+  distinct_outputs: 2
+  verdict: partial
+  expected: Gemini's own GenerationConfig reference documents temperature range [0.0, 2.0] with no per-value
+    rejection language, and Phase 11's own wire evidence shows gemini-3-1-pro ACCEPTING an explicit temperature
+    value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0.
+  expected_source: docs-claims:temperature/gemini
+  probe_ids:
+  - gemini-3-1-pro--temperature--0--default--r1--a3519b85
+  - gemini-3-1-pro--temperature--0--default--r2--a3519b85
+  - gemini-3-1-pro--temperature--0--default--r3--a3519b85
+  - gemini-3-1-pro--temperature--0--default--r4--a3519b85
+  - gemini-3-1-pro--temperature--0--default--r5--a3519b85
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    output_tokens:
+    - 27
+    - 38
+    - 38
+    - 27
+    - 27
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: grok-4-5--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: xAI documents temperature range 0-2 with no per-value rejection language, and Phase 11's own
+    wire evidence shows grok-4-5 ACCEPTING an explicit temperature value in `default` mode. Expect a high
+    match rate (near or at 4/4) at temperature 0.
+  expected_source: docs-claims:temperature/xai
+  probe_ids:
+  - grok-4-5--temperature--0--default--r1--d2c464ce
+  - grok-4-5--temperature--0--default--r2--d2c464ce
+  - grok-4-5--temperature--0--default--r3--d2c464ce
+  - grok-4-5--temperature--0--default--r4--d2c464ce
+  - grok-4-5--temperature--0--default--r5--d2c464ce
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 16
+    - 20
+    - -3
+    - 16
+    - 16
+    system_fingerprints:
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+  note: null
+- cell_id: kimi-k3--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: Kimi/Moonshot documents no temperature field at all for kimi-k3 (absent-from-docs, checked-absence
+    per rule 1b), and Phase 11's own wire evidence independently confirms the field is rejected on the
+    wire too (kimi-k3--temperature--0.7--default--8d339aec, HTTP 400) — a docs-corroborated finding, not
+    a contradiction. This default-config-repeatability cell asks whether kimi-k3's own default sampling
+    is repeatable across five identical requests with no temperature parameter sent at all.
+  expected_source: docs-claims:temperature/kimi
+  probe_ids:
+  - kimi-k3--default-config-repeatability--no-temperature--default--r1--c96c7328
+  - kimi-k3--default-config-repeatability--no-temperature--default--r2--c96c7328
+  - kimi-k3--default-config-repeatability--no-temperature--default--r3--c96c7328
+  - kimi-k3--default-config-repeatability--no-temperature--default--r4--c96c7328
+  - kimi-k3--default-config-repeatability--no-temperature--default--r5--c96c7328
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 93
+    - 92
+    - 83
+    - 92
+    - 115
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: deepseek-v4--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: DeepSeek documents temperature word-for-word identical to OpenAI's own quote (range 0-2, default
+    1, "we generally recommend altering this or top_p but not both"), and Phase 11's own wire evidence
+    shows deepseek-v4 ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate
+    (near or at 4/4) at temperature 0.
+  expected_source: docs-claims:temperature/dseek
+  probe_ids:
+  - deepseek-v4--temperature--0--default--r1--16f2fb80
+  - deepseek-v4--temperature--0--default--r2--16f2fb80
+  - deepseek-v4--temperature--0--default--r3--16f2fb80
+  - deepseek-v4--temperature--0--default--r4--16f2fb80
+  - deepseek-v4--temperature--0--default--r5--16f2fb80
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 66
+    - 72
+    - 60
+    - 61
+    - 60
+    system_fingerprints:
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+  note: null
+- cell_id: glm-5.3--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: no-signal
+  expected: Z.ai documents a narrower [0.0, 1.0] range specific to glm-5.3's own model series (default
+    1.0), conditional on `do_sample` staying true, and Phase 11's own wire evidence shows glm-5.3 ACCEPTING
+    an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature
+    0.
+  expected_source: docs-claims:temperature/zai
+  probe_ids:
+  - glm-5.3--temperature--0--default--r1--1bd1ba85
+  - glm-5.3--temperature--0--default--r2--1bd1ba85
+  - glm-5.3--temperature--0--default--r3--1bd1ba85
+  - glm-5.3--temperature--0--default--r4--1bd1ba85
+  - glm-5.3--temperature--0--default--r5--1bd1ba85
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - length
+    - length
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 20
+    - 1
+    - 73
+    - 65
+    - 67
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: qwen3.8-max--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: Qwen documents temperature range [0, 2) with a caution to set only one of temperature/top_p,
+    and Phase 11's own wire evidence shows qwen3.8-max ACCEPTING an explicit temperature value in `default`
+    mode. Expect a high match rate (near or at 4/4) at temperature 0.
+  expected_source: docs-claims:temperature/qwen
+  probe_ids:
+  - qwen3.8-max--temperature--0--default--r1--8d1713bd
+  - qwen3.8-max--temperature--0--default--r2--8d1713bd
+  - qwen3.8-max--temperature--0--default--r3--8d1713bd
+  - qwen3.8-max--temperature--0--default--r4--8d1713bd
+  - qwen3.8-max--temperature--0--default--r5--8d1713bd
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 42
+    - 41
+    - 46
+    - 47
+    - 54
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: qwen3.8-flash--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: Qwen's same temperature claim covers its flash-tier sibling qwen3.8-flash, and Phase 11's
+    own wire evidence shows qwen3.8-flash likewise ACCEPTING an explicit temperature value in `default`
+    mode. Expect a high match rate (near or at 4/4) at temperature 0 at this smaller/cheaper model too.
+  expected_source: docs-claims:temperature/qwen
+  probe_ids:
+  - qwen3.8-flash--temperature--0--default--r1--660c8774
+  - qwen3.8-flash--temperature--0--default--r2--660c8774
+  - qwen3.8-flash--temperature--0--default--r3--660c8774
+  - qwen3.8-flash--temperature--0--default--r4--660c8774
+  - qwen3.8-flash--temperature--0--default--r5--660c8774
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 39
+    - 42
+    - 47
+    - 47
+    - 39
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
 - cell_id: claude-haiku-4-5--behavioral-control--high-entropy--default
   requirement: calibration
   design: control
@@ -491,4 +1791,74 @@ cells:
     - null
     - null
   note: null
-skips: []
+skips:
+- model: claude-fable-5
+  param: seed
+  mode: n/a
+  requirement: BHV-01
+  reason: no-request-side-seed-field
+  cited_probe_id: null
+  cited_source: docs-claims:seed/anthropic
+- model: claude-opus-5
+  param: seed
+  mode: n/a
+  requirement: BHV-01
+  reason: no-request-side-seed-field
+  cited_probe_id: null
+  cited_source: docs-claims:seed/anthropic
+- model: claude-sonnet-5
+  param: seed
+  mode: n/a
+  requirement: BHV-01
+  reason: no-request-side-seed-field
+  cited_probe_id: null
+  cited_source: docs-claims:seed/anthropic
+- model: claude-haiku-4-5
+  param: seed
+  mode: n/a
+  requirement: BHV-01
+  reason: no-request-side-seed-field
+  cited_probe_id: null
+  cited_source: docs-claims:seed/anthropic
+- model: claude-fable-5
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: claude-fable-5--temperature--0.7--default--be62cc19
+  cited_source: null
+- model: claude-opus-5
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: claude-opus-5--temperature--0.7--default--65c8c160
+  cited_source: null
+- model: claude-sonnet-5
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: claude-sonnet-5--temperature--0.7--default--276ef9f0
+  cited_source: null
+- model: gpt-5-6-sol
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: gpt-5-6-sol--temperature--0.7--default--f4a07a21
+  cited_source: null
+- model: kimi-k3
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: kimi-k3--temperature--0.7--default--8d339aec
+  cited_source: null
+- model: all
+  param: temperature
+  mode: thinking-on/thinking-off
+  requirement: BHV-02
+  reason: deferred-thinking-mode-cross-product
+  cited_probe_id: null
+  cited_source: prereg:Mode scope

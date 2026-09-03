@@ -87,6 +87,62 @@ def render_rate(cell: dict) -> str:
     return f"{cell['rate']} ({cell['rate_pct']}%)"
 
 
+def render_section(req_cells: list[dict]) -> list[str]:
+    """Column layout dispatched by DESIGN, not one shared table for every
+    requirement (12-03): `control` keeps the original repeats/rate/verdict
+    layout; `repeats` (BHV-02/D-03) adds its own Comparisons/Distinct Outputs
+    columns explicitly rather than reusing `control`'s `Repeats` header for a
+    different meaning; `seed-pairs` (BHV-01) gets Pairs/Calls/Effect Control
+    columns entirely of its own — a reader must never mistake a
+    default-config-repeatability substitute cell's rate for a real
+    temperature-0 result, or a seed pair-match rate for a flat repeat-vs-
+    baseline rate. Every cell in one requirement section shares one design in
+    practice (`calibration`->control, `BHV-01`->seed-pairs, `BHV-02`->
+    repeats); a MIXED-design section fails loud rather than silently
+    rendering the first cell's own column shape for every row."""
+    designs = {c["design"] for c in req_cells}
+    if len(designs) != 1:
+        _fail(2, f"a requirement section must share one design, got {sorted(designs)}")
+    design = next(iter(designs))
+
+    if design == "seed-pairs":
+        lines = ["| Model | Pairs | Calls | Rate | Effect Control | Verdict | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            ec = c.get("seed_effect_control") or {}
+            ec_cell = f"{ec.get('result')} ({ec.get('probe_id')})" if ec else "—"
+            lines.append(
+                f"| {c['model']} | {c['pairs']} | {c['calls']} | {render_rate(c)} | "
+                f"{ec_cell} | {c['verdict']} | {expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
+    if design == "repeats":
+        lines = ["| Model | Repeats | Comparisons | Rate | Distinct Outputs | Verdict | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['model']} | {c['repeats']} | {c['comparisons']} | {render_rate(c)} | "
+                f"{c['distinct_outputs']} | {c['verdict']} | {expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
+    if design == "control":
+        lines = ["| Model | Design | Repeats | Rate | Verdict | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['model']} | {c['design']} | {c['repeats']} | {render_rate(c)} | "
+                f"{c['verdict']} | {expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
+    _fail(2, f"render_section: unhandled design {design!r}")
+
+
 def render_matrix(classified: dict) -> str:
     cells = classified["cells"]
     skips = classified.get("skips") or []
@@ -104,14 +160,7 @@ def render_matrix(classified: dict) -> str:
         req_cells = [c for c in cells if c["requirement"] == req]
         lines.append(f"## {req} ({len(req_cells)} cell{'s' if len(req_cells) != 1 else ''})")
         lines.append("")
-        lines.append("| Model | Design | Repeats | Rate | Verdict | Expected (citation) | probe_ids |")
-        lines.append("|---|---|---|---|---|---|---|")
-        for c in req_cells:
-            expected_cell = f"{c['expected']} ({c['expected_source']})"
-            lines.append(
-                f"| {c['model']} | {c['design']} | {c['repeats']} | {render_rate(c)} | "
-                f"{c['verdict']} | {expected_cell} | {len(c['probe_ids'])} |"
-            )
+        lines.extend(render_section(req_cells))
         lines.append("")
 
     lines.append("## Declared Skips")
@@ -281,6 +330,51 @@ def selftest() -> tuple[int, int]:
     if "None yet" not in rendered:
         problems += 1
         print("FAIL render_matrix: expected an explicit 'None yet' line for a skip-free doc", file=sys.stderr)
+
+    # --- render_section: design=seed-pairs gets its own Pairs/Calls/Effect
+    #     Control columns, distinct from both control's and repeats' layouts ---
+    cases += 1
+    seed_pair_cells = [{
+        "cell_id": "m3--seed--42--default", "requirement": "BHV-01", "design": "seed-pairs",
+        "model": "m3", "vendor": "openai", "mode": "default", "param": "seed", "value": 42,
+        "pairs": 5, "calls": 10, "matching_pairs": 5, "rate": "5/5", "rate_pct": 100.0,
+        "verdict": "deterministic", "seed_effect_control": {"result": "matched", "probe_id": "m3--seed--99--default--aaaa"},
+        "expected": "expect w", "expected_source": "docs-claims:seed/openai",
+        "probe_ids": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"],
+        "ancillary": {}, "note": "a full rate whose effect control also matched",
+    }]
+    seed_section = render_section(seed_pair_cells)
+    seed_rendered = "\n".join(seed_section)
+    if "Pairs" not in seed_rendered or "Calls" not in seed_rendered or "Effect Control" not in seed_rendered:
+        problems += 1
+        print("FAIL render_section(seed-pairs): expected Pairs/Calls/Effect Control columns", file=sys.stderr)
+    if "5/5 (100.0%)" not in seed_rendered or "matched" not in seed_rendered:
+        problems += 1
+        print("FAIL render_section(seed-pairs): expected the rendered rate and effect-control result", file=sys.stderr)
+
+    # --- render_section: design=repeats gets Comparisons/Distinct Outputs
+    #     columns, never the seed-pairs Pairs/Calls layout ---
+    cases += 1
+    repeats_section = render_section([fixture_cells[2]])
+    repeats_rendered = "\n".join(repeats_section)
+    if "Comparisons" not in repeats_rendered or "Distinct Outputs" not in repeats_rendered:
+        problems += 1
+        print("FAIL render_section(repeats): expected Comparisons/Distinct Outputs columns", file=sys.stderr)
+    if "Pairs" in repeats_rendered or "Effect Control" in repeats_rendered:
+        problems += 1
+        print("FAIL render_section(repeats): must not carry the seed-pairs Pairs/Effect Control columns", file=sys.stderr)
+
+    # --- render_section: a mixed-design section fails loud rather than
+    #     silently rendering the first cell's own column shape for every row ---
+    cases += 1
+    try:
+        render_section([fixture_cells[0], fixture_cells[2]])  # control + repeats mixed
+        problems += 1
+        print("FAIL render_section: a mixed-design section was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL render_section(mixed design): expected exit 2, got {e.code}", file=sys.stderr)
 
     return cases, problems
 

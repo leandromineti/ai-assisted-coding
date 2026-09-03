@@ -2028,3 +2028,63 @@ Verification, all read from the actual runs, none assumed:
 
 Phase 12's own two firing tasks (Task 1 + Task 2, 148 calls total) are
 complete. Task 3 (classification + rendering) fires nothing further.
+
+**2026-09-03, plan 12-03 Task 3 — classify and render the seed and
+temperature families.** No paid call fired by this task. Extended
+`scripts/classify-behavioral.py` with the `seed-pairs` design (the
+five-disjoint-pair reduction plus the different-seed effect control,
+`reduce_seed_pair_group()`), the closed `SKIP_REASONS` vocabulary (three
+reasons, matching Task 1/2's own declared skips), and 15 new `--selftest`
+fixtures (full/zero/middle-value pair reductions, effect-control
+match/differ, a missing-repeat no-signal case preserving the 5-pair
+denominator, a valid skip of each citation form, and a full seed-pairs
+`build_rows()` integration case). Extended `scripts/build-behavioral-matrix.py`
+with `render_section()`, dispatching column layout by design per requirement
+section (`seed-pairs` gets Pairs/Calls/Effect Control; `repeats` gets
+Repeats/Comparisons/Distinct Outputs; `control` keeps its original layout) —
+fails loud on a mixed-design section rather than silently rendering the
+first cell's own shape for every row. 3 new `--selftest` cases (seed-pairs
+columns, repeats columns, mixed-design fail-loud).
+
+Regenerated both artifacts: `probes/classified/behavioral.yaml` now carries
+**29 cells** (8 `seed-pairs` + 12 `repeats` + 9 `control`) and **10 declared
+skips** (4 seed + 5 temperature-rejection + 1 deferred thinking-mode
+cross-product); `comparisons/behavioral.md` renders a BHV-01 section (8
+cells, Pairs/Calls/Rate/Effect Control/Verdict columns), a BHV-02 section (12
+cells, Repeats/Comparisons/Rate/Distinct Outputs/Verdict columns), and the
+unchanged calibration section (9 cells).
+
+Verification, all read from the actual runs, none assumed:
+- `python3 scripts/classify-behavioral.py --selftest`: **48 cases run, 0 problem(s)** (33 pre-existing + 15 new).
+- `python3 scripts/build-behavioral-matrix.py --selftest`: **12 cases run, 0 problem(s)** (9 pre-existing + 3 new).
+- `python3 scripts/classify-behavioral.py` / `python3 scripts/build-behavioral-matrix.py`: 29 cells, 10 skips, matching the declared cell count across both new set files plus the 9 pre-existing control cells.
+- `python3 scripts/classify-behavioral.py --check`: `0 problem(s)`.
+- `python3 scripts/build-behavioral-matrix.py --check`: `0 problem(s)`.
+- `python3 scripts/classify-probes.py --check`: `0 problem(s)` — the contract pipeline stays byte-stable.
+- `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty.
+- `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base.
+- `python3 probes/check-docs-claims.py --check`: `0 problem(s)`.
+- Idempotency: captured both generated files before a second regeneration pass, re-ran both generators, `diff`'d — no differences.
+
+**Final per-model result table** (both requirement sections, read directly
+from `probes/classified/behavioral.yaml`):
+
+| Model | BHV-01 seed rate (5 pairs) | BHV-02 temp/substitute rate (4 comparisons) |
+|---|---|---|
+| claude-fable-5 | skipped (no request-side seed field) | 0/4 varies (default-config-repeatability substitute) |
+| claude-opus-5 | skipped | 0/4 no-signal (default-config-repeatability substitute) |
+| claude-sonnet-5 | skipped | 0/4 varies (default-config-repeatability substitute) |
+| claude-haiku-4-5 | skipped | **4/4 deterministic** (real temperature-0 cell) |
+| gpt-5-6-sol | 0/5 varies | 0/4 varies (default-config-repeatability substitute) |
+| gemini-3-1-pro | 0/5 varies | 2/4 partial |
+| grok-4-5 | 0/5 varies | 0/4 varies |
+| kimi-k3 | 0/5 no-signal | 0/4 varies (default-config-repeatability substitute) |
+| deepseek-v4 | 0/5 varies | 0/4 varies |
+| glm-5.3 | 0/5 no-signal | 0/4 no-signal |
+| qwen3.8-max | 0/5 varies | 0/4 varies |
+| qwen3.8-flash | 0/5 varies | 0/4 varies |
+
+BHV-01 and BHV-02 are answered on the wire as rates carrying their counts —
+never a boolean anywhere in the classified file. Every declared skip cites
+resolvable evidence. Both generated artifacts regenerate byte-identically.
+Plan 12-03 is complete; no further paid call is planned by this plan.
