@@ -364,3 +364,91 @@ split today). No `comparisons/docs-vs-wire.md` row exists for this fact, and cit
 wrong — there is none to cite. Saying so here is what keeps this claim honest: the compat dialect
 this repo's harness now papers over at the wire is still true of the API, and it would resurface
 immediately if the override were ever removed.
+
+---
+
+## Matrix-only dispositions
+
+Every key below passed D-01's cross-model-variance test in `probes/classified/contract-sweep.yaml`
+(a mix of `rejected` and `accepted-*` states over its own grammatical domain) but stayed out of
+the registry — per D-02, "accepted-unverified is acceptance testimony, not verified behavior."
+This mirrors ADR-0050's own "Considered, left matrix-only" table exactly, same key set, same
+count, because a future verification phase re-checks the promoted set against this list, and a
+silent drop between the two surfaces would leave nothing to re-check against.
+
+**The count is ten, not nine.** An earlier draft of this phase's own planning prose said "nine";
+reconciled here in the open against `RESEARCH.md`'s own D-03 table and `CONTEXT.md`'s own D-02
+key list, both of which enumerate ten rows (the definition: every row in the "considered, left
+matrix-only" table — i.e. every contract-sweep parameter that shows real cross-model variance in
+its own domain and carries no promoted-key registry entry). The "nine" reading is rejected; it
+undercounted the table by one row before the reconciliation and is not used anywhere in this
+document or in ADR-0050.
+
+**Unique-model counts are `sorted(set(...))` over ALL fired modes per model, for every row
+below** — stated once here rather than per row. A model that rejects a parameter at one mode and
+accepts it at another (e.g. `claude-haiku-4-5`, `gpt-5-6-sol` on several rows, the same
+mode-conditionality documented for `temperature` above) counts in BOTH the rejected and the
+accepted set for that row; the two set sizes are not complementary counts of the same 8-or-12
+models and should not be read as if they were.
+
+| Key | Variance summary (unique models) | Reason left matrix-only |
+|---|---|---|
+| `top-p` | 6 `rejected` (`claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`, `claude-haiku-4-5`, `gpt-5-6-sol`, `kimi-k3`) / 8 `accepted-unverified` | acceptance-only, no behavioral honor check |
+| `top-k` | 5 `rejected` (`claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`, `claude-haiku-4-5`, `gpt-5-6-sol`) / 8 `accepted-unverified` | same |
+| `presence-penalty` | 4 `rejected` (`gpt-5-6-sol`, `gemini-3-1-pro`, `grok-4-5`, `kimi-k3`) / 5 `accepted-unverified`; skipped at all 4 Claude models (no field) | same |
+| `frequency-penalty` | same shape as `presence-penalty` | same |
+| `tool-choice` | 6 `rejected` (all 4 Claude + `gpt-5-6-sol`, `grok-4-5`) / 5 `accepted-unverified` | same |
+| `response-format` | mixed `accepted-honored`/`accepted-ignored`/`needs-review`/`rejected` | acceptance state alone verified; conformance grading is out of scope (REQUIREMENTS.md exclusion) |
+| `logit-bias` | 3 `rejected` (`gpt-5-6-sol`, `grok-4-5`, `kimi-k3`) / 4 `accepted-unverified`; skipped at all 4 Claude models | exhaustive vocabulary sweep out of scope |
+| `top-logprobs` | 4 `rejected` (`gpt-5-6-sol`, `gemini-3-1-pro`, `kimi-k3`, `deepseek-v4`) / 4 `accepted-unverified` (`grok-4-5`, `glm-5.3`, `qwen3.8-max`, `qwen3.8-flash`); skipped at all 4 Claude models | acceptance-only; `logprobs` itself (promoted) carries the honor-verification burden |
+| `parallel-tool-calls` | 1 `rejected` (`gpt-5-6-sol`) / rest `accepted-unverified` | same |
+| `stream-options-include-usage` | 4 `rejected` (`gpt-5-6-sol`, `deepseek-v4`, `qwen3.8-max`, `qwen3.8-flash`) / rest `accepted-unverified` | same |
+
+No key is dropped from this table silently. It is the list a future verification phase re-checks
+against when behavioral evidence arrives for any of these parameters — the reason it exists at
+all is that a silent drop here would leave nothing to re-check.
+
+## The candidate register
+
+Every conclusion candidate this phase's own material surfaced, walked from `RESEARCH.md`'s
+"Conclusions + ADR mechanics" section, `CONTEXT.md`'s D-11, and the owner's recorded Task 1
+gate decision in `13-01-SUMMARY.md` (see "Owner Sign-off": *"the conclusion set (amend 19; mint
+20, 21, 22; park the five silent openai-* fields)"*). Candidates below are numbered in the order
+D-11's own candidate list names them, since no earlier document assigns a specific conclusion
+number to a specific candidate ahead of the mint itself (plan 13-05's own job) — this is the
+register's own ordering choice, stated so a reader does not mistake it for a locked assignment.
+
+| Candidate | Disposition |
+|---|---|
+| Anthropic's documented request/response service-tier field asymmetry, confirmed on the wire (this document's own "service-tier field-location asymmetry" section above), plus Gemini's independent structurally identical second instance | **Amend conclusion 19** — extends its existing title ("The served API outranks its own documentation") with a second, distinct field-location fact; not a new number, per the owner's own gate decision |
+| Seed/`temperature: 0` determinism is nearly universally absent on the live wire (this document's own "sampling determinism" section above) | **Promote — destined for conclusion 20** |
+| The compat dialect outlived its author — `gpt-5-6-sol` rejects its own legacy `max_tokens` vocabulary while every third-party compat sibling still accepts it (this document's own "compat dialect" section above) | **Promote — destined for conclusion 21** |
+| The docs-vs-wire contradiction rate (79/288 = 27.4% of pairs the wire had anything to say about; this document's own "docs-versus-wire confrontation" section above) | **Promote — destined for conclusion 22** |
+| The uniform silent acceptance of five `openai-*` foreign fields across the compat family (this document's own "silent-acceptance hazard" section above) | **Parked** — per the owner's explicit Task 1 gate directive ("park the five silent openai-* fields"). It does not clear D-11's "changes what a reader should do" bar as cleanly as the three promoted candidates on its own; this document's own silent-acceptance section already states the reader-facing guidance directly ("an absent rejection is not evidence of support"), which is the disposition the owner chose over minting a fourth conclusion number |
+
+**Walked but not a distinct candidate.** `openai-metadata` (the excluded sixth field in the
+silent-acceptance section above) is evidence INSIDE the parked silent-acceptance candidate, not
+a separate candidate in its own right — no source in this phase's material names it as a D-11
+candidate on its own, and this register does not manufacture one.
+
+## What would falsify this document
+
+**Valid through the dates stated at the top of this file.** Contract-sweep evidence is dated
+`checked: 2026-09-01`; behavioral evidence is dated `checked:`/`evidence_through: 2026-09-03`.
+No rate, verdict, or contradiction count in this document should outlive a re-probe of the live
+APIs past those dates.
+
+**A dated, falsifiable re-probe prediction.** If the twelve tracked models' APIs are re-probed
+with the same harness and the same parameter/value sets, and nothing about any vendor's contract
+or behavior has changed since the dates above, the re-run should reproduce: the same 727-cell
+contract-sweep state distribution (443 fired / 284 skipped, the same six-way state split within
+measurement noise); the same 79-contradiction docs-vs-wire tally at the same 612-pair
+denominator; and the same 72-cell wire-behavior grid's rates and verdicts, within the sampling
+noise the small-N repeatability designs (4-5 repeats per cell) already carry — a model moving
+from `varies` to `deterministic` or back on a re-run of `seed_determinism`/`sampling_repeatability`
+would not by itself falsify this document unless the new rate crossed the same verdict boundary
+`check-probe-drift.py`'s own vocabulary already draws. This document is worth re-running against
+the live wire within 90 days of the evidence dates above (by **2026-12-02**) — past that window,
+vendor-side changes (a documentation update, a silent behavior change, a new model revision) are
+plausible enough that any claim here should be treated as historical until re-confirmed, not
+re-cited as current.
