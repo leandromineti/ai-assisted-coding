@@ -460,3 +460,65 @@ the live wire within 90 days of the evidence dates above (by **2026-12-02**) —
 vendor-side changes (a documentation update, a silent behavior change, a new model revision) are
 plausible enough that any claim here should be treated as historical until re-confirmed, not
 re-cited as current.
+
+## Phase 13 closing verdict
+
+**The drift verdict, dated 2026-09-03.** `python3 scripts/check-probe-drift.py --check`:
+
+```
+72 cell(s) examined, 0 mismatch(es), 0 missing cell(s)
+0 problem(s)
+```
+
+The examined count carries its own measure: six promoted `wire-behavior` keys
+(`seed_determinism`, `sampling_repeatability`, `stop_sequence_honesty`, `multi_candidate_delivery`,
+`logprobs_delivery`, `service_tier_contract`) × twelve probed models = 72 cells, the checker's
+complete domain, not a narrowed subset.
+
+**The thirteenth model report.** `tools/1-models/qwen3-coder-next.md` exists but is outside the
+checker's domain by design, not by gap: it carries no entry in `probes/harness/models.yaml`
+(12 models, VERIFIED by direct read), because the report itself is superseded (2026-08-28, "no
+further re-checks" per `REQUIREMENTS.md`'s Out of Scope table). A report the checker never
+touches is a decision recorded once, here, rather than an absence a future reader has to
+rediscover.
+
+**The five Phase 13 roadmap success criteria, scored:**
+
+1. *A written pattern-analysis document exists, each claim citing classified-evidence rows.*
+   Satisfied by this document: 36 `cell_id`/`probe_id` tokens (13-02's own close-of-task count,
+   re-verified unchanged by this plan, which added no new probe citations) all resolving against
+   `probes/classified/{behavioral,contract-sweep}.yaml`; the docs-vs-wire section cites
+   `comparisons/docs-vs-wire.md`'s own generated Contradictions table, not an ad-hoc read.
+2. *At least one batched ADR names which parameters discriminate.* Satisfied by
+   [`adrs/0050-wire-behavior-promotion.md`](../adrs/0050-wire-behavior-promotion.md): 6 keys
+   promoted, 10 keys named "considered, left matrix-only" in its own table (the count reconciled
+   from an earlier "nine" in the plan's own prose, corrected in the open, see 13-01-SUMMARY.md).
+3. *Per-model reports carry dated OBSERVED cells citing the ADR and specific evidence.* Satisfied:
+   72 OBSERVED cells across the 12 probed `tools/1-models/*.md` reports (6 keys × 12 models), each
+   citing `promoted ADR-0050` plus a `cell_id`/`probe_id`/`docs-claims:` token, landed across
+   plans 13-01/13-03/13-04.
+4. *Every conclusion candidate is promoted or explicitly parked, none silently dropped.* Satisfied
+   by this document's own candidate register above, reconciled this plan: 5 candidates total, 4
+   promoted (1 amendment to conclusion 19, 3 minted as conclusions 20/21/22) and 1 parked, 4+1=5.
+5. *`check-probe-drift.py` exists, runs read-only, is wired into the battery, and its verdict is
+   recorded.* Satisfied: the script joined `CLAUDE.md`'s Lint battery as its sixth command in
+   plan 13-01; its verdict on the complete promoted state is the 72/0/0 quoted above, recorded
+   here where a reader will find it without reading the plans.
+
+**The one assertion no standing check enforces.** Plan 13-04 asserted, once, that
+`adrs/0050-wire-behavior-promotion.md`'s six-key decision-section list and the registry's
+`wire-behavior` group membership agree — re-confirmed this plan by direct query
+(`docs/feature-taxonomy.yaml`'s `wire-behavior` group: `seed_determinism`,
+`sampling_repeatability`, `stop_sequence_honesty`, `multi_candidate_delivery`,
+`logprobs_delivery`, `service_tier_contract`, in that order, matching the ADR's own Decision
+section exactly). This is a one-time assertion, not a standing gate: no lint or generator in
+CLAUDE.md's battery re-checks the ADR's own six-key list against the registry on every commit —
+`build-tool-index.py --check` validates that every registry entry has a well-formed `value_type`
+and a registered `block`, never that the entry set matches an immutable ADR's own prose. If a
+future plan adds a seventh key to the `wire-behavior` group without a corresponding ADR
+amendment (ADRs are immutable, so this would require a NEW ADR extending or superseding
+ADR-0050), nothing in the pre-commit battery would catch the divergence — `check-probe-drift.py`
+only confronts registry keys against classified evidence and report cells, never against ADR
+prose. The honest statement is that this agreement holds because two plans (13-04, this one)
+checked it by hand at two points in time, not because a mechanism holds it invariant going
+forward.
