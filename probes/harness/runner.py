@@ -131,14 +131,30 @@ def _fail(code: int, msg: str) -> None:
     raise SystemExit(code)
 
 
-def probe_id(model_slug: str, param: str, value: str, mode: str, request_body: dict) -> str:
+def probe_id(
+    model_slug: str, param: str, value: str, mode: str, request_body: dict, repeat: int | None = None
+) -> str:
     """D-04: semantic slug + short hash of the canonical request body. Canonical =
     sorted keys, no whitespace — the same body always hashes the same regardless of
     the probe-set YAML's key order, and a corrected body (e.g. a typo fixed) changes
-    the hash, so a fixed probe re-fires without manual JSONL surgery."""
+    the hash, so a fixed probe re-fires without manual JSONL surgery.
+
+    D-09 / Phase 12 extension: `repeat` carries a behavioral repeat index. When
+    `repeat` is `None` (the default, every pre-Phase-12 call site), the return value
+    is BYTE-IDENTICAL to what this function returned before this extension — every
+    probe_id already cited in probes/classified/contract-sweep.yaml keeps resolving.
+    When `repeat` is an integer, an `r`-prefixed segment is inserted between `mode`
+    and the body hash: `{model_slug}--{param}--{value}--{mode}--r{repeat}--{body_hash}`.
+    A byte-identical request body fired N times with `repeat=1..N` therefore produces
+    N distinct ids sharing the same trailing hash segment — the identity coordinate
+    that makes a repeated identical request body individually addressable and
+    individually resumable (seen_probe_ids() below needs no change: it just sees N
+    different strings)."""
     canonical = json.dumps(request_body, sort_keys=True, separators=(",", ":"))
     body_hash = hashlib.sha256(canonical.encode()).hexdigest()[:8]
-    return f"{model_slug}--{param}--{value}--{mode}--{body_hash}"
+    if repeat is None:
+        return f"{model_slug}--{param}--{value}--{mode}--{body_hash}"
+    return f"{model_slug}--{param}--{value}--{mode}--r{repeat}--{body_hash}"
 
 
 def seen_probe_ids(
@@ -400,8 +416,19 @@ def build_skipped_ceiling_record(
 # so a probe can deliberately test the ABSENCE of a field, which is the only way to
 # settle whether a vendor requires one (D-04: the omission changes the canonical
 # body, so it changes the probe_id hash too).
+#
+# `repeat` (D-09, Phase 12): an optional positive integer naming this entry's
+# repeat index within a repeat group — the same byte-identical request body
+# declared N times, each carrying a distinct `repeat: 1..N`, so the harness fires
+# it N times instead of resume-skipping repeats 2..N as already logged. The
+# identity must carry it (probe_id()'s `repeat` keyword) precisely because the
+# request body itself is deliberately unchanged across the group; without a
+# distinguishing coordinate in the id, only the first fired copy would ever be
+# addressable. Validated in load_probe_set() below: must be an int, not a bool,
+# and >= 1, or the run aborts before any HTTP request — a silently coerced or
+# ignored repeat would corrupt the denominator of every rate this phase publishes.
 REQUIRED_PROBE_ENTRY_KEYS = {"model", "param", "value", "mode"}
-OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit"}
+OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit", "repeat"}
 
 # Content-block entry keys (Phase 11 plan 11-03, MODAL-01), the second grammar
 # runner.py recognizes alongside REQUIRED_PROBE_ENTRY_KEYS/OPTIONAL_PROBE_ENTRY_KEYS
@@ -462,6 +489,16 @@ def load_probe_set(path) -> list[dict]:
         missing = REQUIRED_PROBE_ENTRY_KEYS - set(entry)
         if missing:
             _fail(2, f"{path}: probe entry missing required key(s) {sorted(missing)}: {entry}")
+        if "repeat" in entry:
+            repeat_value = entry["repeat"]
+            # isinstance(True, int) is True in Python — bools must be rejected
+            # explicitly, or `repeat: true` would silently pass as repeat=1.
+            if isinstance(repeat_value, bool) or not isinstance(repeat_value, int) or repeat_value < 1:
+                _fail(
+                    2,
+                    f"{path}: probe entry has an invalid `repeat` value {repeat_value!r} "
+                    f"(must be an int >= 1, not a bool): {entry}",
+                )
     return probes
 
 
@@ -778,6 +815,73 @@ def selftest() -> tuple[int, int]:
     if pid_c == pid_a:
         problems += 1
         print("FAIL probe_id: a single-character body change did not change the hash", file=sys.stderr)
+
+    # --- probe_id: repeat=None is byte-identical to the pre-Phase-12 5-argument
+    #     result, and splits into exactly five `--`-separated segments (D-09) ---
+    cases += 1
+    pid_no_repeat = probe_id("x", "baseline", "none", "default", body_a, repeat=None)
+    if pid_no_repeat != pid_a:
+        problems += 1
+        print(
+            f"FAIL probe_id: repeat=None must be byte-identical to the pre-extension "
+            f"result, got {pid_no_repeat!r} != {pid_a!r}",
+            file=sys.stderr,
+        )
+    if len(pid_no_repeat.split("--")) != 5:
+        problems += 1
+        print(
+            f"FAIL probe_id: no-repeat form must split into exactly 5 segments, "
+            f"got {pid_no_repeat.split('--')!r}",
+            file=sys.stderr,
+        )
+
+    # --- probe_id: two calls with the same body and different repeat indices
+    #     produce different ids, sharing the same trailing hash segment; the
+    #     repeat form splits into six segments whose fifth segment is the
+    #     `r`-prefixed index (D-09) ---
+    cases += 1
+    pid_r1 = probe_id("x", "baseline", "none", "default", body_a, repeat=1)
+    pid_r2 = probe_id("x", "baseline", "none", "default", body_a, repeat=2)
+    if pid_r1 == pid_r2:
+        problems += 1
+        print("FAIL probe_id: two different repeat indices produced the same id", file=sys.stderr)
+    segments_r1 = pid_r1.split("--")
+    segments_r2 = pid_r2.split("--")
+    if len(segments_r1) != 6 or len(segments_r2) != 6:
+        problems += 1
+        print(f"FAIL probe_id: repeat form must split into exactly 6 segments, got {segments_r1!r}", file=sys.stderr)
+    if segments_r1[4] != "r1" or segments_r2[4] != "r2":
+        problems += 1
+        print(
+            f"FAIL probe_id: fifth segment must be the r-prefixed repeat index, "
+            f"got {segments_r1[4]!r} and {segments_r2[4]!r}",
+            file=sys.stderr,
+        )
+    if segments_r1[-1] != segments_r2[-1]:
+        problems += 1
+        print("FAIL probe_id: two repeat indices of the same body must share the trailing hash segment", file=sys.stderr)
+
+    # --- load_probe_set: `repeat` validation rejects 0, -1, a string, and a bool
+    #     (bool first, since isinstance(True, int) is True in Python) — exit 2,
+    #     before any HTTP request (D-09) ---
+    for label, bad_repeat_yaml in [
+        ("repeat: 0", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    repeat: 0\n"),
+        ("repeat: -1", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    repeat: -1\n"),
+        ("repeat: a string", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    repeat: \"3\"\n"),
+        ("repeat: a boolean", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    repeat: true\n"),
+    ]:
+        cases += 1
+        with tempfile.TemporaryDirectory() as td:
+            bad_repeat = Path(td) / "bad-repeat.yaml"
+            bad_repeat.write_text(bad_repeat_yaml)
+            try:
+                load_probe_set(bad_repeat)
+                problems += 1
+                print(f"FAIL load_probe_set({label}): expected a fail-loud exit, got a return", file=sys.stderr)
+            except SystemExit as e:
+                if e.code != 2:
+                    problems += 1
+                    print(f"FAIL load_probe_set({label}): expected exit code 2, got {e.code}", file=sys.stderr)
 
     # --- apply_omit: omitting a key changes the canonical body -> changes the
     #     probe_id hash (D-04: this is the whole point — a probe can deliberately
@@ -1578,7 +1682,10 @@ def main() -> int:
         # build_record, assert_no_secrets, the JSONL append, the ledger append
         # and the between-probes ceiling check.
         request_body = build_entry_request(entry, row, adapter)
-        pid = probe_id(model_slug, entry["param"], entry["value"], entry["mode"], request_body)
+        pid = probe_id(
+            model_slug, entry["param"], entry["value"], entry["mode"], request_body,
+            repeat=entry.get("repeat"),
+        )
 
         # Rule 1 fix (plan 09-02): dry-run is checked BEFORE the resume-skip scan, not
         # after. Dry-run never touches disk, so an already-logged probe_id has nothing
