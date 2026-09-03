@@ -136,6 +136,13 @@ NA_HEAD_RE = re.compile(
 VERDICT_HEAD_RE = re.compile(r"^[a-z][a-z-]*$")
 CITATION_RE = re.compile(r"(cell_id|probe_id|docs-claims):`([^`]+)`")
 
+# The ADR every promoted `wire-behavior` cell must cite (§ Cell-value grammar's
+# trailing `promoted ADR-<NNNN>.` clause). `parse_cell()` captures whatever
+# digits appear there without judging them — this is the one place that
+# number is actually checked, so a mistyped or future-ADR citation never
+# passes silently (WR-02).
+EXPECTED_ADR = "0050"
+
 
 def parse_cell(text: str) -> dict | None:
     """Parse one OBSERVED cell string against ADR-0050's grammar. Returns a
@@ -503,6 +510,13 @@ def run_check(
                 findings.append({"scope": "cell", "identifier": identifier, "rule": "unparseable-cell"})
                 has_finding = True
             else:
+                if parsed["adr"] != EXPECTED_ADR:
+                    findings.append({
+                        "scope": "cell", "identifier": identifier,
+                        "rule": "wrong-adr-citation",
+                    })
+                    has_finding = True
+
                 for kind, cid in parsed["citations"]:
                     valid_ids = docs_claims_ids if kind == "docs-claims" else all_ids
                     if cid not in valid_ids:
@@ -808,6 +822,27 @@ def selftest() -> tuple[int, int]:
             behavioral_cells=beh_cells, contract_cells=[],
         )
         check("an unparseable cell was silently skipped instead of firing", any(f["rule"] == "unparseable-cell" for f in findings))
+
+        # --- run_check: a cell citing a wrong ADR number in the trailing
+        #     `promoted ADR-<NNNN>.` clause fires wrong-adr-citation — the
+        #     captured-but-never-validated gap (WR-02) ---
+        cases += 1
+        (tools_dir / "fixture-model.md").write_text(
+            "---\n"
+            "name: fixture-model\n"
+            "model_features:\n"
+            '  stop_sequence_honesty: "honest — OBSERVED 2026-09-03: context, '
+            'cell_id:`fixture-model--stop-truncation--triggering--default`, promoted ADR-9999."\n'
+            "---\n\nBody.\n"
+        )
+        findings, examined, mismatched, missing = run_check(
+            tools_dir=tools_dir, registry_path=td_path / "registry.yaml", models_path=td_path / "models.yaml",
+            behavioral_cells=beh_cells, contract_cells=[],
+        )
+        check(
+            "a cell citing the wrong ADR number did not fire wrong-adr-citation",
+            any(f["rule"] == "wrong-adr-citation" for f in findings),
+        )
 
         # --- run_check: a not-applicable cell claiming no-request-side-field
         #     for a model with REAL evidence fires a finding — the
