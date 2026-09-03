@@ -359,6 +359,28 @@ def group_key(entry: dict) -> tuple:
     return (entry["model"], entry["param"], entry["value"], entry["mode"])
 
 
+def _check_repeat_indices(entries: list[dict], key: tuple, expected_count: int) -> None:
+    """WR-02 (12-06): `runner.py`'s own `load_probe_set` validates a declared
+    `repeat` value's TYPE (int >= 1) but never checks that a group of
+    repeat-carrying entries sharing one `group_key` has DISTINCT, contiguous
+    indices. `reduce_repeat_group`/`reduce_seed_pair_group` then key their
+    per-repeat evidence by the declared repeat VALUE in a plain dict, which
+    would silently collapse a duplicate index while the declared-vs-found
+    COUNT check elsewhere in this file stays blind to it (a duplicate and a
+    gap can co-occur without changing the count). Fail loud (exit 2) here,
+    before either reduction runs, when the entries' `repeat` values are not
+    exactly `{1, ..., expected_count}` -- covers a duplicate, a gap, and a
+    missing `repeat` key (read as `None`, which can never be a member of
+    that set) in one check."""
+    repeats = [e.get("repeat") for e in entries]
+    if sorted(repeats, key=lambda r: (r is None, r)) != list(range(1, expected_count + 1)):
+        _fail(
+            2,
+            f"group {key!r}: expected `repeat` indices to be exactly "
+            f"1..{expected_count} with no duplicates or gaps, got {repeats!r}",
+        )
+
+
 def compute_behavioral_probe_id(entry: dict, models: dict[str, dict]) -> str:
     """Recompute the EXACT probe_id runner.py's main() would have assigned this
     declared repeat entry — same adapter.build_request(), same
@@ -1189,6 +1211,7 @@ def build_rows(
                     f"group {key!r}: expectation declares calls={declared_calls} but "
                     f"{len(entries)} probe entr{'y' if len(entries) == 1 else 'ies'} were found",
                 )
+            _check_repeat_indices(entries, key, declared_calls)
             reduced = reduce_seed_pair_group(entries, effect_control_groups[key], models, raw_records)
             all_joined_at.extend(reduced.pop("joined_at"))
             cells.append({
@@ -1370,6 +1393,7 @@ def build_rows(
                 f"group {key!r}: expectation declares repeats={declared_repeats} but "
                 f"{len(entries)} probe entr{'y' if len(entries) == 1 else 'ies'} were found",
             )
+        _check_repeat_indices(entries, key, declared_repeats)
 
         reduced = reduce_repeat_group(entries, models, raw_records)
         all_joined_at.extend(reduced.pop("joined_at"))
@@ -1894,6 +1918,65 @@ def selftest() -> tuple[int, int]:
         if e.code != 2:
             problems += 1
             print(f"FAIL build_rows(repeats mismatch): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- build_rows: duplicate repeat indices (WR-02, 12-06) — the declared-
+    #     vs-found COUNT still matches (2 declared, 2 found), but the two
+    #     entries share repeat=1 rather than being {1, 2}. Must fail loud
+    #     rather than silently collapsing to 1 key in the reduction while
+    #     reporting a denominator computed from the raw entry count. ---
+    cases += 1
+    dup_repeat_probes = [
+        {"model": "m1", "param": "p", "value": "v", "mode": "default", "prompt": "x", "max_tokens": 16, "repeat": 1},
+        {"model": "m1", "param": "p", "value": "v", "mode": "default", "prompt": "x", "max_tokens": 16, "repeat": 1},
+    ]
+    exp_dup = [{
+        "model": "m1", "param": "p", "value": "v", "mode": "default",
+        "requirement": "calibration", "design": "control", "repeats": 2,
+        "expected": "x", "expected_source": "prereg:Calibration design (rule 5d)",
+    }]
+    try:
+        build_rows(dup_repeat_probes, exp_dup, [], fixture_models, {}, docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text)
+        problems += 1
+        print("FAIL build_rows: duplicate repeat indices were not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_rows(duplicate repeat indices): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- build_rows: a duplicate/gap repeat-index PAIR in a seed-pairs group
+    #     (WR-02, 12-06) — 10 entries found (count matches `calls=10`), but
+    #     the indices are 1..9 plus a second 9 instead of 1..10. Must fail
+    #     loud, same discipline as the control/repeats case above. ---
+    cases += 1
+    dup_seed_probes = [
+        {
+            "model": "m1", "param": "seed", "value": 42, "mode": "default",
+            "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 42}, "repeat": r,
+        }
+        for r in list(range(1, 10)) + [9]  # 1..9 plus a duplicate 9 — never reaches 10
+    ] + [
+        {
+            "model": "m1", "param": "seed", "value": 99, "mode": "default",
+            "prompt": "x", "max_tokens": 16, "extra_params": {"seed": 99},
+        }
+    ]
+    dup_seed_expectation = [{
+        "model": "m1", "param": "seed", "value": 42, "mode": "default",
+        "requirement": "BHV-01", "design": "seed-pairs", "pairs": 5, "calls": 10,
+        "effect_control_value": 99,
+        "expected": "x", "expected_source": "docs-claims:temperature/anthropic",
+    }]
+    try:
+        build_rows(
+            dup_seed_probes, dup_seed_expectation, [], fixture_models, {},
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        problems += 1
+        print("FAIL build_rows: a seed-pairs duplicate/gap repeat-index pair was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_rows(seed-pairs duplicate repeat indices): expected exit 2, got {e.code}", file=sys.stderr)
 
     # --- build_rows: deterministic ordering — requirement, model order, cell_id
     #     — a re-run over shuffled input never reorders rows ---
