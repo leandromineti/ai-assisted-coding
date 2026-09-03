@@ -1,0 +1,87 @@
+# probes/sets/behavioral/control-arm.yaml — Phase 12 plan 12-02's D-03 calibration
+# control arm: one high-entropy prompt fired 5 times (repeat: 1..5) per applicable
+# model, expected to VARY across repeats. Implements CONTEXT.md D-03 (the
+# calibration-arm-first discipline, rule 5d — a determinism test against a prompt
+# with no entropy for a given model measures nothing) and D-04 (the prompt/budget
+# design), and the Phase 12 preregistration's own Sampling configuration statement
+# (probes/PREREGISTRATION.md § "Phase 12 — Cheap Behavioral Verification"): control-
+# arm cells send NO `temperature` parameter at all — they rely on each vendor's own
+# nonzero default, which is what makes a control arm's own variation (or lack of it)
+# meaningful evidence about the DEFAULT sampling behavior, not about an explicit
+# temperature this file never sets.
+#
+# Only the `probes:` key is read by probes/harness/runner.py (D-09's `repeat`
+# coordinate, landed 12-01). `expectations:` and `skips:` are read by
+# scripts/classify-behavioral.py — the runner never opens either key, matching
+# probes/sets/contract-zero-cost.yaml's own header-comment convention for a
+# hand-authored set file (12-02 read_first).
+#
+# Task 1 (this file's first commit) declares ONLY claude-haiku-4-5's 5-repeat
+# control group — the tracer slice that proves the whole pipeline (probe set ->
+# runner -> probes/raw/anthropic.jsonl -> classify-behavioral.py ->
+# probes/classified/behavioral.yaml -> comparisons/behavioral.md) end to end on one
+# cheap cell before the arm expands to the other 8 applicable models in Task 2.
+#
+# Dated per CLAUDE.md's "Dates on everything" and the standing "verify date before
+# stamping" discipline: `date -u` at authoring time read 2026-09-03, not the
+# 2026-09-02 literal PLAN.md's action text names (a planning-day date literal, the
+# same class of mismatch 12-01-SUMMARY.md already documented and corrected) —
+# recorded as a deviation in 12-02-SUMMARY.md, not silently reproduced.
+checked: 2026-09-03
+
+probes:
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    repeat: 1
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    repeat: 2
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    repeat: 3
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    repeat: 4
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    repeat: 5
+
+expectations:
+  - model: claude-haiku-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for claude-haiku-4-5 at its own default sampling settings, and the model's
+      BHV-02 temp-0/determinism cells in plan 12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+
+skips: []

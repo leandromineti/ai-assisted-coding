@@ -1743,3 +1743,39 @@ probes/ledger.jsonl` is empty as of this entry — nothing new on disk under
 either path. The global ledger total remains at the pre-sign-off baseline
 already stated in the Envelope section, **$0.071612**, unchanged by this
 entry.
+
+**2026-09-03, plan 12-02 Task 1 — the tracer slice, fired end to end
+(`python3 probes/harness/runner.py --set
+probes/sets/behavioral/control-arm.yaml`).** One D-03 control-arm group —
+`claude-haiku-4-5` / `behavioral-control` / `high-entropy` / `default`, 5
+repeats (`repeat: 1..5`), the shared prompt "Invent a fictional animal and
+describe it in two sentences." — fired live for the first time, proving the
+whole new pipeline (`probes/sets/behavioral/control-arm.yaml` ->
+`probes/harness/runner.py` (D-09's `repeat` coordinate) -> `probes/raw/
+anthropic.jsonl` -> `scripts/classify-behavioral.py` -> `probes/classified/
+behavioral.yaml` -> `scripts/build-behavioral-matrix.py` ->
+`comparisons/behavioral.md`) end to end on one cheap cell before it expands.
+
+Five distinct probe_ids, sharing one trailing hash segment and differing only
+in the `r{n}` segment (D-09), all HTTP 200, `terminal: verdict`:
+`claude-haiku-4-5--behavioral-control--high-entropy--default--r1--f9856109`
+(repeats r2..r5 share the same `--f9856109` suffix). **Result: VARIES —
+0/4** (`matches: 0`, `comparisons: 4`, `distinct_outputs: 5` — every one of
+the five repeats produced a distinct fictional-animal description; no two
+matched). This is the D-03-favorable outcome: the control prompt has real
+entropy for claude-haiku-4-5 at its own default (unspecified) sampling
+settings, so this model's BHV-02 temp-0/determinism cells in plan 12-03 will
+measure something meaningful rather than a prompt artifact.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/control-arm.yaml --dry-run`: 5 distinct `DRY-RUN` probe_id lines, sharing one trailing hash segment.
+- `python3 scripts/classify-behavioral.py --selftest`: 25 cases run, 0 problem(s).
+- `python3 scripts/build-behavioral-matrix.py --selftest`: 9 cases run, 0 problem(s).
+- `python3 scripts/classify-behavioral.py --check`: 0 problem(s).
+- `python3 scripts/build-behavioral-matrix.py --check`: 0 problem(s).
+- `python3 scripts/classify-probes.py --check`: 0 problem(s) — the contract pipeline is provably undisturbed by the new behavioral evidence (D-11's own flagged assumption, confirmed directly rather than assumed).
+- `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty — byte-stable, as D-11 requires.
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base.
+- **Resumability (D-09's own point):** re-running the identical command printed `SKIP ... (already logged)` for all five repeat probe_ids; `grep -c 'behavioral-control' probes/raw/anthropic.jsonl` reports exactly **5** both before and after the re-run — no duplicate fire, no duplicate ledger line.
+
+Ledger read live (`python3 probes/harness/ledger.py --totals`), never estimated: global **$0.074202** (up from the $0.071612 pre-sign-off baseline, delta **+$0.00259** for these 5 calls), anthropic vendor total **$0.012142** — both far under every ceiling in force (D-02: $10 hard / $8 warn / $0.50 per-vendor soft; anthropic at ~2.4% of its own sub-ceiling).
