@@ -388,7 +388,41 @@ def derive_logprobs_delivery(model: str, beh_idx: dict, cs_idx: dict) -> dict | 
     return None
 
 
+# Anthropic's 4 tracked models share ONE Messages API contract (the same
+# `service_tier` field, the same endpoint, the same docs page,
+# `canonical_name: service_tier` in probes/inventory.yaml) — BHV-06's own
+# tier-audit design was fired at only one representative sibling,
+# claude-haiku-4-5, and ADR-0050's Context section treats the nested/
+# never-mirrored/trap-rejects shape as a fact about that shared API, not a
+# per-model idiosyncrasy discovered independently four times. The other
+# three siblings' cells cite claude-haiku-4-5's own probe evidence for the
+# response-side claim (their OWN presence-row citation still comes from
+# their own probed contract cell).
+_ANTHROPIC_SERVICE_TIER_SIBLINGS = {"claude-fable-5", "claude-opus-5", "claude-sonnet-5"}
+_ANTHROPIC_SERVICE_TIER_AUDIT_SOURCE = "claude-haiku-4-5"
+
+
 def derive_service_tier_contract(model: str, beh_idx: dict, cs_idx: dict) -> dict | None:
+    audit_model = (
+        _ANTHROPIC_SERVICE_TIER_AUDIT_SOURCE
+        if model in _ANTHROPIC_SERVICE_TIER_SIBLINGS
+        else model
+    )
+    # `echo_relation: rejected` cells (the value-rejecting `trap`/out-of-enum
+    # probes, e.g. gpt-5-6-sol's `scale`) report `response_present: absent`
+    # by construction — a rejected request never gets a normal response body
+    # — and must not be read as a genuine "no response-side tier field"
+    # finding. Only non-rejected audit cells carry that fact.
+    audit_cells = [
+        c
+        for c in beh_idx.get((audit_model, "service-tier-audit"), [])
+        if c.get("echo_relation") != "rejected"
+    ]
+    if audit_cells:
+        if any(c.get("response_present") == "absent" for c in audit_cells):
+            return {"kind": "verdict", "token": "response-absent"}
+        if any("." in (c.get("response_field_path") or "") for c in audit_cells):
+            return {"kind": "verdict", "token": "response-asymmetric"}
     for c in cs_idx.get((model, "service-tier", "default"), []):
         if c.get("state"):
             return {"kind": "verdict", "token": c["state"]}
