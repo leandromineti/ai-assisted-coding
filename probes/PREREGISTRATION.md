@@ -1307,3 +1307,397 @@ carries a mode-free baseline cell, mechanically guaranteed never to regress
 by `check_baseline_mode_coverage()` (Task 1), and every one of those cells
 that can resolve fired, classified, and rendered — including, for the first
 time in this milestone, `deepseek-v4` and `kimi-k3`.
+
+# Phase 12 — Cheap Behavioral Verification: rule-5 preregistration (2026-09-02)
+
+Everything above this heading is Phase 11's own protocol and Run log,
+untouched — this is a new, dated top-level section appended below it (D-12:
+one preregistration surface per instrument, matching this file's append-only
+style, rather than a new sibling file). Written and committed **before any
+Phase 12 probe fires**; the sub-section immediately below named "Run log" is
+created empty here and is the append target for every subsequent firing
+plan (12-02..12-05) and for the owner's spend sign-off (this plan's Task 3).
+
+Phase 12 is a bounded extension of the exact pipeline Phases 9-11.1 already
+built and proved (`probes/sets/*.yaml` -> `runner.py` -> `probes/raw/*.jsonl`
++ `probes/ledger.jsonl` -> a classifier -> a rendered `comparisons/` matrix).
+The one genuinely new instrument piece — `probe_id()`'s optional `repeat`
+coordinate (D-09) — landed in this plan's Task 1 (`probes/harness/runner.py`)
+before any cell in this section fires, and every existing `probe_id` (345
+cited in `probes/classified/contract-sweep.yaml`) still resolves unchanged.
+
+### Task
+
+Fire the behavioral cells that answer BHV-01..BHV-06 plus the D-07
+documentation-drift annex, across the applicable-model matrices derived
+directly from Phase 11's own classified evidence
+(`probes/classified/contract-sweep.yaml`, 727 rows) in
+`.planning/phases/12-cheap-behavioral-verification/12-RESEARCH.md` §
+"Applicable-Model Matrices & Cell Design". Requirements: BHV-01, BHV-02,
+BHV-03, BHV-04, BHV-05, BHV-06 (`.planning/REQUIREMENTS.md`). The probe-set
+files plans 12-02..12-05 will author:
+
+- `probes/sets/seed-determinism.yaml` (BHV-01) — plan 12-02
+- `probes/sets/temp0-repeatability.yaml` (BHV-02) plus the D-03 control-arm
+  cells — plan 12-02
+- `probes/sets/stop-sequence.yaml` (BHV-03) — plan 12-03
+- `probes/sets/candidate-count.yaml` (BHV-04) and
+  `probes/sets/logprobs-verify.yaml` (BHV-05) — plan 12-04
+- `probes/sets/service-tier-audit.yaml` (BHV-06) and
+  `probes/sets/docs-drift-annex.yaml` (D-07) — plan 12-05
+
+(Exact filenames are Claude's Discretion per 12-RESEARCH.md § "Claude's
+Discretion"; the ones above are the working names this envelope assumes —
+any plan that renames a set file records the rename in this Run log, since
+the derivation below is keyed to cell counts, not filenames.)
+
+### Measurements
+
+Per fired cell, recorded verbatim in `probes/raw/{vendor}.jsonl` by
+`probes/harness/runner.py` and then read (never re-derived) by each
+requirement's own classifier, mirroring Phase 11's own discipline of never
+re-deriving from re-fired evidence:
+
+- **Q1 resolved (seed-pair design, D-06/D-01).** A seed cell is **five
+  disjoint same-seed pairs** — ten same-seed calls per model, carrying
+  `repeat: 1..10`, compared pairwise as (1,2) (3,4) (5,6) (7,8) (9,10). The
+  reported rate is matching-pairs over 5 (an integer 0-5, never a bare
+  percentage). Plus one different-seed effect-control call per model (a
+  genuinely different request body, no `repeat` coordinate needed) — if a
+  different seed still matches, the observed determinism isn't seed-driven
+  (D-06). Fired at the 8 seed-accepting models only (12-RESEARCH.md § BHV-01):
+  gpt-5-6-sol, gemini-3-1-pro, grok-4-5, kimi-k3, deepseek-v4, glm-5.3,
+  qwen3.8-max, qwen3.8-flash = 11 calls/model, 88 calls total.
+- **Q1 resolved (temp-0 design, D-01).** A temp-0 cell is **five repeats**
+  carrying `repeat: 1..5`. The reported rate is the count of repeats 2..5
+  byte-identical to repeat 1, over 4 comparisons (an integer 0-4). The
+  distinct-output count (how many unique visible-text strings the 5 repeats
+  produced) is recorded alongside as ancillary evidence, never substituted
+  for the primary rate. Fired at all 12 models (12-RESEARCH.md § BHV-02),
+  with claude-haiku-4-5 firing TWO cells per the Mode scope resolution below
+  (10 calls) and the other 11 models firing one cell each (5 calls) — 65
+  calls total (3 Claude models x 5 + haiku's 10 + 8 non-Claude models x 5).
+- **Match metric, stated verbatim (D-02).** Byte equality of the VISIBLE
+  output text only. Reasoning/thinking blocks are excluded from the
+  comparison entirely (a model may reason differently on a byte-identical
+  request without that affecting the user-visible answer, and thinking
+  content is explicitly out of scope for a "does the model answer the same
+  way" question). Finish reason and usage counts (`usage`/`usageMetadata`,
+  already parsed by every adapter's `parse_usage()`) are recorded as
+  ancillary evidence alongside the byte-comparison verdict, never as a
+  substitute for it.
+- **D-03 control-arm cell.** One high-entropy control cell (a prompt with
+  many equally-plausible continuations, e.g. "Continue this story in one
+  sentence:") per applicable model, fired BEFORE that model's determinism
+  cells (5 repeats, same `repeat`-indexed mechanism as the temp-0 design),
+  expected to VARY. 9 models (the 8 seed models + claude-haiku-4-5 — the
+  other 3 Claude models' own BHV-02 substitute cell already doubles as their
+  control per D-05's own reasoning: a rejected-temperature model's baseline
+  determinism IS the interesting behavioral question, not a separate control
+  need). 45 calls total.
+- **BHV-03 (stop-sequence).** 2 calls/model (1 triggering + 1 non-triggering
+  control), no `repeat` coordinate — a single verified behavior, not a rate.
+  10 of 12 models (gpt-5-6-sol and grok-4-5 reject `stop` outright, declared
+  skips citing `gpt-5-6-sol--stop--["the"]--default--6a86352a` and
+  `grok-4-5--stop--["the"]--default--ee1a658f`, both HTTP 400). 20 calls.
+- **BHV-04 (n>1).** 1 call/model at `n: 2`, no `repeat` coordinate — a single
+  observation settles "does the response actually contain N choices." 7
+  models (gpt-5-6-sol, grok-4-5, kimi-k3, deepseek-v4, glm-5.3, qwen3.8-max,
+  qwen3.8-flash). Gemini's `candidateCount` is already settled by citation
+  (`gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857`, rejected)
+  — cited, not re-fired (D-08). 7 calls.
+- **BHV-05 (logprobs).** One combined `logprobs: true` + `top_logprobs: 3`
+  call per (model, mode) pair Phase 11 left unverified or ambiguous, no
+  `repeat` coordinate. 10 combined calls across grok-4-5{default,
+  thinking-on}, glm-5.3{default, thinking-on}, qwen3.8-max{default,
+  thinking-off, thinking-on}, qwen3.8-flash{default, thinking-off,
+  thinking-on}. gpt-5-6-sol/deepseek-v4/qwen3.8-max's already-settled cells
+  keep their Phase 11 verdicts by citation (D-08).
+- **BHV-06 / D-07 (service-tier audit + drift annex).** See Tier-audit scope
+  below for the per-vendor cell design; see Known contamination and confounds
+  for D-16's billing note.
+
+### Sampling configuration
+
+Stated explicitly because it is a confound if left implicit (D-06's stated
+"default (nonzero) temperature" requirement for seed cells):
+
+- **Control-arm cells and seed cells send NO `temperature` parameter at
+  all** — they rely on each vendor's own nonzero default. This is what the
+  control arm itself evidences (a control cell that fails to vary would be
+  evidence the vendor's own default is deterministic, or that the prompt
+  lacks entropy — Calibration design below), and it avoids a per-model
+  temperature-ACCEPTANCE confound entirely (3 of 4 Claude models reject an
+  explicit `temperature` parameter outright — Pitfall 1 — so sending one
+  unconditionally would break those models' seed/control cells for a reason
+  unrelated to determinism).
+- **Only the temp-0 cells send an explicit `temperature: 0`**, and only at
+  the models Phase 11's own contract cells show accepting `temperature`
+  (12-RESEARCH.md § BHV-02's two-group table).
+- **`max_tokens` is set per model so visible output text is actually
+  produced** (the Phase 9 Gemini lesson: a too-small budget yields HTTP 200
+  with empty content at an always-reasoning model) — a larger budget at
+  models whose reasoning is always-on (`reasoning_toggle: always-on` in
+  `probes/harness/models.yaml`, e.g. claude-fable-5, gemini-3-1-pro).
+
+### Mode scope
+
+**Q2 resolved: seed, temp-0, and control-arm cells fire in `default` mode
+only.** The thinking-mode cross-product (firing the same cells again at
+`thinking-on`/`thinking-off`) is explicitly DEFERRED, named here as deferred
+rather than decided silently inside a probe-set file — consistent with the
+phase's own "cheap" framing (12-RESEARCH.md Open Question Q2's own
+recommendation) and roughly tripling cost if pulled in later
+(12-RESEARCH.md § Cost Estimate: ~$0.68 total against today's ~$0.32).
+
+**One exception: claude-haiku-4-5.** Phase 11's own evidence
+(12-RESEARCH.md § Pitfall 1) shows temperature ACCEPTED in `default` and
+`thinking-off` mode and REJECTED only in `thinking-on`
+(`claude-haiku-4-5--temperature--0.7--default--a41444ed`, 200;
+`claude-haiku-4-5--temperature--0.7--thinking-off--df4c6c49`, 200;
+`claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847`, 400). Haiku
+therefore gets TWO temp-0 cells, not one: a real `temperature: 0` cell in
+`default` mode (5 repeats), and the D-05 default-config substitute (no
+`temperature` param, 5 repeats) standing in for `thinking-on`, where the
+parameter is rejected outright. `thinking-off` mode is deliberately NOT
+fired separately — `default` mode's real cell already answers "is Haiku
+deterministic at temperature 0 when it accepts the parameter," and firing
+the same question a third time at `thinking-off` would spend without adding
+a distinct behavioral question.
+
+### Tier-audit scope
+
+**Q3 resolved: one representative model per vendor**, named explicitly:
+
+| Vendor | Representative model |
+|---|---|
+| anthropic | claude-haiku-4-5 |
+| openai | gpt-5-6-sol |
+| xai | grok-4-5 |
+| gemini | gemini-3-1-pro |
+| dseek | deepseek-v4 |
+| kimi | kimi-k3 |
+| zai | glm-5.3 |
+| qwen | qwen3.8-flash |
+
+Reason: Phase 11's own contract cells already show acceptance is uniform
+across a vendor's sibling models for this parameter (all 4 Claude models
+classify identically for `service-tier`; both Qwen models classify
+identically) — per-model repetition would confirm uniformity already
+established, not discover new acceptance-state information
+(12-RESEARCH.md Open Question Q3).
+
+**Already-fired documented values are audited by reading their existing
+Phase 11 records, never re-fired (D-08); only genuinely-new values and the
+omission baselines are fired**, per vendor (12-RESEARCH.md § BHV-06 table):
+
+| Vendor | New cells fired | Detail |
+|---|---|---|
+| anthropic | 4 | 2 documented values (`auto`, `standard_only`) + 1 omission baseline + 1 D-15 trap (send `standard`, the RESPONSE-vocabulary word, as the REQUEST value) |
+| openai | 3 | `scale` + `fast` (new; `auto`/`default`/`flex`/`priority` already fired Phase 11, cited) + 1 omission baseline |
+| xai | 1 | both documented values already contract-fired (cited); 1 omission baseline only |
+| gemini | 5 | all 4 documented values (`unspecified`, `standard`, `flex`, `priority` — genuinely new territory, D-07's own drift-annex cells; Phase 11 never fired Gemini service-tier at all) + 1 omission baseline |
+| kimi, dseek, zai | 1 each (3 total) | undocumented (D-13 rule-1b negative prior) — 1 omission-baseline call each |
+| qwen | 1 | undocumented for this row specifically — 1 omission-baseline call at the representative model |
+
+17 new calls total for the tier audit proper. The D-07 drift annex's other
+two fields (DeepSeek's `thinking` object, Qwen's `reasoning_effort`) are
+ADDITIONAL contract-shaped cells, not part of the 17 above: DeepSeek
+`thinking` (2 calls: `{"type":"enabled"}` / `{"type":"disabled"}`, contradicts
+`probes/inventory.yaml`'s checked-absence assumption per 11.1's direct
+re-read) and Qwen `reasoning_effort` (2 calls at qwen3.8-max, a real field
+independent of `enable_thinking`/`thinking_budget` per 11.1's direct
+re-read) — 4 additional calls. All three D-07 fields fire (the owner's
+broader choice, not parked — CONTEXT.md D-07).
+
+### Falsification criteria
+
+What result would REFUTE each documented prior, stated per family before any
+spend:
+
+- **BHV-01 seed determinism.** For the 5 documented, best-effort/hedged
+  vendors (gpt-5-6-sol, grok-4-5, qwen3.8-max, qwen3.8-flash document
+  best-effort or a stated hedge; gemini-3-1-pro documents NO hedge at all —
+  "the request uses a randomly generated seed" if unset, implying
+  determinism when set): a same-seed match rate materially below 5/5 at
+  gemini-3-1-pro specifically would refute its own unhedged documentation
+  claim more sharply than at a best-effort vendor, where a partial rate is
+  consistent with the vendor's own hedge.
+- **BHV-01 rule-1b cases.** kimi-k3, deepseek-v4, and glm-5.3 have NO
+  documented seed contract at all (`absent-from-docs`). ANY determinism
+  result here — high or low match rate — is a FIRST DISCOVERY, not a
+  corroboration or a refutation of a stated prior (there is no prior to
+  confront). Reported and framed as such, not folded into the same
+  falsification language used for the 5 documented vendors.
+- **BHV-02 temp-0 repeatability.** A low match rate (materially below 4/4)
+  at any model refutes the general expectation that temperature 0 minimizes
+  sampling variance — the closest thing to a cross-vendor prior this
+  behavioral check has, even where no vendor explicitly documents "temp 0 =
+  deterministic."
+- **BHV-06 / D-15's trap.** Sending `standard` (a value that appears only in
+  the RESPONSE-side `usage.service_tier` vocabulary per this plan's Task 2
+  `docs-claims.yaml` amendment) as the REQUEST value is expected to produce
+  an HTTP 400 naming the `service_tier` field — a $0 rejection demonstrating
+  the "caller reads the wrong field" trap is real. A 200 response REFUTES
+  the trap's premise (Anthropic accepts a response-vocabulary word as a
+  request value, which would itself be a new, reportable finding).
+- **D-07 drift annex.** Each of the three fields (Gemini `serviceTier`,
+  DeepSeek `thinking`, Qwen `reasoning_effort`) is confronted against its own
+  11.1-authored `docs-claims.yaml` claim (all three recorded as direct
+  documentation reads, not inference). A rejection where the doc claims
+  acceptance, or vice versa, is a genuine drift/inaccuracy finding, recorded
+  the same way Phase 11's own docs-vs-wire contradictions are recorded —
+  never silently reconciled.
+
+### Known contamination and confounds
+
+- **D-02's exclusion of reasoning/thinking blocks from the match
+  comparison** (Measurements, above) — a model reasoning differently on a
+  byte-identical repeated request is expected and not itself evidence of
+  nondeterminism in the visible answer.
+- **The Phase 9 Gemini lesson.** A too-small output budget yields HTTP 200
+  with empty content at an always-on-reasoning model — not a rejection, a
+  silent, easy-to-miss null result. D-04's ~100-token budget (matching
+  12-RESEARCH.md's own cost-estimate assumption) with per-model reasoning
+  headroom for always-on models is the mitigation; every firing plan
+  verifies non-empty visible content before recording a match/no-match
+  verdict, not merely HTTP 200.
+- **D-16's stated, bounded ledger inaccuracy.** Billing-changing tier values
+  (OpenAI's `flex`/`scale`/`priority`/`fast`) are costed in
+  `probes/ledger.jsonl` against each model's single standard price row in
+  `probes/harness/prices.yaml` — no per-tier price row is added this phase.
+  The recorded spend for those specific cells is therefore approximate by a
+  bounded amount (the tier's real per-token rate may differ from the
+  standard rate this ledger charges it at); every other cell's recorded cost
+  is exact. Stated here, before any dollar of it is spent, not discovered
+  afterward in a ledger reconciliation.
+
+### Preregistered execution path
+
+The stage order the firing plans implement, matching 12-RESEARCH.md's own
+recommended sequencing (control arm first, as calibration, per rule 5d):
+
+```
+# Stage A — D-03 control-arm calibration (45 cells, 9 models x 5 repeats),
+# fired first and read before any determinism cell fires:
+python3 probes/harness/runner.py --set probes/sets/control-arm.yaml
+python3 probes/harness/ledger.py --totals    # read spend-so-far, never estimated
+
+# Stage B — seed determinism (BHV-01, 88 cells) and temp-0 repeatability
+# (BHV-02, 65 cells), fired after the control arm's own rule-5d check passes:
+python3 probes/harness/runner.py --set probes/sets/seed-determinism.yaml
+python3 probes/harness/runner.py --set probes/sets/temp0-repeatability.yaml
+
+# Stage C — stop-sequence (BHV-03, 20 cells), n>1 (BHV-04, 7 cells), and
+# logprobs (BHV-05, 10 cells):
+python3 probes/harness/runner.py --set probes/sets/stop-sequence.yaml
+python3 probes/harness/runner.py --set probes/sets/candidate-count.yaml
+python3 probes/harness/runner.py --set probes/sets/logprobs-verify.yaml
+
+# Stage D — the service-tier audit (BHV-06, 17 cells) and the D-07 drift
+# annex (4 additional cells), fired last:
+python3 probes/harness/runner.py --set probes/sets/service-tier-audit.yaml
+python3 probes/harness/runner.py --set probes/sets/docs-drift-annex.yaml
+
+# End-of-run refire pass (D-10) for any straggler, before classification is
+# treated as final, mirroring Phase 11's own preregistered path:
+python3 probes/harness/runner.py --set <each set file above> --refire-exhausted
+
+# Read the ledger after EVERY stage above (never estimated), classify, audit,
+# commit evidence, render:
+python3 probes/harness/ledger.py --totals
+python3 probes/audit-evidence.py               # D-05, fail-closed
+git add probes/raw probes/ledger.jsonl          # only after the audit passes
+```
+
+Exact set-file names and the classifier/renderer this phase adds are Claude's
+Discretion (12-RESEARCH.md § "Claude's Discretion") — naming the stage order
+and the ledger-read discipline here, before any file exists, is the point of
+a preregistration: the protocol commits to a path, not merely to a result.
+
+### Calibration design (rule 5d)
+
+**D-03: one high-entropy control cell per applicable model, fired BEFORE
+that model's determinism cells, expected to VARY.** A control arm that
+matches 100% at a model means the prompt lacks entropy for that model (or
+that model's own default behavior is more deterministic than assumed at
+default sampling settings) — either way, its determinism cells would measure
+nothing meaningful, and the cell is redesigned (a different prompt, or the
+finding is recorded as a genuine surprise about that model's own default
+behavior) BEFORE the corresponding seed/temp-0 cells fire for that model.
+Verdicts are read from the ledger and from `probes/raw/{vendor}.jsonl`
+directly after Stage A completes, before Stage B begins — mirroring Phase
+11's own Stage 1-2 pause discipline (D-09 there).
+
+### Stopping rules
+
+The ceilings in force, read from `probes/harness/ceilings.yaml`, unchanged
+by this phase: `global_hard_usd: 10.00` (stops the whole run),
+`global_warn_usd: 8.00` (warns, continues), `vendor_soft_usd_default: 0.50`
+(skips that vendor's remaining probes, continues with the other seven).
+**A re-derived envelope larger than the approved one requires a fresh
+sign-off** — the same rule Phase 11's own 11-02 amendment established and
+this document's Run log already demonstrates being honored (the $0.35 ->
+$0.52 re-derivation, approved before Stage 5 fired).
+
+### Sample size
+
+**n=5 for both the seed-pair design and the temp-0 design**, above BHV-01/
+BHV-02's own n>=3 floor (`.planning/REQUIREMENTS.md`), per D-01. Reason
+(D-01, stated): rates resolve in 20% steps at n=5 (fine enough to distinguish
+"always matches" from "usually matches" from "rarely matches" without
+implying false precision), and two of the eight seed-accepting vendors
+document their seed contract as best-effort only — n=5 is enough to
+characterize "mostly reliable" vs. "rarely reliable" for those vendors
+without the cost of a larger n.
+
+### Envelope
+
+Derived, not copied from the ~$0.31/"≈260 calls" round figure in
+12-RESEARCH.md § Cost Estimate (that figure predates this section's Mode
+scope resolution, which adds claude-haiku-4-5's second temp-0 cell). Per
+cell: `cost = calls * (input_tokens/1e6 * input_usd_per_mtok +
+output_tokens/1e6 * output_usd_per_mtok)`, at `probes/harness/prices.yaml`'s
+per-model rates. Token assumptions (stated, matching 12-RESEARCH.md's own
+convention): **~30 input tokens per call** (the short fixed-format prompts
+every family here uses); **output budget per family**: 100 tokens
+(BHV-01/BHV-02/D-03 — the "reply with one word/sentence" style prompts these
+families use), 60 tokens (BHV-03 stop-sequence — a short completion is the
+whole point of the test), 150 tokens (BHV-04 n>1 — multiple choices need more
+room), 100 tokens (BHV-05 logprobs), 80 tokens (BHV-06/D-07 — presence-only
+cells, per 12-RESEARCH.md's own row).
+
+Raw per-vendor cost, summed across every model that vendor owns and every
+cell family that model fires (BHV-01 88 calls + BHV-02 65 calls + D-03 45
+calls + BHV-03 20 calls + BHV-04 7 calls + BHV-05 10 calls + BHV-06 17 calls
++ D-07 annex 4 calls = **254 calls total**), then each vendor's raw share
+rounded UP to the nearest cent before summing (the sum-of-rounded-per-vendor
+convention `probes/SWEEP-DESIGN.md` established and Phase 11's own 11-02
+amendment reproduced):
+
+| Vendor | Calls | Raw cost | Rounded | Share of $0.50 sub-ceiling |
+|---|---|---|---|---|
+| anthropic | 42 | $0.0666 | **$0.07** | 14% |
+| openai | 25 | $0.0785 | **$0.08** | 16% |
+| gemini | 26 | $0.0316 | **$0.04** | 8% |
+| xai | 25 | $0.0167 | **$0.02** | 4% |
+| kimi | 25 | $0.0390 | **$0.04** | 8% |
+| dseek | 27 | $0.0114 | **$0.02** | 4% |
+| zai | 27 | $0.0128 | **$0.02** | 4% |
+| qwen | 57 | $0.0201 | **$0.03** | 6% |
+| **Total** | **254** | **$0.2767** | **$0.32** | — |
+
+No vendor is projected above roughly half of its $0.50 per-vendor
+sub-ceiling (highest, openai, at 16%). Ledger baseline read live at the time
+of writing, `python3 probes/harness/ledger.py --totals`: **global
+$0.071612** (carrying forward Phase 9-11.1's own spend). Projected post-run
+global total: **$0.071612 + $0.32 = $0.391612**, roughly 3.9% of the $10
+global hard ceiling and well under the $8 warn threshold.
+
+### Run log
+
+Appended **during** the runs, never reconstructed afterward — the protocol
+text above this line (this whole Phase 12 section) is never edited once
+committed (methodology rule 5). Each entry is dated. Empty at creation.
+
+<!-- Entries appended here as Phase 12's runs progress. -->

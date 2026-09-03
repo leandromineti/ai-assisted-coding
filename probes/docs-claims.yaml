@@ -450,7 +450,15 @@ claims:
     states ''Priority Tier capacity commitments are no longer available for purchase'' for new organizations
     — a value-semantics nuance on what ''auto'' currently resolves to for most accounts, not this row''s
     own job (that''s openai-service-tier-values'' and BHV-06''s territory) but worth recording here since
-    it directly bears on this claim''s vendor.'
+    it directly bears on this claim''s vendor. Response-side nesting fact (Phase 12, BHV-06): this row''s
+    `quote` above is the REQUEST-side field only — `service_tier` is a top-level Messages API body
+    parameter. The anthropic-service-tiers source (id: anthropic-service-tiers, retrieved 2026-09-02)
+    additionally states: "The response `usage` object also includes the service tier assigned to the
+    request" — i.e. the response reports the assigned tier at `usage.service_tier`, NESTED inside the
+    response''s `usage` object, not at the response top level. Same field NAME, different LOCATION on
+    each side of the wire — a caller checking `response.service_tier` (mirroring the request shape) finds
+    nothing, while `response.usage.service_tier` holds the real answer. This response-side location is
+    what the Phase 12 BHV-06 audit reads.'
 - param: openai-reasoning-effort
   vendor: anthropic
   models: all
