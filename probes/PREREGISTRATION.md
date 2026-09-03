@@ -1701,3 +1701,45 @@ text above this line (this whole Phase 12 section) is never edited once
 committed (methodology rule 5). Each entry is dated. Empty at creation.
 
 <!-- Entries appended here as Phase 12's runs progress. -->
+
+**2026-09-03, plan 12-01 Task 3 — the spend sign-off checkpoint, resolved.**
+The checkpoint presented the derived $0.32 envelope (254 calls, the 8-vendor
+per-vendor table above), the live ledger baseline ($0.071612 global), the
+projected post-run global total ($0.071612 + $0.32 = $0.391612, roughly 3.9%
+of the $10 hard ceiling), each vendor's projected share against the $0.50
+per-vendor soft sub-ceiling (highest, openai, at 16%), the three design
+resolutions the envelope depends on (five disjoint seed pairs = ten calls per
+seed model; `default` mode only, with the thinking cross-product explicitly
+deferred; one representative model per vendor for the tier audit), D-16's
+stated bounded ledger inaccuracy for billing-changing tier values, and the two
+places the owner deliberately chose the broader scope during the CONTEXT.md
+discussion (the three-field D-07 drift annex fired in full rather than
+parked, and the all-eight-vendor tier audit) — per this repo's sign-off
+convention (owner memory: quote informal approvals exactly, never launch a
+scored/spending run without one) and per the "a previously-approved envelope
+never covers a larger one" rule this document's own Phase 11 Run log already
+demonstrates.
+
+The owner's reply, verbatim:
+
+> Approve
+
+This is the `approve` branch of Task 3's checkpoint, and resolves the
+CONTEXT.md § Domain spend-sign-off gate ("This is a paid phase: rule-5
+preregistration with the owner's verbatim spend sign-off precedes any
+firing") against D-12's preregistration surface — this Phase 12 section
+itself is D-12's dated protocol; the sign-off recorded here is what D-12
+requires on disk before any cell beneath it fires. The preregistered
+254-call / $0.32 envelope derived in the Envelope section above is approved
+as designed, with no reduction and no cell dropped — plans 12-02..12-05 may
+fire against it starting at Stage A (the D-03 control-arm calibration), must
+read the ledger after every stage per the Preregistered execution path
+above (never estimate), and must re-present for a fresh sign-off only if a
+re-derived figure exceeds $0.32 (the same "previously-approved never covers
+a larger one" rule stated above).
+
+**No paid call was fired by this task.** `git diff --stat probes/raw/
+probes/ledger.jsonl` is empty as of this entry — nothing new on disk under
+either path. The global ledger total remains at the pre-sign-off baseline
+already stated in the Envelope section, **$0.071612**, unchanged by this
+entry.
