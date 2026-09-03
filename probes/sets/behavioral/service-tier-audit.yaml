@@ -1,0 +1,563 @@
+# probes/sets/behavioral/service-tier-audit.yaml — Phase 12 plan 12-05 Task 1's
+# BHV-06 cells: audits the service-tier REQUEST-versus-RESPONSE vocabulary on
+# the wire at all eight vendors, including the four whose docs say nothing
+# about tiers at all (D-13's rule-1b negative prior IS the audited
+# expectation there), and settles whether Anthropic's documented
+# request/response field-location asymmetry (docs-claims.yaml's
+# anthropic-service-tiers-sourced note on the `service-tier`/anthropic claim,
+# amended in plan 12-01) is real by reading a live response body at the
+# nested `usage.service_tier` location the contract classifier's own
+# top-level-only `detect_echo()` never examines — the exact reason every
+# Claude model's `service-tier` contract cell landed in the silent-acceptance
+# (`accepted-ignored`) hazard class in Phase 11.
+#
+# Representative model per vendor (PREREGISTRATION.md's "Tier-audit scope"
+# subsection, Q3 resolved): claude-haiku-4-5, gpt-5-6-sol, grok-4-5,
+# gemini-3-1-pro, deepseek-v4, kimi-k3, glm-5.3, qwen3.8-flash. Per D-14, one
+# vendor's audit = one request per documented request-enum value PLUS one
+# request omitting the field entirely (the default-behavior baseline, and the
+# WHOLE cell for the four undocumented vendors). Already-fired documented
+# values are audited by reading their existing Phase 11 records via this
+# file's own `cited_cells:` key (below), never re-fired (D-08).
+#
+# 17 new calls fired here (see PREREGISTRATION.md's own per-vendor table),
+# plus 6 cells audited from existing Phase 11 evidence via `cited_cells:`.
+#
+# Gemini's request-field placement was resolved by reading
+# ai.google.dev/api/generate-content directly (`date -u` at retrieval read
+# 2026-09-03): `serviceTier` is documented as a TOP-LEVEL sibling field of
+# `GenerateContentRequest` (alongside `contents`, `systemInstruction`,
+# `generationConfig`, `cachedContent`, `store`) — NOT nested inside
+# `GenerationConfig`'s own field list (confirmed by reading GenerationConfig's
+# full field list separately: no `serviceTier` entry there). The current
+# `extra_params` grammar therefore cannot express it (adapters/gemini.py's
+# own `build_request()` merges `extra_params` INSIDE `generationConfig`) —
+# this file uses the new additive `top_level_params:` entry key
+# (probes/harness/runner.py, this plan's Task 1) for Gemini's four service-
+# tier cells below. Gemini's own RESPONSE-side `serviceTier` is documented
+# separately, nested inside `usageMetadata` (the same JSON object
+# `parse_usage()` already reads `promptTokenCount`/`candidatesTokenCount`
+# from) — a second request-top-level/response-nested asymmetry, structurally
+# identical to Anthropic's own, though only Anthropic's is this plan's
+# `must_haves` truth.
+#
+# `param: service-tier-audit` throughout (a new registry param — distinct
+# from Phase 11's own `service-tier`/`openai-service-tier-values` rows, so no
+# probe_id collides with an existing Phase 11 record even where the request
+# body is byte-identical, e.g. Anthropic's own `auto` cell). `mode: default`,
+# the D-04 prompt ("Invent a fictional animal and describe it in two
+# sentences."), `max_tokens: 80` (PREREGISTRATION.md's own Envelope section:
+# "80 tokens (BHV-06/D-07 — presence-only cells)") — this design reads the
+# response's `usage`/top-level structure, never the visible completion text,
+# so an always-on-reasoning model consuming its whole budget on reasoning
+# (the glm-5.3/kimi-k3 empty-text bug plans 12-02/12-04 had to correct for)
+# is not a confound here: the `usage` object and the `service_tier`/
+# `serviceTier` field are populated by the vendor regardless of whether any
+# visible text was produced.
+#
+# `cited_cells:` (this plan's own new set-file key, documented in
+# scripts/classify-behavioral.py's Task 3 addition): audit rows that read an
+# EXISTING Phase 11 record rather than firing a new one. Each entry carries
+# the cell selector, `requirement`, `design`, `request_value` (mirrors what a
+# `probes:` entry's own extra_params/top_level_params would have carried, so
+# the SAME tier-audit reduction function can be applied uniformly to a fired
+# OR a cited entry), `expected`, `expected_source`, and `cited_probe_id`
+# naming the existing raw record. Six entries: OpenAI's 4 already-fired
+# values (auto/default/flex/priority) and xAI's 2 already-fired values
+# (default/priority) — read from probes/classified/contract-sweep.yaml,
+# param in (service-tier, openai-service-tier-values), and resolving to a
+# line in probes/raw/{openai,xai}.jsonl.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before
+# stamping": `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # --- Anthropic (claude-haiku-4-5, anthropic_messages — extra_params merges
+  #     at the request top level; response-side reads at usage.service_tier
+  #     per the docs-claims.yaml amendment plan 12-01 made) ---
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: auto
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: auto}
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: standard_only
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: standard_only}
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+  # D-15's trap: `standard` is a RESPONSE-side vocabulary word
+  # (`usage.service_tier` resolves to "standard"/"priority"/"batch" per the
+  # anthropic-service-tiers source), never a documented REQUEST value
+  # (`auto`/`standard_only` only) — sent here as the request value itself.
+  # Expected: HTTP 400 naming the field (a $0 rejection).
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: trap
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: standard}
+
+  # --- OpenAI (gpt-5-6-sol, openai_compat) — 2 genuinely new documented
+  #     values (scale, fast) beyond the 4 already fired in Phase 11
+  #     (auto/default/flex/priority, cited below), + 1 omission baseline ---
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: scale
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: scale}
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: fast
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: fast}
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+  # --- xAI (grok-4-5, openai_compat) — both documented values (default,
+  #     priority) already contract-fired in Phase 11 (cited below); only the
+  #     omission baseline is genuinely new here ---
+  - model: grok-4-5
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+  # --- Gemini (gemini-3-1-pro) — Phase 11 never fired service-tier at this
+  #     vendor at all; all 4 documented enum values are genuinely new
+  #     territory, plus 1 omission baseline. `top_level_params:` used
+  #     throughout (see file header) since `extra_params` cannot reach the
+  #     request top level for this family. `max_tokens: 80` per this file's
+  #     own header note (presence-only design, always-on reasoning is not a
+  #     confound for a usage-object-only read) — kept at 80 rather than the
+  #     600 other behavioral files use for this always-on-reasoning model,
+  #     deliberately, since no visible-text comparison is performed here.
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: unspecified
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: unspecified}
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: standard
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: standard}
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: flex
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: flex}
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: priority
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: priority}
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+  # --- DeepSeek, Kimi, Z.ai, Qwen (deepseek-v4, kimi-k3, glm-5.3,
+  #     qwen3.8-flash) — all four vendors' own docs say nothing about tiers
+  #     at all (absent-from-docs); D-13's rule-1b negative prior IS the
+  #     audited expectation, and the predicted result is no tier field in
+  #     the response. One omission-baseline call each — their existing
+  #     Phase 11 cells (the bare `service-tier`/`auto` contract row) are
+  #     corroborating citations, not substitutes for THIS audit's own
+  #     omission-baseline read (see each expectation below). ---
+  - model: deepseek-v4
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+  - model: kimi-k3
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+  - model: glm-5.3
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+  - model: qwen3.8-flash
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+cited_cells:
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: auto
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: auto
+    expected: >-
+      OpenAI documents `service_tier` with 6 request values (auto, default,
+      flex, scale, priority, fast); `auto` is Phase 11's own already-fired
+      cell, classified `silently-translated` (the response's own top-level
+      `service_tier` echoed a DIFFERENT resolved value than the literal
+      request string "auto").
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+    cited_probe_id: "gpt-5-6-sol--service-tier--auto--default--edca588c"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: default
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: default
+    expected: >-
+      OpenAI's documented `default` value, already fired in Phase 11 and
+      classified `accepted-honored` (the response echoed the literal
+      requested value at the top level).
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+    cited_probe_id: "gpt-5-6-sol--openai-service-tier-values--default--default--3a9bd29a"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: flex
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: flex
+    expected: >-
+      OpenAI's documented `flex` value, already fired in Phase 11 and
+      classified `accepted-honored`.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+    cited_probe_id: "gpt-5-6-sol--openai-service-tier-values--flex--default--6ec108ca"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: priority
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: priority
+    expected: >-
+      OpenAI's documented `priority` value, already fired in Phase 11 and
+      classified `accepted-honored`.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+    cited_probe_id: "gpt-5-6-sol--openai-service-tier-values--priority--default--6e1b1fd7"
+  - model: grok-4-5
+    param: service-tier-audit
+    value: default
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: default
+    expected: >-
+      xAI documents only 2 values (default, priority) — no "auto". `default`
+      already fired in Phase 11 and classified `accepted-honored`.
+    expected_source: "docs-claims:openai-service-tier-values/xai"
+    cited_probe_id: "grok-4-5--openai-service-tier-values--default--default--d49043e3"
+  - model: grok-4-5
+    param: service-tier-audit
+    value: priority
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: priority
+    expected: >-
+      xAI's documented `priority` value, already fired in Phase 11 and
+      classified `accepted-honored`.
+    expected_source: "docs-claims:openai-service-tier-values/xai"
+    cited_probe_id: "grok-4-5--openai-service-tier-values--priority--default--b146d009"
+
+expectations:
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: auto
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: auto
+    expected: >-
+      Anthropic documents `service_tier` (auto/standard_only) as a REQUEST-
+      side top-level field, and separately documents (anthropic-service-tiers
+      source) that "the response `usage` object also includes the service
+      tier assigned to the request" — i.e. the RESPONSE-side answer lives at
+      `usage.service_tier`, nested, not at the response top level. This is
+      the row that settles the asymmetry: expect a value present at
+      `usage.service_tier` and ABSENT at the response top level.
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: standard_only
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: standard_only
+    expected: >-
+      Anthropic's second documented request value, same nested
+      `usage.service_tier` response location as the `auto` cell above.
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      Anthropic documents `service_tier` as optional. Omitting it entirely
+      is expected to still resolve to SOME assigned tier at
+      `usage.service_tier` (the field's own documented purpose is reporting
+      "the service tier assigned to the request", which happens whether or
+      not the caller specified one) — a present value here is the field's
+      own default, not a documented-absence refutation (Anthropic documents
+      the field; only the four undocumented vendors' omission cells carry
+      that framing).
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-haiku-4-5
+    param: service-tier-audit
+    value: trap
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: standard
+    expected: >-
+      `standard` is a RESPONSE-side `usage.service_tier` vocabulary word
+      (anthropic-service-tiers source), never a documented REQUEST value
+      (`auto`/`standard_only` only). Expect HTTP 400 naming the
+      `service_tier` field — D-15's trap, demonstrating the "caller reads
+      the wrong field" hazard is real. A 200 response would itself be a
+      finding (refutes the documented request enum).
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: scale
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: scale
+    expected: >-
+      OpenAI documents 6 service_tier values; the contract sweep's own
+      probe_values enumerated only 4 (flex/priority/auto/default), leaving
+      `scale` genuinely unfired. Expect the top-level `service_tier`
+      response field to report SOME resolved value (documented request/
+      response asymmetry precedent: `fast`/`priority` both resolve to a
+      response of `priority` per the same page).
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: fast
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: fast
+    expected: >-
+      OpenAI's own documented request/response rename: "The response will
+      show `service_tier=priority` regardless of if you specify
+      `service_tier=fast` or `priority`" — expect the request value `fast`
+      to be TRANSLATED to a response value of `priority`, not echoed
+      verbatim.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: gpt-5-6-sol
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      OpenAI documents the default behavior as "auto" when the field is not
+      set — expect the top-level `service_tier` response field to report a
+      resolved value even with no request-side field sent.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: grok-4-5
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      xAI documents `service_tier` as an optional field ("Determines
+      scheduling priority and billing") with no stated default value name —
+      whether omitting it still yields a resolved top-level response value
+      is genuinely unasserted by the doc quote itself, read here rather than
+      assumed.
+    expected_source: "docs-claims:openai-service-tier-values/xai"
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: unspecified
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: unspecified
+    expected: >-
+      Gemini documents a 4-value `ServiceTier` enum (unspecified/standard/
+      flex/priority) as a REQUEST-top-level field (`GenerateContentRequest`,
+      sibling to `generationConfig`), and separately documents a RESPONSE-
+      side `serviceTier` field nested inside `usageMetadata` — a second
+      request-top-level/response-nested asymmetry structurally identical to
+      Anthropic's own, discovered while resolving this file's own Gemini
+      placement question (this claim did not previously record the
+      response-side location). `unspecified` is documented as resolving to
+      "standard" by default.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: standard
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: standard
+    expected: >-
+      Same Gemini request-top-level/response-nested (`usageMetadata.serviceTier`)
+      contract as the `unspecified` cell above, an explicit non-default value.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: flex
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: flex
+    expected: >-
+      Same Gemini contract, `flex` value — this and OpenAI's own `flex`
+      share a name but not necessarily a wire behavior, a genuine
+      cross-vendor comparison point.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: priority
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: priority
+    expected: >-
+      Same Gemini contract, `priority` value — shares a name with OpenAI's
+      and xAI's own `priority` values, a genuine cross-vendor comparison
+      point.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-1-pro
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: null
+    expected: >-
+      Gemini documents `serviceTier` as optional, with `unspecified`
+      described as "Default service tier, which is standard." — omitting
+      the field entirely is expected to still resolve to a value at
+      `usageMetadata.serviceTier`, per that same default-resolution
+      language.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: deepseek-v4
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      DeepSeek's docs do not mention `service_tier` under any name
+      (absent-from-docs, D-13's rule-1b negative prior) — the audited
+      expectation IS that documented absence, and the predicted result is
+      no tier field anywhere in the response. A tier field appearing here
+      would REFUTE the documented absence directly — a finding, not an
+      error in this audit.
+    expected_source: "docs-claims:service-tier/dseek"
+  - model: kimi-k3
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      Kimi/Moonshot's docs do not mention `service_tier` under any name
+      (absent-from-docs) — same D-13 rule-1b negative-prior framing as
+      DeepSeek's own cell above: the predicted result is no tier field in
+      the response, and a present field would be a finding, not an error.
+    expected_source: "docs-claims:service-tier/kimi"
+  - model: glm-5.3
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      Z.ai's docs do not mention `service_tier` under any name
+      (absent-from-docs) — same D-13 rule-1b negative-prior framing: the
+      predicted result is no tier field in the response, and a present
+      field would be a finding, not an error.
+    expected_source: "docs-claims:service-tier/zai"
+  - model: qwen3.8-flash
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      Qwen's docs state the literal string `service_tier` appears TWICE but
+      ONLY inside the RESPONSE object schemas, each described as "Currently
+      fixed as `null`" — no REQUEST-body field of this name exists. The
+      audited expectation is that the response field, if present at all, is
+      a fixed null value rather than a resolved tier — distinguished here as
+      `null-valued`, never conflated with a genuinely absent field.
+    expected_source: "docs-claims:service-tier/qwen"
+
+skips: []

@@ -427,8 +427,25 @@ def build_skipped_ceiling_record(
 # addressable. Validated in load_probe_set() below: must be an int, not a bool,
 # and >= 1, or the run aborts before any HTTP request — a silently coerced or
 # ignored repeat would corrupt the denominator of every rate this phase publishes.
+# `top_level_params` (Phase 12 plan 12-05, BHV-06): an additive optional entry
+# key for a field a vendor documents at the REQUEST TOP LEVEL, sibling to
+# `generationConfig`/`messages` — a location `extra_params` cannot reach for the
+# `gemini` family, whose adapter merges `extra_params` INSIDE `generationConfig`
+# (adapters/gemini.py's own `build_request()`). Confirmed necessary by reading
+# Gemini's own `GenerateContentRequest` field list directly (ai.google.dev/api/
+# generate-content, retrieved 2026-09-03): `serviceTier` is a top-level sibling
+# of `generationConfig`, `systemInstruction`, `cachedContent` and `store` — NOT
+# a `GenerationConfig` field. A mapping merged into the built request body at
+# the top level, applied in `build_entry_request()` AFTER
+# `apply_max_tokens_field_override()` and BEFORE `apply_omit()` — mirroring
+# `omit`'s own precedent exactly (an additive request-shape adjustment applied
+# after the adapter builds the base body, before the final probe_id hash is
+# taken, so a declared value here changes the probe_id like any other body
+# change). Validated fail-loud in `load_probe_set()` below: a non-mapping value
+# aborts with exit 2, before any HTTP request is sent — the same discipline
+# `repeat`'s own validation already established for a different optional key.
 REQUIRED_PROBE_ENTRY_KEYS = {"model", "param", "value", "mode"}
-OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit", "repeat"}
+OPTIONAL_PROBE_ENTRY_KEYS = {"prompt", "max_tokens", "extra_params", "omit", "repeat", "top_level_params"}
 
 # Content-block entry keys (Phase 11 plan 11-03, MODAL-01), the second grammar
 # runner.py recognizes alongside REQUIRED_PROBE_ENTRY_KEYS/OPTIONAL_PROBE_ENTRY_KEYS
@@ -499,6 +516,12 @@ def load_probe_set(path) -> list[dict]:
                     f"{path}: probe entry has an invalid `repeat` value {repeat_value!r} "
                     f"(must be an int >= 1, not a bool): {entry}",
                 )
+        if "top_level_params" in entry and not isinstance(entry["top_level_params"], dict):
+            _fail(
+                2,
+                f"{path}: probe entry has an invalid `top_level_params` value "
+                f"{entry['top_level_params']!r} (must be a mapping): {entry}",
+            )
     return probes
 
 
@@ -603,7 +626,13 @@ def build_entry_request(entry: dict, row: dict, adapter) -> dict:
     body.
 
     Scalar entry (no `body_template`): the existing
-    adapter.build_request(...) + apply_omit(...) construction, unchanged.
+    adapter.build_request(...) + apply_omit(...) construction, with one
+    Phase 12 plan 12-05 addition — a declared `top_level_params` mapping is
+    merged into the built body AFTER apply_max_tokens_field_override() and
+    BEFORE apply_omit(), for a field a vendor documents at the request TOP
+    LEVEL that the `gemini` family's own `extra_params` merge (nested inside
+    `generationConfig`) cannot reach. Absent (every entry but the ones that
+    declare it): a no-op, byte-identical to the pre-extension construction.
 
     Both branches route their final body through
     apply_max_tokens_field_override() (plan 11-04) before returning — a
@@ -639,6 +668,9 @@ def build_entry_request(entry: dict, row: dict, adapter) -> dict:
     extra_params = entry.get("extra_params") or {}
     request_body = adapter.build_request(row["api_model_id"], prompt, max_tokens, extra_params)
     request_body = apply_max_tokens_field_override(request_body, row)
+    top_level_params = entry.get("top_level_params") or {}
+    if top_level_params:
+        request_body = {**request_body, **top_level_params}
     return apply_omit(request_body, entry.get("omit"))
 
 
@@ -1513,6 +1545,59 @@ def selftest() -> tuple[int, int]:
             f"should be a no-op, got {body_unchanged!r}",
             file=sys.stderr,
         )
+
+    # --- load_probe_set: `top_level_params` validation rejects a non-mapping
+    #     value (a string, a list) — exit 2, before any HTTP request
+    #     (Phase 12 plan 12-05, mirrors `repeat`'s own validation battery
+    #     above for a different optional key) ---
+    for label, bad_tlp_yaml in [
+        ("top_level_params: a string", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    top_level_params: \"not-a-mapping\"\n"),
+        ("top_level_params: a list", "probes:\n  - model: x\n    param: baseline\n    value: none\n    mode: default\n    top_level_params: [1, 2]\n"),
+    ]:
+        cases += 1
+        with tempfile.TemporaryDirectory() as td:
+            bad_tlp = Path(td) / "bad-top-level-params.yaml"
+            bad_tlp.write_text(bad_tlp_yaml)
+            try:
+                load_probe_set(bad_tlp)
+                problems += 1
+                print(f"FAIL load_probe_set({label}): expected a fail-loud exit, got a return", file=sys.stderr)
+            except SystemExit as e:
+                if e.code != 2:
+                    problems += 1
+                    print(f"FAIL load_probe_set({label}): expected exit code 2, got {e.code}", file=sys.stderr)
+
+    # --- build_entry_request: a declared `top_level_params` mapping is
+    #     merged into the built body AT THE TOP LEVEL and changes the
+    #     probe_id hash (Phase 12 plan 12-05) — the whole point of the
+    #     grammar addition is reaching a field the `gemini` family's own
+    #     `extra_params` merge (nested inside `generationConfig`) cannot ---
+    cases += 1
+
+    class _FakeGeminiAdapter:
+        @staticmethod
+        def build_request(api_model_id, prompt, max_tokens, extra_params):
+            return {"contents": [], "generationConfig": {"maxOutputTokens": max_tokens, **(extra_params or {})}}
+
+    tlp_row = {"wire_family": "gemini", "api_model_id": "g-api"}
+    entry_without_tlp = {"model": "g", "param": "service-tier-audit", "value": "omitted", "mode": "default", "max_tokens": 16}
+    entry_with_tlp = {
+        "model": "g", "param": "service-tier-audit", "value": "standard", "mode": "default",
+        "max_tokens": 16, "top_level_params": {"serviceTier": "standard"},
+    }
+    body_without_tlp = build_entry_request(entry_without_tlp, tlp_row, _FakeGeminiAdapter)
+    body_with_tlp = build_entry_request(entry_with_tlp, tlp_row, _FakeGeminiAdapter)
+    if body_with_tlp.get("serviceTier") != "standard":
+        problems += 1
+        print(f"FAIL build_entry_request(top_level_params): expected serviceTier at the top level, got {body_with_tlp!r}", file=sys.stderr)
+    if "serviceTier" in body_with_tlp.get("generationConfig", {}):
+        problems += 1
+        print("FAIL build_entry_request(top_level_params): serviceTier leaked into generationConfig, must be top-level only", file=sys.stderr)
+    pid_without_tlp = probe_id("g", "service-tier-audit", "omitted", "default", body_without_tlp)
+    pid_with_tlp = probe_id("g", "service-tier-audit", "standard", "default", body_with_tlp)
+    if pid_without_tlp == pid_with_tlp:
+        problems += 1
+        print("FAIL build_entry_request(top_level_params): merging a top_level_params key did not change the probe_id hash", file=sys.stderr)
 
     # --- load_content_block_set: fail-loud paths — empty list, absent key,
     #     entry missing a required key (mirrors load_probe_set's own battery

@@ -2282,3 +2282,95 @@ observations, never a boolean anywhere in the classified file, with every
 declared skip resolving to checkable evidence and every `single-logprobs`
 cell recording the Phase 11 probe_id it upgrades by citation. Plan 12-04
 is complete; no further paid call is planned by this plan.
+
+**2026-09-03, plan 12-05 Task 1 — the eight-vendor service-tier audit,
+including the Anthropic trap probe.** `date -u` at authoring time read
+2026-09-03 (matches the plan's own filed date; no skew this session).
+
+**Gemini placement branch taken.** Read `ai.google.dev/api/generate-content`
+directly (not the archived snapshot — the live page fetched cleanly): the
+`GenerateContentRequest` field list documents `serviceTier` as a TOP-LEVEL
+sibling of `contents`/`tools`/`toolConfig`/`safetySettings`/
+`systemInstruction`/`generationConfig`/`cachedContent`/`store` — confirmed
+by separately reading `GenerationConfig`'s own full field list end to end
+and finding no `serviceTier` entry there at all. Branch taken: the
+"documented at the request top level" branch — the existing `extra_params`
+grammar cannot express it (adapters/gemini.py's own `build_request()`
+merges `extra_params` INSIDE `generationConfig`), so `probes/harness/
+runner.py` gained one additive optional entry key, `top_level_params`
+(`OPTIONAL_PROBE_ENTRY_KEYS`, validated fail-loud as a required mapping in
+`load_probe_set()`, merged into the built request body at the top level in
+`build_entry_request()` after `apply_max_tokens_field_override()` and
+before `apply_omit()` — mirroring `omit`'s own precedent exactly). Covered
+by two new `--selftest` cases (a non-mapping value aborts exit 2; a
+declared `top_level_params` key both appears at the request top level, not
+nested inside `generationConfig`, and changes the probe_id hash) — `python3
+probes/harness/runner.py --selftest`: **53 cases run, 0 problem(s)** (up
+from 51). While reading the same page, also found Gemini's own
+RESPONSE-side `serviceTier`: nested inside `usageMetadata` (the same
+object `parse_usage()` already reads `promptTokenCount`/
+`candidatesTokenCount` from), confirmed by reading `UsageMetadata`'s own
+JSON representation directly — a SECOND request-top-level/response-nested
+asymmetry, structurally identical to Anthropic's own, recorded on the
+`service-tier`/gemini `docs-claims.yaml` claim's own `expected`/note text
+in the fired probe set rather than a separate claims-file edit (out of
+this task's declared file list).
+
+**Fired 17 new calls** (`probes/sets/behavioral/service-tier-audit.yaml`),
+per vendor, request value sent / response field path and value found /
+echo relation:
+
+| Vendor | Request value | Response field(s) checked | Response value | Echo relation |
+|---|---|---|---|---|
+| anthropic | `auto` | `usage.service_tier` present / top-level `service_tier` absent | `standard` (nested) | translated |
+| anthropic | `standard_only` | same dual lookup | `standard` (nested) | translated |
+| anthropic | omitted | same dual lookup | `standard` (nested) | translated (a value appeared despite no request — Anthropic's own field default) |
+| anthropic | `standard` (D-15 trap) | rejected, HTTP 400 | n/a | **rejected**, error body: `"service_tier: Input should be 'auto' or 'standard_only'"` — **names the field** |
+| openai | `scale` | top-level `service_tier` | HTTP 400, `"Invalid value: 'scale'. Supported values are: 'auto', 'default', 'fast', 'flex', and 'priority'."` | **rejected** (a genuine drift finding: OpenAI's LIVE API no longer accepts `scale` at all, contradicting the docs-claims.yaml quote's own 6-member list retrieved 2026-09-02 — recorded here, claim left unedited per this plan's own scope) |
+| openai | `fast` | top-level `service_tier` | `priority` | translated (confirms the documented `fast`→`priority` rename exactly) |
+| openai | omitted | top-level `service_tier` | `default` | translated (a value appeared despite no request) |
+| xai | omitted | top-level `service_tier` | `default` | translated (a value appeared despite no request — xAI's own doc names no default explicitly; now read directly) |
+| gemini | `unspecified` | `usageMetadata.serviceTier` | `unspecified` | echoed |
+| gemini | `standard` | same | `standard` | echoed |
+| gemini | `flex` | same | `flex` | echoed |
+| gemini | `priority` | same | `priority` | echoed |
+| gemini | omitted | same | n/a (no visible-text confound; MAX_TOKENS finish at the 80-token budget, `usageMetadata` still populated) — see note below | — |
+| dseek | omitted | top-level `service_tier` | absent | absent (documented-absence CONFIRMED) |
+| kimi | omitted | top-level `service_tier` | absent | absent (documented-absence CONFIRMED) |
+| zai | omitted | top-level `service_tier` | absent | absent (documented-absence CONFIRMED) |
+| qwen | omitted | top-level `service_tier` | absent | absent (the claim's own "fixed as null" framing was not observed on this non-streaming call; recorded as genuinely absent rather than forced into null-valued) |
+
+Gemini's own omitted cell's raw response has no `finishReason` confound
+worth a table cell of its own (`MAX_TOKENS` on the reasoning budget, same
+as the four fired-value cells) — its own `usageMetadata.serviceTier`
+resolution is read directly by the classifier at Task 3, not asserted
+here.
+
+**The Anthropic asymmetry, settled.** All three non-trap Anthropic cells
+show `usage.service_tier` PRESENT (value `"standard"` in every case,
+regardless of the request value sent) and the response TOP LEVEL's own
+`service_tier` key ABSENT in every case — the documented request/response
+field-location asymmetry (`anthropic-service-tiers` source, docs-claims.yaml)
+is **CONFIRMED** against a live response body: a caller checking
+`response.service_tier` (mirroring the request shape) finds nothing, while
+`response.usage.service_tier` holds the real answer. A secondary finding,
+not asserted before firing: Anthropic's own resolved tier value
+(`"standard"`) does not literally echo either documented request string
+(`auto`/`standard_only`) — the nested field reports the ASSIGNED tier, not
+a verbatim copy of the request.
+
+**D-15's trap, settled.** Sending `standard` (a `usage.service_tier`
+RESPONSE-vocabulary word) as the Anthropic REQUEST value produced the
+predicted HTTP 400, and the error body's own message
+(`"service_tier: Input should be 'auto' or 'standard_only'"`) **names the
+field explicitly** — the "caller reads the wrong field" hazard is real,
+and the rejection cost $0 (never billed; `cost_usd=None` in the raw
+record).
+
+Verification, all read from the actual run, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/service-tier-audit.yaml --dry-run`: **17 distinct `DRY-RUN` probe_id lines**; every Gemini entry's printed request body carries `serviceTier` as a TOP-LEVEL sibling of `generationConfig`, never nested inside it.
+- `python3 probes/harness/runner.py --selftest`: **53 cases run, 0 problem(s)**.
+- `python3 scripts/classify-probes.py --check`: `0 problem(s)`.
+- `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty — the contract pipeline stays byte-stable; the conditional `top_level_params` grammar addition disturbed no existing probe_id.
+- `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base (18 new raw records — the Anthropic trap's own stored 400 error body passes the same scan as any other response body).
+- `python3 probes/harness/ledger.py --totals`: global **$0.309163** (up from the $0.302681 post-plan-12-04 baseline, delta **+$0.006482** for these 17 calls — two accepted-but-fired cells, `gpt-5-6-sol`'s `scale` rejection and the Anthropic trap's 400, billed $0 as predicted; two Gemini cells — `standard`/`flex` — recorded `cost_usd: None` since their own `output_tokens` read `null` at an 80-token reasoning-only completion, an honest gap in the ledger's own per-call cost derivation, not a correctness defect in this audit). Phase-12-only spend: $0.309163 − $0.071612 = $0.237551; remaining Phase 12 headroom **$0.082449**. Every vendor stayed far under its $0.50 sub-ceiling (highest, openai, at ~9.6%).
