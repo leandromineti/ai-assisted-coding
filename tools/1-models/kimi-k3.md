@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
   batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
   fast_mode: false   # checked and absent: the K3 pricing page bills only cache-hit input, cache-miss input, and output — no speed tier; kimi-k2-turbo-class ids are sibling models, not modes (verified 2026-08-27)
+  stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison is the only evidence, cell_id:`kimi-k3--stop-truncation--triggering--default`, probe_id:`kimi-k3--stop-truncation--triggering--default--5b566140`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

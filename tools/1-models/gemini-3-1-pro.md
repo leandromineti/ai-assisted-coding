@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
   batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
   fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27); the tier is RESPONSE-OBSERVABLE — usageMetadata carries `serviceTier: "standard"` on a plain request (observed 2026-08-31), so a Priority purchase would be verifiable from the same field
+  stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but finishReason reports the same STOP value on both the triggering call and the no-stop control — the finish field alone cannot prove which case fired, cell_id:`gemini-3-1-pro--stop-truncation--triggering--default`, probe_id:`gemini-3-1-pro--stop-truncation--triggering--default--c83e86af`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

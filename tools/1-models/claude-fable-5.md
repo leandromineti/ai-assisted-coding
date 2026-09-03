@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
   batch_discount: "50% in+out ($5 / $25 per MTok)"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
+  stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control) — the finish field alone proves which case fired, cell_id:`claude-fable-5--stop-truncation--triggering--default`, probe_id:`claude-fable-5--stop-truncation--triggering--default--61baa082`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

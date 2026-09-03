@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs"
   batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only"
   fast_mode: false   # checked and absent: the docs models page lists no serving-speed option for grok-4-5 — the only "fast" tokens there are separate voice model ids, which are siblings, not modes (verified 2026-08-27)
+  stop_sequence_honesty: 'n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-03: stop returns HTTP 400 in default mode, so no honesty verdict is reachable, probe_id:`grok-4-5--stop--["the"]--default--ee1a658f`, promoted ADR-0050.'
 checked: 2026-08-17
 depth: stub
 ---

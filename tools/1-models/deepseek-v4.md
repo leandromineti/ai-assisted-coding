@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "automatic on-disk, zero config, no TTL knob (best-effort expiry, 'hours to a few days'); usage exposes a DUAL cache surface, observed 2026-08-31: DeepSeek's own prompt_cache_hit_tokens/prompt_cache_miss_tokens alongside OpenAI-style prompt_tokens_details.cached_tokens; cache-hit input Pro $0.044 peak / $0.022 off-peak, Flash $0.014 / $0.007 per MTok"
   batch_discount: "no batch API — time-of-day pricing instead: every rate halves off-peak, which is all hours outside 01:00–04:00 and 06:00–10:00 UTC"
   fast_mode: false   # checked and absent: the pricing page's only dimensions are peak/off-peak hours and cache hit/miss — no speed tier (verified 2026-08-27)
+  stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison only, cell_id:`deepseek-v4--stop-truncation--triggering--default`, probe_id:`deepseek-v4--stop-truncation--triggering--default--970252c9`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

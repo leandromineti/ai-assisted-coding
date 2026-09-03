@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "automatic (explicit breakpoints opt-in from 5.6), read 0.1x, write 1.25x, 30m TTL, 1024-tok minimum — cached input Sol $0.50 / Terra $0.20 / Luna $0.02 per MTok"
   batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
   fast_mode: true    # `service_tier: "fast"` (also accepts "priority" — priority processing RENAMED to fast mode 2026-07-30): Sol $8/$40 short-context, $16/$60 long; offered on all three 5.6 tiers (first-party pricing page, verified 2026-08-27); OBSERVED 2026-08-31 on gpt-5.6-luna: both tier values accepted, and the response reports `service_tier: "priority"` EITHER WAY — the rename is input-side only, the response vocabulary still speaks the old name
+  stop_sequence_honesty: 'n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-03: stop returns HTTP 400 in default mode, so no honesty verdict is reachable, probe_id:`gpt-5-6-sol--stop--["the"]--default--6a86352a`, promoted ADR-0050.'
 checked: 2026-08-17
 depth: stub
 ---

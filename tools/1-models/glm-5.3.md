@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   prompt_caching: "cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated"
   batch_discount: "no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates"
   fast_mode: false   # checked and absent: the pricing page lists input/cached-input/storage/output only; GLM-5-Turbo is a sibling model, not a serving mode of 5.3 (verified 2026-08-27)
+  stop_sequence_honesty: "inconclusive — OBSERVED 2026-09-03: the triggering call returned empty visible text at this budget, so truncation itself was never confirmed against the trigger word in this sweep, and the shared openai_compat stop finish value matches the no-stop control's own finish reason regardless, cell_id:`glm-5.3--stop-truncation--triggering--default`, probe_id:`glm-5.3--stop-truncation--triggering--default--01466ba7`, promoted ADR-0050."
 checked: 2026-08-26
 depth: stub
 ---

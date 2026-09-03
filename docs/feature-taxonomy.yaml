@@ -96,6 +96,19 @@ groups:
       them — a level set the model spends against (`levels:…`) or a token budget the
       caller allocates up front (`budget:…`). A ✓ beside `always-on` and a budget dial is
       a very different bill from a ✓ beside `opt-in`; reasoning tokens bill as output.
+  - id: wire-behavior
+    title: Wire behavior
+    order: 43
+    blurb: >-
+      What the sweep actually observed the live wire do, as distinct from what a vendor
+      documents or what a request merely gets accepted. Every cell in this group is a
+      DEFAULT-MODE wire observation — a rate or a verdict token dated `OBSERVED`, citing the
+      classified evidence it was read from and the ADR that promoted it (ADR-0050). The
+      thinking-mode cross-product (firing the same cells again at `thinking-on`/`thinking-off`)
+      is a named, dated deferral, not a silent scope choice: `probes/PREREGISTRATION.md`'s own
+      `### Mode scope` section (added 2026-09-02) resolves it explicitly for this evidence
+      base. A future thinking-mode run widens a key's domain; it does not change the cell
+      grammar these keys already fix.
   - id: environment-binding
     title: Environment binding
     order: 50
@@ -485,6 +498,13 @@ features:
     value_type: open-descriptive
     definition: "the caller-facing depth dial, `family:specific` (ADR-0017 shape) — `levels:<set>@<default>` | `budget:<unit>` | `none`. The family says who sizes the reasoning: a level enum the model spends against, or a token budget the caller allocates up front"
     note: "added 2026-08-26 (ADR-0040), replacing the free-text `effort_control`. NOT a presence-claim: a boolean would have been 10 ✓ / 1 ✗ with the ✗ on the same row as `reasoning`'s — the same column twice, and rule 5d says an instrument that cannot discriminate cannot measure. The variation is in the level set (four distinct shapes) and the default: `@high` mostly, `@medium` at OpenAI, `@max` at kimi-k3 and glm-5.3 — which is why the default lives in the cell and not in body prose"
+  - id: stop_sequence_honesty
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "whether the model's OWN finish-reason field can distinguish a triggered stop-sequence truncation from a natural completion, independent of whether truncation itself is honored. Bare verdict cell: `honest` | `ambiguous` | `inconclusive`, or the not-applicable form for a model whose `stop` parameter the contract sweep rejects outright"
+    note: "promoted 2026-09-03 (ADR-0050), the tracer key proving the wire-behavior group's cell grammar end-to-end. BHV-03: truncation is nearly universal (9/10 domain models), but only the 4 Anthropic models report a distinguishable stop_reason value — every other domain vendor shares one generic finish value for both the triggered and natural-completion case"
   # --- category-4 block (`workflow_features:`) ---
   - id: intent_pipeline
     group: spine
