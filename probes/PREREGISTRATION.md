@@ -2771,3 +2771,159 @@ is itself evidence this audit's zero-unresolved count is real, not
 separately asserted). `git diff -U0 -- probes/PREREGISTRATION.md`
 (measured before this entry's own commit): 0 removed lines — append-only
 held.
+
+## 2026-09-03 — Plan 12-06 Task 3: full battery, idempotency proof, closing ledger read — Phase 12 CLOSED
+
+No paid call in this task. Every command below quotes its own exact
+trailing output line, not a paraphrase.
+
+### The five pre-commit battery commands (`CLAUDE.md`'s Lint section)
+
+```
+python3 scripts/build-tool-index.py --check
+```
+`48 reports checked, 0 unverifiable (drift is reported above and is not a
+failure)` — exit 0. Six tools report `behind` (hermes-agent, cline, codex,
+opencode, openspec, ecc), zero `UNVERIFIABLE`. A `behind` pin is a work
+queue, not a failure, per `CLAUDE.md`'s own distinction — recorded here as
+a work-queue entry: none of the six is a file this phase touches or a
+claim this phase's behavioral evidence depends on, so no re-read is
+triggered by this closing audit.
+
+```
+python3 scripts/build-refs-index.py --check
+```
+`22 papers + 4 cards checked, 0 problem(s)` — exit 0.
+
+```
+python3 scripts/check-taxonomy.py --check
+```
+`133 files checked, 0 problem(s)` — exit 0.
+
+```
+python3 probes/audit-evidence.py --check
+```
+`0 problem(s)` — exit 0, over the full tracked evidence base including
+every record this phase's six firing plans added.
+
+```
+python3 probes/check-docs-claims.py --check
+```
+`0 problem(s)` — exit 0.
+
+### The four generator drift checks this phase's pipeline depends on
+
+```
+python3 scripts/classify-probes.py --check
+```
+`0 problem(s)` — exit 0. The contract classifier stays byte-stable; this
+phase never touched a contract-sweep cell.
+
+```
+python3 scripts/build-probe-matrix.py --check
+```
+`0 problem(s)` — exit 0.
+
+```
+python3 scripts/classify-behavioral.py --check
+```
+`0 problem(s)` — exit 0.
+
+```
+python3 scripts/build-behavioral-matrix.py --check
+```
+`0 problem(s)` — exit 0.
+
+Two more commands from this task's own `<verify>`, both green:
+`python3 probes/harness/runner.py --selftest`: `53 cases run, 0
+problem(s)` — exit 0 (the printed per-case fixture lines above the
+summary are the selftest's own deliberately-invalid fixtures exercising
+error paths, e.g. `bad-repeat.yaml`/`bad-top-level-params.yaml`/the D-09
+security tripwire — expected stderr from the fixture battery, not a
+failure; the summary line and exit code are the verdict). `python3
+probes/harness/ledger.py --totals`: printed below in full, global
+$0.309622, exit 0 (under the $0.32 envelope, per this task's own
+`fails_when`).
+
+### Idempotency proof
+
+Captured `probes/classified/behavioral.yaml`, `comparisons/behavioral.md`,
+`probes/classified/contract-sweep.yaml`, and `comparisons/probes.md`
+before a second regeneration pass; re-ran all four generators
+(`classify-behavioral.py`, `build-behavioral-matrix.py`,
+`classify-probes.py`, `build-probe-matrix.py`); diffed each against its
+own captured copy:
+
+```
+diff <captured>/behavioral.yaml.before probes/classified/behavioral.yaml       # NO DIFF
+diff <captured>/behavioral.md.before comparisons/behavioral.md                 # NO DIFF
+diff <captured>/contract-sweep.yaml.before probes/classified/contract-sweep.yaml  # NO DIFF
+diff <captured>/probes.md.before comparisons/probes.md                         # NO DIFF
+git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md    # no output
+```
+
+All four generated artifacts this phase touches — plus the two the
+byte-stability proof (D-11) requires stay untouched entirely —
+regenerate byte-identically. Regenerating twice in a row produces the
+same bytes both times.
+
+### Closing ledger read (read live, never estimated)
+
+```
+python3 probes/harness/ledger.py --totals
+```
+
+```json
+{
+  "global": {"cost_usd": 0.309622},
+  "by_vendor": {
+    "anthropic": {"cost_usd": 0.104699},
+    "xai":       {"cost_usd": 0.056790},
+    "kimi":      {"cost_usd": 0.050673},
+    "openai":    {"cost_usd": 0.047825},
+    "qwen":      {"cost_usd": 0.019003},
+    "dseek":     {"cost_usd": 0.012184},
+    "gemini":    {"cost_usd": 0.009762},
+    "zai":       {"cost_usd": 0.008687}
+  }
+}
+```
+`global total: $0.309622` — exit 0.
+
+**Global total:** $0.309622 (cumulative across every phase this
+instrument has fired since Phase 9 — the ledger is one append-only file
+with no phase boundary of its own; the per-vendor table above is the same
+global figure, not phase-scoped).
+
+**Delta from the phase's starting baseline ($0.071612):**
+$0.309622 − $0.071612 = **$0.238010** — this is Phase 12's own spend, the
+same figure every prior plan in this phase (12-02 through 12-05) has
+carried forward and re-derived against the live ledger rather than
+estimating.
+
+**Ratio of actual spend to the approved envelope:** $0.238010 / $0.32 =
+**0.7438 (74.4%)** — the phase closed with **$0.081990** of its approved
+$0.32 envelope unspent (25.6% headroom), never exceeded at any point
+across six firing/documentation plans.
+
+**Per-vendor headroom against the $0.50 sub-ceiling** (`vendor_soft_usd_default`,
+`probes/harness/ceilings.yaml`) — no vendor came close: the highest is
+Anthropic at $0.104699 (20.9% of its own sub-ceiling), followed by xAI at
+$0.056790 (11.4%), Kimi at $0.050673 (10.1%), OpenAI at $0.047825 (9.6%),
+Qwen at $0.019003 (3.8%), DeepSeek at $0.012184 (2.4%), Gemini at
+$0.009762 (2.0%), and Zai at $0.008687 (1.7%). Every vendor sits well
+under half its own sub-ceiling; the phase never approached a per-vendor
+breach at any point.
+
+### Phase 12 — CLOSED
+
+All five pre-commit battery commands and all four generator drift checks
+exit 0 over the extended evidence base. Every generated artifact this
+phase touches regenerates byte-identically, twice in a row. The Task 2
+coverage-and-citation audit reports zero unresolved expected values and
+every applicable model/vendor for every requirement reconciled to a fired
+cell or a cited skip. The phase's actual spend ($0.238010) is read live
+and scored at 74.4% of its approved $0.32 envelope, with every vendor far
+under its own sub-ceiling. No further paid call is planned. Promotion of
+this phase's findings into `docs/conclusions.md` and the affected notes
+is Phase 13's declared job, per Task 2's audit entry above.
