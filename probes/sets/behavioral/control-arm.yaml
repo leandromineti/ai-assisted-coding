@@ -16,17 +16,44 @@
 # probes/sets/contract-zero-cost.yaml's own header-comment convention for a
 # hand-authored set file (12-02 read_first).
 #
-# Task 1 (this file's first commit) declares ONLY claude-haiku-4-5's 5-repeat
-# control group — the tracer slice that proves the whole pipeline (probe set ->
+# Task 1 (this file's first commit) declared ONLY claude-haiku-4-5's 5-repeat
+# control group — the tracer slice that proved the whole pipeline (probe set ->
 # runner -> probes/raw/anthropic.jsonl -> classify-behavioral.py ->
 # probes/classified/behavioral.yaml -> comparisons/behavioral.md) end to end on one
-# cheap cell before the arm expands to the other 8 applicable models in Task 2.
+# cheap cell before the arm expanded.
+#
+# Task 2 (this commit) expands to the other 8 applicable models — nine models
+# total. The other 3 Claude models (claude-fable-5, claude-opus-5, claude-sonnet-5)
+# are DELIBERATELY ABSENT: their D-05 default-config repeatability cell in plan
+# 12-03 is itself their own baseline arm (no separate control need — see the Phase
+# 12 preregistration's own Measurements section, "D-03 control-arm cell").
+#
+# Per-model `max_tokens` is set generously above the shared ~100-token family
+# baseline for every model whose `reasoning_toggle` in probes/harness/models.yaml
+# is `always-on` or `default-on` (gemini-3-1-pro, grok-4-5, kimi-k3, glm-5.3:
+# always-on; gpt-5-6-sol, deepseek-v4, qwen3.8-max, qwen3.8-flash: default-on) —
+# the Phase 9 Gemini lesson (a too-small budget yields HTTP 200 with EMPTY visible
+# content at an always-reasoning model, a silent null result, not a rejection).
+# Confirmed from the fired records themselves, not the HTTP status alone, per this
+# task's own action text.
 #
 # Dated per CLAUDE.md's "Dates on everything" and the standing "verify date before
 # stamping" discipline: `date -u` at authoring time read 2026-09-03, not the
 # 2026-09-02 literal PLAN.md's action text names (a planning-day date literal, the
 # same class of mismatch 12-01-SUMMARY.md already documented and corrected) —
 # recorded as a deviation in 12-02-SUMMARY.md, not silently reproduced.
+#
+# Budget correction, same session (Task 2): the first live fire at max_tokens: 600
+# for kimi-k3 and glm-5.3 hit the Phase 9 Gemini lesson directly — both models'
+# reasoning consumed the ENTIRE budget before any visible text (glm-5.3: 5/5
+# empty, finish_reason "length", 597-600 reasoning_tokens; kimi-k3: 3/5 empty the
+# same way, 2/5 succeeded when reasoning finished under ~520 tokens). Both raised
+# to max_tokens: 1200 (reasoning headroom ~600 + a two-sentence answer ~100-300).
+# The old 600-token request bodies are a DIFFERENT canonical body -> a DIFFERENT
+# probe_id hash (D-04) -> their 10 empty-text records remain on disk, unmodified
+# (append-only, rule 3), and are simply never joined by the classifier (no
+# declared cell cites their probe_id) — historical evidence of the pre-fix
+# no-signal attempt, not a re-fire or overwrite of anything.
 checked: 2026-09-03
 
 probes:
@@ -65,6 +92,286 @@ probes:
     prompt: "Invent a fictional animal and describe it in two sentences."
     max_tokens: 150
     repeat: 5
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 1
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 2
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 3
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 4
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 5
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 1
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 2
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 3
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 4
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 5
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 1
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 2
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 3
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 4
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 5
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 1
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 2
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 3
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 4
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 5
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
 
 expectations:
   - model: claude-haiku-4-5
@@ -81,6 +388,134 @@ expectations:
       repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
       for claude-haiku-4-5 at its own default sampling settings, and the model's
       BHV-02 temp-0/determinism cells in plan 12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: gpt-5-6-sol
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for gpt-5-6-sol at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: gemini-3-1-pro
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for gemini-3-1-pro at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: grok-4-5
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for grok-4-5 at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: kimi-k3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for kimi-k3 at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: deepseek-v4
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for deepseek-v4 at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: glm-5.3
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for glm-5.3 at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: qwen3.8-max
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for qwen3.8-max at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
+      before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: qwen3.8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing prompt
+      (inventing a fictional animal) at default, unspecified-temperature sampling
+      should not produce byte-identical visible output across five independent
+      repeats. A control arm that matches 5/5 would mean this prompt lacks entropy
+      for qwen3.8-flash at its own default sampling settings, and this model's BHV-01/
+      BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
       before they measure anything (D-03).
     expected_source: "prereg:Calibration design (rule 5d)"
 

@@ -1779,3 +1779,68 @@ Verification, all read from the actual runs, none assumed:
 - **Resumability (D-09's own point):** re-running the identical command printed `SKIP ... (already logged)` for all five repeat probe_ids; `grep -c 'behavioral-control' probes/raw/anthropic.jsonl` reports exactly **5** both before and after the re-run — no duplicate fire, no duplicate ledger line.
 
 Ledger read live (`python3 probes/harness/ledger.py --totals`), never estimated: global **$0.074202** (up from the $0.071612 pre-sign-off baseline, delta **+$0.00259** for these 5 calls), anthropic vendor total **$0.012142** — both far under every ceiling in force (D-02: $10 hard / $8 warn / $0.50 per-vendor soft; anthropic at ~2.4% of its own sub-ceiling).
+
+**2026-09-03, plan 12-02 Task 2 — the control arm expanded to the remaining 8
+applicable models (`python3 probes/harness/runner.py --set
+probes/sets/behavioral/control-arm.yaml`), nine models total.** 40 new
+control-arm calls declared (5 repeats each at `gpt-5-6-sol`, `gemini-3-1-pro`,
+`grok-4-5`, `kimi-k3`, `deepseek-v4`, `glm-5.3`, `qwen3.8-max`,
+`qwen3.8-flash`), all 40 landed HTTP 200 / `terminal: verdict` on the first
+fire.
+
+**A genuine budget correction, found by reading the fired records themselves
+rather than trusting the HTTP status — the Phase 9 Gemini lesson, twice.**
+`glm-5.3` (5/5) and 3 of `kimi-k3`'s 5 repeats returned EMPTY visible text at
+`max_tokens: 600` despite every one being HTTP 200 — both models' reasoning
+consumed the entire budget before producing any answer text
+(`finish_reason: "length"`, `reasoning_tokens` 497-600 out of the 600-token
+cap; confirmed directly from each record's own `usage`/`response_body_raw`,
+not assumed from the accepted status). Per this task's own action text
+("a `no-signal` control arm cannot calibrate anything"), both models' budgets
+were raised to `max_tokens: 1200` and their groups re-fired BEFORE
+proceeding — the old 600-token request bodies hash to a different probe_id
+(D-04: a changed request body is a changed cell), so the 10 empty-text
+records remain on disk unmodified (append-only, rule 3), simply unjoined by
+the classifier (no declared cell cites their probe_id) — historical evidence
+of the pre-fix attempt, not an overwrite. All 10 re-fired calls (5 kimi-k3 + 5
+glm-5.3) landed HTTP 200 with real, non-empty visible text on the second
+fire; recorded as a deviation in 12-02-SUMMARY.md.
+
+**Result: all nine applicable models' control arms VARIED — 0/4 at every
+model, `distinct_outputs: 5` at every model (all five repeats produced a
+distinct fictional-animal description, at every model, no exceptions):**
+
+| Model | Rate | distinct_outputs | Verdict |
+|---|---|---|---|
+| claude-haiku-4-5 | 0/4 | 5 | varies |
+| gpt-5-6-sol | 0/4 | 5 | varies |
+| gemini-3-1-pro | 0/4 | 5 | varies |
+| grok-4-5 | 0/4 | 5 | varies |
+| kimi-k3 | 0/4 | 5 | varies |
+| deepseek-v4 | 0/4 | 5 | varies |
+| glm-5.3 | 0/4 | 5 | varies |
+| qwen3.8-max | 0/4 | 5 | varies |
+| qwen3.8-flash | 0/4 | 5 | varies |
+
+This is the D-03-favorable outcome across the board: no model's control arm
+matched at any rate above 0/4, so no model's prompt lacks entropy at its own
+default sampling settings — every applicable model's BHV-01/BHV-02
+determinism cells in plans 12-02(continued)/12-03 will measure something
+meaningful rather than a prompt artifact.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/control-arm.yaml --dry-run`: 45 distinct `DRY-RUN` probe_id lines across the 9 models.
+- `python3 scripts/classify-behavioral.py --check`: 0 problem(s).
+- `python3 scripts/build-behavioral-matrix.py --check`: 0 problem(s).
+- `python3 scripts/classify-probes.py --check`: 0 problem(s) — the contract pipeline remains undisturbed. `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty.
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base (55 behavioral records: 45 live cells + 10 pre-fix empty-text historical records).
+- `python3 -c "import yaml; d=yaml.safe_load(open('probes/classified/behavioral.yaml')); print(len(d['cells']))"`: **9** cells, one per applicable model, all `design: control`.
+
+Ledger read live (`python3 probes/harness/ledger.py --totals`): global
+**$0.107418** (up from $0.074202 after Task 1, delta **+$0.033216** for the
+50 calls fired in this task — 40 first-fire + 10 re-fire), well under the
+Phase 12 envelope ($0.32) and the $10/$8 global ceilings. Per-vendor:
+anthropic $0.012142 (unchanged, no new anthropic calls this task), dseek
+$0.005421, gemini $0.004158, kimi $0.025179, openai $0.013060, qwen
+$0.009908, xai $0.033906, zai $0.003643 — every vendor far under its $0.50
+sub-ceiling (highest, xai, at ~6.8% of it).

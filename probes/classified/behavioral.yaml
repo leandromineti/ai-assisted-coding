@@ -3,10 +3,10 @@
 # probes/raw/*.jsonl — do not edit by hand. Regenerate with
 # `python3 scripts/classify-behavioral.py`.
 #
-# 1 behavioral cell(s), 0 declared skip(s) (1 rows total).
+# 9 behavioral cell(s), 0 declared skip(s) (9 rows total).
 
 checked: 2026-09-03
-evidence_through: '2026-09-03T00:32:03Z'
+evidence_through: '2026-09-03T00:43:34Z'
 cells:
 - cell_id: claude-haiku-4-5--behavioral-control--high-entropy--default
   requirement: calibration
@@ -54,6 +54,436 @@ cells:
     - 103
     - 97
     - 106
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gpt-5-6-sol--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for gpt-5-6-sol at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - gpt-5-6-sol--behavioral-control--high-entropy--default--r1--87b44491
+  - gpt-5-6-sol--behavioral-control--high-entropy--default--r2--87b44491
+  - gpt-5-6-sol--behavioral-control--high-entropy--default--r3--87b44491
+  - gpt-5-6-sol--behavioral-control--high-entropy--default--r4--87b44491
+  - gpt-5-6-sol--behavioral-control--high-entropy--default--r5--87b44491
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 51
+    - 56
+    - 56
+    - 53
+    - 53
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gemini-3-1-pro--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for gemini-3-1-pro at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - gemini-3-1-pro--behavioral-control--high-entropy--default--r1--c3c0aa5b
+  - gemini-3-1-pro--behavioral-control--high-entropy--default--r2--c3c0aa5b
+  - gemini-3-1-pro--behavioral-control--high-entropy--default--r3--c3c0aa5b
+  - gemini-3-1-pro--behavioral-control--high-entropy--default--r4--c3c0aa5b
+  - gemini-3-1-pro--behavioral-control--high-entropy--default--r5--c3c0aa5b
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    output_tokens:
+    - 20
+    - 21
+    - 24
+    - 24
+    - 22
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: grok-4-5--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for grok-4-5 at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - grok-4-5--behavioral-control--high-entropy--default--r1--c7065852
+  - grok-4-5--behavioral-control--high-entropy--default--r2--c7065852
+  - grok-4-5--behavioral-control--high-entropy--default--r3--c7065852
+  - grok-4-5--behavioral-control--high-entropy--default--r4--c7065852
+  - grok-4-5--behavioral-control--high-entropy--default--r5--c7065852
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 2
+    - 7
+    - 10
+    - 12
+    - 13
+    system_fingerprints:
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+    - fp_a39489019fa99b6e
+  note: null
+- cell_id: kimi-k3--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for kimi-k3 at its own default sampling settings, and this model''s BHV-01/ BHV-02 determinism
+    cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - kimi-k3--behavioral-control--high-entropy--default--r1--c96c7328
+  - kimi-k3--behavioral-control--high-entropy--default--r2--c96c7328
+  - kimi-k3--behavioral-control--high-entropy--default--r3--c96c7328
+  - kimi-k3--behavioral-control--high-entropy--default--r4--c96c7328
+  - kimi-k3--behavioral-control--high-entropy--default--r5--c96c7328
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 79
+    - 83
+    - 76
+    - 78
+    - 103
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: deepseek-v4--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for deepseek-v4 at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - deepseek-v4--behavioral-control--high-entropy--default--r1--2e9bd3be
+  - deepseek-v4--behavioral-control--high-entropy--default--r2--2e9bd3be
+  - deepseek-v4--behavioral-control--high-entropy--default--r3--2e9bd3be
+  - deepseek-v4--behavioral-control--high-entropy--default--r4--2e9bd3be
+  - deepseek-v4--behavioral-control--high-entropy--default--r5--2e9bd3be
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 67
+    - 57
+    - 55
+    - 59
+    - 63
+    system_fingerprints:
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+    - a307abda487cd1b463329ccb945ce396
+  note: null
+- cell_id: glm-5.3--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for glm-5.3 at its own default sampling settings, and this model''s BHV-01/ BHV-02 determinism
+    cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - glm-5.3--behavioral-control--high-entropy--default--r1--d1e29e26
+  - glm-5.3--behavioral-control--high-entropy--default--r2--d1e29e26
+  - glm-5.3--behavioral-control--high-entropy--default--r3--d1e29e26
+  - glm-5.3--behavioral-control--high-entropy--default--r4--d1e29e26
+  - glm-5.3--behavioral-control--high-entropy--default--r5--d1e29e26
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - length
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 55
+    - 69
+    - 85
+    - 74
+    - 76
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: qwen3.8-max--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for qwen3.8-max at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - qwen3.8-max--behavioral-control--high-entropy--default--r1--4eb80d11
+  - qwen3.8-max--behavioral-control--high-entropy--default--r2--4eb80d11
+  - qwen3.8-max--behavioral-control--high-entropy--default--r3--4eb80d11
+  - qwen3.8-max--behavioral-control--high-entropy--default--r4--4eb80d11
+  - qwen3.8-max--behavioral-control--high-entropy--default--r5--4eb80d11
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 42
+    - 47
+    - 45
+    - 39
+    - 47
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: qwen3.8-flash--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for qwen3.8-flash at its own default sampling settings, and this model''s BHV-01/ BHV-02
+    determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything
+    (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - qwen3.8-flash--behavioral-control--high-entropy--default--r1--af9177e0
+  - qwen3.8-flash--behavioral-control--high-entropy--default--r2--af9177e0
+  - qwen3.8-flash--behavioral-control--high-entropy--default--r3--af9177e0
+  - qwen3.8-flash--behavioral-control--high-entropy--default--r4--af9177e0
+  - qwen3.8-flash--behavioral-control--high-entropy--default--r5--af9177e0
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 50
+    - 54
+    - 50
+    - 50
+    - 55
     system_fingerprints:
     - null
     - null
