@@ -517,7 +517,18 @@ def run_check(
                     })
                     has_finding = True
 
+                is_no_request_side_field = (
+                    parsed["head"]["kind"] == "na"
+                    and parsed["head"].get("reason") == "no request-side field"
+                )
                 for kind, cid in parsed["citations"]:
+                    if kind == "docs-claims" and not is_no_request_side_field:
+                        findings.append({
+                            "scope": "citation", "identifier": identifier,
+                            "rule": "misplaced-docs-claims-citation",
+                        })
+                        has_finding = True
+
                     valid_ids = docs_claims_ids if kind == "docs-claims" else all_ids
                     if cid not in valid_ids:
                         findings.append({
@@ -822,6 +833,29 @@ def selftest() -> tuple[int, int]:
             behavioral_cells=beh_cells, contract_cells=[],
         )
         check("an unparseable cell was silently skipped instead of firing", any(f["rule"] == "unparseable-cell" for f in findings))
+
+        # --- run_check: a verdict-head cell citing a docs-claims token (valid
+        #     on its own terms, resolving against a real skip's cited_source)
+        #     fires misplaced-docs-claims-citation — that citation kind is
+        #     documented as citable ONLY on a "no request-side field" na head
+        #     (WR-03) ---
+        cases += 1
+        (tools_dir / "fixture-model.md").write_text(
+            "---\n"
+            "name: fixture-model\n"
+            "model_features:\n"
+            '  stop_sequence_honesty: "honest — OBSERVED 2026-09-03: context, '
+            'docs-claims:`seed/anthropic`, promoted ADR-0050."\n'
+            "---\n\nBody.\n"
+        )
+        findings, examined, mismatched, missing = run_check(
+            tools_dir=tools_dir, registry_path=td_path / "registry.yaml", models_path=td_path / "models.yaml",
+            behavioral_cells=beh_cells, behavioral_skips=fixture_skips, contract_cells=[],
+        )
+        check(
+            "a verdict-head cell citing docs-claims did not fire misplaced-docs-claims-citation",
+            any(f["rule"] == "misplaced-docs-claims-citation" for f in findings),
+        )
 
         # --- run_check: a cell citing a wrong ADR number in the trailing
         #     `promoted ADR-<NNNN>.` clause fires wrong-adr-citation — the
