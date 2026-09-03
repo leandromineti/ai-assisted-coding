@@ -24,6 +24,15 @@ commit, no report file. The row itself is the claim, which sets the conventions:
   as the ADR index table: these rows are primary dated observations (miniature
   decision records), not derived summaries of content that lives elsewhere.
 
+## Category 1 — models
+
+*(Section added 2026-09-03. Model candidates have no repo and no stars — the second
+column records the sighting surface instead, same convention as ZCode's row below.)*
+
+| Candidate | Stars | Why not (yet) |
+|---|---|---|
+| Gemini 3.8 Flash (Google) | — *(model, no repo)* | Added 2026-09-03, owner-pointed to the [launch post](https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/) (published 2026-09-02). Announcement facts, all from that one post: in the Gemini API and AI Studio at launch; introductory pricing **$0.75 / $3.75 per M in/out through 2026-12-31, then $1.50 / $7.50** — a dated price cliff worth recording now, since either figure will look wrong later without the date; claims "significant improvements from 3.7 Flash across software engineering, agentic tasks, and critical, multi-step reasoning"; no context window, parameter surface, or API model id stated. The id gap has a known zero-cost resolution: the `ListModels` call (`GET /v1beta/models`), the same route that caught `gemini-3.1-pro-preview` when the bare id 404'd (`probes/harness/models.yaml`, 2026-09-01). Worth ingesting because Google is the only maker in the sweep represented by a single model — and that one ([gemini-3-1-pro](1-models/gemini-3-1-pro.md)) still sits in Preview while its own README row notes the Flash line is the Stable one; a Flash report would give the sweep its first Stable-track Gemini. The restricted sibling **Gemini 3.8 Flash Cyber** (Fairwind Program access only) is noted, not a candidate: no key path means no first-party API surface to assess (ADR-0048). Why not yet: **the launch post is all that has been read** — no model card or docs page (a card note needs a Wayback snapshot per `references/cards/`), no probe. And Phase 12's behavioral run is mid-flight against a preregistered cell set at the pinned model roster — adding a model mid-sweep would fork the envelope, so the read ripens until the phase closes |
+
 ## Category 2 — harnesses
 
 | Candidate | Stars | Why not (yet) |
