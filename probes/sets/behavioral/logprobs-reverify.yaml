@@ -1,0 +1,320 @@
+# probes/sets/behavioral/logprobs-reverify.yaml — Phase 12 plan 12-04 Task 2's
+# BHV-05 cells: does an accepted `logprobs`+`top_logprobs` request actually
+# carry real per-token data, at a budget large enough to rule out the
+# masked-signal explanation (Phase 11's own 16-64-token budget could have
+# produced a 200-with-empty-payload for a reason unrelated to whether the
+# vendor honors the parameter at all).
+#
+# ONE combined request per targeted (model, mode) pair, sending BOTH
+# `logprobs: true` AND `top_logprobs: 3` together — settling both BHV-05
+# sub-questions in a single call, and specifically removing the reason the
+# contract sweep's own `top-logprobs` cells were unverifiable: that
+# detector deliberately returns no evidence when the companion `logprobs`
+# flag is absent from the SAME request (scripts/classify-probes.py's own
+# `detect_none`, dispatched to `top-logprobs` for exactly this reason).
+#
+# Ten targeted (model, mode) pairs (probes/classified/contract-sweep.yaml,
+# filtered param=top-logprobs, confirmed `accepted-unverified` with
+# `honor_evidence: none` at every one of these — the companion-flag-absent
+# case):
+#   grok-4-5     {default, thinking-on}
+#   glm-5.3      {default, thinking-on}
+#   qwen3.8-max  {default, thinking-off, thinking-on}
+#   qwen3.8-flash{default, thinking-off, thinking-on}
+#
+# For each non-default-mode entry, the thinking-mode fragment is copied
+# VERBATIM from the corresponding entry in
+# probes/sets/generated/contract-sweep.yaml for that same model and mode
+# (confirmed against that file's own `n`-row thinking-on/off entries before
+# authoring, per this task's own read_first instruction — never
+# reconstructed by hand):
+#   grok-4-5     thinking-on:  {reasoning_effort: low}          (xai shares
+#                                the openai_compat family default shape)
+#   glm-5.3      thinking-on:  {thinking: {type: enabled}}      (zai override)
+#   qwen3.8-max/qwen3.8-flash
+#                thinking-off: {enable_thinking: false}
+#                thinking-on:  {enable_thinking: true}          (qwen override)
+#
+# `max_tokens`: sized generously above this phase's own ~100-token envelope
+# design, reusing the same established, budget-corrected per-model values
+# (grok-4-5: 600, glm-5.3: 1200, qwen3.8-max/flash: 300) plan 12-02/12-03
+# already confirmed avoid the reasoning-length-exhaustion empty-completion
+# failure — a real risk here since every thinking-on cell explicitly turns
+# reasoning ON, and glm-5.3 in particular required the larger 1200-token
+# cap even for a short two-sentence creative task at this exact vendor.
+#
+# Prompt: the shared D-04 prompt ("Invent a fictional animal and describe it
+# in two sentences.") reused for consistency — BHV-05's own question
+# (does the response carry real per-token logprobs) does not depend on
+# prompt content.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before
+# stamping": `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # --- grok-4-5 (xai, max_tokens 600) ---
+  - model: grok-4-5
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {logprobs: true, top_logprobs: 3}
+  - model: grok-4-5
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {logprobs: true, top_logprobs: 3, reasoning_effort: low}
+
+  # --- glm-5.3 (zai, max_tokens 1200 — budget-corrected) ---
+  - model: glm-5.3
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {logprobs: true, top_logprobs: 3}
+  - model: glm-5.3
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {logprobs: true, top_logprobs: 3, thinking: {type: enabled}}
+
+  # --- qwen3.8-max (qwen, max_tokens 300) ---
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3}
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-off
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3, enable_thinking: false}
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3, enable_thinking: true}
+
+  # --- qwen3.8-flash (qwen, max_tokens 300) ---
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3}
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-off
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3, enable_thinking: false}
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {logprobs: true, top_logprobs: 3, enable_thinking: true}
+
+expectations:
+  - model: grok-4-5
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "grok-4-5--top-logprobs--3--default--ee0a3b87"
+    expected: >-
+      xAI documents `logprobs`/`top_logprobs` (range 0-8) with a
+      pre-announced silent-ignore contract on newer reasoning models — not
+      relevant here (grok-4-5, default mode). Expect real per-token content
+      at the requested 3 alternatives.
+    expected_source: "docs-claims:top-logprobs/xai"
+  - model: grok-4-5
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "grok-4-5--top-logprobs--3--thinking-on--d69aefff"
+    expected: >-
+      Same xAI contract, now with reasoning explicitly enabled
+      (`reasoning_effort: low`) — the silent-ignore language names "newer"
+      reasoning models generically; grok-4-5 with thinking on is the
+      sharpest test of whether that applies here.
+    expected_source: "docs-claims:top-logprobs/xai"
+  - model: glm-5.3
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "glm-5.3--top-logprobs--3--default--fd546fdf"
+    expected: >-
+      Z.ai documents no `logprobs`/`top_logprobs` field at all
+      (absent-from-docs) — yet Phase 11's own wire evidence shows the
+      boolean `logprobs` flag accepted (accepted-ignored, no per-token
+      content found at the old budget). A first discovery at the larger
+      budget: either real per-token data appears, or the undocumented
+      acceptance is confirmed hollow.
+    expected_source: "docs-claims:logprobs/zai"
+  - model: glm-5.3
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "glm-5.3--top-logprobs--3--thinking-on--1d956dd8"
+    expected: >-
+      Same absent-from-docs framing as glm-5.3 default mode, now with
+      thinking explicitly enabled.
+    expected_source: "docs-claims:logprobs/zai"
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-max--top-logprobs--3--default--5c386652"
+    expected: >-
+      Qwen documents `top_logprobs` (0-5, narrower than OpenAI's/Gemini's
+      own 0-20) as applying only when `logprobs` is set true, and documents
+      `logprobs` itself as supported only by a named model subset excluding
+      thinking-phase content. Phase 11's own wire evidence already shows the
+      boolean `logprobs` flag accepted-honored at this (model, mode); this
+      combined cell settles the still-unverified `top_logprobs` count
+      specifically.
+    expected_source: "docs-claims:top-logprobs/qwen"
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-off
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-max--top-logprobs--3--thinking-off--3e87a714"
+    expected: >-
+      Same Qwen `top_logprobs` contract, thinking explicitly disabled.
+    expected_source: "docs-claims:top-logprobs/qwen"
+  - model: qwen3.8-max
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-max--top-logprobs--3--thinking-on--9cdee6cc"
+    expected: >-
+      Same Qwen `top_logprobs` contract, thinking explicitly enabled — Qwen's
+      own docs state thinking-phase content is excluded from logprobs even
+      when the flag is set, so this cell is the sharpest test of whether
+      that exclusion empties the whole payload or only the reasoning
+      portion.
+    expected_source: "docs-claims:top-logprobs/qwen"
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: default
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-flash--top-logprobs--3--default--416a489a"
+    expected: >-
+      Same Qwen `top_logprobs` contract as qwen3.8-max, shared across the
+      qwen3.8 line. Phase 11's own wire evidence shows the boolean
+      `logprobs` flag accepted-ignored (no per-token content found) at this
+      smaller/cheaper model, unlike qwen3.8-max's own accepted-honored
+      result at the same cell — a genuine per-model divergence within one
+      vendor this combined cell re-checks at a larger budget.
+    expected_source: "docs-claims:top-logprobs/qwen"
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-off
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55"
+    expected: >-
+      Same Qwen `top_logprobs` contract, thinking explicitly disabled.
+    expected_source: "docs-claims:top-logprobs/qwen"
+  - model: qwen3.8-flash
+    param: logprobs-reverify
+    value: combined
+    mode: thinking-on
+    requirement: BHV-05
+    design: single-logprobs
+    settles_probe_id: "qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717"
+    expected: >-
+      Same Qwen `top_logprobs` contract, thinking explicitly enabled.
+    expected_source: "docs-claims:top-logprobs/qwen"
+
+# Eight declared skips: the four Claude models (no request-side logprobs
+# field under any name — absent-from-docs, checked-absence), plus the four
+# cells Phase 11 already settled with response-visible evidence (the boolean
+# `logprobs` flag classified `accepted-honored` at these exact (model, mode)
+# pairs) — kept by citation (D-08), never re-derived. Note that two of these
+# four (qwen3.8-max default/thinking-off) are cells this SAME file also
+# fires a combined cell for: the boolean sub-question is settled, the
+# top_logprobs sub-question is not, so the combined re-fire above still
+# applies — these two facts are independent, not a contradiction.
+skips:
+  - model: claude-fable-5
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:logprobs/anthropic"
+  - model: claude-opus-5
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:logprobs/anthropic"
+  - model: claude-sonnet-5
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:logprobs/anthropic"
+  - model: claude-haiku-4-5
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:logprobs/anthropic"
+  - model: gpt-5-6-sol
+    param: logprobs
+    mode: thinking-off
+    requirement: BHV-05
+    reason: already-settled-logprobs-honored
+    cited_probe_id: "gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab"
+  - model: deepseek-v4
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: already-settled-logprobs-honored
+    cited_probe_id: "deepseek-v4--logprobs--true--default--3e9e0cfd"
+  - model: qwen3.8-max
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: already-settled-logprobs-honored
+    cited_probe_id: "qwen3.8-max--logprobs--true--default--8c88fc79"
+  - model: qwen3.8-max
+    param: logprobs
+    mode: thinking-off
+    requirement: BHV-05
+    reason: already-settled-logprobs-honored
+    cited_probe_id: "qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac"

@@ -1,0 +1,365 @@
+# probes/sets/behavioral/stop-truncation.yaml — Phase 12 plan 12-04 Task 1's
+# BHV-03 cells: does a `stop` sequence actually truncate the completion, and
+# does the finish/stop-reason field say so honestly.
+#
+# A NEW prompt for this family (the contract sweep's own `stop` cell used a
+# benign presence-only "reply with one word" prompt whose stop token was
+# never at risk of appearing — re-firing it would produce no signal). This
+# family instead asks for a short, highly predictable enumerated list — the
+# days of the week, in order, starting Monday — and sets the stop sequence
+# to "Thursday", the fourth item: virtually guaranteed to appear (assuming
+# the model follows the instruction) and partway through the list, so a
+# genuine truncation is measurable (the triggering call should stop mid-list,
+# strictly shorter than an unstopped control run of the identical prompt).
+#
+# Two entries per model: a TRIGGERING call (the stop sequence set, in that
+# wire family's own field name) and a non-triggering CONTROL call (identical
+# prompt/budget, no stop parameter at all) — without the control there is no
+# way to show the stop parameter itself, rather than the prompt or the
+# budget, is what shortened the output (baseline-before-interaction).
+#
+# Wire-family field names for the stop-sequence parameter
+# (probes/inventory.yaml's own `stop` row, confirmed against
+# probes/classified/contract-sweep.yaml before authoring):
+#   anthropic_messages -> stop_sequences
+#   openai_compat      -> stop
+#   gemini              -> stopSequences
+#
+# Fired at the 10 models whose `stop` cell is `accepted-unverified` in Phase
+# 11 (probes/classified/contract-sweep.yaml, filtered param=stop):
+# claude-fable-5, claude-opus-5, claude-sonnet-5, claude-haiku-4-5,
+# gemini-3-1-pro, kimi-k3, deepseek-v4, glm-5.3, qwen3.8-max, qwen3.8-flash.
+# gpt-5-6-sol and grok-4-5 both reject `stop` outright in Phase 11
+# (`gpt-5-6-sol--stop--["the"]--default--6a86352a`,
+# `grok-4-5--stop--["the"]--default--ee1a658f`, both HTTP 400) — declared
+# skips below, cited, not fired.
+#
+# `max_tokens` per model: the same established, budget-corrected per-model
+# values plan 12-03's temp0-repeatability.yaml already confirmed avoid the
+# reasoning-length-exhaustion empty-completion failure (12-02/12-03's own
+# read Run log entries) — reused verbatim here rather than re-deriving a
+# fresh estimate for this shorter list-style prompt, since a larger,
+# already-proven-safe budget is strictly conservative for a shorter task.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before
+# stamping": `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # --- claude-fable-5 (anthropic, max_tokens 300) ---
+  - model: claude-fable-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop_sequences: ["Thursday"]}
+  - model: claude-fable-5
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+  # --- claude-opus-5 (anthropic, max_tokens 300) ---
+  - model: claude-opus-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop_sequences: ["Thursday"]}
+  - model: claude-opus-5
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+  # --- claude-sonnet-5 (anthropic, max_tokens 300) ---
+  - model: claude-sonnet-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop_sequences: ["Thursday"]}
+  - model: claude-sonnet-5
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+  # --- claude-haiku-4-5 (anthropic, max_tokens 150) ---
+  - model: claude-haiku-4-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 150
+    extra_params: {stop_sequences: ["Thursday"]}
+  - model: claude-haiku-4-5
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 150
+
+  # --- gemini-3-1-pro (gemini, max_tokens 600) ---
+  - model: gemini-3-1-pro
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 600
+    extra_params: {stopSequences: ["Thursday"]}
+  - model: gemini-3-1-pro
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 600
+
+  # --- kimi-k3 (kimi, max_tokens 1200 — budget-corrected) ---
+  - model: kimi-k3
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 1200
+    extra_params: {stop: ["Thursday"]}
+  - model: kimi-k3
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 1200
+
+  # --- deepseek-v4 (dseek, max_tokens 300) ---
+  - model: deepseek-v4
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop: ["Thursday"]}
+  - model: deepseek-v4
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+  # --- glm-5.3 (zai, max_tokens 1200 — budget-corrected) ---
+  - model: glm-5.3
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 1200
+    extra_params: {stop: ["Thursday"]}
+  - model: glm-5.3
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 1200
+
+  # --- qwen3.8-max (qwen, max_tokens 300) ---
+  - model: qwen3.8-max
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop: ["Thursday"]}
+  - model: qwen3.8-max
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+  # --- qwen3.8-flash (qwen, max_tokens 300) ---
+  - model: qwen3.8-flash
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop: ["Thursday"]}
+  - model: qwen3.8-flash
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+expectations:
+  - model: claude-fable-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Anthropic documents stop_sequences as custom text sequences that cause
+      the model to stop generating, with `stop_reason` set to
+      "stop_sequence" when one is hit — the one wire family whose finish
+      field can genuinely distinguish a triggered stop from a natural
+      completion. Expect the triggering call to truncate strictly before
+      "Thursday" and stop_reason to read "stop_sequence".
+    expected_source: "docs-claims:stop/anthropic"
+  - model: claude-opus-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Same Anthropic stop_sequences contract as claude-fable-5 — expect
+      truncation before "Thursday" and an honest "stop_sequence" finish
+      reason.
+    expected_source: "docs-claims:stop/anthropic"
+  - model: claude-sonnet-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Same Anthropic stop_sequences contract as claude-fable-5 — expect
+      truncation before "Thursday" and an honest "stop_sequence" finish
+      reason.
+    expected_source: "docs-claims:stop/anthropic"
+  - model: claude-haiku-4-5
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Same Anthropic stop_sequences contract as claude-fable-5 — expect
+      truncation before "Thursday" and an honest "stop_sequence" finish
+      reason.
+    expected_source: "docs-claims:stop/anthropic"
+  - model: gemini-3-1-pro
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Gemini documents stopSequences (up to 5) as stopping output at the
+      first appearance of a stop_sequence, not included in the response.
+      Gemini's shared `STOP` finishReason value is emitted for both a
+      triggered stop and a natural completion, so the finish field alone
+      cannot prove which happened here — the visible-text comparison against
+      the control is the only evidence this family trusts for this vendor.
+    expected_source: "docs-claims:stop/gemini"
+  - model: kimi-k3
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Kimi documents stop words (max 5 strings, each <=32 bytes) that halt
+      output when a full match is found, with the matched word itself not
+      output. openai_compat's shared `stop` finish value is emitted for both
+      a triggered stop and a natural completion — text comparison only.
+    expected_source: "docs-claims:stop/kimi"
+  - model: deepseek-v4
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      DeepSeek documents up to 16 stop sequences (four times OpenAI's/xAI's
+      own documented ceiling for the same field name) where the API stops
+      generating further tokens. openai_compat's shared `stop` finish value
+      is ambiguous here too — text comparison only.
+    expected_source: "docs-claims:stop/dseek"
+  - model: glm-5.3
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Z.ai's stop-word field carries a genuine within-vendor contradiction
+      (schema `maxItems: 4` vs. its own prose "only one stop word is
+      supported") — this family fires exactly ONE sequence everywhere, so
+      that contradiction is out of scope here (see the declared skip below)
+      and only the single-sequence behavior is exercised. openai_compat's
+      shared `stop` finish value is ambiguous — text comparison only.
+    expected_source: "docs-claims:stop/zai"
+  - model: qwen3.8-max
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Qwen documents stop words (string or array) that halt generation
+      immediately on a match. openai_compat's shared `stop` finish value is
+      ambiguous — text comparison only.
+    expected_source: "docs-claims:stop/qwen"
+  - model: qwen3.8-flash
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: "Thursday"
+    expected: >-
+      Same Qwen stop-word contract, shared across the qwen3.8 line — text
+      comparison only.
+    expected_source: "docs-claims:stop/qwen"
+
+# Three declared skips: the two models that reject `stop` outright on the
+# wire (cited to their own Phase 11 rejection probe_id), plus the one vendor
+# whose documented schema maximum contradicts its own prose about how many
+# stop words are supported — this family fires a single sequence everywhere,
+# so that contradiction is never exercised; declared out of scope rather
+# than silently absent, a candidate for a later phase.
+skips:
+  - model: gpt-5-6-sol
+    param: stop
+    mode: default
+    requirement: BHV-03
+    reason: wire-rejects-stop-default-mode
+    cited_probe_id: "gpt-5-6-sol--stop--[\"the\"]--default--6a86352a"
+  - model: grok-4-5
+    param: stop
+    mode: default
+    requirement: BHV-03
+    reason: wire-rejects-stop-default-mode
+    cited_probe_id: "grok-4-5--stop--[\"the\"]--default--ee1a658f"
+  - model: glm-5.3
+    param: stop
+    mode: default
+    requirement: BHV-03
+    reason: out-of-scope-multi-sequence-contradiction
+    cited_source: "docs-claims:stop/zai"

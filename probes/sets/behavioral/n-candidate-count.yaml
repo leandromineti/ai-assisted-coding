@@ -1,0 +1,208 @@
+# probes/sets/behavioral/n-candidate-count.yaml — Phase 12 plan 12-04 Task 2's
+# BHV-04 cells: does a request for MORE THAN ONE candidate actually return
+# more than one. Phase 11 only ever fired `n` at value 1 (trivially satisfied
+# — a response always contains at least one candidate); `n: 2` is the first
+# value that can actually be refuted.
+#
+# One entry per model at the 7 models whose `n` cell is `accepted-honored`
+# (value 1) in Phase 11 (probes/classified/contract-sweep.yaml, filtered
+# param=n, mode=default): gpt-5-6-sol, grok-4-5, kimi-k3, deepseek-v4,
+# glm-5.3, qwen3.8-max, qwen3.8-flash — all `openai_compat` family, sharing
+# the field name `n` (probes/inventory.yaml's own `n` row).
+#
+# Gemini is deliberately EXCLUDED from this file's own firing list — its
+# `n`-mapped field (`candidateCount`) already has a DEDICATED exotic row
+# (`gemini-candidate-count`) fired at value 2 in Phase 11 and REJECTED
+# (`gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857`, HTTP 400)
+# — D-08's own "cited, not re-fired" rule applies exactly here; see the
+# declared skip below.
+#
+# `max_tokens` per model: the same established, budget-corrected per-model
+# values plan 12-03's temp0-repeatability.yaml already confirmed avoid the
+# reasoning-length-exhaustion empty-completion failure, reused verbatim
+# (max_tokens caps EACH returned candidate, not the sum across candidates —
+# so the single-completion budget already proven safe for these models is
+# not under-provisioned by requesting two candidates instead of one).
+#
+# Prompt: the D-04 prompt shared by every other Phase 12 behavioral family
+# ("Invent a fictional animal and describe it in two sentences.") — reused
+# here rather than a fresh design, since BHV-04's own question (does the
+# response actually contain N choices) does not depend on prompt content.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before
+# stamping": `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  - model: gpt-5-6-sol
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {n: 2}
+  - model: grok-4-5
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {n: 2}
+  - model: kimi-k3
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {n: 2}
+  - model: deepseek-v4
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {n: 2}
+  - model: glm-5.3
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {n: 2}
+  - model: qwen3.8-max
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {n: 2}
+  - model: qwen3.8-flash
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {n: 2}
+
+expectations:
+  - model: gpt-5-6-sol
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      OpenAI documents `n` as how many chat completion choices to generate,
+      warning that cost scales with `n` and recommending it stay at 1 to
+      minimize cost — no per-model exception language. Expect exactly 2
+      choices returned.
+    expected_source: "docs-claims:n/openai"
+  - model: grok-4-5
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      xAI documents `n` with wording identical to OpenAI's own quote. Expect
+      exactly 2 choices returned.
+    expected_source: "docs-claims:n/xai"
+  - model: kimi-k3
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      Kimi/Moonshot documents no `n`-equivalent field at all
+      (absent-from-docs, checked-absence per rule 1b) — yet Phase 11's own
+      wire evidence shows `n: 1` accepted-honored. This cell is a genuine
+      first discovery, not a corroboration of a stated prior: either `n: 2`
+      is also silently honored despite the doc gap, or the undocumented
+      acceptance breaks down past 1.
+    expected_source: "docs-claims:n/kimi"
+  - model: deepseek-v4
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      DeepSeek documents no completion-count parameter under any name
+      (absent-from-docs, checked against the full 36-property request body)
+      — yet Phase 11's own wire evidence shows `n: 1` accepted-honored. A
+      first discovery, same framing as kimi-k3 above.
+    expected_source: "docs-claims:n/dseek"
+  - model: glm-5.3
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      Z.ai documents no `n` field (absent-from-docs) — yet Phase 11's own
+      wire evidence shows `n: 1` accepted-honored. A first discovery, same
+      framing as kimi-k3/deepseek-v4 above.
+    expected_source: "docs-claims:n/zai"
+  - model: qwen3.8-max
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      Qwen documents `n` (1-4) as "supported only by Qwen3 (non-thinking
+      mode) models," with a separate constraint that `n` must be 1 whenever
+      `tools` is passed — neither constraint applies to this default-mode,
+      tool-free cell. Expect exactly 2 choices returned.
+    expected_source: "docs-claims:n/qwen"
+  - model: qwen3.8-flash
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      Same Qwen `n` contract, shared across the qwen3.8 line. Expect exactly
+      2 choices returned.
+    expected_source: "docs-claims:n/qwen"
+
+# Gemini's own candidateCount question is settled by citing its Phase 11
+# rejection (D-08, not re-fired) — worth naming here that the rejection
+# itself contradicts Gemini's own documentation ("Number of generated
+# responses to return... doesn't work for previous generation models," which
+# implies it DOES work for gemini-3-1-pro — the wire refutes that, one of
+# the 79 docs-contradicted pairs in comparisons/docs-vs-wire.md). The four
+# Claude models have no request-side field for `n` under any name at all
+# (checked-absence, probes/inventory.yaml:508).
+skips:
+  - model: gemini-3-1-pro
+    param: gemini-candidate-count
+    mode: default
+    requirement: BHV-04
+    reason: wire-rejects-gemini-candidate-count
+    cited_probe_id: "gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857"
+  - model: claude-fable-5
+    param: n
+    mode: default
+    requirement: BHV-04
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:n/anthropic"
+  - model: claude-opus-5
+    param: n
+    mode: default
+    requirement: BHV-04
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:n/anthropic"
+  - model: claude-sonnet-5
+    param: n
+    mode: default
+    requirement: BHV-04
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:n/anthropic"
+  - model: claude-haiku-4-5
+    param: n
+    mode: default
+    requirement: BHV-04
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:n/anthropic"
