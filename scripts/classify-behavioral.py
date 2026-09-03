@@ -130,8 +130,10 @@ DESIGNS = frozenset({
 # (response value equals request value), `translated` (a different value
 # came back), `dropped` (the request carried a value and no response field
 # exists to confirm it), `absent` (neither side carried one), `rejected`
-# (the request was refused).
-ECHO_RELATIONS = frozenset({"echoed", "translated", "dropped", "absent", "rejected"})
+# (a genuine, recorded HTTP verdict that was refused), `no-signal` (WR-01,
+# 12-06: no verdict at all -- a `retry_exhausted` terminal or a missing raw
+# record -- distinguished from a real vendor rejection).
+ECHO_RELATIONS = frozenset({"echoed", "translated", "dropped", "absent", "rejected", "no-signal"})
 
 # `tier-audit`'s own closed `response_present` vocabulary (12-05): a missing
 # key and a present-but-null value are NEVER conflated — the entire point of
@@ -752,16 +754,25 @@ def reduce_single_candidates_group(
     which has no rejected-vs-unverified distinction of its own to draw on
     an error body. `returned_count` stays an honest integer even on a
     rejection -- `_get_candidate_count`'s own `len(choices or [])` reads 0
-    from an error body with no `choices` key, never None."""
+    from an error body with no `choices` key, never None.
+
+    A genuine HTTP verdict (`terminal == "verdict"`, any status) is
+    distinguished from having no verdict at all (WR-01, 12-06): a
+    `retry_exhausted` terminal or a missing raw record entirely reduces to
+    `no-signal`, never `rejected` -- the harness ran out of retry budget or
+    the record is absent, which is not evidence the vendor rejected
+    anything. Only a real, recorded non-200 verdict earns `rejected`."""
     wire_family = models[entry["model"]]["wire_family"]
     joined = _join_flat_entry(entry, models, raw_records)
-    if joined["terminal"] == "verdict" and joined["status"] == 200:
+    if joined["record_found"] and joined["terminal"] == "verdict" and joined["status"] == 200:
         state, evidence = classify_probes.detect_candidate_count(
             joined["response_body"], row_id="n", wire_family=wire_family,
             resolved_field=None, requested_value=str(requested_n), usage=joined["usage"],
         )
-    else:
+    elif joined["record_found"] and joined["terminal"] == "verdict":
         state, evidence = "rejected", "none"
+    else:
+        state, evidence = "no-signal", "none"
     returned_count = classify_probes._get_candidate_count(joined["response_body"], wire_family)
     return {
         "probe_ids": [joined["probe_id"]],
@@ -875,7 +886,7 @@ def _tier_error_names_field(response_body: dict, field_name: str | None) -> bool
 
 def _reduce_tier_audit_core(
     *, response_body: dict, status: int | None, terminal: str | None, wire_family: str,
-    request_field: str | None, request_value,
+    request_field: str | None, request_value, record_found: bool = True,
 ) -> dict:
     """The shared tier-audit reduction core (12-05) -- given a response body
     plus its status/terminal and the declared request field/value, computes
@@ -884,9 +895,33 @@ def _reduce_tier_audit_core(
     (`reduce_tier_audit_cited`, below) reading an existing raw record
     directly -- one reduction, two ways to reach it, so a fired and an
     audited-by-citation row are never scored by two independently-drifting
-    code paths."""
+    code paths.
+
+    A genuine HTTP verdict is distinguished from having no verdict at all
+    (WR-01, 12-06): `record_found=False` (an unfired entry) or a non-`verdict`
+    terminal (e.g. `retry_exhausted`) reduces to `no-signal`, never
+    `rejected` -- a harness-side non-outcome is not evidence the vendor
+    refused anything. `reduce_tier_audit_cited` always passes the default
+    `record_found=True`, since it already fails loud (exit 2) when its cited
+    probe_id has no raw record."""
     omitted = request_value is None
-    rejected = terminal != "verdict" or status != 200
+    has_verdict = record_found and terminal == "verdict"
+
+    if not has_verdict:
+        return {
+            "request_field_path": request_field,
+            "request_value": request_value,
+            "response_field_path": None,
+            "response_value": None,
+            "response_present": "absent",
+            "echo_relation": "no-signal",
+            "rejection_names_field": None,
+            "response_top_level_present": None,
+            "response_top_level_value": None,
+            "note": None,
+        }
+
+    rejected = status != 200
 
     if rejected:
         return {
@@ -975,6 +1010,7 @@ def reduce_tier_audit_group(
     core = _reduce_tier_audit_core(
         response_body=joined["response_body"], status=joined["status"], terminal=joined["terminal"],
         wire_family=wire_family, request_field=request_field, request_value=request_value,
+        record_found=joined["record_found"],
     )
     core["probe_ids"] = [joined["probe_id"]]
     core["ancillary"] = {"status": joined["status"], "terminal": joined["terminal"]}
@@ -2223,6 +2259,29 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print(f"FAIL reduce_single_candidates_group(rejected): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
 
+    # --- reduce_single_candidates_group: no-signal on a retry_exhausted
+    #     terminal (WR-01, 12-06) — a harness-side retry-budget exhaustion is
+    #     NOT evidence the vendor rejected anything, so this must NOT read
+    #     'rejected' the way a genuine recorded HTTP 400 above does. ---
+    cases += 1
+    n_raw_exhausted = {n_pid: {
+        "terminal": "retry_exhausted", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 0, "response_body_raw": {}}],
+        "usage": {},
+    }}
+    reduced = reduce_single_candidates_group(n_entry, openai_compat_models, n_raw_exhausted, requested_n=2)
+    if reduced["returned_count"] != 0 or reduced["state"] != "no-signal":
+        problems += 1
+        print(f"FAIL reduce_single_candidates_group(retry_exhausted): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
+
+    # --- reduce_single_candidates_group: no-signal on a MISSING raw record
+    #     entirely (WR-01, 12-06) — same distinction, the unfired case. ---
+    cases += 1
+    reduced = reduce_single_candidates_group(n_entry, openai_compat_models, {}, requested_n=2)
+    if reduced["returned_count"] != 0 or reduced["state"] != "no-signal":
+        problems += 1
+        print(f"FAIL reduce_single_candidates_group(missing record): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
+
     # --- build_rows: design=single-candidates with a non-integer `value`
     #     fails loud (the group_key's own value must be int-parseable) ---
     cases += 1
@@ -2386,6 +2445,30 @@ def selftest() -> tuple[int, int]:
     if core["echo_relation"] != "rejected" or core["rejection_names_field"] is not False:
         problems += 1
         print(f"FAIL _reduce_tier_audit_core(rejected, field not named): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="no-signal" on a
+    #     retry_exhausted terminal (WR-01, 12-06) — a harness-side retry-
+    #     budget exhaustion must NOT read as a genuine vendor 'rejected'. ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={}, status=0, terminal="retry_exhausted", wire_family="anthropic_messages",
+        request_field="service_tier", request_value="standard",
+    )
+    if core["echo_relation"] != "no-signal" or core["rejection_names_field"] is not None:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(retry_exhausted): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="no-signal" when the entry
+    #     is UNFIRED (record_found=False, the default's False path) — same
+    #     distinction, the other route to having no verdict at all. ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={}, status=None, terminal=None, wire_family="anthropic_messages",
+        request_field="service_tier", request_value="standard", record_found=False,
+    )
+    if core["echo_relation"] != "no-signal" or core["rejection_names_field"] is not None:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(unfired): got {core!r}", file=sys.stderr)
 
     # --- _reduce_tier_audit_core: the Anthropic dual lookup — a value
     #     present at the NESTED usage.service_tier location and absent at
