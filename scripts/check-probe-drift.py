@@ -359,7 +359,15 @@ def derive_multi_candidate_delivery(model: str, beh_idx: dict, cs_idx: dict) -> 
         return {"kind": "verdict", "token": cells[0].get("state")}
     # Contract-only rejection (e.g. gemini-3-1-pro's candidateCount) is a
     # real verdict, never a not-applicable substitute — precedence rule (2).
-    for param in ("n", "gemini-candidate-count"):
+    # `gemini-candidate-count` is checked BEFORE the bare `n` row: gemini's
+    # own contract-sweep `n` cell is the uniform, single-candidate (n:1)
+    # probe that every domain model shares — it says nothing about
+    # multi-candidate delivery, and would silently mask the real
+    # `gemini-candidate-count` rejection if checked first (Rule 1 bug fixed
+    # 2026-09-03, plan 13-04: gemini-3-1-pro is the ONLY model with a
+    # non-skipped `gemini-candidate-count` cell, so reordering never changes
+    # any other model's derivation).
+    for param in ("gemini-candidate-count", "n"):
         for c in cs_idx.get((model, param, "default"), []):
             if c.get("state") not in (None, "skipped"):
                 return {"kind": "verdict", "token": c["state"]}

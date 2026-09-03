@@ -32,6 +32,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison only, cell_id:`qwen3.8-flash--stop-truncation--triggering--default`, probe_id:`qwen3.8-flash--stop-truncation--triggering--default--d1ae15ef`, promoted ADR-0050."
   seed_determinism: "0/5 same-seed pairs (varies) — OBSERVED 2026-09-03: qwen3.8-flash's seed field is accepted-unverified at the contract sweep; five same-seed repeat calls produced five distinct outputs, cell_id:`qwen3.8-flash--seed--42--default`, probe_id:`qwen3.8-flash--seed--42--default--r1--714d17f5`, promoted ADR-0050."
   sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-03: qwen3.8-flash accepts an explicit temperature:0 value in default mode — a genuine temperature:0 test, not a substitute; all five repeat calls completed naturally with five distinct outputs, cell_id:`qwen3.8-flash--temperature--0--default`, probe_id:`qwen3.8-flash--temperature--0--default--r1--660c8774`, promoted ADR-0050."
+  multi_candidate_delivery: "rejected — OBSERVED 2026-09-03: a request for 2 candidates was rejected outright in default mode, the same documented thinking-mode conditionality as qwen3.8-max, cell_id:`qwen3.8-flash--n--2--default`, probe_id:`qwen3.8-flash--n--2--default--8df7372d`, promoted ADR-0050."
 checked: 2026-08-27
 depth: stub
 ---

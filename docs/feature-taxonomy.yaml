@@ -519,6 +519,27 @@ features:
     value_type: string
     definition: "whether the model's OWN finish-reason field can distinguish a triggered stop-sequence truncation from a natural completion, independent of whether truncation itself is honored. Bare verdict cell: `honest` | `ambiguous` | `inconclusive`, or the not-applicable form for a model whose `stop` parameter the contract sweep rejects outright"
     note: "promoted 2026-09-03 (ADR-0050), the tracer key proving the wire-behavior group's cell grammar end-to-end. BHV-03: truncation is nearly universal (9/10 domain models), but only the 4 Anthropic models report a distinguishable stop_reason value — every other domain vendor shares one generic finish value for both the triggered and natural-completion case"
+  - id: multi_candidate_delivery
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "whether requesting more than one completion (n/candidateCount > 1) returns the number requested, is silently ignored (accepted but fewer delivered, with no error reporting the shortfall), or is rejected outright — a maker's own named rejection of the field is a measured verdict, never the not-applicable form. Bare verdict cell: `accepted-honored` | `accepted-ignored` | `rejected`, or the not-applicable form for a model with no request-side multi-candidate field. The single-candidate case (n:1) is uniformly honored everywhere and does not discriminate; only the multi-candidate request does"
+    note: "promoted 2026-09-03 (ADR-0050). BHV-04: an 8-model domain splits four ways — 2 honored, 2 rejected outright, 1 (glm-5.3) silently returns 1 of 2 requested with no error, 2 (qwen3.8-max/qwen3.8-flash) reject under a documented thinking-mode conditionality, and gemini-3-1-pro's own candidateCount field is rejected at the contract sweep (a measured rejection, not a behavioral rate)"
+  - id: logprobs_delivery
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "whether requesting logprobs returns real per-token content, is accepted but delivers nothing (confirmed at a budget large enough to rule out truncation masking the result), or is rejected outright. Bare verdict cell: `accepted-honored` | `accepted-ignored` | `rejected`, or the not-applicable form for a model with no request-side logprobs field. Where a model has both an earlier contract classification and a later behavioral re-verification, the behavioral result governs and the cell states that it supersedes the earlier reading (rule 1a)"
+    note: "promoted 2026-09-03 (ADR-0050). BHV-05: an 8-model domain — 3 reject outright, 2 accept and deliver nothing (confirmed at a non-masking budget), 3 deliver real content. qwen3.8-flash's cell carries a revised value: Phase 11's contract classification read accepted-ignored at a budget the reverify showed was confounded; the reverify found real per-token entries and the cell states the supersession explicitly"
+  - id: service_tier_contract
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "the compound service-tier fact: whether a service_tier/serviceTier request value is honored, silently translated, or ignored, AND where the response reports it — mirrored at the top level, nested under a usage envelope and never mirrored there, or absent from the response entirely. Bare verdict cell: `accepted-ignored` | `silently-translated` | `response-asymmetric` | `response-absent`. Every cell cites both tested contracts — the presence row and, where the model is inside its firing scope, the value-enum row — plus the behavioral tier-audit cells where they exist (D-09); a model outside the enum row's scope states that the enum was not tested there rather than implying a result"
+    note: "promoted 2026-09-03 (ADR-0050). D-09/BHV-06: presence fires against all 12 models (gemini-3-1-pro is tested under its own top-level serviceTier field rather than the shared compat service_tier row, which is skipped for it); the value-enum row fires against 7 openai_compat-family models. The response side shows three genuinely distinct states — Anthropic and Gemini both nest the tier under a usage envelope and never mirror it to the top level (Anthropic's own trap probe rejects the response vocabulary word `standard` when sent as a request value); kimi-k3/deepseek-v4/glm-5.3/qwen3.8-flash carry no response-side tier field at all; the remaining models (gpt-5-6-sol, grok-4-5, qwen3.8-max) show a flat, present response with no asymmetry"
   # --- category-4 block (`workflow_features:`) ---
   - id: intent_pipeline
     group: spine
