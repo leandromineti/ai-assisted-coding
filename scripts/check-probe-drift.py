@@ -878,6 +878,72 @@ def selftest() -> tuple[int, int]:
         derived == {"kind": "verdict", "token": "accepted-honored"},
     )
 
+    # --- precedence rule (multi_candidate_delivery): a gemini-candidate-count
+    #     rejection must win over the uniform, meaningless n:1 single-candidate
+    #     contract cell every domain model shares — checking the bare `n` row
+    #     first would silently mask the real rejection (Rule 1 bug fixed
+    #     2026-09-03, plan 13-04, commit 75746d2) ---
+    cases += 1
+    cs_gemini = [
+        {"model": "m", "param": "n", "mode": "default", "state": "accepted-honored",
+         "probe_id": "m--n--1--default--deadbeef"},
+        {"model": "m", "param": "gemini-candidate-count", "mode": "default", "state": "rejected",
+         "probe_id": "m--gemini-candidate-count--2--default--deadbeef"},
+    ]
+    cs_idx_gemini, _ = index_contract(cs_gemini)
+    beh_idx_empty, _ = index_behavioral([])
+    derived = derive_multi_candidate_delivery("m", beh_idx_empty, cs_idx_gemini)
+    check(
+        "a gemini-candidate-count rejection did not win over the uniform n:1 contract cell",
+        derived == {"kind": "verdict", "token": "rejected"},
+    )
+
+    # --- precedence rule (service_tier_contract): a response-absent audit
+    #     cell derives the response-absent verdict — a path missing entirely
+    #     before the rewrite (Rule 1/2 bug fixed 2026-09-03, plan 13-04,
+    #     commit 6377279) ---
+    cases += 1
+    cs_idx_empty, _ = index_contract([])
+    beh_absent = [{
+        "model": "claude-haiku-4-5", "param": "service-tier-audit",
+        "echo_relation": "honored", "response_present": "absent",
+        "response_field_path": None,
+        "cell_id": "claude-haiku-4-5--service-tier-audit--default",
+    }]
+    beh_idx_absent, _ = index_behavioral(beh_absent)
+    derived = derive_service_tier_contract("claude-haiku-4-5", beh_idx_absent, cs_idx_empty)
+    check(
+        "a response-absent audit cell did not derive response-absent",
+        derived == {"kind": "verdict", "token": "response-absent"},
+    )
+
+    # --- precedence rule (service_tier_contract): a nested ("."-containing)
+    #     response_field_path derives the response-asymmetric verdict ---
+    cases += 1
+    beh_asymmetric = [{
+        "model": "claude-haiku-4-5", "param": "service-tier-audit",
+        "echo_relation": "honored", "response_present": "present",
+        "response_field_path": "usage.service_tier",
+        "cell_id": "claude-haiku-4-5--service-tier-audit--default",
+    }]
+    beh_idx_asymmetric, _ = index_behavioral(beh_asymmetric)
+    derived = derive_service_tier_contract("claude-haiku-4-5", beh_idx_asymmetric, cs_idx_empty)
+    check(
+        "a nested response_field_path did not derive response-asymmetric",
+        derived == {"kind": "verdict", "token": "response-asymmetric"},
+    )
+
+    # --- precedence rule (service_tier_contract): an Anthropic sibling model
+    #     (claude-sonnet-5) borrows claude-haiku-4-5's own audit cells rather
+    #     than deriving from its own (absent) service-tier-audit evidence —
+    #     the sibling-borrowing logic added in the same rewrite (6377279) ---
+    cases += 1
+    derived = derive_service_tier_contract("claude-sonnet-5", beh_idx_absent, cs_idx_empty)
+    check(
+        "an Anthropic sibling model did not borrow claude-haiku-4-5's audit cells",
+        derived == {"kind": "verdict", "token": "response-absent"},
+    )
+
     # --- an unreadable/malformed registry file exits 2 ---
     cases += 1
     try:
