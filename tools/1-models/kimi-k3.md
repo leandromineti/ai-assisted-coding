@@ -30,6 +30,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
   fast_mode: false   # checked and absent: the K3 pricing page bills only cache-hit input, cache-miss input, and output — no speed tier; kimi-k2-turbo-class ids are sibling models, not modes (verified 2026-08-27)
   stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison is the only evidence, cell_id:`kimi-k3--stop-truncation--triggering--default`, probe_id:`kimi-k3--stop-truncation--triggering--default--5b566140`, promoted ADR-0050."
+  seed_determinism: "0/5 same-seed pairs (no-signal) — OBSERVED 2026-09-03: kimi-k3's five same-seed repeats each hit reasoning-length exhaustion before producing a comparable visible completion, so the 0/5 rate reflects exhausted budget, not observed variation, cell_id:`kimi-k3--seed--42--default`, probe_id:`kimi-k3--seed--42--default--r1--785f1743`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

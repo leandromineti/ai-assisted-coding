@@ -498,6 +498,13 @@ features:
     value_type: open-descriptive
     definition: "the caller-facing depth dial, `family:specific` (ADR-0017 shape) — `levels:<set>@<default>` | `budget:<unit>` | `none`. The family says who sizes the reasoning: a level enum the model spends against, or a token budget the caller allocates up front"
     note: "added 2026-08-26 (ADR-0040), replacing the free-text `effort_control`. NOT a presence-claim: a boolean would have been 10 ✓ / 1 ✗ with the ✗ on the same row as `reasoning`'s — the same column twice, and rule 5d says an instrument that cannot discriminate cannot measure. The variation is in the level set (four distinct shapes) and the default: `@high` mostly, `@medium` at OpenAI, `@max` at kimi-k3 and glm-5.3 — which is why the default lives in the cell and not in body prose"
+  - id: seed_determinism
+    group: wire-behavior
+    block: model_features
+    applies_to: [1]
+    value_type: string
+    definition: "whether repeated requests carrying the same seed value produce byte-identical output, expressed as a match rate over repeated same-seed pairs. Rate head cell: `<N>/<M> same-seed pairs (<verdict>)`, verdict one of `varies` | `no-signal`, or the not-applicable form for a model with no request-side seed field"
+    note: "promoted 2026-09-03 (ADR-0050). BHV-01: `seed` is uniformly accepted-unverified at the contract layer across its 8-model domain — a flat cell on its own — and uniformly 0/5 behaviorally; only the combined contract-plus-behavioral picture discriminates (D-01), since acceptance alone reads as a non-varying key"
   - id: stop_sequence_honesty
     group: wire-behavior
     block: model_features

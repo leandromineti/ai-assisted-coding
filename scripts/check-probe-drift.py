@@ -28,6 +28,19 @@ This script reads no path outside `docs/feature-taxonomy.yaml`,
 files those two imported readers already own. A finding here is fixed in the
 report cell or in the classified evidence itself — never by loosening this
 script's grammar or narrowing its domain.
+
+A not-applicable cell with reason `no request-side field` (added 2026-09-03,
+plan 13-03, seed_determinism's 4 structurally-absent Claude cells being the
+first to need it) has no fired probe to cite — the field was never sent, so
+neither classified file carries a `cell_id`/`probe_id` for it. The evidence
+for that absence lives instead in `probes/classified/behavioral.yaml`'s own
+`skips:` list, each entry's `cited_source` field pointing at the
+`probes/docs-claims.yaml` claim (e.g. `docs-claims:seed/anthropic`) that
+established the field is genuinely absent-from-docs (rule 1b). This IS
+committed classified evidence (behavioral.yaml, not a re-derivation), so a
+third citation kind, `docs-claims:`, resolves against the set of
+`cited_source` values the skips list itself carries — never against
+`probes/docs-claims.yaml` directly, keeping one canonical resolution path.
 """
 from __future__ import annotations
 
@@ -102,10 +115,14 @@ def _load_yaml(path: Path, required_key: str) -> dict:
 # parenthesised verdict token), a bare verdict token from the key's own
 # closed vocabulary, or the not-applicable form ("n/a (<reason>)", <reason>
 # one of exactly two closed phrases). Citations are backtick-delimited
-# `cell_id:`id`` / `probe_id:`id`` tokens — several `stop`-param probe_ids
-# literally embed a JSON array (`["the"]`), so citations are found by
-# scanning for these tokens rather than by splitting the tail on commas,
-# which legitimately also appear inside prose context.
+# `cell_id:`id`` / `probe_id:`id`` / `docs-claims:`id`` tokens — several
+# `stop`-param probe_ids literally embed a JSON array (`["the"]`), so
+# citations are found by scanning for these tokens rather than by splitting
+# the tail on commas, which legitimately also appear inside prose context.
+# `docs-claims:`id`` is the third kind (added 2026-09-03, plan 13-03) — the
+# only citable evidence for a "no request-side field" not-applicable cell,
+# whose `id` resolves against behavioral.yaml's own `skips:` list rather
+# than against a `cell_id`/`probe_id` (see module docstring).
 CELL_RE = re.compile(
     r"^(?P<head>.+?) — OBSERVED (?P<date>\d{4}-\d{2}-\d{2}): (?P<tail>.+), "
     r"promoted ADR-(?P<adr>\d+)\.$"
@@ -117,7 +134,7 @@ NA_HEAD_RE = re.compile(
     r"^n/a \((?P<reason>no request-side field|parameter rejected at the contract sweep)\)$"
 )
 VERDICT_HEAD_RE = re.compile(r"^[a-z][a-z-]*$")
-CITATION_RE = re.compile(r"(cell_id|probe_id):`([^`]+)`")
+CITATION_RE = re.compile(r"(cell_id|probe_id|docs-claims):`([^`]+)`")
 
 
 def parse_cell(text: str) -> dict | None:
@@ -252,6 +269,25 @@ def index_contract(cells: list[dict]) -> tuple[dict, set[str]]:
     return by_model_param_mode, ids
 
 
+def index_docs_claims_citations(skips: list[dict]) -> set[str]:
+    """The resolution set for `docs-claims:`id`` citation tokens — every
+    `cited_source` value behavioral.yaml's own `skips:` list carries, with
+    the `docs-claims:` prefix stripped (e.g. `docs-claims:seed/anthropic` ->
+    `seed/anthropic`). This is the ONLY evidence a `no request-side field`
+    not-applicable cell can cite: the field was never fired, so neither
+    classified file has a `cell_id`/`probe_id` for it (see module
+    docstring). Skips whose `cited_source` is null or not `docs-claims:`-
+    prefixed (e.g. `prereg:Mode scope`) contribute nothing here — a
+    `docs-claims:` citation must resolve against a real docs-claims skip,
+    never against a different citation family."""
+    ids: set[str] = set()
+    for s in skips:
+        src = s.get("cited_source")
+        if isinstance(src, str) and src.startswith("docs-claims:"):
+            ids.add(src.split(":", 1)[1])
+    return ids
+
+
 # --- Per-key re-derivation rules, all six keys ADR-0050 names --------------
 #
 # Only `stop_sequence_honesty` has registry entries and report cells as of
@@ -370,23 +406,35 @@ def run_check(
     registry_path: Path = REGISTRY_PATH,
     models_path: Path = MODELS_PATH,
     behavioral_cells: list[dict] | None = None,
+    behavioral_skips: list[dict] | None = None,
     contract_cells: list[dict] | None = None,
 ) -> tuple[list[dict], int, int, int]:
     """Runs the full forward+backward check. Returns (findings, cells_examined,
-    mismatched_cells, missing_cells). `behavioral_cells`/`contract_cells` are
-    injectable for --selftest fixtures; a real run loads them via the
-    imported `load_classified()` readers."""
+    mismatched_cells, missing_cells). `behavioral_cells`/`behavioral_skips`/
+    `contract_cells` are injectable for --selftest fixtures; a real run loads
+    them via the imported `load_classified()` readers."""
     keys = promoted_key_ids(registry_path)
     models = probed_model_slugs(models_path)
 
     if behavioral_cells is None:
-        behavioral_cells = build_behavioral_matrix.load_classified()["cells"]
+        # Real run — one load_classified() call supplies both cells and
+        # skips. A caller passing `behavioral_cells` explicitly (every
+        # --selftest fixture) is signaling a pure, no-I/O run: skips then
+        # default to `[]` rather than silently reading the real classified
+        # file, unless the fixture also passes its own `behavioral_skips`.
+        _beh_doc = build_behavioral_matrix.load_classified()
+        behavioral_cells = _beh_doc["cells"]
+        if behavioral_skips is None:
+            behavioral_skips = _beh_doc.get("skips") or []
+    elif behavioral_skips is None:
+        behavioral_skips = []
     if contract_cells is None:
         contract_cells = build_probe_matrix.load_classified()["cells"]
 
     beh_idx, beh_ids = index_behavioral(behavioral_cells)
     cs_idx, cs_ids = index_contract(contract_cells)
     all_ids = beh_ids | cs_ids
+    docs_claims_ids = index_docs_claims_citations(behavioral_skips)
 
     findings: list[dict] = []
     cells_examined = 0
@@ -414,7 +462,8 @@ def run_check(
                 has_finding = True
             else:
                 for kind, cid in parsed["citations"]:
-                    if cid not in all_ids:
+                    valid_ids = docs_claims_ids if kind == "docs-claims" else all_ids
+                    if cid not in valid_ids:
                         findings.append({
                             "scope": "citation", "identifier": identifier,
                             "rule": f"dangling-citation:{kind}:{cid}",
@@ -485,6 +534,20 @@ def selftest() -> tuple[int, int]:
     check(
         "a not-applicable cell with a bracket-bearing probe_id failed to parse",
         p is not None and p["head"]["kind"] == "na" and p["citations"] == [("probe_id", 'm--stop--["the"]--default--deadbeef')],
+    )
+
+    # --- parse_cell: a not-applicable head citing a docs-claims token
+    #     (the only citable evidence a "no request-side field" cell has —
+    #     see module docstring) parses with a docs-claims citation ---
+    cases += 1
+    p = parse_cell(
+        "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's own API "
+        "documents no seed parameter (rule 1b checked-absence), "
+        "docs-claims:`seed/anthropic`, promoted ADR-0050."
+    )
+    check(
+        "a not-applicable cell with a docs-claims citation failed to parse",
+        p is not None and p["head"]["kind"] == "na" and p["citations"] == [("docs-claims", "seed/anthropic")],
     )
 
     # --- parse_cell: a cell with no OBSERVED marker does not parse ---
@@ -580,6 +643,65 @@ def selftest() -> tuple[int, int]:
         check("a fully clean fixture did not report 1 cell examined", examined == 1)
         check("a fully clean fixture reported nonzero mismatches", mismatched == 0)
         check("a fully clean fixture reported nonzero missing cells", missing == 0)
+
+        # --- run_check: a not-applicable cell citing docs-claims, matching a
+        #     skip's cited_source, reports zero findings (the only citable
+        #     evidence a "no request-side field" cell has) ---
+        cases += 1
+        registry_two_keys = {
+            "features": [
+                {"id": "stop_sequence_honesty", "group": "wire-behavior", "block": "model_features"},
+                {"id": "seed_determinism", "group": "wire-behavior", "block": "model_features"},
+            ]
+        }
+        (td_path / "registry-two-keys.yaml").write_text(yaml.safe_dump(registry_two_keys, sort_keys=False))
+        (tools_dir / "fixture-model.md").write_text(
+            "---\n"
+            "name: fixture-model\n"
+            "model_features:\n"
+            '  stop_sequence_honesty: "honest — OBSERVED 2026-09-03: context, '
+            'cell_id:`fixture-model--stop-truncation--triggering--default`, promoted ADR-0050."\n'
+            '  seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: no seed '
+            'field documented, docs-claims:`seed/anthropic`, promoted ADR-0050."\n'
+            "---\n\nBody.\n"
+        )
+        fixture_skips = [{
+            "model": "fixture-model", "param": "seed", "mode": "n/a", "requirement": "BHV-01",
+            "reason": "no-request-side-seed-field", "cited_probe_id": None,
+            "cited_source": "docs-claims:seed/anthropic",
+        }]
+        findings, examined, mismatched, missing = run_check(
+            tools_dir=tools_dir, registry_path=td_path / "registry-two-keys.yaml", models_path=td_path / "models.yaml",
+            behavioral_cells=beh_cells, behavioral_skips=fixture_skips, contract_cells=[],
+        )
+        check(
+            "a docs-claims citation resolving against a skip's cited_source fired a finding",
+            findings == [] and examined == 2 and mismatched == 0,
+        )
+
+        # --- run_check: a docs-claims citation NOT matching any skip's
+        #     cited_source fires a dangling-citation finding — a docs-claims
+        #     token cannot be waved through unresolved any more than a
+        #     cell_id/probe_id one can ---
+        cases += 1
+        (tools_dir / "fixture-model.md").write_text(
+            "---\n"
+            "name: fixture-model\n"
+            "model_features:\n"
+            '  stop_sequence_honesty: "honest — OBSERVED 2026-09-03: context, '
+            'cell_id:`fixture-model--stop-truncation--triggering--default`, promoted ADR-0050."\n'
+            '  seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: no seed '
+            'field documented, docs-claims:`no-such-claim/nobody`, promoted ADR-0050."\n'
+            "---\n\nBody.\n"
+        )
+        findings, examined, mismatched, missing = run_check(
+            tools_dir=tools_dir, registry_path=td_path / "registry-two-keys.yaml", models_path=td_path / "models.yaml",
+            behavioral_cells=beh_cells, behavioral_skips=fixture_skips, contract_cells=[],
+        )
+        check(
+            "a dangling docs-claims citation did not fire dangling-citation:docs-claims",
+            any(f["rule"] == "dangling-citation:docs-claims:no-such-claim/nobody" for f in findings),
+        )
 
         # --- run_check: a promoted key with no cell at all in one report
         #     produces a missing-cell finding naming that model and key ---

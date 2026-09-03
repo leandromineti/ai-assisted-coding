@@ -30,6 +30,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   batch_discount: "50% in+out (Sol $2.50 / $15, Terra $1 / $6, Luna $0.10 / $0.60 per MTok); long-context batch = 2x standard batch"
   fast_mode: true    # `service_tier: "fast"` (also accepts "priority" — priority processing RENAMED to fast mode 2026-07-30): Sol $8/$40 short-context, $16/$60 long; offered on all three 5.6 tiers (first-party pricing page, verified 2026-08-27); OBSERVED 2026-08-31 on gpt-5.6-luna: both tier values accepted, and the response reports `service_tier: "priority"` EITHER WAY — the rename is input-side only, the response vocabulary still speaks the old name
   stop_sequence_honesty: 'n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-03: stop returns HTTP 400 in default mode, so no honesty verdict is reachable, probe_id:`gpt-5-6-sol--stop--["the"]--default--6a86352a`, promoted ADR-0050.'
+  seed_determinism: "0/5 same-seed pairs (varies) — OBSERVED 2026-09-03: gpt-5-6-sol's seed field is accepted-unverified at the contract sweep; five same-seed repeat calls produced five distinct outputs, cell_id:`gpt-5-6-sol--seed--42--default`, probe_id:`gpt-5-6-sol--seed--42--default--r1--b19cbdbe`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

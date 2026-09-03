@@ -30,6 +30,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   batch_discount: "50% in+out ($5 / $25 per MTok)"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control) — the finish field alone proves which case fired, cell_id:`claude-fable-5--stop-truncation--triggering--default`, probe_id:`claude-fable-5--stop-truncation--triggering--default--61baa082`, promoted ADR-0050."
+  seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-fable-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
 checked: 2026-08-17
 depth: stub
 ---

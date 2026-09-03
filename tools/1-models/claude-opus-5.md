@@ -31,6 +31,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
   fast_mode: true    # "up to 2.5x higher output tokens per second" at $10/$50 (2x list), `speed: "fast"` + fast-mode-2026-02-01 beta header; research preview, Claude API only, Opus 5/4.8 only; explicitly NOT the Priority Tier ("Fast mode is not available with a Priority Tier commitment") — first-party fast-mode page, verified 2026-08-27; OBSERVED 2026-08-31: a plain pay-as-you-go key with no waitlist enrollment was served `usage.speed: "fast"` on the first request — the research-preview gate did not gate in practice
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control), cell_id:`claude-opus-5--stop-truncation--triggering--default`, probe_id:`claude-opus-5--stop-truncation--triggering--default--58a5a42f`, promoted ADR-0050."
+  seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-opus-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
 checked: 2026-08-17
 depth: survey
 ---
