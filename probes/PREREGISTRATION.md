@@ -2507,3 +2507,267 @@ CONFIRMED verdict, and the D-07 drift annex's three fields (Gemini
 here) are all confronted on the wire without touching `probes/
 inventory.yaml`. Plan 12-05 is complete; no further paid call is planned
 by this plan.
+
+## 2026-09-03 — Plan 12-06 Task 2: phase-level coverage and citation audit
+
+Computed entirely from `probes/classified/behavioral.yaml` (83 cells, 27
+skips) and cross-checked against `probes/docs-claims.yaml` and
+`probes/classified/contract-sweep.yaml`. No number below is hand-tallied —
+each command is quoted alongside its result so a later re-check can
+re-run it verbatim.
+
+### 1. Citation completeness (roadmap success criterion 6, made countable)
+
+```
+python3 -c "
+import yaml
+from collections import Counter
+d = yaml.safe_load(open('probes/classified/behavioral.yaml'))
+cells = d['cells']
+prefixes = Counter()
+unresolved = []
+for c in cells:
+    es = c.get('expected_source')
+    if es is None:
+        unresolved.append(c['cell_id']); continue
+    for p in ('docs-claims:', 'phase11:', 'prereg:'):
+        if es.startswith(p):
+            prefixes[p] += 1; break
+    else:
+        prefixes['other'] += 1
+print(len(cells), dict(prefixes), unresolved)
+"
+```
+
+Result: **83 total behavioral cells**. `expected_source` resolves to a
+`probes/docs-claims.yaml` claim entry for **74**, to a Phase 11 `probe_id`
+for **0**, to a `probes/PREREGISTRATION.md` preregistration anchor
+(`prereg:`) for **9**, and to nothing for **0** (74 + 0 + 9 = 83, the
+whole file). The last count — zero unresolved — is exactly roadmap
+success criterion 6: no behavioral expected value is asserted from
+memory; `scripts/classify-behavioral.py`'s own citation gate would have
+aborted generation (exit 2) had any citation failed to resolve, so a
+clean `--check` is itself evidence for this count, not a separate claim.
+
+The 9 `prereg:` citations equal the 9 `design: control` (calibration)
+cells exactly — the vocabulary's own rule (`prereg:` accepted ONLY on a
+control row) holds with no exception across the whole file.
+
+Declared-skip citations (separate from cell `expected_source`, computed
+the same way over `skips:`):
+
+```
+python3 -c "
+import yaml
+from collections import Counter
+d = yaml.safe_load(open('probes/classified/behavioral.yaml'))
+skips = d['skips']
+prefixes = Counter(); n_probe_id = 0; multi = 0
+for s in skips:
+    cs, cp = s.get('cited_source'), s.get('cited_probe_id')
+    n = sum(1 for x in (cs, cp) if x)
+    if n != 1: multi += 1
+    if cp and not cs: n_probe_id += 1
+    if cs:
+        for p in ('docs-claims:', 'phase11:', 'prereg:'):
+            if cs.startswith(p): prefixes[p] += 1; break
+        else: prefixes['other'] += 1
+print(len(skips), dict(prefixes), 'probe_id-only:', n_probe_id, 'not-exactly-one:', multi)
+"
+```
+
+Result: **27 skips**, of which 14 cite a `docs-claims:` claim, 1 cites the
+`prereg:` Mode-scope anchor, and 12 cite a raw `probe_id` directly (14 +
+1 + 12 = 27). Every skip carries **exactly one** resolving citation field
+— 0 skips carry zero or more than one.
+
+### 2. Applicable-model coverage per requirement
+
+The applicable unit differs by requirement, matching what each design
+actually tests — stated per row so a later re-check can confront the
+right thing. Reconciliation is applicable = fired + coverage-skipped;
+rows beyond that reconciled total are separately-scoped deferrals over a
+DIFFERENT sub-question about a model/vendor that IS itself already
+covered, called out explicitly rather than folded into the arithmetic.
+
+| Req | Unit | Applicable | Fired | Coverage-skipped | Reconciled | Extra (non-coverage) skip rows |
+|---|---|---|---|---|---|---|
+| BHV-01 | model | 12 (all tracked) | 8 (`design: seed-pairs` cells) | 4 (all 4 Claude models, `no-request-side-seed-field`, cite `docs-claims:seed/anthropic`) | 8+4=12 ✓ | 0 |
+| BHV-02 | model | 12 (all tracked) | 12 (`design: repeats`, requirement BHV-02 — 7 real temperature-0 cells + 5 default-config-repeatability substitutes, per `contract-sweep.yaml`'s own default-mode temperature-acceptance state) | 0 | 12+0=12 ✓ | 6: 5 explanatory citations (`wire-rejects-temperature-default-mode`) attached to the 5 already-fired substitute models, naming WHY each used the substitute route, not an unfired gap; 1 scope-level deferral (`model: all`, thinking-mode cross-product, cites `prereg:Mode scope`) |
+| BHV-03 | model | 12 (all tracked) | 10 (`design: single-stop`) | 2 (gpt-5-6-sol, grok-4-5 — `wire-rejects-stop-default-mode`, each citing its own rejecting `probe_id`) | 10+2=12 ✓ | 1: glm-5.3's own multi-value stop-array sub-question (`out-of-scope-multi-sequence-contradiction`, cites `docs-claims:stop/zai`) — glm-5.3 itself IS fired (single-value truncation cell, `inconclusive`) |
+| BHV-04 | model | 12 (all tracked) | 7 (`design: single-candidates`) | 5 (4 Claude — `no-request-side-field-for-vendor`, cite `docs-claims:n/anthropic`; 1 Gemini — `wire-rejects-gemini-candidate-count`, cites its own rejecting `probe_id`) | 7+5=12 ✓ | 0 |
+| BHV-05 | (model, mode) pair | 18 (derived from `contract-sweep.yaml`'s own logprobs+top_logprobs acceptance state, which varies by thinking mode for several models) | 10 (`design: single-logprobs`, 4 models × 1–3 modes each) | 8 (4 Claude — one applicable mode each, `no-request-side-field-for-vendor`, cite `docs-claims:logprobs/anthropic`; 4 already-Phase-11-settled combos — `already-settled-logprobs-honored`, each citing its own Phase 11 `probe_id`) | 10+8=18 ✓ | 0 |
+| BHV-06 | vendor | 8 (all tracked vendors) | 8 (every vendor has ≥1 `design: tier-audit` cell — 21 live-fired + 6 audited-by-citation = 27 total) | 0 | 8+0=8 ✓ | 1: qwen's own `reasoning_effort`/`thinking_budget` mutual-exclusion sub-question (`deferred-out-of-envelope`, cites `docs-claims:openai-reasoning-effort/qwen`) — qwen (both `qwen3.8-max` and `qwen3.8-flash`) IS fired for its main service-tier and `reasoning_effort` questions |
+
+Every one of BHV-01/03/04/05's coverage-skip rows and every declared
+"extra" row above carries exactly one citation (Section 1's skip count
+already confirms this at the file level: 27/27).
+
+### 3. No boolean rates
+
+```
+python3 -c "
+import yaml
+d = yaml.safe_load(open('probes/classified/behavioral.yaml'))
+cells = d['cells']
+rv_keys = ['rate', 'rate_pct', 'verdict', 'truncation_verdict', 'echo_relation']
+p_keys = ['response_present', 'response_top_level_present', 'logprobs_present']
+checked_rv = bool_rv = checked_p = 0
+bool_p = {}
+for c in cells:
+    for k in rv_keys:
+        if k in c:
+            checked_rv += 1
+            if isinstance(c[k], bool): bool_rv += 1
+    for k in p_keys:
+        if k in c:
+            checked_p += 1
+            if isinstance(c[k], bool): bool_p[k] = bool_p.get(k, 0) + 1
+print('rate/verdict-shaped:', checked_rv, 'booleans:', bool_rv)
+print('presence-shaped:', checked_p, 'booleans by key:', bool_p)
+"
+```
+
+Result: **124** rate/verdict-shaped values checked (`rate`, `rate_pct`,
+`verdict`, `truncation_verdict`, `echo_relation` — every repeat-based or
+audit-derived result field in the file) — **0 booleans**. This is exactly
+the must_haves truth: no repeat-based result is ever collapsed to a bare
+boolean; every one is a rate carrying its integer count or a named
+verdict string.
+
+A separate **64** presence-shaped values were also checked
+(`response_present`, `response_top_level_present`, `logprobs_present`).
+**10** of these — all `logprobs_present`, on the 10 `single-logprobs`
+(BHV-05) cells — ARE Python/YAML booleans (`true`/`false`). This is a
+deliberate, documented design choice, not a violation of the must_haves
+truth: `single-logprobs` is a single-observation design (no `repeat:`
+coordinate at all), so `logprobs_present` is not a repeat-based rate — it
+is a single fired call's own presence fact, paired with the separate
+integer `logprobs_token_entries` field that carries the actual
+quantitative evidence (how many per-token alternatives came back). Plan
+12-04's own coverage entry (D3) asserted `isinstance(x['logprobs_present'],
+bool)` as an explicit, intentional acceptance criterion — this audit
+confirms that design held through the phase's remaining plans and states
+the count rather than silently matching the must_haves truth's more
+general wording to a case it does not cover. **188** values checked in
+total across both scans (124 + 64).
+
+### 4. Requirement-by-requirement scoring against the roadmap's six success criteria
+
+Verbatim from `.planning/ROADMAP.md`'s Phase 12 section, each scored
+against a named artifact and a count:
+
+1. **"Seed-determinism results are recorded as a rate over n≥3 repeat
+   pairs per applicable model ... never a bare boolean cell."** —
+   `probes/classified/behavioral.yaml`, 8 `design: seed-pairs` cells
+   (BHV-01), each `pairs: 5` (n=5 ≥ 3), `rate` a string `"<int>/5"` (e.g.
+   `"0/5"`), never boolean (Section 3: 0 of 124). **MET.**
+2. **"Temperature-0 repeatability results are recorded as a rate over
+   n≥3 repeats per applicable model, with the repeat count stated
+   alongside the rate."** — 12 `design: repeats` cells (BHV-02), each
+   carrying `repeats: 5` and `comparisons: 4` alongside its `rate`
+   string (e.g. `"0/4"`) — the repeat count is a named field on every
+   cell, not implied. **MET.**
+3. **"Stop-sequence truncation is verified per applicable model,
+   including whether the returned stop/finish-reason field honestly
+   reports that truncation occurred."** — 10 `design: single-stop` cells
+   (BHV-03): 9 `stop-honored`, 1 `inconclusive` (glm-5.3, empty visible
+   text at 29/1200 budget tokens — a genuine per-call finding, not
+   re-fired). Every cell carries a `finish_reason_honest` field
+   separately from `truncation_verdict`, and (plan 12-04's own D1
+   verification, re-confirmed here) `finish_reason_honest` is never
+   `"honest"` for a non-`anthropic` vendor — the honesty claim is scoped
+   to the one vendor whose docs actually make it. **MET** (9 of 10
+   cleanly verified; the 10th is an honest inconclusive finding, not a
+   gap — see the declared-skip register below for the 2 wire-rejecting
+   models this cell count excludes).
+4. **"`n>1`/`candidateCount` requests are verified against the actual
+   returned candidate count for every model where the parameter is
+   accepted, and `logprobs` requests are verified to contain real
+   per-token data rather than a 200-with-empty-payload response."** — 7
+   `design: single-candidates` cells (BHV-04): 2 `accepted-honored`, 1
+   `accepted-ignored` (glm-5.3 silently returns 1 of 2 requested), 4
+   `rejected` (clean, field named in 3 of 4 error bodies). 10
+   `design: single-logprobs` cells (BHV-05) at a budget confirmed
+   non-masking (plan 12-04's own read_first instruction): 6
+   `accepted-honored` (real per-token content, `logprobs_token_entries`
+   an int > 0), 4 `accepted-ignored` (grok-4-5, glm-5.3 — genuinely
+   silent, zero entries at every fired mode). **MET** — every fired cell
+   reads the actual returned count/payload, not the HTTP status alone.
+5. **"Service-tier request-vs-response vocabulary is audited on every
+   tier-offering vendor, with Anthropic's documented request/response
+   field asymmetry specifically confirmed or refuted against a live
+   response body."** — 27 `design: tier-audit` cells (BHV-06) across all
+   8 tracked vendors (Section 2's vendor-level reconciliation: 8
+   applicable, 8 fired, 0 coverage-skipped). Anthropic's 4 cells: the
+   asymmetry is **CONFIRMED** (`response_present: present` +
+   `response_top_level_present: absent` on every non-trap cell; the
+   D-15 trap cell shows `echo_relation: rejected`,
+   `rejection_names_field: true`). **MET.**
+6. **"Every behavioral test's expected value cites a
+   `probes/docs-claims.yaml` claim entry or a measured Phase 11 cell —
+   none asserted from memory."** — Section 1 above: 83/83 cells resolve
+   (74 docs-claims + 9 prereg + 0 phase11 + 0 unresolved), 27/27 skips
+   resolve to exactly one citation each. **MET** — with the honest
+   caveat that 0 cells actually needed a `phase11:` citation (every real
+   behavioral question cited a vendor doc or, for the 9 calibration
+   cells, the preregistration's own calibration design); the `phase11:`
+   prefix is exercised instead by the 12 skip rows and 6 tier-audit
+   `cited_probe_id` audit rows, which is the mechanism roadmap criterion
+   6's "or a measured Phase 11 cell" clause actually describes.
+
+### 5. The declared-skip register
+
+All 27 skips, sorted by requirement then model — the phase's honest gaps
+as one readable list rather than scattered across six set files:
+
+| Req | Model | Param | Mode | Reason | Citation |
+|---|---|---|---|---|---|
+| BHV-01 | claude-fable-5 | seed | n/a | no-request-side-seed-field | `docs-claims:seed/anthropic` |
+| BHV-01 | claude-haiku-4-5 | seed | n/a | no-request-side-seed-field | `docs-claims:seed/anthropic` |
+| BHV-01 | claude-opus-5 | seed | n/a | no-request-side-seed-field | `docs-claims:seed/anthropic` |
+| BHV-01 | claude-sonnet-5 | seed | n/a | no-request-side-seed-field | `docs-claims:seed/anthropic` |
+| BHV-02 | all | temperature | thinking-on/thinking-off | deferred-thinking-mode-cross-product | `prereg:Mode scope` |
+| BHV-02 | claude-fable-5 | temperature | default | wire-rejects-temperature-default-mode | `claude-fable-5--temperature--0.7--default--be62cc19` |
+| BHV-02 | claude-opus-5 | temperature | default | wire-rejects-temperature-default-mode | `claude-opus-5--temperature--0.7--default--65c8c160` |
+| BHV-02 | claude-sonnet-5 | temperature | default | wire-rejects-temperature-default-mode | `claude-sonnet-5--temperature--0.7--default--276ef9f0` |
+| BHV-02 | gpt-5-6-sol | temperature | default | wire-rejects-temperature-default-mode | `gpt-5-6-sol--temperature--0.7--default--f4a07a21` |
+| BHV-02 | kimi-k3 | temperature | default | wire-rejects-temperature-default-mode | `kimi-k3--temperature--0.7--default--8d339aec` |
+| BHV-03 | glm-5.3 | stop | default | out-of-scope-multi-sequence-contradiction | `docs-claims:stop/zai` |
+| BHV-03 | gpt-5-6-sol | stop | default | wire-rejects-stop-default-mode | `gpt-5-6-sol--stop--["the"]--default--6a86352a` |
+| BHV-03 | grok-4-5 | stop | default | wire-rejects-stop-default-mode | `grok-4-5--stop--["the"]--default--ee1a658f` |
+| BHV-04 | claude-fable-5 | n | default | no-request-side-field-for-vendor | `docs-claims:n/anthropic` |
+| BHV-04 | claude-haiku-4-5 | n | default | no-request-side-field-for-vendor | `docs-claims:n/anthropic` |
+| BHV-04 | claude-opus-5 | n | default | no-request-side-field-for-vendor | `docs-claims:n/anthropic` |
+| BHV-04 | claude-sonnet-5 | n | default | no-request-side-field-for-vendor | `docs-claims:n/anthropic` |
+| BHV-04 | gemini-3-1-pro | gemini-candidate-count | default | wire-rejects-gemini-candidate-count | `gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857` |
+| BHV-05 | claude-fable-5 | logprobs | default | no-request-side-field-for-vendor | `docs-claims:logprobs/anthropic` |
+| BHV-05 | claude-haiku-4-5 | logprobs | default | no-request-side-field-for-vendor | `docs-claims:logprobs/anthropic` |
+| BHV-05 | claude-opus-5 | logprobs | default | no-request-side-field-for-vendor | `docs-claims:logprobs/anthropic` |
+| BHV-05 | claude-sonnet-5 | logprobs | default | no-request-side-field-for-vendor | `docs-claims:logprobs/anthropic` |
+| BHV-05 | deepseek-v4 | logprobs | default | already-settled-logprobs-honored | `deepseek-v4--logprobs--true--default--3e9e0cfd` |
+| BHV-05 | gpt-5-6-sol | logprobs | thinking-off | already-settled-logprobs-honored | `gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab` |
+| BHV-05 | qwen3.8-max | logprobs | default | already-settled-logprobs-honored | `qwen3.8-max--logprobs--true--default--8c88fc79` |
+| BHV-05 | qwen3.8-max | logprobs | thinking-off | already-settled-logprobs-honored | `qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac` |
+| BHV-06 | qwen3.8-flash | reasoning-effort | default | deferred-out-of-envelope | `docs-claims:openai-reasoning-effort/qwen` |
+
+27 rows, matching Section 1's file-level skip count exactly.
+
+### Deliberate deferral, not an omission
+
+This phase produces **no new numbered conclusion** in `docs/conclusions.md`
+and edits **no tool report**. Promotion of these findings — the genuine
+seed/temperature/stop/candidate/logprobs/service-tier results above, plus
+the standing docs-vs-wire drift findings (OpenAI's `scale` rejection,
+Gemini's second request/response asymmetry) — into the repo's conclusions
+and affected notes is declared **the next phase's job** (Phase 13, per
+`.planning/ROADMAP.md`), not this plan's. Doing it here would split that
+promotion work across two phases; recorded explicitly so this deferral is
+never read as roadmap rule 6 being ignored.
+
+Verification for this task: `python3 scripts/classify-behavioral.py
+--check`: `0 problem(s)` (the citation gate enforced inside the generator
+is itself evidence this audit's zero-unresolved count is real, not
+separately asserted). `git diff -U0 -- probes/PREREGISTRATION.md`
+(measured before this entry's own commit): 0 removed lines — append-only
+held.
