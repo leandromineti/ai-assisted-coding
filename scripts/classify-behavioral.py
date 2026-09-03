@@ -90,7 +90,43 @@ REQUIREMENTS = frozenset({
 # effect-control design, distinct from the baseline-vs-N reduction the other
 # two designs share). Grows further in 12-04/12-05 as new cell shapes
 # (single-observation BHV-03/04/05, presence-only BHV-06) are added.
-DESIGNS = frozenset({"control", "repeats", "seed-pairs"})
+#
+# 12-04 adds three single-observation designs (BHV-03/04/05) — no `repeat`
+# coordinate, a single fired call (or a triggering+control pair for
+# `single-stop`) settling a single verified behavior rather than a rate:
+# `single-stop` pairs a triggering call against its own model's
+# non-triggering control (joined via `control_value`, mirroring
+# `seed-pairs`' own `effect_control_value` mechanism); `single-candidates`
+# and `single-logprobs` each read ONE fired cell through the CONTRACT
+# classifier's own imported detectors (`classify_probes.detect_
+# candidate_count`/`detect_logprobs`) rather than reimplementing them
+# (D-11 key_link: one detector per fact across the contract and behavioral
+# pipelines).
+DESIGNS = frozenset({
+    "control", "repeats", "seed-pairs",
+    "single-stop", "single-candidates", "single-logprobs",
+})
+
+# Closed vocabulary for `single-stop`'s own two judgement fields (12-04).
+# `truncation_verdict` is derived from the returned TEXT alone (never the
+# finish field) -- `stop-honored` when the triggering text ends before the
+# stop token and is shorter than the control's, `stop-ignored` when the stop
+# token appears in the triggering text or the two texts are equal length,
+# `inconclusive` otherwise (including either call missing/empty visible
+# text -- a stop-family claim from one call alone is never asserted).
+TRUNCATION_VERDICTS = frozenset({"stop-honored", "stop-ignored", "inconclusive"})
+
+# `finish_reason_honest` is a SEPARATE three-valued judgement about whether
+# the wire family's OWN finish/stop-reason field can be trusted as proof --
+# `honest` only at the one wire family (anthropic_messages) whose dedicated
+# `stop_sequence` value is distinguishable from a natural completion AND
+# whose claim matches what the text shows; `dishonest` when that field
+# contradicts the text; `ambiguous` everywhere else (every other wire family
+# shares one finish value for both cases, and any inconclusive-text case).
+# A `stop-honored` verdict at a non-anthropic wire family MUST still record
+# `ambiguous` here -- the classifier makes that impossible to violate rather
+# than merely discouraging it (an acceptance criterion asserts this).
+FINISH_REASON_HONEST_VALUES = frozenset({"honest", "ambiguous", "dishonest"})
 
 # Closed verdict vocabulary, shared by every repeat-based design (control/
 # repeats/seed-pairs) — never a bare boolean anywhere in the classified file
@@ -108,6 +144,11 @@ SKIP_REASONS: frozenset[str] = frozenset({
     "no-request-side-seed-field",
     "wire-rejects-temperature-default-mode",
     "deferred-thinking-mode-cross-product",
+    "wire-rejects-stop-default-mode",
+    "out-of-scope-multi-sequence-contradiction",
+    "wire-rejects-gemini-candidate-count",
+    "no-request-side-field-for-vendor",
+    "already-settled-logprobs-honored",
 })
 
 
@@ -501,6 +542,212 @@ def reduce_seed_pair_group(
     }
 
 
+def _join_flat_entry(entry: dict, models: dict[str, dict], raw_records: dict[str, dict]) -> dict:
+    """Join one non-repeated declared entry (no `repeat` key) to its raw
+    evidence -- shared by all three 12-04 single-observation designs, none
+    of which reduce a repeat group. Returns probe_id, the FULL response
+    body (single-candidates/-logprobs need the whole body, not just the
+    visible text, to run the imported contract detectors), status,
+    terminal, finish_reason, visible text, usage, wire_family, and
+    recorded_at. A missing/unfired record degrades to an honestly empty
+    shape (response_body={}, everything else None) rather than raising --
+    the same never-crash-on-absence discipline `_join_seed_entry` already
+    established."""
+    model = models[entry["model"]]
+    wire_family = model["wire_family"]
+    pid = compute_behavioral_probe_id(entry, models)
+    record = raw_records.get(pid)
+    record_found = record is not None
+    status = None
+    response_body: dict = {}
+    terminal = None
+    recorded_at = None
+    usage: dict = {}
+    if record is not None:
+        terminal = record.get("terminal")
+        attempts = record.get("attempts") or []
+        last = attempts[-1] if attempts else {}
+        status = last.get("status")
+        response_body = last.get("response_body_raw") or {}
+        recorded_at = record.get("recorded_at")
+        usage = record.get("usage") or {}
+    text = None
+    finish_reason = None
+    if terminal == "verdict":
+        text = _get_message_text(response_body, wire_family)
+        finish_reason = _get_finish_reason(response_body, wire_family)
+    return {
+        "probe_id": pid, "response_body": response_body, "status": status,
+        "terminal": terminal, "finish_reason": finish_reason, "text": text,
+        "usage": usage, "wire_family": wire_family, "recorded_at": recorded_at,
+        "record_found": record_found,
+    }
+
+
+def reduce_single_stop_group(
+    triggering_entry: dict, control_entry: dict, models: dict[str, dict],
+    raw_records: dict[str, dict], *, stop_token: str,
+) -> dict:
+    """BHV-03's own reduction (12-04): pairs a triggering call against its
+    own model's non-triggering control. `truncation_verdict` is derived
+    from the returned TEXT alone, in the plan's own stated order --
+    `stop-ignored` if the stop token appears anywhere in the triggering
+    text OR the two texts are the same length (either means the stop
+    parameter did not shorten anything); `stop-honored` only when the token
+    is ABSENT and the triggering text is strictly shorter than the
+    control's; `inconclusive` otherwise (including either call missing or
+    carrying empty visible text -- `not text` catches both, matching
+    `reduce_repeat_group`'s own no-signal convention for an empty-but-200
+    response).
+
+    `finish_reason_honest` is a separate three-valued judgement: `ambiguous`
+    at every wire family other than `anthropic_messages` (whose shared
+    finish value cannot distinguish a triggered stop from a natural
+    completion) and at any `inconclusive` verdict (nothing to honestly
+    judge the field against); at `anthropic_messages`, `honest` when the
+    field's own claim (`stop_reason == "stop_sequence"`) agrees with what
+    the text showed, `dishonest` when it contradicts it."""
+    trig = _join_flat_entry(triggering_entry, models, raw_records)
+    ctrl = _join_flat_entry(control_entry, models, raw_records)
+    if not trig["record_found"] or not ctrl["record_found"]:
+        _fail(
+            2,
+            "single-stop group is missing raw evidence for its triggering or control "
+            f"call (triggering={trig['probe_id']!r} found={trig['record_found']}, "
+            f"control={ctrl['probe_id']!r} found={ctrl['record_found']}) — a stop cell "
+            "needs BOTH calls on disk to produce a verdict, never one alone",
+        )
+    joined_at = [t for t in (trig["recorded_at"], ctrl["recorded_at"]) if t]
+
+    triggering_text_length = len(trig["text"]) if trig["text"] else (0 if trig["text"] == "" else None)
+    control_text_length = len(ctrl["text"]) if ctrl["text"] else (0 if ctrl["text"] == "" else None)
+
+    if not trig["text"] or not ctrl["text"]:
+        truncation_verdict = "inconclusive"
+        stop_present = None
+    else:
+        stop_present = stop_token in trig["text"]
+        if stop_present:
+            truncation_verdict = "stop-ignored"
+        elif triggering_text_length == control_text_length:
+            truncation_verdict = "stop-ignored"
+        elif triggering_text_length < control_text_length:
+            truncation_verdict = "stop-honored"
+        else:
+            truncation_verdict = "inconclusive"
+
+    wire_family = trig["wire_family"]
+    if truncation_verdict == "inconclusive" or wire_family != "anthropic_messages":
+        finish_reason_honest = "ambiguous"
+    else:
+        reason_says_stop = trig["finish_reason"] == "stop_sequence"
+        text_shows_stop = truncation_verdict == "stop-honored"
+        finish_reason_honest = "honest" if reason_says_stop == text_shows_stop else "dishonest"
+
+    return {
+        "probe_ids": [trig["probe_id"], ctrl["probe_id"]],
+        "triggering_text_length": triggering_text_length,
+        "control_text_length": control_text_length,
+        "stop_token_in_triggering_text": stop_present,
+        "truncation_verdict": truncation_verdict,
+        "finish_reason_honest": finish_reason_honest,
+        "ancillary": {
+            "triggering_status": trig["status"], "control_status": ctrl["status"],
+            "triggering_finish_reason": trig["finish_reason"], "control_finish_reason": ctrl["finish_reason"],
+        },
+        "joined_at": joined_at,
+    }
+
+
+def reduce_single_candidates_group(
+    entry: dict, models: dict[str, dict], raw_records: dict[str, dict], *, requested_n: int,
+) -> dict:
+    """BHV-04's own reduction (12-04): a single `n>1` fired cell, read
+    through `scripts/classify-probes.py`'s OWN `detect_candidate_count()`
+    and `_get_candidate_count()` -- imported, never reimplemented (this
+    module's own read_first instruction). A non-200/non-verdict record
+    (the real, observed shape at 4 of 7 fired models: `n>1` genuinely
+    REJECTED even though `n=1` classified accepted-honored in Phase 11 --
+    the trivial n=1 case Phase 11 fired can never refute an n>1 claim) is
+    classified `rejected` directly rather than handed to the detector,
+    which has no rejected-vs-unverified distinction of its own to draw on
+    an error body. `returned_count` stays an honest integer even on a
+    rejection -- `_get_candidate_count`'s own `len(choices or [])` reads 0
+    from an error body with no `choices` key, never None."""
+    wire_family = models[entry["model"]]["wire_family"]
+    joined = _join_flat_entry(entry, models, raw_records)
+    if joined["terminal"] == "verdict" and joined["status"] == 200:
+        state, evidence = classify_probes.detect_candidate_count(
+            joined["response_body"], row_id="n", wire_family=wire_family,
+            resolved_field=None, requested_value=str(requested_n), usage=joined["usage"],
+        )
+    else:
+        state, evidence = "rejected", "none"
+    returned_count = classify_probes._get_candidate_count(joined["response_body"], wire_family)
+    return {
+        "probe_ids": [joined["probe_id"]],
+        "requested_n": requested_n,
+        "returned_count": returned_count if returned_count is not None else 0,
+        "state": state,
+        "evidence": evidence,
+        "ancillary": {"status": joined["status"], "terminal": joined["terminal"]},
+        "joined_at": [joined["recorded_at"]] if joined["recorded_at"] else [],
+    }
+
+
+def _get_logprobs_entries(response_body: dict, wire_family: str) -> list:
+    """The raw per-token logprobs entries array, read directly -- every
+    12-04 `single-logprobs` target model shares the `openai_compat` wire
+    shape, so this stays scoped to that family rather than generalizing
+    past what this plan's own cells actually exercise."""
+    if wire_family == "openai_compat":
+        content = ((response_body.get("choices") or [{}])[0].get("logprobs") or {}).get("content")
+        return content or []
+    return []
+
+
+def _logprobs_alternatives_honored(entries: list, requested_top_logprobs: int) -> bool:
+    """True iff every per-token entry carries at least the requested number
+    of alternatives (a vendor MAY return fewer than requested per its own
+    documented hedge -- recorded as a fact, never raised on)."""
+    if not entries:
+        return False
+    for e in entries:
+        alts = e.get("top_logprobs") if isinstance(e, dict) else None
+        if not alts or len(alts) < requested_top_logprobs:
+            return False
+    return True
+
+
+def reduce_single_logprobs_group(
+    entry: dict, models: dict[str, dict], raw_records: dict[str, dict], *, requested_top_logprobs: int,
+) -> dict:
+    """BHV-05's own reduction (12-04): a single combined `logprobs`+
+    `top_logprobs` fired cell, read through `scripts/classify-probes.py`'s
+    OWN `detect_logprobs()` (imported) for `logprobs_present`, plus a local
+    per-token entry count/alternatives-honored reading -- the contract
+    classifier's own detector is boolean-only (`_get_logprobs_present`), so
+    the entry-count/alternatives detail this design's own must_haves truth
+    requires is read locally, never a second presence detector."""
+    wire_family = models[entry["model"]]["wire_family"]
+    joined = _join_flat_entry(entry, models, raw_records)
+    state, evidence = classify_probes.detect_logprobs(
+        joined["response_body"], row_id="logprobs-reverify", wire_family=wire_family,
+        resolved_field=None, requested_value="true", usage=joined["usage"],
+    )
+    entries = _get_logprobs_entries(joined["response_body"], wire_family)
+    return {
+        "probe_ids": [joined["probe_id"]],
+        "logprobs_present": state == "accepted-honored",
+        "logprobs_token_entries": len(entries),
+        "logprobs_alternatives_honored": _logprobs_alternatives_honored(entries, requested_top_logprobs),
+        "state": state,
+        "evidence": evidence,
+        "ancillary": {"status": joined["status"], "terminal": joined["terminal"]},
+        "joined_at": [joined["recorded_at"]] if joined["recorded_at"] else [],
+    }
+
+
 def build_rows(
     probes: list[dict],
     expectations: list[dict],
@@ -553,6 +800,33 @@ def build_rows(
         if len(ec_entries) != 1:
             _fail(2, f"group {ec_key!r}: effect-control group must have exactly 1 entry, got {len(ec_entries)}")
         effect_control_groups[key] = ec_entries[0]
+
+    # A `design: single-stop` expectation's `control_value` names a SECOND
+    # declared probe group (same model/param/mode, the non-triggering
+    # control) — the same pop-before-orphan-check mechanism as seed-pairs'
+    # own `effect_control_value` above, applied to BHV-03's own pairing
+    # (12-04).
+    single_stop_control_groups: dict[tuple, dict] = {}
+    for key, exp in expectations_by_key.items():
+        if exp.get("design") != "single-stop":
+            continue
+        cv = exp.get("control_value")
+        if cv is None:
+            _fail(2, f"group {key!r}: a single-stop expectation requires `control_value`")
+        if not exp.get("stop_token"):
+            _fail(2, f"group {key!r}: a single-stop expectation requires `stop_token`")
+        model, param, _value, mode = key
+        cv_key = (model, param, cv, mode)
+        if cv_key not in groups:
+            _fail(
+                2,
+                f"group {key!r}: no declared probe group for its control_value "
+                f"{cv!r} (expected group_key {cv_key!r})",
+            )
+        cv_entries = groups.pop(cv_key)
+        if len(cv_entries) != 1:
+            _fail(2, f"group {cv_key!r}: control group must have exactly 1 entry, got {len(cv_entries)}")
+        single_stop_control_groups[key] = cv_entries[0]
 
     for key in groups:
         if key not in expectations_by_key:
@@ -627,6 +901,110 @@ def build_rows(
                 "probe_ids": reduced["probe_ids"],
                 "ancillary": reduced["ancillary"],
                 "note": reduced["note"],
+            })
+            continue
+
+        if design == "single-stop":
+            if len(entries) != 1:
+                _fail(2, f"group {key!r}: single-stop expects exactly 1 triggering entry, got {len(entries)}")
+            control_entry = single_stop_control_groups[key]
+            reduced = reduce_single_stop_group(
+                entries[0], control_entry, models, raw_records, stop_token=expectation["stop_token"],
+            )
+            all_joined_at.extend(reduced.pop("joined_at"))
+            if reduced["truncation_verdict"] not in TRUNCATION_VERDICTS:
+                _fail(2, f"group {key!r}: truncation_verdict {reduced['truncation_verdict']!r} outside {sorted(TRUNCATION_VERDICTS)}")
+            if reduced["finish_reason_honest"] not in FINISH_REASON_HONEST_VALUES:
+                _fail(2, f"group {key!r}: finish_reason_honest {reduced['finish_reason_honest']!r} outside {sorted(FINISH_REASON_HONEST_VALUES)}")
+            cells.append({
+                "cell_id": f"{model}--{param}--{value}--{mode}",
+                "requirement": requirement,
+                "design": design,
+                "model": model,
+                "vendor": models[model]["vendor"],
+                "mode": mode,
+                "param": param,
+                "value": value,
+                "stop_token": expectation["stop_token"],
+                "triggering_text_length": reduced["triggering_text_length"],
+                "control_text_length": reduced["control_text_length"],
+                "stop_token_in_triggering_text": reduced["stop_token_in_triggering_text"],
+                "truncation_verdict": reduced["truncation_verdict"],
+                "finish_reason_honest": reduced["finish_reason_honest"],
+                "expected": expected,
+                "expected_source": expected_source,
+                "probe_ids": reduced["probe_ids"],
+                "ancillary": reduced["ancillary"],
+                "note": None,
+            })
+            continue
+
+        if design == "single-candidates":
+            if len(entries) != 1:
+                _fail(2, f"group {key!r}: single-candidates expects exactly 1 fired entry, got {len(entries)}")
+            try:
+                requested_n = int(value)
+            except (TypeError, ValueError):
+                _fail(2, f"group {key!r}: single-candidates `value` must be an int-parseable n, got {value!r}")
+            reduced = reduce_single_candidates_group(entries[0], models, raw_records, requested_n=requested_n)
+            all_joined_at.extend(reduced.pop("joined_at"))
+            cells.append({
+                "cell_id": f"{model}--{param}--{value}--{mode}",
+                "requirement": requirement,
+                "design": design,
+                "model": model,
+                "vendor": models[model]["vendor"],
+                "mode": mode,
+                "param": param,
+                "value": value,
+                "requested_n": reduced["requested_n"],
+                "returned_count": reduced["returned_count"],
+                "state": reduced["state"],
+                "evidence": reduced["evidence"],
+                "expected": expected,
+                "expected_source": expected_source,
+                "probe_ids": reduced["probe_ids"],
+                "ancillary": reduced["ancillary"],
+                "note": None,
+            })
+            continue
+
+        if design == "single-logprobs":
+            if len(entries) != 1:
+                _fail(2, f"group {key!r}: single-logprobs expects exactly 1 fired entry, got {len(entries)}")
+            settles_probe_id = expectation.get("settles_probe_id")
+            if settles_probe_id and settles_probe_id not in contract_probe_ids:
+                _fail(
+                    2,
+                    f"group {key!r}: settles_probe_id does not resolve to a "
+                    f"probes/classified/contract-sweep.yaml row: {settles_probe_id!r}",
+                )
+            requested_top_logprobs = expectation.get("requested_top_logprobs", 3)
+            reduced = reduce_single_logprobs_group(
+                entries[0], models, raw_records, requested_top_logprobs=requested_top_logprobs,
+            )
+            all_joined_at.extend(reduced.pop("joined_at"))
+            cells.append({
+                "cell_id": f"{model}--{param}--{value}--{mode}",
+                "requirement": requirement,
+                "design": design,
+                "model": model,
+                "vendor": models[model]["vendor"],
+                "mode": mode,
+                "param": param,
+                "value": value,
+                "requested_top_logprobs": requested_top_logprobs,
+                "logprobs_present": reduced["logprobs_present"],
+                "logprobs_token_entries": reduced["logprobs_token_entries"],
+                "logprobs_alternatives_honored": reduced["logprobs_alternatives_honored"],
+                "state": reduced["state"],
+                "evidence": reduced["evidence"],
+                "settles_probe_id": settles_probe_id,
+                "expected": expected,
+                "expected_source": expected_source,
+                "probe_ids": reduced["probe_ids"],
+                "ancillary": reduced["ancillary"],
+                "note": None,
             })
             continue
 
@@ -757,9 +1135,15 @@ def regenerate(raw_dir: Path = DEFAULT_RAW_DIR, sets_dir: Path = BEHAVIORAL_SETS
 
 
 def print_summary(cells: list[dict], skips: list[dict]) -> None:
+    """Tallies the primary judgement field per row -- `verdict` for the
+    rate-based designs (control/repeats/seed-pairs), `truncation_verdict`
+    for single-stop, `state` for single-candidates/single-logprobs (12-04:
+    none of the three single-observation designs carry a `verdict` key at
+    all, so a bare `c["verdict"]` KeyErrors on them)."""
     tally: dict[str, int] = {}
     for c in cells:
-        tally[c["verdict"]] = tally.get(c["verdict"], 0) + 1
+        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state")
+        tally[key] = tally.get(key, 0) + 1
     print(f"behavioral cells: {len(cells)}")
     print(f"declared skips: {len(skips)}")
     for verdict in sorted(tally):
@@ -1296,6 +1680,206 @@ def selftest() -> tuple[int, int]:
         if e.code != 2:
             problems += 1
             print(f"FAIL build_rows(missing effect_control_value): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # ---------------------------------------------------------------------
+    # 12-04's three single-observation designs (single-stop/-candidates/
+    # -logprobs) — no repeat coordinate, joined via _join_flat_entry.
+    # ---------------------------------------------------------------------
+    openai_compat_models = {
+        "m1": {"wire_family": "anthropic_messages", "vendor": "anthropic", "api_model_id": "m1-api", "_order": 0},
+        "m2": {"wire_family": "openai_compat", "vendor": "xai", "api_model_id": "m2-api", "_order": 1},
+    }
+
+    def make_stop_entries(model: str, stop_value: str = "triggering", control_value: str = "control-no-stop"):
+        trig = {"model": model, "param": "stop-truncation", "value": stop_value, "mode": "default", "prompt": "x", "max_tokens": 16, "extra_params": {"stop": ["STOP"]}}
+        ctrl = {"model": model, "param": "stop-truncation", "value": control_value, "mode": "default", "prompt": "x", "max_tokens": 16}
+        return trig, ctrl
+
+    def stop_raw(pid: str, text: str | None, *, status: int = 200, finish_reason: str = "end_turn", family: str = "anthropic_messages") -> dict:
+        if family == "anthropic_messages":
+            body = {"content": [{"type": "text", "text": text}], "stop_reason": finish_reason} if text is not None else {}
+        else:
+            body = {"choices": [{"message": {"content": text}, "finish_reason": finish_reason}]} if text is not None else {}
+        return {
+            "terminal": "verdict" if status == 200 else "retry_exhausted",
+            "recorded_at": "2026-09-03T00:00:00Z",
+            "attempts": [{"status": status, "response_body_raw": body}],
+            "usage": {"output_tokens": 5},
+        }
+
+    # --- reduce_single_stop_group: anthropic, honored + honest (text
+    #     shorter, no stop token, field correctly claims stop_sequence) ---
+    cases += 1
+    trig, ctrl = make_stop_entries("m1")
+    trig_pid = compute_behavioral_probe_id(trig, openai_compat_models)
+    ctrl_pid = compute_behavioral_probe_id(ctrl, openai_compat_models)
+    raw = {trig_pid: stop_raw(trig_pid, "abc", finish_reason="stop_sequence"), ctrl_pid: stop_raw(ctrl_pid, "abcdef")}
+    reduced = reduce_single_stop_group(trig, ctrl, openai_compat_models, raw, stop_token="STOP")
+    if reduced["truncation_verdict"] != "stop-honored" or reduced["finish_reason_honest"] != "honest":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(anthropic honest): got {reduced['truncation_verdict']!r}/{reduced['finish_reason_honest']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: anthropic, honored but DISHONEST (text
+    #     shows truncation, but the field does not claim stop_sequence) ---
+    cases += 1
+    raw_dishonest = {trig_pid: stop_raw(trig_pid, "abc", finish_reason="end_turn"), ctrl_pid: stop_raw(ctrl_pid, "abcdef")}
+    reduced = reduce_single_stop_group(trig, ctrl, openai_compat_models, raw_dishonest, stop_token="STOP")
+    if reduced["truncation_verdict"] != "stop-honored" or reduced["finish_reason_honest"] != "dishonest":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(anthropic dishonest): got {reduced['truncation_verdict']!r}/{reduced['finish_reason_honest']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: non-anthropic wire family — ALWAYS
+    #     ambiguous, even on a clean stop-honored verdict (the plan's own
+    #     must_haves truth: no non-anthropic row is ever "honest") ---
+    cases += 1
+    trig2, ctrl2 = make_stop_entries("m2")
+    trig2_pid = compute_behavioral_probe_id(trig2, openai_compat_models)
+    ctrl2_pid = compute_behavioral_probe_id(ctrl2, openai_compat_models)
+    raw2 = {
+        trig2_pid: stop_raw(trig2_pid, "abc", finish_reason="stop", family="openai_compat"),
+        ctrl2_pid: stop_raw(ctrl2_pid, "abcdef", family="openai_compat"),
+    }
+    reduced = reduce_single_stop_group(trig2, ctrl2, openai_compat_models, raw2, stop_token="STOP")
+    if reduced["truncation_verdict"] != "stop-honored" or reduced["finish_reason_honest"] != "ambiguous":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(non-anthropic ambiguous): got {reduced['truncation_verdict']!r}/{reduced['finish_reason_honest']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: stop-ignored (token present in text) ---
+    cases += 1
+    raw_ignored = {
+        trig2_pid: stop_raw(trig2_pid, "abc STOP def", finish_reason="stop", family="openai_compat"),
+        ctrl2_pid: stop_raw(ctrl2_pid, "abcdef", family="openai_compat"),
+    }
+    reduced = reduce_single_stop_group(trig2, ctrl2, openai_compat_models, raw_ignored, stop_token="STOP")
+    if reduced["truncation_verdict"] != "stop-ignored":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(token present): expected stop-ignored, got {reduced['truncation_verdict']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: stop-ignored (equal-length texts, no token) ---
+    cases += 1
+    raw_equal = {
+        trig2_pid: stop_raw(trig2_pid, "same", finish_reason="stop", family="openai_compat"),
+        ctrl2_pid: stop_raw(ctrl2_pid, "same", family="openai_compat"),
+    }
+    reduced = reduce_single_stop_group(trig2, ctrl2, openai_compat_models, raw_equal, stop_token="STOP")
+    if reduced["truncation_verdict"] != "stop-ignored":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(equal length): expected stop-ignored, got {reduced['truncation_verdict']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: fired-but-empty text on EITHER call is
+    #     inconclusive (a genuine finding, e.g. glm-5.3's own reasoning-
+    #     exhaustion record) — NOT the same as a missing record below ---
+    cases += 1
+    raw_empty = {
+        trig2_pid: stop_raw(trig2_pid, "", finish_reason="stop", family="openai_compat"),
+        ctrl2_pid: stop_raw(ctrl2_pid, "abcdef", family="openai_compat"),
+    }
+    reduced = reduce_single_stop_group(trig2, ctrl2, openai_compat_models, raw_empty, stop_token="STOP")
+    if reduced["truncation_verdict"] != "inconclusive" or reduced["finish_reason_honest"] != "ambiguous":
+        problems += 1
+        print(f"FAIL reduce_single_stop_group(empty text): got {reduced['truncation_verdict']!r}/{reduced['finish_reason_honest']!r}", file=sys.stderr)
+
+    # --- reduce_single_stop_group: a MISSING control call (no raw record
+    #     on disk at all) fails loud rather than producing a verdict from
+    #     one call ---
+    cases += 1
+    raw_missing_control = {trig2_pid: stop_raw(trig2_pid, "abc", finish_reason="stop", family="openai_compat")}
+    try:
+        reduce_single_stop_group(trig2, ctrl2, openai_compat_models, raw_missing_control, stop_token="STOP")
+        problems += 1
+        print("FAIL reduce_single_stop_group: a missing control record was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL reduce_single_stop_group(missing control): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- reduce_single_candidates_group: honored (returned == requested) ---
+    cases += 1
+    n_entry = {"model": "m2", "param": "n", "value": 2, "mode": "default", "prompt": "x", "max_tokens": 16, "extra_params": {"n": 2}}
+    n_pid = compute_behavioral_probe_id(n_entry, openai_compat_models)
+    n_raw = {n_pid: {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "a"}}, {"message": {"content": "b"}}]}}],
+        "usage": {"output_tokens": 5},
+    }}
+    reduced = reduce_single_candidates_group(n_entry, openai_compat_models, n_raw, requested_n=2)
+    if reduced["returned_count"] != 2 or reduced["state"] != "accepted-honored":
+        problems += 1
+        print(f"FAIL reduce_single_candidates_group(honored): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
+
+    # --- reduce_single_candidates_group: ignored (only 1 returned) ---
+    cases += 1
+    n_raw_ignored = {n_pid: {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "a"}}]}}],
+        "usage": {"output_tokens": 5},
+    }}
+    reduced = reduce_single_candidates_group(n_entry, openai_compat_models, n_raw_ignored, requested_n=2)
+    if reduced["returned_count"] != 1 or reduced["state"] != "accepted-ignored":
+        problems += 1
+        print(f"FAIL reduce_single_candidates_group(ignored): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
+
+    # --- reduce_single_candidates_group: rejected (HTTP 400) — an honest
+    #     integer returned_count (0), never None, and state='rejected'
+    #     rather than the detector's own 'accepted-unverified' fallback ---
+    cases += 1
+    n_raw_rejected = {n_pid: {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 400, "response_body_raw": {"error": {"message": "invalid n"}}}],
+        "usage": {},
+    }}
+    reduced = reduce_single_candidates_group(n_entry, openai_compat_models, n_raw_rejected, requested_n=2)
+    if reduced["returned_count"] != 0 or reduced["state"] != "rejected":
+        problems += 1
+        print(f"FAIL reduce_single_candidates_group(rejected): got count={reduced['returned_count']} state={reduced['state']!r}", file=sys.stderr)
+
+    # --- build_rows: design=single-candidates with a non-integer `value`
+    #     fails loud (the group_key's own value must be int-parseable) ---
+    cases += 1
+    bad_n_probes = [dict(n_entry, value="not-an-int")]
+    bad_n_expectation = [{
+        "model": "m2", "param": "n", "value": "not-an-int", "mode": "default",
+        "requirement": "BHV-04", "design": "single-candidates",
+        "expected": "x", "expected_source": "docs-claims:temperature/anthropic",
+    }]
+    try:
+        build_rows(bad_n_probes, bad_n_expectation, [], openai_compat_models, {}, docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text)
+        problems += 1
+        print("FAIL build_rows: a non-integer single-candidates value was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_rows(non-integer n value): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- reduce_single_logprobs_group: present (real per-token content,
+    #     each entry carrying the requested alternative count) ---
+    cases += 1
+    lp_entry = {"model": "m2", "param": "logprobs-reverify", "value": "combined", "mode": "default", "prompt": "x", "max_tokens": 16, "extra_params": {"logprobs": True, "top_logprobs": 3}}
+    lp_pid = compute_behavioral_probe_id(lp_entry, openai_compat_models)
+    lp_raw_present = {lp_pid: {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "a"}, "logprobs": {"content": [
+            {"token": "a", "top_logprobs": [{"token": "a"}, {"token": "b"}, {"token": "c"}]},
+        ]}}]}}],
+        "usage": {"output_tokens": 5},
+    }}
+    reduced = reduce_single_logprobs_group(lp_entry, openai_compat_models, lp_raw_present, requested_top_logprobs=3)
+    if not reduced["logprobs_present"] or reduced["logprobs_token_entries"] != 1 or not reduced["logprobs_alternatives_honored"]:
+        problems += 1
+        print(f"FAIL reduce_single_logprobs_group(present): got {reduced!r}", file=sys.stderr)
+
+    # --- reduce_single_logprobs_group: empty payload (200, but no
+    #     per-token content — the accepted-but-silently-ignored hazard) ---
+    cases += 1
+    lp_raw_empty = {lp_pid: {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 200, "response_body_raw": {"choices": [{"message": {"content": "a"}, "logprobs": {"content": []}}]}}],
+        "usage": {"output_tokens": 5},
+    }}
+    reduced = reduce_single_logprobs_group(lp_entry, openai_compat_models, lp_raw_empty, requested_top_logprobs=3)
+    if reduced["logprobs_present"] or reduced["logprobs_token_entries"] != 0 or reduced["logprobs_alternatives_honored"]:
+        problems += 1
+        print(f"FAIL reduce_single_logprobs_group(empty payload): got {reduced!r}", file=sys.stderr)
 
     return cases, problems
 

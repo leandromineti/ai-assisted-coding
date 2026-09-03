@@ -3,10 +3,10 @@
 # probes/raw/*.jsonl — do not edit by hand. Regenerate with
 # `python3 scripts/classify-behavioral.py`.
 #
-# 29 behavioral cell(s), 10 declared skip(s) (39 rows total).
+# 56 behavioral cell(s), 26 declared skip(s) (82 rows total).
 
 checked: 2026-09-03
-evidence_through: '2026-09-03T01:46:18Z'
+evidence_through: '2026-09-03T02:07:27Z'
 cells:
 - cell_id: gpt-5-6-sol--seed--42--default
   requirement: BHV-01
@@ -1308,6 +1308,670 @@ cells:
     - null
     - null
   note: null
+- cell_id: claude-fable-5--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: claude-fable-5
+  vendor: anthropic
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: honest
+  expected: Anthropic documents stop_sequences as custom text sequences that cause the model to stop generating,
+    with `stop_reason` set to "stop_sequence" when one is hit — the one wire family whose finish field
+    can genuinely distinguish a triggered stop from a natural completion. Expect the triggering call to
+    truncate strictly before "Thursday" and stop_reason to read "stop_sequence".
+  expected_source: docs-claims:stop/anthropic
+  probe_ids:
+  - claude-fable-5--stop-truncation--triggering--default--61baa082
+  - claude-fable-5--stop-truncation--control-no-stop--default--828b9644
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop_sequence
+    control_finish_reason: end_turn
+  note: null
+- cell_id: claude-opus-5--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: claude-opus-5
+  vendor: anthropic
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: honest
+  expected: Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday"
+    and an honest "stop_sequence" finish reason.
+  expected_source: docs-claims:stop/anthropic
+  probe_ids:
+  - claude-opus-5--stop-truncation--triggering--default--58a5a42f
+  - claude-opus-5--stop-truncation--control-no-stop--default--a476659c
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop_sequence
+    control_finish_reason: end_turn
+  note: null
+- cell_id: claude-sonnet-5--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: claude-sonnet-5
+  vendor: anthropic
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: honest
+  expected: Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday"
+    and an honest "stop_sequence" finish reason.
+  expected_source: docs-claims:stop/anthropic
+  probe_ids:
+  - claude-sonnet-5--stop-truncation--triggering--default--905e8ef4
+  - claude-sonnet-5--stop-truncation--control-no-stop--default--bd695281
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop_sequence
+    control_finish_reason: end_turn
+  note: null
+- cell_id: claude-haiku-4-5--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: honest
+  expected: Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday"
+    and an honest "stop_sequence" finish reason.
+  expected_source: docs-claims:stop/anthropic
+  probe_ids:
+  - claude-haiku-4-5--stop-truncation--triggering--default--19f5c60f
+  - claude-haiku-4-5--stop-truncation--control-no-stop--default--ccfa3359
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop_sequence
+    control_finish_reason: end_turn
+  note: null
+- cell_id: gemini-3-1-pro--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: Gemini documents stopSequences (up to 5) as stopping output at the first appearance of a stop_sequence,
+    not included in the response. Gemini's shared `STOP` finishReason value is emitted for both a triggered
+    stop and a natural completion, so the finish field alone cannot prove which happened here — the visible-text
+    comparison against the control is the only evidence this family trusts for this vendor.
+  expected_source: docs-claims:stop/gemini
+  probe_ids:
+  - gemini-3-1-pro--stop-truncation--triggering--default--c83e86af
+  - gemini-3-1-pro--stop-truncation--control-no-stop--default--dc03bb1c
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: STOP
+    control_finish_reason: STOP
+  note: null
+- cell_id: kimi-k3--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: Kimi documents stop words (max 5 strings, each <=32 bytes) that halt output when a full match
+    is found, with the matched word itself not output. openai_compat's shared `stop` finish value is emitted
+    for both a triggered stop and a natural completion — text comparison only.
+  expected_source: docs-claims:stop/kimi
+  probe_ids:
+  - kimi-k3--stop-truncation--triggering--default--5b566140
+  - kimi-k3--stop-truncation--control-no-stop--default--e32ccb08
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop
+    control_finish_reason: stop
+  note: null
+- cell_id: deepseek-v4--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 31
+  control_text_length: 68
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: DeepSeek documents up to 16 stop sequences (four times OpenAI's/xAI's own documented ceiling
+    for the same field name) where the API stops generating further tokens. openai_compat's shared `stop`
+    finish value is ambiguous here too — text comparison only.
+  expected_source: docs-claims:stop/dseek
+  probe_ids:
+  - deepseek-v4--stop-truncation--triggering--default--970252c9
+  - deepseek-v4--stop-truncation--control-no-stop--default--e9fc26e7
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop
+    control_finish_reason: stop
+  note: null
+- cell_id: glm-5.3--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 0
+  control_text_length: 56
+  stop_token_in_triggering_text: null
+  truncation_verdict: inconclusive
+  finish_reason_honest: ambiguous
+  expected: 'Z.ai''s stop-word field carries a genuine within-vendor contradiction (schema `maxItems:
+    4` vs. its own prose "only one stop word is supported") — this family fires exactly ONE sequence everywhere,
+    so that contradiction is out of scope here (see the declared skip below) and only the single-sequence
+    behavior is exercised. openai_compat''s shared `stop` finish value is ambiguous — text comparison
+    only.'
+  expected_source: docs-claims:stop/zai
+  probe_ids:
+  - glm-5.3--stop-truncation--triggering--default--01466ba7
+  - glm-5.3--stop-truncation--control-no-stop--default--24197e41
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop
+    control_finish_reason: stop
+  note: null
+- cell_id: qwen3.8-max--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: Qwen documents stop words (string or array) that halt generation immediately on a match. openai_compat's
+    shared `stop` finish value is ambiguous — text comparison only.
+  expected_source: docs-claims:stop/qwen
+  probe_ids:
+  - qwen3.8-max--stop-truncation--triggering--default--67a34da7
+  - qwen3.8-max--stop-truncation--control-no-stop--default--31d5ad51
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop
+    control_finish_reason: stop
+  note: null
+- cell_id: qwen3.8-flash--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: Same Qwen stop-word contract, shared across the qwen3.8 line — text comparison only.
+  expected_source: docs-claims:stop/qwen
+  probe_ids:
+  - qwen3.8-flash--stop-truncation--triggering--default--d1ae15ef
+  - qwen3.8-flash--stop-truncation--control-no-stop--default--05917d15
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop
+    control_finish_reason: stop
+  note: null
+- cell_id: gpt-5-6-sol--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 2
+  state: accepted-honored
+  evidence: candidate-count
+  expected: OpenAI documents `n` as how many chat completion choices to generate, warning that cost scales
+    with `n` and recommending it stay at 1 to minimize cost — no per-model exception language. Expect
+    exactly 2 choices returned.
+  expected_source: docs-claims:n/openai
+  probe_ids:
+  - gpt-5-6-sol--n--2--default--b94c8df8
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: grok-4-5--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 2
+  state: accepted-honored
+  evidence: candidate-count
+  expected: xAI documents `n` with wording identical to OpenAI's own quote. Expect exactly 2 choices returned.
+  expected_source: docs-claims:n/xai
+  probe_ids:
+  - grok-4-5--n--2--default--10c7bf17
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: kimi-k3--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 0
+  state: rejected
+  evidence: none
+  expected: 'Kimi/Moonshot documents no `n`-equivalent field at all (absent-from-docs, checked-absence
+    per rule 1b) — yet Phase 11''s own wire evidence shows `n: 1` accepted-honored. This cell is a genuine
+    first discovery, not a corroboration of a stated prior: either `n: 2` is also silently honored despite
+    the doc gap, or the undocumented acceptance breaks down past 1.'
+  expected_source: docs-claims:n/kimi
+  probe_ids:
+  - kimi-k3--n--2--default--141537ec
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: deepseek-v4--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 0
+  state: rejected
+  evidence: none
+  expected: 'DeepSeek documents no completion-count parameter under any name (absent-from-docs, checked
+    against the full 36-property request body) — yet Phase 11''s own wire evidence shows `n: 1` accepted-honored.
+    A first discovery, same framing as kimi-k3 above.'
+  expected_source: docs-claims:n/dseek
+  probe_ids:
+  - deepseek-v4--n--2--default--53194c57
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: glm-5.3--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 1
+  state: accepted-ignored
+  evidence: candidate-count
+  expected: 'Z.ai documents no `n` field (absent-from-docs) — yet Phase 11''s own wire evidence shows
+    `n: 1` accepted-honored. A first discovery, same framing as kimi-k3/deepseek-v4 above.'
+  expected_source: docs-claims:n/zai
+  probe_ids:
+  - glm-5.3--n--2--default--b1d9be3b
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-max--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 0
+  state: rejected
+  evidence: none
+  expected: Qwen documents `n` (1-4) as "supported only by Qwen3 (non-thinking mode) models," with a separate
+    constraint that `n` must be 1 whenever `tools` is passed — neither constraint applies to this default-mode,
+    tool-free cell. Expect exactly 2 choices returned.
+  expected_source: docs-claims:n/qwen
+  probe_ids:
+  - qwen3.8-max--n--2--default--e510e3ee
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-flash--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 0
+  state: rejected
+  evidence: none
+  expected: Same Qwen `n` contract, shared across the qwen3.8 line. Expect exactly 2 choices returned.
+  expected_source: docs-claims:n/qwen
+  probe_ids:
+  - qwen3.8-flash--n--2--default--8df7372d
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: grok-4-5--logprobs-reverify--combined--default
+  requirement: BHV-05
+  design: single-logprobs
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: false
+  logprobs_token_entries: 0
+  logprobs_alternatives_honored: false
+  state: accepted-ignored
+  evidence: logprobs-content
+  settles_probe_id: grok-4-5--top-logprobs--3--default--ee0a3b87
+  expected: xAI documents `logprobs`/`top_logprobs` (range 0-8) with a pre-announced silent-ignore contract
+    on newer reasoning models — not relevant here (grok-4-5, default mode). Expect real per-token content
+    at the requested 3 alternatives.
+  expected_source: docs-claims:top-logprobs/xai
+  probe_ids:
+  - grok-4-5--logprobs-reverify--combined--default--389d3fcc
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: grok-4-5--logprobs-reverify--combined--thinking-on
+  requirement: BHV-05
+  design: single-logprobs
+  model: grok-4-5
+  vendor: xai
+  mode: thinking-on
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: false
+  logprobs_token_entries: 0
+  logprobs_alternatives_honored: false
+  state: accepted-ignored
+  evidence: logprobs-content
+  settles_probe_id: grok-4-5--top-logprobs--3--thinking-on--d69aefff
+  expected: 'Same xAI contract, now with reasoning explicitly enabled (`reasoning_effort: low`) — the
+    silent-ignore language names "newer" reasoning models generically; grok-4-5 with thinking on is the
+    sharpest test of whether that applies here.'
+  expected_source: docs-claims:top-logprobs/xai
+  probe_ids:
+  - grok-4-5--logprobs-reverify--combined--thinking-on--a63d0627
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: glm-5.3--logprobs-reverify--combined--default
+  requirement: BHV-05
+  design: single-logprobs
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: false
+  logprobs_token_entries: 0
+  logprobs_alternatives_honored: false
+  state: accepted-ignored
+  evidence: logprobs-content
+  settles_probe_id: glm-5.3--top-logprobs--3--default--fd546fdf
+  expected: 'Z.ai documents no `logprobs`/`top_logprobs` field at all (absent-from-docs) — yet Phase 11''s
+    own wire evidence shows the boolean `logprobs` flag accepted (accepted-ignored, no per-token content
+    found at the old budget). A first discovery at the larger budget: either real per-token data appears,
+    or the undocumented acceptance is confirmed hollow.'
+  expected_source: docs-claims:logprobs/zai
+  probe_ids:
+  - glm-5.3--logprobs-reverify--combined--default--d9f149fc
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: glm-5.3--logprobs-reverify--combined--thinking-on
+  requirement: BHV-05
+  design: single-logprobs
+  model: glm-5.3
+  vendor: zai
+  mode: thinking-on
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: false
+  logprobs_token_entries: 0
+  logprobs_alternatives_honored: false
+  state: accepted-ignored
+  evidence: logprobs-content
+  settles_probe_id: glm-5.3--top-logprobs--3--thinking-on--1d956dd8
+  expected: Same absent-from-docs framing as glm-5.3 default mode, now with thinking explicitly enabled.
+  expected_source: docs-claims:logprobs/zai
+  probe_ids:
+  - glm-5.3--logprobs-reverify--combined--thinking-on--79997030
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-max--logprobs-reverify--combined--default
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-max
+  vendor: qwen
+  mode: default
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 47
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-max--top-logprobs--3--default--5c386652
+  expected: Qwen documents `top_logprobs` (0-5, narrower than OpenAI's/Gemini's own 0-20) as applying
+    only when `logprobs` is set true, and documents `logprobs` itself as supported only by a named model
+    subset excluding thinking-phase content. Phase 11's own wire evidence already shows the boolean `logprobs`
+    flag accepted-honored at this (model, mode); this combined cell settles the still-unverified `top_logprobs`
+    count specifically.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-max--logprobs-reverify--combined--default--97ef0c4f
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-max--logprobs-reverify--combined--thinking-off
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-max
+  vendor: qwen
+  mode: thinking-off
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 57
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-max--top-logprobs--3--thinking-off--3e87a714
+  expected: Same Qwen `top_logprobs` contract, thinking explicitly disabled.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-max--logprobs-reverify--combined--thinking-off--17571908
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-max--logprobs-reverify--combined--thinking-on
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-max
+  vendor: qwen
+  mode: thinking-on
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 45
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-max--top-logprobs--3--thinking-on--9cdee6cc
+  expected: Same Qwen `top_logprobs` contract, thinking explicitly enabled — Qwen's own docs state thinking-phase
+    content is excluded from logprobs even when the flag is set, so this cell is the sharpest test of
+    whether that exclusion empties the whole payload or only the reasoning portion.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-max--logprobs-reverify--combined--thinking-on--721a50a1
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-flash--logprobs-reverify--combined--default
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 39
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-flash--top-logprobs--3--default--416a489a
+  expected: Same Qwen `top_logprobs` contract as qwen3.8-max, shared across the qwen3.8 line. Phase 11's
+    own wire evidence shows the boolean `logprobs` flag accepted-ignored (no per-token content found)
+    at this smaller/cheaper model, unlike qwen3.8-max's own accepted-honored result at the same cell —
+    a genuine per-model divergence within one vendor this combined cell re-checks at a larger budget.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-flash--logprobs-reverify--combined--default--4543428e
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-flash--logprobs-reverify--combined--thinking-off
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: thinking-off
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 56
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55
+  expected: Same Qwen `top_logprobs` contract, thinking explicitly disabled.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-flash--logprobs-reverify--combined--thinking-off--871240ba
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-flash--logprobs-reverify--combined--thinking-on
+  requirement: BHV-05
+  design: single-logprobs
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: thinking-on
+  param: logprobs-reverify
+  value: combined
+  requested_top_logprobs: 3
+  logprobs_present: true
+  logprobs_token_entries: 46
+  logprobs_alternatives_honored: true
+  state: accepted-honored
+  evidence: logprobs-content
+  settles_probe_id: qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717
+  expected: Same Qwen `top_logprobs` contract, thinking explicitly enabled.
+  expected_source: docs-claims:top-logprobs/qwen
+  probe_ids:
+  - qwen3.8-flash--logprobs-reverify--combined--thinking-on--56e03a70
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
 - cell_id: claude-haiku-4-5--behavioral-control--high-entropy--default
   requirement: calibration
   design: control
@@ -1793,6 +2457,97 @@ cells:
   note: null
 skips:
 - model: claude-fable-5
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:logprobs/anthropic
+- model: claude-opus-5
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:logprobs/anthropic
+- model: claude-sonnet-5
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:logprobs/anthropic
+- model: claude-haiku-4-5
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:logprobs/anthropic
+- model: gpt-5-6-sol
+  param: logprobs
+  mode: thinking-off
+  requirement: BHV-05
+  reason: already-settled-logprobs-honored
+  cited_probe_id: gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab
+  cited_source: null
+- model: deepseek-v4
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: already-settled-logprobs-honored
+  cited_probe_id: deepseek-v4--logprobs--true--default--3e9e0cfd
+  cited_source: null
+- model: qwen3.8-max
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: already-settled-logprobs-honored
+  cited_probe_id: qwen3.8-max--logprobs--true--default--8c88fc79
+  cited_source: null
+- model: qwen3.8-max
+  param: logprobs
+  mode: thinking-off
+  requirement: BHV-05
+  reason: already-settled-logprobs-honored
+  cited_probe_id: qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac
+  cited_source: null
+- model: gemini-3-1-pro
+  param: gemini-candidate-count
+  mode: default
+  requirement: BHV-04
+  reason: wire-rejects-gemini-candidate-count
+  cited_probe_id: gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857
+  cited_source: null
+- model: claude-fable-5
+  param: n
+  mode: default
+  requirement: BHV-04
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:n/anthropic
+- model: claude-opus-5
+  param: n
+  mode: default
+  requirement: BHV-04
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:n/anthropic
+- model: claude-sonnet-5
+  param: n
+  mode: default
+  requirement: BHV-04
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:n/anthropic
+- model: claude-haiku-4-5
+  param: n
+  mode: default
+  requirement: BHV-04
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:n/anthropic
+- model: claude-fable-5
   param: seed
   mode: n/a
   requirement: BHV-01
@@ -1820,6 +2575,27 @@ skips:
   reason: no-request-side-seed-field
   cited_probe_id: null
   cited_source: docs-claims:seed/anthropic
+- model: gpt-5-6-sol
+  param: stop
+  mode: default
+  requirement: BHV-03
+  reason: wire-rejects-stop-default-mode
+  cited_probe_id: gpt-5-6-sol--stop--["the"]--default--6a86352a
+  cited_source: null
+- model: grok-4-5
+  param: stop
+  mode: default
+  requirement: BHV-03
+  reason: wire-rejects-stop-default-mode
+  cited_probe_id: grok-4-5--stop--["the"]--default--ee1a658f
+  cited_source: null
+- model: glm-5.3
+  param: stop
+  mode: default
+  requirement: BHV-03
+  reason: out-of-scope-multi-sequence-contradiction
+  cited_probe_id: null
+  cited_source: docs-claims:stop/zai
 - model: claude-fable-5
   param: temperature
   mode: default

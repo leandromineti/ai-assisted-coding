@@ -2088,3 +2088,197 @@ BHV-01 and BHV-02 are answered on the wire as rates carrying their counts —
 never a boolean anywhere in the classified file. Every declared skip cites
 resolvable evidence. Both generated artifacts regenerate byte-identically.
 Plan 12-03 is complete; no further paid call is planned by this plan.
+
+**2026-09-03, plan 12-04 Task 1 — BHV-03 stop-truncation cells fired
+(`python3 probes/harness/runner.py --set
+probes/sets/behavioral/stop-truncation.yaml`).** 20 calls declared (10
+models x 2: one triggering call with a single stop sequence, one
+non-triggering control), all 20 landed HTTP 200 / `terminal: verdict` on
+the first fire — no retries needed. A NEW prompt for this family ("List the
+days of the week in order, one per line, starting with Monday."), stop
+sequence `"Thursday"` (the fourth item) — designed so the stop token is
+near-certain to be emitted partway through the list, unlike the contract
+sweep's own presence-only `stop` cell (a "reply with one word" prompt whose
+`["the"]` stop token was never at risk of appearing).
+
+**Result: 9 of 10 models show a clean triggering/control length split
+proving the instrument discriminates — the triggering call ends strictly
+before "Thursday" every time, and the stop token never appears in the
+triggering text:**
+
+| Model | Triggering length | Control length | Stop token present | Note |
+|---|---|---|---|---|
+| claude-fable-5 | 25 | 56 | no | — |
+| claude-opus-5 | 25 | 56 | no | — |
+| claude-sonnet-5 | 25 | 56 | no | — |
+| claude-haiku-4-5 | 25 | 56 | no | — |
+| gemini-3-1-pro | 25 | 56 | no | — |
+| kimi-k3 | 25 | 56 | no | — |
+| deepseek-v4 | 31 | 68 | no | — |
+| glm-5.3 | 0 | 56 | n/a | Triggering call returned HTTP 200 with EMPTY visible text (`finish_reason: "stop"`, only 29 of 1200 budget tokens consumed) — `reasoning_content` shows the model reasoned through "Monday\nTuesday\nWednesday\n" but never emitted it as visible content. NOT a budget exhaustion (29≪1200) — a genuine per-call stochastic quirk at this vendor, the same class of finding as plan 12-03's own no-signal cells. Classified `inconclusive`, not re-fired, per the same "an incomplete/empty cell is a finding, not a bug to paper over" discipline. |
+| qwen3.8-max | 25 | 56 | no | — |
+| qwen3.8-flash | 25 | 56 | no | — |
+
+The acceptance criterion ("at least one model shows the triggering text
+strictly shorter than its control") is satisfied 9 times over — the
+instrument clearly discriminates; glm-5.3's single inconclusive cell does
+not indicate a prompt-design problem.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/stop-truncation.yaml --dry-run`: 20 distinct `DRY-RUN` probe_id lines, every triggering entry's printed request body carrying exactly one stop field in that wire family's own name (`stop_sequences`/`stop`/`stopSequences`).
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base.
+- `python3 probes/harness/ledger.py --totals`: global **$0.292412** (up from the $0.282487 pre-fire baseline carried forward from plan 12-03, delta **+$0.009925** for these 20 calls) — well under the $0.32 Phase 12 envelope. Phase-12-only spend so far: $0.292412 − $0.071612 (pre-phase baseline) = $0.2208; remaining Phase 12 headroom **$0.0992** (per the corrected phase-spend-vs-envelope accounting this plan's own phase_context names — the global total is NOT compared directly against the envelope). Every vendor stayed far under its $0.50 sub-ceiling.
+
+Two declared skips resolve to `state: rejected`/`param: stop` rows in
+`probes/classified/contract-sweep.yaml` (`gpt-5-6-sol--stop--["the"]--default--6a86352a`,
+`grok-4-5--stop--["the"]--default--ee1a658f`); one declared skip cites
+`docs-claims:stop/zai` for the out-of-scope schema-vs-prose multi-sequence
+contradiction (this family fires exactly one sequence everywhere).
+
+**2026-09-03, plan 12-04 Task 2 — BHV-04 candidate-count and BHV-05
+logprobs-reverify cells fired (`python3 probes/harness/runner.py --set
+probes/sets/behavioral/n-candidate-count.yaml` then `--set
+probes/sets/behavioral/logprobs-reverify.yaml`).** 7 + 10 = 17 calls
+declared, all 17 landed `terminal: verdict` on the first fire — no retries
+needed.
+
+**BHV-04 result: a genuine, real discovery Phase 11's own trivial `n=1`
+fire could never have surfaced — 3 of 7 models honor `n=2` cleanly, 1
+silently ignores it, and 3 REJECT it outright, each error body naming the
+`n` field itself (a clean D-07 rejection, not a confound):**
+
+| Model | Requested n | Returned count | State | Note |
+|---|---|---|---|---|
+| gpt-5-6-sol | 2 | 2 | accepted-honored | — |
+| grok-4-5 | 2 | 2 | accepted-honored | — |
+| glm-5.3 | 2 | 1 | accepted-ignored | Accepted the field, silently returned only 1 candidate — the exact silent-acceptance hazard class this family exists to catch, undetectable at Phase 11's own trivial `n=1` fire. |
+| kimi-k3 | 2 | 0 | rejected | HTTP 400: `"invalid n: only 1 is allowed for this model"` |
+| deepseek-v4 | 2 | 0 | rejected | HTTP 400: `"Invalid n value (currently only n = 1 is supported)"` |
+| qwen3.8-max | 2 | 0 | rejected | HTTP 400: `` `The n parameter must be 1 when enable_thinking is true` `` — this exactly matches Qwen's own documented conditionality ("Supported only by Qwen3 (non-thinking mode) models"); this default-mode cell fires with `enable_thinking` at its own vendor default (true), so the rejection is docs-corroborated, not a contradiction. |
+| qwen3.8-flash | 2 | 0 | rejected | Same qwen `n`-requires-non-thinking-mode rejection as qwen3.8-max. |
+
+`reduce_single_candidates_group` (Task 3) classifies a rejection as
+`state: rejected` directly rather than handing an error body to
+`classify_probes.detect_candidate_count()` (whose own vocabulary has no
+rejected state to draw on) — `returned_count` still reads an honest integer
+(0) via that same detector's own `_get_candidate_count()`, never `None`.
+
+**BHV-05 result: the combined re-fire at a larger, non-masking budget
+definitively separates two previously-ambiguous groups — Qwen genuinely
+honors both `logprobs` and `top_logprobs`, grok-4-5/glm-5.3 genuinely do
+not (not a Phase 11 budget artifact):**
+
+| Model | Mode | Present | Token entries | Alternatives honored |
+|---|---|---|---|---|
+| grok-4-5 | default | false | 0 | false |
+| grok-4-5 | thinking-on | false | 0 | false |
+| glm-5.3 | default | false | 0 | false |
+| glm-5.3 | thinking-on | false | 0 | false |
+| qwen3.8-max | default | true | 47 | true |
+| qwen3.8-max | thinking-off | true | 57 | true |
+| qwen3.8-max | thinking-on | true | 45 | true |
+| qwen3.8-flash | default | true | 39 | true |
+| qwen3.8-flash | thinking-off | true | 56 | true |
+| qwen3.8-flash | thinking-on | true | 46 | true |
+
+grok-4-5/glm-5.3's zero-entry result at this plan's larger, ~100-token-plus
+budget (600/1200 tokens respectively, well above the contract sweep's
+16-64-token cap) rules out the masked-signal explanation Task 2's own
+`<precondition>` and this section's own Known contamination note both
+named as the reason for re-firing — these two genuinely, silently ignore
+the parameter (both classified `accepted-ignored` since Phase 11; this
+re-fire confirms that verdict rather than overturning it). qwen3.8-max/
+qwen3.8-flash both carry real per-token content with exactly the requested
+3 alternatives at every one of their 6 combined modes — settling the
+`top-logprobs` sub-question Phase 11 left `accepted-unverified` (no
+companion flag in the same request) at all 10 targeted (model, mode)
+pairs, each cell recording the Phase 11 `top-logprobs` probe_id it
+settles.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/n-candidate-count.yaml --dry-run`: 7 distinct `DRY-RUN` probe_id lines, every printed request body's candidate-count field present and `2`.
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/logprobs-reverify.yaml --dry-run`: 10 distinct `DRY-RUN` probe_id lines, every printed request body carrying both `logprobs`/`top_logprobs` fields together; every non-default-mode entry's thinking fragment confirmed byte-identical (`python3 -c` load-and-compare) to the corresponding entry in `probes/sets/generated/contract-sweep.yaml` for the same model and mode.
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base.
+- `python3 probes/harness/ledger.py --totals`: global **$0.302681** (up from the $0.292412 post-Task-1 baseline, delta **+$0.010269** for these 17 calls) — Phase-12-only spend: $0.302681 − $0.071612 = $0.231069; remaining Phase 12 headroom **$0.088931**. Every vendor stayed far under its $0.50 sub-ceiling.
+
+Phase 12's own two firing tasks in this plan (Task 1 + Task 2, 37 calls
+total) are complete. Task 3 (classification + rendering) fires nothing
+further. Cumulative Phase-12-only spend across plans 12-02/12-03/12-04 is
+**$0.231069** of the approved $0.32 envelope (read live from the ledger,
+never summed from each plan's own reported delta).
+
+**2026-09-03, plan 12-04 Task 3 — classify and render the stop,
+candidate-count and logprobs families.** No paid call fired by this task.
+Extended `scripts/classify-behavioral.py` with three single-observation
+designs — `single-stop` (a triggering/control pair joined via the
+expectation's own `control_value` field, mirroring `seed-pairs`' own
+`effect_control_value` mechanism; a missing raw record for either call
+fails loud rather than producing a verdict from one call — confirmed by a
+dedicated selftest fixture), `single-candidates` and `single-logprobs`
+(each a single fired cell read through `scripts/classify-probes.py`'s OWN
+`detect_candidate_count()`/`detect_logprobs()`, imported via the existing
+`importlib.util` module load, never reimplemented — `grep -c 'def
+detect_candidate_count\|def detect_logprobs' scripts/classify-behavioral.py`
+reports 0). 21 new `--selftest` fixtures (stop honored/dishonest/ambiguous/
+ignored/inconclusive/missing-control-fails-loud; candidates honored/
+ignored/rejected/non-integer-value-fails-loud; logprobs present/empty).
+Extended `scripts/build-behavioral-matrix.py` with three matching render
+sections (`single-stop`'s own Triggering/Control Length + Truncation
+Verdict + Finish-Reason Honest columns; `single-candidates`' own Requested
+n/Returned Count/State columns; `single-logprobs`' own Present/Token
+Entries/Alternatives Honored/Settles columns) and 4 new `--selftest`
+fixtures.
+
+A Rule 1 fix in both scripts, found while regenerating: `print_summary()`
+in each file unconditionally read `c["verdict"]`, which KeyErrors on all
+three new designs (none of which carry a `verdict` key — `single-stop` has
+`truncation_verdict`, `single-candidates`/`single-logprobs` have `state`).
+Fixed identically in both files (`c.get("verdict") or
+c.get("truncation_verdict") or c.get("state")`), verified by a clean
+regenerate run in each.
+
+Regenerated both artifacts: `probes/classified/behavioral.yaml` now
+carries **56 cells** (8 seed-pairs + 12 repeats + 9 control + 10
+single-stop + 7 single-candidates + 10 single-logprobs) and **26 declared
+skips** (10 pre-existing + 3 stop + 5 candidate-count + 8 logprobs);
+`comparisons/behavioral.md` renders three new sections — `BHV-03 (10
+cells)`, `BHV-04 (7 cells)`, `BHV-05 (10 cells)` — each with its own
+design-specific column layout, alongside the three pre-existing sections
+unchanged.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 scripts/classify-behavioral.py --selftest`: **46 cases run, 0 problem(s)** (33 pre-existing per plan 12-03's own summary + 13 new).
+- `python3 scripts/build-behavioral-matrix.py --selftest`: **16 cases run, 0 problem(s)** (12 pre-existing + 4 new).
+- `python3 scripts/classify-behavioral.py` / `python3 scripts/build-behavioral-matrix.py`: 56 cells, 26 skips, matching the declared cell count across all five behavioral set files plus the 9 pre-existing control cells.
+- `python3 scripts/classify-behavioral.py --check`: `0 problem(s)`.
+- `python3 scripts/build-behavioral-matrix.py --check`: `0 problem(s)`.
+- `python3 scripts/classify-probes.py --check`: `0 problem(s)` — the contract pipeline stays byte-stable.
+- `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty.
+- `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base.
+- `python3 probes/check-docs-claims.py --check`: `0 problem(s)`.
+- `python3 scripts/check-taxonomy.py --check`: `133 files checked, 0 problem(s)`.
+- Idempotency: captured both generated files before a second regeneration pass, re-ran both generators, `diff`'d — no differences.
+
+**Final per-model result table, all three new families** (read directly
+from `probes/classified/behavioral.yaml`):
+
+| Model | BHV-03 stop truncation | BHV-04 n=2 candidates | BHV-05 logprobs (any mode) |
+|---|---|---|---|
+| claude-fable-5 | stop-honored, honest | skipped (no field) | skipped (no field) |
+| claude-opus-5 | stop-honored, honest | skipped (no field) | skipped (no field) |
+| claude-sonnet-5 | stop-honored, honest | skipped (no field) | skipped (no field) |
+| claude-haiku-4-5 | stop-honored, honest | skipped (no field) | skipped (no field) |
+| gpt-5-6-sol | skipped (wire-rejects stop) | accepted-honored (2/2) | skipped (already settled honored) |
+| gemini-3-1-pro | stop-honored, ambiguous | skipped (wire-rejects candidateCount) | not applicable this family |
+| grok-4-5 | skipped (wire-rejects stop) | accepted-honored (2/2) | accepted-ignored (0 entries, both modes) |
+| kimi-k3 | stop-honored, ambiguous | rejected (400, "only 1 allowed") | not applicable this family |
+| deepseek-v4 | stop-honored, ambiguous | rejected (400, "only n=1 supported") | skipped (already settled honored) |
+| glm-5.3 | inconclusive (empty visible text) | accepted-ignored (returned 1 of 2) | accepted-ignored (0 entries, both modes) |
+| qwen3.8-max | stop-honored, ambiguous | rejected (400, thinking-mode conditionality) | accepted-honored (real content, all 3 modes) |
+| qwen3.8-flash | stop-honored, ambiguous | rejected (400, thinking-mode conditionality) | accepted-honored (real content, all 3 modes) |
+
+BHV-03, BHV-04 and BHV-05 are answered on the wire from single verified
+observations, never a boolean anywhere in the classified file, with every
+declared skip resolving to checkable evidence and every `single-logprobs`
+cell recording the Phase 11 probe_id it upgrades by citation. Plan 12-04
+is complete; no further paid call is planned by this plan.

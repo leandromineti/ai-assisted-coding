@@ -5,7 +5,7 @@
 # probes/classified/behavioral.yaml, rendered
 
 `checked:` 2026-09-03  
-`evidence_through:` 2026-09-03T01:46:18Z
+`evidence_through:` 2026-09-03T02:07:27Z
 
 ## BHV-01 (8 cells)
 
@@ -37,6 +37,48 @@
 | qwen3.8-max | 5 | 4 | 0/4 (0.0%) | 5 | varies | Qwen documents temperature range [0, 2) with a caution to set only one of temperature/top_p, and Phase 11's own wire evidence shows qwen3.8-max ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0. (docs-claims:temperature/qwen) | 5 |
 | qwen3.8-flash | 5 | 4 | 0/4 (0.0%) | 5 | varies | Qwen's same temperature claim covers its flash-tier sibling qwen3.8-flash, and Phase 11's own wire evidence shows qwen3.8-flash likewise ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0 at this smaller/cheaper model too. (docs-claims:temperature/qwen) | 5 |
 
+## BHV-03 (10 cells)
+
+| Model | Triggering Length | Control Length | Stop Token in Text | Truncation Verdict | Finish-Reason Honest | Expected (citation) | probe_ids |
+|---|---|---|---|---|---|---|---|
+| claude-fable-5 | 25 | 56 | False | stop-honored | honest | Anthropic documents stop_sequences as custom text sequences that cause the model to stop generating, with `stop_reason` set to "stop_sequence" when one is hit — the one wire family whose finish field can genuinely distinguish a triggered stop from a natural completion. Expect the triggering call to truncate strictly before "Thursday" and stop_reason to read "stop_sequence". (docs-claims:stop/anthropic) | 2 |
+| claude-opus-5 | 25 | 56 | False | stop-honored | honest | Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday" and an honest "stop_sequence" finish reason. (docs-claims:stop/anthropic) | 2 |
+| claude-sonnet-5 | 25 | 56 | False | stop-honored | honest | Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday" and an honest "stop_sequence" finish reason. (docs-claims:stop/anthropic) | 2 |
+| claude-haiku-4-5 | 25 | 56 | False | stop-honored | honest | Same Anthropic stop_sequences contract as claude-fable-5 — expect truncation before "Thursday" and an honest "stop_sequence" finish reason. (docs-claims:stop/anthropic) | 2 |
+| gemini-3-1-pro | 25 | 56 | False | stop-honored | ambiguous | Gemini documents stopSequences (up to 5) as stopping output at the first appearance of a stop_sequence, not included in the response. Gemini's shared `STOP` finishReason value is emitted for both a triggered stop and a natural completion, so the finish field alone cannot prove which happened here — the visible-text comparison against the control is the only evidence this family trusts for this vendor. (docs-claims:stop/gemini) | 2 |
+| kimi-k3 | 25 | 56 | False | stop-honored | ambiguous | Kimi documents stop words (max 5 strings, each <=32 bytes) that halt output when a full match is found, with the matched word itself not output. openai_compat's shared `stop` finish value is emitted for both a triggered stop and a natural completion — text comparison only. (docs-claims:stop/kimi) | 2 |
+| deepseek-v4 | 31 | 68 | False | stop-honored | ambiguous | DeepSeek documents up to 16 stop sequences (four times OpenAI's/xAI's own documented ceiling for the same field name) where the API stops generating further tokens. openai_compat's shared `stop` finish value is ambiguous here too — text comparison only. (docs-claims:stop/dseek) | 2 |
+| glm-5.3 | 0 | 56 | None | inconclusive | ambiguous | Z.ai's stop-word field carries a genuine within-vendor contradiction (schema `maxItems: 4` vs. its own prose "only one stop word is supported") — this family fires exactly ONE sequence everywhere, so that contradiction is out of scope here (see the declared skip below) and only the single-sequence behavior is exercised. openai_compat's shared `stop` finish value is ambiguous — text comparison only. (docs-claims:stop/zai) | 2 |
+| qwen3.8-max | 25 | 56 | False | stop-honored | ambiguous | Qwen documents stop words (string or array) that halt generation immediately on a match. openai_compat's shared `stop` finish value is ambiguous — text comparison only. (docs-claims:stop/qwen) | 2 |
+| qwen3.8-flash | 25 | 56 | False | stop-honored | ambiguous | Same Qwen stop-word contract, shared across the qwen3.8 line — text comparison only. (docs-claims:stop/qwen) | 2 |
+
+## BHV-04 (7 cells)
+
+| Model | Requested n | Returned Count | State | Expected (citation) | probe_ids |
+|---|---|---|---|---|---|
+| gpt-5-6-sol | 2 | 2 | accepted-honored | OpenAI documents `n` as how many chat completion choices to generate, warning that cost scales with `n` and recommending it stay at 1 to minimize cost — no per-model exception language. Expect exactly 2 choices returned. (docs-claims:n/openai) | 1 |
+| grok-4-5 | 2 | 2 | accepted-honored | xAI documents `n` with wording identical to OpenAI's own quote. Expect exactly 2 choices returned. (docs-claims:n/xai) | 1 |
+| kimi-k3 | 2 | 0 | rejected | Kimi/Moonshot documents no `n`-equivalent field at all (absent-from-docs, checked-absence per rule 1b) — yet Phase 11's own wire evidence shows `n: 1` accepted-honored. This cell is a genuine first discovery, not a corroboration of a stated prior: either `n: 2` is also silently honored despite the doc gap, or the undocumented acceptance breaks down past 1. (docs-claims:n/kimi) | 1 |
+| deepseek-v4 | 2 | 0 | rejected | DeepSeek documents no completion-count parameter under any name (absent-from-docs, checked against the full 36-property request body) — yet Phase 11's own wire evidence shows `n: 1` accepted-honored. A first discovery, same framing as kimi-k3 above. (docs-claims:n/dseek) | 1 |
+| glm-5.3 | 2 | 1 | accepted-ignored | Z.ai documents no `n` field (absent-from-docs) — yet Phase 11's own wire evidence shows `n: 1` accepted-honored. A first discovery, same framing as kimi-k3/deepseek-v4 above. (docs-claims:n/zai) | 1 |
+| qwen3.8-max | 2 | 0 | rejected | Qwen documents `n` (1-4) as "supported only by Qwen3 (non-thinking mode) models," with a separate constraint that `n` must be 1 whenever `tools` is passed — neither constraint applies to this default-mode, tool-free cell. Expect exactly 2 choices returned. (docs-claims:n/qwen) | 1 |
+| qwen3.8-flash | 2 | 0 | rejected | Same Qwen `n` contract, shared across the qwen3.8 line. Expect exactly 2 choices returned. (docs-claims:n/qwen) | 1 |
+
+## BHV-05 (10 cells)
+
+| Model | Mode | Present | Token Entries | Alternatives Honored | State | Settles (phase 11 probe_id) | Expected (citation) | probe_ids |
+|---|---|---|---|---|---|---|---|---|
+| grok-4-5 | default | False | 0 | False | accepted-ignored | grok-4-5--top-logprobs--3--default--ee0a3b87 | xAI documents `logprobs`/`top_logprobs` (range 0-8) with a pre-announced silent-ignore contract on newer reasoning models — not relevant here (grok-4-5, default mode). Expect real per-token content at the requested 3 alternatives. (docs-claims:top-logprobs/xai) | 1 |
+| grok-4-5 | thinking-on | False | 0 | False | accepted-ignored | grok-4-5--top-logprobs--3--thinking-on--d69aefff | Same xAI contract, now with reasoning explicitly enabled (`reasoning_effort: low`) — the silent-ignore language names "newer" reasoning models generically; grok-4-5 with thinking on is the sharpest test of whether that applies here. (docs-claims:top-logprobs/xai) | 1 |
+| glm-5.3 | default | False | 0 | False | accepted-ignored | glm-5.3--top-logprobs--3--default--fd546fdf | Z.ai documents no `logprobs`/`top_logprobs` field at all (absent-from-docs) — yet Phase 11's own wire evidence shows the boolean `logprobs` flag accepted (accepted-ignored, no per-token content found at the old budget). A first discovery at the larger budget: either real per-token data appears, or the undocumented acceptance is confirmed hollow. (docs-claims:logprobs/zai) | 1 |
+| glm-5.3 | thinking-on | False | 0 | False | accepted-ignored | glm-5.3--top-logprobs--3--thinking-on--1d956dd8 | Same absent-from-docs framing as glm-5.3 default mode, now with thinking explicitly enabled. (docs-claims:logprobs/zai) | 1 |
+| qwen3.8-max | default | True | 47 | True | accepted-honored | qwen3.8-max--top-logprobs--3--default--5c386652 | Qwen documents `top_logprobs` (0-5, narrower than OpenAI's/Gemini's own 0-20) as applying only when `logprobs` is set true, and documents `logprobs` itself as supported only by a named model subset excluding thinking-phase content. Phase 11's own wire evidence already shows the boolean `logprobs` flag accepted-honored at this (model, mode); this combined cell settles the still-unverified `top_logprobs` count specifically. (docs-claims:top-logprobs/qwen) | 1 |
+| qwen3.8-max | thinking-off | True | 57 | True | accepted-honored | qwen3.8-max--top-logprobs--3--thinking-off--3e87a714 | Same Qwen `top_logprobs` contract, thinking explicitly disabled. (docs-claims:top-logprobs/qwen) | 1 |
+| qwen3.8-max | thinking-on | True | 45 | True | accepted-honored | qwen3.8-max--top-logprobs--3--thinking-on--9cdee6cc | Same Qwen `top_logprobs` contract, thinking explicitly enabled — Qwen's own docs state thinking-phase content is excluded from logprobs even when the flag is set, so this cell is the sharpest test of whether that exclusion empties the whole payload or only the reasoning portion. (docs-claims:top-logprobs/qwen) | 1 |
+| qwen3.8-flash | default | True | 39 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--default--416a489a | Same Qwen `top_logprobs` contract as qwen3.8-max, shared across the qwen3.8 line. Phase 11's own wire evidence shows the boolean `logprobs` flag accepted-ignored (no per-token content found) at this smaller/cheaper model, unlike qwen3.8-max's own accepted-honored result at the same cell — a genuine per-model divergence within one vendor this combined cell re-checks at a larger budget. (docs-claims:top-logprobs/qwen) | 1 |
+| qwen3.8-flash | thinking-off | True | 56 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55 | Same Qwen `top_logprobs` contract, thinking explicitly disabled. (docs-claims:top-logprobs/qwen) | 1 |
+| qwen3.8-flash | thinking-on | True | 46 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717 | Same Qwen `top_logprobs` contract, thinking explicitly enabled. (docs-claims:top-logprobs/qwen) | 1 |
+
 ## calibration (9 cells)
 
 | Model | Design | Repeats | Rate | Verdict | Expected (citation) | probe_ids |
@@ -55,10 +97,26 @@
 
 | Model | Param | Requirement | Reason | Citation |
 |---|---|---|---|---|
+| claude-fable-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
+| claude-opus-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
+| claude-sonnet-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
+| claude-haiku-4-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
+| gpt-5-6-sol | logprobs | BHV-05 | already-settled-logprobs-honored | gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab |
+| deepseek-v4 | logprobs | BHV-05 | already-settled-logprobs-honored | deepseek-v4--logprobs--true--default--3e9e0cfd |
+| qwen3.8-max | logprobs | BHV-05 | already-settled-logprobs-honored | qwen3.8-max--logprobs--true--default--8c88fc79 |
+| qwen3.8-max | logprobs | BHV-05 | already-settled-logprobs-honored | qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac |
+| gemini-3-1-pro | gemini-candidate-count | BHV-04 | wire-rejects-gemini-candidate-count | gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857 |
+| claude-fable-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
+| claude-opus-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
+| claude-sonnet-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
+| claude-haiku-4-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
 | claude-fable-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-opus-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-sonnet-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-haiku-4-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
+| gpt-5-6-sol | stop | BHV-03 | wire-rejects-stop-default-mode | gpt-5-6-sol--stop--["the"]--default--6a86352a |
+| grok-4-5 | stop | BHV-03 | wire-rejects-stop-default-mode | grok-4-5--stop--["the"]--default--ee1a658f |
+| glm-5.3 | stop | BHV-03 | out-of-scope-multi-sequence-contradiction | docs-claims:stop/zai |
 | claude-fable-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-fable-5--temperature--0.7--default--be62cc19 |
 | claude-opus-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-opus-5--temperature--0.7--default--65c8c160 |
 | claude-sonnet-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-sonnet-5--temperature--0.7--default--276ef9f0 |

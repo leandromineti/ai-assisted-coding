@@ -140,6 +140,43 @@ def render_section(req_cells: list[dict]) -> list[str]:
             )
         return lines
 
+    if design == "single-stop":
+        lines = ["| Model | Triggering Length | Control Length | Stop Token in Text | "
+                  "Truncation Verdict | Finish-Reason Honest | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['model']} | {c['triggering_text_length']} | {c['control_text_length']} | "
+                f"{c['stop_token_in_triggering_text']} | {c['truncation_verdict']} | "
+                f"{c['finish_reason_honest']} | {expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
+    if design == "single-candidates":
+        lines = ["| Model | Requested n | Returned Count | State | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['model']} | {c['requested_n']} | {c['returned_count']} | {c['state']} | "
+                f"{expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
+    if design == "single-logprobs":
+        lines = ["| Model | Mode | Present | Token Entries | Alternatives Honored | State | "
+                  "Settles (phase 11 probe_id) | Expected (citation) | probe_ids |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+        for c in req_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['model']} | {c['mode']} | {c['logprobs_present']} | {c['logprobs_token_entries']} | "
+                f"{c['logprobs_alternatives_honored']} | {c['state']} | {c.get('settles_probe_id') or '—'} | "
+                f"{expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
     _fail(2, f"render_section: unhandled design {design!r}")
 
 
@@ -208,11 +245,16 @@ def check_generated_drift(path: Path = CLASSIFIED_PATH) -> tuple[int, int]:
 
 
 def print_summary(classified: dict) -> None:
+    """Tallies the primary judgement field per row -- `verdict` for the
+    rate-based designs, `truncation_verdict` for single-stop, `state` for
+    single-candidates/single-logprobs (12-04: none of the three
+    single-observation designs carry a `verdict` key at all)."""
     cells = classified["cells"]
     skips = classified.get("skips") or []
     tally: dict[str, int] = {}
     for c in cells:
-        tally[c["verdict"]] = tally.get(c["verdict"], 0) + 1
+        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state")
+        tally[key] = tally.get(key, 0) + 1
     print(f"cells read: {len(cells)}")
     print(f"requirements (sections): {len(requirement_order(cells))}")
     print(f"declared skips: {len(skips)}")
@@ -375,6 +417,80 @@ def selftest() -> tuple[int, int]:
         if e.code != 2:
             problems += 1
             print(f"FAIL render_section(mixed design): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- render_section: design=single-stop (12-04) gets its own
+    #     Triggering/Control Length + Truncation Verdict + Finish-Reason
+    #     Honest columns, distinct from every rate-based design's layout ---
+    cases += 1
+    single_stop_cells = [{
+        "cell_id": "m4--stop-truncation--triggering--default", "requirement": "BHV-03", "design": "single-stop",
+        "model": "m4", "vendor": "anthropic", "mode": "default", "param": "stop-truncation", "value": "triggering",
+        "stop_token": "Thursday", "triggering_text_length": 25, "control_text_length": 56,
+        "stop_token_in_triggering_text": False, "truncation_verdict": "stop-honored", "finish_reason_honest": "honest",
+        "expected": "expect v", "expected_source": "docs-claims:stop/anthropic",
+        "probe_ids": ["p1", "p2"], "ancillary": {}, "note": None,
+    }]
+    single_stop_section = "\n".join(render_section(single_stop_cells))
+    if "Truncation Verdict" not in single_stop_section or "Finish-Reason Honest" not in single_stop_section:
+        problems += 1
+        print("FAIL render_section(single-stop): expected Truncation Verdict/Finish-Reason Honest columns", file=sys.stderr)
+    if "stop-honored" not in single_stop_section or "honest" not in single_stop_section:
+        problems += 1
+        print("FAIL render_section(single-stop): expected the rendered verdict and honesty judgement", file=sys.stderr)
+
+    # --- render_section: design=single-candidates gets its own Requested
+    #     n/Returned Count/State columns ---
+    cases += 1
+    single_candidates_cells = [{
+        "cell_id": "m5--n--2--default", "requirement": "BHV-04", "design": "single-candidates",
+        "model": "m5", "vendor": "openai", "mode": "default", "param": "n", "value": 2,
+        "requested_n": 2, "returned_count": 2, "state": "accepted-honored", "evidence": "candidate-count",
+        "expected": "expect w", "expected_source": "docs-claims:n/openai",
+        "probe_ids": ["p3"], "ancillary": {}, "note": None,
+    }]
+    single_candidates_section = "\n".join(render_section(single_candidates_cells))
+    if "Requested n" not in single_candidates_section or "Returned Count" not in single_candidates_section:
+        problems += 1
+        print("FAIL render_section(single-candidates): expected Requested n/Returned Count columns", file=sys.stderr)
+    if "accepted-honored" not in single_candidates_section:
+        problems += 1
+        print("FAIL render_section(single-candidates): expected the rendered state", file=sys.stderr)
+
+    # --- render_section: design=single-logprobs gets its own Present/Token
+    #     Entries/Settles columns, including the phase-11 citation link ---
+    cases += 1
+    single_logprobs_cells = [{
+        "cell_id": "m6--logprobs-reverify--combined--default", "requirement": "BHV-05", "design": "single-logprobs",
+        "model": "m6", "vendor": "qwen", "mode": "default", "param": "logprobs-reverify", "value": "combined",
+        "requested_top_logprobs": 3, "logprobs_present": True, "logprobs_token_entries": 47,
+        "logprobs_alternatives_honored": True, "state": "accepted-honored", "evidence": "logprobs-content",
+        "settles_probe_id": "m6--top-logprobs--3--default--deadbeef",
+        "expected": "expect u", "expected_source": "docs-claims:top-logprobs/qwen",
+        "probe_ids": ["p4"], "ancillary": {}, "note": None,
+    }]
+    single_logprobs_section = "\n".join(render_section(single_logprobs_cells))
+    if "Token Entries" not in single_logprobs_section or "Settles" not in single_logprobs_section:
+        problems += 1
+        print("FAIL render_section(single-logprobs): expected Token Entries/Settles columns", file=sys.stderr)
+    if "m6--top-logprobs--3--default--deadbeef" not in single_logprobs_section:
+        problems += 1
+        print("FAIL render_section(single-logprobs): expected the settled phase-11 probe_id rendered", file=sys.stderr)
+
+    # --- render_matrix: a doc mixing all six designs across their own
+    #     requirement sections renders every one without crashing, and each
+    #     section heading states its own cell count (12-04's three new
+    #     designs alongside the three pre-existing ones) ---
+    cases += 1
+    mixed_doc = {
+        "checked": "2026-09-03", "evidence_through": None,
+        "cells": fixture_cells + single_stop_cells + single_candidates_cells + single_logprobs_cells,
+        "skips": [],
+    }
+    mixed_rendered = render_matrix(mixed_doc)
+    for heading in ("## BHV-03 (1 cell)", "## BHV-04 (1 cell)", "## BHV-05 (1 cell)"):
+        if heading not in mixed_rendered:
+            problems += 1
+            print(f"FAIL render_matrix(mixed six-design doc): expected heading {heading!r}", file=sys.stderr)
 
     return cases, problems
 
