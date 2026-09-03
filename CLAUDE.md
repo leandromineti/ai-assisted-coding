@@ -77,6 +77,7 @@ python3 scripts/build-refs-index.py --check   # frontmatter, unread-but-cited, d
 python3 scripts/check-taxonomy.py --check     # deny-listed synonyms, stale category names/numbering, unregistered vocabulary, unapplied ADR decoders
 python3 probes/audit-evidence.py --check      # scans probes/raw/*.jsonl + ledger.jsonl for account-identifying leaks before they're committed
 python3 probes/check-docs-claims.py --check   # docs-claims.yaml completeness, first-party sourcing, rule-1b searched surfaces
+python3 scripts/check-probe-drift.py --check  # ADR-0050 promoted-key OBSERVED cells vs. classified evidence, both directions
 ```
 
 The fourth command is `probes/`'s own gate, D-05's fail-closed privacy scanner: exit 0
@@ -92,6 +93,18 @@ not just at the one-time evidence-commit decision.
 The fifth command is `probes/docs-claims.yaml`'s own gate (Phase 11.1, D-03): exit 0
 means clean, exit 1 means findings, exit 2 means a bad invocation. Like the fourth
 command, a finding is fixed in the claims data, never by narrowing the validator.
+
+The sixth command is ADR-0050's own gate (Phase 13, MTX-03): a two-way check confronting
+every promoted `wire-behavior` key's OBSERVED cell in `tools/1-models/*.md` against the
+classified evidence it cites — exit 0 means clean, exit 1 means findings (a mismatched
+rate or verdict, a missing cell, an unparseable cell, or a citation that resolves nowhere),
+exit 2 means a bad invocation. A finding is fixed in the report cell or in the classified
+evidence, never by loosening the checker's grammar or narrowing its domain — the same
+never-loosen discipline the fourth and fifth commands already model. This is the one
+Phase 13 script that joins the battery; the two Phase 12 generator drift checks
+(`comparisons/behavioral.md`'s and `comparisons/probes.md`'s own `--check` flags)
+deliberately did not, because their inputs are read-only registry renders with no
+hand-kept report cell that could drift out from under them the way an OBSERVED cell can.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
