@@ -1909,3 +1909,63 @@ record before any determinism cell fires.
 probes/ledger.jsonl` is empty as of this entry — nothing new on disk under
 either path since Task 2. The global ledger total remains at
 **$0.107418**, unchanged by this entry.
+
+**2026-09-03, plan 12-03 Task 1 — BHV-01 seed-pairs cells fired
+(`python3 probes/harness/runner.py --set
+probes/sets/behavioral/seed-determinism.yaml`).** 88 calls declared (8 models
+x 11: ten `repeat: 1..10` same-seed (`seed: 42`) calls plus one different-seed
+(`seed: 99`) effect control), all 88 landed HTTP 200 / `terminal: verdict` on
+the first fire — no retries needed except `kimi-k3--seed--42--default--r5`
+(one transient 429, retried once, succeeded).
+
+**Result: seven of eight models show 0/5 same-seed pair matches; two of
+those seven's groups are `no-signal`, not `varies`, because ONE of their ten
+same-seed repeats returned HTTP 200 with EMPTY visible text — the Phase 9
+Gemini lesson recurring at a stochastic, per-call level even at
+control-arm.yaml's own already-corrected max_tokens budget.** Read from the
+fired records themselves (`finish_reason`/`reasoning_tokens`), not assumed
+from the accepted HTTP status:
+
+| Model | Same-seed rate (5 pairs) | Effect control (seed 99 vs. repeat 1) | Verdict | Note |
+|---|---|---|---|---|
+| gpt-5-6-sol | 0/5 | differed | varies | — |
+| gemini-3-1-pro | 0/5 | differed | varies | — |
+| grok-4-5 | 0/5 | differed | varies | `system_fingerprint` CONSTANT (`fp_a39489019fa99b6e`) across all 11 calls, same-seed and effect-control alike — the backend did not change, yet every repeat's visible text still differed. Directly refutes the naive reading of xAI's own hedge (stable fingerprint implying stable output). |
+| kimi-k3 | 0/5 (r6 empty) | differed | **no-signal** | Repeat 6 returned `finish_reason: "length"`, empty visible text, `reasoning_tokens` consumed the full 1200-token budget — the same failure mode Task 2 of plan 12-02 fixed for the control arm's own 5-repeat sample, recurring here at 1 of 10 repeats despite reusing that same corrected budget verbatim. |
+| deepseek-v4 | 0/5 | differed | varies | — |
+| glm-5.3 | 0/5 (r6,r7,r8 empty) | differed | **no-signal** | Repeats 6, 7, 8 all returned `finish_reason: "length"`, empty visible text, `reasoning_tokens` 1198-1200 out of the 1200-token cap — three of ten repeats this time, at the SAME model and SAME budget that succeeded 5/5 in plan 12-02's own control arm. glm-5.3's reasoning-length variance is evidently large enough that a 5-repeat sample does not bound the failure rate a 10-repeat sample exposes. |
+| qwen3.8-max | 0/5 | differed | varies | — |
+| qwen3.8-flash | 0/5 | differed | varies | — |
+
+**Per this task's own action text ("an incomplete repeat group must classify
+`no-signal`, not a smaller denominator"), the kimi-k3 and glm-5.3 groups are
+NOT re-fired with a larger budget** — `max_tokens: 1200` is
+control-arm.yaml's own confirmed, budget-corrected value (this task's own
+read_first names that file as the authority, not a fresh per-group
+assumption), and the failure is a genuine finding about reasoning-length
+variance at these two models rather than an under-provisioned budget (both
+succeeded 5/5 at the identical setting in the smaller control-arm sample).
+Recorded as-is; not silently dropped, not padded to a smaller denominator.
+
+**Falsification read (Measurements/Falsification criteria, stated before any
+call fired):** the pre-registered sharper test was gemini-3-1-pro (the one
+seed vendor with NO best-effort hedge in its docs) — its own same-seed rate
+is 0/5, materially below the unhedged "the request uses a randomly generated
+seed [if unset]" framing, refuting that documentation's implied determinism
+more sharply than a partial rate would at a hedged vendor. Every one of the
+best-effort/hedged vendors (openai, xai, qwen — both qwen models) ALSO shows
+0/5 — consistent with, not refuted by, their own explicit "best effort ...
+not guaranteed" hedges, but at the low end of what "best effort" would
+usually be read to promise. The three rule-1b absent-from-docs vendors
+(dseek, kimi, zai) each recorded their own first discovery: deepseek-v4 at
+0/5 (clean varies), kimi-k3 and glm-5.3 both landing `no-signal` before any
+same-seed rate could even be read.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/seed-determinism.yaml --dry-run`: 88 distinct `DRY-RUN` probe_id lines, no duplicates.
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base.
+- `python3 probes/harness/ledger.py --totals`: global **$0.168286** (up from the $0.107418 pre-fire baseline, delta **+$0.060868** for these 88 calls) — well under the $0.32 Phase 12 envelope and every $0.50 per-vendor sub-ceiling (highest, xai, at ~9.1% of it). Per-vendor: anthropic $0.012142 (unchanged, no anthropic calls this task), kimi $0.040500, gemini $0.007290, xai $0.045682, dseek $0.009451, zai $0.006600, qwen $0.014716, openai $0.031905.
+
+Remaining Phase 12 headroom against the $0.32 envelope: **$0.151714**
+(roughly 47% of the envelope unspent, before Task 2's 60 temperature-family
+calls).

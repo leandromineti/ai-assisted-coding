@@ -1,0 +1,947 @@
+# probes/sets/behavioral/seed-determinism.yaml — Phase 12 plan 12-03 Task 1's
+# BHV-01 cells: five disjoint same-seed pairs (D-01's sample-size decision, D-06's
+# pair-plus-effect-control design) at the eight models Phase 11's own contract
+# evidence shows accepting a request-side `seed` field in `default` mode
+# (probes/classified/contract-sweep.yaml, confirmed against this file before
+# authoring, per this task's own read_first instruction):
+#
+#   gpt-5-6-sol--seed--42--default--77f68fc6      (accepted-unverified)
+#   gemini-3-1-pro--seed--42--default--18c16086   (accepted-unverified)
+#   grok-4-5--seed--42--default--89d4c1d4         (accepted-unverified)
+#   kimi-k3--seed--42--default--992d750b          (accepted-unverified)
+#   deepseek-v4--seed--42--default--4176a0f2      (accepted-unverified)
+#   glm-5.3--seed--42--default--f05c74a2          (accepted-unverified)
+#   qwen3.8-max--seed--42--default--5c475384      (accepted-unverified)
+#   qwen3.8-flash--seed--42--default--1fd7386e    (accepted-unverified)
+#
+# Per model: TEN `repeat: 1..10` entries at `seed: 42` (the same value Phase 11's
+# own contract cell above already used) — byte-identical request bodies, `repeat`
+# the only thing making them 10 distinct probe_ids (D-09) — reduced by
+# scripts/classify-behavioral.py (Task 3, `design: seed-pairs`) into FIVE
+# disjoint pairs: (r1,r2) (r3,r4) (r5,r6) (r7,r8) (r9,r10), never a flat
+# ten-way comparison against repeat 1 (the Measurements subsection's own
+# resolution of what a "pair" means for this design, distinct from the
+# `repeats` design's baseline-vs-N comparison used by BHV-02/D-03). Plus ONE
+# further entry at `seed: 99` (D-06's effect control) — a genuinely different
+# request body, no `repeat` key needed since the changed `value` already
+# produces a distinct probe_id (D-04) — comparing its visible text against
+# repeat 1's: if a DIFFERENT seed still reproduces the same text, the observed
+# same-seed stability is not seed-driven at all.
+#
+# No `temperature` parameter anywhere in this file (Sampling configuration:
+# control-arm/seed cells rely on each vendor's own nonzero default — sending an
+# explicit temperature would break the 3-of-4 Claude models that reject it
+# outright for no reason related to seed determinism; moot here anyway, since
+# none of the four Claude models has a request-side seed field at all — see
+# `skips:` below).
+#
+# `max_tokens` reused verbatim from control-arm.yaml's own confirmed,
+# budget-corrected per-model values (12-02-SUMMARY.md's glm-5.3/kimi-k3 fix) —
+# this task's own read_first names that file as the source of "confirmed
+# output budget," not a fresh assumption.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before stamping":
+# `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # --- gpt-5-6-sol (openai, max_tokens 300) ---
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: gpt-5-6-sol
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 99}
+
+  # --- gemini-3-1-pro (gemini, max_tokens 600) ---
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: gemini-3-1-pro
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 99}
+
+  # --- grok-4-5 (xai, max_tokens 600) ---
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: grok-4-5
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 99}
+
+  # --- kimi-k3 (kimi, max_tokens 1200 — budget-corrected per 12-02-SUMMARY.md) ---
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: kimi-k3
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 99}
+
+  # --- deepseek-v4 (dseek, max_tokens 300) ---
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: deepseek-v4
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 99}
+
+  # --- glm-5.3 (zai, max_tokens 1200 — budget-corrected per 12-02-SUMMARY.md) ---
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: glm-5.3
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {seed: 99}
+
+  # --- qwen3.8-max (qwen, max_tokens 300) ---
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: qwen3.8-max
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 99}
+
+  # --- qwen3.8-flash (qwen, max_tokens 300) ---
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: qwen3.8-flash
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 99}
+
+# `effect_control_value: 99` on every expectation below tells
+# scripts/classify-behavioral.py (Task 3) where to find this model's single
+# different-seed probe entry (group_key (model, "seed", 99, "default")) — the
+# `design: seed-pairs` reduction joins it separately from the ten-repeat
+# same-seed group (`value: 42`) that this expectation's own group_key matches,
+# since a same-`value` group_key match is what `probes:`/`expectations:`
+# pairing already requires everywhere else in this pipeline (12-02's own
+# grammar). Eight expected values, each written for that vendor's own
+# documented seed contract individually (12-RESEARCH.md Pitfall 4) — never one
+# shared best-effort sentence.
+expectations:
+  - model: gpt-5-6-sol
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      OpenAI documents seed as an explicit best-effort determinism feature at
+      gpt-5-6-sol's own vendor: "our system will make a best effort to sample
+      deterministically, such that repeated requests with the same seed and
+      parameters should return the same result. Determinism is not guaranteed,
+      and you should refer to the system_fingerprint response parameter to
+      monitor changes in the backend." Expect a mid-to-high same-seed pair-match
+      rate, not a guaranteed 5/5, with each pair's system_fingerprint recorded
+      alongside it for exactly the drift-monitoring purpose the vendor's own
+      hedge names.
+    expected_source: "docs-claims:seed/openai"
+  - model: gemini-3-1-pro
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Gemini's own GenerateContent reference carries NO best-effort hedge at
+      all for gemini-3-1-pro: "Optional. Seed used in decoding. If not set,
+      the request uses a randomly generated seed" — silent on determinism
+      strength once a seed IS set, unlike every hedged vendor in this file.
+      This unhedged framing sets a HIGHER bar than the best-effort vendors: per
+      this plan's own Falsification criteria, a same-seed pair-match rate
+      materially below 5/5 here refutes the documentation more sharply than a
+      partial rate would at a vendor that explicitly disclaims a guarantee.
+    expected_source: "docs-claims:seed/gemini"
+  - model: grok-4-5
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      xAI documents seed for grok-4-5 with the identical best-effort hedge
+      wording as OpenAI's own claim: "our system will make a best effort to
+      sample deterministically, such that repeated requests with the same seed
+      and parameters should return the same result. Determinism is not
+      guaranteed, and you should refer to the system_fingerprint response
+      parameter to monitor changes in the backend." Expect a mid-to-high
+      same-seed pair-match rate, not a guaranteed 5/5, with system_fingerprint
+      recorded alongside each pair.
+    expected_source: "docs-claims:seed/xai"
+  - model: kimi-k3
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Kimi/Moonshot's own OpenAPI Chat Completions schema documents no seed
+      field at all for kimi-k3 (absent-from-docs, checked-absence per rule
+      1b — the full ChatRequestCommon/ChatRequestBase property list read end
+      to end, zero matches). This vendor has NO seed contract to confront, so
+      ANY same-seed pair-match rate here — high or low — is a FIRST DISCOVERY
+      about undocumented behavior, not a corroboration or a refutation of a
+      stated prior.
+    expected_source: "docs-claims:seed/kimi"
+  - model: deepseek-v4
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      DeepSeek's own Chat Completions reference documents no seed field at
+      all for deepseek-v4 (absent-from-docs, checked-absence per rule 1b — the
+      full 36-property request body read end to end, zero matches). This
+      vendor has NO seed contract to confront, so ANY same-seed pair-match
+      rate here — high or low — is a FIRST DISCOVERY, not a corroboration or a
+      refutation of a stated prior.
+    expected_source: "docs-claims:seed/dseek"
+  - model: glm-5.3
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Z.ai's own Chat Completion API reference documents no seed field at all
+      for glm-5.3 (absent-from-docs, checked-absence per rule 1b — the
+      ChatCompletionTextRequest schema branch matching this tracked model read
+      end to end, zero matches). This vendor has NO seed contract to
+      confront, so ANY same-seed pair-match rate here — high or low — is a
+      FIRST DISCOVERY, not a corroboration or a refutation of a stated prior.
+    expected_source: "docs-claims:seed/zai"
+  - model: qwen3.8-max
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Qwen documents its own explicit hedge for qwen3.8-max, worded
+      differently from OpenAI/xAI's system_fingerprint-pointer wording: "the
+      model returns the same result whenever possible" — a best-effort
+      contract stated in the vendor's own terms, with no system_fingerprint
+      pointer to monitor drift. Expect a mid-to-high same-seed pair-match
+      rate, not a guaranteed 5/5.
+    expected_source: "docs-claims:seed/qwen"
+  - model: qwen3.8-flash
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Qwen's seed claim applies to every model in the family including its
+      flash-tier sibling qwen3.8-flash: "the model returns the same result
+      whenever possible" — the same explicit, vendor-worded best-effort hedge
+      cited for qwen3.8-max above (this file's own vendor-level claim, one row
+      shared by both tracked Qwen models), with no system_fingerprint pointer.
+      Expect a mid-to-high same-seed pair-match rate at this smaller/cheaper
+      model too, not a guaranteed 5/5.
+    expected_source: "docs-claims:seed/qwen"
+
+# Four Claude models declared skipped, never silently absent — none has a
+# request-side seed field at all (probes/classified/contract-sweep.yaml: all
+# four `param: seed` rows are `mode: n/a`, `state: skipped`), cited to
+# Anthropic's own checked-absence docs-claims.yaml entry (the Messages API
+# reference's full Body-parameters list, read end to end plus an in-page
+# search for "seed" — zero matches, retrieved 2026-09-02).
+skips:
+  - model: claude-fable-5
+    param: seed
+    mode: "n/a"
+    requirement: BHV-01
+    reason: no-request-side-seed-field
+    cited_source: "docs-claims:seed/anthropic"
+  - model: claude-opus-5
+    param: seed
+    mode: "n/a"
+    requirement: BHV-01
+    reason: no-request-side-seed-field
+    cited_source: "docs-claims:seed/anthropic"
+  - model: claude-sonnet-5
+    param: seed
+    mode: "n/a"
+    requirement: BHV-01
+    reason: no-request-side-seed-field
+    cited_source: "docs-claims:seed/anthropic"
+  - model: claude-haiku-4-5
+    param: seed
+    mode: "n/a"
+    requirement: BHV-01
+    reason: no-request-side-seed-field
+    cited_source: "docs-claims:seed/anthropic"
