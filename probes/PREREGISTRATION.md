@@ -2374,3 +2374,47 @@ Verification, all read from the actual run, none assumed:
 - `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md`: empty — the contract pipeline stays byte-stable; the conditional `top_level_params` grammar addition disturbed no existing probe_id.
 - `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base (18 new raw records — the Anthropic trap's own stored 400 error body passes the same scan as any other response body).
 - `python3 probes/harness/ledger.py --totals`: global **$0.309163** (up from the $0.302681 post-plan-12-04 baseline, delta **+$0.006482** for these 17 calls — two accepted-but-fired cells, `gpt-5-6-sol`'s `scale` rejection and the Anthropic trap's 400, billed $0 as predicted; two Gemini cells — `standard`/`flex` — recorded `cost_usd: None` since their own `output_tokens` read `null` at an 80-token reasoning-only completion, an honest gap in the ledger's own per-call cost derivation, not a correctness defect in this audit). Phase-12-only spend: $0.309163 − $0.071612 = $0.237551; remaining Phase 12 headroom **$0.082449**. Every vendor stayed far under its $0.50 sub-ceiling (highest, openai, at ~9.6%).
+
+**2026-09-03, plan 12-05 Task 2 — the preregistered documentation-drift
+annex.** D-07: the two annex fields fired here confront their own
+`docs-claims.yaml` claim, without touching `probes/inventory.yaml`'s own
+contradicted checked-absence assumptions. (The annex's third field,
+Gemini's `serviceTier`, fired as part of Task 1 above.)
+
+Fired 4 calls (`probes/sets/behavioral/docs-drift-annex.yaml`), per cell:
+request shape sent, HTTP status, response evidence, registry-assumption
+verdict:
+
+| Cell | Request shape | HTTP status | Response evidence | Registry verdict |
+|---|---|---|---|---|
+| deepseek-v4, `thinking.type=enabled` | `{"thinking":{"type":"enabled"}}`, object at top level | 200 | `reasoning_content` present, visible `content` empty (thinking mode genuinely engaged) | inventory.yaml's `vendor_overrides.dseek` checked-absence (`toggle-not-a-request-parameter`) **CONTRADICTED**: the field exists, is accepted, and demonstrably changes model behavior |
+| deepseek-v4, `thinking.type=disabled` | `{"thinking":{"type":"disabled"}}` | 200 | no `reasoning_content`, visible `content` present (283 chars) | same contradiction, confirmed from the opposite direction — the toggle flips real behavior both ways |
+| qwen3.8-flash, `reasoning_effort=low` | `{"reasoning_effort":"low"}` | 200 | no `thinking_budget` sent (avoids the documented mutual-exclusion error); `usage.reasoning_tokens: 123` | inventory.yaml's `vendor_overrides.qwen` assumption (enable_thinking/thinking_budget ONLY) **CONTRADICTED**: `reasoning_effort` is genuinely accepted, additive to the assumed shape |
+| qwen3.8-flash, `reasoning_effort=medium` | `{"reasoning_effort":"medium"}` | 200 | `usage.reasoning_tokens: 170` (higher than `low`'s 123, consistent with the field's own documented effect) | same contradiction, and the reasoning-token count moves in the documented direction (medium > low) |
+
+Neither field is echoed anywhere in its own response body under its own
+name (no `thinking` or `reasoning_effort` key at the top level of any of
+the four responses) — all four cells classify `echo_relation: dropped`
+per `tier-audit`'s own closed vocabulary (the request carried a value,
+accepted, no response field confirms it verbatim) rather than `echoed`;
+the DeepSeek pair's own `reasoning_content`/visible-`content` shape is the
+real behavioral confirmation, read here in the Run log and not asserted
+as this design's own `echo_relation`, which has no dedicated field to
+examine either way.
+
+The deferred Qwen `reasoning_effort`/`thinking_budget` mutual-exclusion
+probe is declared as a skip (`reason: deferred-out-of-envelope`, citing
+`docs-claims:openai-reasoning-effort/qwen`) rather than fired or silently
+dropped — a candidate for a later phase.
+
+Verification, all read from the actual run, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/docs-drift-annex.yaml --dry-run`: **4 distinct `DRY-RUN` probe_id lines**; both DeepSeek entries' printed request bodies carry `thinking` as the documented object shape (`{"type":"enabled"}`/`{"type":"disabled"}`), never a flat scalar.
+- `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base.
+- `git diff --stat probes/inventory.yaml`: empty — the registry these findings contradict stays unedited, per this plan's own scope (D-09).
+- `python3 probes/harness/ledger.py --totals`: global **$0.309622** (up from the $0.309163 post-Task-1 baseline, delta **+$0.000459** for these 4 calls). Phase-12-only spend: $0.309622 − $0.071612 = $0.238010; remaining Phase 12 headroom **$0.081990**. Every vendor stayed far under its $0.50 sub-ceiling.
+
+Both of plan 12-05's firing tasks (Task 1 + Task 2, 21 calls total) are
+complete. Task 3 (path-aware classification + rendering) fires nothing
+further. Cumulative Phase-12-only spend across plans 12-02 through 12-05
+is **$0.238010** of the approved $0.32 envelope (read live from the
+ledger, never summed from each plan's own reported delta).

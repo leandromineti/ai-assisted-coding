@@ -1,0 +1,213 @@
+# probes/sets/behavioral/docs-drift-annex.yaml — Phase 12 plan 12-05 Task 2's
+# D-07 cells: the preregistered documentation-drift annex, confronting the
+# three fields Phase 11.1's direct-reading passes found DOCUMENTED but never
+# probed, each against its own `docs-claims.yaml` claim (a genuine prior),
+# WITHOUT touching `probes/inventory.yaml`'s own dated (and, for these three
+# fields, now contradicted) checked-absence assumptions.
+#
+# All three fields fire in Phase 12. Two live here:
+#
+#   - DeepSeek's `thinking` object (`anthropic-thinking-object`/dseek claim):
+#     an object with a `type` sub-field, documented values
+#     enabled/disabled, default `enabled`, scoped to deepseek-v4-pro (the
+#     tracked model) — contradicts inventory.yaml's own
+#     axes.thinking.shapes.openai_compat.vendor_overrides.dseek entry
+#     (`"on": null, "off": null, reason: toggle-not-a-request-parameter`).
+#   - Qwen's `reasoning_effort` field (`openai-reasoning-effort`/qwen
+#     claim): a real, independently-accepted field (NOT merely the
+#     OpenAI-standard alias set), with its own per-model-family value list
+#     and a documented mutual exclusion with `thinking_budget` — contradicts
+#     inventory.yaml's own vendor_overrides.qwen assumption that Qwen's own
+#     thinking-toggle shape is `enable_thinking`/`thinking_budget` ONLY.
+#
+# The THIRD field — Gemini's `serviceTier` (contradicts inventory.yaml's own
+# 2026-09-01 checked-absence note for that row) — fires as part of THIS
+# plan's OTHER file, probes/sets/behavioral/service-tier-audit.yaml (its
+# `unspecified`/`standard`/`flex`/`priority` cells), not here: it shares
+# BHV-06's own service-tier audit design and cell family, so it is fired
+# alongside that file's other seven vendors rather than duplicated in this
+# annex. A reader of either file is pointed at the other by this note.
+#
+# Design choice (both cells here use `design: tier-audit`, the one new
+# design this plan's Task 3 adds — no second design value is introduced):
+# neither DeepSeek's `thinking` object nor Qwen's `reasoning_effort` string
+# has a KNOWN response-side echo location (unlike `service_tier`, no wire
+# family reflects either field's resolved value back in a dedicated response
+# field) — so both cells' questions are answered the SAME way
+# `single-candidates`' own acceptance/rejection split answers `n`: was the
+# request ACCEPTED (2xx) or REJECTED (4xx)? `tier-audit`'s own closed
+# `echo_relation` vocabulary already expresses this without inventing a
+# second design — `dropped` on acceptance (the request carried a value and
+# no response field exists to confirm it) and `rejected` on refusal, exactly
+# the "single-candidates-style acceptance" framing the plan calls for.
+#
+# `param: thinking-object` (DeepSeek) and `param: reasoning-effort` (Qwen) —
+# distinct from service-tier-audit.yaml's own `service-tier-audit` param, so
+# no cell_id collides across the two files even though both share
+# `requirement: BHV-06` and `design: tier-audit`.
+#
+# `mode: default`, the D-04 prompt, `max_tokens: 80` — same presence-only
+# budget rationale as service-tier-audit.yaml's own header (this design
+# reads acceptance/rejection and response structure, never visible text, so
+# an always-on-reasoning model's budget is not a confound). Neither
+# deepseek-v4 nor qwen3.8-flash/qwen3.8-max is `reasoning_toggle: always-on`
+# in probes/harness/models.yaml (both are `default-on`), so 80 tokens
+# carries no additional risk beyond what service-tier-audit.yaml already
+# established for the same budget at the same two vendors' own omission
+# cells.
+#
+# Qwen's own reasoning_effort claim documents its value list PER MODEL
+# FAMILY; the Qwen3.8 series' own quote ("Options: low, medium, xhigh.
+# Default: xhigh.") gives 3 values, not the 5-member OpenAI-standard alias
+# set (low/medium/high/xhigh/max) the SAME claim entry also documents as
+# separately accepted and auto-converted. Two cells fire here, both
+# NON-default values (`low`, `medium`) — `xhigh` is the field's own
+# documented default, so testing it would answer nothing an omission cell
+# wouldn't already show; `low`/`medium` are the two values whose acceptance
+# and effect are genuinely informative against the default. Fired at
+# qwen3.8-flash (this plan's own resolved Qwen representative model,
+# matching service-tier-audit.yaml's own choice), not qwen3.8-max.
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before
+# stamping": `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # --- DeepSeek's `thinking` object (deepseek-v4, openai_compat — merges at
+  #     the request top level) ---
+  - model: deepseek-v4
+    param: thinking-object
+    value: enabled
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {thinking: {type: enabled}}
+  - model: deepseek-v4
+    param: thinking-object
+    value: disabled
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {thinking: {type: disabled}}
+
+  # --- Qwen's `reasoning_effort` field (qwen3.8-flash, openai_compat) ---
+  - model: qwen3.8-flash
+    param: reasoning-effort
+    value: low
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {reasoning_effort: low}
+  - model: qwen3.8-flash
+    param: reasoning-effort
+    value: medium
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {reasoning_effort: medium}
+
+cited_cells: []
+
+expectations:
+  - model: deepseek-v4
+    param: thinking-object
+    value: enabled
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: thinking
+    request_value: {type: enabled}
+    registry_note: >-
+      Contradicts probes/inventory.yaml's own
+      axes.thinking.shapes.openai_compat.vendor_overrides.dseek entry
+      ("on": null, "off": null, reason: toggle-not-a-request-parameter) —
+      that entry asserts DeepSeek's thinking mode has NO request-body field
+      at all, model-id-selected only. DeepSeek's own docs contradict this
+      directly for deepseek-v4-pro (the tracked model). An HTTP 200 here
+      confirms the documented field exists and is accepted, refuting the
+      registry's checked-absence assumption; a rejection would instead
+      corroborate the registry against the claim itself.
+    expected: >-
+      DeepSeek documents `thinking` (object, nullable) with a `type`
+      sub-field, values enabled/disabled, default `enabled`, scoped to
+      deepseek-v4-pro. `enabled` is the field's own documented default value
+      — expect acceptance (HTTP 200); no known response-side field echoes
+      the resolved mode back, so `dropped` is the expected echo_relation on
+      acceptance.
+    expected_source: "docs-claims:anthropic-thinking-object/dseek"
+  - model: deepseek-v4
+    param: thinking-object
+    value: disabled
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: thinking
+    request_value: {type: disabled}
+    registry_note: >-
+      Same registry contradiction as the `enabled` cell above — this is the
+      field's own non-default documented value, the sharper test of whether
+      the toggle actually changes model behavior (checked qualitatively via
+      this record's own `reasoning_content`/usage shape, not asserted as
+      this cell's own echo_relation, which has no dedicated response field
+      to examine either way).
+    expected: >-
+      DeepSeek's second documented `thinking.type` value — expect
+      acceptance (HTTP 200), `dropped` echo_relation (no known response
+      field echoes it).
+    expected_source: "docs-claims:anthropic-thinking-object/dseek"
+  - model: qwen3.8-flash
+    param: reasoning-effort
+    value: low
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: reasoning_effort
+    request_value: low
+    registry_note: >-
+      Contradicts probes/inventory.yaml's own
+      axes.thinking.shapes.openai_compat.vendor_overrides.qwen assumption
+      that Qwen's own thinking-toggle shape is `enable_thinking`/
+      `thinking_budget` ONLY. Qwen's own docs document `reasoning_effort` as
+      a REAL, independently-accepted field for the qwen3.8 series
+      (Options: low, medium, xhigh; default xhigh) — additive to, not
+      exclusive with, the enable_thinking/thinking_budget shape. An HTTP 200
+      here confirms the field is genuinely accepted beyond the registry's
+      own narrower assumption.
+    expected: >-
+      Qwen3.8 series documents `reasoning_effort` values low/medium/xhigh
+      (default xhigh) — `low` is a genuinely non-default value. No
+      `thinking_budget` sent alongside it (avoiding the documented mutual-
+      exclusion error). Expect acceptance (HTTP 200), `dropped`
+      echo_relation (no known response field echoes the resolved effort
+      level).
+    expected_source: "docs-claims:openai-reasoning-effort/qwen"
+  - model: qwen3.8-flash
+    param: reasoning-effort
+    value: medium
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: reasoning_effort
+    request_value: medium
+    registry_note: >-
+      Same registry contradiction as the `low` cell above — this is the
+      qwen3.8 series' second non-default documented value.
+    expected: >-
+      Qwen3.8 series' second non-default `reasoning_effort` value. Expect
+      acceptance (HTTP 200), `dropped` echo_relation.
+    expected_source: "docs-claims:openai-reasoning-effort/qwen"
+
+# One declared skip: the documented mutual exclusion between Qwen's own
+# reasoning_effort field and its thinking_budget field is a cheap and
+# genuinely falsifiable claim (send both, expect a documented error), but
+# firing it is outside this plan's preregistered envelope/cell list —
+# declared here as a candidate for a later phase rather than left
+# unmentioned (this file's own header discipline: declare, don't silently
+# drop).
+skips:
+  - model: qwen3.8-flash
+    param: reasoning-effort
+    mode: default
+    requirement: BHV-06
+    reason: deferred-out-of-envelope
+    cited_source: "docs-claims:openai-reasoning-effort/qwen"
