@@ -1969,3 +1969,62 @@ Verification, all read from the actual runs, none assumed:
 Remaining Phase 12 headroom against the $0.32 envelope: **$0.151714**
 (roughly 47% of the envelope unspent, before Task 2's 60 temperature-family
 calls).
+
+**2026-09-03, plan 12-03 Task 2 — BHV-02 temp-0 repeatability cells fired
+(`python3 probes/harness/runner.py --set
+probes/sets/behavioral/temp0-repeatability.yaml`).** 60 calls declared (12
+models x 5 repeats), all 60 landed HTTP 200 / `terminal: verdict` on the
+first fire — no retries needed.
+
+**Correction from the plan's own expected Group A/B split, made BEFORE
+authoring per the plan's own instruction to follow the wire, not the plan's
+anticipated split — recorded here for the record.**
+`probes/classified/contract-sweep.yaml` shows `gpt-5-6-sol` and `kimi-k3`
+REJECTED for `temperature` in `default` mode
+(`gpt-5-6-sol--temperature--0.7--default--f4a07a21`,
+`kimi-k3--temperature--0.7--default--8d339aec`, both HTTP 400) — the plan's
+own PLAN.md text anticipated both accepting it. Group A (temperature
+accepted in `default` mode) is therefore 7 models, not 9; Group B
+(default-config-repeatability substitute + a declared skip) is 5, not 3 —
+still 60 calls total (12 models x 5), redistributed 7+5.
+
+**Result:**
+
+| Model | Group | Rate (4 comparisons) | Distinct outputs | Verdict | Note |
+|---|---|---|---|---|---|
+| claude-haiku-4-5 | A (real temp-0) | 4/4 | 1 | **deterministic** | The one Claude model Phase 11 shows accepting temperature — clean, full determinism at temperature 0. |
+| gemini-3-1-pro | A | 2/4 | 2 | partial | Genuine partial determinism — 5 real, non-empty repeats, 2 of the last 4 matched repeat 1 exactly. |
+| grok-4-5 | A | 0/4 | 5 | varies | — |
+| deepseek-v4 | A | 0/4 | 5 | varies | — |
+| glm-5.3 | A | 0/4 | 5 | **no-signal** | Repeat 2 returned `finish_reason: "length"`, empty visible text, `reasoning_tokens: 1199` of the 1200-token cap — the SAME failure mode as Task 1's seed cell, recurring a third time at this model in this plan despite the reused, control-arm-corrected budget. |
+| qwen3.8-max | A | 0/4 | 5 | varies | — |
+| qwen3.8-flash | A | 0/4 | 5 | varies | — |
+| claude-fable-5 | B (default-config-repeatability) | 0/4 | 5 | varies | Substitute cell — temperature rejected on the wire (`claude-fable-5--temperature--0.7--default--be62cc19`, HTTP 400). |
+| claude-opus-5 | B | 0/4 | 2 | **no-signal** | Substitute cell. THREE of five repeats returned `finish_reason: "length"`, empty visible text, `reasoning_tokens: 300` of the 300-token cap — `max_tokens: 300` here was derived from OBSERVED usage under a much shorter one-word-reply prompt (Phase 10/11 baseline cells), not reused from an already-corrected budget the way the seed cells' budgets were; under this plan's longer two-sentence creative prompt it proved genuinely under-provisioned for opus-5's adaptive reasoning. |
+| claude-sonnet-5 | B | 0/4 | 5 | varies | Substitute cell — temperature rejected on the wire (`claude-sonnet-5--temperature--0.7--default--276ef9f0`, HTTP 400). |
+| gpt-5-6-sol | B | 0/4 | 5 | varies | Substitute cell — temperature rejected on the wire (moved from the plan's anticipated Group A per the correction above). |
+| kimi-k3 | B | 0/4 | 5 | varies | Substitute cell — temperature rejected on the wire (moved from the plan's anticipated Group A per the correction above). |
+
+**claude-opus-5's no-signal cell was NOT re-fired with a larger budget.**
+Unlike Task 1's kimi-k3/glm-5.3 no-signal cells (whose `max_tokens: 1200` was
+control-arm.yaml's own already-fired-and-confirmed value), `max_tokens: 300`
+for the three previously-unfired Claude models in this file was derived from
+a WEAKER basis — real usage observed under a much shorter prompt, not this
+plan's own longer prompt — so a re-fire at a bumped budget would be a
+legitimate correctness fix in isolation. It was not attempted here because
+the remaining Phase 12 headroom at the time this task's evidence landed was
+**$0.037513** (see ledger read below) — a 5-call re-fire at any materially
+larger cap risks exceeding the approved $0.32 envelope without the fresh
+sign-off the Stopping rules require for a re-derived figure larger than the
+approved one. Recorded as `no-signal`, honestly, per this task's own
+"an incomplete repeat group must classify no-signal, not a smaller
+denominator" discipline (Task 1's own precedent) — not silently dropped, not
+padded, not re-fired past the budget's own guardrail.
+
+Verification, all read from the actual runs, none assumed:
+- `python3 probes/harness/runner.py --set probes/sets/behavioral/temp0-repeatability.yaml --dry-run`: 60 distinct `DRY-RUN` probe_id lines, no duplicates.
+- `python3 probes/audit-evidence.py --check`: 0 problem(s) over the extended evidence base.
+- `python3 probes/harness/ledger.py --totals`: global **$0.282487** (up from the $0.168286 post-Task-1 baseline, delta **+$0.114201** for these 60 calls) — under the $0.32 Phase 12 envelope, remaining headroom **$0.037513** (roughly 12% of the envelope unspent). Every vendor still under its $0.50 per-vendor sub-ceiling (highest, anthropic, at ~19.2% of it, driven by the three previously-unfired Claude models' own calls). Per-vendor: anthropic $0.096092, kimi $0.049080, gemini $0.009294, xai $0.051122, dseek $0.011335, zai $0.007763, qwen $0.016981, openai $0.040820.
+
+Phase 12's own two firing tasks (Task 1 + Task 2, 148 calls total) are
+complete. Task 3 (classification + rendering) fires nothing further.

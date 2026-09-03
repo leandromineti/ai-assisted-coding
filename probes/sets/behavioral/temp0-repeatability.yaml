@@ -1,0 +1,771 @@
+# probes/sets/behavioral/temp0-repeatability.yaml — Phase 12 plan 12-03 Task 2's
+# BHV-02 cells: temperature-0 repeatability, split by WHAT THE WIRE ACTUALLY
+# SHOWS in `default` mode (probes/classified/contract-sweep.yaml, filtered to
+# `param: temperature`/`mode: default`, confirmed against this file before
+# authoring per this task's own read_first instruction) — not by the plan's own
+# anticipated vendor-family split, which this file's own Flagged Assumptions
+# section names as "this plan's expectation, not its authority."
+#
+# CORRECTION FROM THE PLAN'S OWN EXPECTED SPLIT (recorded here, per the plan's
+# own instruction: "If the wire evidence puts any model in a different group
+# than expected above, follow the evidence and record the correction in the Run
+# log — do not follow this plan's expected split against the classified file"):
+# `contract-sweep.yaml` shows gpt-5-6-sol AND kimi-k3 REJECTED for `temperature`
+# in `default` mode (`gpt-5-6-sol--temperature--0.7--default--f4a07a21`,
+# `kimi-k3--temperature--0.7--default--8d339aec`, both HTTP 400) — the plan's
+# PLAN.md text anticipated both in "Group A." Wire evidence governs: both move
+# to Group B (the default-config-repeatability substitute), alongside the three
+# Claude models the plan's text DID anticipate there. Group A is therefore 7
+# models (not 9), Group B is 5 (not 3) — still 60 calls total (12 models x 5
+# repeats), matching the Measurements subsection's own call count, just
+# redistributed 7+5 instead of 9+3.
+#
+# Group A — temperature ACCEPTED in `default` mode (7 models): claude-haiku-4-5
+# (the one Claude model that accepts it — Mode scope's own named exception),
+# deepseek-v4, gemini-3-1-pro, glm-5.3, grok-4-5, qwen3.8-max, qwen3.8-flash.
+# Five `repeat: 1..5` entries each at `temperature: 0`.
+#
+# Group B — temperature REJECTED in `default` mode (5 models): claude-fable-5,
+# claude-opus-5, claude-sonnet-5, gpt-5-6-sol, kimi-k3. Five `repeat: 1..5`
+# entries each at `param: default-config-repeatability` — D-05's honest
+# variant, no sampling parameter sent at all, asking what a caller can
+# ACTUALLY request repeatably at these five models. Each also carries a
+# `skips:` entry for its (never-fired-at-temp-0) temperature cell, citing its
+# own Phase 11 rejection probe_id.
+#
+# `max_tokens` per model: the 7 already-established control-arm.yaml budgets
+# (12-02-SUMMARY.md's own confirmed, budget-corrected values) reused verbatim
+# for every model this file shares with that one; the 3 previously-unfired
+# Claude models (claude-fable-5/opus-5/sonnet-5) get max_tokens: 300, derived
+# from this task's own read of their REAL fired usage in probes/raw/
+# anthropic.jsonl (Phase 10-11 baseline/max-tokens cells at max_tokens: 64
+# already produced complete, non-empty visible text with only 0-13
+# thinking_tokens consumed at every one of the three — comfortably inside a
+# 300-token budget for this file's longer two-sentence creative prompt, and
+# far below claude-fable-5's own $50/mtok output price making a much larger
+# ceiling like kimi-k3/glm-5.3's 1200 an unnecessary cost risk with no
+# evidence it is needed).
+#
+# Dated per CLAUDE.md's "Dates on everything" / "verify date before stamping":
+# `date -u` at authoring time read 2026-09-03.
+checked: 2026-09-03
+
+probes:
+  # ============================= GROUP A (7 models) =============================
+  # --- claude-haiku-4-5 (anthropic, max_tokens 150) — the one Claude exception ---
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 150
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- deepseek-v4 (dseek, max_tokens 300) ---
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- gemini-3-1-pro (gemini, max_tokens 600) ---
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- glm-5.3 (zai, max_tokens 1200 — budget-corrected per 12-02-SUMMARY.md) ---
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- grok-4-5 (xai, max_tokens 600) ---
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- qwen3.8-max (qwen, max_tokens 300) ---
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # --- qwen3.8-flash (qwen, max_tokens 300) ---
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # ============================= GROUP B (5 models) =============================
+  # D-05's default-config-repeatability substitute — no sampling parameter sent
+  # at all (temperature rejected outright at every one of these 5 in `default`
+  # mode).
+  # --- claude-fable-5 (anthropic, max_tokens 300) ---
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- claude-opus-5 (anthropic, max_tokens 300) ---
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- claude-sonnet-5 (anthropic, max_tokens 300) ---
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- gpt-5-6-sol (openai, max_tokens 300) — moved from the plan's assumed
+  # Group A after the wire showed it rejecting temperature in default mode ---
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- kimi-k3 (kimi, max_tokens 1200 — budget-corrected) — moved from the
+  # plan's assumed Group A after the wire showed it rejecting temperature in
+  # default mode ---
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 1
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 2
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 3
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 4
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 1200
+    repeat: 5
+
+expectations:
+  # ---------------------------- Group A (7 groups) ----------------------------
+  - model: claude-haiku-4-5
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Anthropic's own Messages API reference documents temperature as
+      deprecated on newer Claude models (default 1.0, range 0.0-1.0), but
+      Phase 11's own wire evidence shows claude-haiku-4-5 specifically
+      ACCEPTING an explicit non-default temperature value in `default` mode
+      (claude-haiku-4-5--temperature--0.7--default--a41444ed, HTTP 200) —
+      unlike its three sibling Claude models, all of which reject it outright.
+      Expect a high match rate (near or at 4/4) at temperature 0, the closest
+      thing to a cross-vendor prior this check has (minimizing sampling
+      variance).
+    expected_source: "docs-claims:temperature/anthropic"
+  - model: deepseek-v4
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      DeepSeek documents temperature word-for-word identical to OpenAI's own
+      quote (range 0-2, default 1, "we generally recommend altering this or
+      top_p but not both"), and Phase 11's own wire evidence shows
+      deepseek-v4 ACCEPTING an explicit temperature value in `default` mode.
+      Expect a high match rate (near or at 4/4) at temperature 0.
+    expected_source: "docs-claims:temperature/dseek"
+  - model: gemini-3-1-pro
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Gemini's own GenerationConfig reference documents temperature range
+      [0.0, 2.0] with no per-value rejection language, and Phase 11's own wire
+      evidence shows gemini-3-1-pro ACCEPTING an explicit temperature value in
+      `default` mode. Expect a high match rate (near or at 4/4) at
+      temperature 0.
+    expected_source: "docs-claims:temperature/gemini"
+  - model: glm-5.3
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Z.ai documents a narrower [0.0, 1.0] range specific to glm-5.3's own
+      model series (default 1.0), conditional on `do_sample` staying true,
+      and Phase 11's own wire evidence shows glm-5.3 ACCEPTING an explicit
+      temperature value in `default` mode. Expect a high match rate (near or
+      at 4/4) at temperature 0.
+    expected_source: "docs-claims:temperature/zai"
+  - model: grok-4-5
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      xAI documents temperature range 0-2 with no per-value rejection
+      language, and Phase 11's own wire evidence shows grok-4-5 ACCEPTING an
+      explicit temperature value in `default` mode. Expect a high match rate
+      (near or at 4/4) at temperature 0.
+    expected_source: "docs-claims:temperature/xai"
+  - model: qwen3.8-max
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Qwen documents temperature range [0, 2) with a caution to set only one
+      of temperature/top_p, and Phase 11's own wire evidence shows
+      qwen3.8-max ACCEPTING an explicit temperature value in `default` mode.
+      Expect a high match rate (near or at 4/4) at temperature 0.
+    expected_source: "docs-claims:temperature/qwen"
+  - model: qwen3.8-flash
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Qwen's same temperature claim covers its flash-tier sibling
+      qwen3.8-flash, and Phase 11's own wire evidence shows qwen3.8-flash
+      likewise ACCEPTING an explicit temperature value in `default` mode.
+      Expect a high match rate (near or at 4/4) at temperature 0 at this
+      smaller/cheaper model too.
+    expected_source: "docs-claims:temperature/qwen"
+
+  # ---------------------------- Group B (5 groups) ----------------------------
+  - model: claude-fable-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Anthropic's own documented temperature contract explains why this
+      model gets a substitute cell rather than a real temperature-0 cell:
+      "models released after Claude Opus 4.6 do not support setting
+      temperature ... all other values are rejected with a 400 error" —
+      confirmed on the wire (claude-fable-5--temperature--0.7--default--be62cc19,
+      HTTP 400). This default-config-repeatability cell instead asks whether
+      claude-fable-5's own DEFAULT (implicit) sampling is repeatable across
+      five identical requests with no temperature parameter sent at all — the
+      closest behavioral question this model's own accepted request surface
+      can answer.
+    expected_source: "docs-claims:temperature/anthropic"
+  - model: claude-opus-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      The same Anthropic deprecation contract applies to claude-opus-5,
+      confirmed on its own wire evidence
+      (claude-opus-5--temperature--0.7--default--65c8c160, HTTP 400). This
+      default-config-repeatability cell asks whether claude-opus-5's own
+      default (implicit) sampling is repeatable across five identical
+      requests with no temperature parameter sent at all.
+    expected_source: "docs-claims:temperature/anthropic"
+  - model: claude-sonnet-5
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      The same Anthropic deprecation contract applies to claude-sonnet-5,
+      confirmed on its own wire evidence
+      (claude-sonnet-5--temperature--0.7--default--276ef9f0, HTTP 400). This
+      default-config-repeatability cell asks whether claude-sonnet-5's own
+      default (implicit) sampling is repeatable across five identical
+      requests with no temperature parameter sent at all.
+    expected_source: "docs-claims:temperature/anthropic"
+  - model: gpt-5-6-sol
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      OpenAI's own vendor-level documentation states a general 0-2 accepted
+      range with no per-model exception language, but gpt-5-6-sol's own wire
+      evidence rejects an explicit temperature value in `default` mode
+      (gpt-5-6-sol--temperature--0.7--default--f4a07a21, HTTP 400) — a
+      model-specific restriction the vendor-level doc does not capture
+      (reasoning-tuned models commonly restrict sampling parameters the base
+      API surface otherwise allows). This default-config-repeatability cell
+      asks whether gpt-5-6-sol's own default sampling is repeatable across
+      five identical requests with no temperature parameter sent at all.
+    expected_source: "docs-claims:temperature/openai"
+  - model: kimi-k3
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Kimi/Moonshot documents no temperature field at all for kimi-k3
+      (absent-from-docs, checked-absence per rule 1b), and Phase 11's own wire
+      evidence independently confirms the field is rejected on the wire too
+      (kimi-k3--temperature--0.7--default--8d339aec, HTTP 400) — a
+      docs-corroborated finding, not a contradiction. This
+      default-config-repeatability cell asks whether kimi-k3's own default
+      sampling is repeatable across five identical requests with no
+      temperature parameter sent at all.
+    expected_source: "docs-claims:temperature/kimi"
+
+# 5 wire-rejection skips (one per Group B model's never-fired real
+# temperature-0 cell) + 1 deferred thinking-mode cross-product skip, covering
+# claude-haiku-4-5's own thinking-on temperature rejection
+# (claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847) — out of the
+# declared Mode scope, not silently forgotten.
+skips:
+  - model: claude-fable-5
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "claude-fable-5--temperature--0.7--default--be62cc19"
+  - model: claude-opus-5
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "claude-opus-5--temperature--0.7--default--65c8c160"
+  - model: claude-sonnet-5
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "claude-sonnet-5--temperature--0.7--default--276ef9f0"
+  - model: gpt-5-6-sol
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "gpt-5-6-sol--temperature--0.7--default--f4a07a21"
+  - model: kimi-k3
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "kimi-k3--temperature--0.7--default--8d339aec"
+  - model: all
+    param: temperature
+    mode: "thinking-on/thinking-off"
+    requirement: BHV-02
+    reason: deferred-thinking-mode-cross-product
+    cited_source: "prereg:Mode scope"
