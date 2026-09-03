@@ -220,3 +220,147 @@ is distinct again: it has zero BHV-06 audit cells of its own, so its `service_ti
 disposition falls back to the presence-row contract state (`accepted-ignored`) rather than any
 response-side finding — a fourth, no-audit-evidence case, not a fifth asymmetric or third-state
 one.
+
+---
+
+## The docs-versus-wire confrontation
+
+**A fresh render, dated.** `python3 scripts/build-docs-vs-wire.py --check` (run 2026-09-03):
+`0 problem(s)` — the file this section cites is current. The same command without `--check`
+prints the full verdict tally rather than just the "## Contradictions" heading's own count:
+
+```
+rows (param x model pairs): 612
+  docs-corroborated: 54
+  docs-contradicted: 79
+  docs-undecidable: 151
+  docs-untested: 324
+  docs-silent: 4
+non-unanimous pairs: 66
+docs-silent claims: 4
+facets awaiting behavioral test: 115
+```
+
+`git status --short -- comparisons/docs-vs-wire.md` reported no diff after this run — the file
+was already at this exact render; this document quotes a dated run, not a static file header.
+
+**Two denominators, stated explicitly.** 79 of the 612 total `(param, model)` pairs are
+contradicted — but 324 of those 612 are `docs-untested` (no wire evidence exists for the pair at
+all), so a rate over all 612 understates how often the wire actually disagreed with the docs
+where the wire had anything to say. Two readings:
+
+- **Over all pairs:** 79/612 = 12.9%.
+- **Over pairs where wire evidence exists** (612 − 324 = 288, i.e. `docs-corroborated` (54) +
+  `docs-contradicted` (79) + `docs-undecidable` (151) + `docs-silent` (4) = 288): 79/288 = 27.4%.
+
+**This document's headline number is 79/288 (27.4%).** The 612-pair denominator counts a large
+mass of pairs (324, more than half the matrix) the sweep never fired at all — a rate over that
+denominator answers "how much of the theoretically-checkable surface is contradicted," a
+different and less actionable question than "of the surface the wire actually spoke to, how
+often did it disagree with the docs." The two readings differ by more than a factor of two, and
+citing one without naming the other is exactly the failure mode this section exists to avoid.
+
+**The shape of the contradictions**, counted directly from `comparisons/docs-vs-wire.md`'s own
+Contradictions table (79 rows): concentration is heaviest at `tool-choice` (6 rows),
+`temperature`/`top-p` (5 rows each), and `service-tier`/`openai-service-tier-values` (5 rows
+each). By maker, the 4 Claude models together account for 28 of the 79 rows (35.4%) and
+`gpt-5-6-sol` alone accounts for 14 (17.7%) — Anthropic and the OpenAI-origin model together
+carry over half the sweep's contradictions (42/79, 53.2%).
+
+One family lands its contradictions exactly at the makers whose documentation never claimed the
+concept at all: `service-tier` and `openai-service-tier-values` contradict at exactly the same 5
+models — `kimi-k3`, `deepseek-v4`, `glm-5.3`, `qwen3.8-max`, `qwen3.8-flash` — the five
+non-OpenAI-family-adjacent compat vendors whose own documentation is silent on a service-tier
+concept altogether (each row's `Quote` column is `—`, i.e. no documented claim exists to
+corroborate or contradict, yet the wire accepted the field, so `docs-claims.yaml`'s own explicit
+absence-of-documentation entry is what the wire evidence contradicts). Link into
+`comparisons/docs-vs-wire.md`'s own listing for every row-level quote, `source_ref`, `probe_id`,
+and HTTP status.
+
+## Support-state distributions
+
+Derived from `probes/classified/contract-sweep.yaml`'s own `state`/`skip_reason` fields across
+all 727 rows (definition: a Python read of every cell's `state` field, tallied by value — 443
+fired cells + 284 declared skips, matching the file's own generated header comment).
+
+**Of the 443 fired cells:** `accepted-unverified` 218 (49.2%), `rejected` 115 (26.0%),
+`accepted-honored` 50 (11.3%), `accepted-ignored` 39 (8.8%), `needs-review` 16 (3.6%),
+`silently-translated` 5 (1.1%). Nearly half the fired surface (218/443) is acceptance testimony
+with no behavioral honor check behind it — exactly the gap ADR-0050's D-02 promotion bar exists
+to name: `accepted-unverified` is what a parameter looks like before anyone checks whether
+acceptance means the model actually did what was asked. Only 89 of the 443 fired cells
+(`accepted-honored` 50 + `silently-translated` 5, i.e. the two states where the wire's own
+response resolves the question one way or the other without further testing, plus the
+39-`accepted-ignored` cells that were themselves later re-tested behaviorally for the promoted
+keys) approach a settled answer without a dedicated behavioral probe.
+
+**Of the 284 declared skips**, only 46 (`no-request-field-for-vendor`) are the "never grammatical
+for this maker" case this document uses throughout to mean structural absence (e.g. `seed`/`n`
+at the 4 Claude models). The remaining 238 skips are per-mode declarations that do not mean
+"never grammatical" in that sense: 160 `wire-shape-incompatible` (a parameter shaped for one
+wire family, e.g. Gemini's `candidateCount`, correctly never fired against an `openai_compat`
+model), 45 `no-thinking-off-toggle`, 22 `toggle-not-a-request-parameter`, and 11
+`toggle-shape-unknown` (all three about a model's reasoning-toggle surface, not about the
+parameter under test). Conflating any of these with the 46 genuine structural-absence skips would
+overstate how much of the matrix is "not applicable" versus "not fired at this mode for other
+reasons."
+
+## The silent-acceptance hazard
+
+Five `openai-*`-named parameters are accepted-unverified, uniformly, across every one of the 5
+foreign `openai_compat`-family siblings — `grok-4-5`, `kimi-k3`, `deepseek-v4`, `glm-5.3`,
+`qwen3.8-max`, `qwen3.8-flash` — a caller sending one of these to a sibling vendor gets neither an
+error nor a confirmation:
+
+- `openai-verbosity`
+- `openai-prediction` (additionally `rejected` at its own origin, `gpt-5-6-sol` — HTTP 400,
+  `` probe_id:`gpt-5-6-sol--openai-prediction--{"content":"hello","type":"content"}--default--1bd2232f` ``
+  — still uniform among the 5 foreign siblings)
+- `openai-store`
+- `openai-safety-identifier`
+- `openai-prompt-cache-key`
+
+All five are skipped (`no-request-field-for-vendor`) at the 4 Claude models and at
+`gemini-3-1-pro`, so the domain for this finding is the 6 `openai_compat` models (origin +
+5 siblings); the uniformity claim itself is over the 5 siblings.
+
+**The excluded sixth candidate.** `openai-metadata` was checked against the same pattern and
+excluded: `grok-4-5`/`kimi-k3`/`deepseek-v4`/`qwen3.8-max`/`qwen3.8-flash` are
+`accepted-unverified` like the five fields above, and `gpt-5-6-sol` is `rejected` at its own
+origin like `openai-prediction` — but `glm-5.3`'s own cell is `needs-review`
+(`` probe_id:`glm-5.3--openai-metadata--{"probe":"true"}--default--9d1cdbd3` ``), breaking the
+uniformity the other five fields show cleanly. An excluded near-miss is evidence for the claim,
+not a footnote to it: it shows the silent-acceptance pattern is a real, checkable property that
+some fields have and at least one adjacent field does not.
+
+**The reader-facing consequence.** An absent rejection is not evidence of support. A harness
+author who sends `openai-prediction` (or any of its four siblings) to `kimi-k3` and receives a
+200 with no error has learned nothing about whether the field did anything — the same wire shape
+a genuinely-honored field would produce.
+
+## The compat dialect finding
+
+`gpt-5-6-sol` — OpenAI's own model — rejects the shared `openai_compat` family's `max_tokens`
+field outright, the exact field name every sibling vendor in this domain (`grok-4-5`, `kimi-k3`,
+`deepseek-v4`, `glm-5.3`, `qwen3.8-max`, `qwen3.8-flash`) still accepts, because each sibling
+copied OpenAI's own Chat Completions field name when building its own compat surface. Quoted
+directly from `probes/PREREGISTRATION.md:340-344`:
+
+> `gpt-5-6-sol` rejects `max_tokens` outright, unrelated to `openai-reasoning-effort`. Its 400
+> body: `Unsupported parameter: 'max_tokens' is not supported with this model. Use
+> 'max_completion_tokens' instead.` (`param: "max_tokens"` in the error JSON) — the harness's
+> `openai_compat` adapter sends `max_tokens` universally; this model requires the newer
+> `max_completion_tokens` field.
+
+**The caveat, in the prose, not around it.** This fact is NOT visible in any classified row.
+`probes/harness/models.yaml:73` applies a per-model request-field-rename override
+(`max_tokens_field: max_completion_tokens`) BEFORE firing, so every classified `max-tokens` cell
+already shows uniform `accepted-honored` — the override masks the underlying vocabulary split in
+the classified evidence entirely. This is the one claim in this document whose evidence is a harness
+configuration rather than a probe result: `probes/PREREGISTRATION.md:340-344` (the passage
+quoted above, recording the origin model's own rejection before the override existed) and
+`probes/harness/models.yaml:73-79` (the override itself, which is why no fired cell shows the
+split today). No `comparisons/docs-vs-wire.md` row exists for this fact, and citing one would be
+wrong — there is none to cite. Saying so here is what keeps this claim honest: the compat dialect
+this repo's harness now papers over at the wire is still true of the API, and it would resurface
+immediately if the override were ever removed.
