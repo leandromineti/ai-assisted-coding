@@ -2418,3 +2418,92 @@ complete. Task 3 (path-aware classification + rendering) fires nothing
 further. Cumulative Phase-12-only spend across plans 12-02 through 12-05
 is **$0.238010** of the approved $0.32 envelope (read live from the
 ledger, never summed from each plan's own reported delta).
+
+**2026-09-03, plan 12-05 Task 3 — path-aware tier detection, and the
+rendered eight-vendor audit.** No paid call fired by this task.
+
+Added the `tier-audit` design to `scripts/classify-behavioral.py`: a
+path-walking response lookup (`_get_path_value`) that returns a distinct
+sentinel for a missing key versus a present-but-`null` value
+(`_tier_presence` maps this to the closed `present`/`null-valued`/`absent`
+vocabulary), a per-`(wire_family, request_field)` nested-path override
+table (`TIER_NESTED_PATH_OVERRIDES` — `anthropic_messages`/`service_tier`
+-> `usage.service_tier`, `gemini`/`serviceTier` -> `usageMetadata.serviceTier`;
+absent from the table falls back to `detect_echo()`'s own top-level-by-name
+default, correct everywhere else), and the closed five-valued
+`echo_relation` vocabulary (`echoed`/`translated`/`dropped`/`absent`/
+`rejected`). Anthropic's own cells additionally carry
+`response_top_level_present`/`response_top_level_value` — the dual lookup
+this requirement's own asymmetry question needs, scoped to Anthropic
+alone per the plan's own must_haves truth. `cited_cells:` support added:
+`load_behavioral_sets()` reads the new optional top-level key (defaults to
+empty, byte-identical for every pre-existing file that omits it), and
+`build_rows()` resolves each entry directly against `raw_records` by its
+own `cited_probe_id` — never through the `groups`/`expectations_by_key`
+machinery, since a cited entry has no `probes:` entry of its own — failing
+loud (exit 2) when a cited probe_id has no raw record on disk. One
+reduction core (`_reduce_tier_audit_core`) serves BOTH a fired entry
+(`reduce_tier_audit_group`) and a cited one (`reduce_tier_audit_cited`),
+so the two paths can never independently drift apart. 17 new `--selftest`
+fixtures (path-walking hit/miss/null, all five `echo_relation` values, a
+rejection with and without the field named, the Anthropic dual lookup
+confirmed/not-scoped-elsewhere, a resolving and a non-resolving
+`cited_cells` entry, and a `build_rows()` end-to-end fired-plus-cited
+mix) — `python3 scripts/classify-behavioral.py --selftest`: **63 cases
+run, 0 problem(s)** (up from 46).
+
+`scripts/build-behavioral-matrix.py` gained a `tier-audit` `render_section`
+branch that splits its own requirement section (BHV-06, shared by both the
+service-tier audit's `service-tier-audit` param and the D-07 annex's
+`thinking-object`/`reasoning-effort` params) into two subsections by
+`param` — "Service-tier audit" (vendor/model/request value/request field
+path/response field path/response value/response present/echo relation/
+fired-or-audited/probe_ids) plus a one-sentence Anthropic-asymmetry
+verdict naming its probe_id, and "Documentation-drift annex" (vendor/
+model/param/request value/echo relation/registry assumption/expected
+citation/probe_ids) — rather than one shared table. 2 new `--selftest`
+fixtures — `python3 scripts/build-behavioral-matrix.py --selftest`:
+**18 cases run, 0 problem(s)** (up from 16).
+
+Regenerated both artifacts: `probes/classified/behavioral.yaml` now
+carries **83 cells** (9 control + 12 repeats + 8 seed-pairs + 10
+single-stop + 7 single-candidates + 10 single-logprobs + **27 tier-audit**
+— 23 service-tier-audit [17 fired + 6 audited-by-citation] + 4 annex) and
+**27 declared skips** (26 pre-existing + 1 new: the deferred Qwen
+mutual-exclusion probe); `comparisons/behavioral.md` renders a new
+`## BHV-06 (27 cells)` section with its own two subsections, alongside
+the six pre-existing sections unchanged.
+
+**Final per-vendor tier-audit result** (read directly from
+`probes/classified/behavioral.yaml`):
+
+| Vendor | Documented? | Result |
+|---|---|---|
+| anthropic | yes | asymmetry **CONFIRMED** (`usage.service_tier` present, top-level `service_tier` absent, every non-trap cell); D-15 trap **rejected**, field named |
+| openai | yes | `fast`→`priority` rename confirmed; `scale` unexpectedly **rejected** live (drift: the docs-claims.yaml quote's own 6-value list no longer matches the live 5-value error message) |
+| xai | yes (2 values) | both cited values echoed; omission resolves to `default` |
+| gemini | yes (new territory) | all 4 enum values echoed at `usageMetadata.serviceTier`; omission resolves to `standard`; a SECOND request-top-level/response-nested asymmetry discovered (not previously recorded on the claim) |
+| dseek, kimi, zai | no (absent-from-docs) | documented absence **CONFIRMED** — omission cell shows no tier field at any of the three |
+| qwen | no (response-only `null` per docs) | omission cell shows the field genuinely absent (not the documented fixed-null shape) on this non-streaming call |
+
+Verification, all read from the actual runs, none assumed:
+- `python3 scripts/classify-behavioral.py --selftest`: **63 cases run, 0 problem(s)**.
+- `python3 scripts/build-behavioral-matrix.py --selftest`: **18 cases run, 0 problem(s)**.
+- `python3 scripts/classify-behavioral.py` / `python3 scripts/build-behavioral-matrix.py`: 83 cells (27 tier-audit: 23 declared in `service-tier-audit.yaml` + 4 in `docs-drift-annex.yaml`), 27 skips.
+- `python3 scripts/classify-behavioral.py --check`: `0 problem(s)`.
+- `python3 scripts/build-behavioral-matrix.py --check`: `0 problem(s)`.
+- `python3 scripts/classify-probes.py --check`: `0 problem(s)` — the contract pipeline stays byte-stable.
+- `git diff --stat probes/classified/contract-sweep.yaml comparisons/probes.md scripts/classify-probes.py`: empty.
+- `python3 probes/audit-evidence.py --check`: `0 problem(s)` over the extended evidence base.
+- `python3 probes/check-docs-claims.py --check`: `0 problem(s)`.
+- `python3 scripts/check-taxonomy.py --check`: `133 files checked, 0 problem(s)`.
+- Idempotency: captured both generated files before a second regeneration pass, re-ran both generators, `diff`'d — no differences.
+- `python3 probes/harness/ledger.py --totals`: global **$0.309622** (unchanged — no paid call this task). Phase-12-only spend **$0.238010** of the approved $0.32 envelope, remaining headroom **$0.081990**.
+
+BHV-06 is answered on the wire at every vendor with request and response
+recorded as separately-located facts, the Anthropic asymmetry has a live
+CONFIRMED verdict, and the D-07 drift annex's three fields (Gemini
+`serviceTier` in Task 1, DeepSeek `thinking` and Qwen `reasoning_effort`
+here) are all confronted on the wire without touching `probes/
+inventory.yaml`. Plan 12-05 is complete; no further paid call is planned
+by this plan.

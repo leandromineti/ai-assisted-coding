@@ -102,10 +102,65 @@ REQUIREMENTS = frozenset({
 # candidate_count`/`detect_logprobs`) rather than reimplementing them
 # (D-11 key_link: one detector per fact across the contract and behavioral
 # pipelines).
+#
+# 12-05 adds `tier-audit` (BHV-06 + the D-07 drift annex): a single fired OR
+# CITED entry, path-aware — the contract classifier's own `detect_echo()`
+# reads a single top-level response key, which is why every Anthropic
+# `service-tier` cell landed in the silent-acceptance hazard class in Phase
+# 11 (docstring precedent: `_get_field_value` in scripts/classify-probes.py
+# claims "no wire family nests service_tier", a claim this very design
+# exists to confront and, for Anthropic and Gemini, refute). `tier-audit`
+# walks a declared candidate response PATH (not just a top-level key name)
+# and records a distinct sentinel for "missing" vs. "present but null" —
+# `response_present` is one of `present`/`null-valued`/`absent`, never
+# conflated. Reused unmodified for the D-07 annex's two non-service-tier
+# fields (DeepSeek's `thinking` object, Qwen's `reasoning_effort`), whose
+# own questions have no known response-side echo location at all — answered
+# through the SAME closed `echo_relation` vocabulary's `dropped`/`rejected`
+# values rather than inventing a second design (the plan's own "single-
+# candidates-style acceptance" framing, expressed without a second DESIGNS
+# entry).
 DESIGNS = frozenset({
     "control", "repeats", "seed-pairs",
     "single-stop", "single-candidates", "single-logprobs",
+    "tier-audit",
 })
+
+# `tier-audit`'s own closed `echo_relation` vocabulary (12-05): `echoed`
+# (response value equals request value), `translated` (a different value
+# came back), `dropped` (the request carried a value and no response field
+# exists to confirm it), `absent` (neither side carried one), `rejected`
+# (the request was refused).
+ECHO_RELATIONS = frozenset({"echoed", "translated", "dropped", "absent", "rejected"})
+
+# `tier-audit`'s own closed `response_present` vocabulary (12-05): a missing
+# key and a present-but-null value are NEVER conflated — the entire point of
+# the path-aware lookup this design adds over the contract classifier's own
+# top-level-only `_get_field_value()`.
+RESPONSE_PRESENCE_VALUES = frozenset({"present", "null-valued", "absent"})
+
+# Per-(wire_family, request_field) nested response-path override (12-05).
+# Absent from this table means "look up `request_field` at the response TOP
+# LEVEL" — `detect_echo()`'s own generic default, correct for every row this
+# design serves except the two known request-top-level/response-nested
+# asymmetries this plan's own BHV-06 audit exists to confront: Anthropic's
+# documented `usage.service_tier` (docs-claims.yaml's amended
+# `service-tier`/anthropic claim) and Gemini's own `usageMetadata.serviceTier`
+# (discovered while resolving this plan's own Gemini request-placement
+# question — the SAME shape of asymmetry, on the response side this time).
+TIER_NESTED_PATH_OVERRIDES: dict[tuple[str, str], tuple[str, ...]] = {
+    ("anthropic_messages", "service_tier"): ("usage", "service_tier"),
+    ("gemini", "serviceTier"): ("usageMetadata", "serviceTier"),
+}
+
+# Anthropic's own literal response-side field name a caller MIRRORING the
+# request shape would check (and find nothing) — always `service_tier`
+# regardless of `request_field`, since this asymmetry is specific to that
+# one field name, not parametrized by whatever field a given cell happens
+# to test (12-05's own dual-lookup requirement is scoped to Anthropic only).
+ANTHROPIC_TOP_LEVEL_MIRROR_FIELD = "service_tier"
+
+_TIER_MISSING = object()
 
 # Closed vocabulary for `single-stop`'s own two judgement fields (12-04).
 # `truncation_verdict` is derived from the returned TEXT alone (never the
@@ -149,6 +204,11 @@ SKIP_REASONS: frozenset[str] = frozenset({
     "wire-rejects-gemini-candidate-count",
     "no-request-side-field-for-vendor",
     "already-settled-logprobs-honored",
+    # 12-05: the documented Qwen reasoning_effort/thinking_budget mutual
+    # exclusion is a cheap, genuinely falsifiable claim, but firing it falls
+    # outside this plan's preregistered envelope/cell list — declared rather
+    # than silently dropped, a candidate for a later phase.
+    "deferred-out-of-envelope",
 })
 
 
@@ -247,17 +307,24 @@ def resolve_citation(
     _fail(2, f"expected_source/cited_source citation has an unrecognized prefix (expected docs-claims:/phase11:/prereg:): {citation!r}")
 
 
-def load_behavioral_sets(sets_dir: Path = BEHAVIORAL_SETS_DIR) -> tuple[list[dict], list[dict], list[dict], list[str]]:
+def load_behavioral_sets(
+    sets_dir: Path = BEHAVIORAL_SETS_DIR,
+) -> tuple[list[dict], list[dict], list[dict], list[dict], list[str]]:
     """Load every probes/sets/behavioral/*.yaml file. Returns (all_probes,
-    all_expectations, all_skips, checked_dates). Fails loud (exit 2) when a
-    file is missing its required `probes:`/`expectations:`/`skips:` top-level
-    keys, or when the directory has no *.yaml files at all."""
+    all_expectations, all_skips, all_cited_cells, checked_dates). Fails loud
+    (exit 2) when a file is missing its required `probes:`/`expectations:`/
+    `skips:` top-level keys, or when the directory has no *.yaml files at
+    all. `cited_cells:` (12-05, a new top-level key) is OPTIONAL and defaults
+    to an empty list when absent — every file predating this plan omits it,
+    and that must stay a no-op — but a PRESENT `cited_cells:` key must still
+    be a list, same fail-loud discipline as the three required keys."""
     files = sorted(Path(sets_dir).glob("*.yaml")) if Path(sets_dir).is_dir() else []
     if not files:
         _fail(2, f"no probes/sets/behavioral/*.yaml files found in {sets_dir}")
     all_probes: list[dict] = []
     all_expectations: list[dict] = []
     all_skips: list[dict] = []
+    all_cited_cells: list[dict] = []
     checked_dates: list[str] = []
     for f in files:
         try:
@@ -276,11 +343,14 @@ def load_behavioral_sets(sets_dir: Path = BEHAVIORAL_SETS_DIR) -> tuple[list[dic
             _fail(2, f"{f}: `skips:` must be a list")
         if not isinstance(data.get("expectations"), list):
             _fail(2, f"{f}: `expectations:` must be a list")
+        if "cited_cells" in data and not isinstance(data["cited_cells"], list):
+            _fail(2, f"{f}: `cited_cells:` must be a list")
         checked_dates.append(data.get("checked"))
         all_probes.extend(data["probes"])
         all_expectations.extend(data["expectations"])
         all_skips.extend(data["skips"])
-    return all_probes, all_expectations, all_skips, checked_dates
+        all_cited_cells.extend(data.get("cited_cells") or [])
+    return all_probes, all_expectations, all_skips, all_cited_cells, checked_dates
 
 
 def group_key(entry: dict) -> tuple:
@@ -301,6 +371,15 @@ def compute_behavioral_probe_id(entry: dict, models: dict[str, dict]) -> str:
     extra_params = entry.get("extra_params") or {}
     request_body = adapter.build_request(model["api_model_id"], prompt, max_tokens, extra_params)
     request_body = harness_runner.apply_max_tokens_field_override(request_body, model)
+    # 12-05: mirrors runner.py's own build_entry_request() step-for-step —
+    # a declared `top_level_params` mapping (Gemini's own service-tier
+    # cells, the only entries in this plan that carry it) is merged at the
+    # top level AFTER the max-tokens override and BEFORE apply_omit(), or
+    # this function's recomputed probe_id would silently diverge from what
+    # the harness actually fired.
+    top_level_params = entry.get("top_level_params") or {}
+    if top_level_params:
+        request_body = {**request_body, **top_level_params}
     request_body = harness_runner.apply_omit(request_body, entry.get("omit"))
     return harness_runner.probe_id(
         entry["model"], entry["param"], entry["value"], entry["mode"], request_body,
@@ -748,6 +827,196 @@ def reduce_single_logprobs_group(
     }
 
 
+def _get_path_value(response_body: dict, path: tuple[str, ...]):
+    """Walk a declared key PATH through a response body, one segment at a
+    time. Returns the sentinel `_TIER_MISSING` the instant any segment is
+    absent or the current value is not a mapping -- distinguishing a
+    genuinely MISSING key from a key present with an explicit `null` value,
+    which a bare `.get(path, None)` chain could never tell apart (12-05's
+    own must_haves truth: "a response carrying no tier field at all is
+    recorded as absent, distinguished from a tier field present with a null
+    value")."""
+    cur = response_body
+    for seg in path:
+        if not isinstance(cur, dict) or seg not in cur:
+            return _TIER_MISSING
+        cur = cur[seg]
+    return cur
+
+
+def _tier_presence(value) -> str:
+    """The three-valued `response_present` vocabulary this design's rows
+    carry: `absent` (the sentinel from `_get_path_value` above), `null-valued`
+    (the key exists, its value is Python `None`/YAML/JSON `null`), or
+    `present` (any other value, including an empty string or `0`)."""
+    if value is _TIER_MISSING:
+        return "absent"
+    if value is None:
+        return "null-valued"
+    return "present"
+
+
+def _tier_error_names_field(response_body: dict, field_name: str | None) -> bool | None:
+    """Whether a rejected request's own returned error body mentions the
+    field name being tested, read as a case-insensitive substring search
+    over the serialized body -- the mechanical reading of D-15's own trap
+    question ("whether the rejection names the field is recorded from the
+    returned error body"). `None` (not a boolean) when there is no field
+    name to search for at all (should not occur for a real cell, kept as an
+    honest degrade rather than a crash)."""
+    if not field_name:
+        return None
+    try:
+        text = json.dumps(response_body)
+    except (TypeError, ValueError):
+        return False
+    return field_name.lower() in text.lower()
+
+
+def _reduce_tier_audit_core(
+    *, response_body: dict, status: int | None, terminal: str | None, wire_family: str,
+    request_field: str | None, request_value,
+) -> dict:
+    """The shared tier-audit reduction core (12-05) -- given a response body
+    plus its status/terminal and the declared request field/value, computes
+    every `tier-audit` row field. Called identically by a FIRED entry
+    (`reduce_tier_audit_group`, below) and a CITED entry
+    (`reduce_tier_audit_cited`, below) reading an existing raw record
+    directly -- one reduction, two ways to reach it, so a fired and an
+    audited-by-citation row are never scored by two independently-drifting
+    code paths."""
+    omitted = request_value is None
+    rejected = terminal != "verdict" or status != 200
+
+    if rejected:
+        return {
+            "request_field_path": request_field,
+            "request_value": request_value,
+            "response_field_path": None,
+            "response_value": None,
+            "response_present": "absent",
+            "echo_relation": "rejected",
+            "rejection_names_field": _tier_error_names_field(response_body, request_field),
+            "response_top_level_present": None,
+            "response_top_level_value": None,
+            "note": None,
+        }
+
+    path = TIER_NESTED_PATH_OVERRIDES.get((wire_family, request_field), (request_field,)) if request_field else (request_field,)
+    value = _get_path_value(response_body, path)
+    presence = _tier_presence(value)
+    response_value = value if presence == "present" else None
+
+    if omitted:
+        # Neither side carried a value UNLESS the vendor injected a resolved
+        # default despite no request-side field at all -- distinct from a
+        # request-carried value with no response confirmation ("dropped"
+        # below), since there was nothing here TO drop.
+        echo_relation = "absent" if presence == "absent" else "translated"
+    elif presence in ("absent", "null-valued"):
+        # The request carried a value; nothing confirms it landed (a null
+        # value is treated the same as absent for echo purposes -- the
+        # DISTINCTION between the two lives in `response_present` itself,
+        # never collapsed here).
+        echo_relation = "dropped"
+    elif str(response_value) == str(request_value):
+        echo_relation = "echoed"
+    else:
+        echo_relation = "translated"
+
+    note = None
+    if omitted and presence == "present":
+        note = (
+            "A tier field appeared in the response despite the request omitting it "
+            "entirely -- for a vendor whose documentation states no service-tier "
+            "concept exists, this refutes the documented-absence prior directly; for "
+            "a documented vendor it reveals the field's own default value. Either way "
+            "this is a finding, not decoration."
+        )
+
+    result = {
+        "request_field_path": request_field,
+        "request_value": request_value,
+        "response_field_path": ".".join(path) if request_field else None,
+        "response_value": response_value,
+        "response_present": presence,
+        "echo_relation": echo_relation,
+        "rejection_names_field": None,
+        "response_top_level_present": None,
+        "response_top_level_value": None,
+        "note": note,
+    }
+
+    if wire_family == "anthropic_messages" and request_field:
+        # 12-05's own dual-lookup requirement, scoped to Anthropic alone: a
+        # caller who mirrors the REQUEST shape (checking the response TOP
+        # LEVEL under the same field name) finds nothing, because the real
+        # answer is nested at `usage.service_tier` -- both lookups are
+        # recorded as separate fields so the asymmetry itself is visible in
+        # the classified row, not just asserted in prose.
+        top_value = _get_path_value(response_body, (ANTHROPIC_TOP_LEVEL_MIRROR_FIELD,))
+        top_presence = _tier_presence(top_value)
+        result["response_top_level_present"] = top_presence
+        result["response_top_level_value"] = top_value if top_presence == "present" else None
+
+    return result
+
+
+def reduce_tier_audit_group(
+    entry: dict, models: dict[str, dict], raw_records: dict[str, dict],
+    *, request_field: str | None, request_value,
+) -> dict:
+    """`tier-audit`'s own reduction for a FIRED entry (12-05): joins one
+    non-repeated declared entry via `_join_flat_entry` (shared with the
+    12-04 single-observation designs) and hands its response body/status/
+    terminal to `_reduce_tier_audit_core` above."""
+    joined = _join_flat_entry(entry, models, raw_records)
+    wire_family = models[entry["model"]]["wire_family"]
+    core = _reduce_tier_audit_core(
+        response_body=joined["response_body"], status=joined["status"], terminal=joined["terminal"],
+        wire_family=wire_family, request_field=request_field, request_value=request_value,
+    )
+    core["probe_ids"] = [joined["probe_id"]]
+    core["ancillary"] = {"status": joined["status"], "terminal": joined["terminal"]}
+    core["joined_at"] = [joined["recorded_at"]] if joined["recorded_at"] else []
+    core["audited_from_existing_evidence"] = False
+    core["cited_probe_id"] = None
+    return core
+
+
+def reduce_tier_audit_cited(
+    cited_probe_id: str, wire_family: str, raw_records: dict[str, dict],
+    *, request_field: str | None, request_value,
+) -> dict:
+    """`tier-audit`'s own reduction for a CITED entry (12-05, D-13's
+    every-vendor audit without re-spending on already-fired values): reads
+    an EXISTING raw record directly by its probe_id -- never re-derived via
+    `compute_behavioral_probe_id`, since a cited entry has no declared
+    `probes:` entry of its own to recompute from. Fails loud (exit 2) when
+    the cited probe_id has no readable raw record -- an audit row with no
+    evidence behind it is worse than an absent row (this plan's own
+    must_haves truth)."""
+    record = raw_records.get(cited_probe_id)
+    if record is None:
+        _fail(2, f"cited_cells entry cites probe_id {cited_probe_id!r}, which has no raw record on disk")
+    terminal = record.get("terminal")
+    attempts = record.get("attempts") or []
+    last = attempts[-1] if attempts else {}
+    status = last.get("status")
+    response_body = last.get("response_body_raw") or {}
+    recorded_at = record.get("recorded_at")
+    core = _reduce_tier_audit_core(
+        response_body=response_body, status=status, terminal=terminal,
+        wire_family=wire_family, request_field=request_field, request_value=request_value,
+    )
+    core["probe_ids"] = [cited_probe_id]
+    core["ancillary"] = {"status": status, "terminal": terminal}
+    core["joined_at"] = [recorded_at] if recorded_at else []
+    core["audited_from_existing_evidence"] = True
+    core["cited_probe_id"] = cited_probe_id
+    return core
+
+
 def build_rows(
     probes: list[dict],
     expectations: list[dict],
@@ -755,12 +1024,18 @@ def build_rows(
     models: dict[str, dict],
     raw_records: dict[str, dict],
     *,
+    cited_cells: list[dict] = (),
     docs_claims_index: set[tuple[str, str]],
     contract_probe_ids: set[str],
     prereg_text: str,
 ) -> tuple[list[dict], list[dict], str | None]:
     """The full group + match-to-expectation + citation-resolve + reduce
-    pipeline. Returns (cells, skip_rows, evidence_through)."""
+    pipeline. Returns (cells, skip_rows, evidence_through). `cited_cells`
+    (12-05, default empty — every pre-existing call site omits it and gets
+    byte-identical behavior) are audit rows with NO matching `probes:` entry
+    at all — resolved directly against `raw_records` by their own
+    `cited_probe_id`, never through the `groups`/`expectations_by_key`
+    machinery below, which exists only for entries this file itself fired."""
     groups: dict[tuple, list[dict]] = {}
     for entry in probes:
         groups.setdefault(group_key(entry), []).append(entry)
@@ -1008,6 +1283,48 @@ def build_rows(
             })
             continue
 
+        if design == "tier-audit":
+            if len(entries) != 1:
+                _fail(2, f"group {key!r}: tier-audit expects exactly 1 fired entry, got {len(entries)}")
+            request_field = expectation.get("request_field")
+            request_value = expectation.get("request_value")
+            reduced = reduce_tier_audit_group(
+                entries[0], models, raw_records, request_field=request_field, request_value=request_value,
+            )
+            all_joined_at.extend(reduced.pop("joined_at"))
+            if reduced["echo_relation"] not in ECHO_RELATIONS:
+                _fail(2, f"group {key!r}: echo_relation {reduced['echo_relation']!r} outside {sorted(ECHO_RELATIONS)}")
+            if reduced["response_present"] not in RESPONSE_PRESENCE_VALUES:
+                _fail(2, f"group {key!r}: response_present {reduced['response_present']!r} outside {sorted(RESPONSE_PRESENCE_VALUES)}")
+            note = reduced["note"] or expectation.get("registry_note")
+            cells.append({
+                "cell_id": f"{model}--{param}--{value}--{mode}",
+                "requirement": requirement,
+                "design": design,
+                "model": model,
+                "vendor": models[model]["vendor"],
+                "mode": mode,
+                "param": param,
+                "value": value,
+                "request_field_path": reduced["request_field_path"],
+                "request_value": reduced["request_value"],
+                "response_field_path": reduced["response_field_path"],
+                "response_value": reduced["response_value"],
+                "response_present": reduced["response_present"],
+                "echo_relation": reduced["echo_relation"],
+                "rejection_names_field": reduced["rejection_names_field"],
+                "response_top_level_present": reduced["response_top_level_present"],
+                "response_top_level_value": reduced["response_top_level_value"],
+                "audited_from_existing_evidence": reduced["audited_from_existing_evidence"],
+                "cited_probe_id": reduced["cited_probe_id"],
+                "expected": expected,
+                "expected_source": expected_source,
+                "probe_ids": reduced["probe_ids"],
+                "ancillary": reduced["ancillary"],
+                "note": note,
+            })
+            continue
+
         declared_repeats = expectation.get("repeats")
         if not isinstance(declared_repeats, int) or declared_repeats < 2:
             _fail(2, f"group {key!r}: expectation `repeats` must be an int >= 2, got {declared_repeats!r}")
@@ -1042,6 +1359,77 @@ def build_rows(
             "probe_ids": reduced["probe_ids"],
             "ancillary": reduced["ancillary"],
             "note": None,
+        })
+
+    # `cited_cells:` (12-05, D-13's every-vendor audit without re-spending on
+    # already-fired values): each entry names an EXISTING raw record rather
+    # than a declared `probes:` group, so it never enters `groups`/
+    # `expectations_by_key` above — its own citation/requirement/design
+    # validation and reduction happen here instead, using the SAME
+    # `_reduce_tier_audit_core` reduction a fired tier-audit row uses.
+    for cc in cited_cells:
+        cc_model = cc.get("model")
+        cc_param = cc.get("param")
+        cc_value = cc.get("value")
+        cc_mode = cc.get("mode")
+        cc_requirement = cc.get("requirement")
+        cc_design = cc.get("design")
+        if cc_model not in models:
+            _fail(2, f"cited_cells entry: unknown model slug {cc_model!r}")
+        if cc_requirement not in REQUIREMENTS:
+            _fail(2, f"cited_cells entry: requirement {cc_requirement!r} is outside the closed vocabulary {sorted(REQUIREMENTS)}")
+        if cc_design not in DESIGNS:
+            _fail(2, f"cited_cells entry: design {cc_design!r} is outside the closed vocabulary {sorted(DESIGNS)}")
+        if cc_design != "tier-audit":
+            _fail(2, f"cited_cells entry: design {cc_design!r} is not supported for a cited cell (only 'tier-audit' reads existing evidence today)")
+        cc_expected_source = cc.get("expected_source")
+        if not cc_expected_source:
+            _fail(2, f"cited_cells entry for model={cc_model!r} value={cc_value!r}: missing required `expected_source`")
+        resolve_citation(
+            cc_expected_source, docs_claims_index=docs_claims_index, contract_probe_ids=contract_probe_ids,
+            prereg_text=prereg_text, allow_prereg=False,
+        )
+        cc_expected = cc.get("expected")
+        if not cc_expected:
+            _fail(2, f"cited_cells entry for model={cc_model!r} value={cc_value!r}: missing required `expected`")
+        cc_cited_probe_id = cc.get("cited_probe_id")
+        if not cc_cited_probe_id:
+            _fail(2, f"cited_cells entry for model={cc_model!r} value={cc_value!r}: missing required `cited_probe_id`")
+        cc_wire_family = models[cc_model]["wire_family"]
+        reduced = reduce_tier_audit_cited(
+            cc_cited_probe_id, cc_wire_family, raw_records,
+            request_field=cc.get("request_field"), request_value=cc.get("request_value"),
+        )
+        all_joined_at.extend(reduced.pop("joined_at"))
+        if reduced["echo_relation"] not in ECHO_RELATIONS:
+            _fail(2, f"cited_cells entry {cc_cited_probe_id!r}: echo_relation {reduced['echo_relation']!r} outside {sorted(ECHO_RELATIONS)}")
+        if reduced["response_present"] not in RESPONSE_PRESENCE_VALUES:
+            _fail(2, f"cited_cells entry {cc_cited_probe_id!r}: response_present {reduced['response_present']!r} outside {sorted(RESPONSE_PRESENCE_VALUES)}")
+        cells.append({
+            "cell_id": f"{cc_model}--{cc_param}--{cc_value}--{cc_mode}",
+            "requirement": cc_requirement,
+            "design": cc_design,
+            "model": cc_model,
+            "vendor": models[cc_model]["vendor"],
+            "mode": cc_mode,
+            "param": cc_param,
+            "value": cc_value,
+            "request_field_path": reduced["request_field_path"],
+            "request_value": reduced["request_value"],
+            "response_field_path": reduced["response_field_path"],
+            "response_value": reduced["response_value"],
+            "response_present": reduced["response_present"],
+            "echo_relation": reduced["echo_relation"],
+            "rejection_names_field": reduced["rejection_names_field"],
+            "response_top_level_present": reduced["response_top_level_present"],
+            "response_top_level_value": reduced["response_top_level_value"],
+            "audited_from_existing_evidence": reduced["audited_from_existing_evidence"],
+            "cited_probe_id": reduced["cited_probe_id"],
+            "expected": cc_expected,
+            "expected_source": cc_expected_source,
+            "probe_ids": reduced["probe_ids"],
+            "ancillary": reduced["ancillary"],
+            "note": reduced["note"],
         })
 
     def sort_key(c: dict) -> tuple:
@@ -1118,13 +1506,14 @@ def regenerate(raw_dir: Path = DEFAULT_RAW_DIR, sets_dir: Path = BEHAVIORAL_SETS
     comparator call, so the two can never independently drift apart."""
     models = load_models()
     raw_records = classify_probes.load_raw_records(raw_dir)
-    probes, expectations, skips, checked_dates = load_behavioral_sets(sets_dir)
+    probes, expectations, skips, cited_cells, checked_dates = load_behavioral_sets(sets_dir)
     docs_claims_index = load_docs_claims_index()
     contract_probe_ids = load_contract_probe_ids()
     prereg_text = load_prereg_text()
 
     cells, skip_rows, evidence_through = build_rows(
         probes, expectations, skips, models, raw_records,
+        cited_cells=cited_cells,
         docs_claims_index=docs_claims_index,
         contract_probe_ids=contract_probe_ids,
         prereg_text=prereg_text,
@@ -1137,12 +1526,13 @@ def regenerate(raw_dir: Path = DEFAULT_RAW_DIR, sets_dir: Path = BEHAVIORAL_SETS
 def print_summary(cells: list[dict], skips: list[dict]) -> None:
     """Tallies the primary judgement field per row -- `verdict` for the
     rate-based designs (control/repeats/seed-pairs), `truncation_verdict`
-    for single-stop, `state` for single-candidates/single-logprobs (12-04:
-    none of the three single-observation designs carry a `verdict` key at
-    all, so a bare `c["verdict"]` KeyErrors on them)."""
+    for single-stop, `state` for single-candidates/single-logprobs, `echo_relation`
+    for tier-audit (12-05: this design carries neither a `verdict` nor a
+    `state` key — a bare `c["verdict"]` KeyErrors on it, same reason 12-04's
+    own three single-observation designs needed this same fallback chain)."""
     tally: dict[str, int] = {}
     for c in cells:
-        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state")
+        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state") or c.get("echo_relation")
         tally[key] = tally.get(key, 0) + 1
     print(f"behavioral cells: {len(cells)}")
     print(f"declared skips: {len(skips)}")
@@ -1880,6 +2270,259 @@ def selftest() -> tuple[int, int]:
     if reduced["logprobs_present"] or reduced["logprobs_token_entries"] != 0 or reduced["logprobs_alternatives_honored"]:
         problems += 1
         print(f"FAIL reduce_single_logprobs_group(empty payload): got {reduced!r}", file=sys.stderr)
+
+    # ---------------------------------------------------------------------
+    # 12-05's `tier-audit` design — path-aware response lookup, the five-
+    # valued `echo_relation` vocabulary, the Anthropic dual-lookup asymmetry
+    # fields, and `cited_cells:` support (fired vs. audited-from-evidence).
+    # ---------------------------------------------------------------------
+
+    # --- _get_path_value / _tier_presence: nested-path hit ---
+    cases += 1
+    if _get_path_value({"usage": {"service_tier": "priority"}}, ("usage", "service_tier")) != "priority":
+        problems += 1
+        print("FAIL _get_path_value: nested-path hit did not return the value", file=sys.stderr)
+
+    # --- _get_path_value / _tier_presence: top-level hit ---
+    cases += 1
+    if _get_path_value({"service_tier": "auto"}, ("service_tier",)) != "auto":
+        problems += 1
+        print("FAIL _get_path_value: top-level hit did not return the value", file=sys.stderr)
+
+    # --- _get_path_value / _tier_presence: absent path -> the distinct
+    #     _TIER_MISSING sentinel, never confused with a present None ---
+    cases += 1
+    missing = _get_path_value({"usage": {}}, ("usage", "service_tier"))
+    if missing is not _TIER_MISSING or _tier_presence(missing) != "absent":
+        problems += 1
+        print(f"FAIL _get_path_value/_tier_presence(absent path): got {missing!r}", file=sys.stderr)
+
+    # --- _get_path_value / _tier_presence: present-but-null, distinct from
+    #     absent (the plan's own must_haves truth) ---
+    cases += 1
+    null_valued = _get_path_value({"usage": {"service_tier": None}}, ("usage", "service_tier"))
+    if null_valued is not None or _tier_presence(null_valued) != "null-valued":
+        problems += 1
+        print(f"FAIL _get_path_value/_tier_presence(null-valued): got {null_valued!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="echoed" (response value
+    #     equals the request value) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"service_tier": "auto"}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value="auto",
+    )
+    if core["echo_relation"] != "echoed" or core["response_present"] != "present":
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(echoed): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="translated" (a DIFFERENT
+    #     value came back — OpenAI's own documented fast->priority rename) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"service_tier": "priority"}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value="fast",
+    )
+    if core["echo_relation"] != "translated":
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(translated): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="dropped" (the request
+    #     carried a value, no response field exists to confirm it) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value="auto",
+    )
+    if core["echo_relation"] != "dropped" or core["response_present"] != "absent":
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(dropped): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="absent" (neither side
+    #     carried a value — the omission-baseline cell at an undocumented
+    #     vendor whose docs are borne out) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value=None,
+    )
+    if core["echo_relation"] != "absent" or core["note"] is not None:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(absent): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: an omission-baseline cell whose response
+    #     DOES carry a resolved value -- a finding, carries a note (the
+    #     plan's own must_haves truth: "none of them records a value ...
+    #     without a note explaining that ... is itself a finding") ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"service_tier": "standard"}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value=None,
+    )
+    if core["echo_relation"] != "translated" or not core["note"]:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(omitted-but-present): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="rejected", WITH the field
+    #     named in the error body (D-15's own trap question) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"error": {"message": "service_tier: invalid value 'standard'"}},
+        status=400, terminal="verdict", wire_family="anthropic_messages",
+        request_field="service_tier", request_value="standard",
+    )
+    if core["echo_relation"] != "rejected" or core["rejection_names_field"] is not True:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(rejected, field named): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: echo_relation="rejected", WITHOUT the
+    #     field named in the error body ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"error": {"message": "invalid request"}},
+        status=400, terminal="verdict", wire_family="anthropic_messages",
+        request_field="service_tier", request_value="standard",
+    )
+    if core["echo_relation"] != "rejected" or core["rejection_names_field"] is not False:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(rejected, field not named): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: the Anthropic dual lookup — a value
+    #     present at the NESTED usage.service_tier location and absent at
+    #     the response TOP LEVEL is the documented asymmetry CONFIRMED,
+    #     recorded as two separate fields (never collapsed into one) ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"usage": {"service_tier": "priority"}}, status=200, terminal="verdict",
+        wire_family="anthropic_messages", request_field="service_tier", request_value="auto",
+    )
+    if (
+        core["response_present"] != "present" or core["response_field_path"] != "usage.service_tier"
+        or core["response_top_level_present"] != "absent"
+    ):
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(anthropic asymmetry): got {core!r}", file=sys.stderr)
+
+    # --- _reduce_tier_audit_core: a non-anthropic wire family carries NO
+    #     top-level dual-lookup fields at all — the plan's own must_haves
+    #     truth scopes the dual lookup to Anthropic specifically ---
+    cases += 1
+    core = _reduce_tier_audit_core(
+        response_body={"service_tier": "auto"}, status=200, terminal="verdict",
+        wire_family="openai_compat", request_field="service_tier", request_value="auto",
+    )
+    if core["response_top_level_present"] is not None or core["response_top_level_value"] is not None:
+        problems += 1
+        print(f"FAIL _reduce_tier_audit_core(non-anthropic, no dual lookup): got {core!r}", file=sys.stderr)
+
+    # --- reduce_tier_audit_cited: a resolving probe_id reads the raw
+    #     record directly, no `probes:` entry required at all ---
+    cases += 1
+    cited_models = {"m7": {"wire_family": "openai_compat", "vendor": "openai", "api_model_id": "m7-api", "_order": 0}}
+    cited_raw = {"m7--service-tier--default--default--aaaa": {
+        "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+        "attempts": [{"status": 200, "response_body_raw": {"service_tier": "default"}}],
+        "usage": {},
+    }}
+    cited_reduced = reduce_tier_audit_cited(
+        "m7--service-tier--default--default--aaaa", "openai_compat", cited_raw,
+        request_field="service_tier", request_value="default",
+    )
+    if (
+        cited_reduced["echo_relation"] != "echoed" or not cited_reduced["audited_from_existing_evidence"]
+        or cited_reduced["cited_probe_id"] != "m7--service-tier--default--default--aaaa"
+    ):
+        problems += 1
+        print(f"FAIL reduce_tier_audit_cited(resolving): got {cited_reduced!r}", file=sys.stderr)
+
+    # --- reduce_tier_audit_cited: a NON-resolving probe_id fails loud —
+    #     an audit row with no readable evidence behind it is worse than an
+    #     absent row (the plan's own must_haves truth) ---
+    cases += 1
+    try:
+        reduce_tier_audit_cited(
+            "does-not-exist--service-tier--default--default--zzzz", "openai_compat", cited_raw,
+            request_field="service_tier", request_value="default",
+        )
+        problems += 1
+        print("FAIL reduce_tier_audit_cited: a non-resolving probe_id was not rejected", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL reduce_tier_audit_cited(non-resolving): expected exit 2, got {e.code}", file=sys.stderr)
+
+    # --- build_rows: design=tier-audit end to end — a fired entry PLUS a
+    #     cited_cells entry citing a probe_id with no matching `probes:`
+    #     entry at all, both landing in the same requirement section ---
+    cases += 1
+    tier_models = {"m8": {"wire_family": "openai_compat", "vendor": "openai", "api_model_id": "m8-api", "_order": 0}}
+    tier_probes = [{
+        "model": "m8", "param": "service-tier-audit", "value": "scale", "mode": "default",
+        "prompt": "x", "max_tokens": 80, "extra_params": {"service_tier": "scale"},
+    }]
+    tier_expectations = [{
+        "model": "m8", "param": "service-tier-audit", "value": "scale", "mode": "default",
+        "requirement": "BHV-06", "design": "tier-audit",
+        "request_field": "service_tier", "request_value": "scale",
+        "expected": "x", "expected_source": "docs-claims:temperature/anthropic",
+    }]
+    tier_pid = compute_behavioral_probe_id(tier_probes[0], tier_models)
+    tier_raw = {
+        tier_pid: {
+            "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+            "attempts": [{"status": 200, "response_body_raw": {"service_tier": "scale"}}],
+            "usage": {},
+        },
+        "m8--service-tier--auto--default--bbbb": {
+            "terminal": "verdict", "recorded_at": "2026-09-03T00:00:00Z",
+            "attempts": [{"status": 200, "response_body_raw": {"service_tier": "auto"}}],
+            "usage": {},
+        },
+    }
+    tier_cited_cells = [{
+        "model": "m8", "param": "service-tier-audit", "value": "auto", "mode": "default",
+        "requirement": "BHV-06", "design": "tier-audit",
+        "request_field": "service_tier", "request_value": "auto",
+        "expected": "x", "expected_source": "docs-claims:temperature/anthropic",
+        "cited_probe_id": "m8--service-tier--auto--default--bbbb",
+    }]
+    try:
+        tier_cells, _tier_skips, _tier_ev = build_rows(
+            tier_probes, tier_expectations, [], tier_models, tier_raw,
+            cited_cells=tier_cited_cells,
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        if len(tier_cells) != 2:
+            problems += 1
+            print(f"FAIL build_rows(tier-audit e2e): expected 2 cells (1 fired + 1 cited), got {len(tier_cells)}", file=sys.stderr)
+        fired_row = next((c for c in tier_cells if not c["audited_from_existing_evidence"]), None)
+        cited_row = next((c for c in tier_cells if c["audited_from_existing_evidence"]), None)
+        if fired_row is None or cited_row is None:
+            problems += 1
+            print(f"FAIL build_rows(tier-audit e2e): expected one fired and one audited row, got {tier_cells!r}", file=sys.stderr)
+        elif cited_row["cited_probe_id"] != "m8--service-tier--auto--default--bbbb":
+            problems += 1
+            print(f"FAIL build_rows(tier-audit e2e): cited row's cited_probe_id wrong, got {cited_row!r}", file=sys.stderr)
+    except SystemExit as e:
+        problems += 1
+        print(f"FAIL build_rows(tier-audit e2e): unexpected SystemExit({e.code})", file=sys.stderr)
+
+    # --- build_rows: a cited_cells entry citing a probe_id with NO raw
+    #     record at all fails loud, end to end through build_rows() too ---
+    cases += 1
+    bad_cited_cells = [dict(tier_cited_cells[0], cited_probe_id="does-not-exist--x--y--default--zzzz")]
+    try:
+        build_rows(
+            tier_probes, tier_expectations, [], tier_models, tier_raw,
+            cited_cells=bad_cited_cells,
+            docs_claims_index=docs_idx, contract_probe_ids=contract_ids, prereg_text=prereg_text,
+        )
+        problems += 1
+        print("FAIL build_rows(tier-audit, non-resolving cited_probe_id): expected SystemExit(2), got a return", file=sys.stderr)
+    except SystemExit as e:
+        if e.code != 2:
+            problems += 1
+            print(f"FAIL build_rows(tier-audit, non-resolving cited_probe_id): expected exit 2, got {e.code}", file=sys.stderr)
 
     return cases, problems
 

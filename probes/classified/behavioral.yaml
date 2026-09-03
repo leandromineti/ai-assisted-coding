@@ -3,10 +3,10 @@
 # probes/raw/*.jsonl — do not edit by hand. Regenerate with
 # `python3 scripts/classify-behavioral.py`.
 #
-# 56 behavioral cell(s), 26 declared skip(s) (82 rows total).
+# 83 behavioral cell(s), 27 declared skip(s) (110 rows total).
 
 checked: 2026-09-03
-evidence_through: '2026-09-03T02:07:27Z'
+evidence_through: '2026-09-03T02:39:35Z'
 cells:
 - cell_id: gpt-5-6-sol--seed--42--default
   requirement: BHV-01
@@ -1972,6 +1972,816 @@ cells:
     status: 200
     terminal: verdict
   note: null
+- cell_id: claude-haiku-4-5--service-tier-audit--auto--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: auto
+  request_field_path: service_tier
+  request_value: auto
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'Anthropic documents `service_tier` (auto/standard_only) as a REQUEST- side top-level field,
+    and separately documents (anthropic-service-tiers source) that "the response `usage` object also includes
+    the service tier assigned to the request" — i.e. the RESPONSE-side answer lives at `usage.service_tier`,
+    nested, not at the response top level. This is the row that settles the asymmetry: expect a value
+    present at `usage.service_tier` and ABSENT at the response top level.'
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-haiku-4-5--service-tier-audit--auto--default--613638b0
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: claude-haiku-4-5--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Anthropic documents `service_tier` as optional. Omitting it entirely is expected to still
+    resolve to SOME assigned tier at `usage.service_tier` (the field's own documented purpose is reporting
+    "the service tier assigned to the request", which happens whether or not the caller specified one)
+    — a present value here is the field's own default, not a documented-absence refutation (Anthropic
+    documents the field; only the four undocumented vendors' omission cells carry that framing).
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-haiku-4-5--service-tier-audit--omitted--default--75f19852
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: claude-haiku-4-5--service-tier-audit--standard_only--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: standard_only
+  request_field_path: service_tier
+  request_value: standard_only
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Anthropic's second documented request value, same nested `usage.service_tier` response location
+    as the `auto` cell above.
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-haiku-4-5--service-tier-audit--standard_only--default--8e0a6451
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: claude-haiku-4-5--service-tier-audit--trap--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-haiku-4-5
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: trap
+  request_field_path: service_tier
+  request_value: standard
+  response_field_path: null
+  response_value: null
+  response_present: absent
+  echo_relation: rejected
+  rejection_names_field: true
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: '`standard` is a RESPONSE-side `usage.service_tier` vocabulary word (anthropic-service-tiers
+    source), never a documented REQUEST value (`auto`/`standard_only` only). Expect HTTP 400 naming the
+    `service_tier` field — D-15''s trap, demonstrating the "caller reads the wrong field" hazard is real.
+    A 200 response would itself be a finding (refutes the documented request enum).'
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--auto--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: auto
+  request_field_path: service_tier
+  request_value: auto
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: gpt-5-6-sol--service-tier--auto--default--edca588c
+  expected: OpenAI documents `service_tier` with 6 request values (auto, default, flex, scale, priority,
+    fast); `auto` is Phase 11's own already-fired cell, classified `silently-translated` (the response's
+    own top-level `service_tier` echoed a DIFFERENT resolved value than the literal request string "auto").
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--service-tier--auto--default--edca588c
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--default--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: default
+  request_field_path: service_tier
+  request_value: default
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: gpt-5-6-sol--openai-service-tier-values--default--default--3a9bd29a
+  expected: OpenAI's documented `default` value, already fired in Phase 11 and classified `accepted-honored`
+    (the response echoed the literal requested value at the top level).
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--openai-service-tier-values--default--default--3a9bd29a
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--fast--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: fast
+  request_field_path: service_tier
+  request_value: fast
+  response_field_path: service_tier
+  response_value: priority
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'OpenAI''s own documented request/response rename: "The response will show `service_tier=priority`
+    regardless of if you specify `service_tier=fast` or `priority`" — expect the request value `fast`
+    to be TRANSLATED to a response value of `priority`, not echoed verbatim.'
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--service-tier-audit--fast--default--d38d4285
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--flex--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: flex
+  request_field_path: service_tier
+  request_value: flex
+  response_field_path: service_tier
+  response_value: flex
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: gpt-5-6-sol--openai-service-tier-values--flex--default--6ec108ca
+  expected: OpenAI's documented `flex` value, already fired in Phase 11 and classified `accepted-honored`.
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--openai-service-tier-values--flex--default--6ec108ca
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: OpenAI documents the default behavior as "auto" when the field is not set — expect the top-level
+    `service_tier` response field to report a resolved value even with no request-side field sent.
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--service-tier-audit--omitted--default--f1a0082e
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: gpt-5-6-sol--service-tier-audit--priority--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: priority
+  request_field_path: service_tier
+  request_value: priority
+  response_field_path: service_tier
+  response_value: priority
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: gpt-5-6-sol--openai-service-tier-values--priority--default--6e1b1fd7
+  expected: OpenAI's documented `priority` value, already fired in Phase 11 and classified `accepted-honored`.
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--openai-service-tier-values--priority--default--6e1b1fd7
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-5-6-sol--service-tier-audit--scale--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-5-6-sol
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: scale
+  request_field_path: service_tier
+  request_value: scale
+  response_field_path: null
+  response_value: null
+  response_present: absent
+  echo_relation: rejected
+  rejection_names_field: true
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'OpenAI documents 6 service_tier values; the contract sweep''s own probe_values enumerated
+    only 4 (flex/priority/auto/default), leaving `scale` genuinely unfired. Expect the top-level `service_tier`
+    response field to report SOME resolved value (documented request/ response asymmetry precedent: `fast`/`priority`
+    both resolve to a response of `priority` per the same page).'
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-5-6-sol--service-tier-audit--scale--default--ae6e1544
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-1-pro--service-tier-audit--flex--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: flex
+  request_field_path: serviceTier
+  request_value: flex
+  response_field_path: usageMetadata.serviceTier
+  response_value: flex
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini contract, `flex` value — this and OpenAI's own `flex` share a name but not necessarily
+    a wire behavior, a genuine cross-vendor comparison point.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-1-pro--service-tier-audit--flex--default--a9f9f805
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-1-pro--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: serviceTier
+  request_value: null
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Gemini documents `serviceTier` as optional, with `unspecified` described as "Default service
+    tier, which is standard." — omitting the field entirely is expected to still resolve to a value at
+    `usageMetadata.serviceTier`, per that same default-resolution language.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-1-pro--service-tier-audit--omitted--default--8b4ac380
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: gemini-3-1-pro--service-tier-audit--priority--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: priority
+  request_field_path: serviceTier
+  request_value: priority
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini contract, `priority` value — shares a name with OpenAI's and xAI's own `priority`
+    values, a genuine cross-vendor comparison point.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-1-pro--service-tier-audit--priority--default--80c5e356
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-1-pro--service-tier-audit--standard--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: standard
+  request_field_path: serviceTier
+  request_value: standard
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini request-top-level/response-nested (`usageMetadata.serviceTier`) contract as the
+    `unspecified` cell above, an explicit non-default value.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-1-pro--service-tier-audit--standard--default--195b4522
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-1-pro--service-tier-audit--unspecified--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-1-pro
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: unspecified
+  request_field_path: serviceTier
+  request_value: unspecified
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Gemini documents a 4-value `ServiceTier` enum (unspecified/standard/ flex/priority) as a REQUEST-top-level
+    field (`GenerateContentRequest`, sibling to `generationConfig`), and separately documents a RESPONSE-
+    side `serviceTier` field nested inside `usageMetadata` — a second request-top-level/response-nested
+    asymmetry structurally identical to Anthropic's own, discovered while resolving this file's own Gemini
+    placement question (this claim did not previously record the response-side location). `unspecified`
+    is documented as resolving to "standard" by default.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-1-pro--service-tier-audit--unspecified--default--eee930a0
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: grok-4-5--service-tier-audit--default--default
+  requirement: BHV-06
+  design: tier-audit
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: service-tier-audit
+  value: default
+  request_field_path: service_tier
+  request_value: default
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: grok-4-5--openai-service-tier-values--default--default--d49043e3
+  expected: xAI documents only 2 values (default, priority) — no "auto". `default` already fired in Phase
+    11 and classified `accepted-honored`.
+  expected_source: docs-claims:openai-service-tier-values/xai
+  probe_ids:
+  - grok-4-5--openai-service-tier-values--default--default--d49043e3
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: grok-4-5--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: xAI documents `service_tier` as an optional field ("Determines scheduling priority and billing")
+    with no stated default value name — whether omitting it still yields a resolved top-level response
+    value is genuinely unasserted by the doc quote itself, read here rather than assumed.
+  expected_source: docs-claims:openai-service-tier-values/xai
+  probe_ids:
+  - grok-4-5--service-tier-audit--omitted--default--4e390329
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: grok-4-5--service-tier-audit--priority--default
+  requirement: BHV-06
+  design: tier-audit
+  model: grok-4-5
+  vendor: xai
+  mode: default
+  param: service-tier-audit
+  value: priority
+  request_field_path: service_tier
+  request_value: priority
+  response_field_path: service_tier
+  response_value: priority
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: true
+  cited_probe_id: grok-4-5--openai-service-tier-values--priority--default--b146d009
+  expected: xAI's documented `priority` value, already fired in Phase 11 and classified `accepted-honored`.
+  expected_source: docs-claims:openai-service-tier-values/xai
+  probe_ids:
+  - grok-4-5--openai-service-tier-values--priority--default--b146d009
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: kimi-k3--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: kimi-k3
+  vendor: kimi
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: null
+  response_present: absent
+  echo_relation: absent
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'Kimi/Moonshot''s docs do not mention `service_tier` under any name (absent-from-docs) — same
+    D-13 rule-1b negative-prior framing as DeepSeek''s own cell above: the predicted result is no tier
+    field in the response, and a present field would be a finding, not an error.'
+  expected_source: docs-claims:service-tier/kimi
+  probe_ids:
+  - kimi-k3--service-tier-audit--omitted--default--43b8c30e
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: deepseek-v4--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: null
+  response_present: absent
+  echo_relation: absent
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: DeepSeek's docs do not mention `service_tier` under any name (absent-from-docs, D-13's rule-1b
+    negative prior) — the audited expectation IS that documented absence, and the predicted result is
+    no tier field anywhere in the response. A tier field appearing here would REFUTE the documented absence
+    directly — a finding, not an error in this audit.
+  expected_source: docs-claims:service-tier/dseek
+  probe_ids:
+  - deepseek-v4--service-tier-audit--omitted--default--82ca9bf4
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: deepseek-v4--thinking-object--disabled--default
+  requirement: BHV-06
+  design: tier-audit
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: thinking-object
+  value: disabled
+  request_field_path: thinking
+  request_value:
+    type: disabled
+  response_field_path: thinking
+  response_value: null
+  response_present: absent
+  echo_relation: dropped
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: DeepSeek's second documented `thinking.type` value — expect acceptance (HTTP 200), `dropped`
+    echo_relation (no known response field echoes it).
+  expected_source: docs-claims:anthropic-thinking-object/dseek
+  probe_ids:
+  - deepseek-v4--thinking-object--disabled--default--383a7620
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: Same registry contradiction as the `enabled` cell above — this is the field's own non-default
+    documented value, the sharper test of whether the toggle actually changes model behavior (checked
+    qualitatively via this record's own `reasoning_content`/usage shape, not asserted as this cell's own
+    echo_relation, which has no dedicated response field to examine either way).
+- cell_id: deepseek-v4--thinking-object--enabled--default
+  requirement: BHV-06
+  design: tier-audit
+  model: deepseek-v4
+  vendor: dseek
+  mode: default
+  param: thinking-object
+  value: enabled
+  request_field_path: thinking
+  request_value:
+    type: enabled
+  response_field_path: thinking
+  response_value: null
+  response_present: absent
+  echo_relation: dropped
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: DeepSeek documents `thinking` (object, nullable) with a `type` sub-field, values enabled/disabled,
+    default `enabled`, scoped to deepseek-v4-pro. `enabled` is the field's own documented default value
+    — expect acceptance (HTTP 200); no known response-side field echoes the resolved mode back, so `dropped`
+    is the expected echo_relation on acceptance.
+  expected_source: docs-claims:anthropic-thinking-object/dseek
+  probe_ids:
+  - deepseek-v4--thinking-object--enabled--default--bfa8e7c7
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: 'Contradicts probes/inventory.yaml''s own axes.thinking.shapes.openai_compat.vendor_overrides.dseek
+    entry ("on": null, "off": null, reason: toggle-not-a-request-parameter) — that entry asserts DeepSeek''s
+    thinking mode has NO request-body field at all, model-id-selected only. DeepSeek''s own docs contradict
+    this directly for deepseek-v4-pro (the tracked model). An HTTP 200 here confirms the documented field
+    exists and is accepted, refuting the registry''s checked-absence assumption; a rejection would instead
+    corroborate the registry against the claim itself.'
+- cell_id: glm-5.3--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: glm-5.3
+  vendor: zai
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: null
+  response_present: absent
+  echo_relation: absent
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'Z.ai''s docs do not mention `service_tier` under any name (absent-from-docs) — same D-13
+    rule-1b negative-prior framing: the predicted result is no tier field in the response, and a present
+    field would be a finding, not an error.'
+  expected_source: docs-claims:service-tier/zai
+  probe_ids:
+  - glm-5.3--service-tier-audit--omitted--default--29873f7a
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: qwen3.8-flash--reasoning-effort--low--default
+  requirement: BHV-06
+  design: tier-audit
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: reasoning-effort
+  value: low
+  request_field_path: reasoning_effort
+  request_value: low
+  response_field_path: reasoning_effort
+  response_value: null
+  response_present: absent
+  echo_relation: dropped
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Qwen3.8 series documents `reasoning_effort` values low/medium/xhigh (default xhigh) — `low`
+    is a genuinely non-default value. No `thinking_budget` sent alongside it (avoiding the documented
+    mutual- exclusion error). Expect acceptance (HTTP 200), `dropped` echo_relation (no known response
+    field echoes the resolved effort level).
+  expected_source: docs-claims:openai-reasoning-effort/qwen
+  probe_ids:
+  - qwen3.8-flash--reasoning-effort--low--default--82045bd6
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: 'Contradicts probes/inventory.yaml''s own axes.thinking.shapes.openai_compat.vendor_overrides.qwen
+    assumption that Qwen''s own thinking-toggle shape is `enable_thinking`/ `thinking_budget` ONLY. Qwen''s
+    own docs document `reasoning_effort` as a REAL, independently-accepted field for the qwen3.8 series
+    (Options: low, medium, xhigh; default xhigh) — additive to, not exclusive with, the enable_thinking/thinking_budget
+    shape. An HTTP 200 here confirms the field is genuinely accepted beyond the registry''s own narrower
+    assumption.'
+- cell_id: qwen3.8-flash--reasoning-effort--medium--default
+  requirement: BHV-06
+  design: tier-audit
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: reasoning-effort
+  value: medium
+  request_field_path: reasoning_effort
+  request_value: medium
+  response_field_path: reasoning_effort
+  response_value: null
+  response_present: absent
+  echo_relation: dropped
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Qwen3.8 series' second non-default `reasoning_effort` value. Expect acceptance (HTTP 200),
+    `dropped` echo_relation.
+  expected_source: docs-claims:openai-reasoning-effort/qwen
+  probe_ids:
+  - qwen3.8-flash--reasoning-effort--medium--default--90cb6e7f
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: Same registry contradiction as the `low` cell above — this is the qwen3.8 series' second non-default
+    documented value.
+- cell_id: qwen3.8-flash--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: qwen3.8-flash
+  vendor: qwen
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: null
+  response_present: absent
+  echo_relation: absent
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Qwen's docs state the literal string `service_tier` appears TWICE but ONLY inside the RESPONSE
+    object schemas, each described as "Currently fixed as `null`" — no REQUEST-body field of this name
+    exists. The audited expectation is that the response field, if present at all, is a fixed null value
+    rather than a resolved tier — distinguished here as `null-valued`, never conflated with a genuinely
+    absent field.
+  expected_source: docs-claims:service-tier/qwen
+  probe_ids:
+  - qwen3.8-flash--service-tier-audit--omitted--default--dea5ae2d
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
 - cell_id: claude-haiku-4-5--behavioral-control--high-entropy--default
   requirement: calibration
   design: control
@@ -2456,6 +3266,13 @@ cells:
     - null
   note: null
 skips:
+- model: qwen3.8-flash
+  param: reasoning-effort
+  mode: default
+  requirement: BHV-06
+  reason: deferred-out-of-envelope
+  cited_probe_id: null
+  cited_source: docs-claims:openai-reasoning-effort/qwen
 - model: claude-fable-5
   param: logprobs
   mode: default

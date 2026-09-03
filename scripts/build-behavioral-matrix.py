@@ -164,6 +164,66 @@ def render_section(req_cells: list[dict]) -> list[str]:
             )
         return lines
 
+    if design == "tier-audit":
+        # 12-05: `tier-audit` rows for BOTH the eight-vendor service-tier
+        # audit (BHV-06's own `service-tier-audit` param) and the D-07
+        # documentation-drift annex (DeepSeek's `thinking-object`, Qwen's
+        # `reasoning-effort` — distinct param values) share one requirement
+        # (BHV-06) and one design, so they land in this SAME call — split
+        # into two rendered subsections by `param` rather than requiring a
+        # second requirement label, matching the plan's own "a service-tier
+        # section ... Render the annex cells in their own section" ask.
+        audit_cells = [c for c in req_cells if c["param"] == "service-tier-audit"]
+        annex_cells = [c for c in req_cells if c["param"] != "service-tier-audit"]
+        lines: list[str] = []
+
+        lines.append(f"### Service-tier audit ({len(audit_cells)} cell{'s' if len(audit_cells) != 1 else ''})")
+        lines.append("")
+        lines.append(
+            "| Vendor | Model | Request Value | Request Field Path | Response Field Path | "
+            "Response Value | Response Present | Echo Relation | Source | probe_ids |"
+        )
+        lines.append("|---|---|---|---|---|---|---|---|---|---|")
+        for c in audit_cells:
+            source = "audited" if c.get("audited_from_existing_evidence") else "fired"
+            request_value = c.get("request_value")
+            request_cell = "omitted" if request_value is None else request_value
+            lines.append(
+                f"| {c['vendor']} | {c['model']} | {request_cell} | {c.get('request_field_path')} | "
+                f"{c.get('response_field_path')} | {c.get('response_value')} | {c.get('response_present')} | "
+                f"{c.get('echo_relation')} | {source} | {len(c['probe_ids'])} |"
+            )
+        lines.append("")
+
+        anthropic_asymmetry_rows = [
+            c for c in audit_cells
+            if c["vendor"] == "anthropic" and c.get("response_top_level_present") is not None
+            and c.get("value") not in ("trap",)
+        ]
+        if anthropic_asymmetry_rows:
+            r = anthropic_asymmetry_rows[0]
+            confirmed = r["response_present"] == "present" and r["response_top_level_present"] == "absent"
+            verdict = "CONFIRMED" if confirmed else "REFUTED"
+            lines.append(
+                f"**Anthropic asymmetry {verdict}:** the nested `{r.get('response_field_path')}` "
+                f"reads `{r.get('response_present')}` while the response top level's own "
+                f"`service_tier` reads `{r.get('response_top_level_present')}` "
+                f"(probe_id `{r['probe_ids'][0]}`)."
+            )
+            lines.append("")
+
+        lines.append(f"### Documentation-drift annex ({len(annex_cells)} cell{'s' if len(annex_cells) != 1 else ''})")
+        lines.append("")
+        lines.append("| Vendor | Model | Param | Request Value | Echo Relation | Registry Assumption | Expected (citation) | probe_ids |")
+        lines.append("|---|---|---|---|---|---|---|---|")
+        for c in annex_cells:
+            expected_cell = f"{c['expected']} ({c['expected_source']})"
+            lines.append(
+                f"| {c['vendor']} | {c['model']} | {c['param']} | {c.get('request_value')} | "
+                f"{c.get('echo_relation')} | {c.get('note') or '—'} | {expected_cell} | {len(c['probe_ids'])} |"
+            )
+        return lines
+
     if design == "single-logprobs":
         lines = ["| Model | Mode | Present | Token Entries | Alternatives Honored | State | "
                   "Settles (phase 11 probe_id) | Expected (citation) | probe_ids |",
@@ -247,13 +307,13 @@ def check_generated_drift(path: Path = CLASSIFIED_PATH) -> tuple[int, int]:
 def print_summary(classified: dict) -> None:
     """Tallies the primary judgement field per row -- `verdict` for the
     rate-based designs, `truncation_verdict` for single-stop, `state` for
-    single-candidates/single-logprobs (12-04: none of the three
-    single-observation designs carry a `verdict` key at all)."""
+    single-candidates/single-logprobs, `echo_relation` for tier-audit
+    (12-05: this design carries neither a `verdict` nor a `state` key)."""
     cells = classified["cells"]
     skips = classified.get("skips") or []
     tally: dict[str, int] = {}
     for c in cells:
-        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state")
+        key = c.get("verdict") or c.get("truncation_verdict") or c.get("state") or c.get("echo_relation")
         tally[key] = tally.get(key, 0) + 1
     print(f"cells read: {len(cells)}")
     print(f"requirements (sections): {len(requirement_order(cells))}")
@@ -476,6 +536,63 @@ def selftest() -> tuple[int, int]:
         problems += 1
         print("FAIL render_section(single-logprobs): expected the settled phase-11 probe_id rendered", file=sys.stderr)
 
+    # --- render_section: design=tier-audit (12-05) splits into a
+    #     "Service-tier audit" subsection (param=service-tier-audit) and a
+    #     "Documentation-drift annex" subsection (any other param) even
+    #     though both share one requirement (BHV-06) and one design ---
+    cases += 1
+    tier_audit_cells = [
+        {
+            "cell_id": "m7--service-tier-audit--auto--default", "requirement": "BHV-06", "design": "tier-audit",
+            "model": "m7", "vendor": "anthropic", "mode": "default", "param": "service-tier-audit", "value": "auto",
+            "request_field_path": "service_tier", "request_value": "auto",
+            "response_field_path": "usage.service_tier", "response_value": "standard",
+            "response_present": "present", "echo_relation": "translated", "rejection_names_field": None,
+            "response_top_level_present": "absent", "response_top_level_value": None,
+            "audited_from_existing_evidence": False, "cited_probe_id": None,
+            "expected": "expect t", "expected_source": "docs-claims:service-tier/anthropic",
+            "probe_ids": ["p5"], "ancillary": {}, "note": None,
+        },
+        {
+            "cell_id": "m7--service-tier-audit--trap--default", "requirement": "BHV-06", "design": "tier-audit",
+            "model": "m7", "vendor": "anthropic", "mode": "default", "param": "service-tier-audit", "value": "trap",
+            "request_field_path": "service_tier", "request_value": "standard",
+            "response_field_path": None, "response_value": None,
+            "response_present": "absent", "echo_relation": "rejected", "rejection_names_field": True,
+            "response_top_level_present": None, "response_top_level_value": None,
+            "audited_from_existing_evidence": False, "cited_probe_id": None,
+            "expected": "expect trap", "expected_source": "docs-claims:service-tier/anthropic",
+            "probe_ids": ["p6"], "ancillary": {}, "note": None,
+        },
+        {
+            "cell_id": "m8--thinking-object--enabled--default", "requirement": "BHV-06", "design": "tier-audit",
+            "model": "m8", "vendor": "dseek", "mode": "default", "param": "thinking-object", "value": "enabled",
+            "request_field_path": "thinking", "request_value": {"type": "enabled"},
+            "response_field_path": "thinking", "response_value": None,
+            "response_present": "absent", "echo_relation": "dropped", "rejection_names_field": None,
+            "response_top_level_present": None, "response_top_level_value": None,
+            "audited_from_existing_evidence": False, "cited_probe_id": None,
+            "expected": "expect d", "expected_source": "docs-claims:anthropic-thinking-object/dseek",
+            "probe_ids": ["p7"], "ancillary": {}, "note": "contradicts a registry assumption",
+        },
+    ]
+    tier_audit_section = "\n".join(render_section(tier_audit_cells))
+    if "Service-tier audit (2 cells)" not in tier_audit_section:
+        problems += 1
+        print("FAIL render_section(tier-audit): expected a Service-tier audit subsection with the right count", file=sys.stderr)
+    if "Documentation-drift annex (1 cell)" not in tier_audit_section:
+        problems += 1
+        print("FAIL render_section(tier-audit): expected a Documentation-drift annex subsection with the right count", file=sys.stderr)
+    if "CONFIRMED" not in tier_audit_section or "usage.service_tier" not in tier_audit_section:
+        problems += 1
+        print("FAIL render_section(tier-audit): expected the Anthropic asymmetry stated as CONFIRMED", file=sys.stderr)
+    if "contradicts a registry assumption" not in tier_audit_section:
+        problems += 1
+        print("FAIL render_section(tier-audit): expected the annex row's registry-assumption note rendered", file=sys.stderr)
+    if "rejected" not in tier_audit_section:
+        problems += 1
+        print("FAIL render_section(tier-audit): expected the trap row's rejected echo_relation rendered", file=sys.stderr)
+
     # --- render_matrix: a doc mixing all six designs across their own
     #     requirement sections renders every one without crashing, and each
     #     section heading states its own cell count (12-04's three new
@@ -491,6 +608,21 @@ def selftest() -> tuple[int, int]:
         if heading not in mixed_rendered:
             problems += 1
             print(f"FAIL render_matrix(mixed six-design doc): expected heading {heading!r}", file=sys.stderr)
+
+    # --- render_matrix: a doc adding tier-audit (BHV-06) alongside the
+    #     other designs still renders every section, one heading per
+    #     requirement (tier-audit's own two param-split subsections live
+    #     INSIDE that one BHV-06 section, not as separate `##` headings) ---
+    cases += 1
+    seven_design_doc = {
+        "checked": "2026-09-03", "evidence_through": None,
+        "cells": fixture_cells + single_stop_cells + single_candidates_cells + single_logprobs_cells + tier_audit_cells,
+        "skips": [],
+    }
+    seven_design_rendered = render_matrix(seven_design_doc)
+    if "## BHV-06 (3 cells)" not in seven_design_rendered:
+        problems += 1
+        print("FAIL render_matrix(seven-design doc): expected a single '## BHV-06 (3 cells)' heading", file=sys.stderr)
 
     return cases, problems
 

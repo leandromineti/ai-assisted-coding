@@ -5,7 +5,7 @@
 # probes/classified/behavioral.yaml, rendered
 
 `checked:` 2026-09-03  
-`evidence_through:` 2026-09-03T02:07:27Z
+`evidence_through:` 2026-09-03T02:39:35Z
 
 ## BHV-01 (8 cells)
 
@@ -79,6 +79,47 @@
 | qwen3.8-flash | thinking-off | True | 56 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55 | Same Qwen `top_logprobs` contract, thinking explicitly disabled. (docs-claims:top-logprobs/qwen) | 1 |
 | qwen3.8-flash | thinking-on | True | 46 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717 | Same Qwen `top_logprobs` contract, thinking explicitly enabled. (docs-claims:top-logprobs/qwen) | 1 |
 
+## BHV-06 (27 cells)
+
+### Service-tier audit (23 cells)
+
+| Vendor | Model | Request Value | Request Field Path | Response Field Path | Response Value | Response Present | Echo Relation | Source | probe_ids |
+|---|---|---|---|---|---|---|---|---|---|
+| anthropic | claude-haiku-4-5 | auto | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-haiku-4-5 | omitted | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-haiku-4-5 | standard_only | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-haiku-4-5 | standard | service_tier | None | None | absent | rejected | fired | 1 |
+| openai | gpt-5-6-sol | auto | service_tier | service_tier | default | present | translated | audited | 1 |
+| openai | gpt-5-6-sol | default | service_tier | service_tier | default | present | echoed | audited | 1 |
+| openai | gpt-5-6-sol | fast | service_tier | service_tier | priority | present | translated | fired | 1 |
+| openai | gpt-5-6-sol | flex | service_tier | service_tier | flex | present | echoed | audited | 1 |
+| openai | gpt-5-6-sol | omitted | service_tier | service_tier | default | present | translated | fired | 1 |
+| openai | gpt-5-6-sol | priority | service_tier | service_tier | priority | present | echoed | audited | 1 |
+| openai | gpt-5-6-sol | scale | service_tier | None | None | absent | rejected | fired | 1 |
+| gemini | gemini-3-1-pro | flex | serviceTier | usageMetadata.serviceTier | flex | present | echoed | fired | 1 |
+| gemini | gemini-3-1-pro | omitted | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| gemini | gemini-3-1-pro | priority | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| gemini | gemini-3-1-pro | standard | serviceTier | usageMetadata.serviceTier | standard | present | echoed | fired | 1 |
+| gemini | gemini-3-1-pro | unspecified | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| xai | grok-4-5 | default | service_tier | service_tier | default | present | echoed | audited | 1 |
+| xai | grok-4-5 | omitted | service_tier | service_tier | default | present | translated | fired | 1 |
+| xai | grok-4-5 | priority | service_tier | service_tier | priority | present | echoed | audited | 1 |
+| kimi | kimi-k3 | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
+| dseek | deepseek-v4 | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
+| zai | glm-5.3 | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
+| qwen | qwen3.8-flash | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
+
+**Anthropic asymmetry CONFIRMED:** the nested `usage.service_tier` reads `present` while the response top level's own `service_tier` reads `absent` (probe_id `claude-haiku-4-5--service-tier-audit--auto--default--613638b0`).
+
+### Documentation-drift annex (4 cells)
+
+| Vendor | Model | Param | Request Value | Echo Relation | Registry Assumption | Expected (citation) | probe_ids |
+|---|---|---|---|---|---|---|---|
+| dseek | deepseek-v4 | thinking-object | {'type': 'disabled'} | dropped | Same registry contradiction as the `enabled` cell above — this is the field's own non-default documented value, the sharper test of whether the toggle actually changes model behavior (checked qualitatively via this record's own `reasoning_content`/usage shape, not asserted as this cell's own echo_relation, which has no dedicated response field to examine either way). | DeepSeek's second documented `thinking.type` value — expect acceptance (HTTP 200), `dropped` echo_relation (no known response field echoes it). (docs-claims:anthropic-thinking-object/dseek) | 1 |
+| dseek | deepseek-v4 | thinking-object | {'type': 'enabled'} | dropped | Contradicts probes/inventory.yaml's own axes.thinking.shapes.openai_compat.vendor_overrides.dseek entry ("on": null, "off": null, reason: toggle-not-a-request-parameter) — that entry asserts DeepSeek's thinking mode has NO request-body field at all, model-id-selected only. DeepSeek's own docs contradict this directly for deepseek-v4-pro (the tracked model). An HTTP 200 here confirms the documented field exists and is accepted, refuting the registry's checked-absence assumption; a rejection would instead corroborate the registry against the claim itself. | DeepSeek documents `thinking` (object, nullable) with a `type` sub-field, values enabled/disabled, default `enabled`, scoped to deepseek-v4-pro. `enabled` is the field's own documented default value — expect acceptance (HTTP 200); no known response-side field echoes the resolved mode back, so `dropped` is the expected echo_relation on acceptance. (docs-claims:anthropic-thinking-object/dseek) | 1 |
+| qwen | qwen3.8-flash | reasoning-effort | low | dropped | Contradicts probes/inventory.yaml's own axes.thinking.shapes.openai_compat.vendor_overrides.qwen assumption that Qwen's own thinking-toggle shape is `enable_thinking`/ `thinking_budget` ONLY. Qwen's own docs document `reasoning_effort` as a REAL, independently-accepted field for the qwen3.8 series (Options: low, medium, xhigh; default xhigh) — additive to, not exclusive with, the enable_thinking/thinking_budget shape. An HTTP 200 here confirms the field is genuinely accepted beyond the registry's own narrower assumption. | Qwen3.8 series documents `reasoning_effort` values low/medium/xhigh (default xhigh) — `low` is a genuinely non-default value. No `thinking_budget` sent alongside it (avoiding the documented mutual- exclusion error). Expect acceptance (HTTP 200), `dropped` echo_relation (no known response field echoes the resolved effort level). (docs-claims:openai-reasoning-effort/qwen) | 1 |
+| qwen | qwen3.8-flash | reasoning-effort | medium | dropped | Same registry contradiction as the `low` cell above — this is the qwen3.8 series' second non-default documented value. | Qwen3.8 series' second non-default `reasoning_effort` value. Expect acceptance (HTTP 200), `dropped` echo_relation. (docs-claims:openai-reasoning-effort/qwen) | 1 |
+
 ## calibration (9 cells)
 
 | Model | Design | Repeats | Rate | Verdict | Expected (citation) | probe_ids |
@@ -97,6 +138,7 @@
 
 | Model | Param | Requirement | Reason | Citation |
 |---|---|---|---|---|
+| qwen3.8-flash | reasoning-effort | BHV-06 | deferred-out-of-envelope | docs-claims:openai-reasoning-effort/qwen |
 | claude-fable-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
 | claude-opus-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
 | claude-sonnet-5 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
