@@ -609,7 +609,8 @@ reasoning written down on both sides.
   (2026-09-04)**: 241,330 stars against **940 watchers (0.39%)** and a 25% lifetime PR
   merge rate over a 26,158-deep open-PR queue — viral discovery plus a product-scale
   contribution firehose, not a prompt-pack phenomenon. A full comparison still needs the
-  same numbers at an ECC re-read.
+  same numbers at an ECC re-read
+  ([issue #45](https://github.com/leandromineti/ai-assisted-coding/issues/45)).
 - Does the `execute_code` refund actually shift model behavior toward programmatic tool
   calling, or do models ignore the affordance? Their own trajectory data could answer
   it; nothing committed does (re-checked: the four new evals don't either).
@@ -658,6 +659,8 @@ without naming which regime produced it, and the "flat Python core with megafile
 characterization — *more* true at this pin than at the last — was reversed wholesale
 four days later. **Scoreable for the next re-read: does the post-burst decomposition
 hold, or do the megafiles regrow?**
+([issue #44](https://github.com/leandromineti/ai-assisted-coding/issues/44) carries
+this and the section's other scoreables.)
 
 ### What the window built
 

@@ -27,7 +27,10 @@ commit, no report file. The row itself is the claim, which sets the conventions:
 ## Category 1 — models
 
 *(Section added 2026-09-03. Model candidates have no repo and no stars — the second
-column records the sighting surface instead, same convention as ZCode's row below.)*
+column records the sighting surface instead, same convention as ZCode's row below.
+The three rows below are planned as **one roster batch**, gated on GPT-6 Astra's API
+answering — [issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43),
+filed 2026-09-04.)*
 
 | Candidate | Stars | Why not (yet) |
 |---|---|---|
