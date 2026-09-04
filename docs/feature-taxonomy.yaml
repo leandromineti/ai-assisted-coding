@@ -393,9 +393,9 @@ features:
     group: control-gates
     block: harness_features
     applies_to: [2]
-    value_type: presence
-    definition: built-in plan/act split
-    note: "shape diverges across verified instances — enforced MODE (claude-code, opencode, cline) · tool (codex) · bundled skill (hermes) · per-query FLAG (warp, 2026-08-19: /plan sets UserQueryMode::Plan on that one submission, no sticky state, planning_enabled always on server-side) — but only `mode` has ≥2 instances, so the enum promotion is deferred (ADR-0012, tracked with issue #13)"
+    value_type: closed-enum
+    definition: "the mechanism carrying the built-in plan/act split: mode (sticky session state until an exit transition) | tool (model-invocable plan/switch tool) | prompt (prompt-only convention, no state, no enforcement) | flag (per-query, non-sticky nudge); enforcement strength stays in cell comments — the value names the carrier"
+    note: "added as presence per ADR-0012 with the enum deferred under value-scope counting; REGRADED 2026-09-04 per ADR-0054 once issue #34 settled key-scope. Census: mode 5 (claude-code, gemini-cli, qwen-code, dsh, cline) · tool 2 (codex, opencode) · prompt 2 (continue, hermes-agent) · flag 1 (warp — the single-instance value whose merge into mode would be a false claim) · ✗ 2 (aider, pi). Borderline rule: the cell takes the mechanism that HOLDS the split (cline mode — switch_to_act_mode only exits it; opencode tool; dsh mode though deliberately unenforced). hermes' old 'bundled skill' shape no longer exists at its pin (promoted to a built-in command, still prompt-only) — no skill value minted"
   - id: model_agnostic
     group: operations
     block: harness_features

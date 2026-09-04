@@ -26,7 +26,7 @@ harness_features:
   skills: true           # SKILL.md convention, 6-root precedence, digest-gated catalog; on in standard/code/cordis presets
   subagents: true        # 6 providers incl. real Codex and Claude Code children; spawn/fork in base bundle, depth cap 3 (bypassed via workflow/ralph — host.ts:352)
   ptc: true              # run_code in a Node worker thread, tools bound as typed fns from the live registry; default mode `native`, opt-in via DSH_TOOLS_MODE or the shipped "PTC 模式" preset
-  plan_mode: true        # sticky LOGGED session state + prompt section + exit tool; deliberately NOT a tool restriction (plan-mode/src/index.ts:1-7)
+  plan_mode: mode        # sticky LOGGED session state + prompt section + exit tool; deliberately NOT a tool restriction (plan-mode/src/index.ts:1-7)
   rules_files: ["AGENTS.md", "CLAUDE.md", "AGENTS.local.md", "CLAUDE.local.md"]  # + user-global ~/.dsh/AGENTS.md; per-preset (the `minimal` preset omits the loader entirely)
   model_agnostic: true   # llm seam + pi-ai adapter (3 wire protocols); DeepSeek privileged in every default (agent-default-model → deepseek-v4-flash)
   session_sharing: true  # export/artifact only: session ZIP export + resume; share LINKS verified absent (no shareUrl anywhere; loopback-bound server)

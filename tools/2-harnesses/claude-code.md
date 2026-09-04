@@ -23,7 +23,7 @@ harness_features:
   skills: true           # OBSERVED: SKILL.md convention, ~/.claude/skills + .claude/skills + plugin skills, /name invocation, description-based triggering
   ptc: false             # checked in official docs (retrieved 2026-08-18): no code-mode/programmatic-tool-calling mechanism documented; tool use is chat-loop only
   subagents: true        # OBSERVED: Agent tool with named types (general-purpose, Explore, Plan, custom .claude/agents/*.md definitions), per-agent model/tool overrides, worktree isolation
-  plan_mode: true        # OBSERVED: an actual MODE with enforced read-only state + plan-file workflow + user approval gate — not a prompt convention
+  plan_mode: mode        # OBSERVED: an actual MODE with enforced read-only state + plan-file workflow + user approval gate — not a prompt convention
   rules_files: [CLAUDE.md]   # OBSERVED: global ~/.claude/CLAUDE.md + project CLAUDE.md, both loaded; the convention the whole field's rules-file story descends from
   model_agnostic: false  # checked and absent BY DESIGN: Anthropic models only (opus/sonnet/haiku/fable). Multi-provider transport exists (API/Bedrock/Vertex) but that is model ACCESS (type 1b), not model agnosticism
   session_sharing: true  # OBSERVED: claude.ai/code session URLs; sessions resumable/shareable across surfaces

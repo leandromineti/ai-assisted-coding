@@ -31,7 +31,7 @@ harness_features:
   skills: true           # 58 bundled + 137 optional SKILL.md dirs at v2026.8.31 (was 70+111 — bundled SHRANK while optional grew: surface moving out of the default install); agentskills.io-compatible
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
   ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; refund re-verified at v2026.8.31, conversation_loop.py:7716-7720)
-  plan_mode: true        # /plan is a BUILT-IN command since the window (was a bundled skill; promoted because platform command menus trim skills alphabetically at their caps and `plan` sorted past the cutoff — agent/plan_prompt.py docstring). Still prompt-only, plans under .hermes/plans/, not a core loop mode
+  plan_mode: prompt      # /plan is a BUILT-IN command since the window (was a bundled skill; promoted because platform command menus trim skills alphabetically at their caps and `plan` sorted past the cutoff — agent/plan_prompt.py docstring). Still prompt-only, plans under .hermes/plans/, not a core loop mode
   rules_files: [SOUL.md, HERMES.md, AGENTS.md, CLAUDE.md, .cursorrules]   # reads competitors' files too — loaders in prompt_builder.py; v2026.8.31 adds AGENTS.override.md and .cursor/rules/*.mdc
   model_agnostic: true   # 39 provider plugins (ls plugins/model-providers/ minus README; was 33)
   session_sharing: true  # `hermes sessions export --format trace --upload` → Hugging Face agent-trace dataset (private by default, forced secret redaction); no hosted live-session links. CORRECTED 2026-09-04: the deep-dive wrote "hermes trace upload", a command that existed at neither pin — the mechanism was real, the identifier invented

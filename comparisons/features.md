@@ -38,17 +38,17 @@ pricing, cutoff, lifecycle) stays in [models.md](models.md).
 | Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | turn end gates | tool approval | headless approval | plan mode | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [aider](../tools/2-harnesses/aider.md) | `open-source` | Apache-2.0 | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | `engine` | `prompt` | `allow` | ✗ | ✓ | ✓ | ✓ | ✗ |
-| [codex](../tools/2-harnesses/codex.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | `policy` | · | ✓ | ✓ | · | · | ✓ |
-| [dsh](../tools/2-harnesses/dsh.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | `sandbox` | · | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | `policy` | `deny` | ✓ | ✗ | ✗ | ✓ | ✗ |
-| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | `policy` | · | ✓ | ✓ | ✓ | ✓ | ✓ |
-| [opencode](../tools/2-harnesses/opencode.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | `policy` | · | ✓ | ✓ | ✓ | · | · |
+| [codex](../tools/2-harnesses/codex.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | `hook` | `policy` | · | `tool` | ✓ | · | · | ✓ |
+| [dsh](../tools/2-harnesses/dsh.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md`, `CLAUDE.md`, `AGENTS.local.md`, `CLAUDE.local.md` | `engine` | `sandbox` | · | `mode` | ✓ | ✓ | ✗ | ✗ |
+| [gemini-cli](../tools/2-harnesses/gemini-cli.md) | `open-source` | Apache-2.0 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | `GEMINI.md`, `MEMORY.md` | `hook` | `policy` | `deny` | `mode` | ✗ | ✗ | ✓ | ✗ |
+| [hermes-agent](../tools/2-harnesses/hermes-agent.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `SOUL.md`, `HERMES.md`, `AGENTS.md`, `CLAUDE.md`, `.cursorrules` | `engine` | `policy` | · | `prompt` | ✓ | ✓ | ✓ | ✓ |
+| [opencode](../tools/2-harnesses/opencode.md) | `open-source` | MIT | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | `AGENTS.md` | ✗ | `policy` | · | `tool` | ✓ | ✓ | · | · |
 | [pi](../tools/2-harnesses/pi.md) | `open-source` | MIT | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `hook` | `none` | · | ✗ | ✓ | ✓ | ✓ | ✗ |
-| [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `hook` | `policy` | · | ✓ | ✓ | ✗ | ✗ | ✓ |
-| [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | `policy` | · | ✓ | ✓ | ✓ | ✗ | ✗ |
-| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | `policy` | · | ✓ | ✗ | ✓ | · | ✓ |
-| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | `policy` | `deny` | ✓ | ✓ | · | ✓ | · |
-| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | `policy` | `allow` | ✓ | ✓ | · | · | · |
+| [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `hook` | `policy` | · | `mode` | ✓ | ✗ | ✗ | ✓ |
+| [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | ✗ | `policy` | · | `flag` | ✓ | ✓ | ✗ | ✗ |
+| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `hook` | `policy` | · | `mode` | ✗ | ✓ | · | ✓ |
+| [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | ✗ | `policy` | `deny` | `mode` | ✓ | · | ✓ | · |
+| [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | ✗ | `policy` | `allow` | `prompt` | ✓ | · | · | · |
 
 ## Environments, memory & extensions on the harness vocabulary (categories 3, 5 & 6)
 

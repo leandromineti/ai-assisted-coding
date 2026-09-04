@@ -29,7 +29,7 @@ harness_features:
   skills: true           # tool/skill.ts + Skill service in system.ts
   subagents: true        # agent/subagent-permissions.ts, task tool
   ptc: true              # 2026-08-18 targeted probe at the pin: packages/codemode/ (confined JS over schema-described host tools) wired as tool/code-mode.ts `execute` tool — EXPERIMENTAL, env-flag-gated default-off (runtime-flags.ts:48 OPENCODE_EXPERIMENTAL_CODE_MODE); third verified PTC instance (ADR-0012)
-  plan_mode: true        # prompt/plan-mode.txt, plan.ts tool
+  plan_mode: tool        # prompt/plan-mode.txt, plan.ts tool
   rules_files: [AGENTS.md]   # session/instruction.ts
   model_agnostic: true   # 75+ providers via Models.dev
   session_sharing: true  # shareable session links (opencode.ai, checked 2026-07-28)

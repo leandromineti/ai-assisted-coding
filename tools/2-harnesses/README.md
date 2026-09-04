@@ -19,7 +19,7 @@ They sort under the category's three components — the loop (`subagents`, `plan
 the permission gate (`tool_approval`, `headless_approval`) — with the rest describing reach
 and portability.
 
-Twelve are presence-claims. Three are not: `turn_end_gates` is graded engine \| hook \|
+Eleven are presence-claims. Four are not: `turn_end_gates` is graded engine \| hook \|
 script \| prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
 because *who enforces* a gate turned out to matter more than whether one exists;
 `headless_approval` is a closed enum (deny \| allow) for the same species of reason one
@@ -28,7 +28,11 @@ it exists; and `tool_approval`, the category's first completed column, was regra
 2026-09-04 ([ADR-0053](../../adrs/0053-tool-approval-architecture-enum.md)) from presence
 to an architecture enum — prompt \| policy \| sandbox \| none — once issue #34's key-scope
 decision unblocked it: the boolean had flattened a seven-way mechanism spread into ✓ and
-rendered dsh and pi's opposite philosophies as identical ✗.
+rendered dsh and pi's opposite philosophies as identical ✗. `plan_mode` followed the same
+day ([ADR-0054](../../adrs/0054-plan-mode-shape-enum.md)) — the shape spread its registry
+note had carried since admission (deferred under value-scope counting) became the enum:
+mode \| tool \| prompt \| flag, census 5·2·2·1 plus two ✗, the value naming the mechanism
+that *holds* the split while enforcement strength stays in the cell comments.
 
 `headless_approval` joined 2026-08-27 when the aider read supplied a second instance taking
 the **opposite value** from gemini-cli's: aider's gate fails **open** when there is no TTY

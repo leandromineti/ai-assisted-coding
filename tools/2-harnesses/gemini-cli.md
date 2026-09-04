@@ -27,7 +27,7 @@ harness_features:
   skills: true           # SKILL.md convention, 6-root precedence incl. the cross-tool .agents/skills dirs (skillManager.ts:54-99), two-stage load (metadata in prompt, body via activate_skill), 2 builtins shipped
   subagents: true        # invoke_agent tool, markdown+YAML defs in .gemini/agents/, isolated tool/prompt registries + derived message bus, compiled depth cap of exactly 1 (local-executor.ts:192-197), 30-turn/10-min defaults
   ptc: false             # checked and absent: no sandboxed runtime where model code drives tools; grep "codeExecution *:" over packages/ → 0 product hits; only defensive handling of the Gemini API part types
-  plan_mode: true        # ApprovalMode.PLAN, default-enabled tools (config.ts:1135); enforcement is policy data not prose — plan.toml catch-all deny + read-only allows; exit_plan_mode is a human checkpoint; an approved plan routes execution to Flash
+  plan_mode: mode        # ApprovalMode.PLAN, default-enabled tools (config.ts:1135); enforcement is policy data not prose — plan.toml catch-all deny + read-only allows; exit_plan_mode is a human checkpoint; an approved plan routes execution to Flash
   rules_files: ["GEMINI.md", "MEMORY.md"]  # GEMINI.md (configurable list) + private per-project MEMORY.md; AGENTS.md NOT loaded by default (repo-wide grep: docs example + test fixture only); three-tier placement model, JIT subdirectory loading via tool output
   model_agnostic: false  # checked: all six AuthType routes end at a Google backend or Gemini-protocol endpoint; GATEWAY swaps the host, not the wire format (@google/genai client throughout)
   session_sharing: false # no share links anywhere; local JSON export (exportSessionCommand.ts:20,72) + resume/checkpoints exist — artifact yes, link no
