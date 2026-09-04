@@ -610,9 +610,12 @@ reasoning written down on both sides.
 - ~~What do 221k stars represent vs ECC's 235k?~~ **Partially answered at the re-read
   (2026-09-04)**: 241,330 stars against **940 watchers (0.39%)** and a 25% lifetime PR
   merge rate over a 26,158-deep open-PR queue — viral discovery plus a product-scale
-  contribution firehose, not a prompt-pack phenomenon. A full comparison still needs the
-  same numbers at an ECC re-read
-  ([issue #45](https://github.com/leandromineti/ai-assisted-coding/issues/45)).
+  contribution firehose, not a prompt-pack phenomenon. ~~A full comparison still needs
+  the same numbers at an ECC re-read~~ **Fully answered 2026-09-04** (issue #45): ECC's
+  pole measured — 248,417 stars on a **96-deep** open-PR queue merged at 49%. Near-equal
+  stars, repos two orders of magnitude apart in contribution surface; the discriminator
+  is open-queue depth, not stars. Full table:
+  [`ecc.md` § Engagement re-measure](../6-extensions/ecc.md).
 - Does the `execute_code` refund actually shift model behavior toward programmatic tool
   calling, or do models ignore the affordance? Their own trajectory data could answer
   it; nothing committed does (re-checked: the four new evals don't either).

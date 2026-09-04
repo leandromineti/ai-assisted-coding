@@ -10,8 +10,8 @@ stack: [Markdown, Node]
 version: v2.1.0-16-ge4e41631
 commit: e4e41631
 first_commit: 2026-01-17
-stars: 236217
-stars_at: 2026-07-30
+stars: 248417
+stars_at: 2026-09-04
 read_at: 2026-07-30   # drift-checked 2026-08-11 at 623f2c02 without re-reading — see "Drift check"; one claim corrected, pin deliberately not moved
 depth: deep-dive   # ECC has no agent loop of its own; its runtime analogs were traced in source — learning pipeline (hooks/observe.sh → agents/observer-loop.sh → scripts/instinct-cli.py), enforcement lifecycle (hooks/hooks.json + memory-persistence contract), install/portability surface. The 281-skill catalog was sampled, not read; ecc2 read at README level
 harness_targets: "23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check"
@@ -67,6 +67,57 @@ revision this read triggered stands, as does the ~2027-01 re-promotion re-check.
 **What a re-read should cost:** small. The evolve fix, the support matrix, and the
 antigravity exclusion are the three places to look, plus the 281-skill catalog that was
 sampled rather than audited at the original read.
+
+## Engagement re-measure + drift triage — 2026-09-04 (issue #45; not a re-read; the pin is unchanged)
+
+**The star-comparison question the hermes deep-dive left open now has both poles
+measured** (`gh api repos/affaan-m/ECC`, 2026-09-04; hermes' numbers from its
+v2026.8.31 re-read the same week):
+
+| measure | ECC | hermes-agent |
+|---|---|---|
+| stars | 248,417 | 241,330 |
+| watchers (watch/star) | 1,276 (0.51%) | 940 (0.39%) |
+| forks | 37,440 | 49,481 |
+| lifetime PRs (merged) | 2,079 (1,023 = 49%) | — (25% lifetime merge rate) |
+| open PR queue | **96** | **26,158** |
+| open issues | 47 | — |
+| stars/day, lifetime | ~1,085 (229 days) | ~513 |
+| stars/day, current window | ~339 (+12,200 since 2026-07-30, 36 days) | — |
+
+The deliverable sentence: **near-identical star counts sit on repos two orders of
+magnitude apart in contribution surface** — hermes' stars come with a 26,158-deep open-PR
+queue at a 25% lifetime merge rate (a product-scale contribution firehose), ECC's with a
+96-deep queue merged at 49% (a curated config pack whose audience stars and forks but
+barely files). ECC's star velocity is also decelerating: the current window runs at about
+a third of its lifetime rate, while its watch/star ratio (0.51%) is the higher of the
+two. "Viral discovery vs sustained attention" resolves as: the star totals are alike; the
+*repos* are unalike, and the discriminator is open-queue depth, not stars.
+
+**Drift triage (rule 4b)** — 295 commits / 638 files / +49,022 −4,947 lines since the
+pin (measured `e4e41631..origin/main` at the 2026-09-04 fetch; the 2026-08-11 check
+covered the first 16). Confronted against this report's claims:
+
+- **The "solo-author product" claim is now dated.** At the pin it held (1,517 of 2,336
+  commits = 65%, as written above). The window is majority *non*-maintainer: `haelyra`
+  authored 144 of the 295 commits (49%) against the maintainer's 26 (9%), and the
+  maintainer's all-time share is down to 1,543 of 2,631 (59%). The claim stays in the
+  body as a description of the pin; it no longer describes HEAD.
+- **Both headline counts reproduce at the pin with their measures** — 281 skills
+  (`skills/*/SKILL.md`), 67 agents (`agents/*.md`); HEAD has 286 and 68. (The counts
+  above were written without stated measures; these are the measures that reproduce
+  them, recorded per the count-carries-its-measure discipline.)
+- **The traced learning pipeline is intact at HEAD** — all three files
+  (`hooks/observe.sh`, `agents/observer-loop.sh`, `scripts/instinct-cli.py`) live under
+  the `skills/continuous-learning-v2/` root at pin and HEAD alike (the report's paths
+  are skill-root-relative), and the window *grew* it: new `instinct-cli-evolve` tests
+  and an `/evolve` command surface. The `learning_loop: background` cell holds.
+- **Untriaged remainder**: `hooks/hooks.json` moved modestly (52 lines changed);
+  `README.md` churned (+331/−146) so the 23-invocation harness-target inventory above
+  was NOT re-derived — that count remains checked only at the pin (rule 1b: the surface
+  not searched this pass is the README's current install matrix).
+
+Pin and `read_at` unchanged; the sections below still describe `e4e41631`.
 
 ## The category verdict (the question this read was preregistered to answer)
 
