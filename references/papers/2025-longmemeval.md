@@ -71,7 +71,12 @@ what the arc's reads found built — ai-memory's fact-level pages and entity ind
 key-expansion (CP2), its authority/decay tiers are value policy (CP1), memos' bounded
 recall + `<memos_context>` injection is a reading strategy (CP4), and ai-memory's
 `sessions/<id>.md` vs observation rows is exactly the session-vs-round granularity
-question (CP1). ai-memory's own future-work names porting LongMemEval-S. The paper's
+question (CP1). ai-memory's own future-work names porting LongMemEval-S — *and it
+shipped (2026-09-02, v2.0.0): an in-repo end-to-end harness replaying haystacks through
+the production hook path, with published, provenance-stamped baselines (hit@5 0.617
+FTS-only → 0.823 with 2.0's default local embeddings) that also print agentmemory's
+0.967 beating them — the future-work claim scored as landed at the 2026-09-04 re-read*.
+The paper's
 "even perfect recall loses 10 points to bad reading" is the sharpest available
 argument that injection format — the thing the memory kind's harness shims control —
 is measurable and material.

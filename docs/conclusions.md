@@ -181,7 +181,11 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    (cursorrules/copilot/cline/continue → mem0). Caveat from the same
    arc: the continuity mechanism is real but its automatic floor is thin (ai-memory's
    baton is first + last prompt + tool names, no LLM) — whether the bet survives
-   contact with use is an open rig question. →
+   contact with use is an open rig question *(answered 2026-08-19 by conclusion 14:
+   pull-shaped)*. **The counter-current strengthened (2026-09-04, ai-memory v2.0.2
+   re-read)**: 2.6k → 5.7k stars in 17 days, the file-first store now natively conforms
+   to Google Cloud's Open Knowledge Format (the independent-store bet got a vendor
+   standard), and 51% of the window's merged PRs came from outside contributors. →
    [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md),
    [`tools/5-memory/memos.md`](../tools/5-memory/memos.md)
 9. **The environments category (3) is a real category, not an axis of the harness category —
@@ -303,6 +307,9 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     pull path. Continuity rests entirely on the receiving agent knowing to ask.
     Incidental: the run was blocked by a live MCP-schema-vs-Anthropic-API interop seam
     whose fix ships default-off — presence≠operative, measured blocking a real run.
+    *(The seam was closed unconditionally at v2.0.2 — schema fixed at the source plus a
+    regression fence test; run-verified 2026-09-04 at the re-read. The measurement
+    stands at its own pin.)*
     **Arm C (same day): the floor is a design property, not a zero-LLM artifact** — with
     the LLM consolidation loop enabled and manually triggered, the reviewer surfaced the
     facts as candidates and rejected every one on an articulated evidence bar
