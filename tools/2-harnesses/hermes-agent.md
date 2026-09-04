@@ -1,38 +1,42 @@
 ---
+# PIN MOVED 524ab5399 → 29112bef0 (= tag v2026.8.31) at the 2026-09-04 release re-read
+# (rule 4b: a pin moves only with a re-read; this was one — three-tract release variant,
+# every claim confronted at both pins). The 2026-08-12 drift check and the 2026-08-27
+# reasoning-parameter read below were performed at the old pin and stay dated as such.
 name: hermes-agent
 category: 2
-surfaces: [terminal, desktop, web, ide, messaging]   # messaging = ~20 platforms via the gateway (Telegram, Discord, Slack, WhatsApp, Signal…), see What it is. `messaging` entered the vocabulary 2026-08-27 (ADR-0047) on qwen-code's second instance; this report is the first, and until then recorded the platforms as being OUTSIDE the four-value set
+surfaces: [terminal, desktop, web, ide, messaging]   # messaging = ~20 platforms via the gateway (Telegram, Discord, Slack, WhatsApp, Signal…), see What it is. `messaging` entered the vocabulary 2026-08-27 (ADR-0047) on qwen-code's second instance; this report is the first, and until then recorded the platforms as being OUTSIDE the four-value set. Re-verified at v2026.8.31: 22 platform-plugin dirs + built-ins (Signal is a built-in, not a plugin); the A2A protocol platform added in the window is a machine-peer channel, not a human surface — deliberately NOT a surfaces value
 execution: both        # local CLI/TUI + remote terminal backends. The daemon/cron half of this comment moved to `residency:` below (ADR-0047) — it was never an execution fact
-residency: resident    # the gateway daemon outlives any conversation, cron delivers to any platform, serverless backends hibernate between sessions — the FIRST verified instance of the shape (deep-dive 2026-07-30)
+residency: resident    # the gateway daemon outlives any conversation, cron delivers to any platform, serverless backends hibernate between sessions — the FIRST verified instance of the shape (deep-dive 2026-07-30). Strengthened at v2026.8.31: /loop, /heartbeat, /bg re-entry commands and bot-to-bot relay are all resident-only affordances, with /pause as their gateway-wide kill switch
 environments: [host, container, remote-sandbox]   # tools/environments/: local, docker, ssh, singularity, modal (+managed), daytona, vercel_sandbox
-environment_relation: bind   # attaches to independently-distributed environments: 8 terminal backends (local, docker, ssh, singularity, modal x2, daytona, vercel_sandbox)
+environment_relation: bind   # attaches to independently-distributed environments: 8 terminal backends counted as concrete BaseEnvironment subclasses incl. managed_modal (the README says "seven", counting modal once) — recounted at v2026.8.31, unchanged
 maker: Nous Research
 url: https://github.com/NousResearch/hermes-agent
 license: MIT
 access: open-source
 stack: [Python, TypeScript]
-version: v2026.7.20-3084-g524ab5399
-commit: 524ab5399
+version: v2026.8.31
+commit: 29112bef0
 first_commit: 2025-07-22
-stars: 222863
-stars_at: 2026-07-30
-read_at: 2026-07-30   # drift-checked 2026-08-12 at 0957277f2 without re-reading (rule 4b) — one claim overtaken since the pin, three corroborated; pin deliberately not moved
+stars: 241330
+stars_at: 2026-09-04
+read_at: 2026-09-04   # v2026.8.31 release re-read (window 7,055 commits); deep-dive 2026-07-30 @ 524ab5399, drift-checked 2026-08-12, reasoning-param targeted read 2026-08-27
 depth: deep-dive
 harness_features:
   mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/)
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks
-  turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤3 re-prompts when the model finishes without fresh verification evidence (body §termination); set 2026-08-18 from the existing deep-dive read, no re-read
-  tool_approval: true    # tools/approval.py — approval at tool dispatch; set 2026-08-25 transcribing the category-2 index absorption table's verified instance at this pin, no re-read
-  skills: true           # 70 bundled + 111 optional SKILL.md dirs; agentskills.io-compatible
+  turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤2 re-prompts (max_attempts=2) when the model finishes without fresh verification evidence (body §termination). CORRECTED 2026-09-04: the deep-dive wrote "≤3", wrong at its own pin — max_attempts: int = 2 at 524ab5399:210 and v2026.8.31:238 alike
+  tool_approval: true    # tools/approval.py — approval at tool dispatch; re-verified at v2026.8.31 (file grew 44% in the window; YOLO import-freeze, smart approval, timeout≠denial all intact)
+  skills: true           # 58 bundled + 137 optional SKILL.md dirs at v2026.8.31 (was 70+111 — bundled SHRANK while optional grew: surface moving out of the default install); agentskills.io-compatible
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
-  ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; set 2026-08-18 from the existing deep-dive read)
-  plan_mode: true        # bundled /plan *skill* (plans under .hermes/plans/), not a core loop mode
-  rules_files: [SOUL.md, HERMES.md, AGENTS.md, CLAUDE.md, .cursorrules]   # reads competitors' files too — prompt_builder.py
-  model_agnostic: true   # 33 provider plugins (plugins/model-providers/)
-  session_sharing: true  # `hermes trace upload` → Hugging Face agent-trace dataset (private by default); no hosted live-session links
-  evals: true            # mini_swe_runner.py, batch_runner.py, committed bench data (mcp-research-data/)
-  learning_loop: true    # ON by default: interval-gated review fork (turn_finalizer.py:653) + idle curator + /learn
+  ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; refund re-verified at v2026.8.31, conversation_loop.py:7716-7720)
+  plan_mode: true        # /plan is a BUILT-IN command since the window (was a bundled skill; promoted because platform command menus trim skills alphabetically at their caps and `plan` sorted past the cutoff — agent/plan_prompt.py docstring). Still prompt-only, plans under .hermes/plans/, not a core loop mode
+  rules_files: [SOUL.md, HERMES.md, AGENTS.md, CLAUDE.md, .cursorrules]   # reads competitors' files too — loaders in prompt_builder.py; v2026.8.31 adds AGENTS.override.md and .cursor/rules/*.mdc
+  model_agnostic: true   # 39 provider plugins (ls plugins/model-providers/ minus README; was 33)
+  session_sharing: true  # `hermes sessions export --format trace --upload` → Hugging Face agent-trace dataset (private by default, forced secret redaction); no hosted live-session links. CORRECTED 2026-09-04: the deep-dive wrote "hermes trace upload", a command that existed at neither pin — the mechanism was real, the identifier invented
+  evals: true            # mini_swe_runner.py, batch_runner.py, mcp-research-data/ — plus, new at v2026.8.31, evals/ with four committed A/B harnesses (compaction, browser tools, read_file design, schema diet); still none measuring the learning loop
+  learning_loop: true    # ON by default (config_defaults.py:1353): interval-gated review fork (turn_finalizer.py:806-819; nudge intervals 10) + idle curator + /learn + /refine. New in window: cron sessions suppressed, whitelist widened to read_file/search_files after the fork was found starving in production (see re-read), 600K-token/16-iteration fork budgets, JSONL skill ledger with rollback
 ---
 
 # hermes-agent
@@ -119,14 +123,23 @@ Every harness here has memory files and skill folders. Hermes' wager is that *wr
 them is the agent's job, not the user's*. The machinery is concrete, not marketing:
 
 1. **Interval-gated background review** (`agent/background_review.py`; call site
-   `agent/turn_finalizer.py:653`) — after a successful, non-interrupted turn, if the
-   memory/skill nudge intervals have elapsed, the agent forks itself in a daemon thread,
-   replays the conversation snapshot ("already warm in the prompt cache, so cheap cache
-   reads"), and asks "should any skill/memory be saved or updated?". Writes go straight
-   to the stores; the fork runs under a tool whitelist limited to memory + skill
-   management, and the spawn is best-effort (exceptions swallowed). *Not* per-turn —
-   the module docstring's "after every turn, may call" resolves at the call site to
-   nudge-counter gating.
+   `agent/turn_finalizer.py:806-819` at v2026.8.31, was :653) — after a successful,
+   non-interrupted turn, if the memory/skill nudge intervals (default 10) have elapsed,
+   the agent forks itself in a daemon thread, replays the conversation snapshot
+   ("already warm in the prompt cache, so cheap cache reads"), and asks "should any
+   skill/memory be saved or updated?". Writes go straight to the stores; the fork runs
+   under a tool whitelist, and the spawn is best-effort (exceptions swallowed). *Not*
+   per-turn — nudge-counter gating at the call site. **Re-read findings (2026-09-04)**:
+   cron sessions now skip the fork entirely (~30K tokens/event, no human in the loop);
+   the whitelist was **widened to include `read_file`/`search_files`** after production
+   telemetry showed the loop *starving* — ~142 denials + ~204 read-before-write refusals
+   over two days on one deployment meant "almost no patch landed"
+   (`background_review.py:1549-1565`; write tools stay denied, and the widening is
+   dispatch-side only so the advertised schema stays cache-stable); forks now carry a
+   600K-token aggregate input budget and a 16-iteration cap; and a JSONL **skill ledger**
+   (`tools/skill_ledger.py`, content-addressed before/after blobs,
+   `hermes curator rollback`) makes even user hard-deletes recoverable — closing the one
+   hole in the curator's never-delete invariant.
 2. **Idle-time curator** (`agent/curator.py`) — an inactivity-triggered auxiliary-model
    task that reviews *agent-created* skills: pin / archive / consolidate / patch. Strict
    invariants in the module docstring: only touches agent-created skills, **never
@@ -165,15 +178,28 @@ coding is a *posture* the agent shifts into when it finds itself in a git repo
 ## Stack & repo shape
 
 Python 3.11+ (uv), with TypeScript for the desktop app (Electron), web dashboard, and a
-Tauri bootstrap installer. 8,071 tracked files: 3,660 `.py`, 1,477 `.md`, 1,297 `.ts`,
-597 `.tsx`. 19,628 commits in ~12.5 months — dominated by Nous' Teknium (~7,350 commits
-across two identities), so it's maintainer-led, not drive-by-scaled.
+Tauri bootstrap installer. 10,925 tracked files at v2026.8.31 (`git ls-tree -r`; was
+8,071): 4,881 `.py`, 1,951 `.ts`, 1,583 `.md`, 800 `.tsx` — plus 725 `.com` files that
+are not code at all: `contributors/emails/` names each mapping file after a commit
+email, a merge-conflict-avoidance structure invented for thousand-PR flow (one file per
+mapping so concurrent salvage PRs never collide; CI-enforced). 26,683 commits in ~13.5
+months, maintainer-led, not drive-by-scaled — Teknium is 7,421 of 19,628 at the old pin
+and 9,339 of 26,683 at this one (`git shortlog -sn`, summing his two identities; the
+deep-dive's "~7,350" carried no measure — corrected 2026-09-04). But a commit count for
+this repo is **not a comparable unit of work**: see the re-read section's velocity
+finding.
 
 The shape is the opposite of opencode's 33-package monorepo: a **flat Python core with
-megafiles**. `cli.py` is 17,976 lines; `hermes_cli/main.py` 11,031; `run_agent.py`
-7,410; `agent/conversation_loop.py` 7,040. The `agent/` package is one directory of
-~180 modules. Capability lives at the edges as data: 70 bundled + 111 optional skills
-(`SKILL.md` dirs), 33 model-provider plugins, plugin platforms for the gateway.
+megafiles**, and at this pin the finding is *more* true than at the last one —
+`cli.py` 17,976 → 22,268 lines; `hermes_cli/main.py` 12,420 → 14,834 *(correction
+2026-09-04: the deep-dive wrote 11,031, wrong at its own pin — the citation into the
+file was read at the pin, the line count was not)*; `run_agent.py` 7,410 → 9,413;
+`agent/conversation_loop.py` 7,040 → 8,830; `gateway/run.py` 25,766 → 33,539. The
+`agent/` package is 155 top-level / 210 recursive `.py` modules (the deep-dive's "~180"
+lands only on the recursive count, which includes `agent/lsp/` etc.). Capability lives
+at the edges as data: 58 bundled + 137 optional skills (`SKILL.md` dirs — bundled
+*shrank* from 70 while optional grew from 111), 39 model-provider plugins, 22 gateway
+platform plugins.
 
 ## Architecture
 
@@ -181,14 +207,16 @@ megafiles**. `cli.py` is 17,976 lines; `hermes_cli/main.py` 11,031; `run_agent.p
 
 ```
 hermes                      pyproject [project.scripts] → hermes_cli.main:main
-  └ cmd_chat                hermes_cli/main.py:2495
-      └ cli.main            cli.py (17,976-line interactive REPL)
-          └ AIAgent         run_agent.py:409 (constructed once, cached across turns)
-              └ run_conversation   agent/conversation_loop.py:1084
+  └ cmd_chat                hermes_cli/main.py:3163
+      └ cli.main            cli.py (22,268-line interactive REPL)
+          └ AIAgent         run_agent.py:422 (constructed once, cached across turns)
+              └ run_conversation   agent/conversation_loop.py:1899
                   └ build_turn_context   agent/turn_context.py (per-turn prologue)
                   └ [loop]  API call → tool dispatch → guardrails → repeat
                   └ turn_finalizer / background_review fork
 ```
+
+(Line numbers repointed at the v2026.8.31 re-read; every hop re-verified.)
 
 The gateway (`gateway/`), TUI (`tui_gateway/`, `ui-tui/`), desktop app, ACP adapter
 (`acp_adapter/` — `hermes acp` for editors), cron, and batch runner all funnel into the
@@ -196,7 +224,7 @@ same `run_conversation`.
 
 ### The agent loop
 
-`conversation_loop.py:1258`:
+`conversation_loop.py:2094` (byte-identical since the deep-dive, only the line moved):
 
 ```python
 while (api_call_count < agent.max_iterations and agent.iteration_budget.remaining > 0) or agent._budget_grace_call:
@@ -215,51 +243,80 @@ tool results → controlled turn halts. Compare opencode's doom-loop-as-permissi
 hermes resolves it in-band with the model rather than escalating to the human.
 
 Termination adds two coding-specific gates: `agent/verification_stop.py` ("policy-only —
-never runs checks itself") nudges the model back up to 3 times when it tries to finish
-right after editing code without fresh verification evidence, with an explicit
-suppression list for non-code extensions so a README edit "must never demand a /tmp
-verification script"; and a `pre_verify` plugin hook lets user policy inject one more
-turn. This is exp-01's "measured verification gate" mechanism living *inside a category-2
-harness* — evidence-ledger-driven, though the evidence bar is "ran something", not a
-hidden verifier.
+never runs checks itself") nudges the model back up to **2** times when it tries to finish
+right after editing code without fresh verification evidence *(correction 2026-09-04:
+the deep-dive wrote "3"; `max_attempts: int = 2` at both pins — 524ab5399:210,
+v2026.8.31:238)*, with an explicit suppression list for non-code extensions so a README
+edit "must never demand a /tmp verification script"; and a `pre_verify` plugin hook lets
+user policy inject one more turn. This is exp-01's "measured verification gate"
+mechanism living *inside a category-2 harness* — evidence-ledger-driven, though the
+evidence bar is "ran something", not a hidden verifier. New in the window and easy to
+misread: `agent/verify/` (869 lines, ported from `superagent-ai/grok-cli` with source
+URLs cited in its `__init__.py`) is a verifier that *does* run checks — build/test/
+readiness recipes — but it is reachable only as the `hermes verify` CLI subcommand: not
+registered as a model tool, not in any toolset. A human-invoked runner beside a
+policy-only in-loop gate; the `engine` grade above describes the in-loop gate only.
 
 ### Context assembly
 
 The governing rule is stated in `AGENTS.md` as a design law: **"Per-conversation prompt
 caching is sacred."** Everything else follows from it.
 
-`build_system_prompt_parts` (`agent/system_prompt.py:152`) assembles **three explicit
-cache tiers**:
+`build_system_prompt_parts` (`agent/system_prompt.py:435` at v2026.8.31, was :152)
+assembles **three explicit cache tiers**:
 
 - **stable** — identity (SOUL.md or hardcoded fallback), task-completion and
   parallel-tool-call guidance, per-tool behavioral blocks (only for tools actually
-  loaded), the skills index, environment hints, the coding operating brief;
+  loaded), environment hints (plus, since the window, a one-line environment probe —
+  `tools/env_probe.py`, default on, silent when the environment is clean), the coding
+  operating brief;
 - **context** — the workspace snapshot (git state, built **once** and never re-probed —
   the brief tells the model to re-check with `git` because the snapshot is allowed to go
   stale rather than shatter the cache), context files, caller system message;
-- **volatile** — memory snapshot (`MEMORY.md`), user profile (`USER.md`), external
-  memory provider block, and a **date-only** timestamp — minute precision was removed
-  because it "invalidates prefix-cache KV on every rebuild path" (credited to a
-  community PR in the comment).
+- **volatile** — now led by the **skills index** (moved out of stable 2026-08-03, per
+  the drift check; confirmed at this pin at `system_prompt.py:926`, with a limitation
+  the drift check didn't have: the comment concedes the move has *"no effect for
+  single-block `cache_control` backends"* — i.e. on Anthropic-style explicit-breakpoint
+  caching, the self-modifying-agent-vs-stable-prefix tension is documented, not fixed),
+  the memory snapshot (`MEMORY.md`), user profile (`USER.md`), external memory provider
+  block, and a **day-granular** timestamp — minute precision was removed because it
+  "invalidates prefix-cache KV on every rebuild path" (still credited to PR #20451).
+  The timestamp has since grown three principled exceptions: a DST-stable zone/offset
+  suffix, a rebuild-day correction line emitted only at compaction boundaries (where
+  the prefix is already invalid), and a timeless mode for eternal bot-chat sessions.
 
 The prompt is cached on the agent instance and never re-rendered mid-session; even
 `/coding` mode flips are deferred to the next session. Context files: it loads its own
 `HERMES.md` **and** `AGENTS.md`, `CLAUDE.md`, and `.cursorrules` — a harness that reads
-its competitors' rules files as first-class input.
+its competitors' rules files as first-class input (v2026.8.31 adds
+`AGENTS.override.md` and `.cursor/rules/*.mdc`).
 
-Compression (`agent/context_compressor.py`, 5,696 lines) is the stated single exception
-to cache sanctity: an auxiliary cheap model summarizes middle turns behind a pluggable
-`ContextEngine` ABC (`context.engine` in config — the compressor is just the default
-implementation, with a documented lifecycle for third-party engines).
+Compression (`agent/context_compressor.py`, 8,842 lines — up 55% from 5,696 across 93
+window commits, the re-read's most-changed core component as the drift check predicted)
+is the stated single exception to cache sanctity: an auxiliary cheap model summarizes
+middle turns behind a pluggable `ContextEngine` ABC (now its own module,
+`agent/context_engine.py`, selected via `context.engine` in config). Window changes,
+each with its default stated: **lean tail retention is the new default** (compaction
+keeps a clamped 10–25K verbatim tail instead of 100–240K — the landing commit says so
+in those words); **native provider-side compaction** (`agent/native_compaction.py`)
+exists but is gated to the gpt-5.6 family on direct OpenAI/Codex routes only, because
+older families fail server-side with an un-downgradeable 500/stall; **micro-compaction**
+ships default-off; in-place compaction replaced session rotation as the default.
+Presence ≠ operative on the pluggability: `plugins/context_engine/` contains only
+`__init__.py` — the compressor is not merely the default engine, it is the only
+implementation in-tree.
 
 ### Tool surface & permissions
 
-**89 `registry.register()` calls across 38 tool modules; 61 tools in the shared core
-set** (`_HERMES_CORE_TOOLS`, `toolsets.py`); **78 registrations carry a `check_fn`**
+**93 `registry.register()` calls across 45 tool modules; 53 tools in the shared core
+set** (`_HERMES_CORE_TOOLS`, `toolsets.py` — AST-counted; the deep-dive's 89/38/61 were
+exact at the old pin, same measures); **73 registrations carry a `check_fn`**
 availability gate (TTL-cached) that removes tools from the schema when their service
 isn't present (no `HASS_TOKEN` → no Home Assistant tools; no `HERMES_DESKTOP` → no GUI
-pane tools). 58 named toolsets compose them. Schemas live in the central registry
-(`tools/registry.py`), declared at module level by each tool file.
+pane tools). 59 named toolsets compose them. Schemas live in the central registry
+(`tools/registry.py`), declared at module level by each tool file. Note the direction:
+registrations grew while the core set *shrank* 61 → 53 — like the bundled-skills
+pruning, default surface is being moved outward.
 
 Permissions are **dangerous-command approval at dispatch time** (`tools/approval.py`):
 pattern detection, per-session approval state, a *smart-approval* path where an
@@ -270,8 +327,16 @@ details worth recording:
   reading the env var per-call "would allow any skill running inside the process to set
   this variable and instantly bypass all approval checks — a prompt-injection escalation
   path". Prompt-injection is modeled as a threat *from the agent's own extensions*.
-- Hard write-denials (`agent/file_safety.py`) protect `~/.ssh/*`, the active profile's
-  `.env`, and Hermes' own state regardless of approval outcome.
+  (Verbatim at v2026.8.31, `approval.py:34-37`. The window added a second, session-scoped
+  bypass axis — a gateway `/yolo` toggle — collapsed with the frozen env var and
+  `approvals.mode: off` into one `is_approval_bypass_active_for_session()` predicate,
+  and an operator-authored policy-text hook on the smart-approval guardian's prompt.)
+- Hard write-denials (`agent/file_safety.py`) protect `~/.ssh` key material, the active
+  profile's `.env` (family since expanded: `.env.local/.production/.envrc`…), and
+  Hermes' own state regardless of approval outcome. One deliberate narrowing in the
+  window: `~/.ssh/config` moved *out* of the unconditional deny set to approval-gated —
+  editing host aliases is routine — the permission model's only loosening, argued rather
+  than drifted.
 
 So on the template's question: the permission check is **after the model decides**
 (dispatch-time), but the tool *schema* is filtered before the model ever sees it
@@ -306,12 +371,20 @@ maker's models — stated openly in the README ("Research-ready").
 
 ## Cost model
 
-MIT, free; you pay inference. Provider-agnostic (33 plugins) with Nous' own Portal
+MIT, free; you pay inference. Provider-agnostic (39 plugins) with Nous' own Portal
 subscription as the promoted default — the system prompt includes a subscription-status
 block for Nous users. The "runs on a $5 VPS / hibernates on serverless" pitch makes the
 *hosting* cost shape part of the product, not just the token bill: a persistent
 companion has an idle-time cost problem that a per-invocation CLI doesn't, and two of
-the eight backends exist specifically to solve it.
+the eight backends exist specifically to solve it. Re-checked 2026-09-04: the README —
+Portal section included — is **byte-identical across the entire 7,055-commit window**,
+and no new monetization surface appears in docs (rule 1b: searched README, docs/**,
+AGENTS.md; source not audited for outbound calls). Distribution note: PyPI's
+`hermes-agent` stopped updating at 0.19.0 (uploaded 2026-07-20 — before even the old
+pin) while six git-tagged releases shipped; the promoted install is now
+`curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash`. There is no
+published artifact that matches any recent pin — the rule-8b artifact probe is
+structurally unavailable here, recorded as such.
 
 ## Surprises
 
@@ -325,14 +398,18 @@ the eight backends exist specifically to solve it.
    whitelists on the fork. Expected marketing; found engineering. What's *absent* is any
    measurement that the loop improves outcomes.
 3. **A fourth position in the per-model-prompt split** (README.md three-way). Hermes
-   keeps ONE shared prompt but appends small per-family appendices: ~4.4KB total —
+   keeps ONE shared prompt but appends small per-family appendices: ~4.4KB total at the
+   old pin (824 + 2,694 + 860 chars, `len()` on the constants; 5,569 at v2026.8.31) —
    tool-use enforcement for a listed model set (`gpt, codex, gemini, gemma, grok, glm,
-   qwen, deepseek`), a 2,694-char OpenAI/Grok execution-discipline block, an 860-char
-   Google block (`agent/prompt_builder.py:309–470`). Between opencode's nine full
-   prompts (~1,256 lines) and cline's one: the shared-base-plus-patches position. And
-   the model list is a tell — the appendices target every major family *except*
-   Anthropic's, i.e. the patches paper over deviations from the behavior Claude exhibits
-   by default.
+   qwen, deepseek` — byte-identical tuple at both pins, now `prompt_builder.py:419`),
+   an OpenAI/Grok execution-discipline block (2,694 → 3,885 chars), an 860-char Google
+   block. Between opencode's nine full prompts (~1,256 lines) and cline's one: the
+   shared-base-plus-patches position. And the model list is a tell — the appendices
+   target every major family *except* Anthropic's, i.e. the patches paper over
+   deviations from the behavior Claude exhibits by default. *(2026-09-04: what was this
+   report's inference is now upstream's own comment — `prompt_builder.py:432-433`:
+   "Claude is excluded because it does not exhibit these failure modes." The gated set
+   grew — kimi, minimax, mimo, mistral — still no Claude.)*
 4. **Prompt-cache discipline is the constitution.** "Sacred" is `AGENTS.md`'s own word;
    the date-only timestamp, the never-re-probed workspace snapshot, deferred mode
    flips, and the review fork riding the warm cache are all the same principle applied
@@ -349,11 +426,16 @@ the eight backends exist specifically to solve it.
    (eager / bridge / listing) across schema sizes — e.g. `full|eager`: 810k input
    tokens, $4.05 vs `full|bridge`: 161k, $0.80. Empirical grounding as an internal
    practice, exp-01's load-bearing mechanism, done by a vendor on its own harness.
-8. **Repo-root artifacts of heavy dogfooding**: a Portuguese-language debugging report
+8. **Repo-root artifacts of heavy dogfooding** *(true at the deep-dive pin; expired in
+   the window)*: a Portuguese-language debugging report
    (`relatorio-issue-69678-sqlite-fd-leaks.md`), a screenshot (`sqlite_leak_fix.png`),
    and a competitive-response essay (`hermes-already-has-routines.md` — "Anthropic just
    announced Claude Code Routines… We shipped it two months ago") all committed at the
    top level. The repo is visibly a working surface for agents, not just a product.
+   *(2026-09-04: all three were removed by named `chore:` commits between 2026-08-02 and
+   2026-08-21; the top level at v2026.8.31 carries product docs only, plus a new
+   `SOUL.md` — the shipped persona prompt. The working-surface era is historical; the
+   repo grew a tidying reflex.)*
 
 ## Reasoning-parameter handling — targeted read 2026-08-27 (not a re-read; the pin is unchanged)
 
@@ -470,24 +552,164 @@ then *without a code change*, while at least one of the two allowlists above
 against a model shipped in the same window. The asymmetry, not either half alone, is the
 claim.
 
+### Re-read at v2026.8.31 (2026-09-04) — the section's diagnosis was validated by upstream's own actions
+
+Citations above are at the old pin; at v2026.8.31 the chokepoints moved
+(`resolve_reasoning_config` → `hermes_constants.py:1464`, the capability gate →
+`run_agent.py:7676`, the Anthropic comment → `anthropic_adapter.py:173-192`, call sites
+`:352/:372/:415`, the Grok allowlist → `model_metadata.py:636-650`) and a **fifth
+decision point appeared** in the four-point stack question 1 traced:
+`agent/reasoning_effort.py`, a canonical effort ladder + one
+`clamp_effort` policy (nearest weaker supported level, never escalate, never invert),
+with wire vocabularies declared as data constants. Its Rule 3 — "Never patch a
+predicate. When a provider rejects a level, fix its declared supported set (data), never
+add another vendor-name special case" — is this section's own diagnosis turned into a
+house rule.
+
+**The "instance in waiting" fired, and is scored: correct.** The `ultra → max` map keyed
+on `"gpt-5.6" in model` bit exactly as described — upstream issue **#89503** — and the
+fix commit (`f7d90c941`) deleted both hand maps; the clamp comment at
+`transports/codex.py:605-610` names the same mechanism: hand maps "repeatedly leaked
+internal levels like 'ultra' to the wire (#89503 class)". A successor under an
+unrecognized id now clamps to the nearest weaker level instead of forwarding an
+undefined wire value. The OpenRouter gap was **demoted, not fixed**: a live
+`/v1/models` capability probe now answers first (motivated in-comment by the list going
+"stale one vendor at a time — #75386"), but the static fallback still reads
+`google/gemini-2` and `qwen/qwen3` (`run_agent.py:7743/:7745`) — the under-send
+survives on a cold cache only.
+
+**Evidence on the 2027-02-28 prediction, recorded, not scored** (the window stays open):
+across 7,055 commits both Claude tuples are **byte-identical** — zero code changes,
+through a commit that split the adapter godfile into four modules — while
+`_GROK_EFFORT_CAPABLE_PREFIXES` **required a hand-extension** (`grok-4.6`,
+`model_metadata.py:645-646`). Both halves currently point the predicted way.
+Complication for scoring: the OpenRouter allowlist named in the prediction has been
+architecturally demoted to a fallback, changing what "goes stale" means for it. New
+evidence on the axis itself: two **new Anthropic allowlists** appeared —
+`_MANDATORY_THINKING_CLAUDE_SUBSTRINGS = ("claude-fable",)` (families that 400 on a
+thinking *disable*), whose comment reasons about allowlist risk explicitly ("the failure
+here is asymmetric… **When in doubt, add the family**"), and a one-family
+`_FAST_MODE_SUPPORTED_SUBSTRINGS` — the source-side counterpart of ADR-0049's
+`fast_mode` key. The vendor picks list polarity per failure direction, now with the
+reasoning written down on both sides.
+
 ## Open questions
 
-- **Does the learning loop pay?** No eval in the repo measures skill/memory accumulation
-  against a baseline. A natural experiment for this repo's rig: same task battery, fresh
-  Hermes vs one seeded with N sessions of use. (Large: park unless the category-2 arc
-  continues.)
-- The issue asked what 221k stars in ~12 months represents vs ECC's 235k in 6. The
-  authorship distribution (maintainer-dominated, ~7.3k commits from one person) says
-  Hermes is a *product* with a community, not a prompt-pack phenomenon; a real answer
-  needs traffic/fork/issue-shape comparison at ECC read time.
+- **Does the learning loop pay?** Still unmeasured, and the negative got *stronger* at
+  the re-read: the window added an `evals/` directory with four committed A/B harnesses
+  (compaction recall, browser-tool shape, `read_file` design, tool-schema diet) — the
+  instrument now exists, and none of the four takes skill/memory accumulation as its
+  dependent variable (rule 1b: searched `evals/*/README.md` subjects and grepped
+  `evals/` for skill/memory). Meanwhile the starvation finding (see the distinguishing
+  bet) shows the loop can run for days while silently doing nothing — so "does it pay"
+  is not answerable from the code even in principle; it needs the ledger telemetry the
+  window just added. A natural experiment for this repo's rig remains: same task
+  battery, fresh Hermes vs one seeded with N sessions of use.
+- ~~What do 221k stars represent vs ECC's 235k?~~ **Partially answered at the re-read
+  (2026-09-04)**: 241,330 stars against **940 watchers (0.39%)** and a 25% lifetime PR
+  merge rate over a 26,158-deep open-PR queue — viral discovery plus a product-scale
+  contribution firehose, not a prompt-pack phenomenon. A full comparison still needs the
+  same numbers at an ECC re-read.
 - Does the `execute_code` refund actually shift model behavior toward programmatic tool
   calling, or do models ignore the affordance? Their own trajectory data could answer
-  it; nothing committed does.
-- `conversation_loop.py` at 7k lines with ~15 concern-specific companions
-  (`turn_context`, `turn_finalizer`, `turn_retry_state`…) looks like a monolith being
-  strangler-figged module by module. Worth a `git log` pass to see if the extraction is
-  agent-driven refactoring.
-- The `contributors/emails` directory and the automated "triage sweeper" in `AGENTS.md`
-  (allowed to close PRs as `implemented_on_main` / `cannot_reproduce` / `incoherent`,
-  explicitly barred from taste-based closes) — how much of the 19.6k-commit velocity is
-  agent-operated maintenance? The governance design for it is unusually explicit.
+  it; nothing committed does (re-checked: the four new evals don't either).
+- ~~Is `conversation_loop.py` being strangler-figged?~~ **Answered: no** (2026-09-04).
+  It grew 7,040 → 8,830 lines over 107 window commits; the 9 that mention
+  refactor/extract are local consolidations, and the 29 new `agent/` modules are new
+  concerns, not carved-out loop internals. *(Post-pin caveat: in the 4 days after the
+  tag, an automated campaign cut every megafile 75–85% — see the release assessment;
+  whether that decomposition holds is the next re-read's question.)*
+- ~~How much of the velocity is agent-operated maintenance?~~ **Partially answered
+  (2026-09-04)**: explicit `Co-Authored-By` agent trailers cover 8.7% of window commits
+  (Claude Fable/Opus/Sonnet models named, plus Cursor and Junie) — but the post-tag
+  burst proves the repo also runs large *uncredited* agent campaigns under the
+  maintainer's identity, so the trailer count is a floor with no matching ceiling. The
+  repo makes no in-repo claim about the share (rule 1b: searched AGENTS.md at both revs
+  + docs/** for agent-written/AI-generated/simp). `contributors/emails` decoded: a
+  per-file email→login map that exists so concurrent PR merges never conflict —
+  CI-enforced, 320 → 935 files in the window.
+
+## Release assessment — v2026.8.31 (2026-09-04; pin 524ab5399 → 29112bef0)
+
+*Method: the release-re-read variant of the three-tract pattern — release substance,
+per-claim confrontation (HOLDS/MOVED/CHANGED/GONE/NEVER-REPRODUCED), provenance
+re-measurement — with load-bearing findings spot-verified in the main session. Window:
+524ab5399 (2026-07-30) → 29112bef0 (= tag v2026.8.31), 7,055 commits over 31.9 days,
+clean ancestry. The published-artifact probe is omitted with reason (see Cost model: no
+artifact matches any recent pin). Corrections to claims wrong at their own pin are
+marked in place above (≤2 re-prompts; `hermes sessions export`, not `hermes trace
+upload`; main.py 12,420 lines; Teknium count re-measured); this section carries what
+the window did.*
+
+### Velocity is two different regimes, and only one of them is development
+
+The window itself is sustained, PR-driven, and bugfix-dominated: ~221 commits/day,
+2,974 merged PRs (~2.4 commits each), 3,892 `fix(` to 792 `feat(` — 55% bug-fixing,
+with the one feature concentration in the desktop app (239 feats). Then, **in the four
+days after the tag**, a single automated simplification campaign added 5,211 commits
+(~1,353/day; 4,105 on 2026-09-02 alone, 87% under the maintainer's identity), merged
+through 432 `simp/*` branches that exist nowhere before the tag, bypassing the PR
+process (13 merge-PR commits in the whole burst), and netting **−219,419 lines** —
+every megafile this report names was cut 75–85% (`gateway/run.py` 33,539 → 5,512;
+`cli.py` 22,268 → 4,656), and the 1,784-line root `AGENTS.md` was fanned out into 12
+per-directory guides. None of it carries an agent trailer; nothing in-repo documents
+the campaign. Two consequences for this report: a hermes commit count is meaningless
+without naming which regime produced it, and the "flat Python core with megafiles"
+characterization — *more* true at this pin than at the last — was reversed wholesale
+four days later. **Scoreable for the next re-read: does the post-burst decomposition
+hold, or do the megafiles regrow?**
+
+### What the window built
+
+- **An autonomy surface**: 11 new slash commands (registry 90 → 101), the notable
+  cluster being agent re-entry — `/loop` and `/heartbeat` (recurring prompts that
+  re-enter an idle session), `/bg` (background session), `/btw` (side question without
+  interrupting), with `/pause` as a gateway-wide emergency stop (`agent/estop.py`).
+  The resident-companion bet deepened in exactly the direction `residency: resident`
+  describes.
+- **Agent-to-agent, twice**: Bot Mode (`tools/bot_mode_dm.py` — agents on the user's
+  gateways discover and DM each other over a synced roster; the `message_agent` schema
+  is injected only into a bot's canonical Bot Chat session, kept out of the global
+  registry and every toolset) and an **A2A protocol v1.0 platform**
+  (`plugins/platforms/a2a/`, stdlib-only, inbound + outbound, off by default) whose
+  DESIGN.md doubles as enforcement evidence for the plugin-boundary policy: it
+  documents four earlier core-patching attempts rejected before `ctx.register_platform()`
+  made a zero-core-edit version possible.
+- **A browser overhaul** (15 browser/preview modules; `browser_exec` can replace the
+  whole `browser_*` toolset behind `browser.backend: "browser-use"`) — with its own
+  committed A/B eval, like the compaction and read-tool decisions. The eval habit
+  (Surprise 7) generalized from MCP exposure to four more design decisions in one
+  window; the learning loop stays the unmeasured one.
+- **Governance hardening**: the AGENTS.md triage sweeper text grew mostly on *when not
+  to close* (three enumerated close reasons; taste-based rejection reserved to humans;
+  rubric "distilled from real closes"), and root AGENTS.md gained eight scar-tissue
+  sections each citing issue numbers. Release cadence: 8 date-versioned tags in the
+  window (~1.75/week), zero rc/beta discipline ever, `.2` suffixes as same-day
+  hotfixes — plus five operational-scar refs (`premerge-oh-god`,
+  `backup/opentui-prestrip-…`) from a bad 2026-05-28.
+- **Competitor absorption as standing posture**: the window ported grok-cli's verify
+  subsystem with source URLs in the docstring, wrote an RFC on plugin-architecture
+  lessons from pi and opencode, and built `evals/readtool/` because a rival's
+  ten-harness benchmark got Hermes' column wrong. Reading competitors' rules files
+  (Surprise 3 of the deep-dive) was one instance of a general behavior.
+- **`/plan` promoted from skill to builtin** — because messaging platforms cap command
+  menus and trim the skill tier alphabetically, and `plan` sorted past the cutoff. A
+  downstream UI cap forcing a capability from the extension tier into the core is the
+  reverse of AGENTS.md's "extended through plugins and skills, not by growing the
+  core", and worth carrying to the category-6 discussion.
+
+### The re-read's own audit
+
+Four claims never reproduced at their own pin — the "≤3 re-prompts" cap (2 at both
+pins), the `hermes trace upload` command name (mechanism real, identifier invented),
+`hermes_cli/main.py` at 11,031 lines (12,420 — provably not a clone artifact, since a
+citation into the same blob lands exactly), and the Teknium count stated without its
+measure. Against those, the counts that carried an implicit measure — 89/38/61/78/58
+tool-surface numbers, 70/111 skills, the 2,694- and 860-char prompt blocks, the
+mcp-research bench figures to the dollar, and three of the four megafile line counts —
+reproduced exactly; the one with-measure miss is the fourth megafile count above. The
+same split the ai-memory re-read scored 8-for-8 vs 0-for-5 holds here in kind if not
+in a single clean ratio: measured counts survive their own pin, unmeasured ones are
+where the errors live. One inter-doc conflict found upstream: two docstrings
+disagree about which cache tier the workspace snapshot lives in (`system_prompt.py`
+says context; `coding_context.py` says stable); this report follows the assembler.
