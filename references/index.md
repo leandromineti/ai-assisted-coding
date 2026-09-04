@@ -5,7 +5,7 @@
      references/cards/, then re-run the script. -->
 
 Every source with a note. **Papers** (22) below, grouped by kind, then
-**vendor model cards** (4) — a separate half because a card is not
+**vendor model cards** (6) — a separate half because a card is not
 literature: it has no `read_depth` to declare, and it is rewritten in place at one
 URL, so each card note carries the archive snapshot its quotes rest on (ADR-0034).
 Newest retrieved: `2026-08-18`.
@@ -72,4 +72,6 @@ Newest retrieved: `2026-08-18`.
 | [2026-claude-opus-5](cards/2026-claude-opus-5.md) | Anthropic | `Claude Opus 5` | 2026-07-24 | · | 2026-08-26 | [archived](https://web.archive.org/web/20260824142558/https://www-cdn.anthropic.com/ceaf5c7ff2783855203fde8208ec311252dced5b/Claude%20Opus%205%20System%20Card.pdf) |
 | [2026-claude-sonnet-5](cards/2026-claude-sonnet-5.md) | Anthropic | `Claude Sonnet 5` | 2026-06-30 | · | 2026-08-26 | [archived](https://web.archive.org/web/20260724170615/https://www-cdn.anthropic.com/283ef97c476cf442c91d9a37d5b214242a55bb92/Claude%20Sonnet%205%20System%20Card.pdf) |
 | [2026-gemini-3-1-pro](cards/2026-gemini-3-1-pro.md) | Google DeepMind | `Gemini 3.1 Pro` | 2026-02 | 2026-02 | 2026-08-26 | [archived](https://web.archive.org/web/20260821204825/https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-3-1-Pro-Model-Card.pdf) |
+| [2026-gemini-3-8-flash](cards/2026-gemini-3-8-flash.md) | Google DeepMind | `Gemini 3.8 Flash` | 2026-09-02 | 2026-09-02 | 2026-09-04 | [archived](https://web.archive.org/web/20260904224020/https://deepmind.google/models/model-cards/gemini-3-8-flash/) |
 | [2026-gemini-3-pro](cards/2026-gemini-3-pro.md) | Google DeepMind | `Gemini 3 Pro` | 2025-11 | 2026-05 | 2026-08-26 | [archived](https://web.archive.org/web/20260820223002/https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-3-Pro-Model-Card.pdf) |
+| [2026-gpt-6-astra](cards/2026-gpt-6-astra.md) | OpenAI | `GPT-6 Astra` | 2026-09-03 | 2026-09-03 | 2026-09-04 | [archived](https://web.archive.org/web/20260904224247/https://deploymentsafety.openai.com/gpt-6-astra) |

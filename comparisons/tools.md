@@ -23,10 +23,13 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | claude-opus-5 | — | — | `closed-source` | proprietary | — | — | — | `—` | survey | [claude-opus-5](../tools/1-models/claude-opus-5.md) |
 | claude-sonnet-5 | — | — | `closed-source` | proprietary | — | — | — | `—` | survey | [claude-sonnet-5](../tools/1-models/claude-sonnet-5.md) |
 | claude-fable-5 | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [claude-fable-5](../tools/1-models/claude-fable-5.md) |
+| claude-fable-5-1 | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [claude-fable-5-1](../tools/1-models/claude-fable-5-1.md) |
 | deepseek-v4 | — | — | `open-weights` | unverified for V4 weights (HF org page shows no license in the listing checked; do not assume the V2/V3-era licenses carry over) | — | — | — | `—` | stub | [deepseek-v4](../tools/1-models/deepseek-v4.md) |
 | gemini-3-1-pro | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [gemini-3-1-pro](../tools/1-models/gemini-3-1-pro.md) |
+| gemini-3-8-flash | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [gemini-3-8-flash](../tools/1-models/gemini-3-8-flash.md) |
 | glm-5.3 | — | — | `open-weights` | GLM-5.3 License — bespoke, named after the model (the sweep's third such, after Kimi K3's and qwen3.8-max's; LICENSE file read 2026-08-31). Not OSI-shaped: its distinctive term is a Model-as-a-Service gate — a licensee whose aggregate revenue exceeds $10B 'must pass Z.AI's security review before using the Software' — which rhymes with the offensive-security rationale for the weights delay. No attribution requirement, no output/synthetic-data clauses | — | — | — | `—` | stub | [glm-5.3](../tools/1-models/glm-5.3.md) |
 | gpt-5-6-sol | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [gpt-5-6-sol](../tools/1-models/gpt-5-6-sol.md) |
+| gpt-6-astra | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [gpt-6-astra](../tools/1-models/gpt-6-astra.md) |
 | grok-4-5 | — | — | `closed-source` | proprietary | — | — | — | `—` | stub | [grok-4-5](../tools/1-models/grok-4-5.md) |
 | kimi-k3 | — | — | `open-weights` | Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here) | — | — | — | `—` | stub | [kimi-k3](../tools/1-models/kimi-k3.md) |
 | qwen3-coder-next | — | — | `open-weights` | Apache-2.0 | — | — | — | `—` | stub | [qwen3-coder-next](../tools/1-models/qwen3-coder-next.md) |
@@ -93,4 +96,4 @@ Every tool with a report, one subsection per category in repo order. Newest read
 |---|---|---|---|---|---|---|---|---|---|---|
 | ecc | — | Markdown, Node | `open-source` | MIT | 248,417 | 2026-01-17 | 23 documented install invocations across ~13 named targets: Claude Code, Cursor, OpenCode, Gemini CLI, Zed, Antigravity, Qwen CLI, Hermes, OpenClaw, Kimi Code, CodeBuddy, JoyCode, plus Codex via a sync script; manual-adaptation guide for the rest. Reach ≠ parity: upstream graded these itself on 2026-08-04 (#2681) — Claude Code stable, Codex supported-sync, Cursor/OpenCode beta, Copilot instruction-only, the remaining nine experimental/minimal. Counted at e4e41631; grading recorded at the 2026-08-11 drift check | `v2.1.0-16-ge4e41631` | deep-dive | [ecc](../tools/6-extensions/ecc.md) |
 
-**48 tools** — 21 deep-dive · 19 stub · 8 survey.
+**51 tools** — 21 deep-dive · 22 stub · 8 survey.

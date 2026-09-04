@@ -41,6 +41,15 @@ depth: stub
 
 # Claude Fable 5
 
+> **Succession note (2026-09-04):** [Claude Fable 5.1](claude-fable-5-1.md) went GA
+> 2026-09-01 and the docs restamped this model **"Legacy"** (model page header;
+> the deprecations table still says `Active`, Deprecated `N/A` — the two surfaces
+> use the lifecycle vocabulary inconsistently), with "you should consider
+> migrating" and retirement "Not sooner than June 9, 2027". Every spec below held
+> at the 5.1 launch — the only documented diffs are on the 5.1 report (§ What
+> changed). This report's six wire-behavior OBSERVED cells remain the 5.0 record;
+> they do not transfer to 5.1.
+
 Anthropic's most capable widely released model: "next-generation intelligence for
 long-running agents." GA 2026-06-09 across Claude API and all cloud routes — then
 **suspended three days later** (2026-06-12) and redeployed, with the vendor's

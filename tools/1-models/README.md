@@ -1,6 +1,6 @@
 # Category 1 — Models
 
-`checked: 2026-08-31`
+`checked: 2026-09-04`
 
 The weights. See [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md) for what this category is and how
 it's judged.
@@ -133,6 +133,22 @@ not adding vocabulary for vendor silence. A `not-stated` marker remains the righ
 only for facts a probe cannot reach (cutoffs, dates) — which is exactly where the repo
 already has one.
 
+**2026-09-04 — 16 models: the issue #43 roster batch** ([gpt-6-astra](gpt-6-astra.md),
+[gemini-3-8-flash](gemini-3-8-flash.md), [claude-fable-5-1](claude-fable-5-1.md), all
+launched within one week, ingested docs-route as one batch). All three reasoning keys
+land **16/16**, with two cells worth the read: GPT-6 Astra's `reasoning_effort`
+default is stated on no first-party surface and was settled by the docs→probe
+escalation route (omitted-effort Responses call echoes `effort: "medium"` — the
+second time that route closed a cell the vendor left blank, after qwen3.8-max), and
+its level set is the first non-Anthropic `low/medium/high/xhigh/max` — the two
+biggest Western makers now share one five-name vocabulary. `fast_mode` moves to
+**5 ✓ / 10 ✗ / 1 ·** and the regional split holds: both new Western models carry a
+paid speed tier (Astra 2x price; Gemini 3.8 Flash's Priority at a derived exactly-1.8x),
+and Gemini 3.8 Flash *narrows* its reasoning floor (drops `minimal`) while no
+non-Western entry changed. The six ADR-0050 wire-behavior keys are deliberately
+absent from all three new reports — they are OBSERVED cells owed by the probe-roster
+fork (issue #43 phase 2), not docs facts.
+
 The other half of the surface is **9 transcription fields** — `maker`, `license`,
 `access`, `model_id`, `release_date`, `context_window`, `max_output`, `pricing`,
 `knowledge_cutoff` — facts copied from a dated source rather than judged.
@@ -153,12 +169,15 @@ are claims.
 
 | Model | Maker | Release | One-line |
 |-------|--------|---------|----------|
-| [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive reasoning; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. |
+| [**Fable 5**](claude-fable-5.md) | Anthropic | GA 2026-06-09 (suspended 06-12, redeployed ~07-01) | Frontier tier; always-on adaptive reasoning; ~30% tokenizer inflation vs pre-4.7 models; domain-gated Mythos 5 twin. $10/$50. **Legacy since 2026-09-01** (5.1 below); its six wire-behavior cells stay the 5.0 record. |
+| [**Fable 5.1**](claude-fable-5-1.md) | Anthropic | GA 2026-09-01 | Added 2026-09-04 (issue #43 batch). Supersedes Fable 5; same specs and base price, **cache reads cut to 0.025x ($0.25/MTok)** — the first break in the universal 0.1x multiplier; cutoffs Jun 2026; forced `tool_choice` now 400s (breaking). First sighted in OpenAI's Astra benchmark table, then first-party. |
 | [**Opus 5**](claude-opus-5.md) | Anthropic | GA 2026-07-24 | Agentic workhorse; 1M context **standard** (the earlier "1M variant" phrasing was stale). Freshest knowledge cutoff in the lineup (May 2026). $5/$25. Exp-01's arm model. |
 | [**Sonnet 5**](claude-sonnet-5.md) | Anthropic | GA 2026-06-30 | Mid-tier; **the rig's pinned model for all category-4 experiment arms.** Now measured in-repo: 18–20/21 on the tarpeek verifier (n=6 incl. Run A), $0.41/run. $2/$10 became the *standard* price on 2026-08-17 — the scheduled September increase was cancelled, so August ledgers are at list price. |
 | [**Haiku 4.5**](claude-haiku-4-5.md) | Anthropic | GA 2025-10-15 | Small/fast tier; in practice the *background-cognition* model inside other tools (ECC's instinct analysis runs on it). Now measured in-repo: uniform 17/21, one packaging DOA, $0.150/run — fully separated from Sonnet on the same instrument. Feb 2025 cutoff. $1/$5. |
+| [**GPT-6 Astra**](gpt-6-astra.md) | OpenAI | 2026-09-03, no stage word (staged rollout: "a limited set of organizations", then "over the coming days"; answered on the probe key 2026-09-04) | Added 2026-09-04 (issue #43's gate model). $10/$50, context-tiered (everything 2x above 272K input); 1.05M window but **922K max input, stated first-party**; reasoning mandatory (`none` → 400) with the first non-Anthropic five-level effort set, default `medium` by probe; misalignment monitoring can **end API tasks** (HTTP 403 `misalignment_policy_violation`, unresumable); tool calling requires Responses. |
 | [**GPT-5.6 Sol**](gpt-5-6-sol.md) | OpenAI | 2026-07-09 (stage ambiguous: 'preview' vs 'Released', vendor's two surfaces disagree) | Frontier tier of a three-tier family (Sol $5/$30 · Terra $2/$12 · Luna $0.20/$1.20), all 1.05M ctx, Feb 2026 cutoff. **GPT-5.5 is retired** — gone from the current models page (2026-07-31), so the Terminal-Bench row below cites a model you can't buy. |
-| [**Gemini 3.1 Pro**](gemini-3-1-pro.md) | Google | Preview since 2026-02-19, no GA plan stated | Still **Preview** while the Flash line is Stable. Tiered pricing doubles above 200k input tokens — taxing the long-context pitch. Window resolved 2026-08-17: 1,048,576 in / 65,536 out, from the per-model page. |
+| [**Gemini 3.1 Pro**](gemini-3-1-pro.md) | Google | Preview since 2026-02-19, no GA plan stated | Still **Preview** while the Flash line is Stable (the sweep now holds a Stable Gemini — 3.8 Flash below). Tiered pricing doubles above 200k input tokens — taxing the long-context pitch. Window resolved 2026-08-17: 1,048,576 in / 65,536 out, from the per-model page. |
+| [**Gemini 3.8 Flash**](gemini-3-8-flash.md) | Google | 2026-09-02, badged **New Stable** on the models index (no stage word in the launch post) | Added 2026-09-04 (issue #43 batch). **The sweep's first Stable-track Gemini.** Intro $0.75/$3.75 doubles 2027-01-01 — a dated cliff stated inline in every pricing cell, scoreable. Thinking floor *narrowed* (no `minimal`, no off); cutoff Mar 2026 lives only on the DeepMind card; Priority tier exactly 1.8x (derived). Fairwind-gated Cyber sibling not assessable (no key path). |
 | [**Grok 4.5**](grok-4-5.md) | xAI | 2026-07 (day 08 third-party only), no stage vocabulary | Coding/agent-tuned, 1.5T-param V9 base. **Trained on real Cursor session data.** 500k ctx — *half its cheaper siblings' 1M*. $2/$6 (<200k), $4/$12 above. No EU at launch (2026-07-28 check). |
 | [**Kimi K3**](kimi-k3.md) | Moonshot AI | API ~2026-07-16 (vendor prints no date); weights by 07-27 | Largest open-weight model: 2.8T total / 104B activated, KDA, 1M ctx (2^20 exactly), native vision, **QAT-native MXFP4 release**. Bespoke "Kimi K3 License". Claims Terminal-Bench 2.1 **88.3** — harness unstated. |
 | [**DeepSeek V4**](deepseek-v4.md) | DeepSeek | Preview 2026-04-24 → GA 2026-08-13 (vendor's words) | Row verified: API is `deepseek-v4-pro`/`-flash`, both 1M ctx, **384K max output** (3× everyone else), weights on HF (`both` release mode). Repriced 2026-08-16 to peak/off-peak (off-peak = 50%); still the sweep's cheapest, cache hits near-free. |
@@ -292,6 +311,23 @@ check starts where the fact actually lives:
   extensive"*, training data cutoff is *"the broader range of data used"*. **Haiku 4.5 is
   the specimen where they diverge** — 2025-02 vs 2025-07, five months — while the three
   Claude 5 models have them equal. A single-date field would have flattened that.
+
+- **OpenAI docs moved and grew a Markdown twin** (found 2026-09-04, the Astra read):
+  `platform.openai.com/docs/*` now **301-redirects to `developers.openai.com/api/docs/*`**
+  — the [gpt-5-6-sol](gpt-5-6-sol.md) report's `url` rides that redirect until its next
+  re-check. Two properties of the new surface are load-bearing: appending **`.md`** to a
+  docs URL serves a Markdown twin that carries facts an HTML-to-text pass silently drops
+  (the endpoint table's Supported markers, Astra's max-input line — prefer `.md` for
+  transcription); and system cards moved off the CDN to **`deploymentsafety.openai.com`**
+  ("Deployment Safety Hub"), a rewritten-in-place page with an in-page PDF — the inverse
+  of Anthropic's content-addressed card URLs, so a card note's `snapshot:` does the same
+  job for the opposite reason.
+
+- **Anthropic's docs host consolidated** (2026-09-04): `docs.claude.com` overview URLs
+  302 to `platform.claude.com`, and the 5.1-generation model pages live at
+  `/docs/en/models/<slug>/overview` (per-model pages, rendered tables) rather than the
+  single overview table earlier reads relied on. The values are the same; the
+  structured-fields fetch trick from the 2026-08-26 note now lands on rendered cells.
 
 ## References
 
