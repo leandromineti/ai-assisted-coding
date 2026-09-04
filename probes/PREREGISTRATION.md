@@ -2927,3 +2927,119 @@ and scored at 74.4% of its approved $0.32 envelope, with every vendor far
 under its own sub-ceiling. No further paid call is planned. Promotion of
 this phase's findings into `docs/conclusions.md` and the affected notes
 is Phase 13's declared job, per Task 2's audit entry above.
+
+# Roster fork — issue #43 phase 2: rule-5 preregistration (2026-09-04)
+
+Everything above this heading is Phase 11's and Phase 12's own protocol and Run
+logs, untouched — this is a new, dated top-level section appended below them
+(the same append-only convention Phase 12's own opening states). It governs the
+one-time roster fork that adds the three September launches to both existing
+instruments: **gpt-6-astra**, **gemini-3-8-flash**, **claude-fable-5-1**
+(15-model roster; owner decisions 2026-09-04: claude-fable-5 STAYS beside 5.1,
+behavioral coverage at sibling parity).
+
+### Task
+
+Fire the incremental contract-sweep and behavioral cells for the three new
+models only — every pre-existing cell resolves to an unchanged probe_id and is
+skipped by the runner's raw-JSONL seen-set (verified pre-fire: all 221
+existing-model probe_ids in the stages-1–3 dry run resolve verbatim to the raw
+seen-set; 0 missing). Then classify, regenerate the matrices, and fill the six
+ADR-0050 wire-behavior keys in the three reports — the first test of the
+promoted vocabulary against a model revision (fable-5 vs fable-5-1).
+
+### Measurements — contract instrument (pinned against the 2026-09-04 regeneration)
+
+`probes/inventory-to-sets.py` over the 15-row models.yaml: **535 declared cells
+(515 scalar + 20 content-block), of which 92 are new** — gpt-6-astra 45 (44
+scalar + 1 content-block), gemini-3-8-flash 28 (27 + 1), claude-fable-5-1 19
+(17 + 2) — plus 85 new declared skips (369 total). Stage partition re-derived:
+8 / 17 / 245 / 120 / 125 / 20 (`runner.py --check-stages`: 0 problem(s)).
+
+### Measurements — behavioral instrument (sibling parity, planned)
+
+Hand-authored after the contract stages land (a `phase11:` skip citation cannot
+precede the contract cell it cites). Planned counts, bounded at **≤ 100 billed
+calls**; the stop/n/logprobs branches flex on the contract verdicts:
+
+- gpt-6-astra (sibling shape: gpt-5-6-sol): seed-pairs 10+1 effect control;
+  default-config-repeatability ×5 (temperature is documented-removed); stop
+  pair ×2 or a cited skip if the contract rejects `stop`; n per contract;
+  service-tier-audit ~5; control-arm ×6. ~31 calls.
+- gemini-3-8-flash (sibling: gemini-3-1-pro): seed-pairs 10+1; temp-0 repeats
+  ×5; stop pair ×2; candidateCount per the sibling's wire-rejection precedent;
+  service-tier-audit ~5; control-arm ×6. ~29 calls.
+- claude-fable-5-1 (sibling: claude-fable-5): default-config-repeatability ×5;
+  stop pair ×2; service-tier-audit ×~5 (its OWN cells — revision evidence beats
+  extending the checker's haiku remap); control-arm ×6; three cited skips
+  (docs-claims:`seed/anthropic`, `n/anthropic`, `logprobs/anthropic` — the
+  claims exist; the skips declare them for this model). ~18 calls.
+
+### Declared decisions (recorded before any fire)
+
+1. **gpt-6-astra is probed on Chat Completions** — the openai_compat family's
+   assessed wire. Its docs state tool calling requires the Responses API; the
+   tools/tool-choice/parallel-tool-calls rows fire on Chat Completions anyway,
+   and whatever the wire returns IS the finding. No Responses adapter in this
+   fork.
+2. **Astra's documented-removed `temperature`/`top_p`/`top_logprobs` cells
+   fire**; their rejections are contract findings (documented-removal vs the
+   vendor's own Chat Completions reference still documenting the params
+   vendor-wide), at zero cost if 400.
+3. **Misalignment monitoring: contract only, never the trigger.** All prompts
+   stay the sweep's innocuous fixtures; if HTTP 403
+   `misalignment_policy_violation` ever appears, its shape is recorded as a
+   finding. No probe attempts to elicit it.
+
+### Falsification criteria
+
+- A new model's thinking-on accept shape 400s at stage 2 → its slug-keyed
+  override (or family fragment) is wrong; fix-before-fire, do not proceed to
+  the paid stages for that model.
+- A fired cell's probe_id colliding with the seen-set (existing model re-fired)
+  → the regeneration changed an existing body; STOP, diagnose, re-pin.
+- Fork spend exceeding the approved envelope → stop and checkpoint (existing
+  ceilings also enforce this mechanically).
+
+### Preregistered execution path
+
+Stages 1 → 2 (calibration read before the paid bulk: the three models'
+thinking fragments must be accepted or rejected as their docs predict) → 3 →
+4 → 5 → 6 → content-blocks; then the behavioral sets, hand-authored and fired
+per family file; then classify-probes → classify-behavioral →
+build-probe-matrix → build-behavioral-matrix → build-docs-vs-wire →
+audit-evidence → the 18 report cells → the full battery. Run-log entries
+appended during, never reconstructed.
+
+### Stopping rules
+
+The existing `probes/harness/ceilings.yaml` values, unchanged (verified
+headroom below): global hard $10.00 / warn $8.00 / vendor soft $0.50 default,
+no overrides. The envelope below is the binding constraint; the ceilings are
+the mechanical backstop.
+
+### Envelope
+
+Live ledger read, 2026-09-04 (pre-fork): **global $0.309622**; by vendor:
+anthropic $0.104699 · xai $0.056790 · kimi $0.050673 · openai $0.047825 ·
+qwen $0.019003 · dseek $0.012184 · gemini $0.009762 · zai $0.008687.
+
+Incremental estimates (scaled from each sibling's actual per-call ledger
+costs): contract ~$0.02 (astra ~$0.010, fable-5-1 ~$0.007, flash ~$0.002);
+behavioral ~$0.14 (astra ~$0.09 — gpt-5-6-sol's behavioral $0.0433 at 2x the
+price; fable-5-1 ~$0.045 — fable-5's behavioral was $0.0424; flash ~$0.004).
+Point estimate **~$0.16**; **requested envelope $0.30** (≈2x margin for
+Astra reasoning-token surprises). Per-vendor projections at the envelope's
+worst case stay far under the $0.50 softs (openai ≈$0.15–0.19, anthropic
+≈$0.16–0.19, gemini ≈$0.02).
+
+**Spend sign-off: PENDING.** No cell fires until the owner's approval line is
+appended to the Run log below and quoted verbatim (the 11-07 amendment
+precedent: the approval covers exactly the 92 contract cells plus ≤100
+behavioral calls at the $0.30 envelope — more requires a new checkpoint).
+
+### Run log
+
+Appended **during** the run, never reconstructed afterward — the protocol text
+above is never edited once committed (methodology rule 5). Each entry is
+dated. Empty at creation.
