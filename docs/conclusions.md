@@ -641,7 +641,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     cascade auto-applies when mounted). The asymmetry has a clean incentive reading:
     an independent memory product that required human commits would surrender the
     "your agent just remembers" pitch that is the type's entire sales surface, so
-    write governance concentrates in the layer whose product does not depend on
+    write governance concentrates in the tool whose product does not depend on
     writes happening — the harness. Corollary for anyone running the supply side:
     with auto-apply universal among vendors, `write_admission` (evidence-gated ·
     scored · unfiltered) is the only control standing between a session and the
