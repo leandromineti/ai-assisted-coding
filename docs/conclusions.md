@@ -146,7 +146,13 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    (hermes' `execute_code`, codex's sandboxed-V8 code-mode), and plan modes everywhere.
    Consequence for the experiment arc: a category-4 framework's measured margin must be
    re-baselined against what the harness already does — recorded as a design rider on
-   exp-03 in [`docs/`](README.md). →
+   exp-03 in [`docs/`](README.md). *(Reliability datum on the flagship absorbed loop,
+   2026-09-04, hermes v2026.8.31 re-read: hermes' on-by-default review fork had been
+   silently **starving in production** — its own tool whitelist denied `read_file`, ~142
+   denials in two days on one deployment, "almost no patch landed" per the upstream
+   comment that widened the whitelist. An absorbed loop can be default-on, gated, and
+   doing nothing; presence≠operative applies to the absorption thesis too, and only the
+   vendor's own telemetry caught it.)* →
    [`tools/2-harnesses/hermes-agent.md`](../tools/2-harnesses/hermes-agent.md),
    [`tools/2-harnesses/codex.md`](../tools/2-harnesses/codex.md)
    **Third instance, and a counter-instance (2026-08-11, Warp survey; evidence upgraded
@@ -384,7 +390,18 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     ability to detect or fix the sub-harness's, which is one of the four failures above.
     Delegation moves the obligation; it does not discharge it.
     Scope: five harnesses read closely, two (gemini-cli single-vendor, codex config-driven)
-    structurally out of reach of the pattern; Warp characterised as a delegating case. →
+    structurally out of reach of the pattern; Warp characterised as a delegating case.
+    **VALIDATED BY UPSTREAM 2026-09-04** (hermes v2026.8.31 release re-read): the exact
+    hardcoded-generation-string instance the qualification flagged as "in waiting" fired
+    as hermes' own issue #89503 within four weeks, and their fix commit names the same
+    mechanism before replacing every per-backend hand map with declared wire
+    vocabularies plus one clamp policy ("Never patch a predicate… fix its declared
+    supported set (data), never add another vendor-name special case"). Meanwhile the
+    denylist ran the whole 7,055-commit window byte-identical — zero code changes,
+    through an adapter-splitting refactor — while the Grok allowlist needed a
+    hand-extension for grok-4.6, and the OpenRouter gap was *demoted* (live catalog
+    probe first, stale static list as cold-cache fallback), not fixed. The conclusion's
+    cost thesis now has the vendor's own engineering as corroboration. →
     [`tools/2-harnesses/opencode.md`](../tools/2-harnesses/opencode.md) §7 ·
     [`cline.md`](../tools/2-harnesses/cline.md) §3 ·
     [`continue.md`](../tools/2-harnesses/continue.md) ·
