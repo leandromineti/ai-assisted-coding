@@ -1,6 +1,6 @@
 # Category 2 — Harnesses
 
-`checked: 2026-08-27`
+`checked: 2026-09-04`
 
 Loop + context assembly + permission model + UI. See
 [`../../docs/tool-taxonomy.md`](../../docs/tool-taxonomy.md).
@@ -19,12 +19,16 @@ They sort under the category's three components — the loop (`subagents`, `plan
 the permission gate (`tool_approval`, `headless_approval`) — with the rest describing reach
 and portability.
 
-Thirteen are presence-claims. Two are not: `turn_end_gates` is graded engine \| hook \|
+Twelve are presence-claims. Three are not: `turn_end_gates` is graded engine \| hook \|
 script \| prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
-because *who enforces* a gate turned out to matter more than whether one exists; and
+because *who enforces* a gate turned out to matter more than whether one exists;
 `headless_approval` is a closed enum (deny \| allow) for the same species of reason one
 level down — *under what conditions* a gate holds turned out to matter more than whether
-it exists.
+it exists; and `tool_approval`, the category's first completed column, was regraded
+2026-09-04 ([ADR-0053](../../adrs/0053-tool-approval-architecture-enum.md)) from presence
+to an architecture enum — prompt \| policy \| sandbox \| none — once issue #34's key-scope
+decision unblocked it: the boolean had flattened a seven-way mechanism spread into ✓ and
+rendered dsh and pi's opposite philosophies as identical ✗.
 
 `headless_approval` joined 2026-08-27 when the aider read supplied a second instance taking
 the **opposite value** from gemini-cli's: aider's gate fails **open** when there is no TTY
@@ -49,7 +53,9 @@ unset everywhere else, including the two harnesses with no gate at all (dsh, pi)
 null is data rather than a gap.
 
 The same probe closed `tool_approval` — **12 of 12 harness reports set, 10 present / 2
-absent**, the first assessed key in this category with no honest dots left. What completing
+absent**, the first assessed key in this category with no honest dots left. (Since the
+2026-09-04 regrade those read 1 `prompt` + 9 `policy` / 1 `sandbox` + 1 `none` — ADR-0053's
+decoder.) What completing
 it exposed is that a ✓ can hide two opposite defaults inside one tool: cline's gate is a
 property of the **surface**, not the engine. Its SDK checks `autoApprove === false` against
 an optional field and ships an empty default policy — *"The SDK defaults unlisted tools to
@@ -68,8 +74,10 @@ aggressively extensible so it doesn't have to dictate your workflow… This keep
 minimal"* — followed by six clauses: **No MCP · No sub-agents · No permission popups · No
 plan mode · No built-in to-dos · No background bash**, each with the same rationale, *build
 it as an extension*. Four of those are cells here (`mcp`, `subagents`, `tool_approval`,
-`plan_mode`), all `false`. **So pi contributes one bit of information to the matrix and it
-renders as four ✗.** Any count that treats them as four independent absences is
+`plan_mode`). **So pi contributes one bit of information to the matrix and it renders as
+four cells** — three ✗ plus, since ADR-0053, `tool_approval: none` (the regrade gave the
+no-gate-no-substitute position its own word, but the cell still descends from the same
+single philosophy paragraph). Any count that treats them as four independent absences is
 over-counting a single stated position.
 
 And the failure is not symmetric across tools, which is what makes it worth a warning

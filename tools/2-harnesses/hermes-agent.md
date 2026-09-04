@@ -27,7 +27,7 @@ harness_features:
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks
   turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤2 re-prompts (max_attempts=2) when the model finishes without fresh verification evidence (body §termination). CORRECTED 2026-09-04: the deep-dive wrote "≤3", wrong at its own pin — max_attempts: int = 2 at 524ab5399:210 and v2026.8.31:238 alike
-  tool_approval: true    # tools/approval.py — approval at tool dispatch; re-verified at v2026.8.31 (file grew 44% in the window; YOLO import-freeze, smart approval, timeout≠denial all intact)
+  tool_approval: policy  # tools/approval.py — approval at tool dispatch; re-verified at v2026.8.31 (file grew 44% in the window; YOLO import-freeze, smart approval, timeout≠denial all intact)
   skills: true           # 58 bundled + 137 optional SKILL.md dirs at v2026.8.31 (was 70+111 — bundled SHRANK while optional grew: surface moving out of the default install); agentskills.io-compatible
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
   ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; refund re-verified at v2026.8.31, conversation_loop.py:7716-7720)

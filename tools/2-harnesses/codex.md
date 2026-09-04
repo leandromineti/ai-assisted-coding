@@ -22,7 +22,7 @@ harness_features:
   lsp: false             # no LSP crate in the 94-crate workspace (crate list checked 2026-07-30); file-search is its own crate
   hooks: true            # hooks crate + hook_runtime.rs; stop hooks can veto turn termination (session/turn.rs)
   turn_end_gates: hook   # ADR-0012 graded: run_turn_stop_hooks → should_block injects a continuation prompt and loops (session/turn.rs:467-474, drift-corroborated 2026-08-16); set 2026-08-18 from the existing deep-dive read
-  tool_approval: true    # SafetyCheck::AskUser at dispatch, inside the internalized OS sandbox — gate and sandbox stacked in one tool; set 2026-08-25 transcribing the category-2 index absorption table's verified instance at this pin, no re-read
+  tool_approval: policy  # SafetyCheck::AskUser at dispatch, inside the internalized OS sandbox — gate and sandbox stacked in one tool; set 2026-08-25 transcribing the category-2 index absorption table's verified instance at this pin, no re-read
   skills: true           # skills + core-skills crates; SKILL.md consumed (also confirmed from spec-kit's registry, conclusion 3)
   subagents: true        # multi_agents handlers, codex_delegate.rs, agent-graph-store
   ptc: true              # code-mode* crates: model-written code in embedded V8, V8 sandbox enabled (ADR-0012; set 2026-08-18 from the existing deep-dive read)

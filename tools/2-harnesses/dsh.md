@@ -22,7 +22,7 @@ harness_features:
   lsp: true              # agent-consumed `lsp` tool, 4 read-only ops; diagnostics explicitly discarded (lsp-stdio/src/connection.ts:254); not in any shipped bundle
   hooks: true            # typed engine events default-on; PLUS bridges that run unmodified Claude Code hooks.json / Codex hook configs (packages/hooks/*) — bridges in no shipped bundle
   turn_end_gates: engine # agent/turn-stopping serial boundary, "data decides" (agent-loop/src/agent.ts:294-300); hook grade also reachable via the CC-bridge Stop mapping
-  tool_approval: false   # checked and absent (2026-08-24 deep-dive): tools/pre-execute default is allow (core/tools/src/index.ts:1477); the gate is the compiled per-call sandbox, and the sole prompt in a stock run is a model-initiated one-shot sandbox escalation
+  tool_approval: sandbox # regraded ✗→sandbox 2026-09-04 per ADR-0053 (same evidence, 2026-08-24 deep-dive): no ask-gate — tools/pre-execute default is allow (core/tools/src/index.ts:1477) — but the compiled per-call OS sandbox stands in its place; the sole prompt in a stock run is a model-initiated one-shot sandbox escalation
   skills: true           # SKILL.md convention, 6-root precedence, digest-gated catalog; on in standard/code/cordis presets
   subagents: true        # 6 providers incl. real Codex and Claude Code children; spawn/fork in base bundle, depth cap 3 (bypassed via workflow/ralph — host.ts:352)
   ptc: true              # run_code in a Node worker thread, tools bound as typed fns from the live registry; default mode `native`, opt-in via DSH_TOOLS_MODE or the shipped "PTC 模式" preset
