@@ -34,15 +34,18 @@ a pipeline stage.
 
 ## What we assess here
 
-The assessed block is **`memory_features:`, 13 keys** (2026-08-26,
-[ADR-0013](../../adrs/0013-memory-features-block.md)): `memory_store`, `capture_path`,
+The assessed block is **`memory_features:`, 14 keys** (2026-09-04,
+[ADR-0013](../../adrs/0013-memory-features-block.md) + `memory_import` via
+[ADR-0051](../../adrs/0051-memory-import-key.md)): `memory_store`, `capture_path`,
 `write_admission`, `recall_injection`, `memory_scope`, `memory_tiers`,
 `hybrid_retrieval`, `decay`, `memory_revision`, `injection_trust_boundary`,
-`deployment_mode`, `harness_installer`, `rule_extraction`. They map onto the three
-components above — capture (`capture_path`, `write_admission`), consolidation
-(`memory_store`, `memory_tiers`, `decay`, `memory_revision`, `rule_extraction`), and
-recall (`recall_injection`, `hybrid_retrieval`, `injection_trust_boundary`) — with
-`harness_installer` the aperture onto a harness.
+`deployment_mode`, `harness_installer`, `rule_extraction`, `memory_import`. They map
+onto the three components above — capture (`capture_path`, `write_admission`),
+consolidation (`memory_store`, `memory_tiers`, `decay`, `memory_revision`,
+`rule_extraction`), and recall (`recall_injection`, `hybrid_retrieval`,
+`injection_trust_boundary`) — with `harness_installer` and `memory_import` the two
+apertures onto the outside: how the tool meets a harness, and whether memory made
+elsewhere can come in.
 
 Values are **descriptive enums naming a mechanism choice, not ADR-0011 enforcement
 grades**: every tool in this category stores something and recalls something, so the
@@ -98,8 +101,13 @@ set only on the four read tools. What the first cut shows:
 
 Single-instance bets stay out of the vocabulary by the two-instance rule but are the
 differentiators to watch: zero-LLM default (ai-memory), git-versioned store
-(ai-memory), native-memory displacement (mem0), competitor import (mem0), skill
-crystallization (memos), provenance audit (ai-memory).
+(ai-memory), native-memory displacement (mem0), skill crystallization (memos),
+provenance audit (ai-memory). One graduated (2026-09-04,
+[ADR-0051](../../adrs/0051-memory-import-key.md)): *competitor import* fired its
+second instance at ai-memory's v2.0.2 re-read (the companions importer, beside mem0's
+import paths) and is now the `memory_import` key. Newly watched from the same re-read,
+each one instance: tombstoned deletion (ai-memory `purge-session`), temporal recall
+(ai-memory `as_of`), typed relation edges (ai-memory).
 
 ## Reports
 

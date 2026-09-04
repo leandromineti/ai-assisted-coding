@@ -35,6 +35,7 @@ memory_features:   # ADR-0013 block, set 2026-08-19 from the deep-dive read at a
   deployment_mode: self-host     # localhost-bound daemon, regex sanitizer at ingress, zero-LLM default — but since 2.0 no longer zero-egress by default (the background embedder fetch above); 2.0 also added password web sessions + separated API credentials, a first step toward multi-user server posture
   harness_installer: true        # install-hooks --apply mutates ~/.claude/settings.json (9 CC events, re-verified at render_shared.rs:36)
   rule_extraction: true          # _rules/ + procedures/ proposal paths, confidence-floored, audit-logged
+  memory_import: true            # companions/ai-memory-importer (ADR-0051, cell set 2026-09-04): deliberately workspace-isolated crate replaying external corpora — OMC wikis and a generic conversation-export JSON envelope — through the public hook pipeline as agent=external-import sessions. Present at acd9c0b too (unnoticed at the deep-dive); the generic envelope landed in the v2 window (#507)
 ---
 
 # ai-memory

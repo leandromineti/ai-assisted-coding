@@ -12,7 +12,8 @@
 # --- groups (added 2026-08-26, ADR-0045) — what TEACHES the reader ---------------
 # Every entry in both lists below carries a `group:`. Groups exist for the reader, not
 # for the schema: the registry renders one subsection per group instead of one flat
-# table per category (26 rows for harnesses, 22 for memory), and each group's `blurb`
+# table per category (28 rows for harnesses, 23 for memory — derived from the rendered
+# registry sections, re-counted 2026-09-04), and each group's `blurb`
 # says what the group is ABOUT and how its keys read together. The division of labour
 # is deliberate — feature-registry.md's intro teaches NOTATION (presence vs graded,
 # omitted vs false, the three verification routes), and these blurbs teach SUBJECT
@@ -252,6 +253,9 @@ groups:
       install path rather than leaving you to wire it up; `rule_extraction` whether it can
       turn accumulated memory into standing instructions — which is the point where a memory
       tool starts doing a workflow framework's job, and the reason the two categories bleed.
+      `memory_import` is the switching-cost key: whether you can arrive with memory you
+      already have, the in-direction mirror of the displacement moves some tools make
+      against a harness's native store.
 
 features:
   # --- harness block (`harness_features:`), applies to category 2 ---
@@ -695,6 +699,13 @@ features:
     value_type: presence
     definition: synthesizes standing instructions/rules from sessions (memory that mints category-6 artifacts of another kind)
     note: "added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts"
+  - id: memory_import
+    group: integration
+    block: memory_features
+    applies_to: [5]
+    value_type: presence
+    definition: "ingests memory born outside the tool's own capture pipeline (rival stores, repo rule files, transcript/conversation exports) — NOT re-ingesting its own exports, NOT document/RAG content loading"
+    note: "added 2026-09-04 per ADR-0051 — the 'competitor import' watch-list entry graduated when ai-memory's companions importer (OMC wikis + generic conversation-export replay through the public hook pipeline, v2.0.2 re-read) became the second instance beside mem0's import skill + auto_import.py (CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules → platform, deep-dive 2026-08-19). The in-direction half of the switching-cost story; mem0's displacement gate is the out-direction"
   # --- category-3 environment block (`environment_features:`), category == 3 only (ADR-0017) ---
   # Mechanism choices, not ADR-0011 enforcement grades — contrast explicit per ADR-0017
   # scoping rule 2. No kind_link on these entries by design: category-3 demand-side

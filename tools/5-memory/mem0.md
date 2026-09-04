@@ -31,6 +31,7 @@ memory_features:   # deep-dive 2026-08-19 — two survey cells FLIPPED (memory_t
   injection_trust_boundary: false  # SETTLED (was an open question): the sole plugin formatter emits bare markdown (_search.py:92-105) — no delimiter, no data-not-instructions framing; openclaw's tags are containers whose preambles say the OPPOSITE ("Use them to personalize your response"), and its recall protocol makes memories authoritative: "Rules are mandatory… Rules override your defaults" — staleness is questioned, provenance never
   deployment_mode: both          # load-bearing asymmetry: the core V3 algorithm IS open (BM25, entities, 6 rerankers, vision), the server is production-grade — but the coding-agent plugin is platform-HARDCODED (api.mem0.ai literal in every script, no MEM0_BASE_URL, settings loader filters unknown keys), V3 net-REMOVED OSS features (graph, temporal, decay), and the SDK ships a 1,582-line A/B-tested upsell funnel (notices.py)
   harness_installer: true        # hooks.json bundle across 6 harnesses + MCP config; SessionStart also appends MEM0_API_KEY to the harness env file
+  memory_import: true            # ADR-0051, cell set 2026-09-04 from the 2026-08-19 deep-dive's findings, no re-read: manual /mem0:import skill (consent in prose) + auto_import.py shipping CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules (cwd + git root, ≤100KB) to api.mem0.ai on every session start, backgrounded, no consent step — rival rule stores ingested as memories; the first instance behind the key
 ---
 
 # mem0

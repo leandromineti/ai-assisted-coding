@@ -102,16 +102,16 @@ The category-5 slice of the feature taxonomy — `memory_features:` frontmatter
 descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows
 of dots are stub-depth reports — unread, honestly unclaimed.
 
-| Tool | access | license | memory store | memory scope | memory tiers | deployment mode | capture path | write admission | decay | memory revision | recall injection | hybrid retrieval | injection trust boundary | harness installer | rule extraction |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | `files-git` | `project`, `user` | ✓ | `self-host` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ |
-| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · |
-| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ |
-| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ |
-| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| Tool | access | license | memory store | memory scope | memory tiers | deployment mode | capture path | write admission | decay | memory revision | recall injection | hybrid retrieval | injection trust boundary | harness installer | rule extraction | memory import |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | `files-git` | `project`, `user` | ✓ | `self-host` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · | ✓ |
+| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ | · |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ | · |
+| [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Execution environments (category 3)
 

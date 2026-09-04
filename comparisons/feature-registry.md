@@ -395,12 +395,13 @@ How a stored memory reaches the model. `recall_injection` says WHEN — always i
 
 ### Integration
 
-How the memory system meets the harness. `harness_installer` says whether it ships an install path rather than leaving you to wire it up; `rule_extraction` whether it can turn accumulated memory into standing instructions — which is the point where a memory tool starts doing a workflow framework's job, and the reason the two categories bleed.
+How the memory system meets the harness. `harness_installer` says whether it ships an install path rather than leaving you to wire it up; `rule_extraction` whether it can turn accumulated memory into standing instructions — which is the point where a memory tool starts doing a workflow framework's job, and the reason the two categories bleed. `memory_import` is the switching-cost key: whether you can arrive with memory you already have, the in-direction mirror of the displacement moves some tools make against a harness's native store.
 
 | Key | Basis | Type | Definition | Kind link | Provenance |
 |---|---|---|---|---|---|
 | `harness_installer` | assessed | `presence` | ships an installer that mutates the harness's own config (settings/hooks) rather than only offering an MCP endpoint | — | added 2026-08-19 per ADR-0013; instances: ai-memory (install-hooks --apply rewrites settings.json), mem0 (hooks.json bundle, 6 harnesses), memos (one-command installer + adapters) |
 | `rule_extraction` | assessed | `presence` | synthesizes standing instructions/rules from sessions (memory that mints category-6 artifacts of another kind) | — | added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts |
+| `memory_import` | assessed | `presence` | ingests memory born outside the tool's own capture pipeline (rival stores, repo rule files, transcript/conversation exports) — NOT re-ingesting its own exports, NOT document/RAG content loading | — | added 2026-09-04 per ADR-0051 — the 'competitor import' watch-list entry graduated when ai-memory's companions importer (OMC wikis + generic conversation-export replay through the public hook pipeline, v2.0.2 re-read) became the second instance beside mem0's import skill + auto_import.py (CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules → platform, deep-dive 2026-08-19). The in-direction half of the switching-cost story; mem0's displacement gate is the out-direction |
 
 ## Extensions
 
@@ -436,4 +437,4 @@ What the subject is built from, and where you meet it. `stack` is the language a
 | `stack` | transcribed | `list` | [Language, Runtime/Framework] of the subject | — | `source-or-docs` · renders in [tools.md](tools.md) |
 | `harness_targets` | transcribed | `list` | which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets | — | `source-or-docs` · renders in [tools.md](tools.md) |
 
-**57 assessed keys across 5 blocks · 20 transcription fields.**
+**58 assessed keys across 5 blocks · 20 transcription fields.**
