@@ -24,6 +24,22 @@ Conventions:
   Whether a present feature *pays* is a mechanism question (see each category's index).
 - New keys follow **issue #2's two-verified-instances rule**: a key enters the
   registry only after the characteristic is verified in at least two tools.
+  **The rule binds keys, not enum values** (decided 2026-09-04, issue #34;
+  [ADR-0052](../adrs/0052-team-sharing-key.md) is the enacted precedent — two
+  key-level instances, one per value): the unit counted is the key's underlying
+  fact. A closed-enum's values are descriptive labels for mechanisms actually
+  observed at cells, so a value may enter with a single instance — the
+  alternatives are a false merge (real mechanism differences flattened into
+  `true`, the `tool_approval` cost issue #34 documents) or a permanently
+  column-less axis whenever the discriminating position is held by one tool
+  (aider's `ranked-index`). Two things stay forbidden at value level: a
+  speculative value no cell exhibits (values are minted at cell-set time, from a
+  verified instance), and using a value spread to smuggle in a key whose *fact*
+  has one instance. ADR-0011 grade ladders need no exception under this reading:
+  a grade scale is measurement vocabulary defined before looking, not a
+  mechanism census. The merits check is separate and still binds — two
+  mechanisms that are not the same fact defer on the merits however they count
+  (issue #34's `turn_end_gates` `measured` control).
 - `block` names the frontmatter block that carries the key (`harness_features` for
   category 2 — renamed from the original bare `features` 2026-08-21, ADR-0018,
   `workflow_features` for category 4, `memory_features` for category-5 `type: memory` reports
