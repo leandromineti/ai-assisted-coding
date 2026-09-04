@@ -157,6 +157,8 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 20. **Determinism is nearly absent on the live wire, and only two models show any of it** (2026-09-03, ADR-0050's `seed_determinism` + `sampling_repeatability` keys — 0/5 seed pairs at all 8 domain models, 0/4 sampling-repeatability pairs at 10 of 12)
 21. **The compat dialect outlived its author, and the sweep's own harness papers over the evidence for it** (2026-09-03, `gpt-5-6-sol` rejects the legacy `max_tokens` name every third-party compat sibling still accepts — no classified row shows it, the harness renames the field before firing)
 22. **Where the wire had anything to say, it disagreed with the docs more than a quarter of the time** (2026-09-03, `comparisons/docs-vs-wire.md` — 79/288 = 27.4% of tested pairs contradicted, headline; 79/612 = 12.9% over all pairs, the other reading)
+23. **Every settled harness compacts, and every one that compacts summarizes with an LLM — the discriminator is what stands beside the summarizer** (2026-09-04, ADR-0055 probe-pass — `none` had zero instances; the variation is prune/truncate stacks and their defaults, plus a background token bill no list price names)
+24. **Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture** (2026-09-04, ADR-0056 census — harnesses span background/in-loop/proposed; every set memory-vendor cell is `background`, so `write_admission` is the supply side's only write control)
 
 ## License
 

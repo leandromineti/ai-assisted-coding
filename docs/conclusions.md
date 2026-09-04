@@ -607,3 +607,47 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`docs/parameter-patterns.md`](parameter-patterns.md) § The docs-versus-wire
     confrontation ·
     [`comparisons/docs-vs-wire.md`](../comparisons/docs-vs-wire.md)
+23. **Every settled harness compacts, and every one that compacts summarizes with an
+    LLM — the discriminator is what stands beside the summarizer** (2026-09-04, the
+    ADR-0055 probe-pass at existing pins: 11 of 12 category-2 cells settled, warp an
+    honest omit because its compaction is entirely server-side). Going in, issue #33
+    proposed `none` as a candidate value; the probe found **zero instances** — no
+    tracked harness ships without a compaction path, and `llm-summarize` appears in
+    all 11 settled cells. So the column's information is not whether but *what else*:
+    a deterministic pruner beside the summarizer in 4 (dsh; opencode and hermes-agent
+    shipped off; claude-code's docs put it first in line), and a hard non-LLM
+    `truncate` in 3 — for three different reasons to avoid the model (gemini-cli falls
+    back to it after a *failed* summarization attempt rather than retry the LLM;
+    codex's opt-in `token_budget` feature installs a fresh window instead of
+    summarizing; cline falls back when the model can't support its summarizer). Two
+    implications. Compaction quality rides the model everywhere, so at context
+    pressure every harness silently spends model calls on its own bookkeeping — a
+    background token bill no list price names. And the near-universal shape means the
+    real design positions live in the *stack and its defaults*, which is exactly the
+    per-mechanism fact the cells' comments carry and the enum deliberately does not. →
+    [ADR-0055](../adrs/0055-context-assembly-group.md) ·
+    [`comparisons/features.md § Harnesses`](../comparisons/features.md) ·
+    [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) § What we assess here
+24. **Every memory vendor's learning loop auto-applies; propose-and-commit exists only
+    as a harness posture** (2026-09-04, the ADR-0056 census across three categories).
+    When `learning_loop` became a mechanism enum, the cross-category split was already
+    sitting in the cells: harnesses span the whole range — `background` (hermes-agent,
+    codex, qwen-code), `in-loop` (claude-code), `proposed` (warp and gemini-cli, both
+    of which *built* autonomous write paths and then put a human commit gate in front,
+    warp going as far as deprecating a shipped auto-write path) — while the memory
+    products occupy exactly one position: every set category-5 cell, plus ecc in
+    category 6, is `background`, auto-applying out-of-loop (ai-memory auto-approves
+    its own wiki edits by default; mem0 extracts with no human in the loop; memos'
+    cascade auto-applies when mounted). The asymmetry has a clean incentive reading:
+    an independent memory product that required human commits would surrender the
+    "your agent just remembers" pitch that is the type's entire sales surface, so
+    write governance concentrates in the layer whose product does not depend on
+    writes happening — the harness. Corollary for anyone running the supply side:
+    with auto-apply universal among vendors, `write_admission` (evidence-gated ·
+    scored · unfiltered) is the only control standing between a session and the
+    store, which is why that key and `injection_trust_boundary` carry the category's
+    security weight (conclusions 8 and 13's governance thread, now with a
+    population-level census behind it). →
+    [ADR-0056](../adrs/0056-learning-loop-mechanism-enum.md) ·
+    [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
+    [issue #13](https://github.com/leandromineti/ai-assisted-coding/issues/13)
