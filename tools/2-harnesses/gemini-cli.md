@@ -34,7 +34,7 @@ harness_features:
   model_agnostic: false  # checked: all six AuthType routes end at a Google backend or Gemini-protocol endpoint; GATEWAY swaps the host, not the wire format (@google/genai client throughout)
   session_sharing: false # no share links anywhere; local JSON export (exportSessionCommand.ts:20,72) + resume/checkpoints exist — artifact yes, link no
   evals: true            # 37 behavioral .eval.ts (ls evals/*.eval.ts | wc -l) with LLM-as-judge + self-consistency voting, ALWAYS/USUALLY_PASSES reliability tiers, 4 eval CLIs — explicitly distinguished from its unit tests
-  learning_loop: false   # checked: the autonomous write path exists (background "confucius" extractor agent) but is default-OFF (experimental.autoMemory=false) AND propose-and-commit — patches land in an .inbox nothing auto-applies, extracted skills are written outside the skill-discovery path; same verified-✗ shape as Warp's
+  learning_loop: proposed  # regraded ✗→proposed 2026-09-04 per ADR-0056 (same evidence): the autonomous write path exists (background "confucius" extractor agent) but is default-OFF (experimental.autoMemory=false) AND propose-and-commit — patches land in an .inbox nothing auto-applies, extracted skills are written outside the skill-discovery path; the old ✗ rendered this identical to pi's nothing, and the enum now names it — same shape as warp's
 ---
 
 # Gemini CLI

@@ -38,7 +38,7 @@ harness_features:
   model_agnostic: true   # 39 provider plugins (ls plugins/model-providers/ minus README; was 33)
   session_sharing: true  # `hermes sessions export --format trace --upload` → Hugging Face agent-trace dataset (private by default, forced secret redaction); no hosted live-session links. CORRECTED 2026-09-04: the deep-dive wrote "hermes trace upload", a command that existed at neither pin — the mechanism was real, the identifier invented
   evals: true            # mini_swe_runner.py, batch_runner.py, mcp-research-data/ — plus, new at v2026.8.31, evals/ with four committed A/B harnesses (compaction, browser tools, read_file design, schema diet); still none measuring the learning loop
-  learning_loop: true    # ON by default (config_defaults.py:1353): interval-gated review fork (turn_finalizer.py:806-819; nudge intervals 10) + idle curator + /learn + /refine. New in window: cron sessions suppressed, whitelist widened to read_file/search_files after the fork was found starving in production (see re-read), 600K-token/16-iteration fork budgets, JSONL skill ledger with rollback
+  learning_loop: background  # ON by default (config_defaults.py:1353): interval-gated review fork (turn_finalizer.py:806-819; nudge intervals 10) + idle curator + /learn + /refine. New in window: cron sessions suppressed, whitelist widened to read_file/search_files after the fork was found starving in production (see re-read), 600K-token/16-iteration fork budgets, JSONL skill ledger with rollback
 ---
 
 # hermes-agent

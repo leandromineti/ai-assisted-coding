@@ -31,7 +31,7 @@ harness_features:
   plan_mode: tool        # plan tool (tools/handlers/plan.rs) + collaboration-mode-templates crate
   rules_files: [AGENTS.md]   # agents_md.rs: root-down AGENTS.md collection ONLY — no competitor files (contrast hermes)
   model_agnostic: true   # model-provider, ollama, lmstudio crates — BYO works, but the product is OpenAI-first by design
-  learning_loop: true    # OFF by default: two-phase startup pipeline (turn_processor.rs:594), feature `memories` Stage::Stable default_enabled: false
+  learning_loop: background  # OFF by default: two-phase startup pipeline (turn_processor.rs:594), feature `memories` Stage::Stable default_enabled: false
 ---
 
 # Codex CLI

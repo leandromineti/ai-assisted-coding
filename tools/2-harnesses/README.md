@@ -23,7 +23,10 @@ They sort under the category's three components — the loop (`subagents`, `plan
 own until ADR-0055), and the permission gate (`tool_approval`, `headless_approval`) — with
 the rest describing reach and portability.
 
-Eleven are presence-claims. Four are not: `turn_end_gates` is graded engine \| hook \|
+Ten are presence-claims. Seven are not (recounted 2026-09-04 across ADR-0053/0054/0055/0056 —
+the two context-assembly enums and the `learning_loop` mechanism enum,
+[ADR-0056](../../adrs/0056-learning-loop-mechanism-enum.md), joined the same day):
+`turn_end_gates` is graded engine \| hook \|
 script \| prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
 because *who enforces* a gate turned out to matter more than whether one exists;
 `headless_approval` is a closed enum (deny \| allow) for the same species of reason one

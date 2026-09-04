@@ -29,7 +29,7 @@ harness_features:
   rules_files: [CLAUDE.md]   # OBSERVED: global ~/.claude/CLAUDE.md + project CLAUDE.md, both loaded; the convention the whole field's rules-file story descends from
   model_agnostic: false  # checked and absent BY DESIGN: Anthropic models only (opus/sonnet/haiku/fable). Multi-provider transport exists (API/Bedrock/Vertex) but that is model ACCESS (type 1b), not model agnosticism
   session_sharing: true  # OBSERVED: claude.ai/code session URLs; sessions resumable/shareable across surfaces
-  learning_loop: true    # OBSERVED — but a THIRD mechanism shape the matrix column doesn't name: agent-written persistent memory (memory/ dir + MEMORY.md index), harness-prompted, written IN-LOOP by the main agent — not hermes' background fork, not codex's spawned pipeline, not Warp's manual-only store. See Surprises 1
+  learning_loop: in-loop # OBSERVED — but a THIRD mechanism shape the matrix column doesn't name: agent-written persistent memory (memory/ dir + MEMORY.md index), harness-prompted, written IN-LOOP by the main agent — not hermes' background fork, not codex's spawned pipeline, not Warp's manual-only store. See Surprises 1
 ---
 
 # Claude Code

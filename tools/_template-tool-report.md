@@ -95,7 +95,7 @@ harness_features:
   model_agnostic: <true | false>   # bring-your-own-model by design
   session_sharing: <true | false>  # shareable session links/artifacts
   evals: <true | false>            # ships its own evaluation suite
-  learning_loop: <true | false>    # AUTONOMOUS agent-written memory/skills (background/spawned write path) — distinct from `skills` (packaged instructions exist) and from user-curated memory files. Added 2026-07-30 per issue #2's two-verified-instances rule (hermes, codex); note default-on vs default-off in the comment
+  learning_loop: <background | in-loop | proposed | false>    # who writes and who commits AUTONOMOUS agent-written memory/skills (ADR-0056): background = out-of-loop process writes and auto-applies · in-loop = the main agent writes during the session · proposed = autonomous path produces, a human commits · false = no autonomous path. Distinct from `skills` (packaged instructions exist) and from user-curated memory files; note default-on vs default-off in the comment
 ---
 
 # <Tool>

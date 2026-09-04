@@ -173,11 +173,14 @@ whenever one of the four is next read.
 - ~~The memory-authorship fourth position~~ — resolved into design-principles
   (2026-08-18): independent storage *stacks* authorships rather than picking one; the
   sharpened question is who approves writes, not who makes them.
-- Issue #13's `learning_loop` promotion trigger: **ai-memory verified in source
-  (2026-08-18)** as the second harness-independent autonomous loop after ECC — mechanism
-  `background` (server-side scheduler, default-on with a provider, auto-approving). The
-  promotion trigger itself still hasn't fired: `background` now has four instances,
-  `in-loop` and `manual` still one each.
+- ~~Issue #13's `learning_loop` promotion trigger~~ — **fired 2026-09-04**
+  ([ADR-0056](../../adrs/0056-learning-loop-mechanism-enum.md)), once issue #34's
+  key-scope decision dissolved the value-scope deferral. The key is now a mechanism
+  enum — background \| in-loop \| proposed — and every set cell in this category reads
+  `background` (ai-memory, mem0, memos; cognee stays ✗): the type's entire verified
+  supply side auto-applies out-of-loop. The `proposed` value's two instances are both
+  harnesses (warp, gemini-cli) — propose-and-commit is, so far, a harness posture,
+  not a memory-vendor one.
 - A memory-interchange convention would be the next MCP-shaped event — watched from the
   [standards scoreboard](../../docs/standards.md)'s side (zero shared formats as
   of 2026-08-18).
