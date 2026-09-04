@@ -24,6 +24,8 @@ harness_features:
   mcp: true              # src/mcp/
   lsp: true              # src/lsp/
   hooks: true            # plugin lifecycle triggers, e.g. plugin.trigger("experimental.chat.messages.transform") in prompt.ts
+  context_retrieval: model-driven  # ADR-0055, cell set 2026-09-04 from the deep-dive: no index in-repo; system.ts assembles the prompt from the per-model file, skills, MCP descriptions, permission rules and location context — repo content only ever arrives via tool calls (body § context assembly)
+  context_compaction: [llm-summarize, prune]  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: auto-triggered LLM summary of the head (processCompaction, session/compaction.ts; fired from prompt.ts:1319 on overflow, default-on) + a separate token-budget tool-output eraser (prune(), compaction.ts:2010-2050, PRUNE_MINIMUM=20k/PRUNE_PROTECT=40k) that is OPT-IN via compaction.prune: true — no true default in the config schema
   turn_end_gates: false  # 2026-08-18 targeted probe at the pin (not a re-read): the full plugin-trigger surface is 4 triggers (chat.messages/system.transform, shell.env, tool.definition) — none at stop; session/prompt.ts loop exit is plain termination logic, no veto/re-prompt path
   tool_approval: policy  # Permission.ask at tool dispatch; set 2026-08-25 transcribing the category-2 index absorption table's verified instance at this pin, no re-read
   skills: true           # tool/skill.ts + Skill service in system.ts

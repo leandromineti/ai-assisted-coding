@@ -12,7 +12,7 @@
 # --- groups (added 2026-08-26, ADR-0045) — what TEACHES the reader ---------------
 # Every entry in both lists below carries a `group:`. Groups exist for the reader, not
 # for the schema: the registry renders one subsection per group instead of one flat
-# table per category (28 rows for harnesses, 24 for memory — derived from the rendered
+# table per category (30 rows for harnesses, 24 for memory — derived from the rendered
 # registry sections, re-counted 2026-09-04), and each group's `blurb`
 # says what the group is ABOUT and how its keys read together. The division of labour
 # is deliberate — feature-registry.md's intro teaches NOTATION (presence vs graded,
@@ -130,9 +130,28 @@ groups:
       emitted code drives tools inside a sandboxed runtime, instead of one chat-loop tool
       call at a time. A `·` in this group is not a no; these keys are set only where the
       mechanism was found in source or official docs.
+  - id: context-assembly
+    title: Context assembly
+    order: 52
+    blurb: >-
+      How the prompt gets built when nobody is typing — the component the category index
+      calls the contested ground of 2026, given registry keys 2026-09-04 (ADR-0055) once
+      issue #34's key-scope decision let single-instance positions be named.
+      `context_retrieval` asks how repo content reaches the prompt without the human
+      adding it, and its four verified positions span a real spectrum of automation:
+      an index that ranks and injects source lines into the prefix itself, an index
+      that ends in a tool result the model must ask for, retrieval delegated to a
+      subagent, and no index at all — the model reading and grepping its own way, which
+      is where every 2025–26 tool-dispatch design landed. `context_compaction` asks
+      what happens when the window fills: an LLM writes a summary that replaces
+      history, deterministic pruning evicts items, or nothing — and whether that runs
+      by default is half the finding. The two keys meet in design-principle H5's
+      revision: retrieval quality and prefix stability conflict whenever retrieval is
+      query-conditioned, so how a harness assembles context is also how it spends its
+      cache.
   - id: control-gates
     title: Control gates
-    order: 52
+    order: 53
     blurb: >-
       Where a human or the engine can stop the agent. Three of the keys mark three
       different moments in a turn: `plan_mode` before the work starts, `tool_approval`
@@ -149,7 +168,7 @@ groups:
       with automation.
   - id: operations
     title: Operations
-    order: 53
+    order: 54
     blurb: >-
       What living with the harness is like. `model_agnostic` says whether you can bring
       your own weights; `session_sharing` whether a session can leave the machine, as a
@@ -318,6 +337,20 @@ features:
     value_type: presence
     definition: standing-instruction files (value may list filenames)
     kind_link: rules-file
+  - id: context_retrieval
+    group: context-assembly
+    block: harness_features
+    applies_to: [2]
+    value_type: closed-enum
+    definition: "how repo content reaches the prompt without the human adding it: ranked-index (harness-built index ranks and injects source content automatically) | search-tool (an index exists but ends in a tool result the model must call) | delegated (retrieval handed to a subagent) | model-driven (no index; the model reads/greps via tools)"
+    note: "added 2026-09-04 per ADR-0055 — the four-value spread from the aider deep-dive (conclusion 17), admissible once issue #34 settled key-scope (ranked-index is single-instance and may stay so: no 2025–26 tool-dispatch design is built that way). Census: ranked-index 1 (aider — tree-sitter symbol index, nx.pagerank, source lines injected as a user message every turn, measured 71% of the assembled prompt) · search-tool 1 (warp — the index's chain ends in a {name,path} tool result, zero context lines) · delegated 1 (gemini-cli — read-only subagent; its own embeddings path is dead code) · model-driven 9. The 2026-09-04 probe-pass settled the last five cells all model-driven (hermes-agent, dsh, cline, continue, claude-code docs-route); continue's cell carries the strongest caveat — an embeddings-backed codebase tool real in core but flag-gated off and unwired in the CLI"
+  - id: context_compaction
+    group: context-assembly
+    block: harness_features
+    applies_to: [2]
+    value_type: closed-enum
+    definition: "what the harness does at context pressure (list allowed for stacked mechanisms, primary first): llm-summarize (an LLM writes a summary that replaces history) | prune (deterministic eviction/masking of items, typically old tool results) | truncate (hard non-LLM cut of raw history)"
+    note: "added 2026-09-04 per ADR-0055, issue #33's candidate settled by a probe-pass at existing pins. llm-summarize is near-universal (11 of 11 settled cells) — the finding is the STACK behind it: prune 4 (dsh, opencode opt-in, hermes-agent opt-in, claude-code docs-route first-line), truncate 3 (gemini-cli's failed-summary fallback CONTENT_TRUNCATED, context/chatCompressionService.ts:289; codex's token_budget fresh-window reset, opt-in UnderDevelopment; cline's basic-compaction fallback for unsupported models). No `none` instance exists — every settled harness compacts — so no such value is minted (issue #34: no speculative values). warp's cell is deliberately unset: compaction is entirely server-driven and the server is unobservable (omit-with-reason in the report). Default-on vs opt-in is half the finding and lives in every cell comment. #33's cache-discipline sibling stays body-prose (placement test)"
   - id: turn_end_gates
     group: control-gates
     block: harness_features

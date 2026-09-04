@@ -11,13 +11,17 @@ than repeating.
 
 ## What we assess here
 
-The assessed block is **`harness_features:`, 15 keys** (2026-08-27): `mcp`, `lsp`, `hooks`,
-`turn_end_gates`, `tool_approval`, `headless_approval`, `skills`, `subagents`, `ptc`,
-`plan_mode`, `rules_files`, `model_agnostic`, `session_sharing`, `evals`, `learning_loop`.
+The assessed block is **`harness_features:`, 17 keys** (2026-09-04; 15 as of 2026-08-27 +
+`context_retrieval` and `context_compaction` via
+[ADR-0055](../../adrs/0055-context-assembly-group.md)): `mcp`, `lsp`, `hooks`,
+`context_retrieval`, `context_compaction`, `turn_end_gates`, `tool_approval`,
+`headless_approval`, `skills`, `subagents`, `ptc`, `plan_mode`, `rules_files`,
+`model_agnostic`, `session_sharing`, `evals`, `learning_loop`.
 They sort under the category's three components — the loop (`subagents`, `plan_mode`,
-`turn_end_gates`, `ptc`), context assembly (`skills`, `rules_files`, `learning_loop`), and
-the permission gate (`tool_approval`, `headless_approval`) — with the rest describing reach
-and portability.
+`turn_end_gates`, `ptc`), context assembly (`context_retrieval`, `context_compaction`,
+`skills`, `rules_files`, `learning_loop` — the component that had no assessed key of its
+own until ADR-0055), and the permission gate (`tool_approval`, `headless_approval`) — with
+the rest describing reach and portability.
 
 Eleven are presence-claims. Four are not: `turn_end_gates` is graded engine \| hook \|
 script \| prose ([ADR-0011](../../adrs/0011-graded-gate-enforcement.md)/[0012](../../adrs/0012-layer-2-feature-set.md)),
@@ -214,6 +218,13 @@ Feature lists mislead here. The axes that seem to matter:
      poor; warm ranking is sharp.
    - **It collides with cache discipline, and aider resolved the collision by disabling its
      own feature.** See axis 6 below. [`aider.md`](aider.md).
+
+   *(2026-09-04 — the axis became registry columns.)* ADR-0055 gave this component its
+   first assessed keys: `context_retrieval` carries the position spread this trail traced
+   (the probe-pass settled every remaining cell `model-driven` — the falsified negative
+   claim, restated as a column), and `context_compaction` carries the pressure half. The
+   [feature registry](../../comparisons/feature-registry.md) owns the definitions; the
+   trail above stays as the evidence it condensed from.
 2. **Permission model** — how much it does without asking, and how that's configured.
 3. **Extension surface** — whether categories 4, 5, and 6 can attach at all (hooks, skills, MCP).
 4. **Isolation story** — which category-3 environment it assumes.
