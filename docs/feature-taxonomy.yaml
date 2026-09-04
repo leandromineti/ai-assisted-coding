@@ -677,7 +677,7 @@ features:
     applies_to: [5]
     value_type: presence
     definition: multi-stream retrieval fusion (RRF/MMR/reranker over lexical+vector+structural)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓. The calibration cuts both ways (ai-memory v2.0.2 re-read, 2026-09-04): ai-memory's ✓ became RICHER than its comment implied when 2.0 made hybrid default-on via in-process local embeddings — the default install is the fact to re-check in both directions"
   - id: injection_trust_boundary
     group: read-path
     block: memory_features

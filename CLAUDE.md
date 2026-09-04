@@ -56,18 +56,29 @@ source actually touches, append a line to `references/log.md`, and re-run
 `python3 scripts/build-tool-index.py`. Set a `harness_features:` key **only** when verified in source or
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
 
-Two report-writing disciplines, both scars from the gsd-core v1.11.0 re-read (2026-08-21):
+Three report-writing disciplines — the first two scars from the gsd-core v1.11.0 re-read
+(2026-08-21), the third from the ai-memory v2.0.2 re-read (2026-09-04):
 
 - **A count carries its measure.** At the re-read, three of four corrections to the deep-dive
   held *at its own pin* — a curated subset stated as a total, a figure no definition reproduced
   (candidate measures ranged 5–39), a total that depended on clone state. State the command or
   definition a count came from, or the next re-read cannot confront it — the enumerable cousin
-  of "a citation is what makes a claim re-checkable".
+  of "a citation is what makes a claim re-checkable". Scored at the ai-memory re-read: counts
+  carrying an implicit measure reproduced **8-for-8** at their own pin; counts stated without
+  one failed **0-for-5** — a settled-sounding count stops being re-checked.
 - **Forward-looking claims are dated, falsifiable predictions.** The deep-dive's issue-counter
   forecast carried a number and a date, so the re-read could *score* it (landed within a day;
   ceiling mis-chosen). Write predictions that way on purpose, and score them at the next
   re-read — a free calibration instrument, the same epistemics this repo credits in tools
   that publish negative results about themselves.
+- **A source-traced claim reads its identifiers from source.** A subject's docs claiming
+  something about its own source is still a docs-view claim (rule 8) — verify the identifier,
+  and the *subject named* beside a citation, in the source itself before writing either as
+  source-traced. The scar, both halves from one deep-dive: a vendor doc's constructor name
+  (`sanitize()`) transcribed into a source trace when the real constructor was
+  `Sanitized::new` at both pins — the vendor was wrong about its own code and the trace
+  inherited it — and an injection envelope attributed to OpenCode at a line-exact citation
+  whose code named Antigravity. Both survived until the re-read's per-claim confrontation.
 
 **Lint.** Before committing:
 
