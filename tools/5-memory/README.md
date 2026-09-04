@@ -1,6 +1,6 @@
 # 5 — Memory
 
-`checked: 2026-08-26`
+`checked: 2026-09-04`
 
 Persistent cross-session state as an installable product — **the agent↔time edge**. Fed
 by hooks/MCP during a session, consolidated between sessions, injected back at the next
@@ -34,12 +34,14 @@ a pipeline stage.
 
 ## What we assess here
 
-The assessed block is **`memory_features:`, 14 keys** (2026-09-04,
+The assessed block is **`memory_features:`, 15 keys** (2026-09-04,
 [ADR-0013](../../adrs/0013-memory-features-block.md) + `memory_import` via
-[ADR-0051](../../adrs/0051-memory-import-key.md)): `memory_store`, `capture_path`,
+[ADR-0051](../../adrs/0051-memory-import-key.md) + `team_sharing` via
+[ADR-0052](../../adrs/0052-team-sharing-key.md)): `memory_store`, `capture_path`,
 `write_admission`, `recall_injection`, `memory_scope`, `memory_tiers`,
 `hybrid_retrieval`, `decay`, `memory_revision`, `injection_trust_boundary`,
-`deployment_mode`, `harness_installer`, `rule_extraction`, `memory_import`. They map
+`deployment_mode`, `team_sharing`, `harness_installer`, `rule_extraction`,
+`memory_import`. They map
 onto the three components above — capture (`capture_path`, `write_admission`),
 consolidation (`memory_store`, `memory_tiers`, `decay`, `memory_revision`,
 `rule_extraction`), and recall (`recall_injection`, `hybrid_retrieval`,
@@ -114,6 +116,25 @@ stores, repo rule files, transcripts — and only mem0 pairs the in-direction wi
 displacement on the way out. Newly watched from the same re-read, each one instance:
 tombstoned deletion (ai-memory `purge-session`), temporal recall (ai-memory `as_of`),
 typed relation edges (ai-memory).
+
+A second key was probed into existence the same day, from the other direction
+(2026-09-04, [ADR-0052](../../adrs/0052-team-sharing-key.md)): a stack question —
+*can a team of developers share one store?* — that the vocabulary could not express
+and the reports had recorded only through the isolation lens. `team_sharing` found
+its two instances at the existing pins in **opposite postures**: ai-memory shares
+everything and attributes (`attribution-only` — no RBAC, by design), cognee isolates
+and grants (`acl` — `share` is itself a permission). Same question, inverted trust
+default — the store-side rhyme of the read-path's `injection_trust_boundary` split,
+and under the attribution-only posture, `write_admission` is the only gate between
+one teammate's compromised session and everyone's recall. mem0 and memos settle ✗
+(platform-only constructs and hub-visibility flags respectively — neither a human
+identity model in the shipped artifact). A same-day docs pass over the hosted and
+stub side (vendor docs, retrieved 2026-09-04) found the axis live beyond the read
+seeds: mem0's and cognee's clouds both sell member-managed team scopes, memori's
+docs list "Team Memory" as explicitly roadmap-only, openviking's auth docs describe
+a multi-human account/role model at mechanism level, and everos/memmachine surfaces
+showed nothing — stub cells stay unset (stub honesty), but the axis is worth a look
+whenever one of the four is next read.
 
 ## Reports
 

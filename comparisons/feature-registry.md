@@ -363,7 +363,7 @@ What the subject is built from, and where you meet it. `stack` is the language a
 
 ### Store & scope
 
-Where memories live and who can see them. `memory_store` names the substrate — a file tree, a vector index, a graph, a relational database, or several at once — and `memory_tiers` whether short- and long-lived memory are distinguished at all. `memory_scope` is the blast radius (session · project · user · organisation), and `deployment_mode` says whether the store runs locally or as someone else's service, which is a privacy question before it is an architecture one.
+Where memories live and who can see them. `memory_store` names the substrate — a file tree, a vector index, a graph, a relational database, or several at once — and `memory_tiers` whether short- and long-lived memory are distinguished at all. `memory_scope` is the blast radius (session · project · user), and `deployment_mode` says whether the store runs locally or as someone else's service, which is a privacy question before it is an architecture one. `team_sharing` asks whether several humans can share one store by design, and under which regime — everyone-sees-everything with attributed writes, or grant-gated access where sharing is itself a permission.
 
 | Key | Basis | Type | Definition | Kind link | Provenance |
 |---|---|---|---|---|---|
@@ -371,6 +371,7 @@ Where memories live and who can see them. `memory_store` names the substrate —
 | `memory_scope` | assessed | `list` | scoping axes the store natively supports (list): project \| agent \| user \| session | — | added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee |
 | `memory_tiers` | assessed | `presence` | typed memory tiers rather than one flat store (working/episodic/semantic, traces/policies, session/permanent) | — | added 2026-08-19 per ADR-0013; instances: ai-memory, memos, cognee — WAS 'all four' until mem0's deep-dive (2026-08-19) flipped its cell: procedural_memory is a metadata tag on one collection, not a tier |
 | `deployment_mode` | assessed | `closed-enum` | self-host \| cloud \| both | — | added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon) |
+| `team_sharing` | assessed | `closed-enum` | multiple humans read/write one store as designed behavior: attribution-only (single-tenant shared data, writes attributed to named users, no access control) \| acl (per-container grants; sharing is itself a permission) | — | added 2026-09-04 per ADR-0052 — probed into existence by a stack question the vocabulary could not express; the two instances answer it in OPPOSITE postures: ai-memory attribution-only (docs/users.md: every authenticated request sees the same wiki pages, RBAC absent by design, design-decisions.md §13), cognee acl (ACL rows principal × permission × dataset, Principal polymorphic over User/Role/Tenant, `share` a first-class permission gating grants). mem0 ✗ (org/project constructs platform-only — the tiers/decay precedent), memos ✗ (ShareScope private\|public\|hub is hub visibility, no human identity model locally). NOT this fact: multi-agent isolation, multi-operator auth alone, vendor interchange (memory_import) |
 
 ### Write path
 
@@ -437,4 +438,4 @@ What the subject is built from, and where you meet it. `stack` is the language a
 | `stack` | transcribed | `list` | [Language, Runtime/Framework] of the subject | — | `source-or-docs` · renders in [tools.md](tools.md) |
 | `harness_targets` | transcribed | `list` | which harnesses the tool officially installs into — verified-only; a list, or a short string for large sets | — | `source-or-docs` · renders in [tools.md](tools.md) |
 
-**58 assessed keys across 5 blocks · 20 transcription fields.**
+**59 assessed keys across 5 blocks · 20 transcription fields.**

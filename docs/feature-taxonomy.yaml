@@ -12,7 +12,7 @@
 # --- groups (added 2026-08-26, ADR-0045) — what TEACHES the reader ---------------
 # Every entry in both lists below carries a `group:`. Groups exist for the reader, not
 # for the schema: the registry renders one subsection per group instead of one flat
-# table per category (28 rows for harnesses, 23 for memory — derived from the rendered
+# table per category (28 rows for harnesses, 24 for memory — derived from the rendered
 # registry sections, re-counted 2026-09-04), and each group's `blurb`
 # says what the group is ABOUT and how its keys read together. The division of labour
 # is deliberate — feature-registry.md's intro teaches NOTATION (presence vs graded,
@@ -222,9 +222,12 @@ groups:
       Where memories live and who can see them. `memory_store` names the substrate — a file
       tree, a vector index, a graph, a relational database, or several at once — and
       `memory_tiers` whether short- and long-lived memory are distinguished at all.
-      `memory_scope` is the blast radius (session · project · user · organisation), and
+      `memory_scope` is the blast radius (session · project · user), and
       `deployment_mode` says whether the store runs locally or as someone else's service,
-      which is a privacy question before it is an architecture one.
+      which is a privacy question before it is an architecture one. `team_sharing` asks
+      whether several humans can share one store by design, and under which regime —
+      everyone-sees-everything with attributed writes, or grant-gated access where
+      sharing is itself a permission.
   - id: write-path
     title: Write path
     order: 81
@@ -636,6 +639,13 @@ features:
     value_type: closed-enum
     definition: "self-host | cloud | both"
     note: "added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon)"
+  - id: team_sharing
+    group: store-scope
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    definition: "multiple humans read/write one store as designed behavior: attribution-only (single-tenant shared data, writes attributed to named users, no access control) | acl (per-container grants; sharing is itself a permission)"
+    note: "added 2026-09-04 per ADR-0052 — probed into existence by a stack question the vocabulary could not express; the two instances answer it in OPPOSITE postures: ai-memory attribution-only (docs/users.md: every authenticated request sees the same wiki pages, RBAC absent by design, design-decisions.md §13), cognee acl (ACL rows principal × permission × dataset, Principal polymorphic over User/Role/Tenant, `share` a first-class permission gating grants). mem0 ✗ (org/project constructs platform-only — the tiers/decay precedent), memos ✗ (ShareScope private|public|hub is hub visibility, no human identity model locally). NOT this fact: multi-agent isolation, multi-operator auth alone, vendor interchange (memory_import)"
   - id: capture_path
     group: write-path
     block: memory_features
