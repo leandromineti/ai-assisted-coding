@@ -106,8 +106,8 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | `files-git` | `project`, `user` | ✓ | `self-host` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ | ✓ |
 | [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · | ✓ |
-| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ | · |
-| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ | · |
+| [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ | ✓ |
 | [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · |

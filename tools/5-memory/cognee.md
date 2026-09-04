@@ -26,6 +26,7 @@ memory_features:   # ADR-0013 block, set 2026-08-19 from the existing survey rea
   # decay deliberately unset: forget is deletion mirroring the session/permanent split (not a lifecycle), but the core pipeline is unread at survey depth — absence not checkable
   deployment_mode: both          # direct (in-process) vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode (server.py:517-531)
   rule_extraction: true          # coding_agent_rules NodeSet, direct mode only
+  memory_import: true            # targeted probe-pass at the pin, cell set 2026-09-04 (ADR-0051): cognee/modules/migration/sources/ ships four competitor-store importers — mem0.py (82 lines, parses the platform export API AND OSS get_all() shapes), zep.py (138), letta.py (155), langmem.py (96) — via import_memory_source, beside the excluded own-format COGX archive round-trip. The most explicit competitor targeting in the column; source-verified at file level, the surrounding pipeline unread at survey depth
 ---
 
 # cognee

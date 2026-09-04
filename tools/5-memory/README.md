@@ -105,9 +105,15 @@ differentiators to watch: zero-LLM default (ai-memory), git-versioned store
 provenance audit (ai-memory). One graduated (2026-09-04,
 [ADR-0051](../../adrs/0051-memory-import-key.md)): *competitor import* fired its
 second instance at ai-memory's v2.0.2 re-read (the companions importer, beside mem0's
-import paths) and is now the `memory_import` key. Newly watched from the same re-read,
-each one instance: tombstoned deletion (ai-memory `purge-session`), temporal recall
-(ai-memory `as_of`), typed relation edges (ai-memory).
+import paths) and is now the `memory_import` key — and the same-day probe-pass that
+settled the remaining read seeds found it **universal**: 4-for-4 ✓ (memos imports the
+host harness's native MEMORY.md and OpenClaw transcripts; cognee ships dedicated
+mem0/zep/letta/langmem importers). Every mature seed pays the arrive-with-your-memory
+toll; what discriminates is the *source family* — rival SaaS stores, harness-native
+stores, repo rule files, transcripts — and only mem0 pairs the in-direction with
+displacement on the way out. Newly watched from the same re-read, each one instance:
+tombstoned deletion (ai-memory `purge-session`), temporal recall (ai-memory `as_of`),
+typed relation edges (ai-memory).
 
 ## Reports
 
