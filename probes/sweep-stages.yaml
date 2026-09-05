@@ -31,13 +31,13 @@
 # therefore an explicit quoted string, so a loader comparing against a
 # generated cell's own (always-string) `value:` field compares string to
 # string, never string to a silently-coerced float or bool.
-checked: 2026-09-02
+checked: 2026-09-04   # issue #43 phase 2 roster fork: +3 models, 443 -> 535 cells
 
 stages:
   - stage: 1
     name: zero-cost-predicted-rejections
     set: contract-sweep
-    expect_cells: 6
+    expect_cells: 8     # 2026-09-04 roster fork: was 6
     # SWEEP-DESIGN.md § Probe ordering, step 1: each of these three
     # below-boundary probe values is PREDICTED to return a 4xx, and a
     # rejected request bills nothing — firing them first is free AND is the
@@ -54,7 +54,7 @@ stages:
   - stage: 2
     name: reasoning-toggles
     set: contract-sweep
-    expect_cells: 14
+    expect_cells: 17    # 2026-09-04 roster fork: was 14
     # SWEEP-DESIGN.md § Probe ordering, step 2 (D-08, load-bearing): fired
     # before any axis-dependent sampling cell — a broken or mis-shaped toggle
     # here invalidates every downstream thinking-on/thinking-off cell built
@@ -70,7 +70,7 @@ stages:
   - stage: 3
     name: sampling
     set: contract-sweep
-    expect_cells: 201
+    expect_cells: 245   # 2026-09-04 roster fork: was 201
     # SWEEP-DESIGN.md § Probe ordering, step 3: the axis-dependent sampling
     # cells, fired only after Stage 2 has confirmed the toggle mechanism
     # itself works for every wire family these rows depend on. 201 = 110
@@ -93,7 +93,7 @@ stages:
   - stage: 4
     name: structural-and-service-tier
     set: contract-sweep
-    expect_cells: 99
+    expect_cells: 120   # 2026-09-04 roster fork: was 99
     # SWEEP-DESIGN.md § Probe ordering, step 4: a vendor's JSON-schema or
     # streaming support does not change when reasoning is toggled, so these
     # carry no ordering dependency on Stages 2-3.
@@ -113,7 +113,7 @@ stages:
   - stage: 5
     name: exotics
     set: contract-sweep
-    expect_cells: 107
+    expect_cells: 125   # 2026-09-04 roster fork: was 107
     # SWEEP-DESIGN.md § Probe ordering, step 5: fired last among the scalar
     # rows because their whole point is asymmetry — a rejection or an
     # unexpected acceptance here is not corrected by any other cell, so there
@@ -147,7 +147,7 @@ stages:
   - stage: 6
     name: content-blocks
     set: content-blocks
-    expect_cells: 16
+    expect_cells: 20    # 2026-09-04 roster fork: was 16
     # SWEEP-DESIGN.md § Probe ordering, step 6: fired last of all, and only
     # once runner.py gains the content-block request path (MODAL-01, plan
     # 11-03) — there is no ordering argument for firing them earlier, since

@@ -5,7 +5,7 @@
 # probes/classified/contract-sweep.yaml, rendered
 
 `checked:` 2026-09-01  
-`evidence_through:` 2026-09-02T14:40:23Z
+`evidence_through:` 2026-09-05T00:02:51Z
 
 ## Legend
 
@@ -23,103 +23,103 @@
 
 ## sampling
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| temperature (mode=default, value=0.7) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ |
-| temperature (mode=thinking-on, value=0.7) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
-| temperature (mode=thinking-off, value=0.7) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
-| top-p (mode=default, value=0.9) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ |
-| top-p (mode=thinking-on, value=0.9) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
-| top-p (mode=thinking-off, value=0.9) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ |
-| top-k (mode=default, value=40) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| top-k (mode=thinking-on, value=40) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
-| top-k (mode=thinking-off, value=40) | · | ✗ | ✗ | ◐ | ✗ | · | · | · | · | · | ◐ | ◐ |
-| presence-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ |
-| presence-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
-| presence-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
-| frequency-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ |
-| frequency-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
-| frequency-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ |
-| logprobs (mode=default, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | ✗ | ✓ | ⚠ | ✓ | ⚠ |
-| logprobs (mode=thinking-off, value=true) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ⚠ |
-| logprobs (mode=thinking-on, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | · | · | ⚠ | ⚠ | ⚠ |
-| top-logprobs (mode=default, value=3) | · | · | · | · | ✗ | ✗ | ◐ | ✗ | ✗ | ◐ | ◐ | ◐ |
-| top-logprobs (mode=thinking-off, value=3) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
-| top-logprobs (mode=thinking-on, value=3) | · | · | · | · | ✗ | ✗ | ◐ | · | · | ◐ | ◐ | ◐ |
-| seed (mode=default, value=42) | · | · | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| seed (mode=thinking-off, value=42) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ |
-| seed (mode=thinking-on, value=42) | · | · | · | · | ◐ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ |
-| n (mode=default, value=1) | · | · | · | · | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| n (mode=thinking-off, value=1) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ✓ |
-| n (mode=thinking-on, value=1) | · | · | · | · | ✓ | ✓ | ✓ | · | · | ✓ | ✓ | ✓ |
-| logit-bias (mode=default, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | ✗ | ◐ | ◐ | ◐ | ◐ |
-| logit-bias (mode=thinking-off, value={"1734":5}) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
-| logit-bias (mode=thinking-on, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | · | · | ◐ | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| temperature (mode=default, value=0.7) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| temperature (mode=thinking-on, value=0.7) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| temperature (mode=thinking-off, value=0.7) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| top-p (mode=default, value=0.9) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-p (mode=thinking-on, value=0.9) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-p (mode=thinking-off, value=0.9) | · | ✗ | ✗ | ◐ | ◐ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| top-k (mode=default, value=40) | ✗ | ✗ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-k (mode=thinking-on, value=40) | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-k (mode=thinking-off, value=40) | · | ✗ | ✗ | ◐ | ✗ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| presence-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ | ✗ | ? | · |
+| presence-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| presence-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ | ✗ | ? | · |
+| frequency-penalty (mode=default, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | ✗ | ◐ | ◐ | ◐ | ◐ | ✗ | ? | · |
+| frequency-penalty (mode=thinking-off, value=0.1) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| frequency-penalty (mode=thinking-on, value=0.1) | · | · | · | · | ✗ | ✗* | ✗* | · | · | ◐ | ◐ | ◐ | ✗ | ? | · |
+| logprobs (mode=default, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | ✗ | ✓ | ⚠ | ✓ | ⚠ | ✗ | ✗* | · |
+| logprobs (mode=thinking-off, value=true) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ⚠ | · | · | · |
+| logprobs (mode=thinking-on, value=true) | · | · | · | · | ✗ | ✗* | ⚠ | · | · | ⚠ | ⚠ | ⚠ | ✗ | ? | · |
+| top-logprobs (mode=default, value=3) | · | · | · | · | ✗ | ✗ | ◐ | ✗ | ✗ | ◐ | ◐ | ◐ | ✗ | ✗ | · |
+| top-logprobs (mode=thinking-off, value=3) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| top-logprobs (mode=thinking-on, value=3) | · | · | · | · | ✗ | ✗ | ◐ | · | · | ◐ | ◐ | ◐ | ✗ | ✗ | · |
+| seed (mode=default, value=42) | · | · | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · |
+| seed (mode=thinking-off, value=42) | · | · | · | · | ◐ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| seed (mode=thinking-on, value=42) | · | · | · | · | ◐ | ◐ | ◐ | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | · |
+| n (mode=default, value=1) | · | · | · | · | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | · |
+| n (mode=thinking-off, value=1) | · | · | · | · | ✓ | · | · | · | · | · | ✓ | ✓ | · | · | · |
+| n (mode=thinking-on, value=1) | · | · | · | · | ✓ | ✓ | ✓ | · | · | ✓ | ✓ | ✓ | ✓ | ✓ | · |
+| logit-bias (mode=default, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | ✗ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| logit-bias (mode=thinking-off, value={"1734":5}) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| logit-bias (mode=thinking-on, value={"1734":5}) | · | · | · | · | ✗ | · | ✗ | · | · | ◐ | ◐ | ◐ | ✗ | · | · |
 
 ## structural
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| max-tokens | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| stop | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| response-format | · | · | · | · | ✗ | ? | ✓ | ⚠ | ✗ | ⚠ | ✗ | ✗ |
-| tools | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* |
-| tool-choice | ✗ | ✗ | ✗ | ✗ | ✗ | · | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| parallel-tool-calls | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| stream | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| stream-options-include-usage | · | · | · | · | ✗ | · | ◐ | ◐ | ✗ | ◐ | ✗ | ✗ |
-| anthropic-structured-output-output-config | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
-| anthropic-structured-output-output-format | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| max-tokens | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ✓ |
+| stop | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ◐ |
+| response-format | · | · | · | · | ✗ | ? | ✓ | ⚠ | ✗ | ⚠ | ✗ | ✗ | ✗ | ? | · |
+| tools | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ?* | ✗ | ✗ | ✗ |
+| tool-choice | ✗ | ✗ | ✗ | ✗ | ✗ | · | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | ✗ |
+| parallel-tool-calls | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| stream | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ |
+| stream-options-include-usage | · | · | · | · | ✗ | · | ◐ | ◐ | ✗ | ◐ | ✗ | ✗ | ✗ | · | · |
+| anthropic-structured-output-output-config | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
+| anthropic-structured-output-output-format | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
 
 ## service-tier
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| service-tier | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| service-tier | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | ⚠ |
 
 ## reasoning-toggle
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| openai-reasoning-effort | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| anthropic-thinking-object | ◐ | ◐ | ◐ | ◐ | · | · | · | · | · | · | · | · |
-| gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| openai-reasoning-effort | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| anthropic-thinking-object | ◐ | ◐ | ◐ | ◐ | · | · | · | · | · | · | · | · | · | · | ◐ |
+| gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ | · | · | · |
 
 ## exotic
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gemini-temperature-range (mode=default, value=1.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| gemini-temperature-range (mode=default, value=2.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| openai-verbosity | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-prediction | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-service-tier-values (mode=default, value=auto) | · | · | · | · | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
-| openai-service-tier-values (mode=default, value=default) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
-| openai-service-tier-values (mode=default, value=flex) | · | · | · | · | ✓ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
-| openai-service-tier-values (mode=default, value=priority) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ |
-| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":1024,"type":"enabled"}) | ✗ | ✗ | ✗ | ◐ | · | · | · | · | · | · | · | · |
-| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":500,"type":"enabled"}) | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
-| gemini-media-resolution | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| gemini-candidate-count | · | · | · | · | · | ✗* | · | · | · | · | · | · |
-| kimi-partial-mode | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| glm-do-sample | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| qwen-repetition-penalty (mode=default, value=0.5) | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ? | ◐ |
-| qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ |
-| qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | ✗ | · | ◐ | · | · | ◐ | ? | ◐ |
-| kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
-| kimi-fixed-sampling-point (mode=default, value=0.6) | · | · | · | · | · | · | · | ✗ | · | · | · | · |
-| openai-store | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-metadata | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ? | ◐ | ◐ |
-| openai-safety-identifier | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-prompt-cache-key | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| gemini-temperature-range (mode=default, value=1.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| gemini-temperature-range (mode=default, value=2.0) | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| openai-verbosity | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-prediction | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| openai-service-tier-values (mode=default, value=auto) | · | · | · | · | ⇄ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | · |
+| openai-service-tier-values (mode=default, value=default) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ✓ | · | · |
+| openai-service-tier-values (mode=default, value=flex) | · | · | · | · | ✓ | · | ⇄ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ✓ | · | · |
+| openai-service-tier-values (mode=default, value=priority) | · | · | · | · | ✓ | · | ✓ | ⚠ | ⚠ | ⚠ | ⚠ | ⚠ | ⇄ | · | · |
+| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":1024,"type":"enabled"}) | ✗ | ✗ | ✗ | ◐ | · | · | · | · | · | · | · | · | · | · | ✗ |
+| anthropic-thinking-budget-floor (mode=default, value={"budget_tokens":500,"type":"enabled"}) | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
+| gemini-media-resolution | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| gemini-candidate-count | · | · | · | · | · | ✗* | · | · | · | · | · | · | · | ✗* | · |
+| kimi-partial-mode | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| glm-do-sample | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| qwen-repetition-penalty (mode=default, value=0.5) | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ? | ◐ | ✗ | · | · |
+| qwen-repetition-penalty (mode=thinking-off, value=0.5) | · | · | · | · | ✗ | · | · | · | · | · | ◐ | ◐ | · | · | · |
+| qwen-repetition-penalty (mode=thinking-on, value=0.5) | · | · | · | · | ✗ | · | ◐ | · | · | ◐ | ? | ◐ | ✗ | · | · |
+| kimi-fixed-sampling-point (mode=default, value=0.3) | · | · | · | · | · | · | · | ✗ | · | · | · | · | · | · | · |
+| kimi-fixed-sampling-point (mode=default, value=0.6) | · | · | · | · | · | · | · | ✗ | · | · | · | · | · | · | · |
+| openai-store | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-metadata | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ? | ◐ | ◐ | ✗ | · | · |
+| openai-safety-identifier | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-prompt-cache-key | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
 
 ## content-block
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| image-input | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗* | ✓ | ✗* | ✗* | ✗* | ✗* |
-| anthropic-cache-control-block | ✓ | ✓ | ✓ | ✓ | · | · | · | · | · | · | · | · |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| image-input | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗* | ✓ | ✗* | ✗* | ✗* | ✗* | ✓ | ✓ | ✓ |
+| anthropic-cache-control-block | ✓ | ✓ | ✓ | ✓ | · | · | · | · | · | · | · | · | · | · | ✓ |
 
 ## Hazards
 
@@ -148,6 +148,8 @@ Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` �
 | service-tier | glm-5.3 | ⚠ accepted-ignored | glm-5.3--service-tier--auto--default--39f1ca62 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | service-tier | qwen3.8-max | ⚠ accepted-ignored | qwen3.8-max--service-tier--auto--default--21c5dfa8 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | service-tier | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--service-tier--auto--default--db747a31 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| service-tier | gpt-6-astra | ⇄ silently-translated | gpt-6-astra--service-tier--auto--default--30068a96 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| service-tier | claude-fable-5-1 | ⚠ accepted-ignored | claude-fable-5-1--service-tier--auto--default--e0af6e90 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | openai-service-tier-values | gpt-5-6-sol | ⇄ silently-translated | gpt-5-6-sol--openai-service-tier-values--auto--default--edca588c | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
 | openai-service-tier-values | grok-4-5 | ⇄ silently-translated | grok-4-5--openai-service-tier-values--auto--default--50701f55 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
 | openai-service-tier-values | grok-4-5 | ⇄ silently-translated | grok-4-5--openai-service-tier-values--flex--default--5807985b | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
@@ -171,3 +173,5 @@ Every cell whose state is ⚠ `accepted-ignored` or ⇄ `silently-translated` �
 | openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--default--default--8a573bf7 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--flex--default--23b17587 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
 | openai-service-tier-values | qwen3.8-flash | ⚠ accepted-ignored | qwen3.8-flash--openai-service-tier-values--priority--default--4bed4339 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the response carries no evidence the parameter had any effect — the vendor may have silently dropped it. |
+| openai-service-tier-values | gpt-6-astra | ⇄ silently-translated | gpt-6-astra--openai-service-tier-values--auto--default--30068a96 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |
+| openai-service-tier-values | gpt-6-astra | ⇄ silently-translated | gpt-6-astra--openai-service-tier-values--priority--default--875735e4 | Silent acceptance (conclusion 19): the request was accepted (2xx) but the vendor's response reports a DIFFERENT value than the one requested — the vendor rewrote it rather than honoring or rejecting it. |

@@ -43,7 +43,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before
 # stamping": `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +gemini-3-8-flash +claude-fable-5-1 pairs, +gpt-6-astra wire-rejects skip (its contract stop cell 400s, the gpt-5-6-sol shape)
 
 probes:
   # --- claude-fable-5 (anthropic, max_tokens 300) ---
@@ -190,6 +190,37 @@ probes:
     max_tokens: 300
     extra_params: {stop: ["Thursday"]}
   - model: qwen3.8-flash
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+
+
+  # --- gemini-3-8-flash (gemini, max_tokens 600; issue #43 roster fork, 2026-09-05 — contract accepts stopSequences: gemini-3-8-flash--stop--["the"]--default--968e372d, HTTP 200) ---
+  - model: gemini-3-8-flash
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 600
+    extra_params: {stopSequences: ["Thursday"]}
+  - model: gemini-3-8-flash
+    param: stop-truncation
+    value: control-no-stop
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 600
+
+  # --- claude-fable-5-1 (anthropic, max_tokens 300; issue #43 roster fork, 2026-09-05 — contract accepts stop_sequences: claude-fable-5-1--stop--["the"]--default--00af0a06, HTTP 200) ---
+  - model: claude-fable-5-1
+    param: stop-truncation
+    value: triggering
+    mode: default
+    prompt: "List the days of the week in order, one per line, starting with Monday."
+    max_tokens: 300
+    extra_params: {stop_sequences: ["Thursday"]}
+  - model: claude-fable-5-1
     param: stop-truncation
     value: control-no-stop
     mode: default
@@ -344,6 +375,39 @@ expectations:
 # stop words are supported — this family fires a single sequence everywhere,
 # so that contradiction is never exercised; declared out of scope rather
 # than silently absent, a candidate for a later phase.
+  - model: gemini-3-8-flash
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: Thursday
+    expected: >-
+      Gemini documents stopSequences (up to 5) as stopping output at the first
+      appearance of a stop sequence, not included in the response — the same
+      vendor-level claim cited for gemini-3-1-pro above, now at the first
+      Stable-track Gemini in the sweep. Expect the triggering call to truncate
+      strictly before "Thursday" and the finish reason to distinguish the stop
+      from the control's natural completion, per the sibling's own cell.
+    expected_source: "docs-claims:stop/gemini"
+  - model: claude-fable-5-1
+    param: stop-truncation
+    value: triggering
+    mode: default
+    requirement: BHV-03
+    design: single-stop
+    control_value: control-no-stop
+    stop_token: Thursday
+    expected: >-
+      Anthropic documents stop_sequences as custom text sequences that cause
+      the model to stop generating, with `stop_reason` set to "stop_sequence"
+      when one fires — the same vendor-level claim cited for claude-fable-5
+      above. The 5.0 predecessor measured honest (stop-honored truncation +
+      the distinguishable stop_reason value); this cell is the revision
+      test's like-for-like comparison at the same fixture.
+    expected_source: "docs-claims:stop/anthropic"
+
 skips:
   - model: gpt-5-6-sol
     param: stop
@@ -363,3 +427,9 @@ skips:
     requirement: BHV-03
     reason: out-of-scope-multi-sequence-contradiction
     cited_source: "docs-claims:stop/zai"
+  - model: gpt-6-astra
+    param: stop
+    mode: default
+    requirement: BHV-03
+    reason: wire-rejects-stop-default-mode
+    cited_probe_id: "gpt-6-astra--stop--[\"the\"]--default--86cda0ea"

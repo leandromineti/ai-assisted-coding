@@ -1,9 +1,10 @@
-# probes/harness/prices.yaml — per-token USD prices for the 12 active tracked models
-# (D-02). One row per model, keyed by the same slug as models.yaml. Every row carries
+# probes/harness/prices.yaml — per-token USD prices for the 15 active tracked models
+# (D-02; 12 at Phase 11, +3 on 2026-09-04 by issue #43's roster fork). One row per
+# model, keyed by the same slug as models.yaml. Every row carries
 # a `retrieved` date and a `source` URL, transcribed from the model report's own
 # pricing: block and url: field, so a stale price is auditable and every ledger dollar
 # figure is recomputable from raw token counts.
-checked: 2026-09-01
+checked: 2026-09-04
 
 prices:
   - slug: claude-fable-5
@@ -87,3 +88,33 @@ prices:
     output_usd_per_mtok: 0.47
     retrieved: 2026-08-27
     source: https://www.qwencloud.com/models/qwen3.8-flash
+
+  - slug: gpt-6-astra
+    input_usd_per_mtok: 10
+    output_usd_per_mtok: 50
+    retrieved: 2026-09-04
+    source: https://developers.openai.com/api/docs/models/gpt-6-astra
+    # Base rate only — the report also carries a >272K-input-token multiplier
+    # (2x input + cache / 1.5x output for the full request) this flat rate does
+    # not capture; not modeled here, same rationale as the gpt-5-6-sol row above
+    # (D-02), and unreachable at probe-sized prompts anyway.
+
+  - slug: gemini-3-8-flash
+    input_usd_per_mtok: 0.75
+    output_usd_per_mtok: 3.75
+    retrieved: 2026-09-04
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    # INTRODUCTORY rate, stated inline per pricing cell: "$0.75 through
+    # December 31, 2026. $1.50 starting January 1, 2027." — every tier doubles on
+    # that date ($1.50/$7.50 base). This row must be re-retrieved at the cliff or
+    # ledger costs computed after 2027-01-01 undercount by half.
+
+  - slug: claude-fable-5-1
+    input_usd_per_mtok: 10
+    output_usd_per_mtok: 50
+    retrieved: 2026-09-04
+    source: https://platform.claude.com/docs/en/models/fable-5-1/overview
+    # Base rate unchanged from claude-fable-5 — the 5.1 launch's whole price move
+    # is cache reads at 0.025x ($0.25/MTok vs the universal 0.1x), which only
+    # matters here if a cache_read_usd_per_mtok tier field is ever added
+    # (ledger.py's _OPTIONAL_TIERS already knows the key).

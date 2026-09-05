@@ -3043,3 +3043,105 @@ behavioral calls at the $0.30 envelope — more requires a new checkpoint).
 Appended **during** the run, never reconstructed afterward — the protocol text
 above is never edited once committed (methodology rule 5). Each entry is
 dated. Empty at creation.
+
+**2026-09-04 — Spend sign-off received.** The owner's reply, verbatim, quoted
+per the repo's sign-off convention (delivered through the session's blocking
+checkpoint):
+
+> approve
+
+Read as approve-fire for exactly the 92 contract cells plus ≤100 behavioral
+calls at the $0.30 envelope; more requires a new checkpoint. Firing begins
+with the stage-1/stage-2 calibration read, per the preregistered execution
+path above.
+
+**2026-09-04/05 — Stages 1 and 2 fired (the calibration read).** Stage 1 (8
+cells, 2 new): claude-fable-5-1's thinking-budget-floor probe 400'd as
+predicted (zero-cost); gemini-3-8-flash's temperature-range 2.0 answered 200
+with `output_tokens: null` (all 60 tokens to reasoning at max 64) —
+cost_usd=None by ledger design, the SAME accepted Phase-11 pattern (15 of
+gemini-3-1-pro's 57 raw records are null-output/unbilled; verified against the
+raw file before proceeding, not assumed). Stage 2 (17 cells, 3 new): all three
+new models accept their thinking fragments exactly as their docs predict —
+fable-5-1 `{"type":"adaptive"}`+`output_config.effort:high` 200 ($0.00041),
+gemini-3-8-flash `thinkingConfig.thinkingLevel:low` 200 ($0.0000105),
+gpt-6-astra `reasoning_effort:low` 200 ($0.00034). Fix-before-fire gate:
+PASSED, no registry change needed. Proceeding to the paid stages.
+
+**2026-09-05 — Stages 3–5 + content-blocks fired (stage 6 owns only
+content-block cells, fired via --content-block-set).** All 92 new cells now
+have raw records; every pre-existing cell printed `SKIP (already logged)`.
+Contract findings worth naming now, ahead of classification: gpt-6-astra's
+documented-removed `temperature`/`top_p`/`top_logprobs`/`logprobs` all 400 on
+the wire (the migration guide observed), `tools`/`tool_choice`/
+`parallel_tool_calls` 400 on Chat Completions (the "tool calling requires
+Responses" claim observed), yet `seed` is ACCEPTED (200) — the removal wave
+did not take seed with it; all four `service_tier` values accepted.
+gemini-3-8-flash rejects `candidateCount: 2` (sibling precedent holds) and
+`frequency/presence penalty`. claude-fable-5-1 rejects explicit
+`temperature`/`top_p`/`top_k` in BOTH modes (the 5.0 shape) but ACCEPTS
+`stop` — and 400s a plain `tools` list at this fixture. Billed fork spend so
+far: claude-fable-5-1 $0.002960 (7 calls), gemini-3-8-flash $0.000943 (12),
+gpt-6-astra $0.006090 (17) — **$0.009993 total, global $0.319615** (envelope
+$0.30 approved for the fork; ~3.3% used).
+
+**2026-09-05 — Behavioral sets authored (sibling parity) and fired.** 64 new
+declared behavioral probe entries across six files (control-arm 10,
+seed-determinism 22, temp0-repeatability 15, stop-truncation 4,
+n-candidate-count 1, service-tier-audit 12), plus 7 declared skips with
+resolvable citations (claude-fable-5-1's three Anthropic no-field skips citing
+docs-claims; gpt-6-astra's temperature + stop wire-rejects citing its own
+contract 400s; claude-fable-5-1's temperature wire-reject;
+gemini-3-8-flash's candidateCount wire-reject citing its own contract cell).
+Every pre-existing entry printed SKIP. Two mid-run observations worth naming
+before classification: gpt-6-astra REJECTS `service_tier: scale` (HTTP 400 —
+the same docs-contradicted shape conclusion 19 recorded at gpt-5-6-sol) and
+claude-fable-5-1 rejects the `trap` response-vocabulary word `standard`
+(HTTP 400 — the 5.0/haiku request/response vocabulary split carries to the
+revision). Closing spend read, live: claude-fable-5-1 $0.055530 (17 billed) ·
+gemini-3-8-flash $0.003776 (40) · gpt-6-astra $0.078670 (41) — **fork total
+$0.137976 of the approved $0.30 envelope (46%), global $0.447598** of the
+$10.00 hard ceiling. No vendor near its $0.50 soft (anthropic $0.160,
+openai $0.127, gemini $0.014).
+
+## 2026-09-05 — Roster fork CLOSED: classification, 18 OBSERVED cells, full battery
+
+No further paid call after the behavioral entry above. Exact trailing output
+lines, read from the actual runs:
+
+- `python3 scripts/classify-probes.py --check`: `0 problem(s)` (904 cells, 15
+  model columns; two dated overrides.yaml entries added for gemini-3-8-flash's
+  capability-named 400s — "Logprobs is not enabled for this model", "Multiple
+  candidates is not enabled for this model" — the grok presencePenalty
+  precedent, evidence corrected in the classified data, never the checker).
+- `python3 scripts/classify-behavioral.py --check`: `0 problem(s)` (105 cells,
+  34 skips).
+- `python3 scripts/build-probe-matrix.py --check` /
+  `build-behavioral-matrix.py --check` / `build-docs-vs-wire.py --check`:
+  `0 problem(s)` each (byte-stable regeneration — each --check re-renders in
+  memory and compares against disk, the idempotency proof).
+- `python3 probes/inventory-to-sets.py --check`: `0 problem(s)`;
+  `runner.py --check-stages`: `535 cells across 6 stages (586 checks run)` /
+  `0 problem(s)`.
+- The six CLAUDE.md battery commands: build-tool-index `51 reports checked, 0
+  unverifiable`; build-refs-index `22 papers + 6 cards checked, 0 problem(s)`;
+  check-taxonomy `144 files checked, 0 problem(s)`; audit-evidence
+  `0 problem(s)`; check-docs-claims `0 problem(s)`; **check-probe-drift
+  `90 cell(s) examined, 0 mismatch(es), 0 missing cell(s)` — 72 pre-fork + the
+  18 new cells, all matching their derivations on the first pass.**
+
+**The headline result (the issue's own question):** claude-fable-5-1
+reproduces claude-fable-5's six verdicts IN KIND — three checked absences
+carry, 0/4 (varies) on the substitute, honest stop, response-asymmetric tier
+— with the tier evidence upgraded from sibling inference to the revision's
+own audit cells. New findings at the other two models: the sweep's first
+NONZERO same-seed rates (1/5 at both gpt-6-astra and gemini-3-8-flash);
+Astra's `fast` tier echoes back verbatim instead of the documented rename to
+`priority`, and its documented `scale` value is rejected naming the field;
+gemini-3-8-flash silently serves a requested paid `priority` tier as
+`standard`, visible only in the nested echo.
+
+Closing ledger read (live): fork spend **$0.137976 of the approved $0.30
+envelope (46%)** — claude-fable-5-1 $0.055530 · gpt-6-astra $0.078670 ·
+gemini-3-8-flash $0.003776; global **$0.447598** of the $10.00 hard ceiling;
+no vendor above $0.16 of its $0.50 soft.

@@ -155,6 +155,41 @@ probes:
   extra_params:
     frequency_penalty: 0.1
     enable_thinking: true
+- model: gpt-6-astra
+  param: frequency-penalty
+  value: '0.1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    frequency_penalty: 0.1
+- model: gpt-6-astra
+  param: frequency-penalty
+  value: '0.1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    frequency_penalty: 0.1
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: frequency-penalty
+  value: '0.1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    frequencyPenalty: 0.1
+- model: gemini-3-8-flash
+  param: frequency-penalty
+  value: '0.1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    frequencyPenalty: 0.1
+    thinkingConfig:
+      thinkingLevel: low
 - model: gpt-5-6-sol
   param: logit-bias
   value: '{"1734":5}'
@@ -285,6 +320,23 @@ probes:
   extra_params:
     logit_bias: *id001
     enable_thinking: true
+- model: gpt-6-astra
+  param: logit-bias
+  value: '{"1734":5}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logit_bias: *id001
+- model: gpt-6-astra
+  param: logit-bias
+  value: '{"1734":5}'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logit_bias: *id001
+    reasoning_effort: low
 - model: gpt-5-6-sol
   param: logprobs
   value: 'true'
@@ -432,6 +484,41 @@ probes:
   extra_params:
     logprobs: true
     enable_thinking: true
+- model: gpt-6-astra
+  param: logprobs
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logprobs: true
+- model: gpt-6-astra
+  param: logprobs
+  value: 'true'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logprobs: true
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: logprobs
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    responseLogprobs: true
+- model: gemini-3-8-flash
+  param: logprobs
+  value: 'true'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    responseLogprobs: true
+    thinkingConfig:
+      thinkingLevel: low
 - model: gpt-5-6-sol
   param: n
   value: '1'
@@ -579,6 +666,41 @@ probes:
   extra_params:
     n: 1
     enable_thinking: true
+- model: gpt-6-astra
+  param: n
+  value: '1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    n: 1
+- model: gpt-6-astra
+  param: n
+  value: '1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    n: 1
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: n
+  value: '1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    candidateCount: 1
+- model: gemini-3-8-flash
+  param: n
+  value: '1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    candidateCount: 1
+    thinkingConfig:
+      thinkingLevel: low
 - model: gpt-5-6-sol
   param: presence-penalty
   value: '0.1'
@@ -726,6 +848,41 @@ probes:
   extra_params:
     presence_penalty: 0.1
     enable_thinking: true
+- model: gpt-6-astra
+  param: presence-penalty
+  value: '0.1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    presence_penalty: 0.1
+- model: gpt-6-astra
+  param: presence-penalty
+  value: '0.1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    presence_penalty: 0.1
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: presence-penalty
+  value: '0.1'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    presencePenalty: 0.1
+- model: gemini-3-8-flash
+  param: presence-penalty
+  value: '0.1'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    presencePenalty: 0.1
+    thinkingConfig:
+      thinkingLevel: low
 - model: gpt-5-6-sol
   param: seed
   value: '42'
@@ -873,6 +1030,41 @@ probes:
   extra_params:
     seed: 42
     enable_thinking: true
+- model: gpt-6-astra
+  param: seed
+  value: '42'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    seed: 42
+- model: gpt-6-astra
+  param: seed
+  value: '42'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    seed: 42
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: seed
+  value: '42'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    seed: 42
+- model: gemini-3-8-flash
+  param: seed
+  value: '42'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    seed: 42
+    thinkingConfig:
+      thinkingLevel: low
 - model: claude-fable-5
   param: temperature
   value: '0.7'
@@ -1129,6 +1321,61 @@ probes:
   extra_params:
     temperature: 0.7
     enable_thinking: true
+- model: gpt-6-astra
+  param: temperature
+  value: '0.7'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+- model: gpt-6-astra
+  param: temperature
+  value: '0.7'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: temperature
+  value: '0.7'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+- model: gemini-3-8-flash
+  param: temperature
+  value: '0.7'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+    thinkingConfig:
+      thinkingLevel: low
+- model: claude-fable-5-1
+  param: temperature
+  value: '0.7'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+- model: claude-fable-5-1
+  param: temperature
+  value: '0.7'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 0.7
+    thinking:
+      type: adaptive
+    output_config:
+      effort: high
 - model: claude-fable-5
   param: top-k
   value: '40'
@@ -1385,6 +1632,61 @@ probes:
   extra_params:
     top_k: 40
     enable_thinking: true
+- model: gpt-6-astra
+  param: top-k
+  value: '40'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_k: 40
+- model: gpt-6-astra
+  param: top-k
+  value: '40'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_k: 40
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: top-k
+  value: '40'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    topK: 40
+- model: gemini-3-8-flash
+  param: top-k
+  value: '40'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    topK: 40
+    thinkingConfig:
+      thinkingLevel: low
+- model: claude-fable-5-1
+  param: top-k
+  value: '40'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_k: 40
+- model: claude-fable-5-1
+  param: top-k
+  value: '40'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_k: 40
+    thinking:
+      type: adaptive
+    output_config:
+      effort: high
 - model: gpt-5-6-sol
   param: top-logprobs
   value: '3'
@@ -1532,6 +1834,41 @@ probes:
   extra_params:
     top_logprobs: 3
     enable_thinking: true
+- model: gpt-6-astra
+  param: top-logprobs
+  value: '3'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_logprobs: 3
+- model: gpt-6-astra
+  param: top-logprobs
+  value: '3'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_logprobs: 3
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: top-logprobs
+  value: '3'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logprobs: 3
+- model: gemini-3-8-flash
+  param: top-logprobs
+  value: '3'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    logprobs: 3
+    thinkingConfig:
+      thinkingLevel: low
 - model: claude-fable-5
   param: top-p
   value: '0.9'
@@ -1788,6 +2125,61 @@ probes:
   extra_params:
     top_p: 0.9
     enable_thinking: true
+- model: gpt-6-astra
+  param: top-p
+  value: '0.9'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_p: 0.9
+- model: gpt-6-astra
+  param: top-p
+  value: '0.9'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_p: 0.9
+    reasoning_effort: low
+- model: gemini-3-8-flash
+  param: top-p
+  value: '0.9'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    topP: 0.9
+- model: gemini-3-8-flash
+  param: top-p
+  value: '0.9'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    topP: 0.9
+    thinkingConfig:
+      thinkingLevel: low
+- model: claude-fable-5-1
+  param: top-p
+  value: '0.9'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_p: 0.9
+- model: claude-fable-5-1
+  param: top-p
+  value: '0.9'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    top_p: 0.9
+    thinking:
+      type: adaptive
+    output_config:
+      effort: high
 - model: claude-fable-5
   param: anthropic-structured-output-output-config
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
@@ -1826,6 +2218,14 @@ probes:
   max_tokens: 64
   extra_params:
     output_config: *id002
+- model: claude-fable-5-1
+  param: anthropic-structured-output-output-config
+  value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    output_config: *id002
 - model: claude-fable-5
   param: anthropic-structured-output-output-format
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
@@ -1857,6 +2257,14 @@ probes:
   extra_params:
     output_format: *id003
 - model: claude-haiku-4-5
+  param: anthropic-structured-output-output-format
+  value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    output_format: *id003
+- model: claude-fable-5-1
   param: anthropic-structured-output-output-format
   value: '{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}'
   mode: default
@@ -1960,6 +2368,30 @@ probes:
   max_tokens: 64
   extra_params:
     max_tokens: 64
+- model: gpt-6-astra
+  param: max-tokens
+  value: '64'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    max_completion_tokens: 64
+- model: gemini-3-8-flash
+  param: max-tokens
+  value: '64'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    maxOutputTokens: 64
+- model: claude-fable-5-1
+  param: max-tokens
+  value: '64'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    max_tokens: 64
 - model: gpt-5-6-sol
   param: parallel-tool-calls
   value: 'true'
@@ -2009,6 +2441,14 @@ probes:
   extra_params:
     parallel_tool_calls: true
 - model: qwen3.8-flash
+  param: parallel-tool-calls
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    parallel_tool_calls: true
+- model: gpt-6-astra
   param: parallel-tool-calls
   value: 'true'
   mode: default
@@ -2081,6 +2521,22 @@ probes:
   max_tokens: 64
   extra_params:
     response_format: *id004
+- model: gpt-6-astra
+  param: response-format
+  value: '{"type":"json_object"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    response_format: *id004
+- model: gemini-3-8-flash
+  param: response-format
+  value: '{"type":"json_object"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    responseMimeType: *id004
 - model: claude-fable-5
   param: stop
   value: '["the"]'
@@ -2178,6 +2634,30 @@ probes:
   max_tokens: 64
   extra_params:
     stop: *id005
+- model: gpt-6-astra
+  param: stop
+  value: '["the"]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stop: *id005
+- model: gemini-3-8-flash
+  param: stop
+  value: '["the"]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stopSequences: *id005
+- model: claude-fable-5-1
+  param: stop
+  value: '["the"]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stop_sequences: *id005
 - model: claude-fable-5
   param: stream
   value: 'false'
@@ -2259,6 +2739,22 @@ probes:
   extra_params:
     stream: false
 - model: qwen3.8-flash
+  param: stream
+  value: 'false'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stream: false
+- model: gpt-6-astra
+  param: stream
+  value: 'false'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stream: false
+- model: claude-fable-5-1
   param: stream
   value: 'false'
   mode: default
@@ -2323,6 +2819,14 @@ probes:
   max_tokens: 64
   extra_params:
     stream_options: *id006
+- model: gpt-6-astra
+  param: stream-options-include-usage
+  value: '{"include_usage":true}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    stream_options: *id006
 - model: claude-fable-5
   param: tool-choice
   value: auto
@@ -2404,6 +2908,22 @@ probes:
   extra_params:
     tool_choice: auto
 - model: qwen3.8-flash
+  param: tool-choice
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    tool_choice: auto
+- model: gpt-6-astra
+  param: tool-choice
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    tool_choice: auto
+- model: claude-fable-5-1
   param: tool-choice
   value: auto
   mode: default
@@ -2516,6 +3036,30 @@ probes:
   max_tokens: 64
   extra_params:
     tools: *id007
+- model: gpt-6-astra
+  param: tools
+  value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    tools: *id007
+- model: gemini-3-8-flash
+  param: tools
+  value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    tools: *id007
+- model: claude-fable-5-1
+  param: tools
+  value: '[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    tools: *id007
 - model: claude-fable-5
   param: anthropic-thinking-object
   value: '{"type":"adaptive"}'
@@ -2559,6 +3103,17 @@ probes:
     thinking:
       type: enabled
       budget_tokens: 1024
+- model: claude-fable-5-1
+  param: anthropic-thinking-object
+  value: '{"type":"adaptive"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 1025
+  extra_params:
+    thinking:
+      type: adaptive
+    output_config:
+      effort: high
 - model: gemini-3-1-pro
   param: gemini-thinking-config
   value: '{"thinkingLevel":"low"}'
@@ -2566,8 +3121,16 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 200
   extra_params:
-    thinkingConfig:
+    thinkingConfig: &id008
       thinkingLevel: low
+- model: gemini-3-8-flash
+  param: gemini-thinking-config
+  value: '{"thinkingLevel":"low"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    thinkingConfig: *id008
 - model: gpt-5-6-sol
   param: openai-reasoning-effort
   value: low
@@ -2617,6 +3180,14 @@ probes:
   extra_params:
     reasoning_effort: low
 - model: qwen3.8-flash
+  param: openai-reasoning-effort
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    reasoning_effort: low
+- model: gpt-6-astra
   param: openai-reasoning-effort
   value: low
   mode: default
@@ -2728,6 +3299,22 @@ probes:
   max_tokens: 64
   extra_params:
     service_tier: auto
+- model: gpt-6-astra
+  param: service-tier
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: claude-fable-5-1
+  param: service-tier
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
 - model: claude-fable-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":500,"type":"enabled"}'
@@ -2735,7 +3322,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: &id008
+    thinking: &id009
       type: enabled
       budget_tokens: 500
 - model: claude-fable-5
@@ -2745,7 +3332,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: &id009
+    thinking: &id010
       type: enabled
       budget_tokens: 1024
 - model: claude-opus-5
@@ -2755,7 +3342,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: *id008
+    thinking: *id009
 - model: claude-opus-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":1024,"type":"enabled"}'
@@ -2763,7 +3350,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: *id009
+    thinking: *id010
 - model: claude-sonnet-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":500,"type":"enabled"}'
@@ -2771,7 +3358,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: *id008
+    thinking: *id009
 - model: claude-sonnet-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":1024,"type":"enabled"}'
@@ -2779,7 +3366,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: *id009
+    thinking: *id010
 - model: claude-haiku-4-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":500,"type":"enabled"}'
@@ -2787,7 +3374,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
-    thinking: *id008
+    thinking: *id009
 - model: claude-haiku-4-5
   param: anthropic-thinking-budget-floor
   value: '{"budget_tokens":1024,"type":"enabled"}'
@@ -2795,7 +3382,23 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 1025
   extra_params:
+    thinking: *id010
+- model: claude-fable-5-1
+  param: anthropic-thinking-budget-floor
+  value: '{"budget_tokens":500,"type":"enabled"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 1025
+  extra_params:
     thinking: *id009
+- model: claude-fable-5-1
+  param: anthropic-thinking-budget-floor
+  value: '{"budget_tokens":1024,"type":"enabled"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 1025
+  extra_params:
+    thinking: *id010
 - model: gemini-3-1-pro
   param: gemini-candidate-count
   value: '2'
@@ -2804,12 +3407,28 @@ probes:
   max_tokens: 200
   extra_params:
     candidateCount: 2
+- model: gemini-3-8-flash
+  param: gemini-candidate-count
+  value: '2'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    candidateCount: 2
 - model: gemini-3-1-pro
   param: gemini-media-resolution
   value: MEDIA_RESOLUTION_LOW
   mode: default
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 200
+  extra_params:
+    mediaResolution: MEDIA_RESOLUTION_LOW
+- model: gemini-3-8-flash
+  param: gemini-media-resolution
+  value: MEDIA_RESOLUTION_LOW
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
   extra_params:
     mediaResolution: MEDIA_RESOLUTION_LOW
 - model: gemini-3-1-pro
@@ -2826,6 +3445,22 @@ probes:
   mode: default
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 200
+  extra_params:
+    temperature: 2.0
+- model: gemini-3-8-flash
+  param: gemini-temperature-range
+  value: '1.0'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    temperature: 1.0
+- model: gemini-3-8-flash
+  param: gemini-temperature-range
+  value: '2.0'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
   extra_params:
     temperature: 2.0
 - model: gpt-5-6-sol
@@ -2877,6 +3512,14 @@ probes:
   extra_params:
     do_sample: true
 - model: qwen3.8-flash
+  param: glm-do-sample
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    do_sample: true
+- model: gpt-6-astra
   param: glm-do-sample
   value: 'true'
   mode: default
@@ -2956,6 +3599,14 @@ probes:
   max_tokens: 64
   extra_params:
     partial_mode: true
+- model: gpt-6-astra
+  param: kimi-partial-mode
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    partial_mode: true
 - model: gpt-5-6-sol
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -2963,7 +3614,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: &id010
+    metadata: &id011
       probe: 'true'
 - model: grok-4-5
   param: openai-metadata
@@ -2972,7 +3623,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
 - model: kimi-k3
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -2980,7 +3631,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
 - model: deepseek-v4
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -2988,7 +3639,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
 - model: glm-5.3
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -2996,7 +3647,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
 - model: qwen3.8-max
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -3004,7 +3655,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
 - model: qwen3.8-flash
   param: openai-metadata
   value: '{"probe":"true"}'
@@ -3012,7 +3663,15 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    metadata: *id010
+    metadata: *id011
+- model: gpt-6-astra
+  param: openai-metadata
+  value: '{"probe":"true"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    metadata: *id011
 - model: gpt-5-6-sol
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3020,7 +3679,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: &id011
+    prediction: &id012
       type: content
       content: hello
 - model: grok-4-5
@@ -3030,7 +3689,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
 - model: kimi-k3
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3038,7 +3697,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
 - model: deepseek-v4
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3046,7 +3705,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
 - model: glm-5.3
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3054,7 +3713,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
 - model: qwen3.8-max
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3062,7 +3721,7 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
 - model: qwen3.8-flash
   param: openai-prediction
   value: '{"content":"hello","type":"content"}'
@@ -3070,7 +3729,15 @@ probes:
   prompt: 'Reply with exactly one word: hello.'
   max_tokens: 64
   extra_params:
-    prediction: *id011
+    prediction: *id012
+- model: gpt-6-astra
+  param: openai-prediction
+  value: '{"content":"hello","type":"content"}'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prediction: *id012
 - model: gpt-5-6-sol
   param: openai-prompt-cache-key
   value: probe-cache-key-0001
@@ -3127,6 +3794,14 @@ probes:
   max_tokens: 64
   extra_params:
     prompt_cache_key: probe-cache-key-0001
+- model: gpt-6-astra
+  param: openai-prompt-cache-key
+  value: probe-cache-key-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    prompt_cache_key: probe-cache-key-0001
 - model: gpt-5-6-sol
   param: openai-safety-identifier
   value: probe-user-0001
@@ -3176,6 +3851,14 @@ probes:
   extra_params:
     safety_identifier: probe-user-0001
 - model: qwen3.8-flash
+  param: openai-safety-identifier
+  value: probe-user-0001
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    safety_identifier: probe-user-0001
+- model: gpt-6-astra
   param: openai-safety-identifier
   value: probe-user-0001
   mode: default
@@ -3400,6 +4083,38 @@ probes:
   extra_params:
     service_tier: auto
 - model: qwen3.8-flash
+  param: openai-service-tier-values
+  value: default
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: default
+- model: gpt-6-astra
+  param: openai-service-tier-values
+  value: flex
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: flex
+- model: gpt-6-astra
+  param: openai-service-tier-values
+  value: priority
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: priority
+- model: gpt-6-astra
+  param: openai-service-tier-values
+  value: auto
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    service_tier: auto
+- model: gpt-6-astra
   param: openai-service-tier-values
   value: default
   mode: default
@@ -3456,6 +4171,14 @@ probes:
   extra_params:
     store: true
 - model: qwen3.8-flash
+  param: openai-store
+  value: 'true'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    store: true
+- model: gpt-6-astra
   param: openai-store
   value: 'true'
   mode: default
@@ -3512,6 +4235,14 @@ probes:
   extra_params:
     verbosity: low
 - model: qwen3.8-flash
+  param: openai-verbosity
+  value: low
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    verbosity: low
+- model: gpt-6-astra
   param: openai-verbosity
   value: low
   mode: default
@@ -3648,3 +4379,20 @@ probes:
   extra_params:
     repetition_penalty: 0.5
     enable_thinking: true
+- model: gpt-6-astra
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: default
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+- model: gpt-6-astra
+  param: qwen-repetition-penalty
+  value: '0.5'
+  mode: thinking-on
+  prompt: 'Reply with exactly one word: hello.'
+  max_tokens: 64
+  extra_params:
+    repetition_penalty: 0.5
+    reasoning_effort: low

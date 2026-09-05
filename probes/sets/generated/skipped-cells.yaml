@@ -52,6 +52,18 @@ skipped:
   param: frequency-penalty
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: frequency-penalty
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: frequency-penalty
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: frequency-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: logit-bias
   mode: n/a
@@ -96,6 +108,18 @@ skipped:
   param: logit-bias
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: logit-bias
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: logit-bias
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-fable-5-1
+  param: logit-bias
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: logprobs
   mode: n/a
@@ -140,6 +164,18 @@ skipped:
   param: logprobs
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: logprobs
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: logprobs
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: n
   mode: n/a
@@ -184,6 +220,18 @@ skipped:
   param: n
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: n
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: n
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: n
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: presence-penalty
   mode: n/a
@@ -228,6 +276,18 @@ skipped:
   param: presence-penalty
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: presence-penalty
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: presence-penalty
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: presence-penalty
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: seed
   mode: n/a
@@ -272,6 +332,18 @@ skipped:
   param: seed
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: seed
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: seed
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: seed
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: temperature
   mode: thinking-off
@@ -304,6 +376,18 @@ skipped:
   param: temperature
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: temperature
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: temperature
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: temperature
+  mode: thinking-off
+  reason: no-thinking-off-toggle
 - model: claude-fable-5
   param: top-k
   mode: thinking-off
@@ -333,6 +417,18 @@ skipped:
   mode: thinking-on
   reason: toggle-not-a-request-parameter
 - model: glm-5.3
+  param: top-k
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: top-k
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: top-k
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
   param: top-k
   mode: thinking-off
   reason: no-thinking-off-toggle
@@ -380,6 +476,18 @@ skipped:
   param: top-logprobs
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: top-logprobs
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: top-logprobs
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
+  param: top-logprobs
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: top-p
   mode: thinking-off
@@ -409,6 +517,18 @@ skipped:
   mode: thinking-on
   reason: toggle-not-a-request-parameter
 - model: glm-5.3
+  param: top-p
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: top-p
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: top-p
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: claude-fable-5-1
   param: top-p
   mode: thinking-off
   reason: no-thinking-off-toggle
@@ -444,6 +564,14 @@ skipped:
   param: anthropic-structured-output-output-config
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: anthropic-structured-output-output-config
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: anthropic-structured-output-output-config
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: gpt-5-6-sol
   param: anthropic-structured-output-output-format
   mode: n/a
@@ -476,6 +604,14 @@ skipped:
   param: anthropic-structured-output-output-format
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: anthropic-structured-output-output-format
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: anthropic-structured-output-output-format
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: parallel-tool-calls
   mode: n/a
@@ -496,6 +632,14 @@ skipped:
   param: parallel-tool-calls
   mode: n/a
   reason: no-request-field-for-vendor
+- model: gemini-3-8-flash
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-fable-5-1
+  param: parallel-tool-calls
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: claude-fable-5
   param: response-format
   mode: n/a
@@ -512,7 +656,15 @@ skipped:
   param: response-format
   mode: n/a
   reason: no-request-field-for-vendor
+- model: claude-fable-5-1
+  param: response-format
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
+  param: stream
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-8-flash
   param: stream
   mode: n/a
   reason: no-request-field-for-vendor
@@ -536,7 +688,19 @@ skipped:
   param: stream-options-include-usage
   mode: n/a
   reason: no-request-field-for-vendor
+- model: gemini-3-8-flash
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: claude-fable-5-1
+  param: stream-options-include-usage
+  mode: n/a
+  reason: no-request-field-for-vendor
 - model: gemini-3-1-pro
+  param: tool-choice
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-8-flash
   param: tool-choice
   mode: n/a
   reason: no-request-field-for-vendor
@@ -572,6 +736,14 @@ skipped:
   param: anthropic-thinking-object
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: anthropic-thinking-object
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: anthropic-thinking-object
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: gemini-thinking-config
   mode: n/a
@@ -616,6 +788,14 @@ skipped:
   param: gemini-thinking-config
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: gemini-thinking-config
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: gemini-thinking-config
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: openai-reasoning-effort
   mode: n/a
@@ -633,6 +813,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-reasoning-effort
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-reasoning-effort
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-reasoning-effort
   mode: n/a
   reason: wire-shape-incompatible
@@ -676,7 +864,23 @@ skipped:
   param: qwen-enable-thinking
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: qwen-enable-thinking
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: qwen-enable-thinking
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: qwen-enable-thinking
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: service-tier
+  mode: n/a
+  reason: no-request-field-for-vendor
+- model: gemini-3-8-flash
   param: service-tier
   mode: n/a
   reason: no-request-field-for-vendor
@@ -712,6 +916,14 @@ skipped:
   param: anthropic-thinking-budget-floor
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: anthropic-thinking-budget-floor
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: anthropic-thinking-budget-floor
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: gemini-candidate-count
   mode: n/a
@@ -756,6 +968,14 @@ skipped:
   param: gemini-candidate-count
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: gemini-candidate-count
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: gemini-candidate-count
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: gemini-media-resolution
   mode: n/a
@@ -800,6 +1020,14 @@ skipped:
   param: gemini-media-resolution
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: gemini-media-resolution
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: gemini-media-resolution
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: gemini-temperature-range
   mode: n/a
@@ -844,6 +1072,14 @@ skipped:
   param: gemini-temperature-range
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: gemini-temperature-range
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: gemini-temperature-range
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: glm-do-sample
   mode: n/a
@@ -861,6 +1097,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: glm-do-sample
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: glm-do-sample
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: glm-do-sample
   mode: n/a
   reason: wire-shape-incompatible
@@ -908,6 +1152,18 @@ skipped:
   param: kimi-fixed-sampling-point
   mode: n/a
   reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: kimi-fixed-sampling-point
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: kimi-fixed-sampling-point
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: kimi-fixed-sampling-point
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: kimi-partial-mode
   mode: n/a
@@ -928,6 +1184,14 @@ skipped:
   param: kimi-partial-mode
   mode: n/a
   reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: kimi-partial-mode
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: kimi-partial-mode
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: openai-metadata
   mode: n/a
@@ -948,6 +1212,14 @@ skipped:
   param: openai-metadata
   mode: n/a
   reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-metadata
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: openai-metadata
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: openai-prediction
   mode: n/a
@@ -968,6 +1240,14 @@ skipped:
   param: openai-prediction
   mode: n/a
   reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-prediction
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: openai-prediction
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: claude-fable-5
   param: openai-prompt-cache-key
   mode: n/a
@@ -985,6 +1265,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-prompt-cache-key
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-prompt-cache-key
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-prompt-cache-key
   mode: n/a
   reason: wire-shape-incompatible
@@ -1005,6 +1293,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-safety-identifier
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-safety-identifier
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-safety-identifier
   mode: n/a
   reason: wire-shape-incompatible
@@ -1025,6 +1321,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-service-tier-values
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-service-tier-values
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-service-tier-values
   mode: n/a
   reason: wire-shape-incompatible
@@ -1045,6 +1349,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-store
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-store
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-store
   mode: n/a
   reason: wire-shape-incompatible
@@ -1065,6 +1377,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: gemini-3-1-pro
+  param: openai-verbosity
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
+  param: openai-verbosity
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
   param: openai-verbosity
   mode: n/a
   reason: wire-shape-incompatible
@@ -1112,6 +1432,18 @@ skipped:
   param: qwen-repetition-penalty
   mode: thinking-off
   reason: no-thinking-off-toggle
+- model: gpt-6-astra
+  param: qwen-repetition-penalty
+  mode: thinking-off
+  reason: no-thinking-off-toggle
+- model: gemini-3-8-flash
+  param: qwen-repetition-penalty
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: claude-fable-5-1
+  param: qwen-repetition-penalty
+  mode: n/a
+  reason: wire-shape-incompatible
 - model: gpt-5-6-sol
   param: anthropic-cache-control-block
   mode: n/a
@@ -1141,6 +1473,14 @@ skipped:
   mode: n/a
   reason: wire-shape-incompatible
 - model: qwen3.8-flash
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gpt-6-astra
+  param: anthropic-cache-control-block
+  mode: n/a
+  reason: wire-shape-incompatible
+- model: gemini-3-8-flash
   param: anthropic-cache-control-block
   mode: n/a
   reason: wire-shape-incompatible

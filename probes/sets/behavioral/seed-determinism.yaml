@@ -42,7 +42,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before stamping":
 # `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +gpt-6-astra +gemini-3-8-flash entries, +claude-fable-5-1 skip (fifth Claude model, same checked-absence claim)
 
 probes:
   # --- gpt-5-6-sol (openai, max_tokens 300) ---
@@ -757,6 +757,185 @@ probes:
     max_tokens: 300
     extra_params: {seed: 99}
 
+
+  # --- gpt-6-astra (issue #43 roster fork, 2026-09-05; max_tokens 300 mirrors its sibling's confirmed budget) ---
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: gpt-6-astra
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {seed: 99}
+
+  # --- gemini-3-8-flash (issue #43 roster fork, 2026-09-05; max_tokens 600 mirrors its sibling's confirmed budget) ---
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 1
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 2
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 3
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 4
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 5
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 6
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 7
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 8
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 9
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 42}
+    repeat: 10
+  - model: gemini-3-8-flash
+    param: seed
+    value: 99
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {seed: 99}
+
 # `effect_control_value: 99` on every expectation below tells
 # scripts/classify-behavioral.py (Task 3) where to find this model's single
 # different-seed probe entry (group_key (model, "seed", 99, "default")) — the
@@ -914,6 +1093,44 @@ expectations:
       model too, not a guaranteed 5/5.
     expected_source: "docs-claims:seed/qwen"
 
+  - model: gpt-6-astra
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      OpenAI's vendor-level seed claim (the same best-effort hedge cited for
+      gpt-5-6-sol above: "our system will make a best effort to sample
+      deterministically ... refer to the system_fingerprint response parameter")
+      is the only stated prior — and it survives at gpt-6-astra even though the
+      model's own migration guide removes temperature/top_p/top_logprobs: the
+      2026-09-05 contract cell shows `seed` ACCEPTED (200) while those sampling
+      params 400. Expect a mid-to-high same-seed pair-match rate, not a
+      guaranteed 5/5, with system_fingerprint recorded alongside each pair.
+    expected_source: "docs-claims:seed/openai"
+  - model: gemini-3-8-flash
+    param: seed
+    value: 42
+    mode: default
+    requirement: BHV-01
+    design: seed-pairs
+    pairs: 5
+    calls: 10
+    effect_control_value: 99
+    expected: >-
+      Gemini's GenerateContent reference carries NO best-effort hedge (the same
+      vendor-level claim cited for gemini-3-1-pro above: "Optional. Seed used in
+      decoding. If not set, the request uses a randomly generated seed" — silent
+      on determinism strength once a seed IS set). The unhedged framing sets the
+      same HIGHER bar at this first Stable-track Gemini: a same-seed pair-match
+      rate materially below 5/5 refutes the documentation more sharply than a
+      partial rate would at a vendor that explicitly disclaims a guarantee.
+    expected_source: "docs-claims:seed/gemini"
+
 # Four Claude models declared skipped, never silently absent — none has a
 # request-side seed field at all (probes/classified/contract-sweep.yaml: all
 # four `param: seed` rows are `mode: n/a`, `state: skipped`), cited to
@@ -940,6 +1157,12 @@ skips:
     reason: no-request-side-seed-field
     cited_source: "docs-claims:seed/anthropic"
   - model: claude-haiku-4-5
+    param: seed
+    mode: "n/a"
+    requirement: BHV-01
+    reason: no-request-side-seed-field
+    cited_source: "docs-claims:seed/anthropic"
+  - model: claude-fable-5-1
     param: seed
     mode: "n/a"
     requirement: BHV-01

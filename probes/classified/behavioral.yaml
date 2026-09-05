@@ -3,10 +3,10 @@
 # probes/raw/*.jsonl — do not edit by hand. Regenerate with
 # `python3 scripts/classify-behavioral.py`.
 #
-# 83 behavioral cell(s), 27 declared skip(s) (110 rows total).
+# 105 behavioral cell(s), 34 declared skip(s) (139 rows total).
 
-checked: 2026-09-03
-evidence_through: '2026-09-03T02:39:35Z'
+checked: 2026-09-05
+evidence_through: '2026-09-05T00:13:09Z'
 cells:
 - cell_id: gpt-5-6-sol--seed--42--default
   requirement: BHV-01
@@ -680,6 +680,176 @@ cells:
     effect_control_output_tokens: 59
     effect_control_system_fingerprint: null
   note: null
+- cell_id: gpt-6-astra--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 1
+  rate: 1/5
+  rate_pct: 20.0
+  verdict: partial
+  seed_effect_control:
+    result: differed
+    probe_id: gpt-6-astra--seed--99--default--13faf581
+  expected: 'OpenAI''s vendor-level seed claim (the same best-effort hedge cited for gpt-5-6-sol above:
+    "our system will make a best effort to sample deterministically ... refer to the system_fingerprint
+    response parameter") is the only stated prior — and it survives at gpt-6-astra even though the model''s
+    own migration guide removes temperature/top_p/top_logprobs: the 2026-09-05 contract cell shows `seed`
+    ACCEPTED (200) while those sampling params 400. Expect a mid-to-high same-seed pair-match rate, not
+    a guaranteed 5/5, with system_fingerprint recorded alongside each pair.'
+  expected_source: docs-claims:seed/openai
+  probe_ids:
+  - gpt-6-astra--seed--42--default--r1--7e092ed1
+  - gpt-6-astra--seed--42--default--r2--7e092ed1
+  - gpt-6-astra--seed--42--default--r3--7e092ed1
+  - gpt-6-astra--seed--42--default--r4--7e092ed1
+  - gpt-6-astra--seed--42--default--r5--7e092ed1
+  - gpt-6-astra--seed--42--default--r6--7e092ed1
+  - gpt-6-astra--seed--42--default--r7--7e092ed1
+  - gpt-6-astra--seed--42--default--r8--7e092ed1
+  - gpt-6-astra--seed--42--default--r9--7e092ed1
+  - gpt-6-astra--seed--42--default--r10--7e092ed1
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 62
+    - 57
+    - 54
+    - 53
+    - 62
+    - 59
+    - 54
+    - 57
+    - 54
+    - 54
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: stop
+    effect_control_output_tokens: 54
+    effect_control_system_fingerprint: null
+  note: null
+- cell_id: gemini-3-8-flash--seed--42--default
+  requirement: BHV-01
+  design: seed-pairs
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: seed
+  value: 42
+  pairs: 5
+  calls: 10
+  matching_pairs: 1
+  rate: 1/5
+  rate_pct: 20.0
+  verdict: partial
+  seed_effect_control:
+    result: differed
+    probe_id: gemini-3-8-flash--seed--99--default--2818d0c6
+  expected: 'Gemini''s GenerateContent reference carries NO best-effort hedge (the same vendor-level claim
+    cited for gemini-3-1-pro above: "Optional. Seed used in decoding. If not set, the request uses a randomly
+    generated seed" — silent on determinism strength once a seed IS set). The unhedged framing sets the
+    same HIGHER bar at this first Stable-track Gemini: a same-seed pair-match rate materially below 5/5
+    refutes the documentation more sharply than a partial rate would at a vendor that explicitly disclaims
+    a guarantee.'
+  expected_source: docs-claims:seed/gemini
+  probe_ids:
+  - gemini-3-8-flash--seed--42--default--r1--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r2--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r3--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r4--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r5--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r6--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r7--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r8--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r9--4d896ab5
+  - gemini-3-8-flash--seed--42--default--r10--4d896ab5
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - STOP
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - STOP
+    - MAX_TOKENS
+    output_tokens:
+    - 72
+    - 21
+    - 21
+    - 24
+    - 24
+    - 24
+    - 21
+    - 21
+    - 72
+    - 21
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    - null
+    effect_control_status: 200
+    effect_control_finish_reason: MAX_TOKENS
+    effect_control_output_tokens: 22
+    effect_control_system_fingerprint: null
+  note: null
 - cell_id: claude-fable-5--default-config-repeatability--no-temperature--default
   requirement: BHV-02
   design: repeats
@@ -1308,6 +1478,169 @@ cells:
     - null
     - null
   note: null
+- cell_id: gpt-6-astra--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: gpt-6-astra is the sweep's first model whose own migration guide REMOVES temperature outright
+    ("Remove `temperature`, `top_p`, and `top_logprobs`.") while OpenAI's vendor-level documentation still
+    states a general 0-2 accepted range — and the wire agrees with the migration guide (gpt-6-astra--temperature--0.7--default--ad5d5e96,
+    HTTP 400). This default-config-repeatability cell asks whether gpt-6-astra's own default sampling
+    is repeatable across five identical requests with no temperature parameter sent at all — the same
+    substitute shape as gpt-5-6-sol's cell above, now backed by documented removal rather than an undocumented
+    model-specific restriction.
+  expected_source: docs-claims:temperature/openai
+  probe_ids:
+  - gpt-6-astra--default-config-repeatability--no-temperature--default--r1--a7b3cece
+  - gpt-6-astra--default-config-repeatability--no-temperature--default--r2--a7b3cece
+  - gpt-6-astra--default-config-repeatability--no-temperature--default--r3--a7b3cece
+  - gpt-6-astra--default-config-repeatability--no-temperature--default--r4--a7b3cece
+  - gpt-6-astra--default-config-repeatability--no-temperature--default--r5--a7b3cece
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 55
+    - 53
+    - 56
+    - 57
+    - 51
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gemini-3-8-flash--temperature--0--default
+  requirement: BHV-02
+  design: repeats
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: temperature
+  value: 0
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'Gemini''s own GenerationConfig reference documents temperature range [0.0, 2.0] with no per-value
+    rejection language (the same vendor-level claim cited for gemini-3-1-pro above), and the roster fork''s
+    own wire evidence shows gemini-3-8-flash ACCEPTING an explicit temperature in default mode (gemini-3-8-flash--temperature--0.7--default--5b686f62,
+    HTTP 200) — so this is a genuine temperature-0 test, not a substitute. Sibling precedent: gemini-3-1-pro
+    measured 2/4 matching pairs (partial) — the only non-Anthropic model with any temp-0 stability signal.'
+  expected_source: docs-claims:temperature/gemini
+  probe_ids:
+  - gemini-3-8-flash--temperature--0--default--r1--a3519b85
+  - gemini-3-8-flash--temperature--0--default--r2--a3519b85
+  - gemini-3-8-flash--temperature--0--default--r3--a3519b85
+  - gemini-3-8-flash--temperature--0--default--r4--a3519b85
+  - gemini-3-8-flash--temperature--0--default--r5--a3519b85
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - STOP
+    - MAX_TOKENS
+    - STOP
+    output_tokens:
+    - 23
+    - 20
+    - 53
+    - 23
+    - 71
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: claude-fable-5-1--default-config-repeatability--no-temperature--default
+  requirement: BHV-02
+  design: repeats
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: default-config-repeatability
+  value: no-temperature
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: Anthropic's documented temperature contract ("models released after Claude Opus 4.6 do not
+    support setting temperature ... all other values are rejected with a 400 error") carries forward to
+    the 5.1 revision — confirmed on the wire (claude-fable-5-1--temperature--0.7--default--070c1680, HTTP
+    400). This default-config-repeatability cell asks whether claude-fable-5-1's own DEFAULT (implicit)
+    sampling is repeatable across five identical requests with no temperature parameter sent — the same
+    substitute its 5.0 predecessor measured at 0/4 pairs (varies), making this the revision test's direct
+    like-for-like comparison cell.
+  expected_source: docs-claims:temperature/anthropic
+  probe_ids:
+  - claude-fable-5-1--default-config-repeatability--no-temperature--default--r1--0775d278
+  - claude-fable-5-1--default-config-repeatability--no-temperature--default--r2--0775d278
+  - claude-fable-5-1--default-config-repeatability--no-temperature--default--r3--0775d278
+  - claude-fable-5-1--default-config-repeatability--no-temperature--default--r4--0775d278
+  - claude-fable-5-1--default-config-repeatability--no-temperature--default--r5--0775d278
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    - end_turn
+    output_tokens:
+    - 146
+    - 139
+    - 117
+    - 130
+    - 169
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
 - cell_id: claude-fable-5--stop-truncation--triggering--default
   requirement: BHV-03
   design: single-stop
@@ -1576,6 +1909,63 @@ cells:
     triggering_finish_reason: stop
     control_finish_reason: stop
   note: null
+- cell_id: gemini-3-8-flash--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: ambiguous
+  expected: Gemini documents stopSequences (up to 5) as stopping output at the first appearance of a stop
+    sequence, not included in the response — the same vendor-level claim cited for gemini-3-1-pro above,
+    now at the first Stable-track Gemini in the sweep. Expect the triggering call to truncate strictly
+    before "Thursday" and the finish reason to distinguish the stop from the control's natural completion,
+    per the sibling's own cell.
+  expected_source: docs-claims:stop/gemini
+  probe_ids:
+  - gemini-3-8-flash--stop-truncation--triggering--default--c83e86af
+  - gemini-3-8-flash--stop-truncation--control-no-stop--default--dc03bb1c
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: STOP
+    control_finish_reason: STOP
+  note: null
+- cell_id: claude-fable-5-1--stop-truncation--triggering--default
+  requirement: BHV-03
+  design: single-stop
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: stop-truncation
+  value: triggering
+  stop_token: Thursday
+  triggering_text_length: 25
+  control_text_length: 56
+  stop_token_in_triggering_text: false
+  truncation_verdict: stop-honored
+  finish_reason_honest: honest
+  expected: Anthropic documents stop_sequences as custom text sequences that cause the model to stop generating,
+    with `stop_reason` set to "stop_sequence" when one fires — the same vendor-level claim cited for claude-fable-5
+    above. The 5.0 predecessor measured honest (stop-honored truncation + the distinguishable stop_reason
+    value); this cell is the revision test's like-for-like comparison at the same fixture.
+  expected_source: docs-claims:stop/anthropic
+  probe_ids:
+  - claude-fable-5-1--stop-truncation--triggering--default--63b65222
+  - claude-fable-5-1--stop-truncation--control-no-stop--default--40f7f6c9
+  ancillary:
+    triggering_status: 200
+    control_status: 200
+    triggering_finish_reason: stop_sequence
+    control_finish_reason: end_turn
+  note: null
 - cell_id: gpt-5-6-sol--n--2--default
   requirement: BHV-04
   design: single-candidates
@@ -1724,6 +2114,30 @@ cells:
   - qwen3.8-flash--n--2--default--8df7372d
   ancillary:
     status: 400
+    terminal: verdict
+  note: null
+- cell_id: gpt-6-astra--n--2--default
+  requirement: BHV-04
+  design: single-candidates
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: n
+  value: 2
+  requested_n: 2
+  returned_count: 2
+  state: accepted-honored
+  evidence: candidate-count
+  expected: OpenAI documents `n` as how many chat completion choices to generate — the same vendor-level
+    claim cited for gpt-5-6-sol above. gpt-6-astra's own contract cell accepts n=1 (HTTP 200); this cell
+    asks whether a request for 2 candidates actually DELIVERS two distinct choices, is rejected, or silently
+    returns one (the glm-5.3 failure shape), on a model whose migration guide removed the classic sampling
+    params but not `n`.
+  expected_source: docs-claims:n/openai
+  probe_ids:
+  - gpt-6-astra--n--2--default--43d4cee4
+  ancillary:
+    status: 200
     terminal: verdict
   note: null
 - cell_id: grok-4-5--logprobs-reverify--combined--default
@@ -2782,6 +3196,358 @@ cells:
     status: 200
     terminal: verdict
   note: null
+- cell_id: gpt-6-astra--service-tier-audit--fast--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: fast
+  request_field_path: service_tier
+  request_value: fast
+  response_field_path: service_tier
+  response_value: fast
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: OpenAI's documented request/response rename ("The response will show service_tier=priority")
+    at the model whose launch post priced fast mode at 2x — the response echo is also the only tell for
+    the documented silent ramp-downgrade, so what comes back here is the wire fact the gpt-6-astra report's
+    fast_mode cell leans on.
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-6-astra--service-tier-audit--fast--default--581b5e9d
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gpt-6-astra--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: service_tier
+  response_value: default
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: OpenAI documents the default behavior as "auto" resolving to the project setting (normally
+    `default`) — expect the top-level response field to say which tier actually served the request when
+    nothing was asked.
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-6-astra--service-tier-audit--omitted--default--812d2e7f
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: gpt-6-astra--service-tier-audit--scale--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: service-tier-audit
+  value: scale
+  request_field_path: service_tier
+  request_value: scale
+  response_field_path: null
+  response_value: null
+  response_present: absent
+  echo_relation: rejected
+  rejection_names_field: true
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: The value OpenAI documents but its own wire rejected at gpt-5-6-sol (conclusion 19's docs-contradicted
+    case). Does the seven-value enum's access-controlled member behave differently at the new flagship,
+    whose docs list `scale` in the same enum?
+  expected_source: docs-claims:openai-service-tier-values/openai
+  probe_ids:
+  - gpt-6-astra--service-tier-audit--scale--default--354001c0
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-8-flash--service-tier-audit--flex--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: flex
+  request_field_path: serviceTier
+  request_value: flex
+  response_field_path: usageMetadata.serviceTier
+  response_value: flex
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini contract, `flex` value — this model's pricing page prices Flex identically to
+    Batch, so the echo says whether the tier is real on the wire.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-8-flash--service-tier-audit--flex--default--a9f9f805
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-8-flash--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: serviceTier
+  request_value: null
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Gemini documents serviceTier as optional with `unspecified` as the default tier — expect the
+    response's nested usageMetadata location to say what served the request when nothing was asked.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-8-flash--service-tier-audit--omitted--default--8b4ac380
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: gemini-3-8-flash--service-tier-audit--priority--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: priority
+  request_field_path: serviceTier
+  request_value: priority
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini contract, `priority` value — the tier the gemini-3-8-flash report's fast_mode
+    cell records at a derived exactly-1.8x premium; the echo is the wire-side half of that claim.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-8-flash--service-tier-audit--priority--default--80c5e356
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-8-flash--service-tier-audit--standard--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: standard
+  request_field_path: serviceTier
+  request_value: standard
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: echoed
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Same Gemini contract, `standard` value, at the fork model.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-8-flash--service-tier-audit--standard--default--195b4522
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: gemini-3-8-flash--service-tier-audit--unspecified--default
+  requirement: BHV-06
+  design: tier-audit
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: service-tier-audit
+  value: unspecified
+  request_field_path: serviceTier
+  request_value: unspecified
+  response_field_path: usageMetadata.serviceTier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Gemini's documented 4-value ServiceTier enum at the first Stable-track Gemini in the sweep
+    — same request-top-level/response-nested contract the 3.1 Pro cells measured.
+  expected_source: docs-claims:service-tier/gemini
+  probe_ids:
+  - gemini-3-8-flash--service-tier-audit--unspecified--default--eee930a0
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: claude-fable-5-1--service-tier-audit--auto--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: auto
+  request_field_path: service_tier
+  request_value: auto
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: 'Anthropic documents `service_tier` (auto/standard_only) as a REQUEST-side top-level field
+    with the tier reported back at the NESTED usage.service_tier — the response-asymmetric shape measured
+    at claude-haiku-4-5 and inherited by claude-fable-5''s cell via the shared-contract argument. These
+    are the 5.1 revision''s OWN cells: does the asymmetry carry to the new flagship directly rather than
+    by sibling inference?'
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-fable-5-1--service-tier-audit--auto--default--c4f4cca9
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: claude-fable-5-1--service-tier-audit--omitted--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: omitted
+  request_field_path: service_tier
+  request_value: null
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Anthropic documents service_tier as optional — expect the nested usage.service_tier to report
+    the serving tier (standard) when nothing was asked, top level absent.
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-fable-5-1--service-tier-audit--omitted--default--2eee8d25
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: A tier field appeared in the response despite the request omitting it entirely -- for a vendor
+    whose documentation states no service-tier concept exists, this refutes the documented-absence prior
+    directly; for a documented vendor it reveals the field's own default value. Either way this is a finding,
+    not decoration.
+- cell_id: claude-fable-5-1--service-tier-audit--standard_only--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: standard_only
+  request_field_path: service_tier
+  request_value: standard_only
+  response_field_path: usage.service_tier
+  response_value: standard
+  response_present: present
+  echo_relation: translated
+  rejection_names_field: null
+  response_top_level_present: absent
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: Anthropic's second documented request value, same nested usage.service_tier response location
+    expected — the revision's own measurement of the second enum member.
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-fable-5-1--service-tier-audit--standard_only--default--a03e16a1
+  ancillary:
+    status: 200
+    terminal: verdict
+  note: null
+- cell_id: claude-fable-5-1--service-tier-audit--trap--default
+  requirement: BHV-06
+  design: tier-audit
+  model: claude-fable-5-1
+  vendor: anthropic
+  mode: default
+  param: service-tier-audit
+  value: trap
+  request_field_path: service_tier
+  request_value: standard
+  response_field_path: null
+  response_value: null
+  response_present: absent
+  echo_relation: rejected
+  rejection_names_field: true
+  response_top_level_present: null
+  response_top_level_value: null
+  audited_from_existing_evidence: false
+  cited_probe_id: null
+  expected: '`standard` is a RESPONSE-side usage.service_tier vocabulary word, not a documented request
+    value — at claude-haiku-4-5 sending it was rejected outright naming the field. Does the 5.1 revision
+    keep the same request/response vocabulary split?'
+  expected_source: docs-claims:service-tier/anthropic
+  probe_ids:
+  - claude-fable-5-1--service-tier-audit--trap--default--f76dad92
+  ancillary:
+    status: 400
+    terminal: verdict
+  note: null
 - cell_id: claude-haiku-4-5--behavioral-control--high-entropy--default
   requirement: calibration
   design: control
@@ -3265,6 +4031,112 @@ cells:
     - null
     - null
   note: null
+- cell_id: gpt-6-astra--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: gpt-6-astra
+  vendor: openai
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for gpt-6-astra at its own default sampling settings, and this model''s determinism
+    cells in this fork would need a redesigned prompt before they measure anything (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - gpt-6-astra--behavioral-control--high-entropy--default--r1--a7b3cece
+  - gpt-6-astra--behavioral-control--high-entropy--default--r2--a7b3cece
+  - gpt-6-astra--behavioral-control--high-entropy--default--r3--a7b3cece
+  - gpt-6-astra--behavioral-control--high-entropy--default--r4--a7b3cece
+  - gpt-6-astra--behavioral-control--high-entropy--default--r5--a7b3cece
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - stop
+    - stop
+    - stop
+    - stop
+    - stop
+    output_tokens:
+    - 53
+    - 55
+    - 55
+    - 56
+    - 49
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
+- cell_id: gemini-3-8-flash--behavioral-control--high-entropy--default
+  requirement: calibration
+  design: control
+  model: gemini-3-8-flash
+  vendor: gemini
+  mode: default
+  param: behavioral-control
+  value: high-entropy
+  repeats: 5
+  comparisons: 4
+  matches: 0
+  rate: 0/4
+  rate_pct: 0.0
+  distinct_outputs: 5
+  verdict: varies
+  expected: 'The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing
+    a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical
+    visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt
+    lacks entropy for gemini-3-8-flash at its own default sampling settings, and this model''s determinism
+    cells in this fork would need a redesigned prompt before they measure anything (D-03).'
+  expected_source: prereg:Calibration design (rule 5d)
+  probe_ids:
+  - gemini-3-8-flash--behavioral-control--high-entropy--default--r1--c3c0aa5b
+  - gemini-3-8-flash--behavioral-control--high-entropy--default--r2--c3c0aa5b
+  - gemini-3-8-flash--behavioral-control--high-entropy--default--r3--c3c0aa5b
+  - gemini-3-8-flash--behavioral-control--high-entropy--default--r4--c3c0aa5b
+  - gemini-3-8-flash--behavioral-control--high-entropy--default--r5--c3c0aa5b
+  ancillary:
+    statuses:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    finish_reasons:
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    - MAX_TOKENS
+    output_tokens:
+    - 22
+    - 41
+    - 18
+    - 19
+    - 22
+    system_fingerprints:
+    - null
+    - null
+    - null
+    - null
+    - null
+  note: null
 skips:
 - model: qwen3.8-flash
   param: reasoning-effort
@@ -3329,6 +4201,13 @@ skips:
   reason: already-settled-logprobs-honored
   cited_probe_id: qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac
   cited_source: null
+- model: claude-fable-5-1
+  param: logprobs
+  mode: default
+  requirement: BHV-05
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:logprobs/anthropic
 - model: gemini-3-1-pro
   param: gemini-candidate-count
   mode: default
@@ -3364,6 +4243,20 @@ skips:
   reason: no-request-side-field-for-vendor
   cited_probe_id: null
   cited_source: docs-claims:n/anthropic
+- model: gemini-3-8-flash
+  param: gemini-candidate-count
+  mode: default
+  requirement: BHV-04
+  reason: wire-rejects-gemini-candidate-count
+  cited_probe_id: gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f
+  cited_source: null
+- model: claude-fable-5-1
+  param: n
+  mode: default
+  requirement: BHV-04
+  reason: no-request-side-field-for-vendor
+  cited_probe_id: null
+  cited_source: docs-claims:n/anthropic
 - model: claude-fable-5
   param: seed
   mode: n/a
@@ -3392,6 +4285,13 @@ skips:
   reason: no-request-side-seed-field
   cited_probe_id: null
   cited_source: docs-claims:seed/anthropic
+- model: claude-fable-5-1
+  param: seed
+  mode: n/a
+  requirement: BHV-01
+  reason: no-request-side-seed-field
+  cited_probe_id: null
+  cited_source: docs-claims:seed/anthropic
 - model: gpt-5-6-sol
   param: stop
   mode: default
@@ -3413,6 +4313,13 @@ skips:
   reason: out-of-scope-multi-sequence-contradiction
   cited_probe_id: null
   cited_source: docs-claims:stop/zai
+- model: gpt-6-astra
+  param: stop
+  mode: default
+  requirement: BHV-03
+  reason: wire-rejects-stop-default-mode
+  cited_probe_id: gpt-6-astra--stop--["the"]--default--86cda0ea
+  cited_source: null
 - model: claude-fable-5
   param: temperature
   mode: default
@@ -3455,3 +4362,17 @@ skips:
   reason: deferred-thinking-mode-cross-product
   cited_probe_id: null
   cited_source: prereg:Mode scope
+- model: gpt-6-astra
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: gpt-6-astra--temperature--0.7--default--ad5d5e96
+  cited_source: null
+- model: claude-fable-5-1
+  param: temperature
+  mode: default
+  requirement: BHV-02
+  reason: wire-rejects-temperature-default-mode
+  cited_probe_id: claude-fable-5-1--temperature--0.7--default--070c1680
+  cited_source: null

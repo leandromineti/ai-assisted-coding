@@ -29,7 +29,13 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "write 1.25x (5m TTL, $12.50) / 2x (1h TTL, $20), read 0.025x — $0.25 per MTok. The read rate is the launch's headline price move: every other Claude model reads cache at 0.1x, and the pricing-page footnote names Fable 5.1 + Mythos 5.1 as the only 0.025x models (verified 2026-09-04 on the model page, the pricing page, and the what's-new page)"
   batch_discount: "50% in+out ($5 / $25 per MTok) — what's-new page, verified 2026-09-04"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models pricing table has one row, "Claude Opus 5 / Claude Opus 4.8" — Fable 5.1 appears on that page only in sidebar navigation, not content (verified 2026-09-04)
-checked: 2026-09-04
+  stop_sequence_honesty: "honest — OBSERVED 2026-09-05: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control) — the same honest verdict claude-fable-5 measured, reproduced at the revision's own cell, cell_id:`claude-fable-5-1--stop-truncation--triggering--default`, probe_id:`claude-fable-5-1--stop-truncation--triggering--default--63b65222`, promoted ADR-0050."
+  seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-05: Anthropic's Messages API reference documents no seed parameter — the checked absence recorded at the 5.0 roster (rule 1b) carries to the revision, declared as this model's own cited skip, docs-claims:`seed/anthropic`, promoted ADR-0050."
+  sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-05: claude-fable-5-1 rejects an explicit temperature value outright in default mode (HTTP 400, the documented post-Opus-4.6 contract); this default-config-repeatability SUBSTITUTE asks whether the model's own default (implicit) sampling is repeatable across five identical requests with no temperature parameter sent — all five completed naturally (end_turn) with five distinct outputs, the exact 0/4 (varies) its 5.0 predecessor measured, cell_id:`claude-fable-5-1--default-config-repeatability--no-temperature--default`, probe_id:`claude-fable-5-1--default-config-repeatability--no-temperature--default--r1--0775d278`, promoted ADR-0050."
+  multi_candidate_delivery: "n/a (no request-side field) — OBSERVED 2026-09-05: Anthropic's Messages API reference documents no n/candidateCount-equivalent multi-candidate parameter — the 5.0 roster's checked absence (rule 1b) carries to the revision, declared as this model's own cited skip, docs-claims:`n/anthropic`, promoted ADR-0050."
+  logprobs_delivery: "n/a (no request-side field) — OBSERVED 2026-09-05: Anthropic's Messages API reference documents no logprobs parameter — the 5.0 roster's checked absence (rule 1b) carries to the revision, declared as this model's own cited skip, docs-claims:`logprobs/anthropic`, promoted ADR-0050."
+  service_tier_contract: "response-asymmetric — OBSERVED 2026-09-05: measured at this model's OWN audit cells rather than the sibling inference the 5.0 cell rested on — `service_tier` rides the request top level and is reported back NESTED at `usage.service_tier` (auto, standard_only, and an omitted field all resolve to a nested `standard`, top level absent), and sending the response-vocabulary word `standard` as a request value is rejected outright naming the field (HTTP 400) — the haiku-measured request/response vocabulary split reproduced at the revision, cell_id:`claude-fable-5-1--service-tier-audit--auto--default`, cell_id:`claude-fable-5-1--service-tier-audit--trap--default`, probe_id:`claude-fable-5-1--service-tier-audit--auto--default--c4f4cca9`, promoted ADR-0050."
+checked: 2026-09-04   # spec block; the six wire-behavior OBSERVED cells above carry their own 2026-09-05 dates
 depth: stub
 ---
 
@@ -112,16 +118,20 @@ above.
 
 ## Role in this repo's work
 
-None yet. This report exists because the model supersedes the roster's flagship
-Anthropic entry, and because it is **the first test of ADR-0050's promoted
-wire-behavior vocabulary against a model revision**: the six `wire-behavior` keys
-(`stop_sequence_honesty`, `seed_determinism`, `sampling_repeatability`,
-`multi_candidate_delivery`, `logprobs_delivery`, `service_tier_contract`) are
-deliberately **absent from this report's frontmatter** — they are OBSERVED-grade
-cells that must be probed at this model id, never inherited from
-[claude-fable-5](claude-fable-5.md)'s 5.0-roster probes
-([issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43),
-phase 2).
+Probed — and this report is now **the scored first test of ADR-0050's promoted
+wire-behavior vocabulary against a model revision** (issue #43 phase 2, fired
+2026-09-05 at this model id, never inherited from
+[claude-fable-5](claude-fable-5.md)'s 5.0-roster probes). **Verdict: all six
+cells reproduce the 5.0 record in kind.** Three checked absences carry
+(seed/n/logprobs — re-declared as this model's own cited skips), the
+sampling-repeatability substitute lands on the identical 0/4 (varies), stop
+honesty is again `honest` with the distinguishable `stop_sequence` value, and
+the service-tier response asymmetry — which the 5.0 cell could only assert via
+the shared-contract argument through claude-haiku-4-5 — is now measured at this
+model's own audit cells, including the vocabulary-split trap rejection. The
+promoted vocabulary survived its first revision without a wording change; what
+the revision test actually bought is an evidence upgrade (sibling inference →
+own cells) rather than a verdict change. Fork share: ~$0.056.
 
 ## Surprises
 
@@ -139,8 +149,9 @@ phase 2).
 
 ## Open questions
 
-- The six wire-behavior cells — probed at `claude-fable-5-1`, do they reproduce the
-  5.0 verdicts? (The first revision test of the promoted vocabulary; issue #43.)
+- ~~The six wire-behavior cells — probed at `claude-fable-5-1`, do they reproduce
+  the 5.0 verdicts?~~ **Answered 2026-09-05: yes, all six in kind** (§ Role) —
+  the revision test's value was the evidence upgrade, not a verdict change.
 - Does the 0.025x cache-read rate actually deliver the "~25% / up to ~45%" vendor
   estimates on this repo's own agentic transcripts? (`prices.yaml` gives the
   arithmetic once the roster batch lands.)

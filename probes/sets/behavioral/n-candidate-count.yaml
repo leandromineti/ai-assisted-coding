@@ -31,7 +31,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before
 # stamping": `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +gpt-6-astra n=2 cell; gemini-3-8-flash candidateCount wire-rejected at its own contract cell (sibling precedent holds), claude-fable-5-1 joins the Anthropic no-field skips
 
 probes:
   - model: gpt-5-6-sol
@@ -77,6 +77,16 @@ probes:
     max_tokens: 300
     extra_params: {n: 2}
   - model: qwen3.8-flash
+    param: n
+    value: 2
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    extra_params: {n: 2}
+
+
+  # --- gpt-6-astra (openai, max_tokens 300; issue #43 roster fork, 2026-09-05 — its contract n=1 cell is 200, this asks for a real second candidate) ---
+  - model: gpt-6-astra
     param: n
     value: 2
     mode: default
@@ -175,6 +185,22 @@ expectations:
 # the 79 docs-contradicted pairs in comparisons/docs-vs-wire.md). The four
 # Claude models have no request-side field for `n` under any name at all
 # (checked-absence, probes/inventory.yaml:508).
+  - model: gpt-6-astra
+    param: n
+    value: 2
+    mode: default
+    requirement: BHV-04
+    design: single-candidates
+    expected: >-
+      OpenAI documents `n` as how many chat completion choices to generate —
+      the same vendor-level claim cited for gpt-5-6-sol above. gpt-6-astra's
+      own contract cell accepts n=1 (HTTP 200); this cell asks whether a
+      request for 2 candidates actually DELIVERS two distinct choices, is
+      rejected, or silently returns one (the glm-5.3 failure shape), on a
+      model whose migration guide removed the classic sampling params but not
+      `n`.
+    expected_source: "docs-claims:n/openai"
+
 skips:
   - model: gemini-3-1-pro
     param: gemini-candidate-count
@@ -201,6 +227,18 @@ skips:
     reason: no-request-side-field-for-vendor
     cited_source: "docs-claims:n/anthropic"
   - model: claude-haiku-4-5
+    param: n
+    mode: default
+    requirement: BHV-04
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:n/anthropic"
+  - model: gemini-3-8-flash
+    param: gemini-candidate-count
+    mode: default
+    requirement: BHV-04
+    reason: wire-rejects-gemini-candidate-count
+    cited_probe_id: "gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f"
+  - model: claude-fable-5-1
     param: n
     mode: default
     requirement: BHV-04

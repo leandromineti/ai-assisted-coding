@@ -29,7 +29,13 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "cached input $1 per MTok (0.1x); cache writes $12.50 (1.25x uncached input rate) — and both double above the 272K long-context threshold (verified 2026-09-04)"
   batch_discount: "50% in+out ($5 / $25 per MTok) — and a Flex tier priced identically to Batch (verified 2026-09-04)"
   fast_mode: true   # `service_tier: "fast"` or `"priority"` ("Priority processing was renamed Fast mode on July 30, 2026"), 2x price per the pricing table. The SPEED claim is launch-post-only for this model ("up to 2x the speed of Standard processing at 2x the Standard price") — the docs' 2.5x banner figure is scoped to gpt-5.6-sol, not Astra. No latency SLA for Astra; unsupported with EU data residency; under ramp limits requests "may downgrade… to standard speeds and charge standard rates", detectable only by reading service_tier back off the response (verified 2026-09-04)
-checked: 2026-09-04
+  stop_sequence_honesty: "n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-05: `stop` returns HTTP 400 in default mode, so no honesty verdict is reachable — the same shape as gpt-5-6-sol, probe_id:`gpt-6-astra--stop--[\"the\"]--default--86cda0ea`, promoted ADR-0050."
+  seed_determinism: "1/5 same-seed pairs (partial) — OBSERVED 2026-09-05: `seed` survives the migration guide's sampling-param purge (accepted at the contract sweep while temperature/top_p 400) and one of five disjoint same-seed pairs matched byte-identically — the sweep's FIRST nonzero same-seed rate at any accepting model (every Phase-12 measurement was 0/5); the seed-99 effect control differed and system_fingerprint was null on all ten repeats, so the vendor's own documented drift-monitoring pointer is empty here, cell_id:`gpt-6-astra--seed--42--default`, probe_id:`gpt-6-astra--seed--42--default--r1--7e092ed1`, promoted ADR-0050."
+  sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-05: temperature is documented-REMOVED on this model and 400s on the wire, so this default-config-repeatability SUBSTITUTE asks whether the model's own default (implicit) sampling is repeatable across five identical requests with no temperature parameter sent — all five completed naturally (stop) with five distinct outputs, cell_id:`gpt-6-astra--default-config-repeatability--no-temperature--default`, probe_id:`gpt-6-astra--default-config-repeatability--no-temperature--default--r1--a7b3cece`, promoted ADR-0050."
+  multi_candidate_delivery: "accepted-honored — OBSERVED 2026-09-05: a request for 2 candidates returned 2 distinct choices — `n` also survives the sampling-param purge, matching gpt-5-6-sol's honored verdict, cell_id:`gpt-6-astra--n--2--default`, probe_id:`gpt-6-astra--n--2--default--43d4cee4`, promoted ADR-0050."
+  logprobs_delivery: "rejected — OBSERVED 2026-09-05: `logprobs` returns HTTP 400 at the contract sweep in both modes, consistent with the migration guide's removal of `top_logprobs` (gpt-5-6-sol still honors logprobs in thinking-off mode — the removal is new at this model), probe_id:`gpt-6-astra--logprobs--true--default--b20577b1`, promoted ADR-0050."
+  service_tier_contract: "silently-translated — OBSERVED 2026-09-05: the presence probe's requested `auto` comes back as a DIFFERENT resolved value at the response's top-level `service_tier` field (the gpt-5-6-sol shape, flat and present, no usage-envelope nesting), probe_id:`gpt-6-astra--service-tier--auto--default--30068a96`; the BHV-06 audit adds three facts the presence probe can't see — `fast` is echoed back VERBATIM as \"fast\", not renamed to `priority` as the fast-mode guide documents, cell_id:`gpt-6-astra--service-tier-audit--fast--default`; an omitted field resolves to `default`, cell_id:`gpt-6-astra--service-tier-audit--omitted--default`; and `scale` is REJECTED outright naming the field (HTTP 400) even though the API reference lists it in this model's seven-value enum — the same docs-contradicted rejection conclusion 19 recorded at gpt-5-6-sol, now reproduced at the new flagship, cell_id:`gpt-6-astra--service-tier-audit--scale--default`, promoted ADR-0050."
+checked: 2026-09-04   # spec block; the six wire-behavior OBSERVED cells above carry their own 2026-09-05 dates
 depth: stub
 ---
 
@@ -116,11 +122,25 @@ manage for git pins.
 
 ## Role in this repo's work
 
-None yet. Ingested as the gate model of issue #43's roster batch. The six
-ADR-0050 wire-behavior cells are deliberately absent until the probe roster forks
-and the cells are fired (phase 2) — and this model brings two new probe-relevant
-behaviors with it: the fast-mode silent-downgrade (`service_tier` echo is the only
-tell) and the misalignment 403 contract above.
+Probed. The six ADR-0050 wire-behavior cells were filled 2026-09-05 by issue
+#43's phase-2 roster fork (92 contract cells + the behavioral parity set across
+the three new models; this model's share ~$0.085). Three wire results worth
+prose beyond the cells:
+
+- **The first nonzero same-seed rate in the sweep.** 1/5 disjoint pairs matched
+  byte-identically — every previously measured seed-accepting model sat at 0/5.
+  Still far from the docs' "should return the same result", and
+  `system_fingerprint` (the vendor's own drift-monitoring pointer) was null on
+  all ten repeats.
+- **The fast-mode rename doesn't happen on the wire.** The fast-mode guide
+  says the response shows `service_tier=priority` when you request `fast`; the
+  audit observed `"fast"` echoed back verbatim. Whichever surface is right, a
+  harness matching the documented `priority` echo to detect fast service would
+  miss it.
+- **`scale` is rejected by the API that documents it** — HTTP 400 naming the
+  field, reproducing at this flagship the exact docs-contradicted rejection
+  conclusion 19 recorded at gpt-5-6-sol. No misalignment 403 appeared on any of
+  the 41 billed innocuous cells (contract observed, trigger never attempted).
 
 ## Surprises
 
@@ -146,11 +166,15 @@ tell) and the misalignment 403 contract above.
 
 ## Open questions
 
-- The six wire-behavior cells at probe time — especially: does the
-  sampling-repeatability substitute fire (temperature removed), and does the
-  service-tier contract expose the fast-mode silent downgrade?
-- Does the misalignment 403 ever fire on innocuous agentic work? (The contract is
-  probe-able; the trigger is out of scope.)
+- ~~The six wire-behavior cells at probe time~~ **Probed 2026-09-05** (issue #43
+  phase 2): the substitute fired (0/4, varies), and the tier audit exposed
+  something better than the downgrade — the documented fast→priority response
+  rename doesn't happen (cells above).
+- Does the misalignment 403 ever fire on innocuous agentic work? Not on 41
+  billed probe cells so far; the standing watch continues. (The trigger remains
+  out of scope.)
+- Is the observed `"fast"` echo (vs the documented `priority` rename) a docs
+  lag or a wire change? Worth a docs re-read at next `checked:` refresh.
 - Astra Pro: does a first-party API surface ever appear?
 - The `configuration_update` mid-run effort change — "standard, single-agent
   mode" only: what does the restriction mean on the wire, and do harnesses use it?

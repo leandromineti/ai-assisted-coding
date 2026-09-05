@@ -6,7 +6,7 @@
 
 # probes/docs-claims.yaml x probes/classified/contract-sweep.yaml, confronted
 
-**Post-hoc confrontation, dated.** The first-party documentation claims registry (`probes/docs-claims.yaml`, `checked: 2026-09-02`) was transcribed AFTER Phase 11's wire evidence (`probes/classified/contract-sweep.yaml`, `checked: 2026-09-01`, `evidence_through: 2026-09-02T14:40:23Z`) had already fired. For every verdict below confronting a Phase 11 cell, this confrontation is therefore post-hoc — a dated retrospective read, not a prediction made in advance of the evidence it judges. For Phase 12's behavioral runs, which have not yet fired, the same claims registry is a genuine prior: a documented expected value stated before any wire evidence exists to confront it (methodology rule 5a). Per methodology rule 1a, docs claims are TESTIMONY — a vendor's own stated account of its own API — ranked below the probes' OBSERVED wire evidence; a `docs-contradicted` verdict below means the wire disagreed with what the vendor's own docs say, not that the docs are wrong in any absolute sense.
+**Post-hoc confrontation, dated.** The first-party documentation claims registry (`probes/docs-claims.yaml`, `checked: 2026-09-02`) was transcribed AFTER Phase 11's wire evidence (`probes/classified/contract-sweep.yaml`, `checked: 2026-09-01`, `evidence_through: 2026-09-05T00:02:51Z`) had already fired. For every verdict below confronting a Phase 11 cell, this confrontation is therefore post-hoc — a dated retrospective read, not a prediction made in advance of the evidence it judges. For Phase 12's behavioral runs, which have not yet fired, the same claims registry is a genuine prior: a documented expected value stated before any wire evidence exists to confront it (methodology rule 5a). Per methodology rule 1a, docs claims are TESTIMONY — a vendor's own stated account of its own API — ranked below the probes' OBSERVED wire evidence; a `docs-contradicted` verdict below means the wire disagreed with what the vendor's own docs say, not that the docs are wrong in any absolute sense.
 
 ## Legend
 
@@ -22,93 +22,93 @@
 
 ### Sampling
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| temperature | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ |
-| top-p | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ |
-| top-k | ✗ | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| presence-penalty | · | · | · | · | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ |
-| frequency-penalty | · | · | · | · | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ |
-| logprobs | · | · | · | · | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ |
-| top-logprobs | · | · | · | · | ✗ | ✗ | ◐ | ✗ | ✗ | ◐ | ◐ | ◐ |
-| seed | · | · | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| n | · | · | · | · | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✓ | ✓ |
-| logit-bias | · | · | · | · | ✗ | · | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| temperature | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-p | ✗ | ✗ | ✗ | ✗ | ✗ | ◐ | ◐ | ✓ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ |
+| top-k | ✗ | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✓ | ◐ | ✗ |
+| presence-penalty | · | · | · | · | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| frequency-penalty | · | · | · | · | ✗ | ✗ | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| logprobs | · | · | · | · | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | · |
+| top-logprobs | · | · | · | · | ✗ | ✗ | ◐ | ✗ | ✗ | ◐ | ◐ | ◐ | ✗ | ✗ | · |
+| seed | · | · | · | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · |
+| n | · | · | · | · | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | · |
+| logit-bias | · | · | · | · | ✗ | · | ✗ | ✓ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
 
 ### Structural / format
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| max-tokens | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| stop | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| response-format | · | · | · | · | ✗ | · | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ |
-| tools | · | · | · | · | · | · | · | · | · | · | · | · |
-| tool-choice | ✗ | ✗ | ✗ | ✗ | ✗ | · | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| parallel-tool-calls | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| stream | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| stream-options-include-usage | · | · | · | · | ✗ | · | ◐ | ◐ | ✗ | ◐ | ✗ | ✗ |
-| anthropic-structured-output-output-config | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
-| anthropic-structured-output-output-format | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| max-tokens | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ◐ | ✓ |
+| stop | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | ◐ | ◐ |
+| response-format | · | · | · | · | ✗ | · | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | ✗ | · | · |
+| tools | · | · | · | · | · | · | · | · | · | · | · | · | ✗ | ✗ | ✗ |
+| tool-choice | ✗ | ✗ | ✗ | ✗ | ✗ | · | ✗ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | ✗ |
+| parallel-tool-calls | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| stream | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | ◐ |
+| stream-options-include-usage | · | · | · | · | ✗ | · | ◐ | ◐ | ✗ | ◐ | ✗ | ✗ | ✗ | · | · |
+| anthropic-structured-output-output-config | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
+| anthropic-structured-output-output-format | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
 
 ### Reasoning toggle
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| openai-reasoning-effort | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| anthropic-thinking-object | ◐ | ◐ | ◐ | ◐ | · | · | · | · | · | · | · | · |
-| gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| openai-reasoning-effort | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| anthropic-thinking-object | ◐ | ◐ | ◐ | ◐ | · | · | · | · | · | · | · | · | · | · | ◐ |
+| gemini-thinking-config | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| qwen-enable-thinking | · | · | · | · | · | · | · | · | · | · | ◐ | ◐ | · | · | · |
 
 ### Service tier / speed
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| service-tier | ✓ | ✓ | ✓ | ✓ | ✓ | · | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| service-tier | ✓ | ✓ | ✓ | ✓ | ✓ | · | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | · | ✓ |
 
 ### Vendor exotics
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gemini-temperature-range | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| openai-verbosity | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-prediction | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-service-tier-values | · | · | · | · | ✓ | · | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| anthropic-thinking-budget-floor | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · |
-| gemini-media-resolution | · | · | · | · | · | ◐ | · | · | · | · | · | · |
-| gemini-candidate-count | · | · | · | · | · | ✗ | · | · | · | · | · | · |
-| kimi-partial-mode | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| glm-do-sample | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| qwen-repetition-penalty | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| kimi-fixed-sampling-point | · | · | · | · | · | · | · | ✓ | · | · | · | · |
-| openai-store | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-metadata | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | · | ◐ | ◐ |
-| openai-safety-identifier | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
-| openai-prompt-cache-key | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| gemini-temperature-range | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| openai-verbosity | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-prediction | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✗ | · | · |
+| openai-service-tier-values | · | · | · | · | ✓ | · | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | · | · |
+| anthropic-thinking-budget-floor | ✗ | ✗ | ✗ | ✗ | · | · | · | · | · | · | · | · | · | · | ✗ |
+| gemini-media-resolution | · | · | · | · | · | ◐ | · | · | · | · | · | · | · | ◐ | · |
+| gemini-candidate-count | · | · | · | · | · | ✗ | · | · | · | · | · | · | · | ✗ | · |
+| kimi-partial-mode | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✓ | · | · |
+| glm-do-sample | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✓ | · | · |
+| qwen-repetition-penalty | · | · | · | · | ✓ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ✓ | · | · |
+| kimi-fixed-sampling-point | · | · | · | · | · | · | · | ✓ | · | · | · | · | · | · | · |
+| openai-store | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-metadata | · | · | · | · | ✗ | · | ◐ | ◐ | ◐ | · | ◐ | ◐ | ✗ | · | · |
+| openai-safety-identifier | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
+| openai-prompt-cache-key | · | · | · | · | ◐ | · | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | ◐ | · | · |
 
 ### Content-block probes
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| image-input | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✗ | ✗ |
-| anthropic-cache-control-block | ✓ | ✓ | ✓ | ✓ | · | · | · | · | · | · | · | · |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| image-input | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✗ | ✗ | ✓ | ✓ | ✓ |
+| anthropic-cache-control-block | ✓ | ✓ | ✓ | ✓ | · | · | · | · | · | · | · | · | · | · | ✓ |
 
 ### Deliberately excluded
 
-| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| max-tokens-semantics | · | · | · | · | · | — | · | — | — | — | · | · |
-| batch-endpoint | · | · | · | · | · | · | · | · | · | · | · | · |
-| logit-bias-exhaustive | · | · | · | · | · | · | · | · | · | · | · | · |
-| n-distinctness-scoring | · | · | · | · | · | · | · | · | · | · | · | · |
-| audio-video-modality | · | · | · | · | · | · | · | · | · | · | · | · |
-| xai-search-parameters | · | · | · | · | · | · | · | · | · | · | · | · |
-| json-schema-conformance-grading | · | · | · | · | · | · | · | · | · | · | · | · |
-| malformed-request-fuzzing | · | · | · | · | · | · | · | · | · | · | · | · |
-| gateway-probe-targets | · | · | · | · | · | · | · | · | · | · | · | · |
+| Parameter | claude-fable-5 | claude-opus-5 | claude-sonnet-5 | claude-haiku-4-5 | gpt-5-6-sol | gemini-3-1-pro | grok-4-5 | kimi-k3 | deepseek-v4 | glm-5.3 | qwen3.8-max | qwen3.8-flash | gpt-6-astra | gemini-3-8-flash | claude-fable-5-1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| max-tokens-semantics | · | · | · | · | · | — | · | — | — | — | · | · | · | — | · |
+| batch-endpoint | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| logit-bias-exhaustive | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| n-distinctness-scoring | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| audio-video-modality | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| xai-search-parameters | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| json-schema-conformance-grading | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| malformed-request-fuzzing | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| gateway-probe-targets | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Contradictions
 
-79 `(param, model)` pair(s) where the wire evidence contradicted the documented contract — Phase 13's PROM-01 input.
+106 `(param, model)` pair(s) where the wire evidence contradicted the documented contract — Phase 13's PROM-01 input.
 
 | Parameter | Model | Quote | source_ref | probe_id | http_status |
 |---|---|---|---|---|---|
@@ -117,51 +117,72 @@
 | temperature | claude-sonnet-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error. ... Defaults to 1.0. Ranges from 0.0 to 1.0. | anthropic-messages-api-ref | claude-sonnet-5--temperature--0.7--default--276ef9f0 | 400 |
 | temperature | claude-haiku-4-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error. ... Defaults to 1.0. Ranges from 0.0 to 1.0. | anthropic-messages-api-ref | claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847 | 400 |
 | temperature | gpt-5-6-sol | What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or `top_p` but not both. | openai-chat-completions-ref | gpt-5-6-sol--temperature--0.7--default--f4a07a21 | 400 |
+| temperature | gpt-6-astra | What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or `top_p` but not both. | openai-chat-completions-ref | gpt-6-astra--temperature--0.7--default--ad5d5e96 | 400 |
+| temperature | claude-fable-5-1 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error. ... Defaults to 1.0. Ranges from 0.0 to 1.0. | anthropic-messages-api-ref | claude-fable-5-1--temperature--0.7--default--070c1680 | 400 |
 | top-p | claude-fable-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error. | anthropic-messages-api-ref | claude-fable-5--top-p--0.9--default--46fc779a | 400 |
 | top-p | claude-opus-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error. | anthropic-messages-api-ref | claude-opus-5--top-p--0.9--default--f69df470 | 400 |
 | top-p | claude-sonnet-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error. | anthropic-messages-api-ref | claude-sonnet-5--top-p--0.9--default--7031a4ad | 400 |
 | top-p | claude-haiku-4-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error. | anthropic-messages-api-ref | claude-haiku-4-5--top-p--0.9--thinking-on--b4ed50fa | 400 |
 | top-p | gpt-5-6-sol | An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or `temperature` but not both. | openai-chat-completions-ref | gpt-5-6-sol--top-p--0.9--default--70cbb966 | 400 |
+| top-p | gpt-6-astra | An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or `temperature` but not both. | openai-chat-completions-ref | gpt-6-astra--top-p--0.9--default--4c143ea6 | 400 |
+| top-p | claude-fable-5-1 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error. | anthropic-messages-api-ref | claude-fable-5-1--top-p--0.9--default--e7563d54 | 400 |
 | top-k | claude-fable-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error. | anthropic-messages-api-ref | claude-fable-5--top-k--40--default--4ab0bab1 | 400 |
 | top-k | claude-opus-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error. | anthropic-messages-api-ref | claude-opus-5--top-k--40--default--3bd43493 | 400 |
 | top-k | claude-sonnet-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error. | anthropic-messages-api-ref | claude-sonnet-5--top-k--40--default--7ea1483e | 400 |
 | top-k | claude-haiku-4-5 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error. | anthropic-messages-api-ref | claude-haiku-4-5--top-k--40--thinking-on--c8ec67cd | 400 |
+| top-k | claude-fable-5-1 | Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error. | anthropic-messages-api-ref | claude-fable-5-1--top-k--40--default--42c40ad0 | 400 |
 | presence-penalty | gpt-5-6-sol | Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. | openai-chat-completions-ref | gpt-5-6-sol--presence-penalty--0.1--default--a5cdfa92 | 400 |
 | presence-penalty | gemini-3-1-pro | Optional. Presence penalty applied to the next token's logprobs if the token has already been seen in the response. This penalty is binary on/off and not dependant on the number of times the token is used (after the first). Use frequencyPenalty for a penalty that increases with each use. A positive penalty will discourage the use of tokens that have already been used in the response, increasing the vocabulary. A negative penalty will encourage the use of tokens that have already been used in the response, decreasing the vocabulary. | gemini-generate-content-ref | gemini-3-1-pro--presence-penalty--0.1--default--f7a5a8f7 | 400 |
 | presence-penalty | grok-4-5 | (Not supported by `grok-3` and reasoning models) Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. | xai-chat-completions-ref | grok-4-5--presence-penalty--0.1--default--8df0ceb0 | 400 |
+| presence-penalty | gpt-6-astra | Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. | openai-chat-completions-ref | gpt-6-astra--presence-penalty--0.1--default--204cc1c3 | 400 |
 | frequency-penalty | gpt-5-6-sol | Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim. | openai-chat-completions-ref | gpt-5-6-sol--frequency-penalty--0.1--default--f25fac90 | 400 |
 | frequency-penalty | gemini-3-1-pro | Optional. Frequency penalty applied to the next token's logprobs, multiplied by the number of times each token has been seen in the respponse so far. A positive penalty will discourage the use of tokens that have already been used, proportional to the number of times the token has been used... Caution: A negative penalty will encourage the model to reuse tokens proportional to the number of times the token has been used. Small negative values will reduce the vocabulary of a response. Larger negative values will cause the model to start repeating a common token until it hits the maxOutputTokens limit. | gemini-generate-content-ref | gemini-3-1-pro--frequency-penalty--0.1--default--741d014c | 400 |
 | frequency-penalty | grok-4-5 | (Not supported by reasoning models) Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim. | xai-chat-completions-ref | grok-4-5--frequency-penalty--0.1--default--e4628785 | 400 |
+| frequency-penalty | gpt-6-astra | Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim. | openai-chat-completions-ref | gpt-6-astra--frequency-penalty--0.1--default--d8063179 | 400 |
 | logprobs | gpt-5-6-sol | Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`. | openai-chat-completions-ref | gpt-5-6-sol--logprobs--true--default--c1192127 | 400 |
 | logprobs | gemini-3-1-pro | Optional. If true, export the logprobs results in response. | gemini-generate-content-ref | gemini-3-1-pro--logprobs--true--default--82d54982 | 400 |
 | logprobs | kimi-k3 | Whether to return log probabilities of the output tokens. If true, the log probability of each output token is returned in the logprobs field of the response message. | kimi-chat-completions-ref | kimi-k3--logprobs--true--default--b9b3e6f3 | 400 |
 | logprobs | glm-5.3 | — | zai-chat-completions-ref | glm-5.3--logprobs--true--default--426b7c7b | 200 |
+| logprobs | gpt-6-astra | Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`. | openai-chat-completions-ref | gpt-6-astra--logprobs--true--default--b20577b1 | 400 |
+| logprobs | gemini-3-8-flash | Optional. If true, export the logprobs results in response. | gemini-generate-content-ref | gemini-3-8-flash--logprobs--true--default--f181e09c | 400 |
 | top-logprobs | gpt-5-6-sol | An integer between 0 and 20 specifying the maximum number of most likely tokens to return at each token position, each with an associated log probability. In some cases, the number of returned tokens may be fewer than requested. `logprobs` must be set to `true` if this parameter is used. | openai-chat-completions-ref | gpt-5-6-sol--top-logprobs--3--default--96b7b9c7 | 400 |
 | top-logprobs | gemini-3-1-pro | Optional. Only valid if responseLogprobs=True. This sets the number of top logprobs, including the chosen candidate, to return at each decoding step in the Candidate.logprobs_result. The number must be in the range of [0, 20]. | gemini-generate-content-ref | gemini-3-1-pro--top-logprobs--3--default--9a6b3b69 | 400 |
 | top-logprobs | kimi-k3 | An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. logprobs must be set to true when this parameter is used. | kimi-chat-completions-ref | kimi-k3--top-logprobs--3--default--f4467171 | 400 |
 | top-logprobs | deepseek-v4 | An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used. | dseek-chat-completions-ref | deepseek-v4--top-logprobs--3--default--b4e6062b | 400 |
+| top-logprobs | gpt-6-astra | An integer between 0 and 20 specifying the maximum number of most likely tokens to return at each token position, each with an associated log probability. In some cases, the number of returned tokens may be fewer than requested. `logprobs` must be set to `true` if this parameter is used. | openai-chat-completions-ref | gpt-6-astra--top-logprobs--3--default--75361b06 | 400 |
+| top-logprobs | gemini-3-8-flash | Optional. Only valid if responseLogprobs=True. This sets the number of top logprobs, including the chosen candidate, to return at each decoding step in the Candidate.logprobs_result. The number must be in the range of [0, 20]. | gemini-generate-content-ref | gemini-3-8-flash--top-logprobs--3--default--847f487e | 400 |
 | n | kimi-k3 | — | kimi-chat-completions-ref | kimi-k3--n--1--default--c3e51607 | 200 |
 | n | deepseek-v4 | — | dseek-chat-completions-ref | deepseek-v4--n--1--default--8bc5ddbc | 200 |
 | n | glm-5.3 | — | zai-chat-completions-ref | glm-5.3--n--1--default--0ca6130e | 200 |
 | logit-bias | gpt-5-6-sol | Modify the likelihood of specified tokens appearing in the completion. Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. ... values like -100 or 100 should result in a ban or exclusive selection of the relevant token. | openai-chat-completions-ref | gpt-5-6-sol--logit-bias--{"1734":5}--default--23d52aa5 | 400 |
 | logit-bias | grok-4-5 | (Unsupported) A JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. Mathematically, the bias is added to the logits generated by the model prior to sampling. ... values like -100 or 100 should result in a ban or exclusive selection of the relevant token. | xai-chat-completions-ref | grok-4-5--logit-bias--{"1734":5}--default--ab30f188 | 400 |
+| logit-bias | gpt-6-astra | Modify the likelihood of specified tokens appearing in the completion. Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. ... values like -100 or 100 should result in a ban or exclusive selection of the relevant token. | openai-chat-completions-ref | gpt-6-astra--logit-bias--{"1734":5}--default--2bdd912f | 400 |
 | stop | gpt-5-6-sol | Not supported with latest reasoning models `o3` and `o4-mini`. Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence. | openai-chat-completions-ref | gpt-5-6-sol--stop--["the"]--default--6a86352a | 400 |
 | stop | grok-4-5 | (Not supported by reasoning models) Up to 4 sequences where the API will stop generating further tokens. | xai-chat-completions-ref | grok-4-5--stop--["the"]--default--ee1a658f | 400 |
+| stop | gpt-6-astra | Not supported with latest reasoning models `o3` and `o4-mini`. Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence. | openai-chat-completions-ref | gpt-6-astra--stop--["the"]--default--86cda0ea | 400 |
 | response-format | gpt-5-6-sol | An object specifying the format that the model must output. Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. ... Setting to `{ "type": "json_object" }` enables the older JSON mode, which ensures the message the model generates is valid JSON. Using `json_schema` is preferred for models that support it. | openai-chat-completions-ref | gpt-5-6-sol--response-format--{"type":"json_object"}--default--d2e1e02b | 400 |
 | response-format | deepseek-v4 | An object specifying the format that the model must output. Setting to { "type": "json_object" } enables JSON Output, which guarantees the message the model generates is valid JSON. ... type: Must be one of `text` or `json_object`. | dseek-chat-completions-ref | deepseek-v4--response-format--{"type":"json_object"}--default--0d7a1753 | 400 |
 | response-format | qwen3.8-max | The format of the response content. Defaults to `{"type": "text"}`. Valid values: - `{"type": "text"}`: Returns a plain text response. - `{"type": "json_object"}`: Returns a JSON string that conforms to standard JSON syntax. - `{"type": "json_schema", "json_schema": {...}}`: Returns a JSON string that conforms to a custom schema. | qwen-chat-api-ref | qwen3.8-max--response-format--{"type":"json_object"}--default--8f134cfa | 400 |
 | response-format | qwen3.8-flash | The format of the response content. Defaults to `{"type": "text"}`. Valid values: - `{"type": "text"}`: Returns a plain text response. - `{"type": "json_object"}`: Returns a JSON string that conforms to standard JSON syntax. - `{"type": "json_schema", "json_schema": {...}}`: Returns a JSON string that conforms to a custom schema. | qwen-chat-api-ref | qwen3.8-flash--response-format--{"type":"json_object"}--default--48a9aef1 | 400 |
+| response-format | gpt-6-astra | An object specifying the format that the model must output. Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. ... Setting to `{ "type": "json_object" }` enables the older JSON mode, which ensures the message the model generates is valid JSON. Using `json_schema` is preferred for models that support it. | openai-chat-completions-ref | gpt-6-astra--response-format--{"type":"json_object"}--default--31e2da15 | 400 |
+| tools | gpt-6-astra | A list of tools the model may call. You can provide either custom tools or function tools. | openai-chat-completions-ref | gpt-6-astra--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--9c493bc8 | 400 |
+| tools | gemini-3-8-flash | Optional. A list of Tools the Model may use to generate the next response. A Tool is a piece of code that enables the system to interact with external systems to perform an action, or set of actions, outside of knowledge and scope of the Model. Supported Tools are Function and codeExecution. | gemini-generate-content-ref | gemini-3-8-flash--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--7dc26cd9 | 400 |
+| tools | claude-fable-5-1 | Definitions of tools that the model may use. If you include tools in your API request, the model may return tool_use content blocks that represent the model's use of those tools. | anthropic-messages-api-ref | claude-fable-5-1--tools--[{"description":"Get the current weather for a location","name":"get_weather","parameters":{"properties":{"location":{"type":"string"}},"required":["location"],"type":"object"}}]--default--5bfc5725 | 400 |
 | tool-choice | claude-fable-5 | How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all. | anthropic-messages-api-ref | claude-fable-5--tool-choice--auto--default--4ee9a900 | 400 |
 | tool-choice | claude-opus-5 | How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all. | anthropic-messages-api-ref | claude-opus-5--tool-choice--auto--default--e0fefe25 | 400 |
 | tool-choice | claude-sonnet-5 | How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all. | anthropic-messages-api-ref | claude-sonnet-5--tool-choice--auto--default--6e2ebbd0 | 400 |
 | tool-choice | claude-haiku-4-5 | How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all. | anthropic-messages-api-ref | claude-haiku-4-5--tool-choice--auto--default--56132667 | 400 |
 | tool-choice | gpt-5-6-sol | Controls which (if any) tool is called by the model. `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools. Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool. | openai-chat-completions-ref | gpt-5-6-sol--tool-choice--auto--default--14171b90 | 400 |
 | tool-choice | grok-4-5 | Controls tool access by the model. `"none"` makes model ignore tools, `"auto"` let the model automatically decide whether to call a tool, `"required"` forces model to pick a tool to call. | xai-chat-completions-ref | grok-4-5--tool-choice--auto--default--a3047aac | 400 |
+| tool-choice | gpt-6-astra | Controls which (if any) tool is called by the model. `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools. Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool. | openai-chat-completions-ref | gpt-6-astra--tool-choice--auto--default--24bdfec3 | 400 |
+| tool-choice | claude-fable-5-1 | How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all. | anthropic-messages-api-ref | claude-fable-5-1--tool-choice--auto--default--24ea48bc | 400 |
 | parallel-tool-calls | gpt-5-6-sol | Whether to enable parallel function calling during tool use. | openai-chat-completions-ref | gpt-5-6-sol--parallel-tool-calls--true--default--72fef3a5 | 400 |
+| parallel-tool-calls | gpt-6-astra | Whether to enable parallel function calling during tool use. | openai-chat-completions-ref | gpt-6-astra--parallel-tool-calls--true--default--970598d7 | 400 |
 | stream-options-include-usage | gpt-5-6-sol | include_usage: optional boolean. If set, an additional chunk will be streamed before the `data: [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request, and the `choices` field will always be an empty array. All other chunks will also include a `usage` field, but with a null value. | openai-chat-completions-ref | gpt-5-6-sol--stream-options-include-usage--{"include_usage":true}--default--35a5d258 | 400 |
 | stream-options-include-usage | deepseek-v4 | Options for streaming response. Only set this when you set `stream: true`. include_usage: If set to true, all chunks in the stream will include a `usage` field, whose value is null on every chunk except the last one. If omitted or set to false, the `usage` field is absent from all chunks except the last one. | dseek-chat-completions-ref | deepseek-v4--stream-options-include-usage--{"include_usage":true}--default--249e714d | 400 |
 | stream-options-include-usage | qwen3.8-max | Configuration options for streaming output. This parameter is effective only when `stream` is set to `true`. include_usage: Specifies whether to include token consumption information in the last data block of the response. | qwen-chat-api-ref | qwen3.8-max--stream-options-include-usage--{"include_usage":true}--default--114e72ff | 400 |
 | stream-options-include-usage | qwen3.8-flash | Configuration options for streaming output. This parameter is effective only when `stream` is set to `true`. include_usage: Specifies whether to include token consumption information in the last data block of the response. | qwen-chat-api-ref | qwen3.8-flash--stream-options-include-usage--{"include_usage":true}--default--d1d18f35 | 400 |
+| stream-options-include-usage | gpt-6-astra | include_usage: optional boolean. If set, an additional chunk will be streamed before the `data: [DONE]` message. The `usage` field on this chunk shows the token usage statistics for the entire request, and the `choices` field will always be an empty array. All other chunks will also include a `usage` field, but with a null value. | openai-chat-completions-ref | gpt-6-astra--stream-options-include-usage--{"include_usage":true}--default--957252ff | 400 |
 | service-tier | kimi-k3 | — | kimi-chat-completions-ref | kimi-k3--service-tier--auto--default--24465b09 | 200 |
 | service-tier | deepseek-v4 | — | dseek-chat-completions-ref | deepseek-v4--service-tier--auto--default--1d5f1f91 | 200 |
 | service-tier | glm-5.3 | — | zai-chat-completions-ref | glm-5.3--service-tier--auto--default--39f1ca62 | 200 |
@@ -171,11 +192,14 @@
 | anthropic-structured-output-output-config | claude-opus-5 | Configuration options for the model's output, such as the output format. | anthropic-messages-api-ref | claude-opus-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--520a890e | 400 |
 | anthropic-structured-output-output-config | claude-sonnet-5 | Configuration options for the model's output, such as the output format. | anthropic-messages-api-ref | claude-sonnet-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--8766bbae | 400 |
 | anthropic-structured-output-output-config | claude-haiku-4-5 | Configuration options for the model's output, such as the output format. | anthropic-messages-api-ref | claude-haiku-4-5--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--1ee0e860 | 400 |
+| anthropic-structured-output-output-config | claude-fable-5-1 | Configuration options for the model's output, such as the output format. | anthropic-messages-api-ref | claude-fable-5-1--anthropic-structured-output-output-config--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--100a0812 | 400 |
 | anthropic-structured-output-output-format | claude-fable-5 | Migrating from beta? The output_format parameter has moved to output_config.format, and beta headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13) and the output_format request field for a transition period. | anthropic-structured-outputs | claude-fable-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--b3a82b3b | 400 |
 | anthropic-structured-output-output-format | claude-opus-5 | Migrating from beta? The output_format parameter has moved to output_config.format, and beta headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13) and the output_format request field for a transition period. | anthropic-structured-outputs | claude-opus-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--fb44ff7d | 400 |
 | anthropic-structured-output-output-format | claude-sonnet-5 | Migrating from beta? The output_format parameter has moved to output_config.format, and beta headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13) and the output_format request field for a transition period. | anthropic-structured-outputs | claude-sonnet-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--23e2e42a | 400 |
 | anthropic-structured-output-output-format | claude-haiku-4-5 | Migrating from beta? The output_format parameter has moved to output_config.format, and beta headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13) and the output_format request field for a transition period. | anthropic-structured-outputs | claude-haiku-4-5--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--8f76ea85 | 400 |
+| anthropic-structured-output-output-format | claude-fable-5-1 | Migrating from beta? The output_format parameter has moved to output_config.format, and beta headers are no longer required. The API continues to accept the old beta header (structured-outputs-2025-11-13) and the output_format request field for a transition period. | anthropic-structured-outputs | claude-fable-5-1--anthropic-structured-output-output-format--{"properties":{"answer":{"type":"string"}},"required":["answer"],"type":"object"}--default--f9dd05ea | 400 |
 | openai-prediction | gpt-5-6-sol | Static predicted output content, such as the content of a text file that is being regenerated. ... type: "content". The type of the predicted content you want to provide. This type is currently always `content`. | openai-chat-completions-ref | gpt-5-6-sol--openai-prediction--{"content":"hello","type":"content"}--default--1bd2232f | 400 |
+| openai-prediction | gpt-6-astra | Static predicted output content, such as the content of a text file that is being regenerated. ... type: "content". The type of the predicted content you want to provide. This type is currently always `content`. | openai-chat-completions-ref | gpt-6-astra--openai-prediction--{"content":"hello","type":"content"}--default--2d045eb2 | 400 |
 | openai-service-tier-values | kimi-k3 | — | kimi-chat-completions-ref | kimi-k3--openai-service-tier-values--auto--default--24465b09 | 200 |
 | openai-service-tier-values | deepseek-v4 | — | dseek-chat-completions-ref | deepseek-v4--openai-service-tier-values--auto--default--1d5f1f91 | 200 |
 | openai-service-tier-values | glm-5.3 | — | zai-chat-completions-ref | glm-5.3--openai-service-tier-values--auto--default--39f1ca62 | 200 |
@@ -185,8 +209,11 @@
 | anthropic-thinking-budget-floor | claude-opus-5 | Determines how many tokens Claude can use for its internal reasoning process. ... Must be ≥ 1024 and less than max_tokens. ... minimum: 1024 | anthropic-messages-api-ref | claude-opus-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--a67c7cca | 400 |
 | anthropic-thinking-budget-floor | claude-sonnet-5 | Determines how many tokens Claude can use for its internal reasoning process. ... Must be ≥ 1024 and less than max_tokens. ... minimum: 1024 | anthropic-messages-api-ref | claude-sonnet-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--13364893 | 400 |
 | anthropic-thinking-budget-floor | claude-haiku-4-5 | Determines how many tokens Claude can use for its internal reasoning process. ... Must be ≥ 1024 and less than max_tokens. ... minimum: 1024 | anthropic-messages-api-ref | claude-haiku-4-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--b05e92b5 | 400 |
+| anthropic-thinking-budget-floor | claude-fable-5-1 | Determines how many tokens Claude can use for its internal reasoning process. ... Must be ≥ 1024 and less than max_tokens. ... minimum: 1024 | anthropic-messages-api-ref | claude-fable-5-1--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--9fb1ba92 | 400 |
 | gemini-candidate-count | gemini-3-1-pro | Optional. Number of generated responses to return. If unset, this will default to 1. Please note that this doesn't work for previous generation models (Gemini 1.0 family) | gemini-generate-content-ref | gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857 | 400 |
+| gemini-candidate-count | gemini-3-8-flash | Optional. Number of generated responses to return. If unset, this will default to 1. Please note that this doesn't work for previous generation models (Gemini 1.0 family) | gemini-generate-content-ref | gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f | 400 |
 | openai-metadata | gpt-5-6-sol | Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format, and querying for objects via API or the dashboard. Keys are strings with a maximum length of 64 characters. Values are strings with a maximum length of 512 characters. | openai-chat-completions-ref | gpt-5-6-sol--openai-metadata--{"probe":"true"}--default--f7f0d50c | 400 |
+| openai-metadata | gpt-6-astra | Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format, and querying for objects via API or the dashboard. Keys are strings with a maximum length of 64 characters. Values are strings with a maximum length of 512 characters. | openai-chat-completions-ref | gpt-6-astra--openai-metadata--{"probe":"true"}--default--b4bcb334 | 400 |
 | image-input | grok-4-5 | Create a chat response from text/image chat prompts. This is the endpoint for making requests to chat and image understanding models. ... messages (array<object \| object \| object \| object \| object>) -- A list of messages that make up the chat conversation. Different models support different message types, such as image and text. | xai-chat-completions-ref | grok-4-5--image-input--content-block--default--49f4b593 | 400 |
 | image-input | deepseek-v4 | type: Possible values: [image_url]. The type of the content part, in this case image_url. ... image_url (object). | dseek-chat-completions-ref | deepseek-v4--image-input--content-block--default--8662bdb7 | 400 |
 | image-input | qwen3.8-max | image_url: type: object. description: The input image information...properties: url: type: string. description: The URL or Base64 Data URL of the image. | qwen-chat-api-ref | qwen3.8-max--image-input--content-block--default--3838e6c6 | 400 |
@@ -194,7 +221,7 @@
 
 ### Non-unanimous pairs
 
-66 `(param, model)` pair(s) whose contributing cells disagreed before reduction.
+87 `(param, model)` pair(s) whose contributing cells disagreed before reduction.
 
 | Parameter | Model | Reduced verdict | Contributing cells (mode, value, state, probe_id) |
 |---|---|---|---|
@@ -206,6 +233,9 @@
 | temperature | kimi-k3 | docs-corroborated | (default, 0.7, rejected, kimi-k3--temperature--0.7--default--8d339aec); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | temperature | deepseek-v4 | docs-undecidable | (default, 0.7, accepted-unverified, deepseek-v4--temperature--0.7--default--1fe9123d); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | temperature | glm-5.3 | docs-undecidable | (default, 0.7, accepted-unverified, glm-5.3--temperature--0.7--default--ce9724b9); (thinking-off, —, skipped, —); (thinking-on, 0.7, accepted-unverified, glm-5.3--temperature--0.7--thinking-on--53041129) |
+| temperature | gpt-6-astra | docs-contradicted | (default, 0.7, rejected, gpt-6-astra--temperature--0.7--default--ad5d5e96); (thinking-off, —, skipped, —); (thinking-on, 0.7, rejected, gpt-6-astra--temperature--0.7--thinking-on--2436a71d) |
+| temperature | gemini-3-8-flash | docs-undecidable | (default, 0.7, accepted-unverified, gemini-3-8-flash--temperature--0.7--default--5b686f62); (thinking-off, —, skipped, —); (thinking-on, 0.7, accepted-unverified, gemini-3-8-flash--temperature--0.7--thinking-on--184aa7ec) |
+| temperature | claude-fable-5-1 | docs-contradicted | (default, 0.7, rejected, claude-fable-5-1--temperature--0.7--default--070c1680); (thinking-off, —, skipped, —); (thinking-on, 0.7, rejected, claude-fable-5-1--temperature--0.7--thinking-on--94163252) |
 | top-p | claude-fable-5 | docs-contradicted | (default, 0.9, rejected, claude-fable-5--top-p--0.9--default--46fc779a); (thinking-off, —, skipped, —); (thinking-on, 0.9, rejected, claude-fable-5--top-p--0.9--thinking-on--e76b925d) |
 | top-p | claude-haiku-4-5 | docs-contradicted | (default, 0.9, accepted-unverified, claude-haiku-4-5--top-p--0.9--default--5ec71278); (thinking-off, 0.9, accepted-unverified, claude-haiku-4-5--top-p--0.9--thinking-off--aed7cd1f); (thinking-on, 0.9, rejected, claude-haiku-4-5--top-p--0.9--thinking-on--b4ed50fa) |
 | top-p | gpt-5-6-sol | docs-contradicted | (default, 0.9, rejected, gpt-5-6-sol--top-p--0.9--default--70cbb966); (thinking-off, 0.9, accepted-unverified, gpt-5-6-sol--top-p--0.9--thinking-off--65ee57fd); (thinking-on, 0.9, rejected, gpt-5-6-sol--top-p--0.9--thinking-on--aa641c79) |
@@ -214,6 +244,9 @@
 | top-p | kimi-k3 | docs-corroborated | (default, 0.9, rejected, kimi-k3--top-p--0.9--default--a4348ce7); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-p | deepseek-v4 | docs-undecidable | (default, 0.9, accepted-unverified, deepseek-v4--top-p--0.9--default--3f02c9db); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-p | glm-5.3 | docs-undecidable | (default, 0.9, accepted-unverified, glm-5.3--top-p--0.9--default--bd787484); (thinking-off, —, skipped, —); (thinking-on, 0.9, accepted-unverified, glm-5.3--top-p--0.9--thinking-on--3f4880d0) |
+| top-p | gpt-6-astra | docs-contradicted | (default, 0.9, rejected, gpt-6-astra--top-p--0.9--default--4c143ea6); (thinking-off, —, skipped, —); (thinking-on, 0.9, rejected, gpt-6-astra--top-p--0.9--thinking-on--89d95887) |
+| top-p | gemini-3-8-flash | docs-undecidable | (default, 0.9, accepted-unverified, gemini-3-8-flash--top-p--0.9--default--2061ac8b); (thinking-off, —, skipped, —); (thinking-on, 0.9, accepted-unverified, gemini-3-8-flash--top-p--0.9--thinking-on--6eed37dc) |
+| top-p | claude-fable-5-1 | docs-contradicted | (default, 0.9, rejected, claude-fable-5-1--top-p--0.9--default--e7563d54); (thinking-off, —, skipped, —); (thinking-on, 0.9, rejected, claude-fable-5-1--top-p--0.9--thinking-on--fd8b3219) |
 | top-k | claude-fable-5 | docs-contradicted | (default, 40, rejected, claude-fable-5--top-k--40--default--4ab0bab1); (thinking-off, —, skipped, —); (thinking-on, 40, rejected, claude-fable-5--top-k--40--thinking-on--3ec00f1f) |
 | top-k | claude-haiku-4-5 | docs-contradicted | (default, 40, accepted-unverified, claude-haiku-4-5--top-k--40--default--36e32dbe); (thinking-off, 40, accepted-unverified, claude-haiku-4-5--top-k--40--thinking-off--76a43fa6); (thinking-on, 40, rejected, claude-haiku-4-5--top-k--40--thinking-on--c8ec67cd) |
 | top-k | gemini-3-1-pro | docs-undecidable | (default, 40, accepted-unverified, gemini-3-1-pro--top-k--40--default--426e453a); (thinking-off, —, skipped, —); (thinking-on, 40, accepted-unverified, gemini-3-1-pro--top-k--40--thinking-on--d075a5b7) |
@@ -221,49 +254,64 @@
 | top-k | kimi-k3 | docs-undecidable | (default, 40, accepted-unverified, kimi-k3--top-k--40--default--7319988b); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-k | deepseek-v4 | docs-undecidable | (default, 40, accepted-unverified, deepseek-v4--top-k--40--default--a0b0d48e); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-k | glm-5.3 | docs-undecidable | (default, 40, accepted-unverified, glm-5.3--top-k--40--default--25bb1e86); (thinking-off, —, skipped, —); (thinking-on, 40, accepted-unverified, glm-5.3--top-k--40--thinking-on--1261b5b9) |
+| top-k | gpt-6-astra | docs-corroborated | (default, 40, rejected, gpt-6-astra--top-k--40--default--63f97850); (thinking-off, —, skipped, —); (thinking-on, 40, rejected, gpt-6-astra--top-k--40--thinking-on--368553b8) |
+| top-k | gemini-3-8-flash | docs-undecidable | (default, 40, accepted-unverified, gemini-3-8-flash--top-k--40--default--fcfb8b6e); (thinking-off, —, skipped, —); (thinking-on, 40, accepted-unverified, gemini-3-8-flash--top-k--40--thinking-on--d8d68e51) |
+| top-k | claude-fable-5-1 | docs-contradicted | (default, 40, rejected, claude-fable-5-1--top-k--40--default--42c40ad0); (thinking-off, —, skipped, —); (thinking-on, 40, rejected, claude-fable-5-1--top-k--40--thinking-on--051f4b9d) |
 | presence-penalty | gpt-5-6-sol | docs-contradicted | (default, 0.1, rejected, gpt-5-6-sol--presence-penalty--0.1--default--a5cdfa92); (thinking-off, 0.1, accepted-unverified, gpt-5-6-sol--presence-penalty--0.1--thinking-off--34f12a58); (thinking-on, 0.1, rejected, gpt-5-6-sol--presence-penalty--0.1--thinking-on--068b93ac) |
 | presence-penalty | gemini-3-1-pro | docs-contradicted | (default, 0.1, rejected, gemini-3-1-pro--presence-penalty--0.1--default--f7a5a8f7); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, gemini-3-1-pro--presence-penalty--0.1--thinking-on--bd32f0f1) |
 | presence-penalty | grok-4-5 | docs-contradicted | (default, 0.1, rejected, grok-4-5--presence-penalty--0.1--default--8df0ceb0); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, grok-4-5--presence-penalty--0.1--thinking-on--6bacebdb) |
 | presence-penalty | kimi-k3 | docs-corroborated | (default, 0.1, rejected, kimi-k3--presence-penalty--0.1--default--9ccce145); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | presence-penalty | deepseek-v4 | docs-undecidable | (default, 0.1, accepted-unverified, deepseek-v4--presence-penalty--0.1--default--10fc43b2); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | presence-penalty | glm-5.3 | docs-undecidable | (default, 0.1, accepted-unverified, glm-5.3--presence-penalty--0.1--default--323feaa7); (thinking-off, —, skipped, —); (thinking-on, 0.1, accepted-unverified, glm-5.3--presence-penalty--0.1--thinking-on--afa1cbe0) |
+| presence-penalty | gpt-6-astra | docs-contradicted | (default, 0.1, rejected, gpt-6-astra--presence-penalty--0.1--default--204cc1c3); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, gpt-6-astra--presence-penalty--0.1--thinking-on--379e310e) |
 | frequency-penalty | gpt-5-6-sol | docs-contradicted | (default, 0.1, rejected, gpt-5-6-sol--frequency-penalty--0.1--default--f25fac90); (thinking-off, 0.1, accepted-unverified, gpt-5-6-sol--frequency-penalty--0.1--thinking-off--8468a27a); (thinking-on, 0.1, rejected, gpt-5-6-sol--frequency-penalty--0.1--thinking-on--3164b8b5) |
 | frequency-penalty | gemini-3-1-pro | docs-contradicted | (default, 0.1, rejected, gemini-3-1-pro--frequency-penalty--0.1--default--741d014c); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, gemini-3-1-pro--frequency-penalty--0.1--thinking-on--b9645bdc) |
 | frequency-penalty | grok-4-5 | docs-contradicted | (default, 0.1, rejected, grok-4-5--frequency-penalty--0.1--default--e4628785); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, grok-4-5--frequency-penalty--0.1--thinking-on--8e6d2115) |
 | frequency-penalty | kimi-k3 | docs-corroborated | (default, 0.1, rejected, kimi-k3--frequency-penalty--0.1--default--ef909843); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | frequency-penalty | deepseek-v4 | docs-undecidable | (default, 0.1, accepted-unverified, deepseek-v4--frequency-penalty--0.1--default--62efc915); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | frequency-penalty | glm-5.3 | docs-undecidable | (default, 0.1, accepted-unverified, glm-5.3--frequency-penalty--0.1--default--d28f0f57); (thinking-off, —, skipped, —); (thinking-on, 0.1, accepted-unverified, glm-5.3--frequency-penalty--0.1--thinking-on--2da738e5) |
+| frequency-penalty | gpt-6-astra | docs-contradicted | (default, 0.1, rejected, gpt-6-astra--frequency-penalty--0.1--default--d8063179); (thinking-off, —, skipped, —); (thinking-on, 0.1, rejected, gpt-6-astra--frequency-penalty--0.1--thinking-on--6d0cce79) |
 | logprobs | gpt-5-6-sol | docs-contradicted | (default, true, rejected, gpt-5-6-sol--logprobs--true--default--c1192127); (thinking-off, true, accepted-honored, gpt-5-6-sol--logprobs--true--thinking-off--b32b91ab); (thinking-on, true, rejected, gpt-5-6-sol--logprobs--true--thinking-on--9a1116de) |
 | logprobs | gemini-3-1-pro | docs-contradicted | (default, true, rejected, gemini-3-1-pro--logprobs--true--default--82d54982); (thinking-off, —, skipped, —); (thinking-on, true, rejected, gemini-3-1-pro--logprobs--true--thinking-on--01fa68c7) |
 | logprobs | grok-4-5 | docs-corroborated | (default, true, accepted-ignored, grok-4-5--logprobs--true--default--ef457ebb); (thinking-off, —, skipped, —); (thinking-on, true, accepted-ignored, grok-4-5--logprobs--true--thinking-on--35ba6e5c) |
 | logprobs | kimi-k3 | docs-contradicted | (default, true, rejected, kimi-k3--logprobs--true--default--b9b3e6f3); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | logprobs | deepseek-v4 | docs-corroborated | (default, true, accepted-honored, deepseek-v4--logprobs--true--default--3e9e0cfd); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | logprobs | glm-5.3 | docs-contradicted | (default, true, accepted-ignored, glm-5.3--logprobs--true--default--426b7c7b); (thinking-off, —, skipped, —); (thinking-on, true, accepted-ignored, glm-5.3--logprobs--true--thinking-on--628e7c79) |
+| logprobs | gpt-6-astra | docs-contradicted | (default, true, rejected, gpt-6-astra--logprobs--true--default--b20577b1); (thinking-off, —, skipped, —); (thinking-on, true, rejected, gpt-6-astra--logprobs--true--thinking-on--31bbb2f6) |
+| logprobs | gemini-3-8-flash | docs-contradicted | (default, true, rejected, gemini-3-8-flash--logprobs--true--default--f181e09c); (thinking-off, —, skipped, —); (thinking-on, true, needs-review, gemini-3-8-flash--logprobs--true--thinking-on--4c641ce5) |
 | top-logprobs | gemini-3-1-pro | docs-contradicted | (default, 3, rejected, gemini-3-1-pro--top-logprobs--3--default--9a6b3b69); (thinking-off, —, skipped, —); (thinking-on, 3, rejected, gemini-3-1-pro--top-logprobs--3--thinking-on--be5e9528) |
 | top-logprobs | grok-4-5 | docs-undecidable | (default, 3, accepted-unverified, grok-4-5--top-logprobs--3--default--ee0a3b87); (thinking-off, —, skipped, —); (thinking-on, 3, accepted-unverified, grok-4-5--top-logprobs--3--thinking-on--d69aefff) |
 | top-logprobs | kimi-k3 | docs-contradicted | (default, 3, rejected, kimi-k3--top-logprobs--3--default--f4467171); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-logprobs | deepseek-v4 | docs-contradicted | (default, 3, rejected, deepseek-v4--top-logprobs--3--default--b4e6062b); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | top-logprobs | glm-5.3 | docs-undecidable | (default, 3, accepted-unverified, glm-5.3--top-logprobs--3--default--fd546fdf); (thinking-off, —, skipped, —); (thinking-on, 3, accepted-unverified, glm-5.3--top-logprobs--3--thinking-on--1d956dd8) |
+| top-logprobs | gpt-6-astra | docs-contradicted | (default, 3, rejected, gpt-6-astra--top-logprobs--3--default--75361b06); (thinking-off, —, skipped, —); (thinking-on, 3, rejected, gpt-6-astra--top-logprobs--3--thinking-on--80cd0e43) |
+| top-logprobs | gemini-3-8-flash | docs-contradicted | (default, 3, rejected, gemini-3-8-flash--top-logprobs--3--default--847f487e); (thinking-off, —, skipped, —); (thinking-on, 3, rejected, gemini-3-8-flash--top-logprobs--3--thinking-on--8edfab7f) |
 | seed | gemini-3-1-pro | docs-undecidable | (default, 42, accepted-unverified, gemini-3-1-pro--seed--42--default--18c16086); (thinking-off, —, skipped, —); (thinking-on, 42, accepted-unverified, gemini-3-1-pro--seed--42--thinking-on--8c6fbf64) |
 | seed | grok-4-5 | docs-undecidable | (default, 42, accepted-unverified, grok-4-5--seed--42--default--89d4c1d4); (thinking-off, —, skipped, —); (thinking-on, 42, accepted-unverified, grok-4-5--seed--42--thinking-on--6616bf14) |
 | seed | kimi-k3 | docs-undecidable | (default, 42, accepted-unverified, kimi-k3--seed--42--default--992d750b); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | seed | deepseek-v4 | docs-undecidable | (default, 42, accepted-unverified, deepseek-v4--seed--42--default--4176a0f2); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | seed | glm-5.3 | docs-undecidable | (default, 42, accepted-unverified, glm-5.3--seed--42--default--f05c74a2); (thinking-off, —, skipped, —); (thinking-on, 42, accepted-unverified, glm-5.3--seed--42--thinking-on--b26aacae) |
+| seed | gpt-6-astra | docs-undecidable | (default, 42, accepted-unverified, gpt-6-astra--seed--42--default--ac317917); (thinking-off, —, skipped, —); (thinking-on, 42, accepted-unverified, gpt-6-astra--seed--42--thinking-on--09d297ea) |
+| seed | gemini-3-8-flash | docs-undecidable | (default, 42, accepted-unverified, gemini-3-8-flash--seed--42--default--0ed5db99); (thinking-off, —, skipped, —); (thinking-on, 42, accepted-unverified, gemini-3-8-flash--seed--42--thinking-on--33158d4e) |
 | n | gemini-3-1-pro | docs-corroborated | (default, 1, accepted-honored, gemini-3-1-pro--n--1--default--d43cbc30); (thinking-off, —, skipped, —); (thinking-on, 1, accepted-honored, gemini-3-1-pro--n--1--thinking-on--fc807d30) |
 | n | grok-4-5 | docs-corroborated | (default, 1, accepted-honored, grok-4-5--n--1--default--5e8e1f8d); (thinking-off, —, skipped, —); (thinking-on, 1, accepted-honored, grok-4-5--n--1--thinking-on--0630c8f0) |
 | n | kimi-k3 | docs-contradicted | (default, 1, accepted-honored, kimi-k3--n--1--default--c3e51607); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | n | deepseek-v4 | docs-contradicted | (default, 1, accepted-honored, deepseek-v4--n--1--default--8bc5ddbc); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | n | glm-5.3 | docs-contradicted | (default, 1, accepted-honored, glm-5.3--n--1--default--0ca6130e); (thinking-off, —, skipped, —); (thinking-on, 1, accepted-honored, glm-5.3--n--1--thinking-on--5e5cec7c) |
+| n | gpt-6-astra | docs-corroborated | (default, 1, accepted-honored, gpt-6-astra--n--1--default--20629e9c); (thinking-off, —, skipped, —); (thinking-on, 1, accepted-honored, gpt-6-astra--n--1--thinking-on--f4af52c3) |
+| n | gemini-3-8-flash | docs-corroborated | (default, 1, accepted-honored, gemini-3-8-flash--n--1--default--81ac2eb7); (thinking-off, —, skipped, —); (thinking-on, 1, accepted-honored, gemini-3-8-flash--n--1--thinking-on--e6450ed4) |
 | logit-bias | grok-4-5 | docs-contradicted | (default, {"1734":5}, rejected, grok-4-5--logit-bias--{"1734":5}--default--ab30f188); (thinking-off, —, skipped, —); (thinking-on, {"1734":5}, rejected, grok-4-5--logit-bias--{"1734":5}--thinking-on--b5079fdd) |
 | logit-bias | kimi-k3 | docs-corroborated | (default, {"1734":5}, rejected, kimi-k3--logit-bias--{"1734":5}--default--d48627ac); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | logit-bias | deepseek-v4 | docs-undecidable | (default, {"1734":5}, accepted-unverified, deepseek-v4--logit-bias--{"1734":5}--default--9b45fd22); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | logit-bias | glm-5.3 | docs-undecidable | (default, {"1734":5}, accepted-unverified, glm-5.3--logit-bias--{"1734":5}--default--1672ba57); (thinking-off, —, skipped, —); (thinking-on, {"1734":5}, accepted-unverified, glm-5.3--logit-bias--{"1734":5}--thinking-on--a01f2102) |
+| logit-bias | gpt-6-astra | docs-contradicted | (default, {"1734":5}, rejected, gpt-6-astra--logit-bias--{"1734":5}--default--2bdd912f); (thinking-off, —, skipped, —); (thinking-on, {"1734":5}, rejected, gpt-6-astra--logit-bias--{"1734":5}--thinking-on--2df52ac9) |
 | anthropic-thinking-budget-floor | claude-haiku-4-5 | docs-contradicted | (default, {"budget_tokens":1024,"type":"enabled"}, accepted-unverified, claude-haiku-4-5--anthropic-thinking-budget-floor--{"budget_tokens":1024,"type":"enabled"}--default--2ea979db); (default, {"budget_tokens":500,"type":"enabled"}, rejected, claude-haiku-4-5--anthropic-thinking-budget-floor--{"budget_tokens":500,"type":"enabled"}--default--b05e92b5) |
 | qwen-repetition-penalty | grok-4-5 | docs-undecidable | (default, 0.5, accepted-unverified, grok-4-5--qwen-repetition-penalty--0.5--default--e18aa90e); (thinking-off, —, skipped, —); (thinking-on, 0.5, accepted-unverified, grok-4-5--qwen-repetition-penalty--0.5--thinking-on--4f7b217b) |
 | qwen-repetition-penalty | kimi-k3 | docs-undecidable | (default, 0.5, accepted-unverified, kimi-k3--qwen-repetition-penalty--0.5--default--723d5c88); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | qwen-repetition-penalty | deepseek-v4 | docs-undecidable | (default, 0.5, accepted-unverified, deepseek-v4--qwen-repetition-penalty--0.5--default--64a49b17); (thinking-off, —, skipped, —); (thinking-on, —, skipped, —) |
 | qwen-repetition-penalty | glm-5.3 | docs-undecidable | (default, 0.5, accepted-unverified, glm-5.3--qwen-repetition-penalty--0.5--default--431bd993); (thinking-off, —, skipped, —); (thinking-on, 0.5, accepted-unverified, glm-5.3--qwen-repetition-penalty--0.5--thinking-on--4807db5d) |
 | qwen-repetition-penalty | qwen3.8-max | docs-undecidable | (default, 0.5, needs-review, qwen3.8-max--qwen-repetition-penalty--0.5--default--fa172ac1); (thinking-off, 0.5, accepted-unverified, qwen3.8-max--qwen-repetition-penalty--0.5--thinking-off--5366243d); (thinking-on, 0.5, needs-review, qwen3.8-max--qwen-repetition-penalty--0.5--thinking-on--43fdcef3) |
+| qwen-repetition-penalty | gpt-6-astra | docs-corroborated | (default, 0.5, rejected, gpt-6-astra--qwen-repetition-penalty--0.5--default--89371d8d); (thinking-off, —, skipped, —); (thinking-on, 0.5, rejected, gpt-6-astra--qwen-repetition-penalty--0.5--thinking-on--73d0e35f) |
 
 ## Docs-silent
 

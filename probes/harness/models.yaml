@@ -1,5 +1,6 @@
-# probes/harness/models.yaml — the sole source of truth for wire facts across the 12
-# active tracked models (D-01). Self-contained: never parses tools/1-models/ prose at
+# probes/harness/models.yaml — the sole source of truth for wire facts across the 15
+# active tracked models (D-01; 12 at Phase 11, +3 on 2026-09-04 by issue #43's
+# roster fork). Self-contained: never parses tools/1-models/ prose at
 # runtime; a drift check against the reports' active-model set is deliberately
 # deferred to Phase 13's check-probe-drift.py.
 #
@@ -16,7 +17,7 @@
 # Phase 13's check-probe-drift.py later confronts this field against the reports'
 # `reasoning_type` key (string equality, not a mapping, since this file reuses the
 # reports' own four-value enum instead of D-06's proposed three classes).
-checked: 2026-09-01
+checked: 2026-09-04
 
 models:
   - slug: claude-fable-5
@@ -135,8 +136,9 @@ models:
       # names two API-callable ids (deepseek-v4-pro, deepseek-v4-flash).
       # deepseek-v4-flash is an available sibling, NOT separately tracked here
       # (RESEARCH.md Open Question 1, resolved to its own recommendation) — this
-      # is what keeps this file at 12 rows matching "12 active models" rather
-      # than silently becoming 13.
+      # is what kept this file at 12 rows matching the then-"12 active models"
+      # rather than silently becoming 13 (15 rows since the 2026-09-04 fork —
+      # the one-row-per-report decision itself is unchanged).
     base_url: https://api.deepseek.com
     key_env_var: PERSONAL_DSEEK_KEY
     reasoning_toggle: default-on
@@ -170,6 +172,53 @@ models:
     base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
     key_env_var: PERSONAL_QWEN_KEY
     reasoning_toggle: default-on
+
+  # --- issue #43 phase 2 roster fork (2026-09-04): the three September launches,
+  # appended as one batch so the probe envelope forks once. Slugs equal the report
+  # filename stems in tools/1-models/ (check-probe-drift.py joins on exactly that).
+  - slug: gpt-6-astra
+    maker: OpenAI
+    vendor: openai
+    wire_family: openai_compat
+    api_model_id: gpt-6-astra
+    base_url: https://api.openai.com/v1
+    key_env_var: PERSONAL_OPENAI_KEY
+    reasoning_toggle: always-on   # tools/1-models/gpt-6-astra.md, verified
+      # 2026-09-04: `reasoning_effort: none` returns HTTP 400 on this model, and
+      # the system card states the withholding is deliberate ("we do not currently
+      # have plans to make reasoning=None available").
+    max_tokens_field: max_completion_tokens   # 2026-09-04, issue #43 gate probe:
+      # the one-shot completion that opened the batch sent max_completion_tokens
+      # and answered HTTP 200 (finish_reason: stop) — same rename gpt-5-6-sol's
+      # D-09 calibration forced, here settled before first fire.
+
+  - slug: gemini-3-8-flash
+    maker: Google
+    vendor: gemini
+    wire_family: gemini
+    api_model_id: gemini-3.8-flash   # bare id, NO -preview suffix — the same
+      # zero-cost ListModels call that caught gemini-3.1-pro-preview's suffix
+      # (above) lists this one as `models/gemini-3.8-flash` (2026-09-04); the
+      # model is badged "New Stable", so no Preview path segment exists. The
+      # adapter prepends `models/`.
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    key_env_var: PERSONAL_GEMINI_KEY
+    reasoning_toggle: always-on   # thinking docs table, verified 2026-09-04:
+      # "gemini-3.8-flash | On (medium) | low, medium, high" — no off state and
+      # no `minimal` level (the 3.5-flash floor was dropped).
+
+  - slug: claude-fable-5-1
+    maker: Anthropic
+    vendor: anthropic
+    wire_family: anthropic_messages
+    api_model_id: claude-fable-5-1
+    base_url: https://api.anthropic.com/v1
+    key_env_var: PERSONAL_ANTHROPIC_KEY
+    reasoning_toggle: always-on   # per-model troubleshooting table, verified
+      # 2026-09-04: "Adaptive only | Always on", rejects BOTH `"enabled"` and
+      # `"disabled"` with a 400 — the same strictest row claude-fable-5 holds;
+      # its slug-keyed thinking-shape override lives beside claude-fable-5's in
+      # probes/inventory.yaml.
 # The superseded Qwen coder entry (see tools/1-models/README.md's own superseded
 # note) is deliberately absent from this list — never re-added without a fresh
 # owner decision.

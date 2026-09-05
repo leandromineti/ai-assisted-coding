@@ -4,10 +4,10 @@
 
 # probes/classified/behavioral.yaml, rendered
 
-`checked:` 2026-09-03  
-`evidence_through:` 2026-09-03T02:39:35Z
+`checked:` 2026-09-05  
+`evidence_through:` 2026-09-05T00:13:09Z
 
-## BHV-01 (8 cells)
+## BHV-01 (10 cells)
 
 | Model | Pairs | Calls | Rate | Effect Control | Verdict | Expected (citation) | probe_ids |
 |---|---|---|---|---|---|---|---|
@@ -19,8 +19,10 @@
 | glm-5.3 | 5 | 10 | 0/5 (0.0%) | differed (glm-5.3--seed--99--default--eabe8bce) | no-signal | Z.ai's own Chat Completion API reference documents no seed field at all for glm-5.3 (absent-from-docs, checked-absence per rule 1b — the ChatCompletionTextRequest schema branch matching this tracked model read end to end, zero matches). This vendor has NO seed contract to confront, so ANY same-seed pair-match rate here — high or low — is a FIRST DISCOVERY, not a corroboration or a refutation of a stated prior. (docs-claims:seed/zai) | 10 |
 | qwen3.8-max | 5 | 10 | 0/5 (0.0%) | differed (qwen3.8-max--seed--99--default--d16ff1a6) | varies | Qwen documents its own explicit hedge for qwen3.8-max, worded differently from OpenAI/xAI's system_fingerprint-pointer wording: "the model returns the same result whenever possible" — a best-effort contract stated in the vendor's own terms, with no system_fingerprint pointer to monitor drift. Expect a mid-to-high same-seed pair-match rate, not a guaranteed 5/5. (docs-claims:seed/qwen) | 10 |
 | qwen3.8-flash | 5 | 10 | 0/5 (0.0%) | differed (qwen3.8-flash--seed--99--default--194b7288) | varies | Qwen's seed claim applies to every model in the family including its flash-tier sibling qwen3.8-flash: "the model returns the same result whenever possible" — the same explicit, vendor-worded best-effort hedge cited for qwen3.8-max above (this file's own vendor-level claim, one row shared by both tracked Qwen models), with no system_fingerprint pointer. Expect a mid-to-high same-seed pair-match rate at this smaller/cheaper model too, not a guaranteed 5/5. (docs-claims:seed/qwen) | 10 |
+| gpt-6-astra | 5 | 10 | 1/5 (20.0%) | differed (gpt-6-astra--seed--99--default--13faf581) | partial | OpenAI's vendor-level seed claim (the same best-effort hedge cited for gpt-5-6-sol above: "our system will make a best effort to sample deterministically ... refer to the system_fingerprint response parameter") is the only stated prior — and it survives at gpt-6-astra even though the model's own migration guide removes temperature/top_p/top_logprobs: the 2026-09-05 contract cell shows `seed` ACCEPTED (200) while those sampling params 400. Expect a mid-to-high same-seed pair-match rate, not a guaranteed 5/5, with system_fingerprint recorded alongside each pair. (docs-claims:seed/openai) | 10 |
+| gemini-3-8-flash | 5 | 10 | 1/5 (20.0%) | differed (gemini-3-8-flash--seed--99--default--2818d0c6) | partial | Gemini's GenerateContent reference carries NO best-effort hedge (the same vendor-level claim cited for gemini-3-1-pro above: "Optional. Seed used in decoding. If not set, the request uses a randomly generated seed" — silent on determinism strength once a seed IS set). The unhedged framing sets the same HIGHER bar at this first Stable-track Gemini: a same-seed pair-match rate materially below 5/5 refutes the documentation more sharply than a partial rate would at a vendor that explicitly disclaims a guarantee. (docs-claims:seed/gemini) | 10 |
 
-## BHV-02 (12 cells)
+## BHV-02 (15 cells)
 
 | Model | Repeats | Comparisons | Rate | Distinct Outputs | Verdict | Expected (citation) | probe_ids |
 |---|---|---|---|---|---|---|---|
@@ -36,8 +38,11 @@
 | glm-5.3 | 5 | 4 | 0/4 (0.0%) | 5 | no-signal | Z.ai documents a narrower [0.0, 1.0] range specific to glm-5.3's own model series (default 1.0), conditional on `do_sample` staying true, and Phase 11's own wire evidence shows glm-5.3 ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0. (docs-claims:temperature/zai) | 5 |
 | qwen3.8-max | 5 | 4 | 0/4 (0.0%) | 5 | varies | Qwen documents temperature range [0, 2) with a caution to set only one of temperature/top_p, and Phase 11's own wire evidence shows qwen3.8-max ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0. (docs-claims:temperature/qwen) | 5 |
 | qwen3.8-flash | 5 | 4 | 0/4 (0.0%) | 5 | varies | Qwen's same temperature claim covers its flash-tier sibling qwen3.8-flash, and Phase 11's own wire evidence shows qwen3.8-flash likewise ACCEPTING an explicit temperature value in `default` mode. Expect a high match rate (near or at 4/4) at temperature 0 at this smaller/cheaper model too. (docs-claims:temperature/qwen) | 5 |
+| gpt-6-astra | 5 | 4 | 0/4 (0.0%) | 5 | varies | gpt-6-astra is the sweep's first model whose own migration guide REMOVES temperature outright ("Remove `temperature`, `top_p`, and `top_logprobs`.") while OpenAI's vendor-level documentation still states a general 0-2 accepted range — and the wire agrees with the migration guide (gpt-6-astra--temperature--0.7--default--ad5d5e96, HTTP 400). This default-config-repeatability cell asks whether gpt-6-astra's own default sampling is repeatable across five identical requests with no temperature parameter sent at all — the same substitute shape as gpt-5-6-sol's cell above, now backed by documented removal rather than an undocumented model-specific restriction. (docs-claims:temperature/openai) | 5 |
+| gemini-3-8-flash | 5 | 4 | 0/4 (0.0%) | 5 | varies | Gemini's own GenerationConfig reference documents temperature range [0.0, 2.0] with no per-value rejection language (the same vendor-level claim cited for gemini-3-1-pro above), and the roster fork's own wire evidence shows gemini-3-8-flash ACCEPTING an explicit temperature in default mode (gemini-3-8-flash--temperature--0.7--default--5b686f62, HTTP 200) — so this is a genuine temperature-0 test, not a substitute. Sibling precedent: gemini-3-1-pro measured 2/4 matching pairs (partial) — the only non-Anthropic model with any temp-0 stability signal. (docs-claims:temperature/gemini) | 5 |
+| claude-fable-5-1 | 5 | 4 | 0/4 (0.0%) | 5 | varies | Anthropic's documented temperature contract ("models released after Claude Opus 4.6 do not support setting temperature ... all other values are rejected with a 400 error") carries forward to the 5.1 revision — confirmed on the wire (claude-fable-5-1--temperature--0.7--default--070c1680, HTTP 400). This default-config-repeatability cell asks whether claude-fable-5-1's own DEFAULT (implicit) sampling is repeatable across five identical requests with no temperature parameter sent — the same substitute its 5.0 predecessor measured at 0/4 pairs (varies), making this the revision test's direct like-for-like comparison cell. (docs-claims:temperature/anthropic) | 5 |
 
-## BHV-03 (10 cells)
+## BHV-03 (12 cells)
 
 | Model | Triggering Length | Control Length | Stop Token in Text | Truncation Verdict | Finish-Reason Honest | Expected (citation) | probe_ids |
 |---|---|---|---|---|---|---|---|
@@ -51,8 +56,10 @@
 | glm-5.3 | 0 | 56 | None | inconclusive | ambiguous | Z.ai's stop-word field carries a genuine within-vendor contradiction (schema `maxItems: 4` vs. its own prose "only one stop word is supported") — this family fires exactly ONE sequence everywhere, so that contradiction is out of scope here (see the declared skip below) and only the single-sequence behavior is exercised. openai_compat's shared `stop` finish value is ambiguous — text comparison only. (docs-claims:stop/zai) | 2 |
 | qwen3.8-max | 25 | 56 | False | stop-honored | ambiguous | Qwen documents stop words (string or array) that halt generation immediately on a match. openai_compat's shared `stop` finish value is ambiguous — text comparison only. (docs-claims:stop/qwen) | 2 |
 | qwen3.8-flash | 25 | 56 | False | stop-honored | ambiguous | Same Qwen stop-word contract, shared across the qwen3.8 line — text comparison only. (docs-claims:stop/qwen) | 2 |
+| gemini-3-8-flash | 25 | 56 | False | stop-honored | ambiguous | Gemini documents stopSequences (up to 5) as stopping output at the first appearance of a stop sequence, not included in the response — the same vendor-level claim cited for gemini-3-1-pro above, now at the first Stable-track Gemini in the sweep. Expect the triggering call to truncate strictly before "Thursday" and the finish reason to distinguish the stop from the control's natural completion, per the sibling's own cell. (docs-claims:stop/gemini) | 2 |
+| claude-fable-5-1 | 25 | 56 | False | stop-honored | honest | Anthropic documents stop_sequences as custom text sequences that cause the model to stop generating, with `stop_reason` set to "stop_sequence" when one fires — the same vendor-level claim cited for claude-fable-5 above. The 5.0 predecessor measured honest (stop-honored truncation + the distinguishable stop_reason value); this cell is the revision test's like-for-like comparison at the same fixture. (docs-claims:stop/anthropic) | 2 |
 
-## BHV-04 (7 cells)
+## BHV-04 (8 cells)
 
 | Model | Requested n | Returned Count | State | Expected (citation) | probe_ids |
 |---|---|---|---|---|---|
@@ -63,6 +70,7 @@
 | glm-5.3 | 2 | 1 | accepted-ignored | Z.ai documents no `n` field (absent-from-docs) — yet Phase 11's own wire evidence shows `n: 1` accepted-honored. A first discovery, same framing as kimi-k3/deepseek-v4 above. (docs-claims:n/zai) | 1 |
 | qwen3.8-max | 2 | 0 | rejected | Qwen documents `n` (1-4) as "supported only by Qwen3 (non-thinking mode) models," with a separate constraint that `n` must be 1 whenever `tools` is passed — neither constraint applies to this default-mode, tool-free cell. Expect exactly 2 choices returned. (docs-claims:n/qwen) | 1 |
 | qwen3.8-flash | 2 | 0 | rejected | Same Qwen `n` contract, shared across the qwen3.8 line. Expect exactly 2 choices returned. (docs-claims:n/qwen) | 1 |
+| gpt-6-astra | 2 | 2 | accepted-honored | OpenAI documents `n` as how many chat completion choices to generate — the same vendor-level claim cited for gpt-5-6-sol above. gpt-6-astra's own contract cell accepts n=1 (HTTP 200); this cell asks whether a request for 2 candidates actually DELIVERS two distinct choices, is rejected, or silently returns one (the glm-5.3 failure shape), on a model whose migration guide removed the classic sampling params but not `n`. (docs-claims:n/openai) | 1 |
 
 ## BHV-05 (10 cells)
 
@@ -79,9 +87,9 @@
 | qwen3.8-flash | thinking-off | True | 56 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-off--9af93f55 | Same Qwen `top_logprobs` contract, thinking explicitly disabled. (docs-claims:top-logprobs/qwen) | 1 |
 | qwen3.8-flash | thinking-on | True | 46 | True | accepted-honored | qwen3.8-flash--top-logprobs--3--thinking-on--4bc31717 | Same Qwen `top_logprobs` contract, thinking explicitly enabled. (docs-claims:top-logprobs/qwen) | 1 |
 
-## BHV-06 (27 cells)
+## BHV-06 (39 cells)
 
-### Service-tier audit (23 cells)
+### Service-tier audit (35 cells)
 
 | Vendor | Model | Request Value | Request Field Path | Response Field Path | Response Value | Response Present | Echo Relation | Source | probe_ids |
 |---|---|---|---|---|---|---|---|---|---|
@@ -108,6 +116,18 @@
 | dseek | deepseek-v4 | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
 | zai | glm-5.3 | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
 | qwen | qwen3.8-flash | omitted | service_tier | service_tier | None | absent | absent | fired | 1 |
+| openai | gpt-6-astra | fast | service_tier | service_tier | fast | present | echoed | fired | 1 |
+| openai | gpt-6-astra | omitted | service_tier | service_tier | default | present | translated | fired | 1 |
+| openai | gpt-6-astra | scale | service_tier | None | None | absent | rejected | fired | 1 |
+| gemini | gemini-3-8-flash | flex | serviceTier | usageMetadata.serviceTier | flex | present | echoed | fired | 1 |
+| gemini | gemini-3-8-flash | omitted | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| gemini | gemini-3-8-flash | priority | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| gemini | gemini-3-8-flash | standard | serviceTier | usageMetadata.serviceTier | standard | present | echoed | fired | 1 |
+| gemini | gemini-3-8-flash | unspecified | serviceTier | usageMetadata.serviceTier | standard | present | translated | fired | 1 |
+| anthropic | claude-fable-5-1 | auto | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-fable-5-1 | omitted | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-fable-5-1 | standard_only | service_tier | usage.service_tier | standard | present | translated | fired | 1 |
+| anthropic | claude-fable-5-1 | standard | service_tier | None | None | absent | rejected | fired | 1 |
 
 **Anthropic asymmetry CONFIRMED:** the nested `usage.service_tier` reads `present` while the response top level's own `service_tier` reads `absent` (probe_id `claude-haiku-4-5--service-tier-audit--auto--default--613638b0`).
 
@@ -120,7 +140,7 @@
 | qwen | qwen3.8-flash | reasoning-effort | low | dropped | Contradicts probes/inventory.yaml's own axes.thinking.shapes.openai_compat.vendor_overrides.qwen assumption that Qwen's own thinking-toggle shape is `enable_thinking`/ `thinking_budget` ONLY. Qwen's own docs document `reasoning_effort` as a REAL, independently-accepted field for the qwen3.8 series (Options: low, medium, xhigh; default xhigh) — additive to, not exclusive with, the enable_thinking/thinking_budget shape. An HTTP 200 here confirms the field is genuinely accepted beyond the registry's own narrower assumption. | Qwen3.8 series documents `reasoning_effort` values low/medium/xhigh (default xhigh) — `low` is a genuinely non-default value. No `thinking_budget` sent alongside it (avoiding the documented mutual- exclusion error). Expect acceptance (HTTP 200), `dropped` echo_relation (no known response field echoes the resolved effort level). (docs-claims:openai-reasoning-effort/qwen) | 1 |
 | qwen | qwen3.8-flash | reasoning-effort | medium | dropped | Same registry contradiction as the `low` cell above — this is the qwen3.8 series' second non-default documented value. | Qwen3.8 series' second non-default `reasoning_effort` value. Expect acceptance (HTTP 200), `dropped` echo_relation. (docs-claims:openai-reasoning-effort/qwen) | 1 |
 
-## calibration (9 cells)
+## calibration (11 cells)
 
 | Model | Design | Repeats | Rate | Verdict | Expected (citation) | probe_ids |
 |---|---|---|---|---|---|---|
@@ -133,6 +153,8 @@
 | glm-5.3 | control | 5 | 0/4 (0.0%) | varies | The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt lacks entropy for glm-5.3 at its own default sampling settings, and this model's BHV-01/ BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything (D-03). (prereg:Calibration design (rule 5d)) | 5 |
 | qwen3.8-max | control | 5 | 0/4 (0.0%) | varies | The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt lacks entropy for qwen3.8-max at its own default sampling settings, and this model's BHV-01/ BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything (D-03). (prereg:Calibration design (rule 5d)) | 5 |
 | qwen3.8-flash | control | 5 | 0/4 (0.0%) | varies | The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt lacks entropy for qwen3.8-flash at its own default sampling settings, and this model's BHV-01/ BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt before they measure anything (D-03). (prereg:Calibration design (rule 5d)) | 5 |
+| gpt-6-astra | control | 5 | 0/4 (0.0%) | varies | The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt lacks entropy for gpt-6-astra at its own default sampling settings, and this model's determinism cells in this fork would need a redesigned prompt before they measure anything (D-03). (prereg:Calibration design (rule 5d)) | 5 |
+| gemini-3-8-flash | control | 5 | 0/4 (0.0%) | varies | The five repeats are expected to VARY: a high-entropy creative-writing prompt (inventing a fictional animal) at default, unspecified-temperature sampling should not produce byte-identical visible output across five independent repeats. A control arm that matches 5/5 would mean this prompt lacks entropy for gemini-3-8-flash at its own default sampling settings, and this model's determinism cells in this fork would need a redesigned prompt before they measure anything (D-03). (prereg:Calibration design (rule 5d)) | 5 |
 
 ## Declared Skips
 
@@ -147,21 +169,28 @@
 | deepseek-v4 | logprobs | BHV-05 | already-settled-logprobs-honored | deepseek-v4--logprobs--true--default--3e9e0cfd |
 | qwen3.8-max | logprobs | BHV-05 | already-settled-logprobs-honored | qwen3.8-max--logprobs--true--default--8c88fc79 |
 | qwen3.8-max | logprobs | BHV-05 | already-settled-logprobs-honored | qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac |
+| claude-fable-5-1 | logprobs | BHV-05 | no-request-side-field-for-vendor | docs-claims:logprobs/anthropic |
 | gemini-3-1-pro | gemini-candidate-count | BHV-04 | wire-rejects-gemini-candidate-count | gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857 |
 | claude-fable-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
 | claude-opus-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
 | claude-sonnet-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
 | claude-haiku-4-5 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
+| gemini-3-8-flash | gemini-candidate-count | BHV-04 | wire-rejects-gemini-candidate-count | gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f |
+| claude-fable-5-1 | n | BHV-04 | no-request-side-field-for-vendor | docs-claims:n/anthropic |
 | claude-fable-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-opus-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-sonnet-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | claude-haiku-4-5 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
+| claude-fable-5-1 | seed | BHV-01 | no-request-side-seed-field | docs-claims:seed/anthropic |
 | gpt-5-6-sol | stop | BHV-03 | wire-rejects-stop-default-mode | gpt-5-6-sol--stop--["the"]--default--6a86352a |
 | grok-4-5 | stop | BHV-03 | wire-rejects-stop-default-mode | grok-4-5--stop--["the"]--default--ee1a658f |
 | glm-5.3 | stop | BHV-03 | out-of-scope-multi-sequence-contradiction | docs-claims:stop/zai |
+| gpt-6-astra | stop | BHV-03 | wire-rejects-stop-default-mode | gpt-6-astra--stop--["the"]--default--86cda0ea |
 | claude-fable-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-fable-5--temperature--0.7--default--be62cc19 |
 | claude-opus-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-opus-5--temperature--0.7--default--65c8c160 |
 | claude-sonnet-5 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-sonnet-5--temperature--0.7--default--276ef9f0 |
 | gpt-5-6-sol | temperature | BHV-02 | wire-rejects-temperature-default-mode | gpt-5-6-sol--temperature--0.7--default--f4a07a21 |
 | kimi-k3 | temperature | BHV-02 | wire-rejects-temperature-default-mode | kimi-k3--temperature--0.7--default--8d339aec |
 | all | temperature | BHV-02 | deferred-thinking-mode-cross-product | prereg:Mode scope |
+| gpt-6-astra | temperature | BHV-02 | wire-rejects-temperature-default-mode | gpt-6-astra--temperature--0.7--default--ad5d5e96 |
+| claude-fable-5-1 | temperature | BHV-02 | wire-rejects-temperature-default-mode | claude-fable-5-1--temperature--0.7--default--070c1680 |

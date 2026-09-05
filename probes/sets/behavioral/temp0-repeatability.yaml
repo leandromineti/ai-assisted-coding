@@ -48,7 +48,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before stamping":
 # `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +gemini-3-8-flash (Group A), +gpt-6-astra +claude-fable-5-1 (Group B) + their wire-rejects skips
 
 probes:
   # ============================= GROUP A (7 models) =============================
@@ -346,7 +346,50 @@ probes:
     extra_params: {temperature: 0}
     repeat: 5
 
-  # ============================= GROUP B (5 models) =============================
+
+  # --- gemini-3-8-flash (gemini, max_tokens 600 mirrors gemini-3-1-pro's; issue #43 roster fork, 2026-09-05) ---
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 1
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 2
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 3
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 4
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    extra_params: {temperature: 0}
+    repeat: 5
+
+  # ============================= GROUP B (7 models) =============================
   # D-05's default-config-repeatability substitute — no sampling parameter sent
   # at all (temperature rejected outright at every one of these 5 in `default`
   # mode).
@@ -536,6 +579,81 @@ probes:
     mode: default
     prompt: "Invent a fictional animal and describe it in two sentences."
     max_tokens: 1200
+    repeat: 5
+
+
+  # --- gpt-6-astra (openai, max_tokens 300; issue #43 roster fork, 2026-09-05 — temperature is documented-REMOVED on this model and 400s on the wire) ---
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- claude-fable-5-1 (anthropic, max_tokens 300; issue #43 roster fork, 2026-09-05) ---
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
     repeat: 5
 
 expectations:
@@ -732,6 +850,61 @@ expectations:
 # claude-haiku-4-5's own thinking-on temperature rejection
 # (claude-haiku-4-5--temperature--0.7--thinking-on--7ac71847) — out of the
 # declared Mode scope, not silently forgotten.
+  - model: gemini-3-8-flash
+    param: temperature
+    value: 0
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Gemini's own GenerationConfig reference documents temperature range
+      [0.0, 2.0] with no per-value rejection language (the same vendor-level
+      claim cited for gemini-3-1-pro above), and the roster fork's own wire
+      evidence shows gemini-3-8-flash ACCEPTING an explicit temperature in
+      default mode (gemini-3-8-flash--temperature--0.7--default--5b686f62,
+      HTTP 200) — so this is a genuine temperature-0 test, not a substitute.
+      Sibling precedent: gemini-3-1-pro measured 2/4 matching pairs (partial)
+      — the only non-Anthropic model with any temp-0 stability signal.
+    expected_source: "docs-claims:temperature/gemini"
+  - model: gpt-6-astra
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      gpt-6-astra is the sweep's first model whose own migration guide REMOVES
+      temperature outright ("Remove `temperature`, `top_p`, and
+      `top_logprobs`.") while OpenAI's vendor-level documentation still states
+      a general 0-2 accepted range — and the wire agrees with the migration
+      guide (gpt-6-astra--temperature--0.7--default--ad5d5e96, HTTP 400). This
+      default-config-repeatability cell asks whether gpt-6-astra's own default
+      sampling is repeatable across five identical requests with no
+      temperature parameter sent at all — the same substitute shape as
+      gpt-5-6-sol's cell above, now backed by documented removal rather than
+      an undocumented model-specific restriction.
+    expected_source: "docs-claims:temperature/openai"
+  - model: claude-fable-5-1
+    param: default-config-repeatability
+    value: no-temperature
+    mode: default
+    requirement: BHV-02
+    design: repeats
+    repeats: 5
+    expected: >-
+      Anthropic's documented temperature contract ("models released after
+      Claude Opus 4.6 do not support setting temperature ... all other values
+      are rejected with a 400 error") carries forward to the 5.1 revision —
+      confirmed on the wire (claude-fable-5-1--temperature--0.7--default--070c1680,
+      HTTP 400). This default-config-repeatability cell asks whether
+      claude-fable-5-1's own DEFAULT (implicit) sampling is repeatable across
+      five identical requests with no temperature parameter sent — the same
+      substitute its 5.0 predecessor measured at 0/4 pairs (varies), making
+      this the revision test's direct like-for-like comparison cell.
+    expected_source: "docs-claims:temperature/anthropic"
+
 skips:
   - model: claude-fable-5
     param: temperature
@@ -769,3 +942,15 @@ skips:
     requirement: BHV-02
     reason: deferred-thinking-mode-cross-product
     cited_source: "prereg:Mode scope"
+  - model: gpt-6-astra
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "gpt-6-astra--temperature--0.7--default--ad5d5e96"
+  - model: claude-fable-5-1
+    param: temperature
+    mode: default
+    requirement: BHV-02
+    reason: wire-rejects-temperature-default-mode
+    cited_probe_id: "claude-fable-5-1--temperature--0.7--default--070c1680"

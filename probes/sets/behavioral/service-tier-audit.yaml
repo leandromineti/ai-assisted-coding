@@ -70,7 +70,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before
 # stamping": `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +12 audit cells (gpt-6-astra 3, gemini-3-8-flash 5, claude-fable-5-1's own 4 — direct revision evidence instead of the haiku remap)
 
 probes:
   # --- Anthropic (claude-haiku-4-5, anthropic_messages — extra_params merges
@@ -220,6 +220,93 @@ probes:
     prompt: "Invent a fictional animal and describe it in two sentences."
     max_tokens: 80
 
+  # --- gpt-6-astra (issue #43 roster fork, 2026-09-05; mirrors gpt-5-6-sol's cells — the contract sweep already accepted flex/priority/auto/default at this model) ---
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: scale
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: scale}
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: fast
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: fast}
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+  # --- gemini-3-8-flash (issue #43 roster fork, 2026-09-05; mirrors gemini-3-1-pro's five cells — serviceTier rides top_level_params, NOT generationConfig) ---
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: unspecified
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: unspecified}
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: standard
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: standard}
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: flex
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: flex}
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: priority
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    top_level_params: {serviceTier: priority}
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+
+  # --- claude-fable-5-1 (issue #43 roster fork, 2026-09-05; its OWN four cells rather than the haiku remap — direct revision evidence for the 5.1 report) ---
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: auto
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: auto}
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: standard_only
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: standard_only}
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: trap
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 80
+    extra_params: {service_tier: standard}
+
 cited_cells:
   - model: gpt-5-6-sol
     param: service-tier-audit
@@ -303,6 +390,7 @@ cited_cells:
       classified `accepted-honored`.
     expected_source: "docs-claims:openai-service-tier-values/xai"
     cited_probe_id: "grok-4-5--openai-service-tier-values--priority--default--b146d009"
+
 
 expectations:
   - model: claude-haiku-4-5
@@ -559,5 +647,138 @@ expectations:
       a fixed null value rather than a resolved tier — distinguished here as
       `null-valued`, never conflated with a genuinely absent field.
     expected_source: "docs-claims:service-tier/qwen"
+
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: scale
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: scale
+    expected: >-
+      The value OpenAI documents but its own wire rejected at gpt-5-6-sol (conclusion 19's docs-contradicted case). Does the seven-value enum's access-controlled member behave differently at the new flagship, whose docs list `scale` in the same enum?
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: fast
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: fast
+    expected: >-
+      OpenAI's documented request/response rename ("The response will show service_tier=priority") at the model whose launch post priced fast mode at 2x — the response echo is also the only tell for the documented silent ramp-downgrade, so what comes back here is the wire fact the gpt-6-astra report's fast_mode cell leans on.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: gpt-6-astra
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      OpenAI documents the default behavior as "auto" resolving to the project setting (normally `default`) — expect the top-level response field to say which tier actually served the request when nothing was asked.
+    expected_source: "docs-claims:openai-service-tier-values/openai"
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: unspecified
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: unspecified
+    expected: >-
+      Gemini's documented 4-value ServiceTier enum at the first Stable-track Gemini in the sweep — same request-top-level/response-nested contract the 3.1 Pro cells measured.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: standard
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: standard
+    expected: >-
+      Same Gemini contract, `standard` value, at the fork model.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: flex
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: flex
+    expected: >-
+      Same Gemini contract, `flex` value — this model's pricing page prices Flex identically to Batch, so the echo says whether the tier is real on the wire.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: priority
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: priority
+    expected: >-
+      Same Gemini contract, `priority` value — the tier the gemini-3-8-flash report's fast_mode cell records at a derived exactly-1.8x premium; the echo is the wire-side half of that claim.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: gemini-3-8-flash
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: serviceTier
+    request_value: null
+    expected: >-
+      Gemini documents serviceTier as optional with `unspecified` as the default tier — expect the response's nested usageMetadata location to say what served the request when nothing was asked.
+    expected_source: "docs-claims:service-tier/gemini"
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: auto
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: auto
+    expected: >-
+      Anthropic documents `service_tier` (auto/standard_only) as a REQUEST-side top-level field with the tier reported back at the NESTED usage.service_tier — the response-asymmetric shape measured at claude-haiku-4-5 and inherited by claude-fable-5's cell via the shared-contract argument. These are the 5.1 revision's OWN cells: does the asymmetry carry to the new flagship directly rather than by sibling inference?
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: standard_only
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: standard_only
+    expected: >-
+      Anthropic's second documented request value, same nested usage.service_tier response location expected — the revision's own measurement of the second enum member.
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: omitted
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: null
+    expected: >-
+      Anthropic documents service_tier as optional — expect the nested usage.service_tier to report the serving tier (standard) when nothing was asked, top level absent.
+    expected_source: "docs-claims:service-tier/anthropic"
+  - model: claude-fable-5-1
+    param: service-tier-audit
+    value: trap
+    mode: default
+    requirement: BHV-06
+    design: tier-audit
+    request_field: service_tier
+    request_value: standard
+    expected: >-
+      `standard` is a RESPONSE-side usage.service_tier vocabulary word, not a documented request value — at claude-haiku-4-5 sending it was rejected outright naming the field. Does the 5.1 revision keep the same request/response vocabulary split?
+    expected_source: "docs-claims:service-tier/anthropic"
 
 skips: []

@@ -54,7 +54,7 @@
 # (append-only, rule 3), and are simply never joined by the classifier (no
 # declared cell cites their probe_id) — historical evidence of the pre-fix
 # no-signal attempt, not a re-fire or overwrite of anything.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: +gpt-6-astra +gemini-3-8-flash control arms (claude-fable-5-1 mirrors claude-fable-5's absence — no Anthropic control beyond haiku, the file's existing shape)
 
 probes:
   - model: claude-haiku-4-5
@@ -373,6 +373,81 @@ probes:
     max_tokens: 300
     repeat: 5
 
+
+  # --- gpt-6-astra (issue #43 roster fork, 2026-09-05; max_tokens 300 mirrors its sibling's) ---
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 1
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 2
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 3
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 4
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 300
+    repeat: 5
+
+  # --- gemini-3-8-flash (issue #43 roster fork, 2026-09-05; max_tokens 600 mirrors its sibling's) ---
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 1
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 2
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 3
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 4
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    prompt: "Invent a fictional animal and describe it in two sentences."
+    max_tokens: 600
+    repeat: 5
+
 expectations:
   - model: claude-haiku-4-5
     param: behavioral-control
@@ -517,6 +592,39 @@ expectations:
       for qwen3.8-flash at its own default sampling settings, and this model's BHV-01/
       BHV-02 determinism cells in plans 12-02/12-03 would need a redesigned prompt
       before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+
+  - model: gpt-6-astra
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing
+      prompt (inventing a fictional animal) at default, unspecified-temperature
+      sampling should not produce byte-identical visible output across five
+      independent repeats. A control arm that matches 5/5 would mean this
+      prompt lacks entropy for gpt-6-astra at its own default sampling settings,
+      and this model's determinism cells in this fork would need a redesigned
+      prompt before they measure anything (D-03).
+    expected_source: "prereg:Calibration design (rule 5d)"
+  - model: gemini-3-8-flash
+    param: behavioral-control
+    value: high-entropy
+    mode: default
+    requirement: calibration
+    design: control
+    repeats: 5
+    expected: >-
+      The five repeats are expected to VARY: a high-entropy creative-writing
+      prompt (inventing a fictional animal) at default, unspecified-temperature
+      sampling should not produce byte-identical visible output across five
+      independent repeats. A control arm that matches 5/5 would mean this
+      prompt lacks entropy for gemini-3-8-flash at its own default sampling settings,
+      and this model's determinism cells in this fork would need a redesigned
+      prompt before they measure anything (D-03).
     expected_source: "prereg:Calibration design (rule 5d)"
 
 skips: []

@@ -29,7 +29,13 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "context caching: read $0.075 per MTok (0.1x of intro input) + storage $0.50 per MTok per hour — both double 2027-01-01 with the rest of the price sheet ($0.15 read / $1.00 storage). Verified 2026-09-04"
   batch_discount: "50% in+out ($0.375 / $1.875 intro; $0.75 / $3.75 from 2027-01-01) — and a separate Flex tier priced identically to Batch (verified 2026-09-04)"
   fast_mode: true   # Priority inference covers this model (supported-models table, verified 2026-09-04): `service_tier: "priority"`, "priced at 75-100% more than the standard API"; the realized premium is exactly 1.8x on both input and output ($1.35/$0.75, $6.75/$3.75) — DERIVED from the pricing page, never a quoted figure. Rate limits 0.3x standard; congestion overflow "gracefully downgraded to Standard processing" rather than 429/503
-checked: 2026-09-04
+  stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-05: stop-honored truncation before the trigger word, but the triggering call's finish reason (STOP) matches the no-stop control's own natural finish value — Gemini's shared STOP value cannot distinguish a stop-sequence halt from a natural completion, so the verdict rests on text comparison only, cell_id:`gemini-3-8-flash--stop-truncation--triggering--default`, probe_id:`gemini-3-8-flash--stop-truncation--triggering--default--c83e86af`, promoted ADR-0050."
+  seed_determinism: "1/5 same-seed pairs (partial) — OBSERVED 2026-09-05: one of five disjoint same-seed pairs matched byte-identically (joining gpt-6-astra as the sweep's first nonzero same-seed rates; gemini-3-1-pro measured 0/5 under the same design) — still far below the unhedged bar Gemini's own undocumented-strength seed wording sets; the seed-99 effect control differed, and 8 of 10 repeats finished MAX_TOKENS at max 600 (reasoning burn), cell_id:`gemini-3-8-flash--seed--42--default`, probe_id:`gemini-3-8-flash--seed--42--default--r1--4d896ab5`, promoted ADR-0050."
+  sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-05: gemini-3-8-flash accepts an explicit temperature:0 in default mode — a genuine temperature-0 test, not a substitute — and all five repeats produced distinct outputs (its Preview sibling gemini-3-1-pro measured 2/4 partial on the same design; the Stable-track model is LESS temp-0-stable than the Preview one), cell_id:`gemini-3-8-flash--temperature--0--default`, probe_id:`gemini-3-8-flash--temperature--0--default--r1--a3519b85`, promoted ADR-0050."
+  multi_candidate_delivery: "rejected — OBSERVED 2026-09-05: candidateCount:2 returns HTTP 400 — 'Multiple candidates is not enabled for this model' — the same wire rejection as gemini-3-1-pro; the 400 body names the capability rather than the field, so the mechanical classification is corrected by a dated overrides.yaml entry (D-08), probe_id:`gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f`, promoted ADR-0050."
+  logprobs_delivery: "rejected — OBSERVED 2026-09-05: logprobs returns HTTP 400 — 'Logprobs is not enabled for this model' — capability-named rather than field-named, corrected by a dated overrides.yaml entry (D-08), probe_id:`gemini-3-8-flash--logprobs--true--default--f181e09c`, promoted ADR-0050."
+  service_tier_contract: "response-asymmetric — OBSERVED 2026-09-05: `serviceTier` rides the request top level but is reported back NESTED at `usageMetadata.serviceTier` (the same asymmetric shape as gemini-3-1-pro and the Anthropic family), measured at this model's own audit cells: `standard` and `flex` echo verbatim, `unspecified` and an omitted field translate to `standard` — and a requested `priority` (the paid 1.8x tier this report's fast_mode cell records) comes back `standard`, silently: the request is accepted, billed at whatever actually served it, and only the nested echo says the premium tier did not, cell_id:`gemini-3-8-flash--service-tier-audit--priority--default`, cell_id:`gemini-3-8-flash--service-tier-audit--flex--default`, cell_id:`gemini-3-8-flash--service-tier-audit--omitted--default`, promoted ADR-0050."
+checked: 2026-09-04   # spec block; the six wire-behavior OBSERVED cells above carry their own 2026-09-05 dates
 depth: stub
 ---
 
@@ -90,9 +96,20 @@ the second discount path beside Batch.
 
 ## Role in this repo's work
 
-None yet. Ingested as one of issue #43's three-model roster batch — the wire-behavior
-cells (ADR-0050's six keys) are deliberately absent until the model is added to the
-probe roster and its cells are fired (phase 2 of the batch).
+Probed. The six ADR-0050 wire-behavior cells were filled 2026-09-05 by issue
+#43's phase-2 roster fork (this model's share $0.0038 — cheapest of the three).
+Two wire results worth prose beyond the cells:
+
+- **A requested `priority` tier is silently served as `standard`.** The audit
+  cell asked for the paid 1.8x tier and the nested `usageMetadata.serviceTier`
+  echo said `standard` came back — accepted, no error, no top-level signal.
+  Whether that is the documented graceful congestion downgrade or a key/tier
+  entitlement gap, the only tell is the nested echo, which is exactly the
+  failure surface conclusion 22's response-asymmetry finding warned about.
+- **Stable is less repeatable than Preview here.** At temperature 0 this model
+  measured 0/4 matching pairs where its Preview sibling gemini-3-1-pro measured
+  2/4 — the stability label on the release channel says nothing about sampling
+  stability.
 
 ## Surprises
 
@@ -114,8 +131,11 @@ probe roster and its cells are fired (phase 2 of the batch).
 ## Open questions
 
 - Does the 2027-01-01 price cliff land as printed? (Score at next re-check.)
-- The six wire-behavior cells, once the probe roster forks (issue #43 phase 2) —
-  first Gemini Flash data in the sweep.
+- ~~The six wire-behavior cells, once the probe roster forks~~ **Probed
+  2026-09-05** (cells above). New question they opened: is the silent
+  priority→standard tier substitution an entitlement gap on this key or the
+  documented congestion downgrade — and does a Priority-enabled billing account
+  see the echo flip?
 - Does `thinking_level` reject or silently map the missing `minimal`/`xhigh` names?
   (The qwen3.8-flash aliasing question, portable here; a negative probe is free.)
 - Does Gemini 3.8 Flash Cyber ever get a public surface (card, pricing, key path)?

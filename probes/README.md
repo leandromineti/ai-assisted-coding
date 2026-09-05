@@ -101,7 +101,7 @@ decision is recorded here so a future session does not re-litigate it from scrat
 |---|---|
 | `probes/harness/` | the runner (two probe-set grammars: `--set` for scalar parameter cells, `--content-block-set` for the image-input/cache-control content-block cells, MODAL-01, Phase 11 plan 11-03 — schema in `probes/inventory.yaml`, not restated here), the stdlib HTTP client, the append-only ledger, and one adapter module per wire family (`probes/harness/adapters/`) |
 | `probes/harness/fixtures.py` | the pinned tiny-PNG test payload the content-block firing path sends (Phase 11 plan 11-03, MODAL-01) — `TINY_PNG_BASE64`, provenance-only `make_tiny_png()`, `--selftest` |
-| `probes/harness/models.yaml` | wire facts for all 12 active tracked models (D-01) — self-contained, never parses `tools/1-models/` prose at runtime |
+| `probes/harness/models.yaml` | wire facts for all 15 active tracked models (D-01; 12 at Phase 11, +3 on 2026-09-04 by issue #43's roster fork) — self-contained, never parses `tools/1-models/` prose at runtime |
 | `probes/harness/prices.yaml` | per-token USD prices for the same 12 models, each row dated and sourced (D-02) |
 | `probes/inventory.yaml` | the parameter registry (Phase 10, D-01) — one row per parameter or content-block, each carrying `source:`/`retrieved:`; a GENERATOR INPUT, never fired directly |
 | `probes/inventory-to-sets.py` | the registry -> probe-set generator (Phase 10) — reads `inventory.yaml` + `harness/models.yaml`, writes `sets/generated/*.yaml`; `--check` (drift + registry validators) and `--selftest` (embedded fixtures) |
@@ -154,7 +154,7 @@ excluded-inventory-row x model pair, which has a claim but never a wire cell), a
 (`deepseek-v4-pro`, `deepseek-v4-flash`). `probes/harness/models.yaml` represents
 DeepSeek with a single row using `deepseek-v4-pro` — the report's headline/primary
 pricing figures — with `deepseek-v4-flash` named as an available sibling that is not
-separately tracked. This is what keeps the registry at 12 rows matching "12 active
+separately tracked. This is what kept the registry at 12 rows matching "12 active
 models" rather than silently becoming 13.
 
 ## Wire questions — settled by plan 09-03's smoke test

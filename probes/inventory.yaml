@@ -125,6 +125,17 @@ axes:
                 type: adaptive
               output_config:
                 effort: high
+          claude-fable-5-1:   # 2026-09-04, issue #43 phase 2 roster fork: the 5.1
+            # revision keeps 5.0's exact accept shape — per-model troubleshooting
+            # table "Adaptive only | Always on", rejects both "enabled" and
+            # "disabled" with a 400; effort default `high`
+            # (tools/1-models/claude-fable-5-1.md § frontmatter, verified
+            # 2026-09-04). Same slug-keyed mechanism as the three entries above.
+            "on":
+              thinking:
+                type: adaptive
+              output_config:
+                effort: high
       openai_compat:
         "on":
           reasoning_effort: low
@@ -847,6 +858,13 @@ params:
         extra_fields:
           output_config: {effort: high}
       claude-sonnet-5:
+        value: {type: adaptive}
+        extra_fields:
+          output_config: {effort: high}
+      claude-fable-5-1:   # 2026-09-04, issue #43 phase 2 roster fork — same
+        # docs-verified accept shape as claude-fable-5's entry above (the 5.1
+        # per-model table keeps the "Adaptive only" row; see the thinking axis's
+        # matching slug-keyed override).
         value: {type: adaptive}
         extra_fields:
           output_config: {effort: high}

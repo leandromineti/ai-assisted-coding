@@ -50,7 +50,7 @@
 #
 # Dated per CLAUDE.md's "Dates on everything" / "verify date before
 # stamping": `date -u` at authoring time read 2026-09-03.
-checked: 2026-09-03
+checked: 2026-09-05   # issue #43 roster fork: claude-fable-5-1 joins the Anthropic no-field skips; gpt-6-astra and gemini-3-8-flash need no reverify — their contract logprobs cells are clean 400 rejections, not budget-confounded readings
 
 probes:
   # --- grok-4-5 (xai, max_tokens 600) ---
@@ -318,3 +318,9 @@ skips:
     requirement: BHV-05
     reason: already-settled-logprobs-honored
     cited_probe_id: "qwen3.8-max--logprobs--true--thinking-off--a9b9c2ac"
+  - model: claude-fable-5-1
+    param: logprobs
+    mode: default
+    requirement: BHV-05
+    reason: no-request-side-field-for-vendor
+    cited_source: "docs-claims:logprobs/anthropic"

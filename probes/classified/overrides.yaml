@@ -323,3 +323,15 @@ overrides:
   reason: 'G-11-3 baseline-mode sibling of the already-overridden thinking-on cell above. Response body:
     {"message": "Logprobs is not enabled for this model"} -- read from this specific cell''s own live
     body, not assumed from the sibling; unambiguously about logprobs; rejected.'
+- probe_id: gemini-3-8-flash--logprobs--true--default--f181e09c
+  state: rejected
+  date: '2026-09-05'
+  reason: 'Auto-classification missed this (the 400 body names the capability, not the resolved
+    field name). Response body: "Logprobs is not enabled for this model" (INVALID_ARGUMENT) --
+    unambiguously the tested parameter; rejected. Issue #43 roster fork.'
+- probe_id: gemini-3-8-flash--gemini-candidate-count--2--default--6827f27f
+  state: rejected
+  date: '2026-09-05'
+  reason: 'Auto-classification missed this (the 400 body names the capability, not the resolved
+    field name). Response body: "Multiple candidates is not enabled for this model"
+    (INVALID_ARGUMENT) -- unambiguously the tested parameter; rejected. Issue #43 roster fork.'
