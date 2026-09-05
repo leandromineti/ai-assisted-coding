@@ -148,6 +148,55 @@ generator's own printed summary reports 79 `docs-contradicted`, 54
 excluded-inventory-row x model pair, which has a claim but never a wire cell), and 4
 `docs-silent`.
 
+## Adding a model to the roster
+
+`added: 2026-09-05` — written from the first roster change after v3.0 shipped
+(issue #43 phase 2: gpt-6-astra + gemini-3-8-flash + claude-fable-5-1, commits
+31f37f5 + 579f997). Neither explorer of the pipeline found a runbook before that
+fork; this is the dependency-ordered procedure it proved, so the next roster
+change starts here instead of re-deriving it.
+
+1. **Working tree first, no commit.** `models.yaml` (+row per model — the slug MUST
+   equal the report filename stem in `tools/1-models/`, since `check-probe-drift.py`
+   joins on exactly that; resolve the `api_model_id` with the zero-cost ListModels
+   call, see § Wire questions #3) and `prices.yaml` (+row, same slug — **nothing
+   cross-checks this file**: a missing row silently yields `cost=None` and no ledger
+   line). Slug-keyed `vendor_overrides`/`probe_value_overrides` in `inventory.yaml`
+   where the family thinking fragment doesn't fit (the Claude adaptive shape is the
+   worked example). A same-vendor addition needs no new key, raw file, or
+   docs-claims entries (claims are per-vendor); a NEW vendor needs all three.
+2. **Regenerate and re-partition.** `inventory-to-sets.py`, then update every
+   `expect_cells:` in `sweep-stages.yaml` from the actual regenerated counts;
+   `runner.py --check-stages` + `inventory-to-sets.py --check`/`--selftest` clean.
+3. **Pre-flight.** `--dry-run` per stage: verify the new bodies (max-tokens field
+   name, nesting, thinking fragment) and that every EXISTING model's probe_id
+   resolves verbatim in the raw seen-set — the resume proof; the ledger alone
+   under-proves it, since rejected cells bill nothing and never appear there.
+4. **Preregister, then a blocking spend sign-off.** Append a dated section to
+   `PREREGISTRATION.md` pinning the regenerated cell counts and the envelope;
+   commit it ALONE (the roster stays uncommitted, keeping the battery green on
+   main — `check-probe-drift`'s model domain is `models.yaml`, so a committed
+   roster without cells is 18 findings per 3 models). The owner's line lands
+   verbatim in the Run log before any cell fires.
+5. **Fire contract stages in order** (1–2 are the zero-cost + calibration read —
+   confirm each new model's thinking fragment behaves as its docs predict before
+   the paid bulk). Capability-named 400s the classifier can't match get dated
+   `classified/overrides.yaml` entries, never a loosened matcher.
+6. **Hand-extend the behavioral sets** (models are hand-enumerated there — known
+   debt): dump each file's top-level key layout before anchor-inserting (one file
+   carries a `cited_cells:` section between `probes:` and `expectations:`), mirror
+   the closest sibling's full field set from a parsed dict, and cite skips only
+   with resolvable tokens — a `phase11:`-style contract citation cannot be written
+   before that contract cell exists, which is what forces contract-before-behavioral.
+7. **Classify, derive, then write the report cells.** Both classifiers + the three
+   matrix generators, each `--check` byte-stable; then derive the expected head per
+   (key, model) by importing `check-probe-drift.py`'s own `DERIVE_FUNCS` and write
+   the OBSERVED cells to match — never hand-compose a verdict the checker will
+   re-derive.
+8. **Close.** Full battery + closing ledger read into the Run log; one commit
+   carries roster, sets, evidence, classified, matrices, and report cells together
+   — green at commit.
+
 ## The DeepSeek row
 
 `tools/1-models/deepseek-v4.md` is one report but names two API-callable model ids
