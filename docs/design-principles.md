@@ -10,7 +10,9 @@ cited and dated; none is imported from blog-post folklore.
 surveys (cline, continue, spec-kit), one framework run end-to-end (gsd-core,
 experiment 01), one preregistered experiment with results. *Updated 2026-08-17:* two
 frameworks now run end-to-end (spec-kit via exp-02's full pipeline), two preregistered
-experiments with results. Known biases: n is small;
+experiments with results. *Updated 2026-09-09:* five category-4 deep-dives (superpowers
+added, with a live plugin-session probe); the category-4 principles below confronted
+per the revision rule. Known biases: n is small;
 the sample is survivorship-filtered (tools got read *because* they're prominent); and a
 pattern shared by successful tools is what builders *believe*, not what's been measured
 to work. Where a principle rests on a single well-engineered instance, it says so.
@@ -482,6 +484,21 @@ CLI adapters (`allowed-tools: Bash(openspec:*)`) —
 [openspec](../tools/4-workflow-frameworks/openspec.md). If a gate *must* hold, it
 eventually needs code, not capitalization — and the lean pole shows starting there is
 viable.
+*Confronted 2026-09-09 (superpowers deep-dive + live probe): the mechanism confirmed,
+the "day one" advice acquires its strongest dissent.* The category's largest tool
+(283.4k stars) refuses the escape hatch **by design** — no engine, enforcement by
+engineered persuasion (rationalization tables, pressure-tested prose, an adversarial
+reviewer subagent) — yet the pattern this principle predicts still surfaced at minimum
+viable size (one awk format gate; a plan-scoped ledger workspace, built after an
+observed failure) and the mechanical version sits acknowledged in the subject's own
+docs as deferred "Phase 4" work. The live probe added run evidence for the premise:
+unattended, the conversational gates evaporated (zero clarifying questions, approval
+ceremony skipped) while the trigger and artifact-path instructions held — prose
+degraded exactly where no one was watching, undetected. F1's claim stands; what
+superpowers contests is only whether the escape hatch must come *first* — its answer
+is to harden the prose instead, and no measurement yet says which pole wins.
+→ [superpowers](../tools/4-workflow-frameworks/superpowers.md) § The distinguishing
+bet, § Run probe
 
 **F2. Spend tokens measuring the domain, not on ceremony.** *(n=1, preregistered;
 under active test)* Exp-01's entire observed quality margin traced to agents that
@@ -506,6 +523,13 @@ never silent miscounts, and stacking both instructions diluted grounding to chec
 compliance (README conclusion 12). F2's "spend tokens measuring" survives as a
 statement about *affordances and weak tiers*, not as universal framework design
 advice.
+*Noted 2026-09-09 (superpowers deep-dive): a structural datapoint, no margin test.*
+The category's largest framework omits the measuring function entirely — F3/gap
+research is a graded absence (zero research dispatch across all 51 skill files;
+uncertainty routes to the human partner or a stronger model, never to investigation).
+No experiment ran, so this confronts F2 with silence on the margin — but it makes the
+principle's sharpest available A/B concrete: the same subagent-execution shape now
+exists with (GSD) and without (superpowers) domain measurement.
 
 **F3. Fresh context per stage works as a refinement funnel — but only if the return
 path is compact.** *(convergent, with the boundary condition observed in both
@@ -514,6 +538,17 @@ in one run (exp-01). spec-kit forked `/analyze` into a subagent and **reverted**
 the 300–500-line report re-entered the main context anyway and compounded until
 sessions froze (#3185). Isolation pays when stage outputs are contracts (task graphs,
 verdicts), not transcripts.
+*Confirmed, third instance (2026-09-09, superpowers deep-dive — and the convergence is
+now a numbered conclusion).* superpowers' SDD is built around exactly this boundary
+condition: dispatch briefs and review packages are handed over **as files** so the
+artifacts "never enter the controller's context" (a real session's 42k-char pasted
+history is the skill's own recorded scar), and the compaction-surviving per-plan
+ledger exists because controllers that lost their place re-dispatched whole completed
+sequences. With gsd-core and bmad-method, that is 3/3 deep-dived subagent-executing
+frameworks on fresh per-unit contexts + file-only handoffs + context-free work-unit
+grammar ([conclusion 25](conclusions.md)); spec-kit's #3185 reversal stays the
+boundary case in the other direction.
+→ [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Architecture
 
 **F4. Budget human attention as an explicit, designed quantity.** *(convergent across
 categories)* spec-kit caps clarification markers at 3, clarify questions at 5, asks one at
@@ -525,6 +560,16 @@ instrument for pricing this is exp-02's attention-split measurement. *First meas
 remediation offer across a full 7-step pipeline, ~63s orchestrator-blocked of 21m33s
 total. The cap did its job; the cost moved to the answer's* quality *(the one
 question got the trap-deciding deferral), which attention-split does not price.*
+*New shape (2026-09-09, superpowers deep-dive): the ration taken to zero at execution
+time, with an audit artifact in its place.* superpowers budgets attention by phase:
+brainstorming asks one question at a time (the spec-kit shape), then SDD **abolishes**
+inter-task check-ins outright — "Do not pause to check in with your human partner
+between tasks" — replacing them with a rulings ledger ("Ruling: what — why — what it
+costs if wrong") and exactly four stop conditions, the ledger handed over at the end
+so the human "reads it and reworks whatever you got wrong". Attention moves from
+in-loop approvals to post-hoc audit; whether the audit actually gets read is the
+unpriced half, same as exp-02's answer-quality gap.
+→ [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Main features
 
 **F5. Verification gates must fail closed, abstain when subjective, and control their
 false-positive rate.** *(convergent, three complementary lessons)* Fail-closed: the
@@ -539,6 +584,21 @@ validator), **prose** gates (the model reading instructions: spec-kit's constitu
 check), and **measured** gates (checks against measured domain behavior: GSD/exp-01) —
 and only the third traced to exp-01's quality margin. Determinism and domain-contact
 are independent axes; a gate can be fully deterministic and never touch behavior.
+*Confronted 2026-09-09 (superpowers deep-dive + live probe): prose gates observed
+failing OPEN, and the prose pole's answer to reliability named.* superpowers' gates
+are all prose or one thin format check; its distinctive contribution to this principle
+is treating prose-gate reliability as an engineering target — Iron Laws phrased as
+gate functions ("Skip any step = lying, not verifying"), rationalization tables that
+pre-name the bypass, adversarial pressure-test scenarios shipped with the skill, and
+review-side false-positive control in the reviewer prompt ("a stated rationale never
+downgrades a finding's severity"; the controller is forbidden to pre-judge;
+adjudication only at the round cap). The live probe then showed the failure mode this
+cannot detect: unattended, the approval ceremony was skipped silently — a prose gate
+does not fail closed, it fails *open and unlogged* (n=1). The three-mechanism
+vocabulary holds unchanged; superpowers populates the prose column almost exclusively
+and the measured column not at all.
+→ [superpowers](../tools/4-workflow-frameworks/superpowers.md) § F4 — verification,
+§ Run probe
 
 **F6. Installing a methodology means granting prose your harness's authority —
 maintainership is a security property.** *(single-instance, structural)* GSD's upstream
@@ -546,6 +606,19 @@ went dark amid a token rug-pull association; the community fork explicitly state
 cannot verify upstream security and forked for that reason. Category-4 supply chain is
 real: you are `curl | sh`-ing *instructions* that will run with everything your agent
 can touch.
+*Second instance, different polarity (2026-09-09, superpowers deep-dive).* Where GSD's
+instance was maintainership *failing*, superpowers shows the property being actively
+managed — and what that costs: one author holds 78.7% of commits (top two humans
+91.3%), releases land as single squashed PRs on a released-only `main`, the repo runs
+**no CI ever** (60 tests, hand-run), and the stated defense is aggressive curation (a
+94% PR rejection rate by the maintainers' own figure, plus a mandatory
+disclose-your-model-and-harness rule for contributions). The installed payload is
+3.3 KB of injected instructions plus 14 prose skills — small enough to read, which is
+itself a supply-chain property no engine-shaped framework offers. The telemetry
+surface is one disclosed, version-tagged image beacon on an optional path, honoring
+three opt-outs.
+→ [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Stack & repo shape,
+§ Substrate
 
 ## The extensions bucket (6) — extension design *(three principles; bucket status per ADR-0002, renumbered per ADR-0007 and again per ADR-0020)*
 

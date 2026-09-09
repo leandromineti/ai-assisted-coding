@@ -155,8 +155,10 @@ tree. Portability passes the category test cleanly at source level (methodology 
 once, 364 adapter lines for 9-14 targets by measure) — and the Codex hook auto-discovery
 incident it fixed at this very pin is the clean specimen of what per-harness installs
 cost. Against GSD, the execution shape converges (fresh per-task subagents, file
-handoffs, context-free plan grammars — now 4/4 among deep-dived subagent-executing
-frameworks) while the enforcement architecture occupies the opposite pole.
+handoffs, context-free plan grammars — 3/3 among deep-dived subagent-executing
+frameworks; this entry's first draft said "4/4", corrected 2026-09-09 by the
+re-derivation recorded in [conclusion 25](../../docs/conclusions.md)) while the
+enforcement architecture occupies the opposite pole.
 
 ### Stubs — promoted from the ledger (2026-08-18)
 
