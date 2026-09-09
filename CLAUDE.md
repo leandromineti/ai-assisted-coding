@@ -128,7 +128,13 @@ commit no longer resolves — claims can't be checked against their source at al
 **behind** is not a failure, but it is not noise either: it is a work queue. Ask whether
 the drift touches what the report claims and record the answer, dated, in the report —
 **without moving the pin** (methodology rule 4b). ECC's 16-commit drift contained the
-upstream bug fix that falsified a claim in its deep-dive.
+upstream bug fix that falsified a claim in its deep-dive. Since 2026-09-09 (issue #36)
+`build-tool-index.py --check` prints a third, docs-route line with the same semantics:
+**stale-docs** names a report with no pin whose `dated-docs` facts were last verified
+against `url` more than 30 days ago (`DOCS_STALE_DAYS`, registry-driven — today that is
+category 1), plus the next report to come due. Same obligation, same trap: re-verify and
+record the date, never bump `checked:` to silence it. A report the owner has retired
+from re-checking says so in frontmatter (`superseded: <date>`) and leaves the queue.
 
 The taxonomy lint (`check-taxonomy.py`) has different semantics: it reads
 `docs/tool-taxonomy.yaml` and has no pins and no behind state. Exit 1 means findings to fix (or to deliberately

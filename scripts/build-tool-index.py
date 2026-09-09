@@ -11,10 +11,14 @@ reports it describes, and you find out when it's already wrong.
 that no longer resolves means the claims beneath it can't be checked against their source,
 which is an error. Upstream having moved on is reported separately and is *not* an error: a
 pin records the commit that was read, so re-pointing it at HEAD without re-reading would
-turn a dated observation into a false claim about current code.
+turn a dated observation into a false claim about current code. Docs-route reports (no
+pin; facts verified against `url` on a `checked` date) get the analogous work-queue line
+when `checked` is older than DOCS_STALE_DAYS — also not an error, for the same reason:
+the cheap way to silence it would be bumping the date without re-verifying (issue #36).
 """
 from __future__ import annotations
 
+import datetime as dt
 import os
 import re
 import subprocess
@@ -221,6 +225,17 @@ ENVIRONMENT_FEATURE_KEYS = [
 # then GAs; xAI documents no stage at all). Free text, verified-only like the rest:
 # a date needs a primary source, and "GA" vs "preview" is a claim, not a default.
 MODEL_LIFECYCLE_KEYS = ["release_date"]
+
+# Docs-route staleness window (issue #36, 2026-09-09). A pinned report has `behind` as
+# its work queue; a docs-route report — no `commit`, facts `dated-docs`-verified against
+# `url` on its `checked` date — had nothing: a stale `checked` was invisible even though
+# the models matrix calls such a row a rumor, and the one sweep that caught real drift
+# (2026-08-17: a pricing renormalization, a retracted cutoff) was manual and unprompted.
+# 30 days, one window for every category: CLAUDE.md says model specs drift faster than
+# monthly, and only category 1 carries dated-docs fields today, so a per-category table
+# would be a table with one row. Which reports count is read from the registry
+# (`transcription_fields[].verification == dated-docs`), never hard-coded to category 1.
+DOCS_STALE_DAYS = 30
 
 REQUIRED = ("name", "category", "depth")
 DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
@@ -521,6 +536,65 @@ def check(reports: list[dict]) -> int:
             file=sys.stderr,
         )
     return problems
+
+
+def _as_date(v) -> dt.date | None:
+    """`checked:` parses as a date when bare, a string when a comment or quote follows."""
+    if isinstance(v, dt.datetime):
+        return v.date()
+    if isinstance(v, dt.date):
+        return v
+    if isinstance(v, str):
+        try:
+            return dt.date.fromisoformat(v.strip()[:10])
+        except ValueError:
+            return None
+    return None
+
+
+def check_docs_staleness(reports: list[dict], today: dt.date) -> tuple[int, tuple | None]:
+    """Report docs-route reports whose `checked` date is past DOCS_STALE_DAYS.
+
+    The docs-route analog of `behind` (methodology rule 4b), and like it **information,
+    not an error**: the only cheap remedy for a red line here would be bumping `checked:`
+    without re-verifying, which turns a dated observation into a lie. A report is on the
+    docs route when it carries no `commit` and its category has at least one
+    `dated-docs` transcription field in the registry. A report carrying `superseded:`
+    (a date — the owner decision that no further re-checks are planned) is skipped: a
+    permanent finding nobody will act on is the noise that taught the behind list to be
+    read as noise. Returns (count past the window, the next report to come due).
+    """
+    dated_by_cat: dict[int, list[str]] = {}
+    for t in TRANSCRIPTION_FIELDS:
+        if t["verification"] == "dated-docs":
+            for c in t["applies_to"]:
+                dated_by_cat.setdefault(c, []).append(t["id"])
+    stale, upcoming = [], []
+    for r in reports:
+        fields = dated_by_cat.get(r.get("category"))
+        if r.get("commit") or not fields or r.get("superseded"):
+            continue
+        checked = _as_date(r.get("checked"))
+        rel = r["_path"].relative_to(ROOT)
+        if checked is None:
+            print(f"warn: {rel} is docs-route but carries no parseable `checked:` date",
+                  file=sys.stderr)
+            continue
+        carried = [f for f in fields if f in r]
+        age = (today - checked).days
+        if age > DOCS_STALE_DAYS:
+            stale.append((age, r["name"], checked, carried, r.get("url", "?")))
+        else:
+            upcoming.append((checked + dt.timedelta(days=DOCS_STALE_DAYS + 1), r["name"]))
+    for age, name, checked, carried, url in sorted(stale, key=lambda s: -s[0]):
+        print(
+            f"stale-docs: {name} checked {checked} ({age} days ago, window "
+            f"{DOCS_STALE_DAYS}); dated-docs fields carried: {', '.join(carried) or 'none'} "
+            f"— re-verify against {url} and record the date; do NOT bump `checked:` "
+            f"without re-verifying.",
+            file=sys.stderr,
+        )
+    return len(stale), (min(upcoming) if upcoming else None)
 
 
 def render(reports: list[dict]) -> str:
@@ -933,7 +1007,10 @@ def render_models(reports: list[dict]) -> str:
         "stage is part of the fact (ADR-0046). `not-stated` means the vendor uses no",
         "stage vocabulary at all; `ambiguous` means its own surfaces disagree. A null",
         "date means the vendor published none — third-party ship-date inference is",
-        "never the date, and the note says what was checked.",
+        "never the date, and the note says what was checked. A row whose `checked` is",
+        f"older than {DOCS_STALE_DAYS} days is a rumor; `build-tool-index.py --check`",
+        "lists such rows as `stale-docs`, a work queue in the sense of methodology rule 4b",
+        "(issue #36) — re-verify against `url`, never bump the date to clear it.",
         "",
         "| Model | " + " | ".join(c.replace("_", " ") for c in cols) + " |",
         "|---|" + "---|" * len(cols),
@@ -1334,8 +1411,13 @@ def main() -> int:
 
     if "--check" in sys.argv:
         problems = check(reports)
-        print(f"{len(reports)} reports checked, {problems} unverifiable "
-              f"(drift is reported above and is not a failure)")
+        today = dt.datetime.now(dt.timezone.utc).date()
+        stale, next_due = check_docs_staleness(reports, today)
+        due = (f"; next docs-route report due {next_due[0]} ({next_due[1]})"
+               if next_due else "")
+        print(f"{len(reports)} reports checked, {problems} unverifiable, {stale} "
+              f"docs-route past the {DOCS_STALE_DAYS}-day window{due} "
+              f"(drift and staleness are reported above and are not failures)")
         return 1 if problems else 0
 
     OUT.parent.mkdir(parents=True, exist_ok=True)

@@ -42,7 +42,7 @@ BLOCKS = tuple(dict.fromkeys(e["block"] for e in REGISTRY["features"]))
 # so a field added to a report tomorrow is queryable today without touching this script.
 SCALARS = (
     "name", "category", "depth", "maker", "license", "access", "url", "type",
-    "stars", "first_commit", "version", "commit", "checked",
+    "stars", "first_commit", "version", "commit", "checked", "superseded",
     "model_id", "release_date", "context_window", "max_output",
     "knowledge_cutoff", "execution", "residency", "environment_relation",
 )

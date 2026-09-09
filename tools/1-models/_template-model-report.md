@@ -39,6 +39,7 @@ model_features:   # nested per ADR-0014 (2026-08-19)
   fast_mode: <true | false — a paid faster-token-throughput serving option for THIS model on the first-party API (ADR-0049); a fast SIBLING model does not count, nor does a no-speedup SLA tier. Comment carries vendor name, premium, and mechanism>
 
 checked: <YYYY-MM-DD — the date every spec above was verified against `url`>
+# superseded: <YYYY-MM-DD>   # only on an owner decision that no further re-checks are planned (the report stays, its facts keep their own dates); `--check` then drops it from the docs-route staleness queue (issue #36). Omit otherwise
 depth: <stub | survey>
 ---
 

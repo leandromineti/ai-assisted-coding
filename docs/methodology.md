@@ -162,6 +162,17 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   silently — issue #9 recorded gsd-core and spec-kit at 41 and 63 commits behind on
   2026-08-01; eleven days later they were at 207 and 123.
 
+  *Docs-route reports have the same queue since 2026-09-09 (issue #36).* A report with
+  no pin has no `behind` — its facts are verified against `url` on a `checked` date, and
+  nothing moved when the vendor rewrote the page. `--check`'s `stale-docs` line names
+  such a report once `checked` is older than 30 days. The obligation is the one above
+  with the pin replaced by the date: re-verify the dated-docs facts against `url` and
+  record the new date, or record why not — **never bump `checked:` without
+  re-verifying**, which is this route's version of moving the pin. The one manual sweep
+  before the queue existed (2026-08-17) caught a pricing renormalization and a wrong
+  knowledge cutoff; it happened because someone thought of it, not because anything
+  asked.
+
 ## 5. Experiments are preregistered
 
 The protocol — task, measurements, falsification criteria, known contamination — is

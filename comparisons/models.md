@@ -15,7 +15,10 @@ vendor's own stage word beside it — stages don't align across vendors, so the
 stage is part of the fact (ADR-0046). `not-stated` means the vendor uses no
 stage vocabulary at all; `ambiguous` means its own surfaces disagree. A null
 date means the vendor published none — third-party ship-date inference is
-never the date, and the note says what was checked.
+never the date, and the note says what was checked. A row whose `checked` is
+older than 30 days is a rumor; `build-tool-index.py --check`
+lists such rows as `stale-docs`, a work queue in the sense of methodology rule 4b
+(issue #36) — re-verify against `url`, never bump the date to clear it.
 
 | Model | release date | prompt caching | batch discount | fast mode | reasoning | reasoning type | reasoning effort | seed determinism | sampling repeatability | stop sequence honesty | multi candidate delivery | logprobs delivery | service tier contract | context window | max output | pricing | knowledge cutoff | checked | depth |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|

@@ -29,6 +29,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   prompt_caching: "unsupported for this model — Model Studio capability row 'Context Caching: Unsupported'; the platform's implicit(0.2x)/explicit(0.1x, 5m TTL) caching lists only qwen3-coder-plus/flash"
   batch_discount: "unsupported for this model — capability row 'Batch Inference: Unsupported' (platform batch, ~50% where offered, excludes it)"
 checked: 2026-08-17
+superseded: 2026-08-28   # owner decision, see the note below: no further re-checks planned, so `--check`'s docs-route staleness queue skips this report (issue #36)
 depth: stub
 ---
 
