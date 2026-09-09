@@ -56,3 +56,7 @@ probes/docs-pdf/*
 !probes/docs-pdf/.gitkeep
 
 __pycache__/
+
+# Claude Code runtime/local state (the committed half of .claude/ is skills/)
+.claude/scheduled_tasks.lock
+.claude/settings.local.json

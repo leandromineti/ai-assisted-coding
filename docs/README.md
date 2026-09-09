@@ -1,6 +1,6 @@
 # Docs — the constitution, and the notes that span the survey
 
-`checked: 2026-08-26`
+`checked: 2026-09-09`
 
 Everything in this repo that is not a tool report, a source note, or an experiment.
 Two halves: the **constitution** — the rules the whole repo answers to — and the
@@ -29,6 +29,16 @@ Read these three first. They outrank every other document in the repo, including
 The numbered, dated conclusions — the repo's actual product, cited as "conclusion N"
 throughout. Lived in `README.md` until 2026-08-26 (ADR-0028), which now carries their
 headline index. Not a note about the survey: it is what the survey concluded.
+
+---
+
+## The cycle → [`assessment-cycle.md`](assessment-cycle.md)
+
+The loop the constitution lives inside (named 2026-09-09, ADR-0057): sight → assess
+with the instrument as it stands → record → reassess the methodology → promote →
+close the arc. References the governing documents, owns none of their definitions;
+the committed [`/assess-tool` skill](../.claude/skills/assess-tool/SKILL.md) walks a
+session through one turn.
 
 ---
 

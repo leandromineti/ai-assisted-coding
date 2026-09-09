@@ -45,6 +45,11 @@ they're already wrong (rule 3).
 
 ## The three operations
 
+These compose into the repo's **assessment cycle** — sight → assess → record →
+reassess the methodology → promote → close the arc — documented in
+[`docs/assessment-cycle.md`](docs/assessment-cycle.md) (ADR-0057); the committed
+`/assess-tool` skill (`.claude/skills/assess-tool/`) walks a session through one turn.
+
 **Ingest a source.** Read it — actually read it. Write `references/papers/<year>-<name>.md` (year-first citekeys since 2026-08-18) from
 [`references/papers/_template-paper-note.md`](references/papers/_template-paper-note.md), cache the PDF in `references/papers/pdf/`, set
 `read_depth` honestly, fill `bears_on` and `verdict`. Then update whatever note or conclusion the
