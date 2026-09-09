@@ -49,6 +49,7 @@ pricing, cutoff, lifecycle) stays in [models.md](models.md).
 | [pi](../tools/2-harnesses/pi.md) | `open-source` | MIT | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | `AGENTS.override.md`, `AGENTS.md`, `CLAUDE.md` | `model-driven` | `llm-summarize` | `hook` | `none` | · | ✗ | ✓ | ✓ | ✓ | ✗ |
 | [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `model-driven` | `llm-summarize` | `hook` | `policy` | · | `mode` | ✓ | ✗ | ✗ | `background` |
 | [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | `search-tool` | · | ✗ | `policy` | · | `flag` | ✓ | ✓ | ✗ | `proposed` |
+| [cecli](../tools/2-harnesses/cecli.md) | `open-source` | Apache-2.0 | ✓ | · | ✓ | ✓ | ✓ | · | ✓ | `ranked-index` | · | `engine` | `prompt` | `allow` | · | ✓ | · | · | · |
 | [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `model-driven` | `prune`, `llm-summarize` | `hook` | `policy` | · | `mode` | ✗ | ✓ | · | `in-loop` |
 | [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | `model-driven` | `llm-summarize`, `truncate` | ✗ | `policy` | `deny` | `mode` | ✓ | · | ✓ | · |
 | [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | `model-driven` | `llm-summarize` | ✗ | `policy` | `allow` | `prompt` | ✓ | · | · | · |
@@ -143,11 +144,11 @@ tracked yet. Definitions and links live in the
 
 | Feature | Category | Demand (✓/checked) | Supply (category-5 kind) | Note |
 |---|---|---|---|---|
-| mcp | 2 | 10/12 | `mcp-server` · 0 tracked |  |
-| hooks | 2 | 8/10 | `hook` · 0 tracked | supply side also carries category-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks |
-| skills | 2 | 9/10 | `skill` · 0 tracked |  |
-| subagents | 2 | 9/11 | `subagent-def` · 0 tracked |  |
-| rules files | 2 | 11/12 | `rules-file` · 0 tracked |  |
-| turn end gates | 2 | 8/12 | `hook` · 0 tracked | added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding |
+| mcp | 2 | 11/13 | `mcp-server` · 0 tracked |  |
+| hooks | 2 | 9/11 | `hook` · 0 tracked | supply side also carries category-4 verification mechanisms — ECC finding: gates can arrive as installable Stop hooks |
+| skills | 2 | 10/11 | `skill` · 0 tracked |  |
+| subagents | 2 | 10/12 | `subagent-def` · 0 tracked |  |
+| rules files | 2 | 12/13 | `rules-file` · 0 tracked |  |
+| turn end gates | 2 | 9/13 | `hook` · 0 tracked | added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding |
 | learning loop | 2 | 6/9 | `memory` · 8 tracked | added 2026-07-30 as presence per issue #2 (hermes, codex); enum deferred at value-scope counting through seven dated issue-#13 comments; REGRADED 2026-09-04 per ADR-0056 once issue #34 settled key-scope. The auto-apply line the old note called the real discriminator is now in the values: background/in-loop auto-apply, proposed does not. Census: background 7 (hermes-agent ON · codex shipped OFF · qwen-code ON incl. the "dream" agent — also a default-on token bill · ai-memory · mem0 · memos mounted OFF by default · ecc), in-loop 1 (claude-code, observed), proposed 2 (warp — auto path built and removed; gemini-cli — the .inbox nothing auto-applies), ✗ 4 (dsh, aider, pi, cognee), 3 honest dots (opencode, cline, continue). Default-on vs off stays in cell comments; sub-typing background by trigger (five verified shapes) argued and parked in ADR-0056 with a trigger. Also set by convention on category-5/6 reports as the demand-side supply row — same enum |
 | measured gates | 4 | 4/7 | `hook` · 0 tracked | the ECC finding — deliverable as installable category-6 Stop hooks, independent of any framework. GSD deep-dive 2026-08-18: even the category's best measured-gate machinery enforces the MEASUREMENT in code but the VERDICT via LLM — its hooks guard files and dispatch, never verification verdicts. bmad-loop stub 2026-08-18: first engine-graded value in the registry — policy-defined verify commands executed and judged by the orchestrator (verify.py:2661, engine.py:2037-2040); in BMAD's companion orchestrator, not the framework |

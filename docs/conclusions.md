@@ -504,7 +504,21 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     personalization vector. And the index collides with prompt caching: aider diagnosed the
     collision three years before the same shape surfaced at hermes, fixed it in two lines,
     and the fix silently disables per-query personalization — RUN-confirmed, the whole
-    disclosure being one word in the startup banner. →
+    disclosure being one word in the startup banner.
+    **The position is held under active maintenance, not just by a dormant tool
+    (2026-09-09, [cecli survey](../tools/2-harnesses/cecli.md)).** The candidates row
+    named the aider fork as this conclusion's cheapest falsifier: if the one tool holding
+    the ranked-index position abandoned it once someone was maintaining the code again,
+    the absence elsewhere would stop looking like a sampling artifact. It did the
+    opposite. At v1.4.1 (2,686 own commits since the fork point) the index is the first
+    roadmap item: PageRank ported to `rustworkx`, the chat-file multiplier raised to ×64,
+    same-extension and path-distance edge gating (the exact cold-ranking weakness the
+    two riders measured, aider #2405), import-aware edges — and the map is still
+    injected as a user message every turn, agent mode included. Tool dispatch was
+    *added* behind an opt-in flag (22 tools, MCP, subagents); the default stays `diff`.
+    One tool, two years apart, both states of maintenance: the sampling-artifact reading
+    stands, and the hybrid is now a sighted shape — index as the constant, tools as the
+    option. →
     [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) axes 1 and 6 ·
     [`docs/design-principles.md`](design-principles.md) H5 ·
     [`warp.md`](../tools/2-harnesses/warp.md) · [`gemini-cli.md`](../tools/2-harnesses/gemini-cli.md)

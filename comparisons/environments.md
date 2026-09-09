@@ -20,6 +20,7 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [pi](../tools/2-harnesses/pi.md) | 2 | ✓ | · | · | · | · |
 | [qwen-code](../tools/2-harnesses/qwen-code.md) | 2 | ✓ | ✓ | ✓ | · | **internalize** |
 | [warp](../tools/2-harnesses/warp.md) | 2 | · | · | ✓ | ✓ | **inhabit** |
+| [cecli](../tools/2-harnesses/cecli.md) | 2 | ✓ | · | · | · | · |
 | [claude-code](../tools/2-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 
-**10 of 52 reports declare `environments:`.**
+**11 of 53 reports declare `environments:`.**

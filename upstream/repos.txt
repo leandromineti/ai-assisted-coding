@@ -105,3 +105,7 @@
 # qwen-code, added 2026-08-27 — candidates-ledger promotion (row added 2026-08-18); the read
 # is a divergence study against gemini-cli at its pin, per the ledger row it supersedes.
 2|qwen-code|https://github.com/QwenLM/qwen-code
+# cecli, added 2026-09-09 — candidates-ledger promotion (row added 2026-08-27): the aider
+# succession fork, read at survey depth for one question — does it keep aider's ranked-index
+# context-assembly bet (conclusion 17) or drift toward tool dispatch?
+2|cecli|https://github.com/cecli-dev/cecli

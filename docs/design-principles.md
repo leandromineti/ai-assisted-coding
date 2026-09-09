@@ -213,6 +213,15 @@ stability are in direct conflict whenever retrieval is query-conditioned** — s
 agents are one instance, not the cause. Any harness adding per-query context assembly
 inherits it.
 
+*Confronted 2026-09-09 (cecli, survey) — **silence on the price, a third shape for the
+tension.*** The aider fork kept the query-conditioned map and made it its own cache block
+(`chat_chunks.py:64-66`), self-pruned once twenty REPO messages accumulate
+(`integration.py:431-434`) — isolating the volatile block instead of freezing it. Whether
+the isolation actually protects the breakpoints was not measured (no run probe at survey
+depth), so the price tag is neither confirmed nor contradicted; what the read adds is
+that a maintainer who understood the collision chose to *keep* the query-conditioning and
+pay in block structure ([cecli](../tools/2-harnesses/cecli.md)).
+
 **H6. Termination must be designed; budgets shape behavior in ways you choose.**
 *(convergent on the first clause, two designs on the second)* opencode terminates on
 explicit conditions (finish reasons, content filters, structured-output failure) with no
