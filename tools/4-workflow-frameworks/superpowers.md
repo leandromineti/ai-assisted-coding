@@ -261,6 +261,37 @@ brainstorming, `CLAUDE.md:110-116`) is parked pending sign-off.
 The run probe confirms the source read at every point it touched: the scripts do
 artifact plumbing with honest exit codes, and nothing more.
 
+**Live auto-trigger probe — 2026-09-09, same day (owner sign-off: "Go", quoted
+verbatim per the spend convention; measured cost $0.98, 91 s, 7 turns).** The
+subject's own acceptance test, run for real: plugin installed **project-scoped from
+the local clone at the pin** (installer confirmed v6.3.0) into a clean scratch git
+repo, then one headless session (Claude Code 2.1.267, default permission mode,
+`claude -p`, `--max-turns 6`) sent exactly the prompt the subject's contributor doc
+prescribes: *"Let's make a react todo list."*
+
+- **PASS at the test's own bar.** The session's first action — before any other
+  output — was `Skill: superpowers:brainstorming`, announced as such ("I'll start by
+  invoking the brainstorming skill, since this is a 'let's build X' request"). No
+  code was written at any point: the session's only Write attempt was brainstorming's
+  own spec artifact at its documented path
+  (`docs/superpowers/specs/2026-09-09-react-todo-list-design.md`), which default-mode
+  permissions denied. The 3,333-byte bootstrap did what the whole architecture bets
+  it does.
+- **Secondary observation, with its conditions stated:** in print mode there is no
+  human partner who can answer, and the session hit repeated permission denials on
+  its context-exploration commands. Under those conditions the architectural path's
+  ceremony collapsed — zero clarifying questions were asked, no approaches were
+  presented, no section-by-section approval was sought — and the agent went straight
+  from context exploration to drafting the committed spec unilaterally. The
+  *artifact* discipline held (a spec, never code; the HARD-GATE's letter was not
+  violated) while the *conversational* gates evaporated with the conversation. That
+  is the report's enforcement thesis observed live: prose gates that presume a
+  watching partner bend when no partner exists, and nothing detects the bend. One
+  session, turn-capped, permission-shaped — a probe, not a rate (n=1).
+
+Transcript retained in session scratch (`trigger-probe/transcript.jsonl`); plugin
+and marketplace removed after the probe, user scope verified untouched.
+
 ## Bleed
 
 Delivery is **category-6 shaped** (skills + plugin marketplaces — the same
@@ -361,10 +392,15 @@ non-compliant model, or GSD's engine surface area.
 
 ## Open questions
 
-- **Does the auto-trigger actually fire?** The repo's own acceptance test ("Let's
+- ~~**Does the auto-trigger actually fire?** The repo's own acceptance test ("Let's
   make a react todo list" → brainstorming auto-triggers) is the cheapest live probe
   and the whole framework hangs on it — one Claude Code session in a scratch project
-  would close it. Parked for sign-off (model spend).
+  would close it. Parked for sign-off (model spend).~~ **Answered 2026-09-09: yes,
+  first action, before any code** (§ Run probe, live auto-trigger probe) — and the
+  same session showed the conversational ceremony collapsing unattended, which
+  refines the question that remains: not *does it trigger* but *what do the prose
+  gates deliver when nobody is watching* (n=1 says: the artifact path, without the
+  approvals).
 - **Does the bounded path eat the framework?** v6.3.0 lets the agent self-classify
   most work out of the spec/plan machinery. What fraction of real sessions take the
   architectural path? (Only observable in use; the drill evals repo may answer it.)
