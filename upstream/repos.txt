@@ -28,6 +28,7 @@
 4|pilot-shell|https://github.com/maxritter/pilot-shell
 4|spec-kitty|https://github.com/Priivacy-ai/spec-kitty
 4|haft|https://github.com/m0n0x41d/haft
+4|superpowers|https://github.com/obra/superpowers
 
 # --- Category 6: portable artifacts / extensions bucket (renumbered 5->6 per ADR-0020, 2026-08-22) --- (2026-08-21 correction, WR-04:
 # this header said "Layer 3" while the one data line below it has always used prefix 5,

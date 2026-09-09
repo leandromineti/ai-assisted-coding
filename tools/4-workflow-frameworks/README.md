@@ -141,6 +141,23 @@ control loop") with the tracked ecosystem's first **engine-graded measured and p
 gates**; drives claude/codex/gemini/copilot/antigravity sessions via tmux + harness
 hooks. Even there, retro→plan stays roadmap.
 
+### superpowers — <https://github.com/obra/superpowers> · [report](superpowers.md)
+
+*(Candidate 2026-09-09, deep-dived 2026-09-09 at pin `b36e082` = tag v6.3.0 — the category's
+fifth deep-dive; stub facts collected en route, the bmad-method same-day precedent.)* The
+category's largest tool (283.4k stars) and its purest **methodology-as-prose** specimen:
+14 skills, one SessionStart hook injecting a 3,333-byte bootstrap, and deliberately no
+engine — every gate is behavioral (Iron Laws, rationalization tables, pressure-tested
+prose), verification authority rests on an adversarial reviewer subagent, and the only
+machine-checked artifact constraint is 12 lines of awk. F3 (gap research) and
+retrospectives are graded absences; the skill-behavior eval harness (drill) lives out of
+tree. Portability passes the category test cleanly at source level (methodology defined
+once, 364 adapter lines for 9-14 targets by measure) — and the Codex hook auto-discovery
+incident it fixed at this very pin is the clean specimen of what per-harness installs
+cost. Against GSD, the execution shape converges (fresh per-task subagents, file
+handoffs, context-free plan grammars — now 4/4 among deep-dived subagent-executing
+frameworks) while the enforcement architecture occupies the opposite pole.
+
 ### Stubs — promoted from the ledger (2026-08-18)
 
 Five candidates ingested at stub depth in one sweep — mechanical facts plus README
