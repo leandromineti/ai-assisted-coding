@@ -67,6 +67,13 @@ answer: **hybrid, with the index as the constant and the tools as an opt-in.**
   (cold map picking 20 language fixtures of 33 files). Import-aware edges
   (`check_import_match`, `:572-597`, gated at `:855-856`; #2688) and a logarithmic
   down-weight of over-defined identifiers (`:925-927`; #2341) are the other two.
+  Provenance by pickaxe (`git log -S '<literal>' -- aider/repomap.py cecli/repomap.py`):
+  the three #2405 mechanisms landed in **two commits three weeks apart** — the extension
+  gate in `50826578` (2025-10-19, subject cites cecli's own umbrella issue #45), the
+  multiplier and path decay in `f079aa0b` (2025-11-07, a powers-of-2 refactor); the #2341
+  down-weight is in `50826578` too. The README's one-checkbox-per-upstream-issue table is
+  a retrospective mapping onto commits that were not authored per issue — the mechanisms
+  are real, the tidy attribution is not.
 - **The injection shape is unchanged.** The map is built into a `role="user"` message
   (`helpers/conversation/integration.py:481-482`), tagged `REPO`, and added by the same
   one-line call in the base coder and in agent mode
