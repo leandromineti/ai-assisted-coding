@@ -213,14 +213,28 @@ stability are in direct conflict whenever retrieval is query-conditioned** — s
 agents are one instance, not the cause. Any harness adding per-query context assembly
 inherits it.
 
-*Confronted 2026-09-09 (cecli, survey) — **silence on the price, a third shape for the
-tension.*** The aider fork kept the query-conditioned map and made it its own cache block
-(`chat_chunks.py:64-66`), self-pruned once twenty REPO messages accumulate
-(`integration.py:431-434`) — isolating the volatile block instead of freezing it. Whether
-the isolation actually protects the breakpoints was not measured (no run probe at survey
-depth), so the price tag is neither confirmed nor contradicted; what the read adds is
-that a maintainer who understood the collision chose to *keep* the query-conditioning and
-pay in block structure ([cecli](../tools/2-harnesses/cecli.md)).
+*Confronted 2026-09-09 (cecli, survey + run probe) — **a third shape for the tension:
+append the retrieval as a delta.*** The aider fork kept the query-conditioned map and
+changed what a re-rank costs: each turn injects only the files and symbols not already
+in the conversation (`repomap.py:1246-1274`, `integration.py:369`), as a new user message
+behind the old ones, so the cached prefix is never rewritten — it grows. Exercised
+offline on the published artifact: a chat-file change appended a 34-file delta against
+a 116-file first map, an identifier-only re-rank appended nothing. That resolves the
+collision without the price aider paid: the `auto → files` downgrade survives verbatim
+(`main.py:1195-1196`) but no longer buys anything the conversation manager does not already
+provide. Two costs replace it — the map accumulates until a purge at twenty REPO
+messages (`integration.py:431-441`) shatters the prefix once, and the delta's
+usefulness hangs on the model re-reading maps scattered through history. *Correction,
+same day:* the first write-up credited a dedicated cache breakpoint on the map
+(`chat_chunks.py:64-66`); that code is dead at the pin and the live placement gives the
+map no breakpoint at all — a definition was cited where a call site was needed
+([cecli](../tools/2-harnesses/cecli.md) § Surprises 5). The revision this leaves for
+the principle: this is codex's WorldState resolution — snapshot-diff, append only the
+delta — applied to retrieval, and it dissolves the aider price tag: query-conditioned
+retrieval and prefix stability conflict only while retrieval *replaces* a block. Three
+payments are now on record for the same invariant — staleness (hermes), machinery plus
+history growth (codex, cecli), features (aider) — and the delta-append one is the only
+shape that has kept the conditioning intact.
 
 **H6. Termination must be designed; budgets shape behavior in ways you choose.**
 *(convergent on the first clause, two designs on the second)* opencode terminates on

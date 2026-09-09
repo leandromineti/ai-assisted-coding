@@ -514,7 +514,12 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     roadmap item: PageRank ported to `rustworkx`, the chat-file multiplier raised to ×64,
     same-extension and path-distance edge gating (the exact cold-ranking weakness the
     two riders measured, aider #2405), import-aware edges — and the map is still
-    injected as a user message every turn, agent mode included. Tool dispatch was
+    injected as a user message every turn, agent mode included: measured on the
+    published 1.4.1 artifact against cecli's own repo, **84% of the message bytes at
+    defaults, 79% in agent mode** (52% once the 18 KB of tool schemas on the wire are
+    counted). The caching rider is answered differently, too — the fork appends each
+    re-rank as a delta behind the cached prefix instead of rewriting it, so aider's
+    silent downgrade survives in the code but no longer has to fire. Tool dispatch was
     *added* behind an opt-in flag (22 tools, MCP, subagents); the default stays `diff`.
     One tool, two years apart, both states of maintenance: the sampling-artifact reading
     stands, and the hybrid is now a sighted shape — index as the constant, tools as the
