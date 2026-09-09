@@ -1,6 +1,6 @@
 # Conclusions
 
-`checked: 2026-09-03`
+`checked: 2026-09-09`
 
 The repo's actual output: the running answer to "what did I actually learn?"
 Numbered, dated, each traceable to a note — a conclusion without a linked note is
@@ -562,10 +562,44 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     from nesting billing metadata under a usage envelope rather than from one maker
     copying another. →
     [`docs/parameter-patterns.md`](parameter-patterns.md) § The service-tier
-    field-location asymmetry, twice ·
+    field-location asymmetry, four times ·
     [`probes/classified/behavioral.yaml`](../probes/classified/behavioral.yaml) BHV-06
+    **Reproduced a generation later, and the asymmetry finally shows its bill (2026-09-05,
+    issue-43 roster fork).** The docs-outranked pattern re-fired at the roster's newest
+    models, in both directions this conclusion names. Rejection side: `gpt-6-astra` returns
+    HTTP 400, naming the field, for `service_tier: scale` — a value OpenAI's API reference
+    lists in this model's own seven-value enum — the exact docs-contradicted shape this
+    conclusion recorded at `gpt-5-6-sol`, reproduced at the next flagship
+    (`gpt-6-astra--service-tier-audit--scale--default`); and its `fast` tier is echoed back
+    verbatim as `"fast"` where the fast-mode guide documents a response rename to
+    `priority` — a harness watching for the documented echo would miss fast service
+    entirely (`gpt-6-astra--service-tier-audit--fast--default`). Wording side:
+    `gemini-3-8-flash`'s 400s name the *capability*, not the field ("Logprobs is not
+    enabled for this model"), the second model in the rejection-wording family the
+    overrides route now covers twice — dated entries in
+    `probes/classified/overrides.yaml`, 2026-09-02 and 2026-09-05. Asymmetry side:
+    `claude-fable-5-1` reproduces the Anthropic field-location asymmetry and its
+    vocabulary-split trap at its **own** audit cells — an evidence upgrade from the
+    sibling-inference the 5.0 cell rested on, verdict unchanged
+    (`claude-fable-5-1--service-tier-audit--trap--default`) — and `gemini-3-8-flash`
+    supplies the asymmetry's sharpest practical cost yet: a requested paid `priority` tier
+    (a derived exactly-1.8x premium) is accepted with HTTP 200 and silently served as
+    `standard`, visible ONLY in the nested `usageMetadata.serviceTier` echo
+    (`gemini-3-8-flash--service-tier-audit--priority--default`) — a billing-relevant
+    substitution with no top-level signal, which is this conclusion's "caller reads the
+    wrong field" hazard priced in dollars. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § The service-tier
+    field-location asymmetry, four times ·
+    [`probes/classified/behavioral.yaml`](../probes/classified/behavioral.yaml) BHV-06 ·
+    [`probes/classified/overrides.yaml`](../probes/classified/overrides.yaml) ·
+    the OBSERVED `service_tier_contract` cells in
+    [`gpt-6-astra`](../tools/1-models/gpt-6-astra.md),
+    [`gemini-3-8-flash`](../tools/1-models/gemini-3-8-flash.md),
+    [`claude-fable-5-1`](../tools/1-models/claude-fable-5-1.md) ·
+    [`probes/PREREGISTRATION.md`](../probes/PREREGISTRATION.md) § Run log, 2026-09-05 ·
+    [issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43)
 
-20. **Determinism is nearly absent on the live wire, and only two models show any of it**
+20. **Determinism is nearly absent on the live wire, and only one model delivers it in full**
     (2026-09-03, ADR-0050's `seed_determinism` + `sampling_repeatability` keys). Requesting
     the same `seed` across five repeats produces zero matches at every one of the 8 models
     with a request-side `seed` field — 0/5 same-seed pairs, uniformly. Requesting
@@ -577,6 +611,26 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     almost everywhere this sweep reaches. →
     [`docs/parameter-patterns.md`](parameter-patterns.md) § Sampling determinism ·
     [`adrs/0050-wire-behavior-promotion.md`](../adrs/0050-wire-behavior-promotion.md)
+    **Headline revised, and the first exceptions (2026-09-05, issue-43 roster fork).** This
+    conclusion's headline read "…and only two models show any of it" until 2026-09-09; the
+    fork falsified that clause, so it was re-scoped rather than left to overclaim. What
+    moved it: `gpt-6-astra` and `gemini-3-8-flash` each matched 1 of 5 disjoint same-seed
+    pairs byte-identically — the sweep's first nonzero same-seed rates after every earlier
+    accepting model measured 0/5 (`gpt-6-astra--seed--42--default`,
+    `gemini-3-8-flash--seed--42--default`, both `partial`). Four models now show a nonzero
+    rate somewhere (those two, plus `claude-haiku-4-5`'s 4/4 and `gemini-3-1-pro`'s 2/4);
+    the re-scoped domains are 8 of 10 seed models at 0/5 and 13 of 15
+    `sampling_repeatability` models at 0/4 — `claude-haiku-4-5` remains the only model
+    delivering determinism outright, which is what the revised headline now says. The
+    fork's own repeatability cells all landed 0/4 (`varies`), including Stable-track
+    `gemini-3-8-flash` under-repeating its Preview sibling (0/4 vs 2/4) and
+    `claude-fable-5-1` reproducing its predecessor's 0/4 substitute. The closing sentence
+    stands unweakened: acceptance still is not reproducibility — a 1/5 partial changes the
+    shape of the failure, not the advice. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § Sampling determinism (the
+    2026-09-05-dated tables and "first nonzero same-seed rates" note) ·
+    [`probes/classified/behavioral.yaml`](../probes/classified/behavioral.yaml) BHV-01/BHV-02 ·
+    [issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43)
 21. **The compat dialect outlived its author, and the sweep's own harness papers over the
     evidence for it** (2026-09-03, `probes/PREREGISTRATION.md:340-344`). `gpt-5-6-sol` —
     OpenAI's own model — rejects the shared `openai_compat` family's `max_tokens` field
@@ -592,6 +646,20 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     vendor still accepts it. →
     [`docs/parameter-patterns.md`](parameter-patterns.md) § The compat dialect finding ·
     [`probes/PREREGISTRATION.md`](../probes/PREREGISTRATION.md)
+    **The caveat widened, one generation further (2026-09-04 gate probe, issue-43 roster
+    fork; folded 2026-09-09).** `gpt-6-astra` — the flagship after `gpt-5-6-sol` — carries
+    the same `max_tokens_field: max_completion_tokens` rename override in
+    `probes/harness/models.yaml:190-193`, adopted *pre-emptively*: the fork's one-shot gate
+    probe sent the new name and answered HTTP 200, so whether this model would reject the
+    legacy `max_tokens` was never fired, and its uniform-looking classified cell
+    (`gpt-6-astra--max-tokens--64--default--bc474c4b`, `accepted-honored`) is a post-rename
+    result like every other. Stated at its own grade: not a second observed rejection —
+    `gpt-5-6-sol`'s pre-override 400 remains the only one on the wire — but the masking
+    this conclusion warns about now spans two origin-model generations, and a reader of
+    the classified evidence alone would see nothing at either. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § The compat dialect finding
+    (the 2026-09-09-dated rename note) ·
+    [issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43)
 22. **Where the wire had anything to say, it disagreed with the docs more than a quarter
     of the time** (2026-09-03, `comparisons/docs-vs-wire.md`, 612 pairs). 79 of the 612
     `(param, model)` pairs the sweep classified are contradicted by the vendor's own
@@ -607,6 +675,21 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`docs/parameter-patterns.md`](parameter-patterns.md) § The docs-versus-wire
     confrontation ·
     [`comparisons/docs-vs-wire.md`](../comparisons/docs-vs-wire.md)
+    **Re-read at the 15-model roster — the headline survives and the rate moved up
+    (2026-09-05 evidence, re-rendered 2026-09-09).** The issue-43 roster fork grew the
+    confrontation by three models (`gpt-6-astra`, `gemini-3-8-flash`, `claude-fable-5-1`)
+    without re-probing the original 12, so the figures above stand as their own dated
+    render rather than being superseded. The regenerated tally
+    (`python3 scripts/build-docs-vs-wire.py`, 2026-09-09): 765 pairs, 415 `docs-untested`,
+    and **106/350 = 30.3%** of tested pairs contradicted (106/765 = 13.9% over all) —
+    "more than a quarter" held through a quarter's worth of roster growth, away from the
+    docs, not toward them. The newly launched `gpt-6-astra` entered as the single largest
+    per-model contributor (15 of the 106 rows, edging `gpt-5-6-sol`'s 14): the
+    documentation most recently written was the documentation most contradicted. →
+    [`docs/parameter-patterns.md`](parameter-patterns.md) § Re-read at the 15-model
+    roster ·
+    [`comparisons/docs-vs-wire.md`](../comparisons/docs-vs-wire.md) ·
+    [issue #43](https://github.com/leandromineti/ai-assisted-coding/issues/43)
 23. **Every settled harness compacts, and every one that compacts summarizes with an
     LLM — the discriminator is what stands beside the summarizer** (2026-09-04, the
     ADR-0055 probe-pass at existing pins: 11 of 12 category-2 cells settled, warp an

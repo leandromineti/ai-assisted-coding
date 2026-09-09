@@ -105,7 +105,9 @@ Two wire results worth prose beyond the cells:
   echo said `standard` came back — accepted, no error, no top-level signal.
   Whether that is the documented graceful congestion downgrade or a key/tier
   entitlement gap, the only tell is the nested echo, which is exactly the
-  failure surface conclusion 22's response-asymmetry finding warned about.
+  failure surface conclusion 19's response-asymmetry amendment warned about
+  (mis-cited as conclusion 22 until 2026-09-09; conclusion 22 is the
+  docs-vs-wire rate).
 - **Stable is less repeatable than Preview here.** At temperature 0 this model
   measured 0/4 matching pairs where its Preview sibling gemini-3-1-pro measured
   2/4 — the stability label on the release channel says nothing about sampling

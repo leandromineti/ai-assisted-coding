@@ -1,6 +1,9 @@
 # Parameter patterns
 
-`checked: 2026-09-03`
+`checked: 2026-09-09`  <!-- 2026-09-09: issue-47 fold-in of the issue-43 roster fork (evidence
+  2026-09-05) — §§ Sampling determinism, service-tier asymmetry, docs-versus-wire confrontation,
+  and compat dialect updated for the 15-model roster; sections not named there still speak the
+  12-model roster as of their own 2026-09-03 statements. Was: checked: 2026-09-03 -->
 
 The pattern-analysis document this milestone's evidence base earns: cross-vendor asymmetries,
 docs-vs-wire contradictions, and support-state distributions synthesized from Phase 11's
@@ -13,8 +16,9 @@ finding, not probe tooling, and distinct from `comparisons/`, which is generated
 
 **Valid through:** every rate/state cited in this document is valid only as of the evidence
 dates below; no claim here should outlive a re-probe of the live APIs. Contract-sweep evidence:
-`probes/classified/contract-sweep.yaml`'s own `checked: 2026-09-01`. Behavioral evidence:
-`probes/classified/behavioral.yaml`'s own `checked:`/`evidence_through: 2026-09-03`.
+`probes/classified/contract-sweep.yaml`'s own `checked: 2026-09-01`,
+`evidence_through: 2026-09-05` (the issue-43 roster fork's cells included). Behavioral evidence:
+`probes/classified/behavioral.yaml`'s own `checked:`/`evidence_through: 2026-09-05`.
 
 This document grows across Phase 13's plans as each promoted key lands its finding section; this
 plan seeds it with the opening framing and the first fully-cited finding, `stop_sequence_honesty`
@@ -74,8 +78,10 @@ Two promoted keys converge on the same finding from different domains: requestin
 `temperature` outright, the model's own default implicit sampling), both fail to reproduce
 identical output almost everywhere this sweep can test.
 
-**`seed_determinism`, 8-model domain** (the 4 Claude models have no request-side `seed` field —
-`docs-claims:seed/anthropic` — and are structurally out of this key's domain, not a gap):
+**`seed_determinism`, 10-model domain** (8 at the 2026-09-03 render; grew by 2 with the issue-43
+roster fork, 2026-09-05 — the 5 Claude models have no request-side `seed` field —
+`docs-claims:seed/anthropic`, re-declared at `claude-fable-5-1`'s own cells by the fork — and are
+structurally out of this key's domain, not a gap):
 
 | Model | Rate | Verdict | cell_id |
 |---|---|---|---|
@@ -87,9 +93,12 @@ identical output almost everywhere this sweep can test.
 | glm-5.3 | 0/5 same-seed pairs | no-signal | `` cell_id:`glm-5.3--seed--42--default` `` |
 | qwen3.8-max | 0/5 same-seed pairs | varies | `` cell_id:`qwen3.8-max--seed--42--default` `` |
 | qwen3.8-flash | 0/5 same-seed pairs | varies | `` cell_id:`qwen3.8-flash--seed--42--default` `` |
+| gpt-6-astra | 1/5 same-seed pairs | partial | `` cell_id:`gpt-6-astra--seed--42--default` `` |
+| gemini-3-8-flash | 1/5 same-seed pairs | partial | `` cell_id:`gemini-3-8-flash--seed--42--default` `` |
 
-**`sampling_repeatability`, 12-model domain** (every tracked model gets a cell — either a real
-`temperature: 0` test, or, for the 5 models whose `temperature` parameter the contract sweep
+**`sampling_repeatability`, 15-model domain** (12 at the 2026-09-03 render; grew by 3 with the
+issue-43 roster fork, 2026-09-05 — every tracked model gets a cell — either a real
+`temperature: 0` test, or, for the 7 models whose `temperature` parameter the contract sweep
 rejects outright in `default` mode, a `default-config-repeatability` SUBSTITUTE that instead
 asks whether the model's own implicit sampling repeats):
 
@@ -107,19 +116,25 @@ asks whether the model's own implicit sampling repeats):
 | glm-5.3 | real temperature:0 | 0/4 repeat pairs | no-signal | `` cell_id:`glm-5.3--temperature--0--default` `` |
 | qwen3.8-max | real temperature:0 | 0/4 repeat pairs | varies | `` cell_id:`qwen3.8-max--temperature--0--default` `` |
 | qwen3.8-flash | real temperature:0 | 0/4 repeat pairs | varies | `` cell_id:`qwen3.8-flash--temperature--0--default` `` |
+| gpt-6-astra | substitute | 0/4 repeat pairs | varies | `` cell_id:`gpt-6-astra--default-config-repeatability--no-temperature--default` `` |
+| gemini-3-8-flash | real temperature:0 | 0/4 repeat pairs | varies | `` cell_id:`gemini-3-8-flash--temperature--0--default` `` |
+| claude-fable-5-1 | substitute | 0/4 repeat pairs | varies | `` cell_id:`claude-fable-5-1--default-config-repeatability--no-temperature--default` `` |
 
 **Why a uniform-looking key still promotes.** The contract sweep alone would fail `seed` on
 D-01's cross-model variance test: every fired cell in its domain is `accepted-unverified`, flat
 (VERIFIED by direct query of `probes/classified/contract-sweep.yaml`'s `seed` rows — 0 of 17
-fired cells in any state other than `accepted-unverified`). The promotion case rests on the
+fired cells in any state other than `accepted-unverified` at the 2026-09-03 render; re-verified
+2026-09-09 at 0 of 21 with the roster fork's cells included). The promotion case rests on the
 **combined** picture, per ADR-0050: contract evidence shows `seed` uniformly accepted, and only
-the behavioral rate — 0/5 in all 8 domain models — exposes that "accepted" never meant
-"deterministic." That is the finding, not an absence of one.
+the behavioral rate — 0/5 in 8 of the 10 domain models, 1/5 at the other two — exposes that
+"accepted" never meant "deterministic." That is the finding, not an absence of one.
 
-**Substitute design, named where it fires.** Five of the twelve `sampling_repeatability` cells
+**Substitute design, named where it fires.** Seven of the fifteen `sampling_repeatability` cells
 above are not a `temperature: 0` test at all — they are the `default-config-repeatability`
-substitute, for the five models whose `temperature` the contract sweep rejects outright in
-`default` mode (`claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`, `gpt-5-6-sol`, `kimi-k3`).
+substitute, for the seven models whose `temperature` the contract sweep rejects outright in
+`default` mode (`claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`, `gpt-5-6-sol`, `kimi-k3`,
+plus the roster fork's `gpt-6-astra` and `claude-fable-5-1`, both rejecting `temperature` at
+their own 2026-09-05 cells).
 The design column above names the substitute explicitly on every row that used it; paraphrasing
 `comparisons/behavioral.md`'s own generated sentence for these cells, the substitute asks
 whether the model's own DEFAULT (implicit) sampling — with no `temperature` parameter sent at
@@ -128,7 +143,7 @@ accepted request surface can answer. A substitute cell's `0/4` rate is never the
 real `temperature: 0` cell's `0/4` rate, and this document never states one where it means the
 other.
 
-**Signal versus no-signal.** Four of the twenty rows above carry a `no-signal` verdict rather
+**Signal versus no-signal.** Four of the twenty-five rows above carry a `no-signal` verdict rather
 than `varies`: `kimi-k3` and `glm-5.3` in the `seed_determinism` table (both hit reasoning-length
 exhaustion before producing a comparable visible completion across all five repeats), and
 `claude-opus-5` and `glm-5.3` (a real `temperature: 0` cell here) in the `sampling_repeatability`
@@ -138,21 +153,36 @@ budget was exhausted before a comparable completion existed to compare at all, s
 reflects an absent measurement, not an observed one. Reading the two verdicts as equivalent would
 overstate how much of this domain was actually confirmed to vary.
 
-**The signal that exists.** Only `claude-haiku-4-5` (4/4, real `temperature: 0`) and
-`gemini-3-1-pro` (2/4 partial, real `temperature: 0`) show any repeatability signal at all across
-both tables — 10 of the 12 `sampling_repeatability` models, and all 8 of the `seed_determinism`
-domain, show zero. Determinism is close to universally absent on the live wire this sweep
-reaches.
+**The signal that exists.** Four models now show a nonzero rate across the two tables —
+`claude-haiku-4-5` (4/4, real `temperature: 0`, still the only fully deterministic cell),
+`gemini-3-1-pro` (2/4 partial, real `temperature: 0`), and the roster fork's two 1/5 same-seed
+partials below — while 13 of the 15 `sampling_repeatability` models and 8 of the 10
+`seed_determinism` models show zero. Determinism is close to universally absent on the live wire
+this sweep reaches, and nowhere but `claude-haiku-4-5` is it delivered in full.
+
+**The first nonzero same-seed rates (2026-09-05, issue-43 roster fork).** Every seed-accepting
+model measured before the fork sat at 0/5; `gpt-6-astra` and `gemini-3-8-flash` each matched 1
+of 5 disjoint same-seed pairs byte-identically — `partial` verdicts, not determinism, but the
+first evidence that a same-seed match can happen at all on this wire. Both cells' seed-99 effect
+controls differed (the seed is doing *something*), and at `gpt-6-astra` the vendor's own
+drift-monitoring pointer `system_fingerprint` was null on all ten repeats
+(`` cell_id:`gpt-6-astra--seed--42--default` ``, `` cell_id:`gemini-3-8-flash--seed--42--default` ``).
+A same-sitting cross-channel note: at `temperature: 0`, Stable-track `gemini-3-8-flash` measured
+0/4 where its Preview sibling `gemini-3-1-pro` measured 2/4 — the release channel's stability
+label says nothing about sampling stability
+(`` cell_id:`gemini-3-8-flash--temperature--0--default` ``).
 
 ### Temperature's two axes
 
 `temperature` is heterogeneous on two independent axes, confirmed by direct query of
 `probes/classified/contract-sweep.yaml`'s `temperature` rows across all fired modes.
 
-**Axis 1 — cross-vendor, `default`-mode rejection.** 5 of the 12 tracked models reject
+**Axis 1 — cross-vendor, `default`-mode rejection.** 7 of the 15 tracked models reject
 `temperature` outright in `default` mode: `claude-fable-5`, `claude-opus-5`, `claude-sonnet-5`,
-`gpt-5-6-sol`, `kimi-k3` (count taken directly from the `state: rejected` rows at `mode: default`
-in `probes/classified/contract-sweep.yaml`'s `temperature` cells).
+`gpt-5-6-sol`, `kimi-k3`, and — since the issue-43 roster fork, 2026-09-05 — `gpt-6-astra` and
+`claude-fable-5-1` (count taken directly from the `state: rejected` rows at `mode: default`
+in `probes/classified/contract-sweep.yaml`'s `temperature` cells; was 5 of 12 at the 2026-09-03
+render).
 
 **Axis 2 — within one model, mode-conditional acceptance.**
 
@@ -190,7 +220,11 @@ implementation drifting from an origin vendor's contract, but Anthropic's own li
 rejecting parameters Anthropic's own current documentation says it accepts, on Anthropic's own
 models, including a name the docs explicitly promise a transition period for.
 
-### The service-tier field-location asymmetry, twice
+*Re-counted 2026-09-09, same measure, post-roster-fork:* `claude-fable-5-1` rejects both fields
+at its own cells too, so the pattern now holds at all 5 Claude models — 10 rows of the
+regenerated table's 106 contradicted pairs (10/106 ≈ 9.4%).
+
+### The service-tier field-location asymmetry, four times
 
 Anthropic documents `service_tier` as a request-top-level field and `usage.service_tier` as its
 nested response-side mirror — never promoted to the response top level. This is confirmed
@@ -210,6 +244,25 @@ the two makers: request field `serviceTier` at the top level, response field
 Gemini's own cells were never fired as a trap, but the shape — request top level, response
 nested under a `usage`/`usageMetadata` envelope — is the same fact discovered independently at a
 second maker.
+
+**The third and fourth instances (2026-09-05, issue-43 roster fork; section retitled from
+"twice" 2026-09-09).** `claude-fable-5-1`'s own audit cells reproduce the Anthropic shape the
+5.0 report could previously only assert via the shared-contract argument through
+`claude-haiku-4-5`: request-top-level `service_tier`, response value nested at
+`usage.service_tier` with the top level absent
+(`` cell_id:`claude-fable-5-1--service-tier-audit--auto--default`, probe_id:`claude-fable-5-1--service-tier-audit--auto--default--c4f4cca9` ``),
+and the vocabulary-split trap fires here too — sending the response word `standard` as a request
+value is rejected, HTTP 400 naming the field
+(`` cell_id:`claude-fable-5-1--service-tier-audit--trap--default`, probe_id:`claude-fable-5-1--service-tier-audit--trap--default--f76dad92` ``).
+An evidence upgrade (sibling inference → the revision's own cells), not a verdict change.
+`gemini-3-8-flash` reproduces the Gemini shape and adds the asymmetry's sharpest practical cost
+yet: a requested paid `priority` tier (a derived exactly-1.8x premium per its report's
+`fast_mode` cell) is accepted with HTTP 200 and silently served as `standard` — the substitution
+is visible ONLY in the nested `usageMetadata.serviceTier` echo, with no top-level or error-side
+signal at all
+(`` cell_id:`gemini-3-8-flash--service-tier-audit--priority--default`, probe_id:`gemini-3-8-flash--service-tier-audit--priority--default--80c5e356` ``).
+A caller who never reads the nested field pays for whatever actually served the request while
+believing the premium tier did.
 
 The genuine third state belongs to neither asymmetric maker: `kimi-k3`, `deepseek-v4`, `glm-5.3`,
 and `qwen3.8-flash` each show `response_present: absent` on their own BHV-06 audit cells — no
@@ -276,6 +329,37 @@ corroborate or contradict, yet the wire accepted the field, so `docs-claims.yaml
 absence-of-documentation entry is what the wire evidence contradicts). Link into
 `comparisons/docs-vs-wire.md`'s own listing for every row-level quote, `source_ref`, `probe_id`,
 and HTTP status.
+
+### Re-read at the 15-model roster (2026-09-09)
+
+**The same measure, re-run.** `python3 scripts/build-docs-vs-wire.py` (run 2026-09-09, after the
+issue-43 roster fork added `gpt-6-astra`, `gemini-3-8-flash`, and `claude-fable-5-1` to the
+confrontation; `git status --short -- comparisons/docs-vs-wire.md` reported no diff after the
+run — the committed file was already at this render):
+
+```
+rows (param x model pairs): 765
+  docs-corroborated: 69
+  docs-contradicted: 106
+  docs-undecidable: 170
+  docs-untested: 415
+  docs-silent: 5
+```
+
+**Both denominators, restated.** Over all pairs: 106/765 = 13.9%. Over pairs where wire
+evidence exists (765 − 415 = 350, i.e. 69 + 106 + 170 + 5 = 350): **106/350 = 30.3%**. The
+2026-09-03 headline — "more than a quarter of tested pairs contradicted" — survives the roster
+growing by a quarter, and the rate moved *up* (27.4% → 30.3%), not toward the docs. Note what
+changed and what did not: the fork **expanded the roster**, it did not re-probe the original 12
+models, so the 79/288 figure above stands as that roster's own dated render rather than being
+superseded by this one — the two tallies answer the same question at two roster sizes.
+
+**The shape, re-counted** (same measure: the regenerated Contradictions table's own 106 rows,
+tallied by model): `gpt-6-astra` enters as the single largest contributor at 15 rows, edging out
+`gpt-5-6-sol`'s 14 — the two OpenAI models alone carry 29/106 (27.4%), the 5 Claude models 36/106
+(34.0%), and the two makers together 65/106 (61.3%). The concentration finding sharpens: the
+makers whose documentation is most voluminous contribute the most contradicted pairs, and a
+newly launched flagship walked straight to the top of the table in its first month.
 
 ## Support-state distributions
 
@@ -364,6 +448,21 @@ split today). No `comparisons/docs-vs-wire.md` row exists for this fact, and cit
 wrong — there is none to cite. Saying so here is what keeps this claim honest: the compat dialect
 this repo's harness now papers over at the wire is still true of the API, and it would resurface
 immediately if the override were ever removed.
+
+**The rename carries to the next flagship — as an override adopted pre-fire, not an observed
+rejection (2026-09-04, issue-43 roster fork's gate probe; folded here 2026-09-09).**
+`gpt-6-astra` — OpenAI's next flagship after `gpt-5-6-sol` — carries the same
+`max_tokens_field: max_completion_tokens` override in `probes/harness/models.yaml` (its own
+dated comment at the `gpt-6-astra` block, `probes/harness/models.yaml:190-193`): the fork's
+one-shot gate probe sent the *new* name, answered HTTP 200 (`finish_reason: stop`), and the
+override was settled before the batch's first fire. Stated precisely, because the two facts
+differ in grade: whether `gpt-6-astra` would REJECT the legacy `max_tokens` name was **never
+fired** — no probe sent it, so its classified `max-tokens` cell
+(`` probe_id:`gpt-6-astra--max-tokens--64--default--bc474c4b` ``, `accepted-honored`) is, like
+every such cell, a post-rename result. The masking mechanism this section describes now covers
+two origin-model generations pre-emptively, which widens the caveat rather than adding a second
+observed rejection: a reader of the classified evidence sees uniform acceptance at both OpenAI
+models, and only `gpt-5-6-sol`'s pre-override 400 (quoted above) was ever observed on the wire.
 
 ---
 
