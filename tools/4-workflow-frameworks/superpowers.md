@@ -300,10 +300,17 @@ at 182f60b4) is the category's cleanest natural experiment:
 | Portability bill | Codex hook auto-discovery incident; per-harness quirk ledger | declarative capability descriptors, 18 targets |
 
 What the convergence claim survives: both frameworks independently landed on fresh
-per-task subagent contexts, file-based handoffs, plan grammars written for a
-context-free executor, and worktree isolation — that is now four-of-four among the
-category's deep-dived frameworks doing subagent execution, no longer a two-tool
-coincidence. What it does not survive: enforcement is where the category
+per-task subagent contexts, file-based handoffs, and plan grammars written for a
+context-free executor — **3/3** among the category's deep-dived subagent-executing
+frameworks (gsd-core, bmad-method, superpowers), no longer a two-tool coincidence.
+*(Corrected same day, 2026-09-09: this section's first draft claimed "four-of-four"
+with worktree isolation as a fourth mark. Re-deriving from the five deep-dive reports'
+own frontmatter and text: spec-kit does not belong in the denominator —
+`context_isolation: false`, its one isolation attempt reverted upstream after
+compounding-context freezes (#3185, spec-kit.md:23) — and bmad-method has no worktree
+machinery at all ("implementation single-threaded", bmad-method.md:24), so worktrees
+hold only 2/3 and are not part of the converged set.)* What the claim does not
+survive: enforcement is where the category
 actually differentiates, and superpowers deliberately occupies the all-prose pole
 that GSD's trajectory (prose rules hardening into hooks and engine checks, one scar
 at a time) has been moving away from. The practitioner question is which failure
@@ -346,8 +353,9 @@ non-compliant model, or GSD's engine surface area.
   overstates**: it is a browser-side image beacon on one optional path, not
   session-level telemetry.
 - **"Same skills-based delivery, same subagent-execution shape as GSD — tests
-  whether convergence is real" — answered**: the execution shape converges (now 4/4
-  among deep-dived subagent-executing frameworks); enforcement is where
+  whether convergence is real" — answered**: the execution shape converges (3/3
+  among the deep-dived subagent-executing frameworks — the count corrected same day
+  from a "4/4" first draft, see the comparison section); enforcement is where
   the tools genuinely diverge, so "the category is converging" is true of workflow
   shape and false of enforcement architecture.
 

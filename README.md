@@ -159,6 +159,7 @@ evidence links, is [`docs/conclusions.md`](docs/conclusions.md)._
 22. **Where the wire had anything to say, it disagreed with the docs more than a quarter of the time** (2026-09-03, `comparisons/docs-vs-wire.md` — 79/288 = 27.4% of tested pairs contradicted, headline; 79/612 = 12.9% over all pairs, the other reading; re-read 2026-09-09 at the 15-model roster: 106/350 = 30.3%, the rate moved up)
 23. **Every settled harness compacts, and every one that compacts summarizes with an LLM — the discriminator is what stands beside the summarizer** (2026-09-04, ADR-0055 probe-pass — `none` had zero instances; the variation is prune/truncate stacks and their defaults, plus a background token bill no list price names)
 24. **Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture** (2026-09-04, ADR-0056 census — harnesses span background/in-loop/proposed; every set memory-vendor cell is `background`, so `write_admission` is the supply side's only write control)
+25. **Subagent execution in category 4 has one shape: three independent frameworks converged on it, and the fourth tried it, froze, and reverted** (2026-09-09, superpowers deep-dive — gsd-core/bmad-method/superpowers 3/3 on fresh per-unit contexts, file-only handoffs, context-free work-unit grammar; worktrees only 2/3 and excluded; spec-kit's isolation attempt reverted upstream #3185; the count itself corrected same day from a 4/4 first draft)
 
 ## License
 

@@ -137,6 +137,34 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    "three hard-blocking hooks" was a curated subset — a lexical exit-2 grep matches 8
    hook files at both pins. →
    [release assessment](../tools/4-workflow-frameworks/gsd-core.md#release-assessment--v1110-2026-08-21-pin-fee72d55--182f60b4)
+   **Fourth shape added (2026-09-09, superpowers deep-dive): the framework that
+   refuses the escape hatch.** The category's largest tool (283.4k stars, an order of
+   magnitude above the rest) ships `deterministic_engine: false` **by design** — no
+   orchestrator, no state machine, no scheduler; the porting guide states the position
+   plainly ("The bootstrap is the entire integration. Without it, the skill files are
+   inert") and the runtime contract with the model is one 3,333-byte SessionStart
+   injection, measured at the run probe. Where the first three shapes each grew or
+   productized an engine, superpowers engineers *persuasion* as the enforcement
+   surface: Iron Laws, rationalization tables that pre-name the excuse the agent is
+   about to make, adversarial pressure-test scenarios shipped inside the skill
+   directories (prose treated as code, with tests OF the prose — measured by an
+   out-of-tree LLM-judged tmux harness), and verification authority resting on a
+   reviewer subagent told to treat the implementer's report as unverified claims. The
+   escape-hatch pattern still appears, at minimum viable size and pointed elsewhere:
+   the only executables are 127 lines of plumbing bash whose one semantic check is an
+   awk heading grammar (exit 3), and the one structural defense — the plan-scoped
+   ledger workspace — was built for *context recovery*, not correctness. The
+   mechanical version is known deferred work (PreToolUse path enforcement is "Phase 4"
+   of an unshipped design in the subject's own docs). Two of this conclusion's
+   standing lines survive their fifth deep-dive: no framework yet has an engine-graded
+   measured or process gate (superpowers: `measured_gates: false`,
+   `process_gates: prose`), and the portability price surfaced again in a new
+   currency — not translation loss but per-harness *discovery defaults* (the Codex
+   hooks auto-discovery incident: an empty-object `"hooks": {}` is the only value that
+   stops another harness's hook firing, and the test asserting the field's absence
+   passed while the bug was live). →
+   [`tools/4-workflow-frameworks/superpowers.md`](../tools/4-workflow-frameworks/superpowers.md)
+   § The distinguishing bet, § Substrate
 8. **Harnesses are absorbing the stack from the middle** (2026-07-30, from the hermes +
    codex deep-dives). The mechanisms adjacent categories sell are turning up *natively in
    category 2*, twice each: turn-end verification gates (hermes' `verification_stop`,
@@ -734,3 +762,36 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [ADR-0056](../adrs/0056-learning-loop-mechanism-enum.md) ·
     [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
     [issue #13](https://github.com/leandromineti/ai-assisted-coding/issues/13)
+25. **Subagent execution in category 4 has one shape: three independent frameworks
+    converged on it, and the fourth tried it, froze, and reverted** (2026-09-09, the
+    superpowers deep-dive closing the count; re-derived from the five deep-dive
+    reports' `workflow_features` frontmatter and execution-shape text — never from any
+    one report's summary). Every deep-dived framework that executes through subagents —
+    gsd-core, bmad-method, superpowers, three independent lineages — landed on the same
+    three marks: **fresh per-unit subagent contexts** (hook-enforced at gsd-core,
+    mandatory-flavored prose at bmad-method, prose at superpowers), **file-based
+    artifacts as the only inter-context channel** (`.planning/` · `sprint-status.yaml`
+    plus a 5-state spec frontmatter machine · brief/report/diff triads), and **a
+    work-unit grammar written to execute without inherited context** (structured task
+    graphs · expected-value matrices · a plan addressed to "an enthusiastic junior
+    engineer with poor taste"). Worktree isolation is deliberately NOT in the converged
+    set — it holds 2/3 (bmad-method is single-threaded with no worktree machinery) —
+    and this claim's own first draft in the superpowers report said "four-of-four"
+    including it, with spec-kit wrongly in the denominator; the same-day re-derivation
+    corrected both, recorded here because a settled-sounding count stops being
+    re-checked. The two non-adopters are not counterexamples of the shape: spec-kit
+    *attempted* context isolation and reverted it upstream after compounding-context
+    freezes (#3185) — the pull toward the shape is real and the blocker was harness
+    mechanics — and OpenSpec stops at the spec boundary, never entering execution.
+    Reader-facing: the workflow diagram is commoditizing, so a category-4 choice
+    discriminates on what still varies — the enforcement grade behind each gate
+    (conclusion 7's tradeoff, four shapes and counting) and which functions a
+    framework omits outright (superpowers: gap research and retrospectives, both
+    graded absences with declared search surfaces). →
+    [`tools/4-workflow-frameworks/superpowers.md`](../tools/4-workflow-frameworks/superpowers.md)
+    § For the daily GSD user (the corrected count) ·
+    [`gsd-core`](../tools/4-workflow-frameworks/gsd-core.md),
+    [`bmad-method`](../tools/4-workflow-frameworks/bmad-method.md),
+    [`spec-kit`](../tools/4-workflow-frameworks/spec-kit.md) § context settlement,
+    [`openspec`](../tools/4-workflow-frameworks/openspec.md) ·
+    [issue #48](https://github.com/leandromineti/ai-assisted-coding/issues/48)
