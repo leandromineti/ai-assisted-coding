@@ -3,39 +3,39 @@ name: kimi-k3
 category: 1
 maker: Moonshot AI
 url: https://huggingface.co/moonshotai/Kimi-K3
-license: "Kimi K3 License (model card's own term; third-party summaries describe it as MIT-like with a commercial MaaS revenue gate — the gate did not appear in the card text checked, so its terms are unverified here)"
+license: "Kimi K3 License — the LICENSE file itself read 2026-09-18 (3,065 B; HF metadata `license: other`, `license_name: kimi-k3`): an MIT-shaped grant plus three model-specific terms — §2 a Model-as-a-Service gate, 'if the Licensee or any of its affiliates operates a Model as a Service business, and the aggregate revenue ... exceeds 20 million US dollars ... in total over any consecutive 12 months, the Licensee must enter into a separate agreement with Moonshot AI before using the Software or its derivative works for any commercial purpose'; §3 a branding term, 'Kimi K3' must be prominently displayed on products above 100M MAU or $20M monthly revenue; §4 exempts internal use and use via Moonshot's official products or certified inference partners. The 2026-08-17 'unverified' stood because the gate is in the LICENSE file, not the card text"
 access: open-weights
 model_id: moonshotai/Kimi-K3
 release_date:
   date: null
   stage: not-stated
-  note: "the launch blog prints NO calendar date and uses no stage vocabulary; third-party puts it ~2026-07-16, which is inference and not the fact. Weights were promised 'by July 27, 2026' and the HF initial commit is consistent with that, but this report has never recorded that commit's date — reading it off the HF repo is the open route to a first-party date (verified 2026-08-17)"
+  note: "the launch blog prints NO calendar date and uses no stage vocabulary; third-party puts it ~2026-07-16, which is inference and not the fact. Weights were promised 'by July 27, 2026' and the HF initial commit is consistent with that, but this report has never recorded that commit's date — reading it off the HF repo is the open route to a first-party date (verified 2026-08-17). Route CLOSED 2026-09-18: the HF commits API dates the 'Initial commit' 2026-07-27T13:31:26Z — consistent with the promise, but a weights-upload date, not a release date; the platform changelog says only 'July 2026', and the blog (now at kimi.ai/blog/kimi-k3) is still undated. `date` stays null: no first-party surface states a calendar release day"
 context_window: 1048576
-max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17)"
+max_output: "131072 default, settable up to 1048576 (first-party API max_completion_tokens; verified 2026-08-17; re-verified 2026-09-18 — `max_tokens` is now marked deprecated in favor of max_completion_tokens)"
 pricing:
   input: 3          # USD per MTok — base list rate (see the registry's rule)
   output: 15
   currency: USD
   regime: route-dependent
-  note: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17)"
+  note: "weights free; first-party API $3 / $15 per MTok flat across the window (platform.kimi.ai, USD). A separate first-party CNY surface (platform.kimi.com) lists ¥20 / ¥100 — two price lists, not one converted. Other routes remain route-dependent (verified 2026-08-17; re-verified 2026-09-18 on both platform pricing pages — flat, 'no tiering by context length' stated verbatim)"
 knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
-  note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf — flagged as the one unread candidate — was READ 2026-08-26 (47 pp, via the HF model page's link to MoonshotAI/Kimi-K3) and is silent: no knowledge cutoff anywhere, the document's only 'cutoff' being an unrelated MoE routing threshold, and its §3.1 Pre-Training Data naming four corpus domains with no dates. Every candidate first-party surface is now checked"
+  note: "not stated in quickstart, HF card, or GitHub README (checked 2026-08-17); the k3_tech_report.pdf — flagged as the one unread candidate — was READ 2026-08-26 (47 pp, via the HF model page's link to MoonshotAI/Kimi-K3) and is silent: no knowledge cutoff anywhere, the document's only 'cutoff' being an unrelated MoE routing threshold, and its §3.1 Pre-Training Data naming four corpus domains with no dates. Every candidate first-party surface is now checked (re-verified 2026-09-18 across the HF README/config/LICENSE, both platforms' models, pricing, quickstart, reasoning-effort, thinking, chat-API and changelog pages, and the launch blog — zero hits)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on    # docs: "K3 always thinks"; not toggleable (first-party API) — OBSERVED 2026-08-31 (issue #42 probe): reasoning_content returned with no params; and `enable_thinking: false` is ACCEPTED AND SILENTLY IGNORED — no error, reasoning still returned. Contrast Z.ai (rejects with an error) and Qwen (honors it): three vendors, three behaviors for the same param intent
-  reasoning_effort: "levels:low/high/max@max"   # default-to-most-expensive; reasoning tokens bill as output
-  prompt_caching: "automatic, no cache id or TTL surface, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API)"
-  batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off) is explicitly scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17)"
-  fast_mode: false   # checked and absent: the K3 pricing page bills only cache-hit input, cache-miss input, and output — no speed tier; kimi-k2-turbo-class ids are sibling models, not modes (verified 2026-08-27)
+  reasoning_effort: "levels:low/high/max@max"   # default-to-most-expensive; reasoning tokens bill as output (re-verified 2026-09-18 on three surfaces; the docs add 'Switching levels invalidates prefix-cache hits' and have renamed the guide from thinking-effort to reasoning-effort)
+  prompt_caching: "automatic, prior-request >256-tok threshold; cache-hit input $0.30 vs miss $3.00 per MTok (0.1x); no storage fee mentioned (first-party API, 2026-08-17). The 'no cache id or TTL surface' half is CONTRADICTED 2026-09-18 by the chat API reference, which now documents `prompt_cache_options.ttl` ('5m' | '1h', default 5m, 'Cache writes are billed per TTL tier') and `prompt_cache_key` — while the caching guide and the K3 quickstart still say 'No TTL management' and 'no cache ID, TTL, or extra parameter is required', and the pricing table publishes no write rate. A first-party self-contradiction; the reference is the newer surface"
+  batch_discount: "checked and absent for K3 — Moonshot's batch API (40% off, 'costs are 60% of the standard model price') was scoped to kimi-k2.5/k2.6 only (first-party docs, 2026-08-17); re-verified 2026-09-18: the scope is now kimi-k2.7-code and kimi-k2.6 (kimi-k2.5 discontinued 2026-08-31), K3 still absent"
+  fast_mode: false   # checked and absent: the K3 pricing page bills only cache-hit input, cache-miss input, and output — no speed tier; kimi-k2-turbo-class ids were sibling models, not modes (verified 2026-08-27; by 2026-09-18 those ids are deprecated and the live speed sibling is `kimi-k2.7-code-highspeed`, '~180 Tokens/s', sold as a separate id at 2x the k2.7-code rate — still a model, not a mode of K3)
   stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison is the only evidence, cell_id:`kimi-k3--stop-truncation--triggering--default`, probe_id:`kimi-k3--stop-truncation--triggering--default--5b566140`, promoted ADR-0050."
   seed_determinism: "0/5 same-seed pairs (no-signal) — OBSERVED 2026-09-03: kimi-k3's five same-seed repeats each hit reasoning-length exhaustion before producing a comparable visible completion, so the 0/5 rate reflects exhausted budget, not observed variation, cell_id:`kimi-k3--seed--42--default`, probe_id:`kimi-k3--seed--42--default--r1--785f1743`, promoted ADR-0050."
   sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-03: kimi-k3 rejects an explicit temperature value outright in default mode (docs-corroborated, no field documented and HTTP 400 on the wire); this default-config-repeatability SUBSTITUTE asks whether the model's own default sampling is repeatable across five identical requests with no temperature parameter sent at all, and all five completed naturally with five distinct outputs, cell_id:`kimi-k3--default-config-repeatability--no-temperature--default`, probe_id:`kimi-k3--default-config-repeatability--no-temperature--default--r1--c96c7328`, promoted ADR-0050."
   multi_candidate_delivery: "rejected — OBSERVED 2026-09-03: a request for 2 candidates was rejected outright, cell_id:`kimi-k3--n--2--default`, probe_id:`kimi-k3--n--2--default--141537ec`, promoted ADR-0050."
   logprobs_delivery: "rejected — OBSERVED 2026-09-03: `logprobs` returns HTTP 400 at the contract sweep, probe_id:`kimi-k3--logprobs--true--default--b9b3e6f3`, promoted ADR-0050."
   service_tier_contract: "response-absent — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`kimi-k3--service-tier--auto--default--24465b09`; the value-enum row fires here (openai_compat family) — all 4 values accepted-ignored uniformly, probe_id:`kimi-k3--openai-service-tier-values--auto--default--24465b09`; the BHV-06 tier audit is the third, genuinely distinct response-side state — no service-tier field appears in the response at all, a real absence rather than a nesting the presence probe alone cannot see, cell_id:`kimi-k3--service-tier-audit--omitted--default`, probe_id:`kimi-k3--service-tier-audit--omitted--default--43b8c30e`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec cell held; license and cache cells corrected from the LICENSE file and the API reference; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
@@ -55,7 +55,7 @@ that third parties quantize down. Released July 2026.
 | Tool-call fidelity | Vendor-claimed strength ("agentic" benchmark family); the card claims **88.3 on Terminal-Bench 2.1** — above every harness+model row in this repo's stale benchmark snapshot, with harness unstated (the category index's model+harness confound, from the other side) |
 | Long-horizon coherence | · |
 | Usable context (vs advertised) | 1,048,576 exactly (2^20) — same power-of-two budget as GPT-5.6's "1.05M" |
-| Cost per completed task | Weights free; the real cost is inference infrastructure (vLLM/SGLang on H100/H20-class GPUs) — the taxonomy's open question about whether 2.8T-scale open weights change anything *practical* for individuals stands |
+| Cost per completed task | Weights free; the real cost is inference infrastructure (vLLM/SGLang on H100/H20-class GPUs) — the question of whether 2.8T-scale open weights change anything *practical* for individuals was closed by scope 2026-08-27 ([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md): the self-hosted route is acknowledged, never assessed) — this row states the API-served product's cost basis only (cross-reference corrected 2026-09-18) |
 | Release mode & access routes (1b) | Open weights + hosted APIs + aggregators; the full 1b spread, with quantization variance built in rather than added downstream |
 
 ## Reasoning surface
@@ -99,14 +99,26 @@ whose per-model dispatch this repo documented upstream).
 5. **Two first-party price lists, and a rebrand** (2026-08-17): `platform.moonshot.ai`
    now 301s to `platform.kimi.ai` (USD) and `platform.moonshot.cn` to
    `platform.kimi.com` (CNY, ¥20/¥100 — its own list, not a conversion). Moonshot's
-   batch API (40% off) explicitly excludes K3: it covers only k2.5/k2.6.
+   batch API (40% off) explicitly excludes K3: it covers only k2.5/k2.6 (2026-09-18:
+   now k2.7-code/k2.6, k2.5 having been discontinued 2026-08-31; K3 still excluded).
 
 ## Open questions
 
-- The license's actual commercial terms — read the license file itself, not
-  summaries, before any claim stronger than "weights downloadable".
-- What harness produced the 88.3 Terminal-Bench claim? (Unstated in the card
-  summary; the model+harness confound cuts both ways.)
+- ~~The license's actual commercial terms — read the license file itself, not
+  summaries, before any claim stronger than "weights downloadable".~~ **Read
+  2026-09-18** (frontmatter): MIT-shaped grant, a $20M-per-12-months Model-as-a-Service
+  gate requiring a separate agreement, a "Kimi K3" branding term above 100M MAU or $20M
+  monthly revenue, and an exemption for internal use and certified inference partners.
+- ~~What harness produced the 88.3 Terminal-Bench claim? (Unstated in the card
+  summary; the model+harness confound cuts both ways.)~~ **Stated on the card all
+  along, in a collapsed Footnotes block** (read 2026-09-18; the README is
+  byte-identical to its 2026-07-27 revision, so this was a missed read, not new
+  information): "Kimi K3 is evaluated with the Kimi Code harness. For all other models,
+  we report the best score across harnesses" — GLM-5.2 with Claude Code, Opus 4.8 and
+  Fable 5 with Terminus 2, GPT-5.5 and GPT-5.6 Sol with Codex — at effort `max`,
+  temperature 1.0. The confound is therefore stated, not hidden: a best-of-harnesses
+  comparison against a single-harness self-score. The in-house bench footnote adds
+  that K3 scores 73.7 under Claude Code versus its headline under Kimi Code.
 - ~~Does 104B-activated MoE inference actually fit any individual's budget via the
   GGUF/community route, and at what quality loss?~~ **Closed by scope 2026-08-27**
   ([ADR-0048](../../adrs/0048-category-1-assesses-api-versions-only.md)): the
