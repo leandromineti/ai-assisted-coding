@@ -17,16 +17,16 @@ pricing:
   output: 6.0
   currency: USD
   regime: flat
-  note: "$2 / $6 per MTok, no context tiering on the model page — the same headline pair as Grok 4.5's sub-200k tier, at 2× the context (verified 2026-08-27). A third-party-reported 22:00–08:00 (UTC+8) 50%-off night window is NOT verified first-party: the only discount page that resolves is `qwencloud.com/promo/discount-qwen`, and it is Qwen3.7-Max's, expired 2026-07-31"
+  note: "$2 / $6 per MTok, no context tiering on the model page — the same headline pair as Grok 4.5's sub-200k tier, at 2× the context (verified 2026-08-27). A third-party-reported 22:00–08:00 (UTC+8) 50%-off night window is NOT verified first-party: the only discount page that resolves is `qwencloud.com/promo/discount-qwen`, and it is Qwen3.7-Max's, expired 2026-07-31. Re-verified 2026-09-18: still NOT-STATED on eleven first-party surfaces (both model pages, the 0902 snapshot page, the marketplace, token-plan and the JS-only pricing/api pages, the promo page, and the docs' pricing, cost-optimization, batch, thinking, cache and prime-mode guides — grepped for hours, off-peak, night, discount, 50%); prices unchanged"
 knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
-  note: "not stated on any surface checked 2026-08-27: the QwenCloud model page, the platform's model-release changelog entry, and the Hugging Face card for the weights (Qwen/Qwen3.8-2.4T-A95B) are all silent. Third-party 'August 2026' figures are ship-date inference, not the fact"
+  note: "not stated on any surface checked 2026-08-27: the QwenCloud model page, the platform's model-release changelog entry, and the Hugging Face card for the weights (Qwen/Qwen3.8-2.4T-A95B) are all silent. Third-party 'August 2026' figures are ship-date inference, not the fact (re-verified 2026-09-18, same surfaces plus the docs' thinking/batch/cache guides and the 0902 snapshot page — zero hits)"
 model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning: true
-  reasoning_type: default-on   # OBSERVED 2026-08-31 (issue #42 thin-client probe), closing the cell left deliberately blank 2026-08-27: a request with NO thinking params returned `reasoning_content` (36 reasoning tokens billed), and `enable_thinking: false` returned none — default-on, toggleable, both directions observed. The docs' `Hybrid` classification stands; the DEFAULT was never stated on any first-party surface, so this cell is the sweep's first enum value that rests on a probe rather than a page. See § Reasoning surface.
+  reasoning_type: default-on   # OBSERVED 2026-08-31 (issue #42 thin-client probe), closing the cell left deliberately blank 2026-08-27: a request with NO thinking params returned `reasoning_content` (36 reasoning tokens billed), and `enable_thinking: false` returned none — default-on, toggleable, both directions observed. The docs' `Hybrid` classification stands; the DEFAULT was never stated on any first-party surface, so this cell is the sweep's first enum value that rests on a probe rather than a page. See § Reasoning surface. CORRECTED 2026-09-18: one first-party page does state it — the Batch API guide's billing notes read 'The qwen3.8, qwen3.7, qwen3.6, and qwen3.5 series models enable thinking by default' — so the value is now docs-corroborated and the 'first enum value resting on a probe' claim is retired; the Thinking page itself still states no per-model default.
   reasoning_effort: "levels:low/medium/xhigh@xhigh"   # docs, verbatim: "Example with `qwen3.8-max` (options: `low`, `medium`, `xhigh`; default `xhigh`)"
-  prompt_caching: "two priced modes on one model page: implicit cache read $0.25 per MTok (0.125x of input, no opt-in stated), explicit cache creation $2.50 (1.25x) + explicit cache read $0.17 per MTok (0.085x). No TTL and no breakpoint surface stated anywhere checked (2026-08-27)"
+  prompt_caching: "two priced modes on one model page: implicit cache read $0.25 per MTok (0.125x of input, no opt-in stated), explicit cache creation $2.50 (1.25x) + explicit cache read $0.17 per MTok (0.085x). No TTL and no breakpoint surface stated anywhere checked (2026-08-27) — CONTRADICTED 2026-09-18 by the context-cache guide, which moved to run-and-scale/context-cache and now documents both: explicit cache TTL '5 minutes (resets on hit)', breakpoints via cache_control: {type: ephemeral} (Anthropic's marker, up to four per request, 1,024-token minimum), plus a third 'session cache' mode for the Responses API; the page also says this model's explicit-hit price 'is not 10% of the standard input token price' — consistent with the $0.17 here"
   batch_discount: "checked and absent — OBSERVED 2026-08-31: batch creation fails validation with `model_not_found`: 'The provided model 'qwen3.8-max' is not supported by the Batch API' (issue #42 probe; failed validation bills nothing). This RESOLVES the two-surface disagreement recorded 2026-08-27 — the batch guide's supported-model list (older qwen-max/plus/flash/turbo ids only) was right, and the model page's own Batch card was wrong for this model. The platform batch discount itself is 50% of real-time, 24h window — just not for this model"
   fast_mode: false   # checked and absent: QwenCloud's Prime Mode ("TPS is 1.5~2x that of the standard API") is the platform's throughput mode, and its supported-models list excludes this model (glm-5.2-fast-preview and wan3.0-video-prime only; verified 2026-08-27)
   stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but the openai_compat family's shared stop finish value matches the no-stop control's own finish reason — text comparison only, cell_id:`qwen3.8-max--stop-truncation--triggering--default`, probe_id:`qwen3.8-max--stop-truncation--triggering--default--67a34da7`, promoted ADR-0050."
@@ -35,7 +35,7 @@ model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   multi_candidate_delivery: "rejected — OBSERVED 2026-09-03: a request for 2 candidates was rejected outright in default mode, a rejection Qwen's own documentation corroborates as thinking-mode-conditional, cell_id:`qwen3.8-max--n--2--default`, probe_id:`qwen3.8-max--n--2--default--e510e3ee`, promoted ADR-0050."
   logprobs_delivery: "accepted-honored — OBSERVED 2026-09-03: `logprobs` returns real per-token content, the behavioral reverify agreeing with the contract sweep's own already-unambiguous reading, cell_id:`qwen3.8-max--logprobs-reverify--combined--default`, probe_id:`qwen3.8-max--logprobs-reverify--combined--default--97ef0c4f`, promoted ADR-0050."
   service_tier_contract: "accepted-ignored — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value, probe_id:`qwen3.8-max--service-tier--auto--default--21c5dfa8`; the value-enum row fires here (openai_compat family) — all 4 values accepted-ignored uniformly, probe_id:`qwen3.8-max--openai-service-tier-values--auto--default--21c5dfa8`; unlike its qwen3.8-flash sibling, the BHV-06 tier audit did not fire against this model — the response-side shape (nested, absent, or flat) is not tested here, so the cell states only what the presence and enum rows established, promoted ADR-0050."
-checked: 2026-08-27
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep), folded in 9 days early: every spec cell held; the cache cell corrected from the moved context-cache guide; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
@@ -143,7 +143,17 @@ model is unchecked and is the obvious next probe.
   returned, `default-on` (§ Reasoning surface).
 - Is the 22:00–08:00 (UTC+8) half-price night window real for this model? If it is, the
   regime is `time-of-day` (DeepSeek V4's shape), not `flat` — this changes a comparable
-  number, so it needs a first-party page, not a press citation.
+  number, so it needs a first-party page, not a press citation. *Re-checked 2026-09-18
+  across eleven first-party surfaces (`pricing` note): still not stated anywhere; the
+  only discounts the platform names are batch, cache multipliers, the Token Plan
+  subscription (~40%) and the expired 3.7-Max promo. The one surface whose table could
+  not be read is the JS-only `pricing/api` page.*
+- A dated snapshot now exists, `qwen3.8-max-0902` (alias `qwen3.8-max-2026-09-02`,
+  sighted 2026-09-18): same prices and limits, half the TPM (1M vs 2M), "upgraded
+  snapshot of qwen3.8-max". The marketplace tile for "Qwen3.8-Max" already carries the
+  0902 description while this id's own page does not — whether the bare id silently
+  moved to the snapshot is a docs question the wire can answer (compare outputs on a
+  fixed prompt, or read the response's model field).
 - ~~Does the Batch API accept the `qwen3.8-max` id? The model page and the batch guide
   disagree; one request settles it.~~ **Resolved 2026-08-31, in two probe rounds**: the
   first attempt hit an account-verification wall (`access_denied: "The user information
