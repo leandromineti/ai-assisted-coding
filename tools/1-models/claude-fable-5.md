@@ -2,14 +2,14 @@
 name: claude-fable-5
 category: 1
 maker: Anthropic
-url: https://platform.claude.com/docs/en/about-claude/models/overview
+url: https://platform.claude.com/docs/en/models/fable-5/overview   # repointed 2026-09-18: the models overview (this report's url until then) now carries a 4-model lineup that EXCLUDES Fable 5 (`inLineup: false`, `legacy: true`, `upgradeId: claude-fable-5-1`); the per-model legacy hub carries the same structured-data object and is where every field below was re-verified
 license: proprietary
 access: closed-source
 model_id: claude-fable-5
 release_date:
   date: 2026-06-09
   stage: GA
-  note: "no preview stage; then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01) — the sweep's only GA interruption (verified 2026-08-17)"
+  note: "no preview stage; then suspended 2026-06-12 and redeployed (vendor update dated 2026-07-01) — the sweep's only GA interruption (verified 2026-08-17 from anthropic.com/news/redeploying-fable-5, a surface outside the docs; releasedOn 2026-06-09 re-verified 2026-09-18 on the legacy hub, deprecations table 'Active', retirement 'Not sooner than June 9, 2027')"
 context_window: 1000000
 max_output: 128000
 pricing:
@@ -17,17 +17,17 @@ pricing:
   output: 50
   currency: USD
   regime: flat
-  note: "$10 / $50 per MTok (verified 2026-08-17)"
+  note: "$10 / $50 per MTok (verified 2026-08-17; re-verified 2026-09-18 on the pricing page and the legacy hub)"
 knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
-  note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5"
+  note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). Older than Opus 5's May 2026, same as Sonnet 5. re-verified 2026-09-18 on the legacy hub's structured data"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on   # confirmed 2026-08-26: docs table Default "Always on"; rejects BOTH `enabled` and `disabled`
   reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # settled 2026-08-26 — `output_config.effort` (§ Reasoning surface)
-  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok"
-  batch_discount: "50% in+out ($5 / $25 per MTok)"
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $12.50 / $20 / $1 per MTok (re-verified 2026-09-18; the successor reads at 0.025x — see claude-fable-5-1)"
+  batch_discount: "50% in+out ($5 / $25 per MTok) (re-verified 2026-09-18)"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control) — the finish field alone proves which case fired, cell_id:`claude-fable-5--stop-truncation--triggering--default`, probe_id:`claude-fable-5--stop-truncation--triggering--default--61baa082`, promoted ADR-0050."
   seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-fable-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
@@ -35,7 +35,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   multi_candidate_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no n/candidateCount-equivalent multi-candidate parameter for claude-fable-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`n/anthropic`, promoted ADR-0050."
   logprobs_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no logprobs parameter for claude-fable-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`logprobs/anthropic`, promoted ADR-0050."
   service_tier_contract: "response-asymmetric — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`claude-fable-5--service-tier--auto--default--aa7ed336`; the value-enum row (openai-service-tier-values) does not fire for Anthropic models — not tested here. The response-side shape is the shared Anthropic Messages API contract (same field, same endpoint across all 4 Claude models), verified directly at sibling model claude-haiku-4-5: the tier is reported at `usage.service_tier`, nested under the usage envelope and never mirrored to the top level, and sending the response-vocabulary word `standard` as a request value is rejected outright naming the field, cell_id:`claude-haiku-4-5--service-tier-audit--auto--default`, probe_id:`claude-haiku-4-5--service-tier-audit--auto--default--613638b0`, cell_id:`claude-haiku-4-5--service-tier-audit--trap--default`, probe_id:`claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
@@ -49,6 +49,13 @@ depth: stub
 > at the 5.1 launch — the only documented diffs are on the 5.1 report (§ What
 > changed). This report's six wire-behavior OBSERVED cells remain the 5.0 record;
 > they do not transfer to 5.1.
+>
+> *2026-09-18 (staleness sweep):* the overview page this report cited as `url`
+> no longer lists Fable 5 at all — its lineup array holds four models and files
+> Fable 5 under a "Legacy models" sidebar group with Opus 4.8–4.5 and Sonnet
+> 4.6/4.5, carrying `upgradeId: claude-fable-5-1`. The `url` is repointed to the
+> legacy hub; every spec re-verified there, unchanged. The Legacy-vs-Active
+> inconsistency above still stands.
 
 Anthropic's most capable widely released model: "next-generation intelligence for
 long-running agents." GA 2026-06-09 across Claude API and all cloud routes — then

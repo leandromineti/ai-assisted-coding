@@ -2,14 +2,14 @@
 name: claude-opus-5
 category: 1
 maker: Anthropic
-url: https://platform.claude.com/docs/en/about-claude/models/overview
+url: https://platform.claude.com/docs/en/models/overview   # repointed 2026-09-18: the former /docs/en/about-claude/models/overview now 307s here (and docs.claude.com 301s into platform.claude.com, 2 hops)
 license: proprietary
 access: closed-source
 model_id: claude-opus-5
 release_date:
   date: 2026-07-24
   stage: GA
-  note: "no preview stage — 'available today' across all surfaces (verified 2026-08-17)"
+  note: "no preview stage — 'available today' across all surfaces (verified 2026-08-17); releasedOn 2026-07-24 re-verified 2026-09-18 in the overview's structured data, deprecations table 'Active', retirement 'Not sooner than July 24, 2027'; the launch framing itself is no longer on any docs surface"
 context_window: 1000000
 max_output: 128000
 pricing:
@@ -17,18 +17,18 @@ pricing:
   output: 25
   currency: USD
   regime: flat
-  note: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17)"
+  note: "$5 / $25 per MTok; fast mode (research preview, Claude API only) $10 / $50 (verified 2026-08-17; re-verified 2026-09-18 on the pricing and fast-mode pages — the fast-mode availability clause now reads 'on the Claude API, including Claude Managed Agents, only')"
 knowledge_cutoff:
   date: 2026-05          # the limit date on training data
   basis: vendor-stated
-  note: "May 2026 (reliable); training data May 2026 — the two coincide. corroborated 2026-08-26 by a second first-party surface — the [Opus 5 system card](../../references/cards/2026-claude-opus-5.md) §1.1: 'Claude Opus 5's knowledge cutoff date is May 2026' — and re-verified the same day against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026"
+  note: "May 2026 (reliable); training data May 2026 — the two coincide. corroborated 2026-08-26 by a second first-party surface — the [Opus 5 system card](../../references/cards/2026-claude-opus-5.md) §1.1: 'Claude Opus 5's knowledge cutoff date is May 2026' — and re-verified the same day against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from). The freshest cutoff in the current lineup, newer than Fable 5's and Sonnet 5's Jan 2026. re-verified 2026-09-18 (structured data unchanged)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   # Both keys below settled 2026-08-26 against the thinking + effort docs (§ Reasoning surface).
-  reasoning_type: default-on   # docs table Default "On"; accepts `disabled` — but ONLY at effort ≤ high, see below
-  reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # "supports all five effort levels"; `output_config.effort`
-  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok"
-  batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header"
+  reasoning_type: default-on   # docs table Default "On"; accepts `disabled` — but ONLY at effort ≤ high, see below (footnote re-verified verbatim 2026-09-18)
+  reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # "supports all five effort levels"; `output_config.effort` (re-verified 2026-09-18; the effort page now also documents a per-message effort BETA, `mid-conversation-output-config-2026-07-01`, on Opus 5 / Fable 5.1 / Mythos 5.1 — and NOT Fable 5, which 400s — a sighting, unregistered vocabulary)
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $6.25 / $10 / $0.50 per MTok (re-verified 2026-09-18; 0.1x is no longer lineup-wide — Fable 5.1 and Mythos 5.1 read at 0.025x)"
+  batch_discount: "50% in+out ($2.50 / $12.50 per MTok); 300k max output via beta header (re-verified 2026-09-18, `output-300k-2026-03-24`)"
   fast_mode: true    # "up to 2.5x higher output tokens per second" at $10/$50 (2x list), `speed: "fast"` + fast-mode-2026-02-01 beta header; research preview, Claude API only, Opus 5/4.8 only; explicitly NOT the Priority Tier ("Fast mode is not available with a Priority Tier commitment") — first-party fast-mode page, verified 2026-08-27; OBSERVED 2026-08-31: a plain pay-as-you-go key with no waitlist enrollment was served `usage.speed: "fast"` on the first request — the research-preview gate did not gate in practice
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control), cell_id:`claude-opus-5--stop-truncation--triggering--default`, probe_id:`claude-opus-5--stop-truncation--triggering--default--58a5a42f`, promoted ADR-0050."
   seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-opus-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
@@ -36,7 +36,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   multi_candidate_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no n/candidateCount-equivalent multi-candidate parameter for claude-opus-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`n/anthropic`, promoted ADR-0050."
   logprobs_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no logprobs parameter for claude-opus-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`logprobs/anthropic`, promoted ADR-0050."
   service_tier_contract: "response-asymmetric — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`claude-opus-5--service-tier--auto--default--4b23e6d5`; the value-enum row (openai-service-tier-values) does not fire for Anthropic models — not tested here. The response-side shape is the shared Anthropic Messages API contract (same field, same endpoint across all 4 Claude models), verified directly at sibling model claude-haiku-4-5: the tier is reported at `usage.service_tier`, nested under the usage envelope and never mirrored to the top level, and sending the response-vocabulary word `standard` as a request value is rejected outright naming the field, cell_id:`claude-haiku-4-5--service-tier-audit--auto--default`, probe_id:`claude-haiku-4-5--service-tier-audit--auto--default--613638b0`, cell_id:`claude-haiku-4-5--service-tier-audit--trap--default`, probe_id:`claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: survey
 ---
 

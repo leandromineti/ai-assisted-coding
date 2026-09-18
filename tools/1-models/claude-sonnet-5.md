@@ -2,14 +2,14 @@
 name: claude-sonnet-5
 category: 1
 maker: Anthropic
-url: https://platform.claude.com/docs/en/about-claude/models/overview
+url: https://platform.claude.com/docs/en/models/overview   # repointed 2026-09-18: the former /docs/en/about-claude/models/overview now 307s here (and docs.claude.com 301s into platform.claude.com, 2 hops)
 license: proprietary
 access: closed-source
 model_id: claude-sonnet-5
 release_date:
   date: 2026-06-30
   stage: GA
-  note: "no preview stage — launched as the default model on Free/Pro plans day one (verified 2026-08-17)"
+  note: "no preview stage — launched as the default model on Free/Pro plans day one (verified 2026-08-17); releasedOn 2026-06-30 re-verified 2026-09-18, retirement 'Not sooner than June 30, 2027'; the consumer-plan framing is not on any docs surface"
 context_window: 1000000
 max_output: 128000
 pricing:
@@ -17,18 +17,18 @@ pricing:
   output: 10
   currency: USD
   regime: flat
-  note: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization)"
+  note: "$2 / $10 per MTok — now STANDARD: the launch framing 'introductory through 2026-08-31, then $3/$15' was retired and the scheduled increase cancelled (verified 2026-08-17; ledgers recorded at $2/$10 need no September renormalization). SCORED 2026-09-18, 18 days past the would-be increase: held — the pricing page states the increase 'will not occur' and lists $2 / $10"
 knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
-  note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from)"
+  note: "Jan 2026 (reliable); training data Jan 2026 — the two coincide. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); re-verified 2026-09-18"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   # Both keys below settled 2026-08-26 against the thinking + effort docs (§ Reasoning surface).
   reasoning_type: default-on   # docs table Default "On"; accepts `disabled` unconditionally, unlike Opus 5
   reasoning_effort: "levels:low/medium/high/xhigh/max@high"   # `output_config.effort`; all five levels
-  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok"
-  batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header"
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $2.50 / $4 / $0.20 per MTok (re-verified 2026-09-18)"
+  batch_discount: "50% in+out ($1 / $5 per MTok); 300k max output via beta header (re-verified 2026-09-18)"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control), cell_id:`claude-sonnet-5--stop-truncation--triggering--default`, probe_id:`claude-sonnet-5--stop-truncation--triggering--default--905e8ef4`, promoted ADR-0050."
   seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-sonnet-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
@@ -36,7 +36,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   multi_candidate_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no n/candidateCount-equivalent multi-candidate parameter for claude-sonnet-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`n/anthropic`, promoted ADR-0050."
   logprobs_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no logprobs parameter for claude-sonnet-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`logprobs/anthropic`, promoted ADR-0050."
   service_tier_contract: "response-asymmetric — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`claude-sonnet-5--service-tier--auto--default--60274a16`; the value-enum row (openai-service-tier-values) does not fire for Anthropic models — not tested here. The response-side shape is the shared Anthropic Messages API contract (same field, same endpoint across all 4 Claude models), verified directly at sibling model claude-haiku-4-5: the tier is reported at `usage.service_tier`, nested under the usage envelope and never mirrored to the top level, and sending the response-vocabulary word `standard` as a request value is rejected outright naming the field, cell_id:`claude-haiku-4-5--service-tier-audit--auto--default`, probe_id:`claude-haiku-4-5--service-tier-audit--auto--default--613638b0`, cell_id:`claude-haiku-4-5--service-tier-audit--trap--default`, probe_id:`claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: survey
 ---
 

@@ -2,14 +2,14 @@
 name: claude-haiku-4-5
 category: 1
 maker: Anthropic
-url: https://platform.claude.com/docs/en/about-claude/models/overview
+url: https://platform.claude.com/docs/en/models/overview   # repointed 2026-09-18: the former /docs/en/about-claude/models/overview now 307s here (and docs.claude.com 301s into platform.claude.com, 2 hops)
 license: proprietary
 access: closed-source
 model_id: claude-haiku-4-5-20251001
 release_date:
   date: 2025-10-15
   stage: GA
-  note: "no preview stage; the model-id snapshot suffix (20251001) predates the announced date by two weeks — the announcement text is the source (verified 2026-08-17)"
+  note: "no preview stage; the model-id snapshot suffix (20251001) predates the announced date by two weeks — the announcement text is the source (verified 2026-08-17); releasedOn 2025-10-15 re-verified 2026-09-18 — and the deprecations table now sets retirement 'Not sooner than October 15, 2026', four weeks out, with no retirement notice posted yet (Anthropic commits to 60 days' notice)"
 context_window: 200000
 max_output: 64000
 pricing:
@@ -17,17 +17,17 @@ pricing:
   output: 5
   currency: USD
   regime: flat
-  note: "$1 / $5 per MTok (verified 2026-08-17)"
+  note: "$1 / $5 per MTok (verified 2026-08-17; re-verified 2026-09-18)"
 knowledge_cutoff:
   date: 2025-07          # the limit date on training data
   basis: vendor-stated
-  note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs define the pair as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used — RECORDED HERE AS THE TRAINING-DATA LIMIT (2025-07); the vendor's finer 'reliable knowledge cutoff' is 2025-02 (ADR-0038: one date, the outer bound)"
+  note: "Feb 2025 (reliable); training data Jul 2025 — the lineup's only model where the two DIVERGE, by five months. re-verified 2026-08-26 against the models overview page's own structured data (`reliableKnowledgeCutoff` / `trainingDataCutoff` — the field name is where this note's '(reliable)' comes from); the docs defined the pair (2026-08-26 read) as knowledge = the date through which knowledge is most extensive, training data = the broader range of data used — those definitions LEFT the overview page by 2026-09-18, which now only points at 'Anthropic's Transparency Hub' for both cutoffs; the two dates themselves re-verified 2026-09-18 in the structured data — RECORDED HERE AS THE TRAINING-DATA LIMIT (2025-07); the vendor's finer 'reliable knowledge cutoff' is 2025-02 (ADR-0038: one date, the outer bound)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: opt-in      # confirmed 2026-08-26: docs table Default "Off", "Extended only", rejects `adaptive`
-  reasoning_effort: budget:tokens   # the sweep's only `budget:` dial; effort's supported-models list EXCLUDES 4.5
-  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok"
-  batch_discount: "50% in+out ($0.50 / $2.50 per MTok)"
+  reasoning_effort: budget:tokens   # the sweep's only `budget:` dial; effort's supported-models list EXCLUDES 4.5 (re-verified 2026-09-18 — the overview now says so on its own surface, 'Default effort: Not supported'; the thinking page adds that extended thinking is deprecated on the 4.6 models and rejected from 4.7 on, so this dial's remaining life is Haiku 4.5's own)
+  prompt_caching: "write 1.25x (5m TTL) / 2x (1h TTL), read 0.1x — $1.25 / $2 / $0.10 per MTok (re-verified 2026-09-18)"
+  batch_discount: "50% in+out ($0.50 / $2.50 per MTok) (re-verified 2026-09-18; the 300k beta list still excludes Haiku 4.5)"
   fast_mode: false   # checked and absent: the fast-mode page's supported-models list is Opus 5 + Opus 4.8 only, and `speed: "fast"` on an unsupported model returns an error (verified 2026-08-27)
   stop_sequence_honesty: "honest — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, and the response's own stop_reason field reports the distinguishable value stop_sequence (vs. end_turn on the no-stop control), cell_id:`claude-haiku-4-5--stop-truncation--triggering--default`, probe_id:`claude-haiku-4-5--stop-truncation--triggering--default--19f5c60f`, promoted ADR-0050."
   seed_determinism: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no seed parameter for claude-haiku-4-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`seed/anthropic`, promoted ADR-0050."
@@ -35,7 +35,7 @@ model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per A
   multi_candidate_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no n/candidateCount-equivalent multi-candidate parameter for claude-haiku-4-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`n/anthropic`, promoted ADR-0050."
   logprobs_delivery: "n/a (no request-side field) — OBSERVED 2026-09-03: Anthropic's Messages API reference documents no logprobs parameter for claude-haiku-4-5 — the full top-level Body parameters list was read end to end with no match (rule 1b checked-absence), docs-claims:`logprobs/anthropic`, promoted ADR-0050."
   service_tier_contract: "response-asymmetric — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`claude-haiku-4-5--service-tier--auto--default--6ba13904`; the value-enum row (openai-service-tier-values) does not fire for Anthropic models — not tested here. The BHV-06 tier audit (fired directly against this model) confirms the tier is reported at `usage.service_tier`, nested under the usage envelope and never mirrored to the top level, cell_id:`claude-haiku-4-5--service-tier-audit--auto--default`, probe_id:`claude-haiku-4-5--service-tier-audit--auto--default--613638b0`; the trap probe sending the response-vocabulary word `standard` as a request value is rejected outright, HTTP 400 naming the field, cell_id:`claude-haiku-4-5--service-tier-audit--trap--default`, probe_id:`claude-haiku-4-5--service-tier-audit--trap--default--8fc20f53`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: survey
 ---
 
