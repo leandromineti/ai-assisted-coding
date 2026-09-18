@@ -9,33 +9,33 @@ model_id: gemini-3.1-pro (Preview)
 release_date:
   date: 2026-02-19
   stage: Preview
-  note: "API changelog: 'Released Gemini 3.1 Pro Preview'; no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting"
-context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap)
+  note: "API changelog: 'Released Gemini 3.1 Pro Preview'; no GA date or plan stated anywhere as of 2026-08-17 — six months in Preview and counting. Re-verified 2026-09-18: still Preview on every surface (overview badge, `gemini-3.1-pro-preview` endpoint, deprecations page under 'Preview models' with 'No shutdown date announced'), no GA line in the changelog — seven months"
+context_window: 1048576   # input token limit on the model page (verified 2026-08-17; resolves the 2026-07-31 gap; re-verified 2026-09-18)
 max_output: 65536
 pricing:
   input: 2          # USD per MTok — base list rate (see the registry's rule)
   output: 12
   currency: USD
   regime: context-tiered
-  note: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys)"
+  note: "$2 / $12 per MTok for prompts ≤200k tokens; $4 / $18 above 200k (verified 2026-08-17; batch and caching moved to their own keys; re-verified 2026-09-18 on the pricing page)"
 knowledge_cutoff:
   date: 2025-01          # the limit date on training data
   basis: inherited
-  note: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'"
+  note: "January 2025 — inherited by explicit vendor delegation, read 2026-08-26 from both DeepMind model cards. Gemini-3-1-Pro-Model-Card.pdf (published February 2026) states no cutoff of its own, but its Model Data section reads 'Training Dataset: Gemini 3.1 Pro is based on Gemini 3 Pro. For more information about the training dataset for Gemini 3.1 Pro, see the Gemini 3 Pro model card' — and Gemini-3-Pro-Model-Card.pdf (Last Updated May 2026) states 'The knowledge cutoff date for Gemini 3 Pro was January 2025'. A cutoff is a property of the training dataset, and the vendor delegates 3.1 Pro's dataset to that card, so the figure carries. Caveat: the parent card separates pre- from post-training data and a cutoff describes the pre-training half, so a later post-training refresh would not surface here. Model page still has no cutoff row, only 'Latest update: February 2026'. Re-verified 2026-09-18: both card PDFs are byte-identical to the copies cached in references/cards/pdf/ (md5 match), the 3.1 card still has no Last Updated stamp and no cutoff, the parent still says January 2025; zero 'cutoff' hits across seven API-docs pages"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on    # "thinking by default", cannot be fully disabled — OBSERVED 2026-08-31 (issue #42 probe): thoughtsTokenCount 87 on a three-word prompt, no thinking config sent
-  reasoning_effort: "levels:low/medium/high@high"   # thinking_level IS the dial; legacy thinking_budget is mutually exclusive with it
-  prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h"
-  batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard"
-  fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27); the tier is RESPONSE-OBSERVABLE — usageMetadata carries `serviceTier: "standard"` on a plain request (observed 2026-08-31), so a Priority purchase would be verifiable from the same field
+  reasoning_effort: "levels:low/medium/high@high"   # thinking_level IS the dial (re-verified 2026-09-18: 'gemini-3.1-pro-preview | On (high) | low, medium, high'); the 2026-08-17 sub-claim that legacy thinking_budget is mutually exclusive with it is now UNSUPPORTED — `thinking_budget`/`thinkingBudget` has zero occurrences on the thinking, models, per-model, pricing, caching and batch pages (rule 1b: searched surfaces named), so the parameter appears to have left the docs; the claim is kept as dated history, not re-asserted
+  prompt_caching: "implicit on by default (4096-tok min) + explicit cache objects; cached input $0.20 (≤200k) / $0.40 (>200k) per MTok = 0.1x, storage $4.50 per MTok-hour, TTL settable, default 1h — STANDARD-tier figures; re-verified 2026-09-18, with two surface changes: explicit caching is now labelled Beta (v1beta) and lives on the generate-content caching page (the /docs/caching page became the Interactions API's, implicit-only), and Priority-tier caching is priced separately at $0.36 / $0.72 with $8.10 per MTok-hour storage (1.8x)"
+  batch_discount: "50% in+out at both size tiers ($1 / $6 ≤200k, $2 / $9 above); batch caching priced same as standard (re-verified 2026-09-18; the batch page moved from /docs/batch-mode to /docs/batch-api and is generateContent-only)"
+  fast_mode: true    # "Priority" service tier on the first-party pricing page: $3.60/$21.60 ≤200k, $7.20/$32.40 above (~1.8x standard); Flex is the slower-for-cheaper inverse (verified 2026-08-27; re-verified 2026-09-18 — Flex now carries a rate, $1 / $6 ≤200k and $2 / $9 above, i.e. the batch rate); the tier is RESPONSE-OBSERVABLE — usageMetadata carries `serviceTier: "standard"` on a plain request (observed 2026-08-31), so a Priority purchase would be verifiable from the same field
   stop_sequence_honesty: "ambiguous — OBSERVED 2026-09-03: stop-honored truncation before the trigger word, but finishReason reports the same STOP value on both the triggering call and the no-stop control — the finish field alone cannot prove which case fired, cell_id:`gemini-3-1-pro--stop-truncation--triggering--default`, probe_id:`gemini-3-1-pro--stop-truncation--triggering--default--c83e86af`, promoted ADR-0050."
   seed_determinism: "0/5 same-seed pairs (varies) — OBSERVED 2026-09-03: gemini-3-1-pro's seed field is accepted-unverified at the contract sweep; five same-seed repeat calls produced five distinct outputs, cell_id:`gemini-3-1-pro--seed--42--default`, probe_id:`gemini-3-1-pro--seed--42--default--r1--4d896ab5`, promoted ADR-0050."
   sampling_repeatability: "2/4 repeat pairs (partial) — OBSERVED 2026-09-03: gemini-3-1-pro accepts an explicit temperature:0 value in default mode — a genuine temperature:0 test, not a substitute; all five repeat calls hit the MAX_TOKENS budget uniformly, and two distinct outputs recurred across the five, giving a partial 2/4 match rate, cell_id:`gemini-3-1-pro--temperature--0--default`, probe_id:`gemini-3-1-pro--temperature--0--default--r1--a3519b85`, promoted ADR-0050."
   multi_candidate_delivery: "rejected — OBSERVED 2026-09-03: gemini-3-1-pro's own candidateCount field (its multi-candidate parameter, distinct from the shared compat n row) is rejected outright by the contract sweep at candidateCount:2 — a measured verdict from the contract sweep itself, not a behavioral re-test, probe_id:`gemini-3-1-pro--gemini-candidate-count--2--default--3d7b5857`, promoted ADR-0050."
   logprobs_delivery: "rejected — OBSERVED 2026-09-03: `logprobs` returns HTTP 400 at the contract sweep, probe_id:`gemini-3-1-pro--logprobs--true--default--82d54982`, promoted ADR-0050."
   service_tier_contract: "response-asymmetric — OBSERVED 2026-09-03: the shared compat `service-tier` presence row is skipped for gemini-3-1-pro — not tested there — because Gemini exposes its own top-level `serviceTier` field rather than the compat row's `service_tier` name; the value-enum row (openai-service-tier-values) is also not tested here, being openai_compat-family only. The BHV-06 tier audit is the real evidence: `serviceTier` is a request-top-level field, and the response reports it at `usageMetadata.serviceTier`, nested under the usage envelope and never mirrored to the top level — the structurally identical asymmetry to Anthropic's own, discovered independently and with no shared code, cell_id:`gemini-3-1-pro--service-tier-audit--omitted--default`, probe_id:`gemini-3-1-pro--service-tier-audit--omitted--default--8b4ac380`, cell_id:`gemini-3-1-pro--service-tier-audit--flex--default`, probe_id:`gemini-3-1-pro--service-tier-audit--flex--default--a9f9f805`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
@@ -45,7 +45,12 @@ Google's big-model line for "advanced intelligence, complex problem-solving, and
 powerful agentic and vibe coding capabilities" — and, as of this check, still marked
 **Preview** while four Flash-line models (3.6 Flash, 3.5 Flash, 3.5 Flash-Lite, 3.1
 Flash-Lite) are Stable. The lineup's shape is the finding: Google's *stable* tier is
-the fast/cheap line; the flagship Pro trails it in release status.
+the fast/cheap line; the flagship Pro trails it in release status. (2026-09-18: the
+count is stale in the finding's favor — 3.7 Flash and 3.8 Flash have since gone Stable
+too, four Flash *generations* to GA while 3.1 Pro stays Preview at seven months; the
+parent `gemini-3-pro-preview` endpoint was shut down 2026-03-09 and now aliases to
+3.1 Pro, and a same-price `gemini-3.1-pro-preview-customtools` endpoint, "better at
+prioritizing your custom tools", is a tool-call-fidelity lead.)
 
 ## The category-1 axes
 
@@ -124,4 +129,4 @@ transition deferred its own read) and the stale Terminal-Bench snapshot.
   surface here. A first-party page naming 3.1 Pro and a cutoff in one sentence would
   still be better evidence —
   [`deepmind.google/models/model-cards/gemini-3-1-pro/`](https://deepmind.google/models/model-cards/gemini-3-1-pro/)
-  and whatever Google publishes at GA (still Preview at six months, per `release_date`).
+  and whatever Google publishes at GA (still Preview at seven months as of 2026-09-18, per `release_date`).
