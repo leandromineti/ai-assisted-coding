@@ -4,37 +4,37 @@
 # a `retrieved` date and a `source` URL, transcribed from the model report's own
 # pricing: block and url: field, so a stale price is auditable and every ledger dollar
 # figure is recomputable from raw token counts.
-checked: 2026-09-04
+checked: 2026-09-18   # staleness sweep: 10 rows re-retrieved (gpt-5-6-sol changed), Anthropic sources repointed
 
 prices:
   - slug: claude-fable-5
     input_usd_per_mtok: 10
     output_usd_per_mtok: 50
-    retrieved: 2026-08-17
-    source: https://platform.claude.com/docs/en/about-claude/models/overview
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification; source repointed with the report url
+    source: https://platform.claude.com/docs/en/models/fable-5/overview
 
   - slug: claude-opus-5
     input_usd_per_mtok: 5
     output_usd_per_mtok: 25
-    retrieved: 2026-08-17
-    source: https://platform.claude.com/docs/en/about-claude/models/overview
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification; source repointed with the report url
+    source: https://platform.claude.com/docs/en/models/overview
 
   - slug: claude-sonnet-5
     input_usd_per_mtok: 2
     output_usd_per_mtok: 10
-    retrieved: 2026-08-17
-    source: https://platform.claude.com/docs/en/about-claude/models/overview
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification; source repointed with the report url
+    source: https://platform.claude.com/docs/en/models/overview
 
   - slug: claude-haiku-4-5
     input_usd_per_mtok: 1
     output_usd_per_mtok: 5
-    retrieved: 2026-09-01
-    source: https://platform.claude.com/docs/en/about-claude/models/overview
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification; source repointed with the report url
+    source: https://platform.claude.com/docs/en/models/overview
 
   - slug: gpt-5-6-sol
-    input_usd_per_mtok: 5
-    output_usd_per_mtok: 30
-    retrieved: 2026-08-17
+    input_usd_per_mtok: 4     # promotional since 2026-08-21 (was 5), "at least through November 21, 2026"
+    output_usd_per_mtok: 20   # was 30
+    retrieved: 2026-09-18
     source: https://developers.openai.com/api/docs/models
     # Sol tier's base rate only — the report also carries a >272k-input-token
     # multiplier (2x in / 1.5x out) this flat rate does not capture; not modeled
@@ -43,7 +43,7 @@ prices:
   - slug: gemini-3-1-pro
     input_usd_per_mtok: 2
     output_usd_per_mtok: 12
-    retrieved: 2026-08-17
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification
     source: https://ai.google.dev/gemini-api/docs/models
     # <=200k-token tier only — the report also carries a >200k tier ($4/$18); not
     # modeled here, same rationale as the gpt-5-6-sol row above.
@@ -51,20 +51,20 @@ prices:
   - slug: grok-4-5
     input_usd_per_mtok: 2
     output_usd_per_mtok: 6
-    retrieved: 2026-08-17
-    source: https://docs.x.ai/docs/models
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification; source repointed with the report url
+    source: https://docs.x.ai/developers/models/grok-4.5
     # <200k-token tier only — the report also carries a >=200k tier ($4/$12).
 
   - slug: kimi-k3
     input_usd_per_mtok: 3
     output_usd_per_mtok: 15
-    retrieved: 2026-08-17
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification
     source: https://huggingface.co/moonshotai/Kimi-K3
 
   - slug: deepseek-v4
     input_usd_per_mtok: 1.32
     output_usd_per_mtok: 3.96
-    retrieved: 2026-08-17
+    retrieved: 2026-09-18   # Pro peak rate unchanged at the 2026-09-18 re-verification
     source: https://api-docs.deepseek.com/quick_start/pricing
     # Pro peak rate — the report's headline/primary pricing figures, matching the
     # deepseek-v4-pro representative api_model_id chosen in models.yaml. Off-peak
@@ -74,19 +74,19 @@ prices:
   - slug: glm-5.3
     input_usd_per_mtok: 1.4
     output_usd_per_mtok: 4.4
-    retrieved: 2026-08-26
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification
     source: https://docs.z.ai/guides/llm/glm-5.3
 
   - slug: qwen3.8-max
     input_usd_per_mtok: 2.0
     output_usd_per_mtok: 6.0
-    retrieved: 2026-08-27
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification
     source: https://www.qwencloud.com/models/qwen3.8-max
 
   - slug: qwen3.8-flash
     input_usd_per_mtok: 0.15
     output_usd_per_mtok: 0.47
-    retrieved: 2026-08-27
+    retrieved: 2026-09-18   # unchanged at the 2026-09-18 re-verification
     source: https://www.qwencloud.com/models/qwen3.8-flash
 
   - slug: gpt-6-astra
