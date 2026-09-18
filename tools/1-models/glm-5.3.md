@@ -3,13 +3,13 @@ name: glm-5.3
 category: 1
 maker: Z.ai (Zhipu AI)
 url: https://docs.z.ai/guides/llm/glm-5.3
-license: "GLM-5.3 License — bespoke, named after the model (the sweep's third such, after Kimi K3's and qwen3.8-max's; LICENSE file read 2026-08-31). Not OSI-shaped: its distinctive term is a Model-as-a-Service gate — a licensee whose aggregate revenue exceeds $10B 'must pass Z.AI's security review before using the Software' — which rhymes with the offensive-security rationale for the weights delay. No attribution requirement, no output/synthetic-data clauses"
+license: "GLM-5.3 License — bespoke, named after the model (the sweep's third such, after Kimi K3's and qwen3.8-max's; LICENSE file read 2026-08-31). Not OSI-shaped: its distinctive term is a Model-as-a-Service gate — a licensee whose aggregate revenue exceeds $10B 'must pass Z.AI's security review before using the Software' — which rhymes with the offensive-security rationale for the weights delay. No output/synthetic-data clauses; the MIT-shaped notice-retention condition ('this permission notice shall be included in all copies') is the only attribution-like term, so 'no attribution requirement' (2026-08-31 wording) is now read as 'no branding requirement' (re-read 2026-09-18, LICENSE unchanged; the $10B test is 'in total over any consecutive 12 months')"
 access: open-weights   # FLIPPED from closed-source 2026-08-31 per the report's own dated prediction, which scored a HIT (see § the prediction, scored) — weights landed 2026-08-25
 model_id: glm-5.3 (API); weights zai-org/GLM-5.3 (+ GLM-5.3-Flash sibling, and -BF16 variants of both; all created 2026-08-25 — supersedes the 2026-08-26 no-repo check)
 release_date:
   date: 2026-08-14
   stage: not-stated
-  note: "no stage vocabulary at all ('GLM-5.3 is now available to all GLM Coding Plan users'); the day is third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell). Open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26)"
+  note: "no stage vocabulary at all ('GLM-5.3 is now available to all GLM Coding Plan users'); the day is third-party-corroborated (unite.ai, marktechpost, both 2026-08-14), Z.ai's own blog being unfetchable (JS shell). Open weights announced but held back for a 'two-week safety evaluation and hardening period' (verified 2026-08-26). CONFLICT recorded 2026-09-18: Z.ai's release-notes page (docs.z.ai/release-notes/new-released) now dates its GLM-5.3 entry 2026-08-18 — the first first-party date, four days after the third-party one; the field keeps 08-14 (availability date, corroborated twice) and the vendor's later stamp is recorded here rather than silently adopted, since a release-note date can be the note's own posting date"
 context_window: 1000000
 max_output: 128000
 pricing:
@@ -17,25 +17,25 @@ pricing:
   output: 4.4
   currency: USD
   regime: flat
-  note: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20, GLM-5-Turbo $1.20 / $4.00 (verified 2026-08-26)"
+  note: "$1.40 / $4.40 per MTok — same list price as GLM-5.2 and 5.1; base GLM-5 sits at $1 / $3.20 (verified 2026-08-26; re-verified 2026-09-18). GLM-5-Turbo $1.20 / $4.00 (2026-08-26) is GONE from the pricing page and the chat-completion model enum by 2026-09-18 (zero 'turbo' hits across the pricing page, enum, llms.txt, openapi.json); the new siblings are GLM-5.3-Flash $0.15 / $0.50 and the API-only GLM-5.3-FlashX $0.37 / $1.25"
 knowledge_cutoff:
   date: null          # the limit date on training data
   basis: not-stated
-  note: "not stated — the model guide carries no cutoff (checked 2026-08-26); the HF card, once it existed, was read 2026-08-31 and is also silent: no cutoff or training-data date anywhere on zai-org/GLM-5.3"
+  note: "not stated — the model guide carries no cutoff (checked 2026-08-26); the HF card, once it existed, was read 2026-08-31 and is also silent: no cutoff or training-data date anywhere on zai-org/GLM-5.3 (re-verified 2026-09-18 across the guide, pricing, cache, thinking, thinking-mode, concept-param, chat-completion reference, migrate page, release notes, HF README and LICENSE — the card was rewritten 2026-09-04 and stays silent)"
 model_features:   # nested per ADR-0014; reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on    # "GLM-5.3 always operates with reasoning enabled"; thinking.type: disabled is "no longer supported" — OBSERVED 2026-08-31 (issue #42 probe): sending it returns error 1210, 'This model always engages in thinking and cannot be disabled; please use low, high, or max' — the refusal also names the exact low/high/max level set the reasoning_effort cell records
   reasoning_effort: "levels:low/high/max@max"   # 'Deep Reasoning' — identical surface and default to Kimi K3
-  prompt_caching: "cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated"
-  batch_discount: "no batch API found on the pricing page or model guide (checked 2026-08-26); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates"
-  fast_mode: false   # checked and absent: the pricing page lists input/cached-input/storage/output only; GLM-5-Turbo is a sibling model, not a serving mode of 5.3 (verified 2026-08-27)
+  prompt_caching: "cached input $0.26 per MTok (≈0.19x of the $1.40 input rate); cached-input storage 'Limited-time Free' (undated); mechanism described only as 'intelligent caching' — no TTL, no explicit-breakpoint surface stated (2026-08-26). Re-verified 2026-09-18 against a dedicated Context Caching page that now exists (docs.z.ai/guides/capabilities/cache): rates unchanged; breakpoints explicitly DENIED ('Implicit caching that intelligently identifies repeated context content without manual configuration'); TTL still non-numeric ('Cache has reasonable time limits, will recalculate after expiration'); the response field is documented as usage.prompt_tokens_details.cached_tokens. The same page says cache hits are 'usually 50% of standard price' while the pricing table gives $0.26 vs $1.40 ≈ 0.19x — a first-party self-contradiction; the table is what this cell records"
+  batch_discount: "no batch API found on the pricing page or model guide (checked 2026-08-26; re-verified 2026-09-18 — llms.txt lists 76 pages and openapi.json 14 paths, none batch); the guide's off-peak '50% of the standard points' is GLM Coding Plan subscription quota, not API pricing — don't conflate it with DeepSeek's off-peak API rates"
+  fast_mode: false   # checked and absent: the pricing page lists input/cached-input/storage/output only; GLM-5-Turbo was a sibling model, not a serving mode of 5.3 (verified 2026-08-27; by 2026-09-18 Turbo is gone and the Flash/FlashX ids are likewise separate models, not tiers — zero priority/fast/flex/service_tier hits across the docs)
   stop_sequence_honesty: "inconclusive — OBSERVED 2026-09-03: the triggering call returned empty visible text at this budget, so truncation itself was never confirmed against the trigger word in this sweep, and the shared openai_compat stop finish value matches the no-stop control's own finish reason regardless, cell_id:`glm-5.3--stop-truncation--triggering--default`, probe_id:`glm-5.3--stop-truncation--triggering--default--01466ba7`, promoted ADR-0050."
   seed_determinism: "0/5 same-seed pairs (no-signal) — OBSERVED 2026-09-03: glm-5.3's five same-seed repeats each hit reasoning-length exhaustion before producing a comparable visible completion, so the 0/5 rate reflects exhausted budget, not observed variation, cell_id:`glm-5.3--seed--42--default`, probe_id:`glm-5.3--seed--42--default--r1--5d9fe9d0`, promoted ADR-0050."
   sampling_repeatability: "0/4 repeat pairs (no-signal) — OBSERVED 2026-09-03: glm-5.3 accepts an explicit temperature:0 value in default mode — a genuine temperature:0 test, not a substitute; but two of the five repeat calls hit the length budget while three completed naturally (stop), a mixed truncation state that confounds the comparison, so the 0/4 rate reflects that mismatch, not observed sampling variation, cell_id:`glm-5.3--temperature--0--default`, probe_id:`glm-5.3--temperature--0--default--r1--1bd1ba85`, promoted ADR-0050."
   multi_candidate_delivery: "accepted-ignored — OBSERVED 2026-09-03: a request for 2 candidates returned only 1, with no error reporting the shortfall — the gap between requested and returned is the finding, cell_id:`glm-5.3--n--2--default`, probe_id:`glm-5.3--n--2--default--b1d9be3b`, promoted ADR-0050."
   logprobs_delivery: "accepted-ignored — OBSERVED 2026-09-03: `logprobs` is accepted but the response carries zero per-token entries, confirmed at a larger, non-masking budget — Z.ai's own docs are silent on a logprobs/top_logprobs field at all (absent-from-docs), cell_id:`glm-5.3--logprobs-reverify--combined--default`, probe_id:`glm-5.3--logprobs-reverify--combined--default--d9f149fc`, promoted ADR-0050."
   service_tier_contract: "response-absent — OBSERVED 2026-09-03: `service_tier` is accepted at the presence probe but not echoed back at the requested value (accepted-ignored), probe_id:`glm-5.3--service-tier--auto--default--39f1ca62`; the value-enum row fires here (openai_compat family) — all 4 values accepted-ignored uniformly, probe_id:`glm-5.3--openai-service-tier-values--auto--default--39f1ca62`; the BHV-06 tier audit is the third, genuinely distinct response-side state — no service-tier field appears in the response at all, a real absence rather than a nesting the presence probe alone cannot see, cell_id:`glm-5.3--service-tier-audit--omitted--default`, probe_id:`glm-5.3--service-tier-audit--omitted--default--29873f7a`, promoted ADR-0050."
-checked: 2026-08-26
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep), folded in 8 days early: every spec and docs-grade model_features cell held; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
@@ -43,6 +43,8 @@ depth: stub
 
 Z.ai's coding/agent flagship: 1M context, 128K max output, always-on reasoning with
 a three-level `reasoning_effort` (default `max`). Launched API-first on 2026-08-14
+(Z.ai's own release notes, first fetchable 2026-09-18, stamp the entry 2026-08-18 —
+see `release_date`)
 with the open weights explicitly **held back two weeks for a safety evaluation** —
 Z.ai's stated reason is that the model "developed offensive security capability
 faster than expected, with its largest gains on the exploitation end of the chain."
@@ -136,4 +138,13 @@ GLM models, not 5.3.
   Grok 0.15x). *Partial observation 2026-08-31 (issue #42 probe): the surface is at
   least response-visible — `usage.prompt_tokens_details.cached_tokens` appears on a
   plain request — so hit rates are measurable even though the mechanism stays
-  undocumented. TTL still unknown; probing it needs two spaced requests.*
+  undocumented. TTL still unknown; probing it needs two spaced requests.* **Half
+  answered 2026-09-18** by a new Context Caching page: breakpoints are explicitly
+  absent ("without manual configuration"), the TTL is stated but not as a number
+  ("reasonable time limits"), and the page contradicts the pricing table on the hit
+  rate (says "usually 50%", table says 0.19x). The numeric TTL still needs the probe.
+- The docs disagree with themselves on invalid `reasoning_effort` values (sighted
+  2026-09-18): the Deep Thinking page says any value outside low/high/max "will result
+  in an error" and, two lines later, maps none/minimal→low, medium→high, xhigh→max; the
+  HF card says any other value defaults to `max`. Three positions, one free negative
+  probe.
