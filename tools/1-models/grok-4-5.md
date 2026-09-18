@@ -2,50 +2,59 @@
 name: grok-4-5
 category: 1
 maker: xAI
-url: https://docs.x.ai/docs/models
+url: https://docs.x.ai/developers/models/grok-4.5   # repointed 2026-09-18: the docs moved /docs/* → /developers/* (the old url 308s) and a per-model page now exists; every field below was re-verified there and on its .md twin
 license: proprietary
 access: closed-source
 model_id: grok-4.5
 release_date:
   date: 2026-07
   stage: not-stated
-  note: "MONTH-LEVEL, which is why the date carries no day: the first-party release notes say only 'now available on the xAI API' with no stage word. The day this report carries elsewhere (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17)"
+  note: "MONTH-LEVEL, which is why the date carries no day: the first-party release notes say only 'now available on the xAI API' with no stage word. The day this report carries elsewhere (07-08) is third-party-corroborated, x.ai's dated announcement being unfetchable (verified 2026-08-17). Re-verified 2026-09-18: x.ai/news/grok-4-5 now fetches and is dated 'Jul 16, 2026', the co-authored card is dated July 14 — nothing first-party supports 07-08, so the body's day is retracted below; the field stays month-level because the release notes still say only 'now available on the xAI API' under a July heading"
 context_window: 500000
-max_output: "no model-specific figure published; generic max_completion_tokens defaults to 128000, visible-output only (checked 2026-08-17)"
+max_output: "no model-specific figure published; generic max_completion_tokens defaults to 128000, visible-output only (checked 2026-08-17; re-verified 2026-09-18 — 'visible-output only' is the Chat Completions semantics; the Responses API's max_output_tokens 'includes both output and reasoning tokens', same 128,000 default)"
 pricing:
   input: 2          # USD per MTok — base list rate (see the registry's rule)
   output: 6
   currency: USD
   regime: context-tiered
-  note: "$2 / $6 per MTok for prompts <200k tokens; $4 / $12 at ≥200k — the higher rate applies to ALL tokens once the prompt reaches 200k (re-verified 2026-08-17)"
+  note: "$2 / $6 per MTok for prompts <200k tokens; $4 / $12 at ≥200k — the higher rate applies to ALL tokens once the prompt reaches 200k (re-verified 2026-08-17; re-verified 2026-09-18 on the per-model page, pricing page and the embedded models registry)"
 knowledge_cutoff:
   date: 2026-01          # the limit date on training data
   basis: vendor-stated
-  note: "RESOLVED 2026-08-26 — *Model Card: Grok 4.5* (July 14 2026, 23 pp, cursor.com/resources/grok-4-5-model-card.pdf) states in §1: 'Grok 4.5 has a pretraining cutoff of January 2026.' First-party despite the cursor.com host: the card's §1 names the model as 'the initial release of the newest family of models from SpaceXAI* and Cursor†' — Cursor is a CO-AUTHOR, not a third party mirroring someone else's document, which is what makes this admissible where the 4.6 figure was not. Vendor terminology is 'pretraining cutoff', matching this field's semantics (the outer training-data bound; the card notes midtraining and post-training followed). Supersedes the 2026-08-17 retraction, kept here: RETRACTED 2026-08-17 — the 'Feb 1, 2026' recorded 2026-07-31 is documented for Grok 4.6, not 4.5; no first-party page states a 4.5 cutoff (model page, overview, release notes, launch post all checked)"
+  note: "RESOLVED 2026-08-26 — *Model Card: Grok 4.5* (July 14 2026, 23 pp, cursor.com/resources/grok-4-5-model-card.pdf) states in §1: 'Grok 4.5 has a pretraining cutoff of January 2026.' First-party despite the cursor.com host: the card's §1 names the model as 'the initial release of the newest family of models from SpaceXAI* and Cursor†' — Cursor is a CO-AUTHOR, not a third party mirroring someone else's document, which is what makes this admissible where the 4.6 figure was not. Re-read 2026-09-18 (PDF unchanged, md5 1e19dca73a396a21cf4d829ad78f60c3): the two footnotes qualify that sentence — '* SpaceXAI is a doing-business-as (dba) name of XAI LLC. xAI and SpaceXAI may be used interchangeably' and '† Grok 4.5 was also subject to supplemental training using anonymized Cursor workflow data' — so Cursor's named role is training-data contributor; the document is still the maker's own card hosted by Cursor, and the cutoff sentence is intact. docs.x.ai still states no 4.5 cutoff (the only cutoff on the whole llms-full.txt corpus is 4.6's). Vendor terminology is 'pretraining cutoff', matching this field's semantics (the outer training-data bound; the card notes midtraining and post-training followed). Supersedes the 2026-08-17 retraction, kept here: RETRACTED 2026-08-17 — the 'Feb 1, 2026' recorded 2026-07-31 is documented for Grok 4.6, not 4.5; no first-party page states a 4.5 cutoff (model page, overview, release notes, launch post all checked)"
 model_features:   # nested per ADR-0014 (2026-08-19); reasoning keys split per ADR-0040
   reasoning: true
   reasoning_type: always-on    # vendor: "cannot be disabled" — OBSERVED 2026-08-31 (issue #42 probe): 27 reasoning tokens on a three-word prompt, no thinking config sent
-  reasoning_effort: "levels:low/medium/high@high"   # 'xhigh' is silently downgraded to high (4.6+ only)
-  prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs"
-  batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only"
-  fast_mode: false   # checked and absent: the docs models page lists no serving-speed option for grok-4-5 — the only "fast" tokens there are separate voice model ids, which are siblings, not modes (verified 2026-08-27)
+  reasoning_effort: "levels:low/medium/high@high"   # 'xhigh' is silently downgraded to high (4.6+ only) — re-verified 2026-09-18 on the reasoning guide ('On models that do not support it, such as grok-4.5, requests with xhigh are treated as high'), but the NEW per-model page and the embedded models registry list xhigh as SUPPORTED on grok-4.5 ('Reasoning efforts (supported): low, medium, high, xhigh'; supportedEfforts includes xhigh). A first-party self-contradiction; the cell keeps the guide's value and the wire is the tiebreaker (a negative probe is free — queued in § Open questions)
+  prompt_caching: "automatic (server-affinity via prompt_cache_key / x-grok-conv-id); cached input $0.30 (<200k) / $0.60 (≥200k) per MTok = 0.15x; TTL not stated anywhere in the caching docs (re-verified 2026-09-18 across the five caching pages — 'Cache entries can be evicted at any time')"
+  batch_discount: "verified absent — Grok 4.5 is excluded from the Batch API entirely ('will be rejected'); the 20% batch discount covers 4.3/4.20-era models only (re-verified 2026-09-18: per-model page 'Batch API: Not supported', registry batchDiscountPercent 0)"
+  fast_mode: false   # checked and absent: the docs models page lists no serving-speed option for grok-4-5 — the only "fast" tokens there are separate voice model ids, which are siblings, not modes (verified 2026-08-27; re-verified 2026-09-18 — Priority Processing is now priced at 2x with the response's service_tier as the billing witness, a tier the presence probe already classified, not a speed mode)
   stop_sequence_honesty: 'n/a (parameter rejected at the contract sweep) — OBSERVED 2026-09-03: stop returns HTTP 400 in default mode, so no honesty verdict is reachable, probe_id:`grok-4-5--stop--["the"]--default--ee1a658f`, promoted ADR-0050.'
   seed_determinism: "0/5 same-seed pairs (varies) — OBSERVED 2026-09-03: grok-4-5's seed field is accepted-unverified at the contract sweep; five same-seed repeat calls produced five distinct outputs, cell_id:`grok-4-5--seed--42--default`, probe_id:`grok-4-5--seed--42--default--r1--1d55da10`, promoted ADR-0050."
   sampling_repeatability: "0/4 repeat pairs (varies) — OBSERVED 2026-09-03: grok-4-5 accepts an explicit temperature:0 value in default mode — a genuine temperature:0 test, not a substitute; all five repeat calls completed naturally with five distinct outputs, cell_id:`grok-4-5--temperature--0--default`, probe_id:`grok-4-5--temperature--0--default--r1--d2c464ce`, promoted ADR-0050."
   multi_candidate_delivery: "accepted-honored — OBSERVED 2026-09-03: a request for 2 candidates returned 2, cell_id:`grok-4-5--n--2--default`, probe_id:`grok-4-5--n--2--default--10c7bf17`, promoted ADR-0050."
   logprobs_delivery: "accepted-ignored — OBSERVED 2026-09-03: `logprobs` is accepted but the response carries zero per-token entries, confirmed at a larger, non-masking budget chosen precisely to rule out truncation hiding the result — xAI's own docs pre-announce a silent-ignore contract on newer reasoning models, cell_id:`grok-4-5--logprobs-reverify--combined--default`, probe_id:`grok-4-5--logprobs-reverify--combined--default--389d3fcc`, promoted ADR-0050."
   service_tier_contract: "silently-translated — OBSERVED 2026-09-03: the presence probe's requested `auto` value comes back as a DIFFERENT resolved value at the response's own top-level `service_tier` field, probe_id:`grok-4-5--service-tier--auto--default--50701f55`; the value-enum row fires here (openai_compat family) — `default`/`priority` are echoed (accepted-honored) but `flex` is ALSO silently translated (unlike gpt-5-6-sol, which honors `flex`), probe_id:`grok-4-5--openai-service-tier-values--flex--default--5807985b`; the BHV-06 tier audit confirms the response field stays flat and present at the top level with no nesting under a usage envelope — not the asymmetric shape Anthropic and Gemini show, cell_id:`grok-4-5--service-tier-audit--default--default`, promoted ADR-0050."
-checked: 2026-08-17
+checked: 2026-09-18   # full docs-route re-verification (staleness sweep): every spec cell held; release-day and reasoning-effort surfaces conflict, recorded; the six wire-behavior OBSERVED cells keep their own dates
 depth: stub
 ---
 
 # Grok 4.5
 
 xAI's recommended model "for code and chat" (released 2026-07-08 on the 1.5T-param V9
-base, per the 2026-07-28 verified sweep). The category-1↔2 story attached to it is why it
+base, per the 2026-07-28 verified sweep). *Both clauses aged by 2026-09-18:* the models
+page now says "For everything else, including code, use Grok 4.6", and the launch post
+at x.ai/news/grok-4-5 — unfetchable until now — is dated **Jul 16, 2026**, with the
+co-authored card dated July 14; the 07-08 day was third-party and is retracted (the
+`release_date` field was always month-level). The docs also moved wholesale from
+`/docs/*` to `/developers/*`, with a per-model page for 4.5 that did not exist before. The category-1↔2 story attached to it is why it
 matters to this repo: **trained on real Cursor session data** — the sharpest instance
 of the harness-as-training-data-instrument pattern in the taxonomy's boundary-rule
-note. No EU availability at launch (2026-07-28 check; not re-verified today).
+note. No EU availability at launch (2026-07-28 check); by 2026-09-18 the July release
+notes carry "Grok 4.5 is now available in the API console for EU users" — console
+access, not an EU inference region: the per-model page lists `us-east-1` and
+`us-west-2` only, the registry's `eu-west-1` cluster serves grok-4.3 alone, and the
+regional-endpoint doc offers a US endpoint (4.6 only) with no EU one.
 
 ## The category-1 axes
 
@@ -115,4 +124,8 @@ One three-word request ("Say ok.", `max_tokens: 256`) returned three observation
 - Does Cursor-session training measurably improve performance *inside Cursor* vs
   other harnesses — the cleanest possible test of the category-1↔2 integration thesis,
   if anyone can run it?
-- EU availability since launch? (Unchecked since 2026-07-28.)
+- ~~EU availability since launch? (Unchecked since 2026-07-28.)~~ **Answered
+  2026-09-18** (intro): console access for EU users since July; no EU serving region.
+- Does `grok-4.5` honor `xhigh` or downgrade it? The reasoning guide says downgrade,
+  the new per-model page and the models registry say supported (frontmatter). One
+  request settles it, and the response's reasoning-token count is the witness.
