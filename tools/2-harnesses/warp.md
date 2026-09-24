@@ -27,7 +27,7 @@ harness_features:
   session_sharing: true # app/src/terminal/shared_session/ with its own permissions_manager; the one local enforcement point is viewer mode (execute.rs:594-600 WaitingOnSharer)
   hooks: false         # 2026-08-19 sharpened: no hook engine for Warp's own loop (exhaustive sweep — stop_hook/on_turn_end/PreToolUse/max_turns/… all zero hits; no hook schema in settings). Warp's answer to hooks is "it uses YOURS": it installs its own plugins into Claude Code and Codex hook systems — see Orchestration
   context_retrieval: search-tool   # ADR-0055, cell set 2026-09-04 from the deep-dive: the embedding index is real but its chain ends in a {name, path} tool result with zero surrounding context lines (RETRIEVE_FRAGMENT_CONTEXT_LENGTH = 0, codebase_index.rs:82); the only automatic contribution is a pointer saying the codebase is indexed (body § index verdict)
-  # context_compaction deliberately unset (ADR-0055, 2026-09-04): compaction is entirely server-driven — /compact is the only client trigger, ToolCallResultSummary arrives opaque, and the wire/server implementation lives in an external unpublished proto repo absent from this clone; whether the server summarizes or prunes is undecidable from source (omit-with-reason)
+  # context_compaction deliberately unset (ADR-0055, 2026-09-04): compaction is entirely server-driven — /compact is the only client trigger, ToolCallResultSummary arrives opaque, and the wire/server implementation lives in an external unpublished proto repo absent from this clone; whether the server summarizes or prunes is undecidable from source (omit-with-reason). DRIFT 2026-09-24: the premise "unpublished" was WRONG — `warpdotdev/warp-proto-apis` is a public repo (`gh api … -q .private` → false) carrying 15 `.proto` files at the exact rev this pin depends on (`b0886a95…`, Cargo.toml:348), and `apis/multi_agent/v1/response.proto:95` declares `bool summarized`. Cell still unset: reading request.proto/conversation_data.proto at that rev is the parked follow-up that may decide it (§ Drift check 2026-09-24, 1)
   turn_end_gates: false # 2026-08-19, decidable after all: the 2026-08-18 probe's "loop server-side" premise was half wrong — the ITERATION loop is client-side (see Architecture), so a turn-end gate would have to be visible here, and it is verified absent. Three things run at turn end (suggestion chip, /queue drain, "Execute this plan" chip) — all advisory, none can veto. Turn extension exists only for transient errors (MAX_RETRIES=3) and wait_for_events. What the server does before emitting Finished stays unobservable, but the enforcement point (execution) is wholly client-side and ungated
   tool_approval: policy  # can_autoexecute_command six-level chain at dispatch — with the AgentDecided caveat: a model-authored is_risky:false self-authorizes and preempts the redirection guard (body §permission model); set 2026-08-25 transcribing the deep-dive's verified instance at this pin, no re-read
   plan_mode: flag      # 2026-08-19: the survey missed it by name — UserQueryMode::{Normal, Plan, Orchestrate} (app/src/ai/agent/mod.rs:2637-2653), entered via /plan. A per-query flag, not sticky state: derived from the string prefix at each submit, no mode toggle, no exit transition. planning_enabled is hardcoded true in every real request (api.rs:403) — /plan is a nudge, not a capability switch
@@ -118,10 +118,16 @@ and codex each assume their loop is the one that matters.
 
 ## Stack & repo shape
 
-Rust monorepo: 3962 `.rs` of 6199 tracked files, `app/` (the client) plus ~50 crates under
-`crates/`. 682 `.md` — an unusual share, explained by `agents/specs/` and `.agents/specs/`,
-directories of per-ticket agent specs (`APP-4913-tui-input-prompt-prefix.md`, …) committed
-alongside the code. The repo dogfoods its own workflow: `AGENTS.md`, `.mcp.json`, `.claude/`,
+Rust monorepo: 3962 `.rs` of 6199 tracked files, `app/` (the client) plus **78** crates under
+`crates/` (`git ls-tree -d --name-only 80a20347 crates/ | wc -l`; 75 as workspace path
+dependencies in the root `Cargo.toml` — *corrected 2026-09-24: the deep-dive wrote "~50", a
+figure no measure at the pin produces*). 682 `.md` (exact: `git ls-tree -r --name-only
+80a20347 | grep -c '\.md$'`) — an unusual share, explained by per-ticket agent specs
+committed alongside the code: **498 of them under the root `specs/` tree** (281 per-ticket
+directories), 19 under `agents/specs/` (`APP-4913-tui-input-prompt-prefix.md`, …) and 32
+under `.agents/` (*corrected 2026-09-24: the deep-dive attributed the count to the two
+smaller directories and never mentioned `specs/`; the observation survives, the attribution
+did not*). The repo dogfoods its own workflow: `AGENTS.md`, `.mcp.json`, `.claude/`,
 `.agents/`, and `.warpindexingignore` at root. It even tests the dogfooding: a unit test reads
 the repo's own root `AGENTS.md` through the production rules predicate and asserts `WARP.md`
 no longer exists (`crates/repo_metadata/src/standing_queries_tests.rs:118-134`).
@@ -142,6 +148,21 @@ adopted. First non-permissive harness in this repo's set.
 whose `.proto` files are not in this drop. Everything server-side (prompt assembly, model
 routing, tool choice, summarization policy) is absent by construction; every claim below
 about the server is inferred from client usage and graded accordingly.
+
+**Corrected 2026-09-24 — half of that absence was a rule-1b failure.** The proto repo is
+**public** (`gh api repos/warpdotdev/warp-proto-apis -q .private` → `false`) and at the exact
+rev this pin depends on it carries 15 `.proto` files under `apis/multi_agent/v1/`
+(`attachment`, `citations`, `conversation_data`, `document_content`, `file_content`,
+`input_context`, `lsp`, `options`, `orchestration`, `request`, `response`, `skill`,
+`suggestions`, `task`, `todo`). The *server implementation* is closed; the *wire schema*
+never was — the surface searched was the clone, which structurally cannot show a git
+dependency's contents. Read at that rev it already corroborates two findings from a better
+source: the three top-level event types are stated in the contract
+(`response.proto:19-29`, `oneof type { StreamInit init; ClientActions client_actions;
+StreamFinished finished; }`), and the server meters BYOK spend separately from Warp spend
+(`byok_token_usage` beside `warp_token_usage`, `response.proto:108-118`), with `bool
+summarized` (`:95`) the first direct evidence for the "server silently compacts" claim. See
+§ Drift check 2026-09-24, 1.
 
 ## Architecture — the traced loop *(deep-dive 2026-08-19)*
 
@@ -321,7 +342,8 @@ notification to `Stop`).
 
 The Claude driver is the deepest: transcript-file parsing (Claude's own JSONL, uploaded and
 rehydrated on resume), a required platform plugin from a Warp-owned marketplace
-(`warpdotdev/claude-code-warp` — hook internals live there, outside this drop), and
+(`warpdotdev/claude-code-warp` — hook internals live there, outside this drop; a public
+repo, checked 2026-09-24, so outside is not closed), and
 `parent_bridge.rs`, a three-stage on-disk mailbox under `.claude-code/oz-parent-bridge/`
 that a Claude hook drains into next-turn context (capped 6000 chars), with a `wake_driver`
 that relaunches a dormant session when mail arrives. PTY scraping is used only for runtime
@@ -444,7 +466,7 @@ conclusion 15 covers. Read alongside the child-launch finding in § Permission m
 **Warp's orchestration is strict about its own surface and pass-through about everything it
 delegates.** That is a coherent position; it is not a defence.
 
-## Drift
+## Drift check — 2026-08-19 (not a re-read; the pin is unchanged)
 
 *(2026-08-19, pin unmoved per rule 4b.)* Upstream is 98 commits past the pin; 27 touch the
 paths this deep-dive traced. Reviewed by subject: orchestration plumbing consolidation
@@ -455,6 +477,281 @@ Nothing in the subjects contradicts the structural findings (index-as-tool, clie
 loop, permission ordering, child-launch flags); the checkpoint/retry work extends the
 orchestration story rather than changing its shape. Re-check the child-launch flags
 specifically on any future re-pin — that is the finding most likely to be "fixed."
+
+## Drift check — 2026-09-24 (not a re-read; the pin is unchanged)
+
+384 commits / 1368 files since the pin; **145 of them touch a file or directory this report
+cites**, which is the set that was checked
+(`git log --format='%h %cs %s' 80a20347..df5cacf89 -- <49 cited paths>`; the path list is
+every `*.{rs,toml,md,json}` string in this report resolved to its full path at the pin, plus
+the 14 directory-level citations — `crates/{mcp,lsp,computer_use,isolation_platform,warp_tui}`,
+`crates/ai/src/{skills,diff_validation,index/full_source_code_embedding,file_outline}`,
+`app/src/ai/execution_profiles`, `app/src/terminal/{cli_agent_sessions,shared_session}`,
+`app/src/billing`, `app/src/ai/agent_sdk/driver/harness`). Every one of the six structural
+findings survives. What the check turned up instead are **two claims that were wrong at the
+pin** — both counts stated without the measure that produced them, and one of them an
+*absence* that was never an absence.
+
+**1. CONTRADICTED — the proto repo is public, so the "load-bearing absence" is not one.**
+§ Stack & repo shape says the wire protocol "lives in an external git dependency … whose
+`.proto` files are not in this drop. Everything server-side … is absent **by construction**",
+and § Open questions says the server-side prompt assembly and tool-choice policy are
+"**Undecidable by construction** — the proto repo and backend are closed." The first half is
+true and the second is false. `warpdotdev/warp-proto-apis` is a **public** repository
+(`gh api repos/warpdotdev/warp-proto-apis -q .private` → `false`), and at the exact rev the
+pin depends on — `b0886a9523e2e05d102f61bd0a212dc15ade4835`, `Cargo.toml:348 @ 80a20347` —
+it carries **15 `.proto` files** under `apis/multi_agent/v1/` (`attachment`, `citations`,
+`conversation_data`, `document_content`, `file_content`, `input_context`, `lsp`, `options`,
+`orchestration`, `request`, `response`, `skill`, `suggestions`, `task`, `todo`), counted with
+`gh api repos/warpdotdev/warp-proto-apis/git/trees/b0886a95…?recursive=1 -q '[.tree[].path | select(endswith(".proto"))] | length'`.
+The *server implementation* is still closed; the *wire schema* never was. This is a rule-1b
+failure — the surface searched was the clone, and the clone structurally cannot show a git
+dependency's contents.
+
+Read at that rev, the schema immediately **corroborates two findings from a better source
+than the one the report used**, and the correction should say so rather than just retract:
+
+- § Architecture's three top-level event types were read off the client's match arms
+  (`response_stream.rs:493-524`). The schema states them directly:
+  `oneof type { StreamInit init = 1; ClientActions client_actions = 2; StreamFinished finished = 3; }`
+  (`apis/multi_agent/v1/response.proto:19-29 @ b0886a95`). SOURCE-grade, from the contract
+  rather than from one consumer of it.
+- Surprise 9 ("BYOK ships your key to the vendor") gains wire-level confirmation: the
+  server's own usage metadata meters BYOK spend separately from Warp spend —
+  `map<string, ModelTokenUsage> warp_token_usage = 6;` beside
+  `map<string, ModelTokenUsage> byok_token_usage = 7;` and
+  `map<string, ModelTokenUsage> custom_endpoint_token_usage = 9;`
+  (`apis/multi_agent/v1/response.proto:108-118 @ b0886a95`). A server can only meter BYOK
+  tokens it spent itself. The same message carries `bool summarized = 2;` (`:95`) — the
+  first direct evidence for § Context assembly's "the server silently compacts".
+
+  *The `context_compaction` omit-with-reason (frontmatter, ADR-0055, 2026-09-04) should be
+  revisited on this basis — it was justified by "the wire/server implementation lives in an
+  external unpublished proto repo absent from this clone", and the repo is not unpublished.
+  Reading `request.proto` and `conversation_data.proto` at the pinned rev may make the cell
+  decidable. Not done here: this is a drift check, not a re-read.*
+
+  `warpdotdev/claude-code-warp` (§ Orchestration mechanics, "hook internals live there,
+  outside this drop") is public too (`gh api repos/warpdotdev/claude-code-warp -q .private`
+  → `false`, last pushed 2026-08-17). Same correction applies: outside the drop, not closed.
+
+**2. CONTRADICTED — two counts in § Stack & repo shape do not reproduce at the pin.**
+The scar this repo already records ("a count carries its measure") fires on both:
+
+- *"~50 crates under `crates/`."* At the pin there are **78** crate directories, each with
+  its own `Cargo.toml` (`git ls-tree -d --name-only 80a20347 crates/ | wc -l` → 78;
+  `git ls-tree -r --name-only 80a20347 crates/ | grep -c '^crates/[^/]*/Cargo\.toml$'` → 78).
+  The only other candidate measure is the workspace's local-path dependency list
+  (`git show 80a20347:Cargo.toml | grep -c 'path = "crates/'` → **75**). Neither is ~50, and
+  the root `Cargo.toml` has no enumerable member list to have produced one
+  (`members = ["crates/*", "app"]`). At HEAD: 80 crates (`+ai_types`, `+regex_dfas`,
+  `+secret_redaction`, `+warp_harness_usage`; `−command-signatures-v2`, `−warp_js`).
+- *"682 `.md` … explained by `agents/specs/` and `.agents/specs/`."* The 682 is exact
+  (`git ls-tree -r --name-only 80a20347 | grep -c '\.md$'`), but the explanation names the
+  wrong directories. **498 of the 682 (73%) live in the root `specs/` tree** — 281 per-ticket
+  directories the report never mentions — against **19** in `agents/specs/` and **32** under
+  `.agents/` (`git ls-tree -r --name-only 80a20347 <dir> | grep -c '\.md$'`). The cited
+  example file is genuine and is one of the 19 (`agents/specs/APP-4913-tui-input-prompt-prefix.md`).
+  The observation ("the repo dogfoods its own workflow") survives; the attribution does not.
+
+  Both numbers that *did* carry an implicit measure reproduce exactly: 3962 `.rs` / 6199
+  tracked files at the pin, and the frontmatter's `crates/warp_tui (180 files)` is exactly
+  the `.rs` count under `crates/warp_tui/src` (184 including `benches/`). Worth stating the
+  measure in place so the next check does not have to re-derive it.
+
+**3. Corroborated — the child-launch flags did not get "fixed", and the report predicted
+they might.** The 2026-08-19 Drift note ended "Re-check the child-launch flags specifically
+on any future re-pin — that is the finding most likely to be 'fixed.'" Scored at 384 commits
+and 44 days: **it was not fixed, in any of the five launch sites.** All present at HEAD,
+byte-identical in substance: `claude --dangerously-skip-permissions`
+(`claude_code.rs:222 @ df5cacf89`, was `:211 @ 80a20347`), `--dangerously-bypass-hook-trust`
+as a named constant (`codex.rs:62`, was `:52`),
+`codex --dangerously-bypass-approvals-and-sandbox` in both the driver (`codex.rs:204,209`)
+and the local pane launch (`local_harness_launch.rs:127,136`), and `gemini --yolo`
+(`gemini.rs:107`). The collateral config writes are all intact too: `hasTrustDialogAccepted`
+and `skipDangerousModePermissionPrompt` into Claude's files, `trust_level = "trusted"`
+stamped per project key (`codex.rs:854,861`), `trustedFolders.json` for Gemini
+(`gemini.rs:328`), and the `OPENAI_API_KEY` seed into `~/.codex/auth.json`
+(`codex.rs:571,607`). The prediction was correct and is now dated evidence, not a hunch.
+
+**4. Corroborated, and sharpened — upstream shipped a mechanism that only makes sense if
+the hidden-pane finding is right.** § Permission model's stated reason for disabling the
+children's guardrails is UI: "children run in hidden panes where an approval prompt would
+hang unseen". Upstream then hit exactly that failure and built a workaround for it. #15728
+(`51a74992a`, 2026-09-02, "Pass confirmation dialogs in 3p harnesses, and ensure driver
+exits") adds a **bounded shutdown sequence**: send `/exit`; after 1s send "a bare Enter to
+retry a dropped write **or accept the default confirmation option**"; after 15s `SIGKILL`
+the proved descendant process group. The new modules are
+`app/src/ai/agent_sdk/driver/harness/exit_escalation.rs` ("Bounded shutdown sequence for a
+third-party harness") and `process_control.rs`, with the per-harness comments naming what is
+being dismissed — `claude_code.rs:545 @ df5cacf89`: *"'Exit anyway' is the default-highlighted
+option, so a bare Enter…"*. So Warp now *blind-presses Enter at a child's confirmation
+dialog*, which is the same finding one step further: not only are the child's approval gates
+disabled at launch, the ones that survive are answered by keystroke injection. The
+autonomous-mode and child-conversation bypasses are intact at HEAD, with the reason written
+in the code: *"Child conversations live in hidden panes where a confirmation card would be
+invisible and hang the run. Always auto-execute"*
+(`app/src/ai/blocklist/action_model/execute/run_agents.rs:462-475 @ df5cacf89`).
+
+**5. Corroborated — `AgentDecided` still sits above `ContainsRedirection`. Open question
+answered.** § Open questions asked whether the ordering bug survives upstream. It does, and
+untouched: the model-authored `is_risky == Some(false)` fast path returns `Allowed(AgentDecided)`
+at `permissions.rs:961-966 @ df5cacf89` and the `contains_redirection` deny is at `:968-972`
+— the same eight lines in the same order as `permissions.rs:934-945 @ 80a20347`. 44 days and
+385 commits of exposure did not reclassify it, which is itself information: it is a decision,
+or at least a tolerated one, not a fresh slip. `AutonomyForceDisabled` is still declared
+three times and **constructed nowhere** (`git grep -n AutonomyForceDisabled df5cacf89 -- app crates`
+→ three hits, all enum declarations at `permissions.rs:52,87,124`). The default allow/deny
+lists and their `cfg(test)` compile-out are byte-identical
+(`git diff 80a20347 df5cacf89 -- crates/cloud_object_models/src/ai_execution_profile.rs` →
+empty), so the 18-entry shipped denylist still has no unit test over it.
+
+*One mechanical change worth a reader's note:* every permission accessor now threads a team
+scope — `get_execute_commands_setting(ctx, terminal_view_id)` became
+`get_execute_commands_setting(terminal_view_id, scope, ctx)` — from the ~20-commit
+`[multi-team]` series (`e2a080210` P0 through `93b4f91e9`). Policy *resolution* is now
+per-window-team; the precedence chain and its ordering are unchanged.
+
+**6. Corroborated — index-as-tool, unchanged down to the constant.**
+`RETRIEVE_FRAGMENT_CONTEXT_LENGTH: usize = 0` at both
+`codebase_index.rs:82` and `get_relevant_files/remote_search/native.rs:281`, identical at pin
+and HEAD. `codebase_index.rs`'s 35 changed lines are one `Vec<Gitignore>` → `Vec<Arc<Gitignore>>`
+refactor (`c6609ef23`, gitignore matcher sharing) with no retrieval-path change. The
+`generateCodeEmbeddings` / `rerankFragments` GraphQL surface is unchanged
+(`crates/warp_graphql_schema/api/schema.graphql`), so the § Context assembly privacy trace
+still holds. The three consent strings are **verbatim identical** at HEAD, including "No code
+is stored on Warp servers" (`init_project/mod.rs:45`) and "Code is never stored on the
+server" (`codebase_index_speedbump_banner.rs:18`). The org-forces-indexing override survived
+the `user_workspaces.rs` split intact — `AdminEnablementSetting::Enable => ai_globally_enabled`
+now at `app/src/workspaces/user_workspaces/mod.rs:1640-1649 @ df5cacf89`, with
+`team_allows_codebase_context()` pluralised to `teams_allow_codebase_context()` and now
+folding over every team the user belongs to.
+
+**7. Corroborated — the turn-start context enumeration is exactly right, and exhaustively
+so.** § Context assembly claims a *complete* enumeration of `AIAgentContext`. Both revisions
+carry the same 13 variants in the same order — `Directory`, `SelectedText`,
+`ExecutionEnvironment`, `CurrentTime`, `Image`, `Codebase`, `ProjectRules`, `File`, `Git`,
+`Repository`, `PullRequest`, `Skills`, `Block` (`app/src/ai/agent/mod.rs:2229 @ 80a20347`,
+`:2213 @ df5cacf89`) — despite `mod.rs` taking 348 changed lines. `AgentViewBlockContext`
+(the auto-attached scrollback gate) appears at the same three sites with the same counts.
+The rules predicate is byte-identical (`git diff … -- crates/repo_metadata/src/standing_queries.rs`
+→ empty): still exactly `["WARP.md", "AGENTS.md"]` at `standing_queries.rs:22`, and
+`LINKABLE_FILES: [&str; 7]` is unchanged at `init_project/mod.rs:50-58` — the category-6
+bleed finding (competitors' rules files are link targets only) stands.
+
+**8. Corroborated — `ptc: false` got stronger by subtraction.** The pin's PTC sweep found a
+UI chip flag and a telemetry field and no runtime. Since then upstream **deleted the only
+embedded JS runtime in the drop**: `crates/warp_js` is gone at HEAD
+(`git ls-tree -d --name-only df5cacf89 crates/warp_js` → empty), removed with
+`a06279712` (2026-09-12, "Rip out completions v2 and associated code"), along with
+`app/src/plugin/host/native/js_api/`, `.../plugin.rs`, `.../runner.rs` and
+`crates/warp_completer/src/signatures/v2/js.rs`. `CodeModeChip` survives as a feature flag
+only (`crates/warp_features/src/lib.rs:394`, gated at `app/src/features.rs:261`), and
+`is_code_mode_v2` remains a telemetry field. The negative claim now has a stronger surface
+behind it, not a weaker one.
+
+**9. Corroborated — `hooks: false`, `turn_end_gates: false`, and the exhaustive sweep hold,
+including across all 384 subjects.** The pin's sweep tokens still return **zero files** at
+HEAD across `app/src` and `crates`: `stop_hook`, `on_turn_end`, `TurnEnd`, `PreToolUse`,
+`PostToolUse`, `max_turns`, `verification_step` — same zero as at the pin. Scanning all 384
+subject lines for the report's headline vocabulary
+(`git log --format='%h %s' 80a20347..df5cacf89 | grep -icE …`) returns: **1** hit on
+`hook` and it is the word "webhook" (`066ec71b7`, a skill validator); **0** on
+`compact|summariz`; **0** on `reasoning|effort`; **0** on `plan mode|/plan|UserQueryMode|planning`;
+**0** on `scrollback|block context`. `UserQueryMode { Normal, Plan, Orchestrate }` is
+unchanged (`mod.rs:2828 @ df5cacf89`) and `planning_enabled: true` is still hardcoded in the
+real request path (`api.rs:438 @ df5cacf89`, was `:403`). `MemorySource` still has the one
+variant `Manual` and `is_autogenerated` is still present-and-deprecated at the same five
+sites — the `learning_loop: proposed` regrade's evidence is intact.
+
+**10. Corroborated and extended — the distinguishing bet grew in exactly its own direction.**
+Three independent extensions, none of which change the shape of the bet:
+
+- The `CLIAgent` enum gained **`Grok`** — 16 → 17 recognised agents
+  (`app/src/terminal/cli_agent.rs:164 @ df5cacf89`, `2718b6658`, 2026-09-08, "Adds
+  first-class Grok Build support"). `crates/warp_cli/src/agent.rs`'s
+  `enum Harness { Oz, Claude, OpenCode, Gemini, Codex, Unknown }` is unchanged
+  (`:278-291 @ df5cacf89`), so orchestration backends stayed at five while *recognised*
+  agents grew.
+- **Warp now publishes its own skills into its children's skill roots.** New module
+  `app/src/ai/agent_sdk/driver/harness/skill_dirs_publish.rs @ df5cacf89` — "Makes
+  Warp-provided skills available to third-party harnesses (Claude Code, Codex) by symlinking
+  them into a skill root each harness already searches on its own", reading the same
+  `WARP_SKILL_DIRS`. Its conflict policy is the child-launch pattern in miniature: *"In a
+  sandbox, we own the whole filesystem, so the published skill wins: the conflicting entry is
+  renamed aside with a `.backup` suffix"*; outside a sandbox it falls back to a `warp-<name>`
+  alias. § Permission model's "Warp also writes into three other vendors' config files as
+  collateral state of a launch" now extends to their skill directories.
+- **Warp now extracts and reports usage metrics out of its children's native transcripts.**
+  New `usage_reporting.rs`, `transcript_persistence.rs`, `save_coordinator.rs` and the new
+  crate `warp_harness_usage` (`4a7740e81`, "[APP-5545] Extract native Claude and Codex usage
+  metrics"; `c0380ce89`, "Publish metrics from native transcript captures"). Warp meters what
+  its delegates spend.
+
+  The **OpenCode fourth tier is unchanged**: still `HarnessKind::Unsupported(Harness::OpenCode)`
+  in driver dispatch (`driver/harness/mod.rs:308 @ df5cacf89`), still rejected for remote runs
+  with the same string ("Remote child agents do not support the opencode harness yet.",
+  `run_agents.rs:729,807`), still fully wired in the session listener with its own plugin
+  manager. And the **OSC 777 event schema is byte-identical** —
+  `git diff 80a20347 df5cacf89 -- app/src/terminal/cli_agent_sessions/event/v1.rs` is empty.
+  A cross-vendor protocol that does not move in 384 commits is a protocol.
+
+**11. Corroborated — the reasoning-parameter section is byte-identical.**
+`set_codex_model_reasoning_effort` moved from `codex.rs:777-789 @ 80a20347` to
+`codex.rs:888-900 @ df5cacf89` with **not one character changed**: still no model-id check,
+no vendor branch, no vocabulary validation, no version pin — the user's string still lands
+verbatim in another product's `config.toml`, and an unset value still removes the key. The
+comment one function over (*"We do this unconditionally rather than enumerating a list of
+'old' models on the client"*) is also unchanged, now at `:917-923`. Across all 384 subject
+lines there is **no commit mentioning reasoning or effort**. Conclusion 15's fourth position
+is stable at the 44-day mark.
+
+**12. Corroborated and quantified — the dogfooding claim, measured.** § Stack & repo shape
+says "the repo dogfoods its own workflow" from the presence of `AGENTS.md`, `.mcp.json`,
+`.claude/`, `.agents/`. The commit log measures it: **253 of the 384 commits (66%) are
+authored by `warp-agent-staging[bot]`** (`git log --format='%an' 80a20347..df5cacf89 | sort |
+uniq -c | sort -rn`), across 41 distinct authors, the next-largest being a human at 18 and
+`dependabot[bot]` at 13. In the 98-commit window *before* the pin the same bot authored
+**60 (61%)**. Warp's own agent writes two of every three commits to Warp, and the share is
+rising. The bot's subjects are ordinary product work, not automation chores — "Remove stable
+orchestration feature flags (#15887)", "Add Neovim 0.13 line text objects (#16105)", "Avoid
+panic when /model targets a closed window (#16102)". This is the strongest available evidence
+for the report's dogfooding observation and it was free.
+
+**13. Untouched.** The MCP protected-write-path hard veto (`check_protected_write_paths`,
+`permissions.rs:768/1233 @ df5cacf89`); `crates/isolation_platform`'s detect-don't-launch
+shape (28 added lines, all new tests and plumbing, `environment_relation: inhabit` intact);
+`CreateDocuments`/`EditDocuments` always-auto-execute
+(`git diff … -- execute/create_documents.rs` → empty); `crates/ai/src/agent/orchestration_config.rs`
+(→ empty); `LLMProvider::API_KEY_PROVIDERS = [OpenAI, Anthropic, Google, Xai]`, still
+`[Self; 4]` at `crates/ai/src/llm_provider.rs:17 @ df5cacf89` despite the Grok work; the
+capability-declaration request shape (`api_keys` still a request field, `supports_*` booleans
+17 → 20); `crates/computer_use` (large churn, all Windows recording backends —
+`environments`/`surfaces` unaffected); `crates/mcp`, `crates/lsp`, `crates/ai/src/diff_validation`,
+`app/src/billing` (no claim-bearing change). Also **still no agent eval suite** — but the
+reason is now visible: `385cc203c` ("Support benchmark repository preparation overrides")
+lands "the Warp client half of benchmark repository substitution" against a companion PR in
+the closed `warpdotdev/warp-server`. `evals: false` is a fact about this drop's boundary, not
+about the product; worth one clause in the frontmatter comment.
+
+**Citation hygiene — four line references in this report no longer resolve at HEAD**, though
+all remain correct at the pin. `app/src/settings_view/code_page.rs:82` (the "grep and find
+tool calling" settings copy) is now `app/src/settings_view/code_indexing_page.rs:77`
+(`c9e562294` split the Code page); `app/src/workspaces/user_workspaces.rs:1827-1829` is now
+`app/src/workspaces/user_workspaces/mod.rs:1640-1649` (`8cbb01d45` split the file into a
+module); `app/src/settings_view/ai_page.rs` is now `warp_agent_page.rs` (`42effe840`, "Rename
+Oz Agent UI to Warp Agent" — the rename § the intro anticipated has landed); and
+`permissions.rs:934-945` is `:961-972`. No correction is owed — a pinned citation is a
+citation at its pin — but a reader who greps at HEAD will come up empty on the first two.
+
+**What a re-read should cost:** moderate-to-high, and it should start somewhere new. The
+permission chain, the loop, the index path, the OSC-777 protocol, and the reasoning-parameter
+function are all unchanged, so a re-read buys little there. What has changed is the
+*orchestration periphery* — skill publication into children, transcript-derived usage
+metering, the exit-escalation sequence, team-scoped policy resolution — and, more importantly,
+what is now known to be readable: **the 15-file proto repo at the pinned rev**, which is the
+cheapest unexploited evidence surface this subject has and which would settle both the
+`context_compaction` omit-with-reason and § Open questions' "undecidable by construction".
 
 ## Open questions
 
@@ -470,8 +767,13 @@ specifically on any future re-pin — that is the finding most likely to be "fix
   (`TransferShellCommandControlToUser`), and the OSC-777 follow channel — all
   terminal-substrate capabilities. Whether they pay for the thick-client/thin-protocol costs
   (server dependency, protocol drift) is a use question, not a source question.
-- What do the server-side prompt assembly and tool-choice policy actually do? Undecidable by
-  construction — the proto repo and backend are closed. The token-accounting vocabulary
-  (SystemPrompt → ToolDefinitions → History → LatestInput) is the only aperture found.
-- Does `AgentDecided`-above-`ContainsRedirection` survive upstream? It has the shape of an
-  ordering bug, not a decision. Check at next re-pin; if it flips, that dates the finding.
+- What do the server-side prompt assembly and tool-choice policy actually do? ~~Undecidable by
+  construction — the proto repo and backend are closed.~~ *Half-corrected 2026-09-24: the
+  backend is closed, the proto repo is public and readable at the pinned rev — the wire
+  schema is decidable, the policy behind it is not.* The token-accounting vocabulary
+  (SystemPrompt → ToolDefinitions → History → LatestInput) is the only aperture found in
+  the clone; `request.proto` and `conversation_data.proto` at `b0886a95` are the unread
+  aperture.
+- ~~Does `AgentDecided`-above-`ContainsRedirection` survive upstream?~~ **Answered 2026-09-24:
+  it survives, same eight lines in the same order at `permissions.rs:961-972 @ df5cacf89`,
+  after 384 commits — a tolerated ordering, not a fresh slip** (§ Drift check 2026-09-24, 5).
