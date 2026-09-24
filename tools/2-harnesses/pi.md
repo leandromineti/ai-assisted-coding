@@ -1,4 +1,10 @@
 ---
+# PIN MOVED 8fa7eebd2 → f07218c4d (= tag v0.87.1) at the 2026-09-24 release re-read
+# (rule 4b: three Opus tracts — release substance, per-claim confrontation at both pins,
+# provenance — main-session spot-verification; window 694 commits). PINNING LESSON: the old pin
+# was a side-branch commit never on main's first-parent line (`git rev-list --first-parent
+# v0.87.1 | grep 8fa7eebd2` → nothing), so 290 of the 694 "new" commits predate the read and
+# the deep-dive's flagship Surprise 1 was already dead on main 14 days before it was written.
 name: pi
 category: 2
 surfaces: [terminal]  # TUI (packages/tui, differential rendering); RPC/JSON modes are local headless control, not a surface
@@ -12,29 +18,29 @@ url: https://github.com/earendil-works/pi
 license: MIT
 access: open-source
 stack: [TypeScript, Node]
-version: v0.84.3-20-g8fa7eebd2
-commit: 8fa7eebd2
+version: v0.87.1   # = npm `latest` for @earendil-works/pi-coding-agent — tree and published artifact at parity for the first time
+commit: f07218c4d
 first_commit: 2025-08-09
-stars: 97226
-stars_at: 2026-08-26
-read_at: 2026-08-26
+stars: 109148
+stars_at: 2026-09-24   # gh api; 97,226 at 2026-08-26 (+411/day)
+read_at: 2026-09-24   # v0.87.1 release re-read (§ Release re-read); deep-dive 2026-08-26 @ 8fa7eebd2
 depth: deep-dive
 harness_features:
   mcp: false             # checked and absent: no MCP client anywhere (grep modelcontextprotocol over packages/{coding-agent,ai,agent}/src → 0; the one "MCP" token is a comment naming MCP bridges as a hypothetical image source). ai-memory's "pi via hooks+MCP" claim was made at ai-memory's pin — MCP would ride an extension, not core. STRENGTHENED 2026-08-27 at this same pin (no re-read, prompted by the aider read's MCP work): the surface is now the whole tree, not three src dirs, and the subject STATES the refusal — README.md:498 under ## Philosophy, "**No MCP.** Build CLI tools with READMEs, or build an extension that adds MCP support", linking an argued rationale; docs/usage.md:308 "intentionally does not include built-in MCP". Dependency-scan trap recorded: @modelcontextprotocol/sdk IS in package-lock.json but purely TRANSITIVELY (required by @google/genai) — no pi package.json declares it, so a manifest scan reports MCP where source and docs both deny it. README.md:394's "MCP server integration" is in a "What's possible" list of things EXTENSIONS can build, not a shipped feature
   lsp: false             # checked and absent: no LSP client, no vscode-languageserver/jsonrpc/tree-sitter/ast-grep dependency (two independent reader greps → 0 files each)
-  hooks: true            # 34-event extension lifecycle system (types.ts:1237-1279), 14 with a blocking/modifying return contract; dispatch is ordered + first-block-wins + fail-closed (runner.ts:936-950). DEFAULT-OFF: the only default-mounted extension (llama.cpp) registers zero handlers
+  hooks: true            # 34-event extension lifecycle system (types.ts:1237-1279), 14 with a blocking/modifying return contract; dispatch is ordered + first-block-wins + fail-closed (runner.ts:936-950). DEFAULT-OFF: the only default-mounted extension (llama.cpp) registers zero handlers At f07218c4d: 39 events / 18 with a return contract (types.ts:1354-1419; +context_with_system, cache_warming_decision, agent_before_settle, ui_prompt_start/end); dispatch unchanged (runner.ts:1134-1152); still default-off (llama registers zero handlers)
   context_retrieval: model-driven  # ADR-0055, cell set 2026-09-04 from the deep-dive: "no memory subsystem, no repo map, no index, no embeddings" — file-into-context is model-driven search (default tools shell out; grep/find opt-in bind ripgrep/fd); packages/agent/src/search/ is session-transcript search with zero shipped consumers (body § context assembly)
-  context_compaction: llm-summarize  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: default-on (DEFAULT_COMPACTION_SETTINGS enabled: true, reserveTokens: 16384), same-model LLM summary of the head with a fixed 20k-token verbatim tail (core/compaction/compaction.ts); tool results are truncated to 2000 chars and FED to the summarizer (utils.ts:89,144) — see the dated qualifier on the body's "deleted, not summarized" line
-  turn_end_gates: hook   # DEFAULT-OFF: an extension agent_end handler can queue a follow-up and force another turn (agent-session.ts:1125-1127), but the handler has NO return contract (no {block,reason}); the engine-grade shouldStopAfterTurn seam exists in pi-agent-core but the CLI never assigns it (referenced only in packages/agent tests)
-  tool_approval: none    # regraded ✗→none 2026-09-04 per ADR-0053 (same evidence: README:40 states it; grep confirm|approve|permission over core/tools/*.ts → 0): no ask-before-execute, no allowlist gate at dispatch, and — the shape the old ✗ shared with dsh's and the enum now separates — NOTHING standing in for it (runs as the launching user; the --tools/--exclude-tools flags are launch-config, not runtime approval; --approve gates project-local FILE trust, not tool calls; confinement delegated to external containerization by docs)
+  context_compaction: llm-summarize  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: default-on (DEFAULT_COMPACTION_SETTINGS enabled: true, reserveTokens: 16384), same-model LLM summary of the head with a fixed 20k-token verbatim tail (core/compaction/compaction.ts); tool results are truncated to 2000 chars and FED to the summarizer (utils.ts:89,144) — see the dated qualifier on the body's "deleted, not summarized" line HOLDS at f07218c4d byte-for-byte (compaction/compaction.ts:148-152; utils.ts:89,144 same lines); NEW default-ON cost machinery beside it: a prompt-cache WARMER (core/cache-warmer.ts, 453 lines; settings-manager.ts:957 default "streaming") that replays a one-token request at 90% of the cache TTL whenever expected savings clear $0.05 under a 0.15 continuation probability "measured from our own usage" — pi now spends money by itself to prevent the misses it meters
+  turn_end_gates: hook   # DEFAULT-OFF: an extension agent_end handler can queue a follow-up and force another turn (agent-session.ts:1125-1127), but the handler has NO return contract (no {block,reason}); the engine-grade shouldStopAfterTurn seam exists in pi-agent-core but the CLI never assigns it (referenced only in packages/agent tests) CHANGED at f07218c4d, value kept: `shouldStopAfterTurn` was removed (0 hits) and replaced by `finishTurn`, which the shipped CLI DOES assign (agent-session.ts:677) — but only as a relay to a `turn_end` extension boundary that short-circuits with no handlers (:642), so default-off holds; `turn_end` now HAS a return contract, `BoundaryResult { entries?, continue? }` (types.ts:1407, :812-815) — continue-only: an extension can force another turn and still cannot veto a stop, while the engine beneath exposes `{action:"end"}` to SDK embedders. A second boundary, `agent_before_settle`, same shape
+  tool_approval: none    # regraded ✗→none 2026-09-04 per ADR-0053 (same evidence: README:40 states it; grep confirm|approve|permission over core/tools/*.ts → 0): no ask-before-execute, no allowlist gate at dispatch, and — the shape the old ✗ shared with dsh's and the enum now separates — NOTHING standing in for it (runs as the launching user; the --tools/--exclude-tools flags are launch-config, not runtime approval; --approve gates project-local FILE trust, not tool calls; confinement delegated to external containerization by docs) HOLDS at f07218c4d across four surfaces (tools grep 0/24 files; approval identifiers 0 over packages/*/src; OS sandbox primitives 0 — one prose comment; 0 code commits in 694 mention permission/sandbox), and the maker now DECLARES it: SECURITY.md:50 lists "the Pi coding agent intentionally does not have a sandbox" as out of scope for security reports. A gate is DESIGNED, as a doc: packages/agent/docs/pico-v3.md:1671-1822 (hold-for-approval, `decideApproval(grant|deny)`, "never grants automatically", 2026-09-10) — TESTIMONY, 0 matching source. Docs corroboration LOST: packages/coding-agent/README.md 717 → 70 lines, the "No MCP / No sub-agents / No permission popups" manifesto deleted
   skills: true           # full SKILL.md / Agent Skills standard (skills.ts:355-381), 6 discovery roots incl. cross-tool ~/.agents/skills and documented ~/.claude/skills / ~/.codex/skills interop; name+description in prompt, body read on demand; DEFAULT-ON
   subagents: false       # checked and absent from the product: 8 built-in tools (read bash powershell edit write grep find ls), no Task/spawn tool. Present only as an example extension (process-isolated pi subprocesses, 8 parallel/4 concurrent, NO depth cap, NO budget), manually symlinked to activate
   ptc: false             # checked and absent: no sandboxed code-execution channel (grep pyodide|quickjs|isolated-vm|code_execution|codemode → 0). Agent-authored extension TypeScript runs in-process via jiti, but that is authored-then-/reload plugin code with no sandbox, not a per-turn code tool
   plan_mode: false       # checked and absent from the product; example extension only (examples/extensions/plan-mode, built entirely on the public API: setActiveTools + a tool_call block hook + [DONE:n] scraping)
   rules_files: ["AGENTS.override.md", "AGENTS.md", "CLAUDE.md"]  # 5 candidates incl. .MD casings (resource-loader.ts:72); first match per directory; walked to FILESYSTEM ROOT with no cap and NO trust gate (contrast the sibling .agents/skills walk, which stops at git root); --no-context-files to disable, DEFAULT-ON
-  model_agnostic: true   # BYO-model by design: pi-ai is a unified multi-provider client (32 API adapter files, ~9 distinct families: OpenAI/Anthropic/Google/Mistral/Bedrock/xAI/OpenRouter/Copilot/Codex); 40 providers, 7 with OAuth. Default provider google, but no privileged default vendor in the loop. Maker Earendil Works has no category-1 model stake (Radius is a gateway, not weights)
+  model_agnostic: true   # BYO-model by design: pi-ai is a unified multi-provider client (32 API adapter files, ~9 distinct families: OpenAI/Anthropic/Google/Mistral/Bedrock/xAI/OpenRouter/Copilot/Codex); 40 providers, 7 with OAuth. Default provider google, but no privileged default vendor in the loop. Maker Earendil Works has no category-1 model stake (Radius is a gateway, not weights) At f07218c4d: 41 providers (+meta), 9 OAuth files, 32 api files (8 of them shared helpers — measure stated 2026-09-24)
   session_sharing: true  # /share POSTs the session JSONL (system prompt + full tool schemas included) to radius.pi.dev at visibility=organization when a Radius credential exists (session-share.ts:113), else a private gh gist rendered at pi.dev/session/; /export writes HTML/JSONL locally. Vendor-hosted share links exist — but org-visible under a "secret gist"-labelled command
-  evals: true            # model-backed behavioral eval harness on vitest-evals (real AgentSession vs a live provider, LLM/rubric judge) — small: 2 suites / 2 cases (grep describeEval → 2). The substantive one A/Bs the self-extension system prompt. Software tests are separate and not counted
+  evals: true            # model-backed behavioral eval harness on vitest-evals (real AgentSession vs a live provider, LLM/rubric judge) — small: 2 suites / 2 cases (grep describeEval → 2). The substantive one A/Bs the self-extension system prompt. Software tests are separate and not counted At f07218c4d: 7 suites in packages/evals/evals/ plus a Docker test rig (not a product sandbox)
   learning_loop: false   # checked and absent as an AUTONOMOUS path: no memory tool, no background/spawned writer, no subagent. BUT the highest self-authorship ceiling in the tracked set — see the report: agent-written skills/extensions/SYSTEM.md land in ~/.pi/agent/ and auto-load in every future session with no trust gate and no permission system; human-invited ("ask it to build one"), not self-initiated
 ---
 
@@ -308,6 +314,69 @@ Probe target: `@earendil-works/pi-coding-agent@0.84.3` (dist-tag `latest`, publi
   provider tokens "for an external client"). Rules-file kill switch `--no-context-files`
   confirms `AGENTS.md`/`CLAUDE.md` as the loaded names.
 - No scored agent run: no credentials on this box and no free tier — omit-with-reason.
+
+## Release re-read — v0.87.1 (2026-09-24; pin 8fa7eebd2 → f07218c4d)
+
+Three Opus tracts, load-bearing claims re-run at both pins. Window `git rev-list --count
+8fa7eebd2..v0.87.1` = **694** — but the old pin sat on a side branch, so **290 of them carry
+committer dates at or before the read** (long-lived branch work unreachable from the pinned
+commit); the real post-read count is 404. Trailing-30-day rate fell 667 → 456 (−32%) while
+releases rose 5 → 8 per 30 days (a 15-day freeze, then four in three days); the six-author
+plateau collapsed into three (Ronacher 137, Zechner 116, Brailovsky 77; the previous #1 fell to
+12). `git diff --stat` 1,164 files, +175,107 / −45,495; `packages/agent` +89,721 of which 44%
+is documentation; two new packages the seven release bodies never name — `chord` (+14,539,
+"pluggable remote-service boundary") and `durable` (+8,533). Zero AI-attributed commits in 694.
+
+**1. Surprise 1 is dead — and was dead before it was written.** `HarnessNotImplemented` has 0
+occurrences in any package source at f07218c4d (`5aeb06bb1`, **2026-08-11**, 14 days before the
+pin); `packages/agent/src/harness/` grew ~9,000 lines of real runtime with one narrow stub
+left (`runtime/harness.ts:306`). It is wired to nothing that ships: `CURRENT_SESSION_VERSION = 3`
+(`session-manager.ts:41`), and its only consumers sit under `coding-agent/src/experimental/`.
+The 2027-02-28 prediction is not yet scored; the mechanism it bet on arrived, the cutover did
+not.
+
+**2. `--auth-token` inverted (Surprise 6).** Zero consumers at the old pin — verified with the
+report's own prescribed grep. At f07218c4d the token flows five hops to a Radius relay bearer
+(`radius-auth.ts:57-66`) and `runServer` is implemented (`experimental/commands.ts:11,96`) — and
+none of it ships: `PI_EXPERIMENTAL === "1"` gates dispatch, and the package's `files` now
+excludes `!dist/experimental`, `!dist/cli/experimental`, `!dist/client` (no exclusions at the
+old pin). A consumer in code that is deliberately not published; the flag was never in `pi
+--help` (the 42-flag main CLI is byte-identical across pins — it lived on the experimental
+subcommands). `execution: local` holds by the publish boundary, not by absence.
+
+**3. The impersonation is maintained, vendor-corroborated, and was under-reported.**
+`claudeCodeVersion` `"2.1.75"` → `"2.1.251"` → `"2.1.280"` in 20 days by two maintainers, the
+second bump a public release-note line. The deep-dive cited the `anthropic-beta` header and
+omitted the two lines beneath it at its own pin: `"user-agent": claude-cli/${claudeCodeVersion}`
+and `"x-app": "cli"` (`anthropic-messages.ts:937-938` @ 8fa7eebd2; `:952-953` @ f07218c4d) —
+the headers a billing surface keys on. Upstream #8981 quotes Anthropic's own 400: *"Claude Code
+2.1.75 does not support this model; version 2.1.251 or newer is required. Run 'claude update'"*
+— the vendor accepted the impersonation, gated a model on the spoofed version, and told a
+third-party harness to update the official client. `search/issues impersonat` → 0; the same
+construction now ships as a copyable example extension (`examples/extensions/custom-provider-anthropic/index.ts:387,414`).
+
+**4. Context assembly.** The system prompt became section-addressable (`buildSystemPromptSections`,
+`system-prompt.ts:121-180`) with a diff-patch delivery so a tool activation no longer rebuilds
+the prefix — a direct answer to the residual invalidation leak this report documented; content
+unchanged, still clock-free. Compaction byte-identical (Surprise 7's late-firing default
+holds; per-model overrides added). The cache warmer (cell) is the window's sharpest cost
+datum. `AGENTS.md` walk still unbounded and ungated (`resource-loader.ts:72, 140-152`, same
+lines); the two ancestor walks with opposite stopping rules survive intact.
+
+**5. Own-pin corrections.** "Mario Zechner 65% all-time" is a mixed-measure artifact (3,565 with
+merges ÷ 5,487 without; consistent measures give 61.4% / 60.2%); "6 discovery roots" matches no
+reading (four filesystem roots plus three config routes); `README.md:498/:394` and
+`docs/usage.md:308` are `packages/coding-agent/…` paths (the root README has no "MCP" token);
+`resolve-config-value.ts:6,16` cited an import and a type alias where the mechanism is `:81-82`,
+`:187`, `:199`; the body said `tool_approval: false` twenty days after the cell became `none`.
+Audit: with-measure 9/9, without 21/24 — the failures are the numbers with no adjacent citation.
+
+**Predictions (dated, falsifiable).** **P-1** by 2026-12-31 `git log v0.87.1..HEAD -S'claudeCodeVersion'
+-- packages/ai/src/api/anthropic-messages.ts` shows ≥ 3 further bumps and the constant is still a
+hardcoded literal (2 bumps in 27 days). **P-2** by 2026-12-31 `git grep -iE "decideApproval|hold
+for approval" <tag> -- ':(glob)packages/*/src/**'` still returns 0 — the designed gate stays a
+document. The 2027-02-28 cutover prediction stands unscored. Next trigger: the next tag after
+`pico-v3.md`'s runtime lands a consumer in `main.ts`, or 2026-12-31.
 
 ## Bleed
 
