@@ -47,7 +47,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | hermes-agent | terminal + desktop + web + ide + messaging · both · **resident** | Python, TypeScript | `open-source` | MIT | 248,666 | 2025-07-22 | — | `v2026.9.24` | deep-dive | [hermes-agent](../tools/2-harnesses/hermes-agent.md) |
 | opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | `open-source` | MIT | 209,850 | 2025-03-21 | — | `1.18.32` | deep-dive | [opencode](../tools/2-harnesses/opencode.md) |
 | pi | terminal · local | TypeScript, Node | `open-source` | MIT | 109,148 | 2025-08-09 | — | `v0.87.1` | deep-dive | [pi](../tools/2-harnesses/pi.md) |
-| qwen-code | terminal + ide + desktop + web + messaging · local · **resident** | TypeScript, Node, Rust | `open-source` | Apache-2.0 | 27,405 | 2025-04-15 | — | `cua-driver-rs-v0.20.1-16-gfc0e827658` | deep-dive | [qwen-code](../tools/2-harnesses/qwen-code.md) |
+| qwen-code | terminal + ide + desktop + web + messaging · local · **resident** | TypeScript, Node, Rust | `open-source` | Apache-2.0 | 28,111 | 2025-04-15 | — | `0.24.5` | deep-dive | [qwen-code](../tools/2-harnesses/qwen-code.md) |
 | warp | terminal + desktop + web · both | Rust | `open-source` | AGPL-3.0 | 64,121 | 2026-04-28 | — | `tui-screenshots-app5029-227-g80a20347` | deep-dive | [warp](../tools/2-harnesses/warp.md) |
 | cecli | terminal · local | Python | `open-source` | Apache-2.0 | 408 | 2023-04-03 | — | `v1.6.1` | survey | [cecli](../tools/2-harnesses/cecli.md) |
 | claude-code | terminal + desktop + web + ide + messaging · both | TypeScript, Node | `closed-source` | proprietary | 147,932 | — | — | `2.1.281` | survey | [claude-code](../tools/2-harnesses/claude-code.md) |

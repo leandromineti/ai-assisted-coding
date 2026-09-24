@@ -1,4 +1,9 @@
 ---
+# PIN MOVED fc0e827658 → 59c8e93c0e (= tag v0.24.5) at the 2026-09-24 release re-read
+# (rule 4b: three Opus tracts — release substance, per-claim confrontation at both pins,
+# provenance — main-session spot-verification; window 1,139 commits). Read after the comparator
+# gemini-cli's own re-read (bb523741c = v0.61.0, same day), so the divergence study is re-scored
+# at both NEW pins. Own-pin defects corrected in place.
 name: qwen-code
 category: 2
 surfaces: [terminal, ide, desktop, web, messaging]  # cli (terminal) · vscode-ide-companion + zed-extension + --acp (ide) · desktop-shell, 84 files · web-shell, 619 files + webui, 220 files · messaging = 11 channel packages (feishu, dingtalk, telegram, qqbot, wecom, weixin, github, gitlab, dws), each driving a spawned `--acp` child
@@ -11,26 +16,26 @@ url: https://github.com/QwenLM/qwen-code
 license: Apache-2.0
 access: open-source
 stack: [TypeScript, Node, Rust]  # Rust is not incidental: packages/cua-driver is a 663-file Rust workspace (crates for macOS/Windows/Linux + browser). ts(4008) tsx(793) rs(384) java(218) per repo-facts.sh
-version: cua-driver-rs-v0.20.1-16-gfc0e827658   # MECHANICAL and misleading on its own: `git describe` lands on a Rust sub-tag. The PRODUCT version at this pin is 0.22.2 (package.json), confirmed by the run probe below printing 0.22.2 — the tag list carries v0.22.2, desktop-v0.2.2 and cua-driver-rs-v0.20.1 in parallel, one per shipped artifact
-commit: fc0e827658
+version: 0.24.5   # packages/cli/package.json at the tag — never `git describe` here (it lands on a Rust sub-tag; six parallel tag series now: v*, desktop-v*, cua-driver-rs-v* and three more)
+commit: 59c8e93c0e
 first_commit: 2025-04-15   # IDENTICAL to gemini-cli's (2025-04-16 is codex's; gemini-cli is also 2025-04-15) — this is the imported fork history, not qwen-code's own start. The product forked gemini-cli v0.8.2 and stopped syncing at Qwen Code v0.1
-stars: 27405
-stars_at: 2026-08-27
-read_at: 2026-08-27
+stars: 28111
+stars_at: 2026-09-24   # gh api; 27,405 at 2026-08-27
+read_at: 2026-09-24   # v0.24.5 release re-read (§ Release re-read); deep-dive 2026-08-27 @ fc0e827658
 depth: deep-dive   # 2026-08-27, all THREE ADR-0021 components traced at the pin: the loop, context assembly, and the permission gate. Read as a DIVERGENCE STUDY against gemini-cli at its own pin (64b5b79a6, read 2026-08-25). NOT traced, and named so the gap is legible: the 663-file Rust cua-driver workspace, the individual channel implementations beyond their shared base contract, and the daemon side-channel coordination protocol
 harness_features:
   mcp: true              # client: stdio + SSE + StreamableHTTP (tools/mcp-client.ts:9-17), plus a `qwen mcp` management subcommand verified at runtime
-  lsp: true              # INVERSION vs the parent's verified false: packages/core/src/lsp/ ships NativeLspClient + LspServerManager + LspConnectionFactory + LspResponseNormalizer, instantiated on the real config path (cli/src/config/config.ts:2482). Servers are user-configured (LspConfigLoader), not bundled
-  hooks: true            # 16 lifecycle events (hooks/types.ts:24-52) incl. PostToolBatch, UserPromptExpansion, MessageDisplay, SubagentStart/Stop, PreCompact/PostCompact — a superset of the parent's 11, with a `qwen hooks` subcommand
+  lsp: true              # INVERSION vs the parent's verified false: packages/core/src/lsp/ ships NativeLspClient + LspServerManager + LspConnectionFactory + LspResponseNormalizer, instantiated on the real config path (cli/src/config/config.ts:2482). Servers are user-configured (LspConfigLoader), not bundled PRESENCE ≠ OPERATIVE (2026-09-24, both pins): instantiated only behind `--experimental-lsp` (cli/config.ts:1800-1805 @ 59c8e93c0e; :1661-1663 @ old) — default-OFF; the inversion against the parent's `false` holds, the cell never said the default
+  hooks: true            # 22 lifecycle events (hooks/types.ts:24-69 — the `HookEventName` enum has 22 members at BOTH pins; the deep-dive's "16" read a window that stopped at :52, corrected 2026-09-24; the parent's 11 re-derived and correct, so the superset holds) incl. PostToolBatch, UserPromptExpansion, MessageDisplay, SubagentStart/Stop, PreCompact/PostCompact — a superset of the parent's 11, with a `qwen hooks` subcommand
   context_retrieval: model-driven  # ADR-0055, cell set 2026-09-04 from the divergence study: tool-dispatched reads/greps, no index; the fork does not mount its parent's dark context pipeline either (body § context assembly)
   context_compaction: llm-summarize  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: its own chatCompressionService.ts (packages/core/src/services/) summarizes via model call, with plan-mode state threaded through explicitly (:1057) so compaction can't hide that the agent was planning; the parent's masking service and CONTENT_TRUNCATED fallback are NOT inherited (grep @ fc0e827658 → 0)
   turn_end_gates: hook   # Stop + StopFailure carrying `stop_hook_active` (hooks/hookEventHandler.ts:250-258, 647-687) — the same Claude Code Stop-hook retry contract the parent implements as AfterAgent
-  tool_approval: policy  # four ApprovalModes (PLAN | DEFAULT | AUTO_EDIT | AUTO, config.ts:388-404). AUTO is a three-stage filter (permissions/autoMode.ts): workspace-scoped edit fast-path, read-only allowlist, then an LLM classifier — all three firing only when no user rule matched, and an explicit user `ask` rule beats every fast-path
-  skills: true           # skills/ with skill-manager, skill-activation, skill-curator and a `bundled` set; `.qwen/skills/` present in-tree
+  tool_approval: policy  # FIVE ApprovalModes — PLAN | DEFAULT | AUTO_EDIT | AUTO | YOLO (config/approval-mode.ts:7-13, byte-identical at both pins; the deep-dive's `config.ts:388-404` was the display record, one entry short — corrected 2026-09-24). At v0.24.5 the AUTO stage sequence is five deep with a new unconditional L5.2.6 that blocks classifier-approved writes outside the workspace (permissions/autoMode.ts:852); the classifier is STILL deny-only (permissions/classifier.ts exposes only `shouldBlock`) — teeth, not approve authority. Divergence scored at both new pins: none of gemini-cli's four new default-on gates crossed the fork, and qwen-code already had the strongest one — "non-overridable shell safety gates that must run before auto/YOLO execution" (tools/shell.ts:5091-5096 @ fc0e827658, :5769-5774 @ 59c8e93c0e), a month before the parent shipped its YOLO-bypassable cwd check. Original: four ApprovalModes (PLAN | DEFAULT | AUTO_EDIT | AUTO, config.ts:388-404). AUTO is a three-stage filter (permissions/autoMode.ts): workspace-scoped edit fast-path, read-only allowlist, then an LLM classifier — all three firing only when no user rule matched, and an explicit user `ask` rule beats every fast-path
+  skills: true           # skills/ with skill-manager, skill-activation, skill-curator and a `bundled` set; `.qwen/skills/` present in-tree At v0.24.5: bundled skills 12 → 17 (`git ls-tree --name-only <rev> packages/core/src/skills/bundled/ | wc -l`); an auto-skill review path shipped default-off (`enableAutoSkill` "Defaults to false", core/config.ts:1418-1419)
   subagents: true        # subagents/ with subagent-manager, builtin-agents, agent-frontmatter-schema, validation; SubagentStart/Stop hook events exist for them
   ptc: false             # checked and absent, same negative as the parent: `grep "codeExecution *:"` over packages/ → 0 product hits. NEAR MISS recorded rather than smoothed: packages/node-repl ships a session-persistent Node REPL as a STANDALONE MCP server ("fully independent of core — any MCP client … can run it"), which is code execution reached through the ordinary tool loop, not model-emitted code driving the harness's tools
   plan_mode: mode        # ApprovalMode.PLAN as a first-class mode (client.ts:1964), with dedicated plan-mode-entry-policy.ts and plan-mode-shell-policy.ts, and plan-mode state threaded into compaction (chatCompressionService.ts:1057)
-  rules_files: ["QWEN.md", "AGENTS.md"]  # INVERSION vs the parent: both load by DEFAULT (utils/memory-constants.ts:7-33, "defaults to include both"), where gemini-cli loads GEMINI.md/MEMORY.md and does NOT load AGENTS.md by default. The fork adopted the cross-tool convention its parent declined
+  rules_files: ["QWEN.md", "AGENTS.md"]  # INVERSION vs the parent: both load by DEFAULT (utils/memory-constants.ts:7-33, "defaults to include both"), where gemini-cli loads GEMINI.md/MEMORY.md and does NOT load AGENTS.md by default. The fork adopted the cross-tool convention its parent declined CHANGED at v0.24.5: a third default-loaded file, `QWEN.local.md` (utils/memory-constants.ts:28; memory/memoryDiscovery.ts:563)
   model_agnostic: true   # INVERSION vs the parent's verified false: 13 provider presets (providers/presets/) — deepseek, grok, minimax, moonshot, modelscope, openrouter, requesty, zai, idealab, three alibaba plans, and custom-provider — plus model-discovery and install paths
   session_sharing: false # checked and absent in the same shape as the parent: no share links anywhere (grep shareLink|shareUrl|publicUrl|/api/share over packages/ → 0 non-test hits); a local export path and `qwen sessions` resume exist — artifact yes, link no
   evals: false           # checked and absent under the registry's definition. NEAR MISS, recorded because it is the closest thing: memory/recall-eval.test.ts is a real measurement harness — a labeled corpus, Recall@5, a frozen reference scorer kept for regression comparison — but it scores the DETERMINISTIC selector and says so; the model selector is exercised by mocked cases. No agent/task-success eval harness: `git ls-files "*.eval.ts"` → 0, against the parent's 37 plus four eval CLIs
@@ -249,6 +254,36 @@ messaging channels (Telegram, **Discord**, etc.)"* and no Discord channel exists
 search: `git grep -il discord` → 12 files, all help text, a design doc, settings-schema
 comments, test fixtures and one unrelated Rust doc; `packages/channels/` has eleven
 directories and none is Discord. Advertised in the interface, absent from the tree.
+
+## Release re-read — v0.24.5 (2026-09-24; pin fc0e827658 → 59c8e93c0e)
+
+Three Opus tracts, load-bearing claims re-run at both pins. Window 1,139 commits in 28 days
+(40.7/day, up 25% on the prior 28; 0 merges; 81 authors, top three 60.5%; bots 5.5%);
+**441 of 1,139 commits (38.7%) carry an AI-named `Co-authored-by`, 418 of them
+`Qwen-Coder`** — the highest self-attributed agent share in the tracked set, measured per
+commit. All 12 stable `v*` tags sit one unmerged bot `chore(release)` commit off main; six
+tag series now, not three. Release notes are generated PR-title dumps that omit the window's
+structural moves: `packages/webui` deleted into `web-shell` (619 → 1,064 files), `qwen-live`
+and `mobile-shell` appeared, and `packages/cli/src` — not the shell — was the busiest tract.
+
+**Cells**: 8 SAME, 9 CHANGED (three by value or default — `rules_files` gains `QWEN.local.md`;
+`tool_approval` was five modes at its own pin and gained L5.2.6; `lsp` is default-off behind
+a flag — the rest by citation or count: hooks 22 not 16, skills 12 → 17, moved lines), 0
+absent. **All four divergence inversions hold at both new pins** (`lsp`, `model_agnostic`,
+`learning_loop`, AGENTS.md-by-default), with the comparator re-verified the same day. The
+divergence study's headline question — do the parent's new gates cross the fork? — answers
+NO, and inverts: the fork had the non-overridable shell gate first.
+
+**Own-pin audit**: with-measure counts **11/11**; without **9/13**. Never reproduced: "16
+events" (22), "663 Rust files" (380 `.rs` in a 663-file package, no browser crate), a
+quotation — *"The caller MUST treat this as a block."* — with 0 hits in the whole tree at
+either pin, "stages 1-3" (source says "L1/L2/L3", not stages), "11 channel packages" (9 channels plus
+`base` and `plugin-example`), "four ApprovalModes". The run probe's Discord help-string gap
+has now survived two pins and 1,139 commits.
+
+**Prediction (dated, falsifiable).** By **2026-11-24** the Discord help-string gap resolves
+(a channel directory added or the string amended) — 35%. Next trigger: v0.25.0, or the
+parent's v0.62.0 re-read, whichever comes first (the fork is read against its parent).
 
 ## Bleed
 
