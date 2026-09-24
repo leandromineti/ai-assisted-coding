@@ -50,7 +50,7 @@ pricing, cutoff, lifecycle) stays in [models.md](models.md).
 | [qwen-code](../tools/2-harnesses/qwen-code.md) | `open-source` | Apache-2.0 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `QWEN.md`, `AGENTS.md` | `model-driven` | `llm-summarize` | `hook` | `policy` | · | `mode` | ✓ | ✗ | ✗ | `background` |
 | [warp](../tools/2-harnesses/warp.md) | `open-source` | AGPL-3.0 | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | `WARP.md`, `AGENTS.md` | `search-tool` | · | ✗ | `policy` | · | `flag` | ✓ | ✓ | ✗ | `proposed` |
 | [cecli](../tools/2-harnesses/cecli.md) | `open-source` | Apache-2.0 | ✓ | · | ✓ | ✓ | ✓ | · | ✓ | `ranked-index` | · | `engine` | `prompt` | `allow` | · | ✓ | · | · | · |
-| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `model-driven` | `prune`, `llm-summarize` | `hook` | `policy` | · | `mode` | ✗ | ✓ | · | `in-loop` |
+| [claude-code](../tools/2-harnesses/claude-code.md) | `closed-source` | proprietary | ✓ | · | ✓ | ✓ | ✓ | ✗ | `CLAUDE.md` | `model-driven` | `prune`, `llm-summarize` | `hook` | `policy` | `deny` | `mode` | ✗ | ✓ | · | `in-loop` |
 | [cline](../tools/2-harnesses/cline.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | ✓ | ✗ | ✓ | `model-driven` | `llm-summarize`, `truncate` | ✗ | `policy` | `deny` | `mode` | ✓ | · | ✓ | · |
 | [continue](../tools/2-harnesses/continue.md) | `open-source` | Apache-2.0 | ✓ | · | · | · | · | ✗ | ✓ | `model-driven` | `llm-summarize` | ✗ | `policy` | `allow` | `prompt` | ✓ | · | · | · |
 
