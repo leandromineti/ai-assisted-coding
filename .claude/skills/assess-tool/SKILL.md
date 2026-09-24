@@ -33,7 +33,13 @@ searched; commits go straight to `main` after a green battery.
       `scripts/repo-facts.sh <name>` — never hand-type mechanical facts.
 - [ ] Decide and record the pin deliberately (check the branch model:
       `git rev-list --left-right --count origin/main...origin/dev`-style before
-      trusting freshness).
+      trusting freshness). Pin a release tag or a first-parent commit of the default
+      branch — `git rev-list --first-parent origin/<default> | grep <pin>` — never a
+      side branch (rule 4c; pi's 2026-08 pin hid a fortnight of `main`).
+- [ ] For every `false` / absent cell, name the subject's OWN vocabulary you searched
+      (its config schema, type names, settings keys), not other harnesses' words
+      (rule 1b; cline's `completionPolicy` was missed by a `should_block` grep). Every
+      presence cell comment states default-on / default-off / unmounted.
 - [ ] **Deep-dive dispatch shape:** ~3 parallel reader subagents, one per category
       component, briefs carrying: exact clone path + pin, READ-ONLY, file:line
       citations mandatory, counts with measures, absences with searched surfaces,

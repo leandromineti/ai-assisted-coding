@@ -70,12 +70,24 @@ Three report-writing disciplines — the first two scars from the gsd-core v1.11
   definition a count came from, or the next re-read cannot confront it — the enumerable cousin
   of "a citation is what makes a claim re-checkable". Scored at the ai-memory re-read: counts
   carrying an implicit measure reproduced **8-for-8** at their own pin; counts stated without
-  one failed **0-for-5** — a settled-sounding count stops being re-checked.
+  one failed **0-for-5** — a settled-sounding count stops being re-checked. The 2026-09-24
+  batch reproduced the split across eight reports (with-measure 30/30, 14/14, 13/14, 11/11,
+  9/9, 8/8, 7/7, 5/5; without 1/5, 2/9, 27/30, 9/13, 21/24, 5/7, 1/5, 8/9) and added three
+  shapes: **the measure names its population** (hermes' "8.7% agent trailers" was exact for
+  *any* co-author trailer, 28% of it a CI bot; AI-named was 2.6%), **it pins its refs** (a
+  count against `main...v1.5.0rc10` was right when written and unreproducible a fortnight
+  later; pi's "65%" divided commits-with-merges by a total-without), and **a measure can
+  survive its own pin and die at the next** (hermes' `registry.register(` grep fell 93 → 64
+  with no tool removed once registration went table-driven — prefer the subject's own
+  registry, AST or config, over greps of call sites).
 - **Forward-looking claims are dated, falsifiable predictions.** The deep-dive's issue-counter
   forecast carried a number and a date, so the re-read could *score* it (landed within a day;
   ceiling mis-chosen). Write predictions that way on purpose, and score them at the next
   re-read — a free calibration instrument, the same epistemics this repo credits in tools
-  that publish negative results about themselves.
+  that publish negative results about themselves. **Bound both sides** (2026-09-24): a
+  prediction with only a ceiling scores TRUE for two opposite worlds — gemini-cli's
+  "under 150 commits/month" passes for maintenance and for collapse alike (steady state
+  45–60). State both falsifiers, or a band, and say which world each side means.
 - **A source-traced claim reads its identifiers from source.** A subject's docs claiming
   something about its own source is still a docs-view claim (rule 8) — verify the identifier,
   and the *subject named* beside a citation, in the source itself before writing either as
@@ -85,7 +97,9 @@ Three report-writing disciplines — the first two scars from the gsd-core v1.11
   inherited it — and an injection envelope attributed to OpenCode at a line-exact citation
   whose code named Antigravity. Both survived until the re-read's per-claim confrontation.
 
-**Lint.** Before committing:
+**Lint.** Before committing — and `bash scripts/sync-upstream.sh` first whenever you intend
+to act on the `behind` lines, because `--check` never fetches and says so on its
+`stale-clone` line:
 
 ```sh
 python3 scripts/build-tool-index.py --check   # pinned commits still match clone HEADs

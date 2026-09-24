@@ -237,6 +237,12 @@ MODEL_LIFECYCLE_KEYS = ["release_date"]
 # (`transcription_fields[].verification == dated-docs`), never hard-coded to category 1.
 DOCS_STALE_DAYS = 30
 
+# Clone staleness window (2026-09-24 batch). `--check` never fetches — it is read-only by
+# design — so its drift numbers are only as fresh as the last `scripts/sync-upstream.sh`.
+# Four drift checks in August ran on clones ~10 days stale and under-measured their windows
+# up to 2.8×; a `stale-clone` line makes that slack visible instead of silent.
+CLONE_STALE_DAYS = 14
+
 REQUIRED = ("name", "category", "depth")
 DEPTH_ORDER = {"deep-dive": 0, "survey": 1, "stub": 2}
 CATEGORY_NAMES = {
@@ -498,6 +504,8 @@ def check(reports: list[dict]) -> int:
     """
     problems = 0
     behind = []
+    shapes = []
+    stale = []
     for r in reports:
         pinned = r.get("commit")
         # A recorded pin with a clone present is checked regardless of `access:`: a
@@ -523,19 +531,66 @@ def check(reports: list[dict]) -> int:
             )
             problems += 1
             continue
-        n = g("rev-list", "--count", f"{pinned}..HEAD").stdout.strip()
+        # Drift is measured against the REMOTE default branch, never the clone's HEAD
+        # (2026-09-24): after a re-read every clone sits detached at its tag, and a clone
+        # detached at its pin reads `pinned..HEAD` = 0 forever — gemini-cli was invisible
+        # on this queue for 30 days that way. `--check` still never fetches; the fetch
+        # date below says how stale the comparison is.
+        ref = _default_ref(g)
+        fetched = _fetch_date(clone)
+        if fetched is None or (dt.date.today() - fetched).days > CLONE_STALE_DAYS:
+            stale.append((r["name"], fetched))
+        pinned = str(pinned)
+        if g("merge-base", "--is-ancestor", pinned, ref).returncode != 0:
+            mb = g("merge-base", pinned, ref).stdout.strip()[:10]
+            off = g("rev-list", "--count", f"{mb}..{pinned}").stdout.strip() if mb else "?"
+            shapes.append((r["name"], pinned, ref, mb, off))
+        n = g("rev-list", "--count", f"{pinned}..{ref}").stdout.strip()
         if n and n != "0":
-            head = g("rev-parse", "--short", "HEAD").stdout.strip()
-            files = g("diff", "--name-only", f"{pinned}..HEAD").stdout.split()
-            behind.append((r["name"], pinned, head, int(n), len(files), r.get("read_at", "?")))
-    for name, pinned, head, n, nfiles, read_at in sorted(behind, key=lambda b: -b[3]):
+            head = g("rev-parse", "--short", ref).stdout.strip()
+            files = g("diff", "--name-only", f"{pinned}..{ref}").stdout.split()
+            behind.append((r["name"], pinned, head, int(n), len(files), r.get("read_at", "?"), ref, fetched))
+    for name, pinned, head, n, nfiles, read_at, ref, fetched in sorted(behind, key=lambda b: -b[3]):
         print(
-            f"behind: {name} read at {read_at} on {pinned}; upstream is {n} commits ahead "
-            f"({head}), {nfiles} files changed — re-read if the drift touches what the "
-            f"report claims; do NOT re-pin without re-reading.",
+            f"behind: {name} read at {read_at} on {pinned}; {ref} is {n} commits ahead "
+            f"({head}, fetched {fetched or 'never'}), {nfiles} files changed — re-read if the "
+            f"drift touches what the report claims; do NOT re-pin without re-reading.",
+            file=sys.stderr,
+        )
+    for name, pinned, ref, mb, off in shapes:
+        print(
+            f"pin-shape: {name} pins {pinned}, which is not on {ref} — a release spur or a "
+            f"side branch, {off} commit(s) past merge-base {mb}; drift above is measured "
+            f"from that merge-base, and a side-branch pin can hide work already on the "
+            f"default branch (methodology rule 4c).",
+            file=sys.stderr,
+        )
+    for name, fetched in stale:
+        print(
+            f"stale-clone: {name} last fetched {fetched or 'never'} (> {CLONE_STALE_DAYS} days) — "
+            f"its drift figures are a lower bound; run scripts/sync-upstream.sh before acting.",
             file=sys.stderr,
         )
     return problems
+
+
+def _default_ref(g) -> str:
+    """The remote default branch as a local ref, or HEAD when the clone has no remote."""
+    r = g("symbolic-ref", "-q", "--short", "refs/remotes/origin/HEAD")
+    if r.returncode == 0 and r.stdout.strip():
+        return r.stdout.strip()
+    for b in ("origin/main", "origin/dev", "origin/master"):
+        if g("rev-parse", "--verify", "-q", b).returncode == 0:
+            return b
+    return "HEAD"
+
+
+def _fetch_date(clone) -> "dt.date | None":
+    """Date of the clone's last fetch (FETCH_HEAD mtime), or None if it never fetched."""
+    f = clone / ".git" / "FETCH_HEAD"
+    if not f.exists():
+        return None
+    return dt.date.fromtimestamp(f.stat().st_mtime)
 
 
 def _as_date(v) -> dt.date | None:

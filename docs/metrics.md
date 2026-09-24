@@ -136,6 +136,21 @@ moment was not the *duration* of the block but the *content* of the answer (a
 one-line deferral decided the exit-code trap). Time-based attention metrics price
 the interruption, not the leverage.
 
+### Agent-attribution share (candidate, 2026-09-24 — not yet used in an experiment)
+`commits carrying an AI-named Co-Authored-By trailer / window commits`, measured **per
+commit** (split `git log --format='%H%x1e%B'` records on the sentinel; a per-line grep
+over-counts squash-merged trailers), and always reported beside two companions on the same
+window: the *any-trailer* share and the *bot-author* share (`git shortlog -sn`). The
+category-2 batch that minted it showed why the companions are mandatory — the signal lives
+in a different place per repo, and any one measure alone misreads it: opencode's
+`opencode-agent[bot]` authors 36% of commits (96 of them real fixes with the human in a
+trailer) while AI-named trailers are 0.7%; hermes 8.7% any-trailer vs 2.6% AI-named;
+qwen-code 39% `Qwen-Coder` co-authors; pi 0 in 694 despite dogfooding its own agent; cline
+runs a workflow that strips agent badges; codex's Copybara export strips trailers
+outright (11.3% pre-export → 0.06%), so its public history *cannot* answer the question.
+Read it as a floor with a per-repo blind-spot note, never as a comparison across tools
+without one.
+
 ### Correction rate (candidate, borrowed 2026-08-17 — not yet used in an experiment)
 `correction attempts / trajectory steps`, from
 [`agent-frameworks-eval`](../references/papers/2025-agent-frameworks-eval.md) (its RQ2). Borrowed WITH

@@ -40,7 +40,13 @@ match its npm registry entry — both would have been wrong if asserted from mem
   search **the maker's own site**; a repository host shows only what is open source, and
   `tools/` shows only what someone here has already ingested. Where the absence survives,
   record *where you looked and when*, so the next reader can see the shape of the hole
-  rather than inherit the conclusion.
+  rather than inherit the conclusion. **Search the subject's vocabulary, not a
+  competitor's** (2026-09-24): before asserting an absence, read how the subject names
+  the concept — its config schema, type names, settings keys — and search those. cline's
+  `turn_end_gates: false` (2026-08-18) searched `should_block` and stop-hook spellings; cline
+  spells the mechanism `completionPolicy`, and the gate was in the loop at the pin. codex's
+  "no budget of any kind" searched repetition words; codex has a *token* session budget.
+  Both absences measured the search vocabulary.
 
   *Why it earned its place:* on 2026-08-26 the tool taxonomy's maker-span paragraph was
   wrong **three times in one day**, each time by this exact method. First it claimed six of
@@ -140,13 +146,37 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   describes an aggregation, run it or read its key function — a grouping key is a
   one-line thing to check and the whole claim rests on it.
 
+  *Three more shapes, from the 2026-09-24 batch.* **A call site counts only on a live
+  path** — check the guard above it: opencode's "answers both" citation sat inside a branch
+  that returns unless a default-off flag is set, and codex's `SafetyCheck` was cited for
+  every tool when it governs `apply_patch` alone. **A name is weaker than a docstring** —
+  a file (`plan-reminder-anthropic.txt`, imported nowhere), a directory
+  (`packages/containers`, CI images read as an isolation concern), a flag. **A claim that
+  spans two surfaces needs a call-graph step, not two file:line steps** — cline's "`xhigh`
+  in the CLI sends no effort" joined two accurate readings through a function that only
+  the VS Code extension calls.
+
 - **4b. The `behind` list is a work queue, not a status line.** When
   `build-tool-index.py --check` reports a report behind its pin, the obligation is to
   ask *whether the drift touches what the report claims* — and to record the answer,
-  dated, in the report itself. Three outcomes, all of them writing:
+  dated, in the report itself. Four outcomes, all of them writing:
   **contradicted** (correct the claim in place, citing the pin), **corroborated** (say
   so — upstream confirming a finding is evidence, and unrecorded it looks like silence),
-  **untouched** (one line, so the next reader doesn't redo the check).
+  **untouched** (one line, so the next reader doesn't redo the check), and — since
+  2026-09-24 — **retracted**: the citation still resolves at the pin, but the evidence it
+  pointed at no longer exists upstream. Keep the pinned citation, say when it left, and
+  downgrade any claim that rested on the *statement* rather than the *mechanism*. hermes
+  condensed away four comments the report cited while every mechanism survived; pi cut
+  its README from 717 to 70 lines and took both first-party statements of "No MCP / No
+  permission popups" with it while the code absence held. Docs-backed absences decay faster
+  than code-backed ones, and a source-only re-check cannot see it.
+
+  **A drift check names the ref it ran against and that ref's committer date, and fetches
+  first** (2026-09-24). "At HEAD" is not a citation: four August drift checks ran on clones
+  ten days stale (refs dated 08-06, checks dated 08-16) and under-measured their windows
+  up to 2.8× — one "moderate re-read cost" forecast inherited the undercount. The idiom is
+  `## Drift check — <date> (at <sha>, committed <date>; not a re-read; the pin is
+  unchanged)`, and `--check`'s `stale-clone` line says how old the comparison is.
 
   **The pin does not move.** A drift check is not a re-read, and only a re-read earns a
   new pin (`upstream/README.md`'s scar). A report may carry a dated drift check well
@@ -172,6 +202,19 @@ mechanically. Blobless clones (`upstream/`) keep `git log`/`blame` usable — a 
   before the queue existed (2026-08-17) caught a pricing renormalization and a wrong
   knowledge cutoff; it happened because someone thought of it, not because anything
   asked.
+
+- **4c. A pin is a release tag, or a commit on the default branch's first-parent line.**
+  Check `git rev-list --first-parent origin/<default> | grep <pin>` before recording one;
+  anything else is recorded with its branch relation in the frontmatter, and `--check`'s
+  `pin-shape` line names it. Release tags cut on spurs (codex, gemini-cli, opencode,
+  qwen-code all tag one to four commits off their default branch) are fine — they are
+  what users install, and drift is measured from the merge-base.
+
+  *Why it earned its place:* pi's 2026-08-26 deep-dive pinned `8fa7eebd2`, a side-branch
+  commit. 290 of the 694 commits in the next window carried dates *before* the read — work
+  that was already on `main` and unreachable from the pin — and the report's flagship
+  Surprise (a throwing stub) had been deleted on `main` fourteen days before it was
+  written. A pin off the trunk buys a tree that is already historical.
 
 ## 5. Experiments are preregistered
 
@@ -310,6 +353,15 @@ not just read.
   credentials. The finding was reachable only by probing the artifact — and the same
   probe settled a second claim (the shipped default config) against what users actually
   receive rather than what the tree suggests.
+
+  *The other direction, 2026-09-24:* **read the manifest's `files`/`bin` and the publish
+  script before claiming a tree ships a mechanism.** codex's `package.json` says
+  `0.0.0-dev` with no `optionalDependencies` — the 13 KB launcher, six platform packages
+  and a 387 MB payload are injected by `build_npm_package.py`; pi added
+  `"!dist/experimental"` to `files` in the same window it built the server, so a flag's
+  new consumer never reaches a user (a consumer in the tree is not evidence the flag
+  ships); cline's `@cline/cli` is renamed `cline` at publish and versions `3.x` while the
+  extension's tag says `4.x` — the artifact's version namespace may not be the tag's.
 
 ## 9. Public docs are self-contained
 
