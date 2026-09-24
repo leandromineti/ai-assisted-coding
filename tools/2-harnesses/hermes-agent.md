@@ -1,4 +1,9 @@
 ---
+# PIN MOVED 29112bef0 → f97608f178 (= tag v2026.9.24) at the 2026-09-24 release re-read
+# (rule 4b: three Opus tracts — release substance by component, per-claim confrontation at
+# all three pins, provenance/scoreables — main-session spot-verification; window 14,831
+# commits). The 2026-09-04 release assessment and its sections stay dated at 29112bef0;
+# the sections below it stay dated at 524ab5399 as their own header says.
 # PIN MOVED 524ab5399 → 29112bef0 (= tag v2026.8.31) at the 2026-09-04 release re-read
 # (rule 4b: a pin moves only with a re-read; this was one — three-tract release variant,
 # every claim confronted at both pins). The 2026-08-12 drift check and the 2026-08-27
@@ -15,30 +20,30 @@ url: https://github.com/NousResearch/hermes-agent
 license: MIT
 access: open-source
 stack: [Python, TypeScript]
-version: v2026.8.31
-commit: 29112bef0
+version: v2026.9.24   # tag subject "chore: release v0.21.5 (2026.9.24)"
+commit: f97608f178
 first_commit: 2025-07-22
-stars: 241330
-stars_at: 2026-09-04
-read_at: 2026-09-04   # v2026.8.31 release re-read (window 7,055 commits); deep-dive 2026-07-30 @ 524ab5399, drift-checked 2026-08-12, reasoning-param targeted read 2026-08-27
+stars: 248666
+stars_at: 2026-09-24   # repo-facts.sh; 241,330 at 2026-09-04
+read_at: 2026-09-24   # v2026.9.24 release re-read (window 14,831 commits, three regimes — § Release re-read v2026.9.24); v2026.8.31 release re-read 2026-09-04 (window 7,055 commits); deep-dive 2026-07-30 @ 524ab5399, drift-checked 2026-08-12, reasoning-param targeted read 2026-08-27
 depth: deep-dive
 harness_features:
-  mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/)
+  mcp: true              # tools/mcp_tool.py + optional-mcps/ + committed exposure-strategy bench (mcp-research-data/) DRIFT 2026-09-24: `mcp-research-data/` was deleted upstream 2026-09-13 (0c0875b746, "delete orphaned bench data") — the value holds on 25 `tools/mcp_*.py` modules + `optional-mcps/` at f97608f178; Surprise 7's exhibit is no longer in-tree
   lsp: true              # agent/lsp/ (client, manager, servers, workspace)
   hooks: true            # plugin lifecycle hooks (pre_llm_call, pre_verify), shell hooks
   context_retrieval: model-driven  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: no codebase index of any kind — read_extract/read_preview/read_window/file_operations are model-dispatched tools, and the only content index in the repo is FTS5 over the agent's OWN session history (tools/session_search_tool.py), not source; confirmed absent by targeted grep (embed|repo-map|code-index|vector-store|semantic-search @ 29112bef0) alongside the context-assembly section's tier inventory
-  context_compaction: [llm-summarize, prune]  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: agent/context_compressor.py runs an auxiliary-model summary by default (in-place compaction replaced session rotation as the default); a deterministic tool-result pruner (_prune_old_tool_results, :3993) ships OFF — proactive_prune_tokens: 0 in config_defaults.py:874, an opt-in trigger
-  turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤2 re-prompts (max_attempts=2) when the model finishes without fresh verification evidence (body §termination). CORRECTED 2026-09-04: the deep-dive wrote "≤3", wrong at its own pin — max_attempts: int = 2 at 524ab5399:210 and v2026.8.31:238 alike
-  tool_approval: policy  # tools/approval.py — approval at tool dispatch; re-verified at v2026.8.31 (file grew 44% in the window; YOLO import-freeze, smart approval, timeout≠denial all intact)
-  skills: true           # 58 bundled + 137 optional SKILL.md dirs at v2026.8.31 (was 70+111 — bundled SHRANK while optional grew: surface moving out of the default install); agentskills.io-compatible
+  context_compaction: [llm-summarize, prune]  # ADR-0055, cell set 2026-09-04 probe-pass at the pin: agent/context_compressor.py runs an auxiliary-model summary by default (in-place compaction replaced session rotation as the default); a deterministic tool-result pruner (_prune_old_tool_results, :3993) ships OFF — proactive_prune_tokens: 0 in config_defaults.py:874, an opt-in trigger At v2026.9.24: proactive_prune_tokens still 0 (config_defaults.py:592), micro_compact False (:603); ONE changed default — `threshold_tokens` None → 256_000 (:570), an absolute trigger so 1M-window models compact at all
+  turn_end_gates: engine # ADR-0012 graded: agent/verification_stop.py — in-loop policy, ≤2 re-prompts (max_attempts=2) when the model finishes without fresh verification evidence (body §termination). CORRECTED 2026-09-04: the deep-dive wrote "≤3", wrong at its own pin — max_attempts: int = 2 at 524ab5399:210 and v2026.8.31:238 alike At v2026.9.24: max_attempts=2 at verification_stop.py:159 (third pin in a row); gates now run as one ordered pipeline, agent/turn_stop_gates.py:105 (verify-on-stop → pre_verify hook → kanban terminal-tool guard). CORRECTION 2026-09-24, true at BOTH pins: verify-on-stop ships **default OFF** — `"verify_on_stop": False` at config_defaults.py:201 (:264 @ 29112bef0); the grade is the mechanism's, a fresh install does not run it (presence ≠ operative)
+  tool_approval: policy  # tools/approval.py — approval at tool dispatch; re-verified at v2026.8.31 (file grew 44% in the window; YOLO import-freeze, smart approval, timeout≠denial all intact) At v2026.9.24: tools/approval.py 5,971 → 1,354 lines with seven approval_*.py siblings; YOLO import-freeze at :43-45, unified bypass predicate at :484-488, `approvals` config block key-identical across pins
+  skills: true           # 58 bundled + 137 optional SKILL.md dirs at v2026.8.31 (was 70+111 — bundled SHRANK while optional grew: surface moving out of the default install); agentskills.io-compatible At v2026.9.24: 58 bundled + **150** optional (`git ls-tree -r --name-only v2026.9.24 skills/ | grep -c SKILL.md$`, same over optional-skills/) — bundled flat, optional +13
   subagents: true        # delegate_task (tools/delegate_tool.py), single + parallel batch
-  ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; refund re-verified at v2026.8.31, conversation_loop.py:7716-7720)
+  ptc: true              # execute_code: model-written Python calls tools via RPC; iteration budget refunds these turns (ADR-0012; refund re-verified at v2026.8.31, conversation_loop.py:7716-7720) At v2026.9.24 the refund is agent/turn_tool_round.py:185-188
   plan_mode: prompt      # /plan is a BUILT-IN command since the window (was a bundled skill; promoted because platform command menus trim skills alphabetically at their caps and `plan` sorted past the cutoff — agent/plan_prompt.py docstring). Still prompt-only, plans under .hermes/plans/, not a core loop mode
   rules_files: [SOUL.md, HERMES.md, AGENTS.md, CLAUDE.md, .cursorrules]   # reads competitors' files too — loaders in prompt_builder.py; v2026.8.31 adds AGENTS.override.md and .cursor/rules/*.mdc
-  model_agnostic: true   # 39 provider plugins (ls plugins/model-providers/ minus README; was 33)
-  session_sharing: true  # `hermes sessions export --format trace --upload` → Hugging Face agent-trace dataset (private by default, forced secret redaction); no hosted live-session links. CORRECTED 2026-09-04: the deep-dive wrote "hermes trace upload", a command that existed at neither pin — the mechanism was real, the identifier invented
-  evals: true            # mini_swe_runner.py, batch_runner.py, mcp-research-data/ — plus, new at v2026.8.31, evals/ with four committed A/B harnesses (compaction, browser tools, read_file design, schema diet); still none measuring the learning loop
-  learning_loop: background  # ON by default (config_defaults.py:1353): interval-gated review fork (turn_finalizer.py:806-819; nudge intervals 10) + idle curator + /learn + /refine. New in window: cron sessions suppressed, whitelist widened to read_file/search_files after the fork was found starving in production (see re-read), 600K-token/16-iteration fork budgets, JSONL skill ledger with rollback
+  model_agnostic: true   # 39 provider plugins (ls plugins/model-providers/ minus README; was 33) At v2026.9.24: **38** (`opencode-free` removed, nothing added)
+  session_sharing: true  # `hermes sessions export --format trace --upload` → Hugging Face agent-trace dataset (private by default, forced secret redaction); no hosted live-session links. CORRECTED 2026-09-04: the deep-dive wrote "hermes trace upload", a command that existed at neither pin — the mechanism was real, the identifier invented At v2026.9.24 the `--format trace` subparser is hermes_cli/subcommands/sessions.py:76; still no hosted live-session link
+  evals: true            # mini_swe_runner.py, batch_runner.py, mcp-research-data/ — plus, new at v2026.8.31, evals/ with four committed A/B harnesses (compaction, browser tools, read_file design, schema diet); still none measuring the learning loop At v2026.9.24: `evals/` is 69 top-level entries (was 4), incl. codebase_navigability/, postmortem/, memory/ — and still none takes skill/memory accumulation as its dependent variable (`git grep -l skill_ledger v2026.9.24 -- evals` → 0; evals/memory/honcho_current_query.py:6 disclaims "not memory quality")
+  learning_loop: background  # ON by default (config_defaults.py:1353): interval-gated review fork (turn_finalizer.py:806-819; nudge intervals 10) + idle curator + /learn + /refine. New in window: cron sessions suppressed, whitelist widened to read_file/search_files after the fork was found starving in production (see re-read), 600K-token/16-iteration fork budgets, JSONL skill ledger with rollback At v2026.9.24: default still ON (config_defaults.py:789), fork call site turn_finalizer.py:700-710, budgets background_review.py:150/:157; NEW: review_idle_queue.py defers reviews bound for the managed local llama-server until the machine is idle (`auxiliary.background_review.defer`); the loop STARVED AGAIN by a different mechanism (#115299) — § Release re-read v2026.9.24
 ---
 
 # hermes-agent
@@ -175,33 +180,53 @@ coding is a *posture* the agent shifts into when it finds itself in a git repo
 | 33 provider plugins, model-agnostic | Table stakes at this point; breadth notable |
 | MCP client, LSP, subagents, skills | Table stakes by mid-2026 |
 | Built-in cron with natural-language jobs | Distinctive |
-| Trajectory export for training (`hermes trace upload`, batch_runner) | Distinctive — the research-lab tell |
+| Trajectory export for training (`hermes sessions export --format trace --upload`, batch_runner — *identifier corrected 2026-09-24; the 09-04 audit retracted `hermes trace upload` in the frontmatter but not here*) | Distinctive — the research-lab tell |
 
 ## Stack & repo shape
 
 Python 3.11+ (uv), with TypeScript for the desktop app (Electron), web dashboard, and a
-Tauri bootstrap installer. 10,925 tracked files at v2026.8.31 (`git ls-tree -r`; was
-8,071): 4,881 `.py`, 1,951 `.ts`, 1,583 `.md`, 800 `.tsx` — plus 725 `.com` files that
+Tauri bootstrap installer. **15,075** tracked files at v2026.9.24 (`git ls-tree -r`; 10,925 at
+v2026.8.31, 8,071 at the deep-dive): 7,059 `.py`, 2,549 `.ts`, 1,613 `.md`, 1,221 `.tsx` —
+plus 1,221 `.com` files that
 are not code at all: `contributors/emails/` names each mapping file after a commit
 email, a merge-conflict-avoidance structure invented for thousand-PR flow (one file per
-mapping so concurrent salvage PRs never collide; CI-enforced). 26,683 commits in ~13.5
-months, maintainer-led, not drive-by-scaled — Teknium is 7,421 of 19,628 at the old pin
-and 9,339 of 26,683 at this one (`git shortlog -sn`, summing his two identities; the
+mapping so concurrent salvage PRs never collide; CI-enforced; 1,545 files at v2026.9.24).
+**41,514** commits in ~14 months (26,683 at v2026.8.31), maintainer-led, not drive-by-scaled
+— Teknium is 7,421 of 19,628 at the deep-dive pin, 9,339 of 26,683 at v2026.8.31, and
+**18,492 of 41,514 (44.5%)** at this one (`git shortlog -sn`, summing his two identities; the
 deep-dive's "~7,350" carried no measure — corrected 2026-09-04). But a commit count for
 this repo is **not a comparable unit of work**: see the re-read section's velocity
 finding.
 
-The shape is the opposite of opencode's 33-package monorepo: a **flat Python core with
-megafiles**, and at this pin the finding is *more* true than at the last one —
-`cli.py` 17,976 → 22,268 lines; `hermes_cli/main.py` 12,420 → 14,834 *(correction
-2026-09-04: the deep-dive wrote 11,031, wrong at its own pin — the citation into the
-file was read at the pin, the line count was not)*; `run_agent.py` 7,410 → 9,413;
-`agent/conversation_loop.py` 7,040 → 8,830; `gateway/run.py` 25,766 → 33,539. The
-`agent/` package is 155 top-level / 210 recursive `.py` modules (the deep-dive's "~180"
-lands only on the recursive count, which includes `agent/lsp/` etc.). Capability lives
-at the edges as data: 58 bundled + 137 optional skills (`SKILL.md` dirs — bundled
-*shrank* from 70 while optional grew from 111), 39 model-provider plugins, 22 gateway
-platform plugins.
+The shape **was** the opposite of opencode's 33-package monorepo — a flat Python core with
+megafiles, *more* true at v2026.8.31 than at the deep-dive (`cli.py` 17,976 → 22,268;
+`hermes_cli/main.py` 12,420 → 14,834; `run_agent.py` 7,410 → 9,413;
+`agent/conversation_loop.py` 7,040 → 8,830; `gateway/run.py` 25,766 → 33,539) — **and at
+this pin it is false by every one of those measures** (rewritten 2026-09-24, not
+annotated: the characterization did not survive the pin move). The Sep 2026
+decomposition (PR #102117, merged 2026-09-04) turned every god file into a *facade plus
+`<stem>_<topic>.py` siblings*, and AGENTS.md now legislates it (`AGENTS.md:227-251 @
+f97608f178`: "A file passing ~2,000 lines or a function passing ~300 lines / cyclomatic
+complexity 30 is the signal to split"). `git show <rev>:<path> | wc -l`, three points:
+
+| file | v2026.8.31 | 2026-09-04 post-campaign (`b51c055a1`) | v2026.9.24 |
+|---|---|---|---|
+| `cli.py` | 22,268 | 4,656 | **1,849** |
+| `hermes_cli/main.py` | 14,834 | 3,433 | **3,652** |
+| `run_agent.py` | 9,413 | 1,555 | **1,623** |
+| `agent/conversation_loop.py` | 8,830 | 1,600 | **1,758** |
+| `gateway/run.py` | 33,539 | 5,512 | **6,166** |
+
+Megafiles are relocated, not abolished: the largest non-test `.py` is now
+`agent/auxiliary_client.py` at 8,197 lines, and non-test files over 5,000 lines went 37 →
+6 → **7** (PR #102117's own measure, reproduced). The `agent/` package is 245 top-level /
+306 recursive `.py` modules (155 / 210 at v2026.8.31; `agent/turn_*.py` alone 4 → 31).
+Capability lives at the edges as data: 58 bundled + **150** optional skills (`SKILL.md`
+dirs; 137 at v2026.8.31, 111 at the deep-dive), **38** model-provider plugins (39), 22
+gateway platform plugins. A 2,085-entry machine-readable compat manifest
+(`COMPAT_MANIFEST.md` + `compat_manifest.json`, `scripts/check_compat_pointers.py` in CI)
+declares the old import paths non-API — with a dated self-commitment the project missed:
+"removed on 2026-09-14", and 338 `PLUGIN-COMPAT` blocks still in the tree at the 09-24 tag.
 
 ## Architecture
 
@@ -210,7 +235,7 @@ platform plugins.
 ```
 hermes                      pyproject [project.scripts] → hermes_cli.main:main
   └ cmd_chat                hermes_cli/main.py:3163
-      └ cli.main            cli.py (22,268-line interactive REPL)
+      └ cli.main            cli.py (22,268-line interactive REPL at v2026.8.31; a 1,849-line facade at v2026.9.24, `cli.py:1647`)
           └ AIAgent         run_agent.py:422 (constructed once, cached across turns)
               └ run_conversation   agent/conversation_loop.py:1899
                   └ build_turn_context   agent/turn_context.py (per-turn prologue)
@@ -226,7 +251,10 @@ same `run_conversation`.
 
 ### The agent loop
 
-`conversation_loop.py:2094` (byte-identical since the deep-dive, only the line moved):
+`conversation_loop.py:2094` at v2026.8.31 (byte-identical since the deep-dive, only the line
+moved — **the streak ended at v2026.9.24**: `agent/conversation_loop.py:1546` reads
+`while (s.api_call_count < …`, the local became a field of a `_LoopState` dataclass, and
+the loop body is gone — see § Release re-read v2026.9.24, 2):
 
 ```python
 while (api_call_count < agent.max_iterations and agent.iteration_budget.remaining > 0) or agent._budget_grace_call:
@@ -271,7 +299,9 @@ assembles **three explicit cache tiers**:
   parallel-tool-call guidance, per-tool behavioral blocks (only for tools actually
   loaded), environment hints (plus, since the window, a one-line environment probe —
   `tools/env_probe.py`, default on, silent when the environment is clean), the coding
-  operating brief;
+  operating brief; *(at v2026.9.24 the environment hints left this tier for the END of
+  volatile, `system_prompt.py:783-786`, for a prompt-integrity reason — § Release re-read
+  v2026.9.24, 3)*
 - **context** — the workspace snapshot (git state, built **once** and never re-probed —
   the brief tells the model to re-check with `git` because the snapshot is allowed to go
   stale rather than shatter the cache), context files, caller system message;
@@ -312,7 +342,11 @@ implementation in-tree.
 
 **93 `registry.register()` calls across 45 tool modules; 53 tools in the shared core
 set** (`_HERMES_CORE_TOOLS`, `toolsets.py` — AST-counted; the deep-dive's 89/38/61 were
-exact at the old pin, same measures); **73 registrations carry a `check_fn`**
+exact at the old pin, same measures — *and at v2026.9.24 the grep measure broke: 64
+calls across 48 modules, because registration became table-driven (`kanban_tools.py`
+14 call sites → one `for … in _TOOLS:` loop at `:1201`), while the AST-counted core set went
+**53 → 59** and toolsets 59 → 61 — the "moved outward" reading below is reversed for
+tools; § Release re-read v2026.9.24, 4*); **73 registrations carry a `check_fn`**
 availability gate (TTL-cached) that removes tools from the schema when their service
 isn't present (no `HASS_TOKEN` → no Home Assistant tools; no `HERMES_DESKTOP` → no GUI
 pane tools). 59 named toolsets compose them. Schemas live in the central registry
@@ -366,7 +400,7 @@ opencode's `visibleTools`.
 
 Categories 3, 4, and 5 as above — plus a bleed no other tool in the study has: **category 1
 training data**. `batch_runner.py`, `trajectory_compressor.py`, and
-`hermes trace upload` (exports sessions in Claude Code JSONL shape to Hugging Face,
+`hermes sessions export --format trace --upload` (*corrected 2026-09-24 — `hermes trace` was never a registered subcommand at any of the three pins*; exports sessions in Claude Code JSONL shape to Hugging Face,
 private by default, secret-redacted) exist "for training the next generation of
 tool-calling models". The harness is also a data-collection instrument for its
 maker's models — stated openly in the README ("Research-ready").
@@ -424,7 +458,9 @@ structurally unavailable here, recorded as such.
    from the agent's own skills. Security reasoning about the extension surface itself,
    not just about user commands.
 7. **They benchmark their own design decisions and commit the data.**
-   `mcp-research-data/` holds bench rows comparing three MCP exposure strategies
+   `mcp-research-data/` (at 29112bef0 — **deleted upstream 2026-09-13**, `0c0875b746`
+   "delete orphaned bench data"; the figures below were re-verified to the dollar at that
+   pin before the deletion and are no longer re-checkable in-tree) holds bench rows comparing three MCP exposure strategies
    (eager / bridge / listing) across schema sizes — e.g. `full|eager`: 810k input
    tokens, $4.05 vs `full|bridge`: 161k, $0.80. Empirical grounding as an internal
    practice, exp-01's load-bearing mechanism, done by a vendor on its own harness.
@@ -606,7 +642,13 @@ reasoning written down on both sides.
   bet) shows the loop can run for days while silently doing nothing — so "does it pay"
   is not answerable from the code even in principle; it needs the ledger telemetry the
   window just added. A natural experiment for this repo's rig remains: same task
-  battery, fresh Hermes vs one seeded with N sessions of use.
+  battery, fresh Hermes vs one seeded with N sessions of use. **Stronger again at
+  v2026.9.24**: `evals/` grew 4 → 69 entries including one literally named `memory/`,
+  whose only file disclaims the question ("proves query routing, ownership and caller
+  waiting, not memory quality", `evals/memory/honcho_current_query.py:6`); no eval
+  references `skill_ledger`; and the ledger itself is now trimmed at 5 MB with
+  oldest-entry eviction (#118696, 2026-09-22) — a rolling ~5-week horizon, so a
+  ledger-based value study must capture during the run, not mine afterwards.
 - ~~What do 221k stars represent vs ECC's 235k?~~ **Partially answered at the re-read
   (2026-09-04)**: 241,330 stars against **940 watchers (0.39%)** and a 25% lifetime PR
   merge rate over a 26,158-deep open-PR queue — viral discovery plus a product-scale
@@ -624,16 +666,236 @@ reasoning written down on both sides.
   refactor/extract are local consolidations, and the 29 new `agent/` modules are new
   concerns, not carved-out loop internals. *(Post-pin caveat: in the 4 days after the
   tag, an automated campaign cut every megafile 75–85% — see the release assessment;
-  whether that decomposition holds is the next re-read's question.)*
+  whether that decomposition holds is the next re-read's question.)* **Reversed at
+  v2026.9.24: yes** — the loop is a 1,758-line phase dispatcher over twelve `agent/turn_*`
+  modules, and the decomposition held for 20 days (scored in § Release re-read v2026.9.24).
 - ~~How much of the velocity is agent-operated maintenance?~~ **Partially answered
   (2026-09-04)**: explicit `Co-Authored-By` agent trailers cover 8.7% of window commits
-  (Claude Fable/Opus/Sonnet models named, plus Cursor and Junie) — but the post-tag
+  (Claude Fable/Opus/Sonnet models named, plus Cursor and Junie) — *measure corrected
+  2026-09-24: 8.7% (612/7,055) is the share carrying ANY `Co-Authored-By:` trailer, 171
+  of those lines `github-actions[bot]` and most of the rest humans; commits naming an AI
+  co-author are 183 = 2.6%. A right number attached to the wrong sentence.* — but the post-tag
   burst proves the repo also runs large *uncredited* agent campaigns under the
   maintainer's identity, so the trailer count is a floor with no matching ceiling. The
   repo makes no in-repo claim about the share (rule 1b: searched AGENTS.md at both revs
   + docs/** for agent-written/AI-generated/simp). `contributors/emails` decoded: a
   per-file email→login map that exists so concurrent PR merges never conflict —
   CI-enforced, 320 → 935 files in the window.
+
+## Release re-read — v2026.9.24 (2026-09-24; pin 29112bef0 → f97608f178)
+
+Three Opus tracts (release substance by component · per-claim confrontation at all three
+pins · provenance and the parked scoreables), load-bearing claims re-run in the main
+session before writing. Window `git rev-list --count 29112bef0..v2026.9.24` = **14,831**;
+`git diff --shortstat` 11,081 files, +1,285,800 / −1,004,361 (net +281,439). Five tags fell
+inside it (9.7, 9.11, 9.14, 9.21, 9.24; ~1.5/week); the release note for v2026.9.24 covers
+only v0.21.4 → v0.21.5 and defers curated notes to v0.22.0, so **no curated note covers
+this pin-to-pin window**. The morning's `--check` had said 1,248 commits behind; the fetch
+said 14,831 — the hermes lesson from 09-04, repeated.
+
+**Velocity: three regimes, not two.** Per-day `%cs` histogram: a pre-tag tail of 261
+commits on long-lived branches merged after the tag; the **campaign**, 5,117 commits on
+09-01…09-04 (1,279/day, 65.5% `refactor`, `simp/` subjects on exactly two dates, 09-02 and
+09-03); then **post-campaign PR-driven development at 473/day** (9,453 in 20 days; 574/day
+in the last fortnight) — more than double the previous window's 221, with `fix:feat` at
+9.3:1 (was 4.9:1). Merged PRs by the GitHub API: 3,764 in 24.6 days (153/day; 2,974 in the
+previous 31.9). No second campaign: the heavy post-campaign days are mixed-author,
+fix-dominated. Concentration: Teknium + teknium1 61.7% authored, Teknium **76.5% as
+committer** — the maintainer is the merge button for three commits in four. Agent
+trailers in the PR-driven regime: **8.81%** of commits carry any `Co-Authored-By:`
+(8.67% last window — flat), AI-named co-authors 1.1% overall (2.5% in the campaign,
+which the campaign itself pulls down: 0 of its 796 `simp/` commits carry one).
+
+**1. The decomposition held — scored.** `git show <rev>:<path> | wc -l` at v2026.8.31 /
+post-campaign `b51c055a1` / v2026.9.24: `cli.py` 22,268 / 4,656 / **1,849**;
+`hermes_cli/main.py` 14,834 / 3,433 / 3,652; `run_agent.py` 9,413 / 1,555 / 1,623;
+`agent/conversation_loop.py` 8,830 / 1,600 / 1,758; `gateway/run.py` 33,539 / 5,512 /
+6,166. Four regrew +4–12% in 20 days, one fell another 60%; all five are 75–92% below
+their pre-campaign size. Non-test `.py` files over 5,000 lines: 37 → 6 → **7**
+(`agent/context_compressor.py` crossed at 5,576; `agent/auxiliary_client.py` is the
+largest at 8,197). The repo added back 2.3× what the campaign removed (+494,790 lines
+post-campaign) **into new files** — 4,881 → 7,059 `.py`, mean file size 12.5 → 11.7 KB —
+which is what the facade rule asks for. The rule is prose only: no size or complexity
+gate exists under `scripts/` or `.github/` (rule 1b: grepped `cyclomatic|max.?lines|
+line_limit|2000 lines|god file` at the tag → 0), and `gateway/run.py` is already 3× over
+it and regrowing. The campaign is documented three ways at this pin (AGENTS.md
+§ Facade + siblings, `COMPAT_MANIFEST.md` naming PR #102117 with a missed 2026-09-14
+removal date, `evals/codebase_navigability/` — an offline eval of what a codebase costs
+an *agent* to navigate: tokens per symbol lookup, 2,000-line `read_file` windows spanned).
+
+**2. The loop is a phase dispatcher now.** `agent/conversation_loop.py:1395` `_run_phase`
+calls twelve `agent/turn_*` modules (bound at import "so a source-tree swap cannot load a
+skewed phase mid-turn", `:38-39`), each returning a verdict whose `.action` is `return` /
+`break` / `continue`, with one latched field family (`_LATCHED_VERDICT_FIELDS`, `:1392`)
+so an error handler cannot clear an earlier arm. Entry trace: `run_conversation` `:1605` →
+`_run_conversation_turn` `:1448` → `_run_api_retry_loop` `:1416` → `finalize_turn`
+(`agent/turn_finalizer.py:490`); the gateway hop moved to `gateway/run_turn_runner.py:1726`.
+Stuck-loop guardrails: same module, 854 → 639 lines. Budgets unchanged (500 / 50,
+`agent/iteration_budget.py:4-5`); the `execute_code` refund carved out to
+`agent/turn_tool_round.py:185-188`. New and default-off: `api_mode == "codex_app_server"`
+hands the whole turn to a codex app-server subprocess (`:1527-1543`). **Turn-end gates
+are now one ordered pipeline** — `agent/turn_stop_gates.py:105` runs verify-on-stop →
+`pre_verify` plugin hook → kanban terminal-tool guard, each with its own attempt counter;
+`max_attempts=2` holds for the third pin running (`verification_stop.py:159`). And the
+correction this re-read owes at *both* pins: **verify-on-stop ships off** —
+`"verify_on_stop": False` (`config_defaults.py:201`; `:264 @ 29112bef0`; "default OFF
+(opt-in)" in the function's own docstring at both) — the report graded the mechanism and
+never said a fresh install does not run it. Also at both pins: the in-loop nudge's text
+tells the model to run `hermes verify --json` (`verification_stop.py:195,201`), so "not
+registered as a model tool" was true and understated.
+
+**3. Context assembly — two tier moves, one changed default.** Environment hints left the
+stable tier for the *end of volatile* (`stable_parts.append(_env_hints)` at
+`system_prompt.py:677 @ 29112bef0` → `volatile_parts.append(f"{RUNTIME_ENVIRONMENT_HEADING}…`
+at `:783-786`), for a prompt-*integrity* reason, not a cache one: "so quoted host examples
+cannot shadow it during persisted-prompt validation" — the first instance in this report
+where "caching is sacred" lost an argument. Project context files moved ahead of the
+worktree snapshot inside the context tier (`:762-773`) "so a shared context file can
+remain in the longest common prefix across worktrees" — a sibling-worktree cache win.
+Plugin prompt sections are frozen into one coarse anchor a resumed process can
+reconstruct without re-running plugins (`:113`, `:170`, emitted `:779`). Compaction:
+every default SAME except `threshold_tokens` None → **256_000** (`config_defaults.py:570`),
+an absolute trigger added because 1M-window models "never fired" at the 50% ratio; the
+lean tail gained a `TAIL_MAX_CONTEXT_FRACTION = 0.20` ceiling (`context_compressor.py:908`)
+whose comment names a production failure on a local 27B where "the 'protected' tail WAS
+the whole request". `plugins/context_engine/` is still only `__init__.py`. Native
+compaction widened by one model (`gpt-6-astra` on official Codex OAuth). Rules files:
+same precedence chain (`prompt_builder.py:1739-1740`), one carve-out — the injection
+scanner now *warns* instead of blocking for a `SOUL.md` in the user's own `HERMES_HOME`
+(`user_authored=False`, `:81`; #112570). Docs-vs-source, both directions:
+`website/docs/developer-guide/prompt-assembly.md:33` correctly puts the skills index in
+volatile and the runtime block at its end, then `:38` says skills are "part of the stable
+tier"; source (`system_prompt.py:776`) settles it. The root `docs/` tree was folded into
+the Docusaurus site and deleted (`0b40f5a790`, 2026-09-13) — rule-1b surfaces for this
+subject are `website/docs/` + the twelve `AGENTS.md` from now on; and
+`agent/system_prompt.py:8` now cites `references/system-prompt-invariant.md`, which does
+not exist at the tag.
+
+**4. Permissions and the tool surface.** Nothing loosened, nothing new in the config
+surface: `tools/approval.py` 5,971 → 1,354 lines plus seven `approval_*.py` siblings, YOLO
+frozen at import (`:43-45`, reworded), one bypass predicate (`:484-488`), the `approvals`
+block key-identical across pins, `~/.ssh/config` still the only approval-gated carve-out
+from the write deny set, root's home now added to it (`file_safety.py:80`). Three things
+the previous reads under-recorded exist at *both* pins — the `approvals.deny` glob list
+that blocks even under `--yolo`, the denial circuit-breaker (`denial_breaker_threshold:
+3`), and the Tirith content-security scanner (`approval.py:640-670`) — gaps, not window
+changes. **The tool-count measure broke**: `registry.register(` grep 93 → 64 across 45 →
+48 modules while no tool was removed — registration went table-driven (`kanban_tools.py`
+14 → 1, `browser_tool.py` 10 → 1); by the AST measures that survive, `_HERMES_CORE_TOOLS`
+**53 → 59**, `TOOLSETS` 59 → 61, `COMMAND_REGISTRY` 101 → 102, `VALID_HOOKS` 37 → 41. The
+09-04 reading "core set shrank 61 → 53, default surface moving outward" is **reversed for
+tools** and holds for skills (optional 137 → 150) — a two-point trend read as a direction.
+A count can carry its measure at its own pin and still die at the next one.
+
+**5. The reasoning-parameter stack, and the 2027-02-28 prediction's evidence.** Every
+chokepoint moved (`resolve_reasoning_config` → `hermes_constants.py:1415`; the capability
+gate and the OpenRouter static list → a new `agent/reasoning_params.py:88` / `:15-16`;
+Anthropic predicates → `anthropic_adapter.py:159-187`; Grok allowlist →
+`model_metadata.py:413`; `EFFORT_LADDER` / `clamp_effort` → `reasoning_effort.py:25` /
+`:120`), the architecture is intact, and Rule 3 ("never patch a predicate") now heads the
+module docstring over a wall of named wire vocabularies as data, several with dated
+live-probe provenance in-comment. Evidence, not a score: across 14,831 commits **all
+three Claude denylists are entry-identical** (15 / 4 / 1 entries; cumulative zero content
+changes across 21,886 commits and ~56 days) and `_GROK_EFFORT_CAPABLE_PREFIXES` needed
+**no** hand-extension this window (same five). The OpenRouter static fallback is
+byte-identical (`google/gemini-2`, `qwen/qwen3`, no `gemini-3`) with the live probe still
+answering first — the cold-cache under-send survives, unfixed, and upstream #75386 is
+still open at 55 days. **The sharpest instance is on Anthropic's own side and on neither
+list the prediction named**: the one construct built as an *allowlist*,
+`_FAST_MODE_SUPPORTED_SUBSTRINGS = ("opus-4-6","opus-4.6")` at 29112bef0, was wrong at that
+pin (4.6 "silently runs and bills at standard speed"), hand-extended at 9.7/9.14/9.21 to
+`("opus-4-8","opus-4.8","opus-5")`, and rewritten again on 09-23 (`78a50c28fc`, PR
+#120517: "the old 'opus-5' substring matched any future Opus 5.x") to an exact-id
+`_ANTHROPIC_FAST_MODE_MODELS = frozenset({"claude-opus-4-8","claude-opus-5","claude-opus-5-5"})`
+(`model_metadata.py:446`) — two corrections in 24 days, versus zero for the denylists.
+ADR-0049's source-side counterpart changed file, shape and polarity discipline. Adjacent:
+an OpenAI *denylist* appeared for chat-era families that 400 on any `reasoning` field
+(`model_metadata.py:423-426`, "fail-open"). And the `ultra` leak **recurred in an
+untouched path** — #112010 (opened 2026-09-15, closed in ~10 h): the aux/MoA
+chat-completions path never clamped, fixed by applying "the same entry clamp the main
+transport applies (#89503)" (`auxiliary_client.py:6613`, `reasoning_effort.py:184`). The
+house rule was not applied at every entry point.
+
+**6. The learning loop starved again, by a different mechanism.** The whitelist widening
+the 09-04 read documented persists verbatim (`background_review.py:1090-1104`). But
+#115299 (merged 2026-09-18, "Background review fork can update skills *again*") found the
+fork's `skill_view`/`read_file` hitting the parent session's repeat-view dedup stub, so the
+read-before-write guard was never satisfied and skill writes were refused — a second
+starvation in a second consecutive window. #106310 (2026-09-09) found the same whitelist
+bug class in the other direction: a skills-only fork held the whole `memory` toolset,
+allowing "standing-rule deletions with no user in the loop" on `MEMORY.md` — now staged
+for approval. New: `agent/review_idle_queue.py` defers reviews bound for the managed local
+llama-server until the machine is idle, because the fork "monopolizes the GPU the next
+prompt needs and the next live turn cancels it (decode cost paid, learning lost)" — a
+third failure mode on record: denied (fixed), unmeasured (still), preempted by the user's
+own next prompt (new). Open upstream: #109375, #107850.
+
+**7. Release notes carry their measure.** The v2026.9.24 body names the commit it was
+measured at and states 1,610 non-merge commits / 4,828 files / +164,132 / −149,440 / 475
+closed issues / ~460 merged PRs for v2026.9.21..v2026.9.24; **four of five reproduce to
+the digit** (`git rev-list --count --no-merges`, `git diff --shortstat`, `gh api
+search/issues` with the tags' exact timestamps; merged PRs 455 vs "~460"). All eight
+features the body names as "undocumented here on purpose" are locatable in the tree. What
+the note omits: `tests/` is 55% of the release's changed files, and the fast-mode gate
+correction above lands inside it unmentioned. There is no in-repo CHANGELOG (rule 1b:
+`git ls-tree -r --name-only v2026.9.24 | grep -i changelog` → a desktop-app feature file
+and CI classifiers only).
+
+**8. Provenance the reports cited was condensed away — a distinct hazard.** The
+`single-block cache_control` caveat (`system_prompt.py:923-924 @ 29112bef0`), the dated
+`grok-4.5` live-probe comment, `/plan`'s alphabetical-cutoff rationale, the verbatim YOLO
+comment, the numbered Rules list in `reasoning_effort.py`, and the inter-doc conflict
+about the workspace snapshot's cache tier (now resolved: `coding_context.py:8-9` names no
+tier, `system_prompt.py:6` says `context` — the 09-04 call to follow the assembler was
+right) are all gone at f97608f178 while every mechanism they described survives. A
+subject that periodically rewrites its own comments rots a report's *evidence* faster
+than its *claims*; those citations stay pinned to 29112bef0 and say so. `README.md` is
+byte-identical at all three pins (blob `c0511226…` across 21,886 commits) — the marketing
+surface is the most stable artifact in the repository.
+
+**9. Candidate vocabulary, flagged only (owner gate).** (a) A harness that *ships a model
+server*: `hermes_cli/local_runtime/` — 19 files, absent at 29112bef0 — downloads and
+verifies llama.cpp release binaries, reads GGUF headers, probes VRAM, physics-checks the
+requested context window and supervises a router-mode `llama-server`; default-off
+(`"local_runtime": {"enabled": False}`, `config_defaults.py:2639-2641`). Adjacent to
+`model_agnostic`, not the same claim; a harness fact, not a category-1 assessment
+(ADR-0048). (b) The phase-verdict loop (2) — instance #1 of a "loop decomposition" shape
+no key names. (c) Stacked turn-end gates (2) — `turn_end_gates` grades the strongest
+carrier and cannot express a stack, the same tension `context_compaction` resolved with a
+list. (d) A CI-enforced, dated deprecation manifest for an extension surface — category 6
+more than 2. (e) A remote shared-metrics sender (`telemetry.shared_metrics.send`,
+endpoint `telemetry.nousresearch.com`, `config_defaults.py:2298-2306`, 11 new
+`hermes_cli/observability/` modules) — new egress surface, double-gated `False`; the Cost
+model section's "source not audited for outbound calls" is now findable.
+
+**10. The re-read's own audit.** Counts stated with their measure: **30 of 30**
+reproduced at their own pin (48 individual figures across two pins, all exact — tool
+counts ×10, skill dirs ×4, provider plugins ×2, megafile lines ×10, prompt-block chars
+×6, `max_attempts` at every pin, the MCP bench to the dollar, window commits/days/rate,
+tags, the `/plan` registry, fork budgets, contributors files, evals dirs). Without a
+stated measure: **1 of 5** — the velocity paragraph's `fix(`/`feat(` (3,889/784 by the
+nearest measure), 2,974 PRs (a GitHub-API figure, now labelled), 239 desktop feats (243),
+and 8.7% agent trailers (a right number attached to the wrong population — corrected in
+place); only the post-tag burst block reproduced. The split the ai-memory re-read scored
+8-for-8 vs 0-for-5 reproduces here at larger n, and cleanly. Two identifiers the 09-04
+audit retracted in the frontmatter survived in the body (`hermes trace upload`, twice) —
+corrected. The campaign's "bypassing the PR process" was **wrong**: the branch was read on
+`main` the same day PR #102117 wrapped it. One new failure shape for the ledger: 8.7% was
+a stated measure that described a different population than the sentence.
+
+**Predictions, scored at the next re-read (dated, falsifiable).**
+- **P-1.** On **2026-12-24**, non-test `.py` files over 5,000 lines number **between 8 and
+  13 inclusive** (37 → 6 → 7 at +1 per 20 days, against ~75 new `.py` files/day and a
+  prose-only ceiling), **and** no mechanical size/complexity gate exists under `scripts/`
+  or `.github/`. ≤7 = the norm grew teeth; ≥14 = the campaign was a one-off; a gate landing
+  is the more interesting falsifier and should be recorded as such. Secondary:
+  `gateway/run.py` > 6,166 and < 10,000 lines.
+- **P-2.** The 2027-02-28 prediction stands unscored. Recorded beside it: the asymmetry
+  fired *inside Anthropic* (three denylists 0 changes / one allowlist 2 corrections in 24
+  days) and on neither named list.
+- Next trigger (issue #32's rule): **v0.22.0**, the tag upstream promises will carry the
+  curated notes from v0.21.0 onward — the first chance to score the release-note
+  discipline against a curated note.
 
 ## Release assessment — v2026.8.31 (2026-09-04; pin 524ab5399 → 29112bef0)
 
@@ -650,20 +912,36 @@ the window did.*
 ### Velocity is two different regimes, and only one of them is development
 
 The window itself is sustained, PR-driven, and bugfix-dominated: ~221 commits/day,
-2,974 merged PRs (~2.4 commits each), 3,892 `fix(` to 792 `feat(` — 55% bug-fixing,
-with the one feature concentration in the desktop app (239 feats). Then, **in the four
+2,974 merged PRs (~2.4 commits each; *a GitHub-API figure — `gh api search/issues -f
+q="… is:pr is:merged merged:2026-07-30..2026-08-31"` reproduces it exactly, the clone
+cannot: hermes squash-merges, 275 `Merge pull request` subjects — measure stated
+2026-09-24*), 3,892 `fix(` to 792 `feat(` — 55% bug-fixing (*recounted 2026-09-24 with
+the measure stated: `git log --format=%B 524ab5399..29112bef0 | grep -c 'fix('` → 3,889 /
+784; subject-anchored 3,617 / 719*),
+with the one feature concentration in the desktop app (239 feats; 243 by
+`^feat\((desktop|apps/desktop)`). Then, **in the four
 days after the tag**, a single automated simplification campaign added 5,211 commits
 (~1,353/day; 4,105 on 2026-09-02 alone, 87% under the maintainer's identity), merged
-through 432 `simp/*` branches that exist nowhere before the tag, bypassing the PR
-process (13 merge-PR commits in the whole burst), and netting **−219,419 lines** —
+through 432 `simp/*` branches that exist nowhere before the tag (447 distinct names at the
+next fetch), ~~bypassing the PR process (13 merge-PR commits in the whole burst)~~ —
+**CORRECTED 2026-09-24: the campaign landed as PR #102117**, a two-parent merge
+(`d3630f8532`, 2026-09-04, "refactor: whole-codebase simplification — −34% source LOC,
+every god file decomposed, zero behavior change", 4,271 commits, +436,199/−784,430 by its
+own body); the `simp/*` merges were the side branch's interior, read on `main` the same
+day the wrapper landed — and netting **−219,419 lines** —
 every megafile this report names was cut 75–85% (`gateway/run.py` 33,539 → 5,512;
 `cli.py` 22,268 → 4,656), and the 1,784-line root `AGENTS.md` was fanned out into 12
-per-directory guides. None of it carries an agent trailer; nothing in-repo documents
-the campaign. Two consequences for this report: a hermes commit count is meaningless
+per-directory guides. None of it carries an agent trailer (0 of 796 `simp/` commits,
+re-checked 2026-09-24); ~~nothing in-repo documents the campaign~~ **it does at
+v2026.9.24** — `AGENTS.md:227` "Facade + siblings layout (Sep 2026 decomposition)", added
+*during* the campaign (`27a4023791`, 2026-09-03), plus `COMPAT_MANIFEST.md` and an offline
+eval built to hold future refactors to the same numbers
+(`evals/codebase_navigability/`). Two consequences for this report: a hermes commit count is meaningless
 without naming which regime produced it, and the "flat Python core with megafiles"
 characterization — *more* true at this pin than at the last — was reversed wholesale
 four days later. **Scoreable for the next re-read: does the post-burst decomposition
-hold, or do the megafiles regrow?**
+hold, or do the megafiles regrow?** *Scored 2026-09-24: HELD — see § Release re-read
+v2026.9.24, 1.*
 ([issue #44](https://github.com/leandromineti/ai-assisted-coding/issues/44) carries
 this and the section's other scoreables.)
 
