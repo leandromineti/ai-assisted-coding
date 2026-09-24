@@ -41,7 +41,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | Tool | Surfaces · exec | Stack | Access | License | Stars | Since | Harness targets | Version read | Depth | Report |
 |---|---|---|---|---|---|---|---|---|---|---|
 | aider | terminal + web · local | Python | `open-source` | Apache-2.0 | 48,519 | 2023-04-03 | — | `v0.86.3.dev-53-g5dc9490b` | deep-dive | [aider](../tools/2-harnesses/aider.md) |
-| codex | terminal · local | Rust, TypeScript | `open-source` | Apache-2.0 | 102,646 | 2025-04-16 | — | `rusty-v8-v150.4.0-94-g413492cd6c` | deep-dive | [codex](../tools/2-harnesses/codex.md) |
+| codex | terminal · local | Rust, TypeScript | `open-source` | Apache-2.0 | 126,329 | 2025-04-16 | — | `rust-v0.156.1` | deep-dive | [codex](../tools/2-harnesses/codex.md) |
 | dsh | web · local | TypeScript, Node.js | `open-source` | MIT | 190,941 | 2026-06-10 | — | `dsh-v0.1.1-rc.2` | deep-dive | [dsh](../tools/2-harnesses/dsh.md) |
 | gemini-cli | terminal + ide · local | TypeScript, Node, Ink | `open-source` | Apache-2.0 | 106,681 | 2025-04-15 | — | `v0.49.0-preview.0-117-g64b5b79a6` | deep-dive | [gemini-cli](../tools/2-harnesses/gemini-cli.md) |
 | hermes-agent | terminal + desktop + web + ide + messaging · both · **resident** | Python, TypeScript | `open-source` | MIT | 248,666 | 2025-07-22 | — | `v2026.9.24` | deep-dive | [hermes-agent](../tools/2-harnesses/hermes-agent.md) |
