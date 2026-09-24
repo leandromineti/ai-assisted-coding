@@ -11,8 +11,8 @@ stack: [TypeScript, React]
 version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44
 first_commit: 2023-05-23
-stars: 35166
-stars_at: 2026-07-28
+stars: 36012
+stars_at: 2026-09-24   # gh api; 35,166 at 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 harness_features:
@@ -176,6 +176,45 @@ cline at least *look* at the model id and get the version wrong; this branch nev
 Every affected model shipped before the 2026-07-28 read (Fable 5 2026-06-09, Sonnet 5
 2026-06-30, Opus 5 2026-07-24), so it is a live gap at the pin. Not traced: whether a
 default config reaches this branch without the user explicitly enabling reasoning.
+
+## Drift check — 2026-09-24 (not a re-read; the pin is unchanged — and so is `main`)
+
+The `behind` queue never listed this report, and after a fetch (`sync-upstream.sh` +
+`git fetch --tags`, 2026-09-24) it still does not: **`origin/main` is `5522c6f44`, the
+pin**, last commit 2026-07-20 (`git -C upstream/continue log -1 --format='%h %cs'
+origin/main`). The 2026-07-28 survey read the branch tip eight days after its last
+commit; **66 days later nothing has landed on `main`**. What moved, and why it does not
+count:
+
+1. **GitHub `pushed_at` (2026-09-22) is bot traffic.** Every remote branch with a
+   commit after 2026-07-20 is `origin/cla-signatures` or a `snyk-fix-*` branch
+   (`git for-each-ref --sort=-committerdate refs/remotes/origin`, excluding
+   `snyk|cla-sig|dependabot|renovate`: the newest human branch is `origin/main` itself,
+   then `add-emojis-to-readme` at 2026-05-09). `pushed_at` reflects any ref; it is not
+   evidence of development (the superpowers read's release-branch lesson, inverted).
+2. **The release tags are older than the pin and not on `main`.** `v2.0.0-vscode` and
+   `v2.1.0-vscode` are both dated 2026-06-18, each one commit off a June merge-base with
+   `main` (`git merge-base v2.1.0-vscode origin/main` → `d0a3c0b62`, 2026-06-18; 1
+   commit to the tag, 3 to `main`), tagged on release commits no branch contains
+   (`git branch -r --contains v2.1.0-vscode` → empty). The GitHub "latest release"
+   (v2.0.0-vscode) therefore predates the read; there is no release trigger to wait for.
+3. **The published artifacts stopped in June.** `@continuedev/cli` on npm last published
+   1.5.47 on 2026-06-18 (`npm view @continuedev/cli time`) — the same day as the tags —
+   after 1.5.45 in March and 1.5.46 three days earlier. Rule 8b's artifact leg agrees
+   with the source leg.
+4. **The fork network is not where the work went** (aider's lesson: "the tool stopped"
+   and "the work moved" are different findings). The five most-starred forks
+   (`gh api "repos/continuedev/continue/forks?sort=stargazers"`) last pushed between
+   2025-09 and 2026-08-17, the newest being `continuedev/continue-fork` (8 stars) — an
+   org-owned fork, not a continuation. Whether Continue's development moved to a private
+   repository is **unverified**: this surface (GitHub forks, npm, remote branches) cannot
+   see it.
+
+**Verdict:** every claim in this report is UNTOUCHED — there is no window. The finding is
+the one aider's read produced 28 days earlier: a second harness in the set whose `main`
+has stopped, with stars still rising (35,166 → 36,012, +2.4% in 58 days). The pin stays;
+the re-read trigger is any commit on `origin/main` or a tag that contains the pin, and
+the cheaper check is the same three commands above, dated.
 
 ## Open questions
 

@@ -63,6 +63,15 @@ permission gate. The pin required no decision — `5dc9490b` is simultaneously t
 HEAD, `origin/main`, and the last commit anyone made. There is no drift to check and no
 rule-4b window to scope, which is itself the first finding.
 
+**Re-checked 2026-09-24 (not a re-read; the pin is unchanged, and so is upstream).**
+After `sync-upstream.sh` + `git fetch --tags`, `origin/main` is still `5dc9490b`
+(`git -C upstream/aider log -1 --format='%h %cs' origin/main` → 2026-05-22), no tag
+contains the pin (`git tag --contains 5dc9490b` → empty), the GitHub API reports
+`pushed_at` 2026-05-22 and the latest release still v0.86.0 (2025-08-09), and the
+distribution repo's stars are 49,154 (`gh api`, +635 since 2026-08-27). Days dormant:
+**125**. Nothing to triage; the lineage's motion is in
+[cecli](cecli.md), whose v1.6.1 release re-read is dated the same day.
+
 ## Provenance — a frozen artifact
 
 `repo-facts.sh` and the GitHub API, 2026-08-27:

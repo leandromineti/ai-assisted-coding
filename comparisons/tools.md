@@ -52,7 +52,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | cecli | terminal · local | Python | `open-source` | Apache-2.0 | 405 | 2023-04-03 | — | `v1.4.1` | survey | [cecli](../tools/2-harnesses/cecli.md) |
 | claude-code | terminal + desktop + web + ide + messaging · both | TypeScript, Node | `closed-source` | proprietary | 147,932 | — | — | `2.1.281` | survey | [claude-code](../tools/2-harnesses/claude-code.md) |
 | cline | ide + terminal · local | TypeScript, React | `open-source` | Apache-2.0 | 65,138 | 2024-07-05 | — | `nightly-main-20260728125218-dc175c73a8dd` | survey | [cline](../tools/2-harnesses/cline.md) |
-| continue | ide + terminal · local | TypeScript, React | `open-source` | Apache-2.0 | 35,166 | 2023-05-23 | — | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../tools/2-harnesses/continue.md) |
+| continue | ide + terminal · local | TypeScript, React | `open-source` | Apache-2.0 | 36,012 | 2023-05-23 | — | `v1.3.40-vscode-11-g5522c6f44` | survey | [continue](../tools/2-harnesses/continue.md) |
 
 ## 3 · Execution environments
 
