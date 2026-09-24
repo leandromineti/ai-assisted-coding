@@ -329,7 +329,7 @@ features:
       packages/node-repl ships a session-persistent Node REPL as a standalone MCP server
       ("fully independent of core — any MCP client … can run it"), i.e. code execution
       arriving as one more tool call
-    note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it?"
+    note: "added 2026-08-18 per ADR-0012, resolving issue #3 (hermes execute_code, iteration-refunded; codex code-mode in sandboxed V8); open mechanism question: do models actually use it? CORRECTION 2026-09-24 (codex re-read): at codex's 2026-07-30 pin the V8 sandbox was an opt-in cargo feature nothing enabled — it became unconditional on 2026-07-31 (2e32d95894) and is enforced at rust-v0.156.1; the presence claim held, the enforcement claim did not at its own pin"
   - id: rules_files
     group: extension-points
     block: harness_features
