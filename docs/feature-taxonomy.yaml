@@ -358,7 +358,7 @@ features:
     value_type: graded
     definition: "native turn-end verification/stop gate — the harness can veto or re-prompt the model's attempt to end its turn; GRADED per ADR-0011/0012: engine | hook | script | prose | true | false"
     kind_link: hook
-    note: "added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
+    note: "CELL CONVENTION since 2026-09-24 (ADR-0058, no new key): the comment states DIRECTION (veto / re-prompt / both — pi's turn_end contract is continue-only, codex's veto has block-and-continue plus stop-now) and BASIS (verification / obligation bookkeeping / plugin-decided — cline's engine gate re-prompts on unfinished team tasks, never on work quality; hermes stacks three gates in one pipeline). Parked: a `turn_end_basis` enum, trigger a third harness whose gate fires on something other than verification. Original: added 2026-08-18 per ADR-0012 (hermes verification_stop = engine; codex run_turn_stop_hooks should_block = hook) — conclusion 8's core leg, previously column-less; graded because harness gates at engine/hook vs framework gates at prose/script IS the absorption finding"
   - id: tool_approval
     group: control-gates
     block: harness_features
@@ -378,8 +378,23 @@ features:
       (dynamic per-argument evaluation may tighten never loosen, evaluator error → disabled); and
       cline's surface finding — the gate is a property of the SURFACE, not the engine (VS Code
       forces autoApprove:false, the CLI ships defaultToolAutoApprove=true; one tool, opposite
-      out-of-the-box postures). Model-authority-in-the-gate is the parked second axis (ADR-0053,
-      trigger: a third widen-capable gate)
+      out-of-the-box postures). Model-authority-in-the-gate was the parked second axis (ADR-0053,
+      trigger: a third widen-capable gate) — TRIGGER MET 2026-09-24 (warp, claude-code auto mode,
+      codex Guardian): it is now its own key, `gate_model_authority` (ADR-0058)
+  - id: gate_model_authority
+    group: control-gates
+    block: harness_features
+    applies_to: [2]
+    value_type: closed-enum
+    definition: "who besides the human and the operator's rules can decide a tool call: none (no model in the decision) | deny-only (a model can only tighten — block or escalate, never approve) | approve (a SEPARATE model can approve what would otherwise prompt) | self (the acting model's own output can approve its call); default-on/off and bounds (operator deny rules, fail-closed) in the cell comment"
+    note: "added 2026-09-24 per ADR-0058. Census at admission: self 1 (warp AgentDecided), approve 3 (claude-code auto mode docs-route + default starting mode on subscription plans; codex Guardian, default routed to human; dsh experimental/auto-review, default-off), deny-only 2 (qwen-code classifier shouldBlock-only; gemini-cli CONSECA default-off one-way), none 6 (aider, cecli, cline, opencode, pi, hermes-agent's smart mode unchecked → omitted), unset 2 (continue — evaluator's nature unread; hermes-agent). The discriminator is approve vs self: a separate reviewer bounded by deny rules is a different gate from the acting model authorizing itself"
+  - id: unbypassable_gates
+    group: control-gates
+    block: harness_features
+    applies_to: [2]
+    value_type: presence
+    definition: "at least one tool-dispatch check that the harness's OWN full-auto mode cannot switch off; the comment names the check and its ordering relative to the bypass. false = the full-auto flag dissolves every gate, or there is no gate to dissolve"
+    note: "added 2026-09-24 per ADR-0058. Census at admission: true 4 (gemini-cli — two gates above the YOLO short-circuit; qwen-code — non-overridable shell safety gates before auto/YOLO; hermes-agent — approvals.deny blocks even under --yolo; claude-code docs-route — actions no mode auto-approves), false 7 (aider and cecli --yes-always; opencode --dangerously-skip-permissions; codex --dangerously-bypass-approvals-and-sandbox; dsh danger-full-access; cline yolo preset; pi no gate), unset 2 (warp, continue — not checked)"
   - id: headless_approval
     group: control-gates
     block: harness_features
@@ -399,7 +414,8 @@ features:
       "y" (io.py:810), no agent-loop call site overrides it, and the EOF handler treats end-of-input
       as "the user pressed Enter" (io.py:884-886) — so all seven gates auto-approve under
       `aider -m` with no TTY. gemini-cli is `deny`: ASK_USER interactive / DENY headless when no
-      rule matches (policy-engine.ts:291-293). The pair is what makes the key discriminate, and
+      rule matches (policy-engine.ts:291-293). Census 2026-09-24: deny 4 (gemini-cli, cline,
+      claude-code docs-route, opencode), allow 2 (aider, cecli). The pair is what makes the key discriminate, and
       aider adds a second-order finding recorded in its report body rather than here — its
       `--yes-always` flag is STRICTER than its absence, because the shell gate passes
       explicit_yes_required=True and io.py:866-867 turns blanket-yes into an automatic "no" for
@@ -905,7 +921,8 @@ transcription_fields:
       CLASS of platforms rather than one, and the report's cell comment says which
       (hermes-agent ~20 via its gateway; qwen-code 11 channel packages — feishu, dingtalk,
       telegram, qqbot, wecom, weixin, github, gitlab, dws). Before it, both reports recorded
-      the platforms in prose as explicitly outside the vocabulary
+      the platforms in prose as explicitly outside the vocabulary. Third instance 2026-09-24:
+      claude-code (Slack, docs-route)
     verification: source-or-docs
     rendered_in: [tools.md]
   - id: residency

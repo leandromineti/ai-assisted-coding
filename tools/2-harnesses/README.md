@@ -11,16 +11,17 @@ than repeating.
 
 ## What we assess here
 
-The assessed block is **`harness_features:`, 17 keys** (2026-09-04; 15 as of 2026-08-27 +
+The assessed block is **`harness_features:`, 19 keys** (2026-09-24, `gate_model_authority` and
+`unbypassable_gates` via [ADR-0058](../../adrs/0058-gate-model-authority-and-unbypassable-gates.md); 17 as of 2026-09-04; 15 as of 2026-08-27 +
 `context_retrieval` and `context_compaction` via
 [ADR-0055](../../adrs/0055-context-assembly-group.md)): `mcp`, `lsp`, `hooks`,
 `context_retrieval`, `context_compaction`, `turn_end_gates`, `tool_approval`,
-`headless_approval`, `skills`, `subagents`, `ptc`, `plan_mode`, `rules_files`,
+`headless_approval`, `gate_model_authority`, `unbypassable_gates`, `skills`, `subagents`, `ptc`, `plan_mode`, `rules_files`,
 `model_agnostic`, `session_sharing`, `evals`, `learning_loop`.
 They sort under the category's three components — the loop (`subagents`, `plan_mode`,
 `turn_end_gates`, `ptc`), context assembly (`context_retrieval`, `context_compaction`,
 `skills`, `rules_files`, `learning_loop` — the component that had no assessed key of its
-own until ADR-0055), and the permission gate (`tool_approval`, `headless_approval`) — with
+own until ADR-0055), and the permission gate (`tool_approval`, `headless_approval`, `gate_model_authority`, `unbypassable_gates`) — with
 the rest describing reach and portability.
 
 Ten are presence-claims. Seven are not (recounted 2026-09-04 across ADR-0053/0054/0055/0056 —
