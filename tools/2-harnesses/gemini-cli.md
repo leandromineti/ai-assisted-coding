@@ -1,4 +1,9 @@
 ---
+# PIN MOVED 64b5b79a6 → bb523741c (= tag v0.61.0) at the 2026-09-24 release re-read
+# (rule 4b: three Opus tracts — release substance, per-claim confrontation at both pins,
+# provenance — main-session spot-verification). The tag is a RELEASE-BRANCH tree: main@2026-09-15
+# (ae28844fb) + three version bumps + one cherry-pick; 22 main commits are not in it. Pinned at the
+# tag because it is what users install and because `git describe`/package.json finally agree.
 name: gemini-cli
 category: 2
 surfaces: [terminal, ide]  # ide = ACP mode (packages/cli/src/acp/, docs/cli/acp-mode.md) + VS Code companion (context/diff feed, not a loop host)
@@ -10,22 +15,22 @@ url: https://github.com/google-gemini/gemini-cli
 license: Apache-2.0
 access: open-source
 stack: [TypeScript, Node, Ink]
-version: v0.49.0-preview.0-117-g64b5b79a6
-commit: 64b5b79a6
+version: v0.61.0   # `git describe` = package.json = 0.61.0 at this pin (the old pin's describe string anchored a stale preview tag while package.json said 0.59.0-nightly)
+commit: bb523741c
 first_commit: 2025-04-15
-stars: 106681
-stars_at: 2026-08-25
-read_at: 2026-08-25
+stars: 107148
+stars_at: 2026-09-24   # gh api; 106,681 at 2026-08-25 (+15.6/day)
+read_at: 2026-09-24   # v0.61.0 release re-read (§ Release re-read); deep-dive 2026-08-25 @ 64b5b79a6
 depth: deep-dive
 harness_features:
   mcp: true              # client: stdio + SSE + streamable-HTTP (mcp-client.ts:16-22); per-server trust/allow/exclude + per-tool + annotation-matched policy rules (policy/config.ts:566-601); MCP OAuth subsystem; untrusted folders refuse stdio servers entirely
   lsp: false             # checked and absent: no LSP client or dependency; the VS Code companion and ACP are bespoke agent protocols, zero diagnostics plumbing
   hooks: true            # 11 lifecycle events incl. BeforeModel/AfterModel/BeforeToolSelection (hooks/types.ts:43-55), Command + Runtime types, blocking decision vocabulary, per-project trust file; mechanism default-ON, event arrays default empty
-  context_retrieval: delegated     # ADR-0055, cell set 2026-09-04 from the deep-dive: retrieval rides a read-only investigator subagent; the embedding path is dead code with zero production callers, and the full graph-based context pipeline ships dark (experimental.contextManagement default false, config.ts:1199) — body § context assembly
+  context_retrieval: delegated     # ADR-0055, cell set 2026-09-04 from the deep-dive: retrieval rides a read-only investigator subagent; the embedding path is dead code with zero production callers, and the full graph-based context pipeline ships dark (experimental.contextManagement default false, config.ts:1199) — body § context assembly HOLDS at bb523741c: generateEmbedding still 1 def + 9 test hits; contextManagement default false (config.ts:1206)
   context_compaction: [llm-summarize, prune, truncate]  # ADR-0055, cell set 2026-09-04 probe-pass at the pin — the deepest stack in the column, all automatic: LLM summary at ~50% of window (context/chatCompressionService.ts) is primary; a threshold FIFO eraser masks old tool outputs every turn (context/toolOutputMaskingService.ts, called from client.ts:1258, no feature flag); and after a FAILED summarization attempt the service falls back to a hard non-LLM cut rather than retry the LLM (CONTENT_TRUNCATED via truncateHistoryToBudget, chatCompressionService.ts:137,289)
   turn_end_gates: hook   # AfterAgent can halt (continue:false) or re-prompt (decision:'block', stop_hook_active retry contract — Claude Code's Stop-hook shape byte-for-byte) at client.ts:973-1035, default-armed/empty; an ENGINE-grade next-speaker gate exists but is default-OFF (config.ts:1279); subagents get an engine gate default-ON (complete_task enforcement, local-executor.ts:362-374)
-  tool_approval: policy  # default decision ASK_USER interactive / DENY headless when no rule matches (policy-engine.ts:291-293), via a ~12.8k-line priority-tiered TOML policy engine; folder trust force-resets any non-DEFAULT mode
-  headless_approval: deny   # FAIL-CLOSED, transcribed 2026-08-27 from the tool_approval finding above at this same pin when the key was admitted (policy-engine.ts:291-293) — no re-read. The opposite pole from aider's `allow`, which is the pair that made the key discriminate
+  tool_approval: policy  # default decision ASK_USER interactive / DENY headless when no rule matches (policy-engine.ts:291-293), via a ~12.8k-line priority-tiered TOML policy engine; folder trust force-resets any non-DEFAULT mode At bb523741c the default is unchanged (policy-engine.ts:299-301) but the gate grew FOUR DEFAULT-ON checks, two of them ordered so that YOLO cannot bypass them: an untrusted-flag / modified-build-file taint gate in shell.ts:310-322 that sits ABOVE the YOLO short-circuit (:324; at the old pin YOLO was the first statement), and "Build File Protection" in policy-engine.ts:804-857 (30 filenames incl. package.json, priority MAX_SAFE_INTEGER, DENY when non-interactive) placed after the YOLO ALLOW at :738 — editing package.json now prompts in every mode. Also new default-on: shell cwd confinement (:372-388, YOLO-bypassable), a 31-entry runtime-altering env denylist for MCP/extension processes (environmentSanitization.ts:240-272), a DNS-resolving SSRF guard on fetchWithTimeout (fetch.ts:443-450), a system-config integrity gate on the Admin tier. THIRD GATE DOOR, present at BOTH pins and never named here: scheduler/policy.ts:76-88 upgrades ASK_USER → ALLOW for any client-initiated call lacking additional_permissions — reported upstream as #29305 (2026-09-13, bot-flagged as a likely bypass, unanswered)
+  headless_approval: deny   # FAIL-CLOSED, transcribed 2026-08-27 from the tool_approval finding above at this same pin when the key was admitted (policy-engine.ts:291-293) — no re-read. The opposite pole from aider's `allow`, which is the pair that made the key discriminate Reinforced at bb523741c: Build File Protection yields DENY when non-interactive (policy-engine.ts:845-847)
   skills: true           # SKILL.md convention, 6-root precedence incl. the cross-tool .agents/skills dirs (skillManager.ts:54-99), two-stage load (metadata in prompt, body via activate_skill), 2 builtins shipped
   subagents: true        # invoke_agent tool, markdown+YAML defs in .gemini/agents/, isolated tool/prompt registries + derived message bus, compiled depth cap of exactly 1 (local-executor.ts:192-197), 30-turn/10-min defaults
   ptc: false             # checked and absent: no sandboxed runtime where model code drives tools; grep "codeExecution *:" over packages/ → 0 product hits; only defensive handling of the Gemini API part types
@@ -33,8 +38,8 @@ harness_features:
   rules_files: ["GEMINI.md", "MEMORY.md"]  # GEMINI.md (configurable list) + private per-project MEMORY.md; AGENTS.md NOT loaded by default (repo-wide grep: docs example + test fixture only); three-tier placement model, JIT subdirectory loading via tool output
   model_agnostic: false  # checked: all six AuthType routes end at a Google backend or Gemini-protocol endpoint; GATEWAY swaps the host, not the wire format (@google/genai client throughout)
   session_sharing: false # no share links anywhere; local JSON export (exportSessionCommand.ts:20,72) + resume/checkpoints exist — artifact yes, link no
-  evals: true            # 37 behavioral .eval.ts (ls evals/*.eval.ts | wc -l) with LLM-as-judge + self-consistency voting, ALWAYS/USUALLY_PASSES reliability tiers, 4 eval CLIs — explicitly distinguished from its unit tests
-  learning_loop: proposed  # regraded ✗→proposed 2026-09-04 per ADR-0056 (same evidence): the autonomous write path exists (background "confucius" extractor agent) but is default-OFF (experimental.autoMemory=false) AND propose-and-commit — patches land in an .inbox nothing auto-applies, extracted skills are written outside the skill-discovery path; the old ✗ rendered this identical to pi's nothing, and the enum now names it — same shape as warp's
+  evals: true            # 37 behavioral .eval.ts (ls evals/*.eval.ts | wc -l) with LLM-as-judge + self-consistency voting, ALWAYS/USUALLY_PASSES reliability tiers, 4 eval CLIs — explicitly distinguished from its unit tests 38 at bb523741c (+evals/provenance_attribution.eval.ts)
+  learning_loop: proposed  # regraded ✗→proposed 2026-09-04 per ADR-0056 (same evidence): the autonomous write path exists (background "confucius" extractor agent) but is default-OFF (experimental.autoMemory=false) AND propose-and-commit — patches land in an .inbox nothing auto-applies, extracted skills are written outside the skill-discovery path; the old ✗ rendered this identical to pi's nothing, and the enum now names it — same shape as warp's HOLDS at bb523741c: experimentalAutoMemory ?? false (config.ts:1200), settingsSchema.ts:2432-2441 identical; .inbox jail via scoped-config.ts:71-84
 ---
 
 # Gemini CLI
@@ -102,7 +107,7 @@ commit histogram is the platform story in one row (`git log --since=2026-01-01
 
 | 2026-01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 |
 |---|---|---|---|---|---|---|---|
-| 610 | 588 | 682 | 376 | 233 | 49 | 48 | 58 |
+| 611 | 588 | 682 | 376 | 233 | 49 | 48 | 58 |
 
 A ~93% collapse from the March peak, sustained since June — yet nightly/preview/stable
 release trains ran daily through the pin date (0.57.0 promoted to `latest` on
@@ -393,6 +398,89 @@ not exit status (5e).
   builtin skills (`antigravity-support`, `skill-creator`) in SKILL.md format; a
   bundled `chrome-devtools-mcp.mjs` MCP server rides inside the CLI artifact.
 
+## Release re-read — v0.61.0 (2026-09-24; pin 64b5b79a6 → bb523741c)
+
+Three Opus tracts, load-bearing claims re-run at both pins. **The branch model first**: `main` is
+squash-merged (0 merges, 45/45 subjects end in a PR number) and moves ~45 commits/month —
+the fourth consecutive month at that floor, so the deep-dive's "~93% collapse" holds with a
+fourth data point (2026-06…09: 49 / 48 / 60 / 43). Release tags sit on `release/*` branches
+that never merge back: v0.61.0 = main@2026-09-15 + 3 bumps + 1 cherry-pick, not an ancestor of
+main; `git rev-list --count 64b5b79a6..v0.61.0` = 27, `..origin/main` = 45. **Instrument
+finding**: the clone had sat detached at the old pin, so `build-tool-index.py --check` (which
+counts `<pin>..HEAD` with no fetch) reported gemini-cli 0 behind for the whole 30 days — the
+`behind` queue is blind to any clone left detached at its pin.
+
+**1. The loop is byte-identical.** All eight loop files (`turn.ts`, `nonInteractiveCli.ts`,
+`client.ts`, `hooks/types.ts`, `hookRunner.ts`, `local-executor.ts`, `agents/types.ts`,
+`tool-executor.ts`) carry the same blob at both pins; every loop citation keeps its line. The
+one loop-adjacent change is `AgentLoopContext` moving from prototype getters to own
+properties (`ae28844fb`) so `{...config}` no longer silently drops eight fields — a fix for
+consumers of the published core library, with no in-tree trigger.
+
+**2. Nothing default-off flipped on; the release added gates that are on.** All nine
+"shipped, default-off" mechanisms in Surprises 9 re-checked: contextManagement false,
+skipNextSpeakerCheck true, maxSessionTurns −1, planEnabled true, worktrees false, sandbox
+dormant (`sandboxConfig.ts:58-63` identical), Seatbelt default still `permissive-open`
+(`sandbox.ts:129`), autoMemory false, CONSECA false, IDE feed off. What shipped instead is in
+the `tool_approval` cell: four default-on gates, two of them not even YOLO-able — the first
+such controls in this subject. The default posture is still "bare host + ASK_USER"; the gate
+grew teeth no setting removes. The window is monothematic: of 27 commits, ~14 are security
+hardening (SSRF, RFC 9207, NTFS 8.3, indirect prompt injection via build files, a hardcoded
+CrUX key), one is a feature (`gemini-3.8-flash` / `3.5-flash-lite`, behind default-false
+server experiment flags), and the rest are bookkeeping — 15 of 17 content commits before the
+09-15 branch point are security-worded, 3 of 16 after: a three-week hardening sprint that
+ended on the day the release branched, with **zero new documentation pages** (`.md` 168 → 168).
+
+**3. Context assembly.** One prompt sentence changed in the whole window — the Untrusted Data
+mandate gained an envelope-provenance paragraph (`snippets.ts:219`) — while `wrapUntrusted`
+still has exactly the same call sites in the same three tools (`mcp-tool.ts`, `shell.ts`,
+`web-fetch.ts`): the gap the deep-dive named ("narrower than the prompt claims") is
+measurably wider. Compaction thresholds unchanged (0.5 / 0.3 at `chatCompressionService.ts:45,51`;
+CONTENT_TRUNCATED fallback at :298/:317). The 28 known-safe commands survived a +373/−23
+rewrite of `commandSafety.ts` entry-for-entry, now path-aware (a `~`- or symlink-escaping
+argument loses the silent ALLOW). All six Seatbelt profiles now deny `$HOME/.gemini` — until
+this window a sandboxed agent on macOS could read the user's OAuth credentials and *write*
+`trustedFolders.json`, `trusted_hooks.json` and `policy_integrity.json`, the state the gate
+consults (`deny file-read*` blocks 6 → 12). `additional_permissions` still inspects
+`fileSystem` only (`policy-engine.ts:782-802`, 0 hits for `network` at both pins) — the
+deep-dive's open question is answered NO, and it survived a security-hardening release.
+
+**4. Provenance.** Complete maintainer turnover: the previous window's top three humans
+contributed zero; four of eleven window authors made their first-ever main commit inside it;
+one reviewer is `Co-authored-by` on 21 of 45 commits while authoring 3. The `[SSR Agent]`
+maintenance bot the deep-dive read as a practice ran for **five days** (13 commits, all
+2026-08-14→18, all by one author who has not committed since) — zero in the 37 days after; the
+triage half still comments. The Antigravity sunset advanced a step the tree cannot see:
+#29279 reports personal-account OAuth now refused ("migrate to the Antigravity suite") while
+`README.md` is byte-identical and still advertises the free tier at three lines; every
+Antigravity file is unchanged. Release notes are pure auto-generated PR lists; v0.61.0's only
+user-visible change (two new production models) appears in them as a cherry-pick's mechanics.
+The community funnel: 256 PRs created, 46 merged (all internal), 144 closed unmerged, 283 open,
+545 open issues, against a `ROADMAP.md` untouched since 2025-10-09 promising first priority to
+public contributions. #29050 (invalid policy TOML rules still loaded — the zod-nulling scar's
+sibling) open 31 days with an outside fix blocked on a CLA check. Presence ≠ operative, new
+specimens: `GEMINI_RESTRICTED_MODE` is read at `trust.ts:49` and set nowhere (marketed in the
+v0.59.0 changelog as "Restricted Mode"); `prepareIsolatedSettingsDir` and `SecurityValidator`
+have zero production callers.
+
+**5. The re-read's own audit.** With-measure counts **13/14** (one transcription slip: 610 →
+611 in the histogram); without-measure **27/30** (failed: the two prompt byte counts, "~15
+modules"). Own-pin defects corrected: the package list omitted `devtools`; "the SDK's
+`legacy-agent-session.ts`" is core's; the hook trust file is one global file keyed per
+project; `config.ts:2576` is a JSDoc; "email on every event" is OAuth-route only; 6 SSR commits
+were read as a practice. Artifact probe (`@google/gemini-cli@0.61.0`, 449 files): version
+matches the tag, exactly two builtin skills (a third SKILL.md is an example), six `.sb`
+profiles, `chrome-devtools-mcp.mjs` bundled — and that last one never needed the artifact route
+(`packages/core/package.json:112` declares it at both pins).
+
+**Predictions (dated, falsifiable).** The 2027-03-01 succession prediction is tracking (45/mo
+vs a 150 ceiling) but its ceiling is mis-chosen the way hermes's was — both "maintenance" and
+"collapse" pass it. New: **P-1** between 2026-09-24 and 2026-11-24, ≤ 1 PR merges from an author
+with no prior merged PR and a non-`@google.com` git email (window baseline 0–1 of 46). **P-2**
+October 2026 lands 30–60 commits on main. **P-3** the security-worded share of content
+commits after v0.61.0 is below 40% by 2026-11-24 (88% in the sprint, 19% after). Next
+trigger: v0.62.0 (~2026-09-30), the first release since the pin not made of hardening.
+
 ## Bleed
 
 - **category 1↔2 (maker span)**: the Google column's harness entry, now traced.
@@ -465,9 +553,12 @@ training-data opt-in whose absent-value default is `true` client-side.
   read supplies the gemini-cli side; the comparison wants qwen-code's fork point
   (v0.8.2-era) against today's policy-engine/hooks/skills architecture — most of
   which postdates the fork, so the divergence is likely *large and asymmetric*.
-- The `additional_permissions` engine-level network gap
-  (`policy-engine.ts:744-764`): does a second tool ever adopt the parameter without
-  shell.ts's tool-level prompt? Re-check at next drift.
+- ~~The `additional_permissions` engine-level network gap (`policy-engine.ts:744-764`): does a
+  second tool ever adopt the parameter without shell.ts's tool-level prompt?~~ **Answered
+  2026-09-24: NO** — `run_shell_command` is still the only adopter (12 non-test hits at both
+  pins) and the engine still reads `fileSystem` only (`:782-802` @ bb523741c).
+- **The third gate door** (added 2026-09-24): `scheduler/policy.ts:76-88` upgrades ASK_USER →
+  ALLOW for client-initiated calls; upstream #29305 calls it a bypass. Decision or slip?
 - Does the Antigravity succession prediction (2027-03-01, above) hold?
 - exp-04's cross-harness memory question now has a Google-side answer shape (inbox
   + human promotion); if a memory-continuity arm ever runs against gemini-cli, the
