@@ -45,7 +45,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 | dsh | web · local | TypeScript, Node.js | `open-source` | MIT | 190,941 | 2026-06-10 | — | `dsh-v0.1.1-rc.2` | deep-dive | [dsh](../tools/2-harnesses/dsh.md) |
 | gemini-cli | terminal + ide · local | TypeScript, Node, Ink | `open-source` | Apache-2.0 | 106,681 | 2025-04-15 | — | `v0.49.0-preview.0-117-g64b5b79a6` | deep-dive | [gemini-cli](../tools/2-harnesses/gemini-cli.md) |
 | hermes-agent | terminal + desktop + web + ide + messaging · both · **resident** | Python, TypeScript | `open-source` | MIT | 248,666 | 2025-07-22 | — | `v2026.9.24` | deep-dive | [hermes-agent](../tools/2-harnesses/hermes-agent.md) |
-| opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | `open-source` | MIT | 190,554 | 2025-03-21 | — | `github-v1.2.25-1492-g017a5977d` | deep-dive | [opencode](../tools/2-harnesses/opencode.md) |
+| opencode | terminal + desktop + ide · local | TypeScript, Bun, Effect | `open-source` | MIT | 209,850 | 2025-03-21 | — | `1.18.32` | deep-dive | [opencode](../tools/2-harnesses/opencode.md) |
 | pi | terminal · local | TypeScript, Node | `open-source` | MIT | 97,226 | 2025-08-09 | — | `v0.84.3-20-g8fa7eebd2` | deep-dive | [pi](../tools/2-harnesses/pi.md) |
 | qwen-code | terminal + ide + desktop + web + messaging · local · **resident** | TypeScript, Node, Rust | `open-source` | Apache-2.0 | 27,405 | 2025-04-15 | — | `cua-driver-rs-v0.20.1-16-gfc0e827658` | deep-dive | [qwen-code](../tools/2-harnesses/qwen-code.md) |
 | warp | terminal + desktop + web · both | Rust | `open-source` | AGPL-3.0 | 64,121 | 2026-04-28 | — | `tui-screenshots-app5029-227-g80a20347` | deep-dive | [warp](../tools/2-harnesses/warp.md) |
