@@ -22,6 +22,12 @@ ones — which moves HEADs past the commits existing reports are pinned to and t
 re-read the flagged reports at the new HEAD or reset each clone back to its report's
 pin (`git -C upstream/<tool> reset --hard <pinned-sha>`).
 
+**Warning (scar, 2026-09-24):** a whole-window `git log -S<literal>` on a blobless clone is a
+blob-fetch storm, not a log query — on `hermes-agent` it fetched until the disk was full
+(`fatal: write error: No space left on device`) and left orphaned `tmp_pack_*` files under
+`.git/objects/pack/`. Track a literal across pins with `git show <tag>:<path> | grep` over the
+intermediate tags instead, or scope `-S` to one path and a short range.
+
 Clones are **blobless** (`--filter=blob:none`): full commit history and file listings, with
 file contents fetched on demand. That keeps `git log`, `git blame`, and
 `git log --follow` usable — which matters, because *when* a design appeared is often more
