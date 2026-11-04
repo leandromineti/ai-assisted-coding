@@ -4,7 +4,7 @@
 <!-- Edit the frontmatter of the notes in references/papers/ or
      references/cards/, then re-run the script. -->
 
-Every source with a note. **Papers** (24) below, grouped by kind, then
+Every source with a note. **Papers** (25) below, grouped by kind, then
 **vendor model cards** (6) — a separate half because a card is not
 literature: it has no `read_depth` to declare, and it is rewritten in place at one
 URL, so each card note carries the archive snapshot its quotes rest on (ADR-0034).
@@ -56,7 +56,8 @@ Newest retrieved: `2026-11-04`.
 
 | Source | Year | Venue | Peer | read | Cites | Bears on | What it does to our claims |
 |---|---|---|---|---|---|---|---|
-| [2026-akita-agent-memory](papers/2026-akita-agent-memory.md) | 2026 | akitaonrails.com (author's blog) | ✗ | full | · | `agentmemory`, `ai-memory`, `conclusion-14` | refines conclusion 14 as testimony — the author's own 2026-05-23 retraction of agentmemory (three named defects, no mechanism given) is the from-essay source for the agentmemory ledger row and an owed confrontation for the ai-memory re-read |
+| [2026-akita-agent-memory](papers/2026-akita-agent-memory.md) | 2026 | akitaonrails.com (author's blog) | ✗ | full | · | `agentmemory`, `ai-memory`, `conclusion-14` | refines conclusion 14 as testimony — the author's own 2026-05-23 retraction of agentmemory (three named defects; their mechanisms are in the 05-23 post it points to, noted as 2026-akita-ai-memory-launch) is the from-essay source for the agentmemory ledger row and an owed confrontation for the ai-memory re-read |
+| [2026-akita-ai-memory-launch](papers/2026-akita-ai-memory-launch.md) | 2026 | akitaonrails.com (author's blog) | ✗ | full | · | `agentmemory`, `ai-memory`, `conclusion-14` | vendor testimony — the 'relato completo' the 2026-05-18 essay's retraction points to: gives a mechanism and an agentmemory issue number for each of the three retraction defects (#309, #204, #539), but no agentmemory version and no measurement method; supersedes the agentmemory ledger row's 'without a mechanism' absence and re-scopes its predictions 1 and 2 |
 | [2026-lost-in-simulation](papers/2026-lost-in-simulation.md) | 2026 | arXiv preprint | ✗ | full | 25 (3 influential) | `exp-03`, `metrics`, `methodology-8` | the reason to prefer a rule-based simulator: swapping only the user LLM moves measured agent success by 9pp, and simulated users are systematically miscalibrated against real humans |
 
 ## survey
@@ -65,7 +66,7 @@ Newest retrieved: `2026-11-04`.
 |---|---|---|---|---|---|---|---|
 | [2026-from-prompt-to-process](papers/2026-from-prompt-to-process.md) | 2026 | arXiv preprint | ✗ | full | 0 (0 influential) | `conclusion-7`, `conclusion-6`, `taxonomy`, `gsd-core`, `spec-kit`, `openspec`, `bmad-method`, `methodology-8` | independent convergence on conclusion 7 from docs only — and its GSD validation score of 0 is contradicted by our exp-01 run, which is rule 8 earning its keep |
 
-**24 papers** — 13 full · 5 extract · 6 abstract.
+**25 papers** — 14 full · 5 extract · 6 abstract.
 
 ## Vendor model cards
 

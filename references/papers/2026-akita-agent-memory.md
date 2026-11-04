@@ -12,7 +12,7 @@ read_depth: full   # the PT page text (297 lines in the local cache) read end to
 retrieved: 2026-11-04
 pdf: references/papers/pdf/2026-akita-agent-memory.pt.txt   # extracted page text, gitignored; the author's EN page is cached alongside as 2026-akita-agent-memory.en.txt
 bears_on: [agentmemory, ai-memory, conclusion-14]
-verdict: "refines conclusion 14 as testimony — the author's own 2026-05-23 retraction of agentmemory (three named defects, no mechanism given) is the from-essay source for the agentmemory ledger row and an owed confrontation for the ai-memory re-read"
+verdict: "refines conclusion 14 as testimony — the author's own 2026-05-23 retraction of agentmemory (three named defects; their mechanisms are in the 05-23 post it points to, noted as 2026-akita-ai-memory-launch) is the from-essay source for the agentmemory ledger row and an owed confrontation for the ai-memory re-read"
 ---
 
 # Memória de Agentes IA: Karpathy LLM Wiki e agentmemory na Prática (2026-05-18, with a 2026-05-23 retraction)
@@ -98,9 +98,15 @@ mined.
 ### 2026-05-23 update (retraction)
 
 The update sits at the top of the PT page, above the original first paragraph. It names three
-defects in one parenthetical and gives no mechanism, measurement or source reference for any of
-them. Each defect below is the shortest verbatim span that states it, so the agentmemory ledger
-row can quote the essay and not a paraphrase.
+defects in one parenthetical, with no mechanism or measurement on this page, and then sends the
+reader to a separate post, the author's 2026-05-23 "Criei um Sistema de Memória pra Agentes de
+Código: ai-memory", for "o relato completo" (the full account). That post, noted at
+[2026-akita-ai-memory-launch](2026-akita-ai-memory-launch.md), gives a mechanism and an
+agentmemory issue number for each of the three defects, and no agentmemory version or
+measurement method. *(Corrected 2026-11-04, review CR-01: this paragraph first said the update
+gave no source reference; it does, and the absence had searched this page only.)* Each defect
+below is the shortest verbatim span that states it, so the agentmemory ledger row can quote the
+essay and not a paraphrase.
 
 - **Framing:**
 
@@ -149,7 +155,7 @@ Copied, never rounded; locators are PT section headings.
   *agentmemory: implementação prática do padrão*). These are the author's description of the
   tool as of 2026-05-18, not a source reading.
 - The retraction's figures: "5s" window and "~47%" of Claude Code tool calls (update at the top);
-  both are the author's, unmeasured in the post.
+  both are the author's, unmeasured in this post and in the 05-23 post it points to.
 - Claude Code's compaction constants, as the author read them in the leaked source (section
   *Claude Code: três níveis de compaction + summary detalhado*). The code lines are English in
   both pages:
@@ -169,7 +175,8 @@ Copied, never rounded; locators are PT section headings.
 
 - **From-essay source.** This note is where the agentmemory ledger row (phase 15, plan 15-03)
   quotes the three 2026-05-23 defects from, and where its from-essay predictions get their tag.
-  The essay gives symptoms only; whether the shipped `v0.9.31` still has them, and whether the
+  This page gives symptoms only; the mechanisms are in the 05-23 post it points to
+  ([2026-akita-ai-memory-launch](2026-akita-ai-memory-launch.md)). Whether the shipped `v0.9.31` still has them, and whether the
   ~47% fraction is even reproducible by reading source, is exactly what the row's predictions
   leave to the later deep dive.
 - **Owed confrontations, named and not applied (D-19).** The ai-memory re-read owes a check of
