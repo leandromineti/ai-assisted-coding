@@ -10,8 +10,8 @@ stack: [Python, TypeScript]
 version: v1.5.0-2-gb948f88d4
 commit: b948f88d4
 first_commit: 2023-08-16
-stars: 30103
-stars_at: 2026-08-18
+stars: 33062
+stars_at: 2026-11-04   # gh api; 30,103 at 2026-08-18 (+37.9/day net)
 read_at: 2026-08-18   # survey read, same day as the stub
 depth: survey   # read: README, cognee-mcp/src/server.py (tool surface + save_interaction + improve + tool modes), codingagents/coding_rule_associations.py (top), pyproject dependency spec, evals/README. Cross-examined against ai-memory's docs/issues-cognee.md (competitor testimony, 2026-05-21) with two structural claims spot-checked in source at the pin. NOT read: the core pipeline internals (cognify tasks, retrievers), the frontend, the separate cognee-integrations repo (README via GitHub API only)
 harness_targets: "in-repo: cognee-mcp (MCP server, stdio/HTTP, agent-scoped datasets per client). Separate repos/packages, README-level: Claude Code marketplace plugin (cognee-integrations — hooks capture, prompt-submit injection, session-end graph sync; a Codex plugin shares its config), OpenClaw plugin (@cognee/cognee-openclaw on npm)"

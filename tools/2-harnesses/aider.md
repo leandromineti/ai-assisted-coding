@@ -19,8 +19,8 @@ stack: [Python]
 version: v0.86.3.dev-53-g5dc9490b
 commit: 5dc9490b
 first_commit: 2023-04-03
-stars: 48519
-stars_at: 2026-08-27
+stars: 49943
+stars_at: 2026-11-04   # gh api; 48,519 at 2026-08-27 (+20.6/day net)
 read_at: 2026-08-27
 depth: deep-dive   # 2026-08-27, all THREE ADR-0021 components traced at the pin by three parallel readers (loop; context assembly; permission gate + reach + provenance), load-bearing claims spot-verified in the main session before writing. Pin needed no decision: `5dc9490b` IS HEAD and origin/main — the repo has not moved in 97 days. RUN-probed the same day (published PyPI artifact 0.86.2, 54 commits behind the pin: install, repo-map measurement at three budgets, full assembled-prompt dump, zero-config lint gate). NOT traced: the Streamlit GUI beyond its permission posture, the scraper/voice/watch subsystems, the 111 .mp3 audio assets, and the polyglot corpus (a separate repo, not present at the pin — see § Evals)
 harness_features:

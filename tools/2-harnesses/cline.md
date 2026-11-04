@@ -16,8 +16,8 @@ stack: [TypeScript, React]
 version: v4.1.21   # the VS Code extension; the CLI at this tag is `cline@3.0.65` on npm (apps/cli/package.json names `@cline/cli`, a build-time name the publish script renames — publish-npm.ts:33), SDK 0.0.86, desktop 0.0.35
 commit: 787ad1b07
 first_commit: 2024-07-05
-stars: 69228
-stars_at: 2026-09-24   # gh api; 65,138 at 2026-07-28
+stars: 71306
+stars_at: 2026-11-04   # gh api; 69,228 at 2026-09-24 (+50.7/day net); 65,138 at 2026-07-28
 read_at: 2026-09-24   # v4.1.21 release re-read (§ Release re-read); survey 2026-07-28 @ dc175c73a, drift-checked 2026-08-16 at 574b8eb45 (a 2026-08-06 commit) without re-reading (rule 4b) — all claims corroborated; upstream deleted the vestigial classifier this report flagged; pin deliberately not moved
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 harness_features:

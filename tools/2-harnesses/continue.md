@@ -11,8 +11,8 @@ stack: [TypeScript, React]
 version: v1.3.40-vscode-11-g5522c6f44
 commit: 5522c6f44
 first_commit: 2023-05-23
-stars: 36012
-stars_at: 2026-09-24   # gh api; 35,166 at 2026-07-28
+stars: 36402
+stars_at: 2026-11-04   # gh api; 36,012 at 2026-09-24 (+9.5/day net); 35,166 at 2026-07-28
 read_at: 2026-07-28
 depth: survey   # prompt/context subsystem read closely; rest of the codebase skimmed
 harness_features:

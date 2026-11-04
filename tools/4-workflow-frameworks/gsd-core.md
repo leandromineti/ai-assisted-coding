@@ -12,8 +12,8 @@ commit: 182f60b4
 # (= tag v1.11.0) at the 2026-08-21 release re-read (rule 4b: a pin moves only with a
 # re-read; both were). exp-01 artifacts keep their own pin (d04592de).
 first_commit: 2025-12-14
-stars: 8540
-stars_at: 2026-08-21
+stars: 11239
+stars_at: 2026-11-04   # gh api; 8,540 at 2026-08-21 (+36.0/day net)
 read_at: 2026-08-21   # v1.11.0 release re-read; deep-dive 2026-08-18 @ fee72d55, survey 2026-07-28 @ d04592de, exp-01 late July
 depth: deep-dive   # 2026-08-18: runtime traced in source by three parallel readers, load-bearing claims spot-verified at the pin. 2026-08-21: same method over the fee72d55→v1.11.0 window (release substance; per-claim confrontation; provenance re-measurement)
 harness_targets: "18 install targets @ 182f60b4 (bin/install.js:838): claude, codex, copilot, cursor, windsurf, cline, opencode, antigravity, kimi, kimi-code, kilo, pi, trae, qwen, hermes, codebuddy, zcode, augment (+ vscode extension). List byte-identical fee72d55→v1.11.0; growth redirected to the out-of-tree EoS Registry (see 2026-08-21 assessment). Gemini CLI removed upstream 2026-06-18 (sunset)"

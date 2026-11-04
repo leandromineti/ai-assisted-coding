@@ -9,8 +9,8 @@ stack: [Python]
 version: v3.2.6rc1-371-g30cffb08b
 commit: 30cffb08b
 first_commit: 2025-08-21   # predates the GitHub repo (2025-10-09) — imported spec-kit history
-stars: 1520
-stars_at: 2026-08-18
+stars: 1713
+stars_at: 2026-11-04   # gh api; 1,520 at 2026-08-18 (+2.5/day net); repo renamed → spec-kitty/spec-kitty (flagged 2026-11-04, url: unchanged)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README + tree inspection; source unread
 harness_targets: [Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, Windsurf, OpenCode]

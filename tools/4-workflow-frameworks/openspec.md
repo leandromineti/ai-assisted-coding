@@ -9,8 +9,8 @@ stack: [TypeScript, Node]
 version: v1.7.0-5-g2b3d368
 commit: 2b3d368
 first_commit: 2025-08-05
-stars: 63241
-stars_at: 2026-07-31
+stars: 73935
+stars_at: 2026-11-04   # gh api; 63,241 at 2026-07-31 (+111/day net)
 read_at: 2026-07-31   # drift-checked 2026-08-16 at d578896 without re-reading (rule 4b) — specs-apply.ts nearly doubled, flagged for re-read on issue #10; pin deliberately not moved
 depth: deep-dive   # the runtime traced in source: delta-merge engine (specs-apply.ts), archive flow, artifact-graph DAG engine + schema loader, validator, command-generation adapters; skills read; dogfooding measured. Website/docs skimmed
 harness_targets: "29 adapter modules in src/core/command-generation/adapters/ (claude, cursor, cline, continue, opencode, gemini, copilot, devin, kiro, roocode, qwen, …); 37 tool configs with skills dirs; detection by scanning for each tool's config dirs"

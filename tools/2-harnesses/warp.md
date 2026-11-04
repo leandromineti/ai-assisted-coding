@@ -13,8 +13,8 @@ stack: [Rust]
 version: tui-screenshots-app5029-227-g80a20347
 commit: 80a20347
 first_commit: 2026-04-28   # squashed "Initial public release of Warp" — NOT the product's age
-stars: 64121
-stars_at: 2026-08-11
+stars: 65869
+stars_at: 2026-11-04   # gh api; 64,121 at 2026-08-11 (+20.6/day net)
 read_at: 2026-08-19   # deep-dive; survey was 2026-08-11 at the same pin. Upstream drifted 98 commits between the reads — dated drift answer in Drift, pin unmoved (rule 4b)
 depth: deep-dive   # 2026-08-19, three parallel readers: loop, context assembly, orchestration+permissions; load-bearing claims spot-verified at the pin. No run probe — GUI-first Rust monorepo, a build alone exceeds any reasonable probe budget, and no in-scope claim depends on runtime behavior
 harness_features:

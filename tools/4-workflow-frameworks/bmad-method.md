@@ -9,8 +9,8 @@ stack: [JavaScript, Node.js, Python]
 version: v6.11.0-29-g86beb065
 commit: 86beb065
 first_commit: 2025-04-13
-stars: 52030
-stars_at: 2026-08-18
+stars: 54996
+stars_at: 2026-11-04   # gh api; 52,030 at 2026-08-18 (+38.0/day net)
 read_at: 2026-08-18   # deep-dive, same day and same pin as the stub — promoted stub → deep-dive directly; the read did the survey's work en route
 depth: deep-dive   # 2026-08-18: source traced by three parallel readers at the pin (routing spine + plan/ship pipeline; gates/runtime/personas; installer/portability), load-bearing claims spot-verified in main session; install RUN-probed same day in a node:22 container (npm 6.11.0 = the pin's release tag, 29 commits behind the pin)
 harness_targets: "47 platform codes @ 86beb065 (tools/installer/ide/platform-codes.yaml) — but only 22 distinct target dirs, and 26 of the 47 share the `.agents/skills/` cross-tool convention; 4 marked preferred (claude-code, codex, cursor, github-copilot); none deprecated or suspended at the pin"

@@ -22,8 +22,8 @@ commit: f5d702a5   # the e2b SDK/CLI clone; this is what build-tool-index --chec
 # docs/ARCHITECTURE.md changed too. Per D-07 the cells are set from pin-state prose anyway;
 # a dated drift caveat is attached at the affected cells in plan 07-02.
 first_commit: 2023-03-04   # e2b SDK repo; the infra repo's 2019 root is an imported fossil — see History
-stars: 13423
-stars_at: 2026-08-16
+stars: 14711
+stars_at: 2026-11-04   # gh api; 13,423 at 2026-08-16 (+16.1/day net)
 read_at: 2026-08-16
 depth: deep-dive   # for a non-harness: isolation mechanism, sandbox lifecycle, and multi-tenancy traced in source across both repos (three parallel Opus reads), 10 load-bearing claims spot-verified at the pins by the main session. NOT run — no sandbox created; wire-level claims are strong code inference, labelled where they are not demonstrated
 environment_features:   # ADR-0017 block, set 2026-08-20 from the existing deep-dive read at f5d702a5 (and e2b-infra @ fcc2edbc9) — not a re-read

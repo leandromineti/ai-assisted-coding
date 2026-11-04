@@ -9,8 +9,8 @@ stack: [Python, Go, TypeScript]   # modal-client monorepo; Python is the referen
 version: py/v1.5.4-7-g59e6e618
 commit: 59e6e618   # the open modal client (cloned as upstream/modal); --check guards this pin even though the PRODUCT is closed — see the generator's decouple note (2026-08-16)
 first_commit: 2021-07-09
-stars: 502   # the client repo only — not a measure of the product's reach
-stars_at: 2026-08-16
+stars: 532   # the client repo only — not a measure of the product's reach
+stars_at: 2026-11-04   # gh api; 502 at 2026-08-16 (+0.4/day net)
 read_at: 2026-08-16
 depth: survey   # client source (proto + shipped container agent) read closely; the ENVIRONMENT ITSELF is closed and characterized from (a) the wire contract and (b) dated vendor testimony — NOT from infra source. That grade cap IS the finding. Not run.
 environment_features:   # ADR-0017 block, set 2026-08-20 from the existing survey read at 59e6e618 — not a re-read

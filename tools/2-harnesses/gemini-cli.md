@@ -18,8 +18,8 @@ stack: [TypeScript, Node, Ink]
 version: v0.61.0   # `git describe` = package.json = 0.61.0 at this pin (the old pin's describe string anchored a stale preview tag while package.json said 0.59.0-nightly)
 commit: bb523741c
 first_commit: 2025-04-15
-stars: 107148
-stars_at: 2026-09-24   # gh api; 106,681 at 2026-08-25 (+15.6/day)
+stars: 108725
+stars_at: 2026-11-04   # gh api; 107,148 at 2026-09-24 (+38.5/day net); 106,681 at 2026-08-25 (+15.6/day)
 read_at: 2026-09-24   # v0.61.0 release re-read (§ Release re-read); deep-dive 2026-08-25 @ 64b5b79a6
 depth: deep-dive
 harness_features:

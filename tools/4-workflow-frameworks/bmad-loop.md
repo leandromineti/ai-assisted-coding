@@ -9,8 +9,8 @@ stack: [Python]
 version: v0.10.0-135-g75e0348
 commit: 75e0348
 first_commit: 2026-06-10
-stars: 93
-stars_at: 2026-08-18
+stars: 177
+stars_at: 2026-11-04   # gh api; 93 at 2026-08-18 (+1.1/day net)
 read_at: 2026-08-18
 depth: stub   # README + module.yaml read in full; three targeted source probes (verify-command execution path, epic-boundary gate, retro consumers) answering the bmad-method deep-dive's open question 1; the 42-file engine otherwise unread
 harness_targets: "drives claude (default), codex, gemini, copilot, antigravity via profiles + a generic tmux adapter, opencode per README badge (README.md, Requirements) — DRIVE targets, not install targets; the skills module installs through bmad-method's 47-code installer"

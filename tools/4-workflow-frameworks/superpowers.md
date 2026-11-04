@@ -9,8 +9,8 @@ stack: [Markdown, Shell, Node]
 version: v6.3.0
 commit: b36e082
 first_commit: 2025-10-09
-stars: 283395
-stars_at: 2026-09-09
+stars: 312345
+stars_at: 2026-11-04   # gh api; 283,395 at 2026-09-09 (+517/day net)
 read_at: 2026-09-09   # candidate 2026-09-09 (one day) → stub facts + deep-dive same sitting, the bmad-method same-day precedent
 depth: deep-dive   # 2026-09-09: all four category-4 functions traced in source by three parallel readers (F1 intent refinement, F2 work decomposition, F3 gap research — absent, surface declared, F4 verification) plus the delivery substrate; load-bearing claims spot-verified at the pin in the main session; all four runtime executables run-probed same day
 harness_targets: "three measures @ b36e082, stated because they differ: 9 harnesses with a dedicated manifest or code adapter in-tree (Claude Code, Cursor, Codex, Devin, Hermes, Kimi, OpenCode, Pi, Gemini); 11 with any dedicated source artifact (+ Antigravity's tool-map reference, + Copilot CLI's env-var branch in hooks/session-start:52-55); 14 install sections in README.md lines 49-260 (Factory Droid, Grok Build CLI, and the official Claude marketplace ride .claude-plugin/ with zero dedicated files)"

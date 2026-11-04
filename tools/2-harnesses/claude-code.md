@@ -11,8 +11,8 @@ license: proprietary   # the GitHub repo (141,660 stars) is issues + distributio
 access: closed-source   # the public repo (see `license:` above) is issues + distribution + examples, not source — a public repo is not source access
 stack: [TypeScript, Node]   # distribution observable (npm package, bundled); internals not readable — this is packaging fact, not architecture claim
 version: 2.1.281   # `claude --version`, observed 2026-09-24 (2.1.233 at the 2026-08-17 read; latest GitHub release v2.1.281, 2026-09-23) — NOT a git pin; there is no clone, so nothing here is machine-checked (--check skips: no commit field)
-stars: 147932
-stars_at: 2026-09-24   # of the issues/distribution repo — measures community gravity, not source adoption
+stars: 154528
+stars_at: 2026-11-04   # gh api; 147,932 at 2026-09-24 (+161/day net); of the issues/distribution repo — measures community gravity, not source adoption
 read_at: 2026-09-24   # re-observation at 2.1.281 (§ Re-observation); first read 2026-08-17 at 2.1.233 — the observation route's version of a re-read, no pin to move
 depth: survey   # OBSERVATION-ONLY (issue #12): daily use + live-session instrumentation of v2.1.233 + platform docs. There is no source; every architecture claim below is behavior, config-surface, or testimony — graded inline. This can never honestly reach deep-dive: the loop and context assembly are not readable RE-OBSERVED 2026-09-24 at 2.1.281: every cell re-derived from the live CLI + docs retrieved that day; auto mode itself was NOT exercised (the observing session was not in it) — the classifier is docs testimony
 harness_features:

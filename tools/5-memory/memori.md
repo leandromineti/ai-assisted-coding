@@ -10,8 +10,8 @@ stack: [Rust, Python, TypeScript]
 version: v3.3.6-24-g538b61f
 commit: 538b61f
 first_commit: 2025-07-24
-stars: 16128
-stars_at: 2026-08-18
+stars: 17410
+stars_at: 2026-11-04   # gh api; 16,128 at 2026-08-18 (+16.4/day net)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README skim; source not read
 ---

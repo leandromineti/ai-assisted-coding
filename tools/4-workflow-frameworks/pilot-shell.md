@@ -9,8 +9,8 @@ stack: [TypeScript, Python, React]
 version: v10.3.1
 commit: c8c8243
 first_commit: 2025-10-24
-stars: 2019
-stars_at: 2026-08-18
+stars: 2113
+stars_at: 2026-11-04   # gh api; 2,019 at 2026-08-18 (+1.2/day net); repo renamed → maxritter/qualitylayer (flagged 2026-11-04, url: unchanged)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README + LICENSE read; source unread
 harness_targets: [Claude Code, Codex]

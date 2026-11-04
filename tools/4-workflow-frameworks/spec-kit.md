@@ -9,8 +9,8 @@ stack: [Python]
 version: v0.1.10-1039-g655a3cb
 commit: 655a3cb
 first_commit: 2025-08-21
-stars: 124319
-stars_at: 2026-07-28
+stars: 147175
+stars_at: 2026-11-04   # gh api; 124,319 at 2026-07-28 (+231/day net)
 read_at: 2026-08-18   # deep-dive date; first read 2026-07-28, drift-checked 2026-08-16, all at the SAME pin (clone re-detached to 655a3cb for the deep-dive)
 depth: deep-dive   # 2026-08-18: runtime traced in source by three parallel readers (workflow engine + state machine; template compilers + 37 integrations; artifact flow + gates), load-bearing claims spot-verified in main session. Earlier: templates read in full (survey 2026-07-28); RUN 2026-08-17 (exp-02 Run B, full 7-step pipeline at this pin — rule 8 gap closed)
 harness_targets: "37 registered integrations @ 655a3cb (36 named + `generic`), incl. Claude Code, Codex, Gemini CLI, Cursor, Copilot, OpenCode, Cline, Goose, Kimi, Hermes — survey's \"44 config dirs\" did not reproduce at deep-dive"

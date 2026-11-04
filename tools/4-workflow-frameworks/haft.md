@@ -9,8 +9,8 @@ stack: [Go, Rust, SQLite]
 version: v9.1.0
 commit: 8a5f038
 first_commit: 2025-12-10
-stars: 1383
-stars_at: 2026-08-18
+stars: 1396
+stars_at: 2026-11-04   # gh api; 1,383 at 2026-08-18 (+0.2/day net)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + full README; Go source and FPF spec unread
 harness_targets: "Claude Code + Codex stable; experimental adapters: Grok, Pi, Hermes, Zed, Antigravity, Cursor, Gemini CLI, OpenCode (haft init flags @ 8a5f038)"

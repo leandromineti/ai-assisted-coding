@@ -23,8 +23,8 @@ stack: [Python, TypeScript]
 version: v2026.9.24   # tag subject "chore: release v0.21.5 (2026.9.24)"
 commit: f97608f178
 first_commit: 2025-07-22
-stars: 248666
-stars_at: 2026-09-24   # repo-facts.sh; 241,330 at 2026-09-04
+stars: 260507
+stars_at: 2026-11-04   # gh api; 248,666 at 2026-09-24 (+289/day net); 241,330 at 2026-09-04
 read_at: 2026-09-24   # v2026.9.24 release re-read (window 14,831 commits, three regimes — § Release re-read v2026.9.24); v2026.8.31 release re-read 2026-09-04 (window 7,055 commits); deep-dive 2026-07-30 @ 524ab5399, drift-checked 2026-08-12, reasoning-param targeted read 2026-08-27
 depth: deep-dive
 harness_features:

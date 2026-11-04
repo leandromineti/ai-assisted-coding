@@ -11,8 +11,8 @@ stack: [Rust, TypeScript, Python, Go]   # Rust-dominant (605 tracked .rs files);
 version: v0.6.12-3-g0191b03
 commit: 0191b03
 first_commit: 2024-10-03
-stars: 7829
-stars_at: 2026-08-21
+stars: 8939
+stars_at: 2026-11-04   # gh api; 7,829 at 2026-08-21 (+14.8/day net)
 read_at: 2026-08-21
 depth: deep-dive   # isolation mechanism, network defaults, and filesystem/credential model traced in source (three parallel Opus reads, orchestrator-dispatched; load-bearing claims independently spot-verified at the pin by this executor session and flagged [✓]). NOT run — /dev/kvm absent on this host 2026-08-21; every behavioural claim is static-source-derived, never OBSERVED.
 environment_features:   # ADR-0017 block, set 2026-08-21 from the deep-dive read at 0191b03 — not a re-read

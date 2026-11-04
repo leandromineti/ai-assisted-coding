@@ -13,8 +13,8 @@ commit: 6abf639   # this is what build-tool-index --check validates
 # (read 2026-08-20), cited only if the SDK's own filesystem story leads there (D-14, e2b.md's
 # two-pin idiom). Re-check drift with: repo-facts.sh artifact-fs
 first_commit: 2025-06-22
-stars: 1108
-stars_at: 2026-08-20
+stars: 1159
+stars_at: 2026-11-04   # gh api; 1,108 at 2026-08-20 (+0.7/day net)
 read_at: 2026-08-20
 depth: deep-dive   # category 3's second deep-dive (2026-08-21 correction, WR-02: counting only deep-dive-depth category-3 reports in read order — e2b 1st, this 2nd; modal is depth: survey and does not count); three-tract source read (D-15), load-bearing claims spot-verified at the pin by the main session before writing (08-01-PLAN.md Task 2)
 environment_features:   # ADR-0017 block, set 2026-08-20 from the deep-dive read at 6abf639 (and artifact-fs @ 2b87a48 for filesystem_sync) — Task 3 gate outcome: no lattice extension needed (see 08-01-SUMMARY.md); Dynamic Workers is a sibling platform binding with zero SDK surface and gets no cell (D-01's two-instance bar unmet by one sighting)

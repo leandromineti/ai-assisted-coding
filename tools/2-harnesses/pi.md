@@ -21,8 +21,8 @@ stack: [TypeScript, Node]
 version: v0.87.1   # = npm `latest` for @earendil-works/pi-coding-agent — tree and published artifact at parity for the first time
 commit: f07218c4d
 first_commit: 2025-08-09
-stars: 109148
-stars_at: 2026-09-24   # gh api; 97,226 at 2026-08-26 (+411/day)
+stars: 120036
+stars_at: 2026-11-04   # gh api; 109,148 at 2026-09-24 (+266/day net); 97,226 at 2026-08-26 (+411/day)
 read_at: 2026-09-24   # v0.87.1 release re-read (§ Release re-read); deep-dive 2026-08-26 @ 8fa7eebd2
 depth: deep-dive
 harness_features:

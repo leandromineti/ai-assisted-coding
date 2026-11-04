@@ -10,8 +10,8 @@ stack: [Python]
 version: v1.2.3-5-gd07cddc
 commit: d07cddc
 first_commit: 2026-06-05
-stars: 12126
-stars_at: 2026-08-18
+stars: 13804
+stars_at: 2026-11-04   # gh api; 12,126 at 2026-08-18 (+21.5/day net)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + README skim; source not read
 harness_targets: "use-cases/claude-code-plugin/ exists in-repo (file listing at the pin) — a Claude Code plugin as a shipped use case; other harness targets not checked"

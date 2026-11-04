@@ -14,8 +14,8 @@ stack: [Rust]
 version: v2.0.2
 commit: 7e787c9
 first_commit: 2026-05-21
-stars: 5712
-stars_at: 2026-09-04
+stars: 15119
+stars_at: 2026-11-04   # gh api; 5,712 at 2026-09-04 (+154/day net)
 read_at: 2026-09-04   # v2.0.2 release re-read; deep-dive 2026-08-18 @ acd9c0b, same day as the stub
 depth: deep-dive   # capture→consolidate→handoff traced in source (hooks/, ai-memory-hooks, ai-memory-consolidate); Claude Code installer read end-to-end (install_hooks.rs + render_shared.rs + commands/hook.rs); MCP tool surface read at router + ARCHITECTURE level; re-read at v2.0.2 with per-claim confrontation + release-binary run probe. NOT traced: the managed-workstream loop (`ai-memory run`, docs-level only), the web frontend, the retrieval RRF internals beyond the store's table shapes, and the new local-embeddings inference internals (candle/BERT read at config/fetch level only)
 harness_targets: "23 harness targets at v2.0.2, counted from docs/support-matrix.md (moved out of the README this window) as rows naming an agent, excluding the 4 OS-platform rows, the Managed-workstreams capability row, and the 2 provider rows: 16 Supported with MCP + lifecycle hooks (adds ZCode), 4 MCP-only (Claude Desktop, VS Code Copilot, Zed, Swival), 1 Managed-only (Crush), 1 Hooks-only (Pool — new status class: capture works, no first-party MCP client, injection not demonstrated), 1 community (Hermes). Same rule at acd9c0b gives 21; the old '~24' conflated the OS-platform rows with targets and omitted Crush (corrected 2026-09-04). Claude Code verified in source, others spot-checked at the event-table level in render_shared.rs"

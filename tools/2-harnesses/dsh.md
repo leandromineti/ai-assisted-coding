@@ -13,8 +13,8 @@ stack: [TypeScript, Node.js]
 version: dsh-v0.1.1-rc.2
 commit: b150a551b8
 first_commit: 2026-06-10
-stars: 190941
-stars_at: 2026-08-24
+stars: 272371
+stars_at: 2026-11-04   # gh api; 190,941 at 2026-08-24 (+1131/day net)
 read_at: 2026-08-24
 depth: deep-dive
 harness_features:

@@ -19,8 +19,8 @@ stack: [TypeScript, Node, Rust]  # Rust is not incidental: packages/cua-driver i
 version: 0.24.5   # packages/cli/package.json at the tag — never `git describe` here (it lands on a Rust sub-tag; six parallel tag series now: v*, desktop-v*, cua-driver-rs-v* and three more)
 commit: 59c8e93c0e
 first_commit: 2025-04-15   # IDENTICAL to gemini-cli's (2025-04-16 is codex's; gemini-cli is also 2025-04-15) — this is the imported fork history, not qwen-code's own start. The product forked gemini-cli v0.8.2 and stopped syncing at Qwen Code v0.1
-stars: 28111
-stars_at: 2026-09-24   # gh api; 27,405 at 2026-08-27
+stars: 29005
+stars_at: 2026-11-04   # gh api; 28,111 at 2026-09-24 (+21.8/day net); 27,405 at 2026-08-27
 read_at: 2026-09-24   # v0.24.5 release re-read (§ Release re-read); deep-dive 2026-08-27 @ fc0e827658
 depth: deep-dive   # 2026-08-27, all THREE ADR-0021 components traced at the pin: the loop, context assembly, and the permission gate. Read as a DIVERGENCE STUDY against gemini-cli at its own pin (64b5b79a6, read 2026-08-25). NOT traced, and named so the gap is legible: the 663-file Rust cua-driver workspace, the individual channel implementations beyond their shared base contract, and the daemon side-channel coordination protocol
 harness_features:

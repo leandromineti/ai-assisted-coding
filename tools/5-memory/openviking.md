@@ -10,8 +10,8 @@ stack: [Python, TypeScript, Rust]
 version: v0.4.16-7-g2af48624
 commit: 2af48624
 first_commit: 2026-01-29
-stars: 31583
-stars_at: 2026-08-21
+stars: 41531
+stars_at: 2026-11-04   # gh api; 31,583 at 2026-08-21 (+133/day net)
 read_at: 2026-08-21
 depth: stub   # facts from repo-facts.sh + README skim; source not read, no memory_features cells set
 ---

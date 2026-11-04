@@ -18,8 +18,8 @@ stack: [Rust, TypeScript]
 version: rust-v0.156.1   # `git describe` at the tag; at the old pin it read `rusty-v8-v150.4.0-94-…` because product release tags are cut on 1–7-commit spurs off main that never merge back — no rust-v* tag is an ancestor of main (0 of 5 sampled)
 commit: b412ff32c4
 first_commit: 2025-04-16
-stars: 126329
-stars_at: 2026-09-24   # gh api; 102,646 at 2026-07-30 (+423/day)
+stars: 133177
+stars_at: 2026-11-04   # gh api; 126,329 at 2026-09-24 (+167/day net); 102,646 at 2026-07-30 (+423/day)
 read_at: 2026-09-24   # rust-v0.156.1 release re-read (§ Release re-read); deep-dive 2026-07-30 @ 413492cd6c, drift-checked 2026-08-16 at 57f42a8113 (a 2026-08-06 commit) without re-reading (rule 4b) — three claims corroborated, two refined, the stuck-loop absence settled; pin deliberately not moved
 depth: deep-dive
 harness_features:

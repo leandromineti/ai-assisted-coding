@@ -18,8 +18,8 @@ stack: [Python]
 version: v1.6.1
 commit: e49b18e26
 first_commit: 2023-04-03   # aider's first commit — the fork keeps the full history (13,048 shared commits with aider main; see § Stack & repo shape)
-stars: 408
-stars_at: 2026-09-24   # repo-facts.sh; 405 at 2026-09-09
+stars: 414
+stars_at: 2026-11-04   # gh api; 408 at 2026-09-24 (+0.1/day net); 405 at 2026-09-09
 read_at: 2026-09-24   # v1.6.1 release re-read (window 103 commits, 2b8c49bf..e49b18e26); survey 2026-09-09 @ 2b8c49bf
 depth: survey   # 2026-09-09, targeted source read at the pin for ONE question — does the aider fork keep the ranked-index context-assembly bet (conclusion 17) or drift toward tool dispatch? — plus the registry keys aider carried, each re-checked at the fork's own source by grep (one Opus reader, load-bearing citations spot-verified in the main session). NOT traced: the loop end to end, the TUI, the ACP server, the Cymbal search index, the memorizer subagent's runtime. RUN probe added 2026-09-09 on the published 1.4.1 artifact (`pip install cecli-dev==1.4.1`), offline dumps only, no API call — § Run probe; the probe also caught two source misreads in the first write-up, corrected in place and listed in § Surprises RE-READ 2026-09-24 at v1.6.1 (§ Release re-read): release substance by component + every citation confronted at both pins; still survey depth — the loop end to end, the TUI, the ACP server and the Cymbal index remain untraced
 harness_features:

@@ -21,8 +21,8 @@ stack: [TypeScript, Bun, Effect]
 version: 1.18.32   # packages/opencode/package.json at the pin — NOT `git describe`: every v1.x release tag is cut on an orphan commit off `dev`, so describe can only ever reach `github-v1.2.25`, the GitHub app's tag from 2026-06-03 (the 2026-07-28 field said v1.2.25 for a product at 1.18.8; corrected 2026-09-24)
 commit: 545f51d26
 first_commit: 2025-03-21
-stars: 209850
-stars_at: 2026-09-24   # gh api; 190,554 at 2026-07-28 (+333/day)
+stars: 224554
+stars_at: 2026-11-04   # gh api; 209,850 at 2026-09-24 (+359/day net); 190,554 at 2026-07-28 (+333/day)
 read_at: 2026-09-24   # v1.18.32 release re-read (§ Release re-read); deep-dive 2026-07-28 @ 017a5977d, drift-checked 2026-08-16 at 03bff6500 without re-reading (rule 4b) — cited surface nearly frozen (7 of 123 commits, 5 of them release syncs); all claims corroborated; pin deliberately not moved
 depth: deep-dive
 harness_features:

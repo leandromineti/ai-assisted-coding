@@ -10,8 +10,8 @@ stack: [TypeScript, Python]
 version: v2.0.30-20-g85532420
 commit: 85532420
 first_commit: 2024-05-28
-stars: 10762
-stars_at: 2026-08-18
+stars: 12255
+stars_at: 2026-11-04   # gh api; 10,762 at 2026-08-18 (+19.1/day net)
 read_at: 2026-08-19   # deep-dive, same pin as the 2026-08-18 survey (zero upstream drift)
 depth: deep-dive   # 2026-08-19: three parallel readers at the pin (lifecycle math incl. per-stage tracing + golden tests; recall/injection/runtime/deployment; adapters/products/install surface), load-bearing claims spot-verified in main session; npm artifact probed (2.0.16 tarball: telemetry credentials + template defaults verified against the DISTRIBUTED package, not just the clone)
 harness_targets: "verified in-repo at the pin: OpenClaw (local plugin v2 in-process TS; legacy v1 plugin still published but EVICTED by v2's installer; separate first-party CLOUD plugin → memos.memtensor.cn), DeepSeek Harness (in-process Cordis adapter, the best-documented of the four), hermes-agent (out-of-process Python MemoryProvider over JSON-RPC to a node bridge), OpenWork (vendored Electron fork, points at the cloud). Three backends behind one brand: local SQLite, MemTensor cloud, and a 90.6k-line Python research OS no harness installs"

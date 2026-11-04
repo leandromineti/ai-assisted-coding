@@ -9,8 +9,8 @@ stack: [Markdown]
 version: conductor-v0.4.1-16-gf06add3
 commit: f06add3
 first_commit: 2025-12-17
-stars: 3704
-stars_at: 2026-08-18
+stars: 3779
+stars_at: 2026-11-04   # gh api; 3,704 at 2026-08-18 (+1.0/day net)
 read_at: 2026-08-18
 depth: stub   # facts from repo-facts.sh + full README; rules/skills prose unread
 harness_targets: [Antigravity, Claude Code]
