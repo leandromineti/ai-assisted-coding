@@ -109,3 +109,26 @@
 # succession fork, read at survey depth for one question — does it keep aider's ranked-index
 # context-assembly bet (conclusion 17) or drift toward tool dispatch?
 2|cecli|https://github.com/cecli-dev/cecli
+# MemPalace, added 2026-11-04 — Phase 15 (v4.0 memory re-assessment) clone for the MemPalace
+# deep dive; a blobless clone made by hand with the sync script's flag, not by running the
+# script. Detached on purpose at release tag v3.11.0, peeled commit
+# 602d796c699cabba2971982cd9dccbbf46abfe79. Assertion, 2026-11-04: `git rev-parse
+# v3.11.0^{commit}` equals `git rev-parse HEAD`, and `git cat-file -t` of it is `commit`
+# (the tag itself is an annotated tag object). The default branch is develop; `git rev-list
+# --count v3.11.0..origin/develop` = 406 on 2026-11-04 (develop is a descendant of the tag).
+# Do not move this clone off the tag, and do not fast-forward it with sync-upstream.sh,
+# without a re-read: the report's pin is the tag commit.
+5|mempalace|https://github.com/MemPalace/mempalace
+# agentmemory, added 2026-11-04 — Phase 15 clone for the agentmemory deep dive, made the same
+# way (blobless, by hand). Detached on purpose at release tag v0.9.31, peeled commit
+# c5b8ebfb32eb6a08fe301d3bb75840f3597b66c8. Assertion, 2026-11-04: `git rev-parse
+# v0.9.31^{commit}` equals `git rev-parse HEAD`, and `git cat-file -t` of it is `commit`
+# (the tag is lightweight). Same warning: leave it on the tag until a re-read moves the pin.
+5|agentmemory|https://github.com/rohitg00/agentmemory
+# ai-memory and openviking (lines in the Category 5 block above), 2026-11-04 — Phase 15 ran
+# `git fetch --tags` in both clones and detached them at the releases the v4.0 re-reads will
+# score against: ai-memory v3.3.3 (peeled commit 8c39e4e6778b17aa103b02eb0a7ae327d63ba689,
+# annotated tag) and openviking v0.5.3 (peeled commit 178a8cdfb41b51e7d24c4bf79a13cc54981e0ee8,
+# lightweight tag). Each assertion is the same as above: tag^{commit} equals HEAD and is a
+# commit object. Their reports keep the old pins (7e787c9, 2af48624; both still resolve) until
+# the Phase 16 re-reads move them.
