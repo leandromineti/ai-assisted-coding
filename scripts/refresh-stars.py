@@ -76,6 +76,17 @@ CAP_PRIORS = 3
 GH_TIMEOUT_S = 60
 WORKLIST_PATHS = ("tools", "docs", "README.md", "articles", "adrs", "experiments")
 SEGMENT = r"[A-Za-z0-9._-]+"
+ARROW = "\u2192"
+# Semantic-caveat policy (PITFALLS S2): what a count means for the four reports whose count is not
+# a plain "stars of the thing this report is about". Printed as a CAVEAT line, never acted on.
+POLICY = {
+    "claude-code": "stars of the issues/distribution repo (access: closed-source) \u2014 community gravity, not source adoption",
+    "modal": "client SDK repo only \u2014 not a measure of the product's reach",
+    "daytona": "repository-now count beside a pre-closure freeze pin \u2014 two dates on one frontmatter block",
+    "gsd-core": "counts the live repo only \u2014 the predecessor's stars stay stranded on the archive (see the report's provenance notes)",
+}
+# Warning kinds in their fixed per-report order.
+KIND_ORDER = ["RENAMED", "ARCHIVED", "NEGATIVE", "STALE-QUALIFIER", "SKIPPED-NON-GITHUB", "NO-POLICY"]
 
 
 class RefreshError(Exception):
@@ -159,6 +170,8 @@ STARS_RE = re.compile(r"^stars:([ \t]*)(\d+)(.*)$")
 AT_RE = re.compile(r"^stars_at:([ \t]*)(\d{4}-\d{2}-\d{2})(?:([ \t]+)#(.*)|[ \t]*)$")
 SLUG_RE = re.compile(rf"^({SEGMENT})/({SEGMENT})$")
 URL_RE = re.compile(rf"^https://github\.com/({SEGMENT})/({SEGMENT})/?$")
+RENAME_Q_RE = re.compile(rf"repo renamed {ARROW} ({SEGMENT}/{SEGMENT}) \(flagged (\d{{4}}-\d{{2}}-\d{{2}}), url: unchanged\)")
+ARCHIVE_Q_RE = re.compile(r"repo archived \(flagged (\d{4}-\d{2}-\d{2})\)")
 TAG_RE = re.compile(r"(?:gh api|repo-facts\.sh); ")
 ENTRY_RE = re.compile(
     r"\d{1,3}(?:,\d{3})+ at \d{4}-\d{2}-\d{2}(?: \([+\-−]?\d+(?:\.\d+)?/day(?: net)?\))?(?=; |\Z)"
@@ -450,6 +463,48 @@ def structural_guard(report: Report, new_lines: list, fetched: Fetched, today: d
 
 # --- the run -----------------------------------------------------------------------------------
 
+def find_qualifiers(text: str) -> tuple:
+    """The script's own qualifiers anywhere in a comment: (rename matches, archived matches)."""
+    return list(RENAME_Q_RE.finditer(text)), list(ARCHIVE_Q_RE.finditer(text))
+
+
+def analyze(report: Report, fetched: Fetched, today: date) -> tuple:
+    """(new qualifiers to append, warnings [(kind, line)]) for one report (D-01..D-03, D-04)."""
+    rel = report.rel
+    comment = report.at_comment or ""
+    renames, archives = find_qualifiers(comment)
+    new_q: list = []
+    warns: list = []
+    if fetched.full_name.lower() != report.slug.lower():
+        warns.append(("RENAMED", f"WARNING: RENAMED {rel} {report.slug} {ARROW} {fetched.full_name} (url: not rewritten)"))
+        if fetched.full_name.lower() not in {m.group(1).lower() for m in renames}:
+            new_q.append(f"repo renamed {ARROW} {fetched.full_name} (flagged {today}, url: unchanged)")
+    if fetched.archived:
+        warns.append(("ARCHIVED", f"WARNING: ARCHIVED {rel} {report.slug}"))
+        if not archives:
+            new_q.append(f"repo archived (flagged {today})")
+    delta = fetched.count - report.stars
+    if delta < 0:
+        if today == report.old_date:
+            detail = "(same-day, no rate)"
+        else:
+            detail = f"({format_rate(delta, (today - report.old_date).days)}/day net)"
+        warns.append(("NEGATIVE", f"WARNING: NEGATIVE {rel} {_signed(delta)} {detail}"))
+    for m in renames:
+        if m.group(1).lower() == report.slug.lower():
+            warns.append(("STALE-QUALIFIER", f"WARNING: STALE-QUALIFIER {rel} {m.group(0)}"))
+    if archives and not fetched.archived:
+        for m in archives:
+            warns.append(("STALE-QUALIFIER", f"WARNING: STALE-QUALIFIER {rel} {m.group(0)}"))
+    if report.stem not in POLICY:
+        rest = parse_trail(comment.lstrip())[1] if comment.strip() else ""
+        rest = ARCHIVE_Q_RE.sub("", RENAME_Q_RE.sub("", rest)).strip(" ;\t")
+        stars_comment = report.stars_tail.strip().lstrip("#").strip() if "#" in report.stars_tail else ""
+        if rest or stars_comment:
+            warns.append(("NO-POLICY", f"WARNING: NO-POLICY {rel} non-trail comment prose without a POLICY entry"))
+    return new_q, warns
+
+
 def plan_change(report: Report, fetched: Fetched, today: date, qualifiers: list) -> Change:
     new_lines = list(report.lines)
     stars_eol = report.lines[report.stars_i][1]
@@ -508,9 +563,20 @@ def _run(root, *, apply, only, date_override, fetch, list_files, out, err, today
         fetched[rep.rel] = got
 
     # Phase C: render and guard every change
-    changes = [plan_change(rep, fetched[rep.rel], run_date, []) for rep in reports if rep.rel in fetched]
+    changes = []
+    for rep in reports:
+        if rep.rel not in fetched:
+            continue
+        quals, found = analyze(rep, fetched[rep.rel], run_date)
+        ch = plan_change(rep, fetched[rep.rel], run_date, quals)
+        ch.flags = [k for k in KIND_ORDER if any(kind == k for kind, _ in found)]
+        for kind, line in found:
+            warnings.append((rep.rel, KIND_ORDER.index(kind), line))
+        changes.append(ch)
 
     # Phase D: report
+    if date_override and not apply:
+        print(f"date override {date_override}: preview only \u2014 --apply stamps the API Date", file=out)
     for ch in changes:
         if ch.new_bytes == ch.old_bytes:
             continue
@@ -532,6 +598,9 @@ def _run(root, *, apply, only, date_override, fetch, list_files, out, err, today
         flags = ", ".join(ch.flags) or "—"
         print(f"| {rep.rel} | {ch.fetched.slug} | {rep.stars:,} → {ch.fetched.count:,} | "
               f"{_signed(ch.delta)} | {rate} | {ch.action} | {flags} |", file=out)
+    for rep in reports:
+        if rep.stem in POLICY:
+            print(f"CAVEAT {rep.rel}: {POLICY[rep.stem]}", file=out)
     for _, _, line in sorted(warnings, key=lambda w: (w[0], w[1])):
         print(line, file=err)
 
@@ -615,10 +684,11 @@ XA, XB, XC = "tools/2-harnesses/xa.md", "tools/2-harnesses/xb.md", "tools/2-harn
 
 
 def _fx(id, files, api, *, expect=None, exit=0, warns=(), apply=True, only=(), today=TODAY,
-        date_override=None, out_has=(), out_last=None):
+        date_override=None, out_has=(), out_last=None, out_first=None, out_count=(), err_has=()):
     return {"id": id, "files": files, "api": api, "expect": expect if expect is not None else {},
             "exit": exit, "warns": list(warns), "apply": apply, "only": list(only), "today": today,
-            "date_override": date_override, "out_has": list(out_has), "out_last": out_last}
+            "date_override": date_override, "out_has": list(out_has), "out_last": out_last,
+            "out_first": out_first, "out_count": list(out_count), "err_has": list(err_has)}
 
 
 def _trio(b_doc, b_api):
@@ -703,10 +773,10 @@ def _build_fixtures() -> list:
     # --- encoding ---------------------------------------------------------------------------
     fx.append(_fx(
         "crlf-no-trailing-newline",
-        {A: _doc("stars: 100", f"stars_at: 2026-08-16   # gh api; 90 at 2026-07-28 (+1.2/day); kept {_EM} {_ARROW} intact",
+        {D: _doc("stars: 100", f"stars_at: 2026-08-16   # gh api; 90 at 2026-07-28 (+1.2/day); kept {_EM} {_ARROW} intact",
                  eol="\r\n", final_newline=False)},
         {"acme/tool": _ok(260, "acme/tool")},
-        expect={A: _doc("stars: 260",
+        expect={D: _doc("stars: 260",
                         "stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net); 90 at 2026-07-28 "
                         f"(+1.2/day); kept {_EM} {_ARROW} intact",
                         eol="\r\n", final_newline=False)}))
@@ -757,6 +827,103 @@ def _build_fixtures() -> list:
                   expect={A: dry}, apply=False,
                   out_has=["  -stars: 100", "  +stars: 260", "  +stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net)"],
                   out_last="1 reports, 0 written (dry-run), 0 warning(s)"))
+    # --- identity and status flags (D-01..D-03) and negative deltas --------------------------
+    PS = "tools/4-workflow-frameworks/pilot-shell.md"
+    ps_url = "https://github.com/maxritter/pilot-shell"
+    q_rename = f"repo renamed {_ARROW} maxritter/qualitylayer (flagged 2026-11-04, url: unchanged)"
+    fx.append(_fx(
+        "negative-delta",
+        {A: _doc("stars: 71943", "stars_at: 2026-08-21")}, {"acme/tool": _ok(71383, "acme/tool")},
+        expect={A: _doc("stars: 71383", "stars_at: 2026-11-04   # gh api; 71,943 at 2026-08-21 (-7.5/day net)")},
+        exit=1, warns=["NEGATIVE"], err_has=[f"WARNING: NEGATIVE {A} -560 (-7.5/day net)"]))
+    fx.append(_fx(
+        "rename-first-run",
+        {PS: _doc("stars: 2019", "stars_at: 2026-08-18", url=ps_url)},
+        {"maxritter/pilot-shell": _ok(2175, "maxritter/qualitylayer")},
+        expect={PS: _doc("stars: 2175", f"stars_at: 2026-11-04   # gh api; 2,019 at 2026-08-18 (+2.0/day net); {q_rename}",
+                         url=ps_url)},
+        exit=1, warns=["RENAMED"],
+        err_has=[f"WARNING: RENAMED {PS} maxritter/pilot-shell {_ARROW} maxritter/qualitylayer (url: not rewritten)"]))
+    after_rename = _doc("stars: 2175", f"stars_at: 2026-11-04   # gh api; 2,019 at 2026-08-18 (+2.0/day net); {q_rename}",
+                        url=ps_url)
+    fx.append(_fx(
+        "rename-rerun",
+        {PS: after_rename},
+        {"maxritter/pilot-shell": _ok(2187, "maxritter/qualitylayer", date_hdr="Tue, 10 Nov 2026 12:00:00 GMT")},
+        today=date(2026, 11, 10),
+        expect={PS: _doc("stars: 2187", "stars_at: 2026-11-10   # gh api; 2,175 at 2026-11-04 (+2.0/day net); "
+                                        f"2,019 at 2026-08-18 (+2.0/day net); {q_rename}", url=ps_url)},
+        exit=1, warns=["RENAMED"]))
+    fx.append(_fx(
+        "rename-rerun-same-day",
+        {PS: after_rename}, {"maxritter/pilot-shell": _ok(2175, "maxritter/qualitylayer")},
+        expect={PS: after_rename}, exit=1, warns=["RENAMED"]))
+    fx.append(_fx(
+        "archived",
+        {A: _doc("stars: 100", "stars_at: 2026-08-16")}, {"acme/tool": _ok(260, "acme/tool", archived=True)},
+        expect={A: _doc("stars: 260", "stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net); "
+                                      "repo archived (flagged 2026-11-04)")},
+        exit=1, warns=["ARCHIVED"], err_has=[f"WARNING: ARCHIVED {A} acme/tool"]))
+    fx.append(_fx(
+        "rename-and-archived",
+        {PS: _doc("stars: 2019", "stars_at: 2026-08-18", url=ps_url)},
+        {"maxritter/pilot-shell": _ok(2175, "maxritter/qualitylayer", archived=True)},
+        expect={PS: _doc("stars: 2175", f"stars_at: 2026-11-04   # gh api; 2,019 at 2026-08-18 (+2.0/day net); "
+                                        f"{q_rename}; repo archived (flagged 2026-11-04)", url=ps_url)},
+        exit=1, warns=["RENAMED", "ARCHIVED"]))
+    fixed_url = "https://github.com/maxritter/qualitylayer"
+    fx.append(_fx(
+        "stale-qualifier",
+        {PS: _doc("stars: 2175", f"stars_at: 2026-11-04   # gh api; 2,019 at 2026-08-18 (+2.0/day net); {q_rename}",
+                  url=fixed_url)},
+        {"maxritter/qualitylayer": _ok(2187, "maxritter/qualitylayer", date_hdr="Tue, 10 Nov 2026 12:00:00 GMT")},
+        today=date(2026, 11, 10),
+        expect={PS: _doc("stars: 2187", "stars_at: 2026-11-10   # gh api; 2,175 at 2026-11-04 (+2.0/day net); "
+                                        f"2,019 at 2026-08-18 (+2.0/day net); {q_rename}", url=fixed_url)},
+        exit=1, warns=["STALE-QUALIFIER"], err_has=[f"WARNING: STALE-QUALIFIER {PS} {q_rename}"]))
+    fx.append(_fx(
+        "stale-archived-qualifier",
+        {A: _doc("stars: 100", "stars_at: 2026-08-16   # gh api; 90 at 2026-07-01 (+1.0/day); "
+                               "repo archived (flagged 2026-10-01)")},
+        {"acme/tool": _ok(260, "acme/tool", archived=False)},
+        expect={A: _doc("stars: 260", "stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net); "
+                                      "90 at 2026-07-01 (+1.0/day); repo archived (flagged 2026-10-01)")},
+        exit=1, warns=["STALE-QUALIFIER"]))
+    E2B = "tools/3-execution-environments/e2b.md"
+    fx.append(_fx(
+        "case-only-slug",
+        {E2B: _doc("stars: 100", "stars_at: 2026-08-16", url="https://github.com/e2b-dev/E2B")},
+        {"e2b-dev/E2B": _ok(260, "e2b-dev/e2b")},
+        expect={E2B: _doc("stars: 260", "stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net)",
+                          url="https://github.com/e2b-dev/E2B")}))
+    FOO = "tools/5-memory/foo.md"
+    fx.append(_fx(
+        "no-policy-comment",
+        {FOO: _doc("stars: 100", "stars_at: 2026-08-16   # something odd about this count",
+                   url="https://github.com/acme/foo")},
+        {"acme/foo": _ok(260, "acme/foo")},
+        expect={FOO: _doc("stars: 260", "stars_at: 2026-11-04   # gh api; 100 at 2026-08-16 (+2.0/day net); "
+                                        "something odd about this count", url="https://github.com/acme/foo")},
+        exit=1, warns=["NO-POLICY"]))
+    cc_doc = _doc("stars: 147932", f"stars_at: 2026-09-24   # {cc_prose}", url="https://github.com/anthropics/claude-code")
+    fx.append(_fx(
+        "policy-caveat-printed",
+        {CC: cc_doc}, {"anthropics/claude-code": _ok(148014, "anthropics/claude-code")},
+        expect={CC: _doc("stars: 148014", f"stars_at: 2026-11-04   # gh api; 147,932 at 2026-09-24 (+2.0/day net); {cc_prose}",
+                         url="https://github.com/anthropics/claude-code")},
+        out_count=[(f"CAVEAT {CC}: stars of the issues/distribution repo (access: closed-source) "
+                    f"{_EM} community gravity, not source adoption", 1), ("CAVEAT ", 1)]))
+    # --- invocation guards --------------------------------------------------------------------
+    plain = _doc("stars: 100", "stars_at: 2026-08-16")
+    fx.append(_fx("only-unknown-name", {A: plain}, {"acme/tool": _ok(260, "acme/tool")},
+                  only=["no-such-report"], exit=2))
+    fx.append(_fx("date-override-apply-mismatch", {A: plain}, {"acme/tool": _ok(260, "acme/tool")},
+                  date_override=date(2026, 11, 5), exit=2))
+    fx.append(_fx(
+        "date-override-dry-run", {A: plain}, {"acme/tool": _ok(260, "acme/tool")},
+        apply=False, date_override=date(2026, 11, 5), expect={A: plain},
+        out_first=f"date override 2026-11-05: preview only {_EM} --apply stamps the API Date",
+        out_has=["  +stars_at: 2026-11-05   # gh api; 100 at 2026-08-16 (+2.0/day net)"]))
     return fx
 
 
@@ -810,10 +977,17 @@ def _run_fixture(fx: dict) -> tuple:
         for s in fx["out_has"]:
             if s not in out.getvalue():
                 problems.append(f"stdout lacks {s!r}")
-        if fx["out_last"] is not None:
-            lines = out.getvalue().rstrip("\n").split("\n")
-            if not lines or lines[-1] != fx["out_last"]:
-                problems.append(f"last stdout line {lines[-1:] !r}, want {fx['out_last']!r}")
+        for s in fx["err_has"]:
+            if s not in err.getvalue():
+                problems.append(f"stderr lacks {s!r}")
+        for s, n in fx["out_count"]:
+            if out.getvalue().count(s) != n:
+                problems.append(f"stdout has {out.getvalue().count(s)} of {s!r}, want {n}")
+        out_lines = out.getvalue().rstrip("\n").split("\n")
+        if fx["out_last"] is not None and out_lines[-1:] != [fx["out_last"]]:
+            problems.append(f"last stdout line {out_lines[-1:]!r}, want {fx['out_last']!r}")
+        if fx["out_first"] is not None and out_lines[:1] != [fx["out_first"]]:
+            problems.append(f"first stdout line {out_lines[:1]!r}, want {fx['out_first']!r}")
         after = _walk_files(tmp)
         if after != sorted(fx["files"]):
             problems.append(f"file set changed: {after}")
@@ -863,6 +1037,18 @@ def _case_rate_format() -> list:
 _SUBPROCESS_CALLS: list = []
 
 
+def _case_cli_flag_conflict() -> list:
+    import contextlib
+    problems = []
+    for argv in (["--selftest", "--apply"], ["--selftest", "--only", "x"], ["--selftest", "--date", "2026-11-04"]):
+        sink = io.StringIO()
+        with contextlib.redirect_stderr(sink):
+            rc = main(argv)
+        if rc != 2:
+            problems.append(f"main({argv}) returned {rc}, want 2")
+    return problems
+
+
 def _case_no_subprocess() -> list:
     return [f"subprocess.run was called {len(_SUBPROCESS_CALLS)} time(s): {_SUBPROCESS_CALLS[:2]!r}"] \
         if _SUBPROCESS_CALLS else []
@@ -900,7 +1086,8 @@ def selftest() -> tuple:
             for msg in found:
                 print(f"ERROR: fixture '{fx['id']}' {msg}", file=sys.stderr)
             problems += bool(found)
-        groups = [("gh-include-parse", _case_gh_include_parse), ("rate-format", _case_rate_format)]
+        groups = [("gh-include-parse", _case_gh_include_parse), ("rate-format", _case_rate_format),
+                  ("cli-flag-conflict", _case_cli_flag_conflict)]
         for gid, fn in groups:
             cases += 1
             found = fn()
