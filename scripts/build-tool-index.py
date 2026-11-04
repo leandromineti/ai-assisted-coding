@@ -669,7 +669,8 @@ def render(reports: list[dict]) -> str:
         "loop+context definition).",
         "",
         "`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; "
-        "refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the "
+        "refreshed by `scripts/refresh-stars.py`, which keeps each prior count in the "
+        "`stars_at` comment trail). `Since` is the repo's first commit date — the "
         "*public* history's start, which for open-sourced-later tools postdates the product. "
         "Both columns describe the *current* repo only: a fork or org move strands the "
         "predecessor's stars while keeping its history — see each report's provenance notes "
@@ -1302,7 +1303,8 @@ def render_feature_registry() -> str:
         "**dated-docs** — verified against the report's `url` on its `checked` date; for",
         "vendor-defined facts (a price, a context window) the docs *are* the ground",
         "truth, the one place rule 1a's source-beats-testimony ordering inverts ·",
-        "**mechanical** — script-collected (`repo-facts.sh`, GitHub API), never",
+        "**mechanical** — script-collected (`repo-facts.sh` at ingest, `refresh-stars.py`",
+        "on refresh; GitHub API), never",
         "hand-typed · **source-or-docs** — read in the pinned clone or official docs.",
         "Honesty/meta columns (`depth`, `checked`, `read_at`) and tool-taxonomy",
         "classification fields (`category`, `type`) are deliberately absent — they are",

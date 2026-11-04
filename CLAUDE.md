@@ -35,7 +35,7 @@ conclusion without a linked note is an assertion; a finding that changed no note
 | `probes/` | the API parameter-probe instrument (v3.0, since 2026-09-01): `harness/` (stdlib-only runner + 3 wire-family adapters + `models.yaml`/`prices.yaml`/`ceilings.yaml`/`sweep-stages.yaml`, all dated), declarative probe sets in `sets/` (plus `sets/behavioral/`, hand-authored repeat-based probe sets, one file per test family, Phase 12), `audit-evidence.py` (D-05's fail-closed privacy scanner, in the lint battery above), `PREREGISTRATION.md` (the rule-5 protocol + appended, dated Run log), `classified/` (hand-kept `overrides.yaml`; generated `contract-sweep.yaml`, rule 3; generated `behavioral.yaml`, rate-with-count schema, Phase 12), dated smoke/run artifacts. Front door: [`probes/README.md`](probes/README.md). `raw/` and `ledger.jsonl` are tracked by git since 2026-09-02 (Phase 11 plan 11-06, D-04's revisit gate — the owner's provisional 2026-09-01 decision was revisited and flipped) | yes |
 | `upstream/` | cloned study copies. **Gitignored** — a manifest, not the code | n/a |
 | `references/papers/pdf/` | cached papers. **Gitignored** — refetchable from each note's `arxiv`/`doi` | n/a |
-| `scripts/` | the generators (`build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh`), the taxonomy lint (`check-taxonomy.py`) — it checks; it writes nothing — and `build-db.py`, which builds the gitignored `comparisons/repo.db` for ad-hoc queries (`--query "SQL"`; a view over frontmatter, never authoritative, ADR-0035) | yes |
+| `scripts/` | the generators (`build-tool-index.py`, `build-refs-index.py`, `repo-facts.sh`), `refresh-stars.py` — the only writer of the reports' `stars:`/`stars_at:` pair: dry-run by default, `--apply` to write, `--selftest` for its fixtures; a network write op, so it stays out of the lint battery — the taxonomy lint (`check-taxonomy.py`) — it checks; it writes nothing — and `build-db.py`, which builds the gitignored `comparisons/repo.db` for ad-hoc queries (`--query "SQL"`; a view over frontmatter, never authoritative, ADR-0035) | yes |
 | `adrs/` | dated, immutable decision records for taxonomy/structure decisions. Living docs always speak the current state; ADRs hold how it was reached and the old→new decoders. Never edit an accepted ADR except `superseded-by`. See [`adrs/README.md`](adrs/README.md) | yes |
 | `articles/` | public-facing drafts, one file per article, site-schema frontmatter. Drafted here so claims keep repo-relative links (rule 4 for prose); published to the personal site as a downstream copy. See [`articles/README.md`](articles/README.md) | yes |
 
@@ -57,7 +57,9 @@ source actually touches, append a line to `references/log.md`, and re-run
 `python3 scripts/build-refs-index.py`.
 
 **Ingest a tool.** Clone into `upstream/`, run `scripts/repo-facts.sh` for the mechanical facts
-(never hand-type stars or first-commit dates), write the report, re-run
+(never hand-type stars or first-commit dates; an existing report's stars are refreshed with
+`python3 scripts/refresh-stars.py --apply` — never by re-running `repo-facts.sh`, which reads
+the clone's HEAD and can move pins), write the report, re-run
 `python3 scripts/build-tool-index.py`. Set a `harness_features:` key **only** when verified in source or
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
 

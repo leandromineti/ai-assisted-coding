@@ -29,10 +29,16 @@ commit: <short SHA — omit if closed source>
 # the clone and the SHA read, and its Drift-check sections must re-check those by hand
 # (`repo-facts.sh <clone>`). Precedent: e2b.md (SDK pin machine-checked, infra pin
 # prose-recorded). Don't invent a second commit: field — the checker reads only one.
-# The next three come from scripts/repo-facts.sh — never hand-typed. Omit if closed source.
+# The next three come from scripts/repo-facts.sh at ingest — never hand-typed. Omit if closed source.
 first_commit: <YYYY-MM-DD — first commit in the public repo; postdates the product if open-sourced later>
 stars: <integer, GitHub API>
 stars_at: <YYYY-MM-DD the star count was fetched — stars drift daily, so they carry their own date>
+# Later refreshes go through `scripts/refresh-stars.py --apply`, which rewrites only the
+# `stars:` and `stars_at:` lines and keeps the history in the `stars_at` comment, newest
+# first, at most 3 priors: `# gh api; <prior count> at <prior date> (<±rate>/day net)`,
+# then any qualifier prose verbatim. A renamed or archived repo gains a dated qualifier:
+# `repo renamed → <owner/repo> (flagged <date>, url: unchanged)` or
+# `repo archived (flagged <date>)` — the script never rewrites `url:`.
 read_at: <YYYY-MM-DD>
 depth: <stub | survey | deep-dive>
 # type: category-6 (extensions) reports only — one of the bucket's type vocabulary:

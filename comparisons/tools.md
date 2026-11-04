@@ -7,7 +7,7 @@ Every tool with a report, one subsection per category in repo order. Newest read
 
 `depth` is the honesty column: **stub** means facts were collected mechanically but nobody read the source; **survey** means it was used or skimmed; **deep-dive** means the category's component decomposition (defined in tool-taxonomy.md) was actually traced, the report saying which components (pre-2026-08-25 deep-dives read under the earlier loop+context definition).
 
-`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; refresh with `scripts/repo-facts.sh`). `Since` is the repo's first commit date — the *public* history's start, which for open-sourced-later tools postdates the product. Both columns describe the *current* repo only: a fork or org move strands the predecessor's stars while keeping its history — see each report's provenance notes (gsd-core is the live case).
+`Stars` is from the GitHub API on the date in each report's `stars_at` (drifts daily; refreshed by `scripts/refresh-stars.py`, which keeps each prior count in the `stars_at` comment trail). `Since` is the repo's first commit date — the *public* history's start, which for open-sourced-later tools postdates the product. Both columns describe the *current* repo only: a fork or org move strands the predecessor's stars while keeping its history — see each report's provenance notes (gsd-core is the live case).
 
 `Harness targets` applies to category-4/5 tools (which harnesses they officially install into) — set in frontmatter only when verified in source or docs; `·` means not yet checked, `—` not applicable.
 

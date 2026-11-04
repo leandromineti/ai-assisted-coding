@@ -54,7 +54,8 @@ lessons attached to it) — and a transcribed field's verification route:
 **dated-docs** — verified against the report's `url` on its `checked` date; for
 vendor-defined facts (a price, a context window) the docs *are* the ground
 truth, the one place rule 1a's source-beats-testimony ordering inverts ·
-**mechanical** — script-collected (`repo-facts.sh`, GitHub API), never
+**mechanical** — script-collected (`repo-facts.sh` at ingest, `refresh-stars.py`
+on refresh; GitHub API), never
 hand-typed · **source-or-docs** — read in the pinned clone or official docs.
 Honesty/meta columns (`depth`, `checked`, `read_at`) and tool-taxonomy
 classification fields (`category`, `type`) are deliberately absent — they are
