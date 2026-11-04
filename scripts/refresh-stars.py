@@ -75,6 +75,8 @@ POPULATION_GLOB = "tools/[2-6]-*/*.md"
 CAP_PRIORS = 3
 GH_TIMEOUT_S = 60
 WORKLIST_PATHS = ("tools", "docs", "README.md", "articles", "adrs", "experiments")
+IMMUTABLE_PREFIXES = ("adrs/", "experiments/")
+SUPERLATIVE_RE = re.compile(r"(largest|biggest|fastest|most-starred|out-stars|smallest)", re.IGNORECASE)
 SEGMENT = r"[A-Za-z0-9._-]+"
 ARROW = "\u2192"
 # Semantic-caveat policy (PITFALLS S2): what a count means for the four reports whose count is not
@@ -519,6 +521,64 @@ def plan_change(report: Report, fetched: Fetched, today: date, qualifiers: list)
                   action="same-day" if same_day else "prepend", delta=delta, rate=rate)
 
 
+def _k_forms(value: int) -> list:
+    """k renderings of a count: one decimal half-up from 1,000, integer half-up from 10,000."""
+    forms = []
+    if value >= 1000:
+        forms.append(f"{(Decimal(value) / 1000).quantize(Decimal('0.1'), rounding=ROUND_HALF_UP)}k")
+    if value >= 10000:
+        forms.append(f"{(Decimal(value) / 1000).quantize(Decimal('1'), rounding=ROUND_HALF_UP)}k")
+    return forms
+
+
+def _in_worklist_scope(rel: str) -> bool:
+    return rel == "README.md" or any(rel.startswith(f"{p}/") for p in WORKLIST_PATHS if p != "README.md")
+
+
+def build_worklist(root: Path, reports: list, list_files) -> list:
+    """Checklist lines for every place a pre-refresh star figure or a superlative appears in prose
+    (D-07). Whole-number-token matching; each report's own stars:/stars_at: lines are excluded; the
+    script edits none of it. One '- [ ] path:line — reasons' line per hit, sorted by path then line."""
+    forms: dict = {}
+    own: set = set()
+    for rep in reports:
+        own.add((rep.rel, rep.stars_i + 1))
+        own.add((rep.rel, rep.at_i + 1))
+        for form in [str(rep.stars), f"{rep.stars:,}", *_k_forms(rep.stars)]:
+            forms.setdefault(form.lower(), []).append(rep)
+    combined = None
+    if forms:
+        alt = "|".join(re.escape(f) for f in sorted(forms, key=len, reverse=True))
+        combined = re.compile(rf"(?<![\w.,])(?:{alt})(?!\w|[.,]\d)", re.IGNORECASE)
+    hits = []
+    for rel in sorted(list_files(root)):
+        if not _in_worklist_scope(rel):
+            continue
+        try:
+            text = (root / rel).read_bytes().decode("utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        for n, line in enumerate(text.split("\n"), 1):  # LF numbering, as grep and git count lines
+            line = line.rstrip("\r")
+            if (rel, n) in own:
+                continue
+            reasons: list = []
+            if combined is not None:
+                for m in combined.finditer(line):
+                    for rep in forms[m.group(0).lower()]:
+                        reason = f'"{m.group(0)}" ({rep.stem} stars {rep.stars:,} at {rep.old_date})'
+                        if reason not in reasons:
+                            reasons.append(reason)
+            for m in SUPERLATIVE_RE.finditer(line):
+                reason = f'superlative "{m.group(0)}"'
+                if reason not in reasons:
+                    reasons.append(reason)
+            if reasons:
+                tail = " \u2014 immutable (do not edit)" if rel.startswith(IMMUTABLE_PREFIXES) else ""
+                hits.append((rel, n, f"- [ ] {rel}:{n} \u2014 {'; '.join(reasons)}{tail}"))
+    return [h[2] for h in sorted(hits, key=lambda h: (h[0], h[1]))]
+
+
 def _signed(n: int) -> str:
     return f"{'-' if n < 0 else '+'}{abs(n):,}"
 
@@ -601,6 +661,12 @@ def _run(root, *, apply, only, date_override, fetch, list_files, out, err, today
     for rep in reports:
         if rep.stem in POLICY:
             print(f"CAVEAT {rep.rel}: {POLICY[rep.stem]}", file=out)
+    print("## Prose worklist (pre-refresh values; no prose edited)", file=out)
+    print("Forms searched: each pre-refresh stars value as raw, comma and k forms, plus "
+          "largest|biggest|fastest|most-starred|out-stars|smallest; scope: git-tracked files under "
+          "tools/ docs/ README.md articles/ adrs/ experiments/ (adrs/ and experiments/ are immutable).", file=out)
+    for line in build_worklist(root, reports, list_files):
+        print(line, file=out)
     for _, _, line in sorted(warnings, key=lambda w: (w[0], w[1])):
         print(line, file=err)
 
@@ -684,11 +750,13 @@ XA, XB, XC = "tools/2-harnesses/xa.md", "tools/2-harnesses/xb.md", "tools/2-harn
 
 
 def _fx(id, files, api, *, expect=None, exit=0, warns=(), apply=True, only=(), today=TODAY,
-        date_override=None, out_has=(), out_last=None, out_first=None, out_count=(), err_has=()):
+        date_override=None, out_has=(), out_last=None, out_first=None, out_count=(), err_has=(),
+        worklist=None):
     return {"id": id, "files": files, "api": api, "expect": expect if expect is not None else {},
             "exit": exit, "warns": list(warns), "apply": apply, "only": list(only), "today": today,
             "date_override": date_override, "out_has": list(out_has), "out_last": out_last,
-            "out_first": out_first, "out_count": list(out_count), "err_has": list(err_has)}
+            "out_first": out_first, "out_count": list(out_count), "err_has": list(err_has),
+            "worklist": worklist}
 
 
 def _trio(b_doc, b_api):
@@ -924,6 +992,29 @@ def _build_fixtures() -> list:
         apply=False, date_override=date(2026, 11, 5), expect={A: plain},
         out_first=f"date override 2026-11-05: preview only {_EM} --apply stamps the API Date",
         out_has=["  +stars_at: 2026-11-05   # gh api; 100 at 2026-08-16 (+2.0/day net)"]))
+    # --- prose worklist (D-07) --------------------------------------------------------------
+    CG = "tools/5-memory/cognee.md"
+    stamp = "(cognee stars 30,103 at 2026-08-18)"
+    imm = " \u2014 immutable (do not edit)"
+    fx.append(_fx(
+        "worklist",
+        {
+            CG: _doc("stars: 30103", "stars_at: 2026-08-18", url="https://github.com/acme/cognee"),
+            "README.md": "Roughly 30k stars.\n".encode(),
+            "docs/n.md": "# Notes\ncognee has 30.1k stars today\nit is the fastest growing\nid 1930103 is no count\n".encode(),
+            "adrs/0001-x.md": "# ADR\nAt 30,103 stars we chose.\n".encode(),
+            "experiments/01-x/log.md": "Largest in class\n".encode(),
+        },
+        {"acme/cognee": _ok(30259, "acme/cognee")},
+        expect={CG: _doc("stars: 30259", "stars_at: 2026-11-04   # gh api; 30,103 at 2026-08-18 (+2.0/day net)",
+                         url="https://github.com/acme/cognee")},
+        worklist=[
+            f'- [ ] README.md:1 \u2014 "30k" {stamp}',
+            f'- [ ] adrs/0001-x.md:2 \u2014 "30,103" {stamp}{imm}',
+            f'- [ ] docs/n.md:2 \u2014 "30.1k" {stamp}',
+            '- [ ] docs/n.md:3 \u2014 superlative "fastest"',
+            f'- [ ] experiments/01-x/log.md:1 \u2014 superlative "Largest"{imm}',
+        ]))
     return fx
 
 
@@ -986,6 +1077,14 @@ def _run_fixture(fx: dict) -> tuple:
         out_lines = out.getvalue().rstrip("\n").split("\n")
         if fx["out_last"] is not None and out_lines[-1:] != [fx["out_last"]]:
             problems.append(f"last stdout line {out_lines[-1:]!r}, want {fx['out_last']!r}")
+        if fx["worklist"] is not None:
+            got_wl = [ln for ln in out_lines if ln.startswith("- [ ] ")]
+            if got_wl != fx["worklist"]:
+                problems.append(f"worklist {got_wl!r}, want {fx['worklist']!r}")
+            if "## Prose worklist (pre-refresh values; no prose edited)" not in out_lines:
+                problems.append("worklist heading missing")
+            if not out_lines[-1].startswith("1 reports, "):
+                problems.append("trailing summary line is not last")
         if fx["out_first"] is not None and out_lines[:1] != [fx["out_first"]]:
             problems.append(f"first stdout line {out_lines[:1]!r}, want {fx['out_first']!r}")
         after = _walk_files(tmp)
