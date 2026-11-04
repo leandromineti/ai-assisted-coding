@@ -329,7 +329,13 @@ params:
       # where a vendor documented mode-dependence.
     probe_values: [0.7]   # D-03: one benign in-range value.
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -360,7 +366,13 @@ params:
     axis: thinking
     probe_values: [0.9]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -385,7 +397,13 @@ params:
     axis: thinking
     probe_values: [40]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -410,7 +428,13 @@ params:
     axis: thinking
     probe_values: [0.1]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -431,7 +455,13 @@ params:
     axis: thinking
     probe_values: [0.1]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -501,7 +531,13 @@ params:
     axis: thinking
     probe_values: [42]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -524,7 +560,13 @@ params:
     axis: thinking
     probe_values: [1]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -547,7 +589,13 @@ params:
     probe_values:
       - "1734": 5
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -573,7 +621,13 @@ params:
         # the openai_compat family (xai/kimi/dseek/zai/qwen keep `max_tokens`).
     probe_values: [64]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -594,7 +648,13 @@ params:
     probe_values:
       - - the
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -619,7 +679,13 @@ params:
     probe_values:
       - type: json_object
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -648,7 +714,13 @@ params:
                 type: string
             required: [location]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -671,7 +743,13 @@ params:
     name_overrides: {}
     probe_values: [auto]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -694,7 +772,13 @@ params:
     name_overrides: {}
     probe_values: [true]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -715,7 +799,13 @@ params:
     name_overrides: {}
     probe_values: [false]
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-
@@ -738,7 +828,13 @@ params:
     probe_values:
       - include_usage: true
     firing_scope: all
-    confidence: high
+    confidence: low   # re-marked 2026-11-04 (T-10-05): third-party source
+    hypothesis: >-
+      Transcribed from a third-party quick reference (muxup.com), not from
+      vendor documentation: that each vendor accepts this parameter under the
+      names above is a hypothesis. The Phase 11 contract sweep tested it on
+      the wire (probes/classified/contract-sweep.yaml); the wire evidence, not
+      this source, settles it.
     source: https://muxup.com/2025q2/recommended-llm-parameter-quick-reference
     retrieved: 2026-09-01
     note: >-

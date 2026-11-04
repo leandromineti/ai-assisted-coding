@@ -25,12 +25,14 @@ from __future__ import annotations
 
 import argparse
 import copy
+import importlib.util
 import json
 import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import urlparse
 
 import yaml
 
@@ -40,6 +42,19 @@ PROBES_DIR = Path(__file__).resolve().parent
 INVENTORY_PATH = PROBES_DIR / "inventory.yaml"
 MODELS_PATH = PROBES_DIR / "harness" / "models.yaml"
 GENERATED_DIR = PROBES_DIR / "sets" / "generated"
+
+# T-10-05 (Phase 10 threat register, enforced 2026-11-04 after the retroactive
+# security audit found the declared validator missing): the first-party docs
+# domains are read from probes/check-docs-claims.py's FIRST_PARTY_DOMAINS — the
+# one registry DOCP-03 already owns — never restated here. Loaded by path because
+# the filename is hyphenated; that module has no import-time side effects.
+_docs_claims_spec = importlib.util.spec_from_file_location(
+    "check_docs_claims", PROBES_DIR / "check-docs-claims.py"
+)
+_check_docs_claims = importlib.util.module_from_spec(_docs_claims_spec)
+_docs_claims_spec.loader.exec_module(_check_docs_claims)
+FIRST_PARTY_DOMAINS = _check_docs_claims.FIRST_PARTY_DOMAINS
+host_is_first_party = _check_docs_claims.host_is_first_party
 
 REASONING_TOGGLES = {"always-on", "default-on", "opt-in", "none"}
 FIRING_SCOPES = {"all", "wire-family", "home-vendor"}
@@ -951,6 +966,37 @@ def check_inv03_traceability(rows: list[dict]) -> tuple[int, int]:
     return checks, 0
 
 
+def check_source_confidence(rows: list[dict]) -> tuple[int, int]:
+    """T-10-05 / D-15: a third-party writeup is never a first-party vendor fact.
+    (1) every `confidence: low` row carries a non-empty `hypothesis:` note; (2) a
+    row whose `source:` is an http(s) URL on a host outside every vendor's
+    first-party docs domains (FIRST_PARTY_DOMAINS, label-boundary match) must be
+    `confidence: low` — and therefore, by (1), carry a `hypothesis`. Non-URL
+    sources (repo research paths on excluded rows) are out of scope: they cite
+    this repo, not a vendor."""
+    checks = 0
+    problems = 0
+    domains = [d for ds in FIRST_PARTY_DOMAINS.values() for d in ds]
+    for row in rows:
+        checks += 1
+        rid = row.get("id", "?")
+        if row.get("confidence") == "low" and not str(row.get("hypothesis") or "").strip():
+            problems += 1
+            print(f"FAIL source/confidence: row {rid!r} is confidence: low with no `hypothesis` note", file=sys.stderr)
+            continue
+        parsed = urlparse(str(row.get("source") or ""))
+        if parsed.scheme not in ("http", "https") or not parsed.hostname:
+            continue
+        if not any(host_is_first_party(parsed.hostname, d) for d in domains) and row.get("confidence") != "low":
+            problems += 1
+            print(
+                f"FAIL source/confidence: row {rid!r} cites non-first-party host "
+                f"{parsed.hostname!r} at confidence: {row.get('confidence')!r} (must be low + hypothesis)",
+                file=sys.stderr,
+            )
+    return checks, problems
+
+
 def run_registry_checks(inventory: dict) -> tuple[int, int]:
     """Fold every row-level validator above into one (checks_run, problems) pair —
     shared by --check (against the real registry) and --selftest (against
@@ -968,6 +1014,7 @@ def run_registry_checks(inventory: dict) -> tuple[int, int]:
         check_max_tokens_override,
         check_axis_declaration,
         check_inv03_traceability,
+        check_source_confidence,
     ):
         c, p = fn(rows)
         checks += c
@@ -1316,6 +1363,25 @@ def selftest() -> tuple[int, int]:
     if p != 0:
         problems += 1
         print("FAIL selftest: check_enums flagged valid enum values", file=sys.stderr)
+
+    # --- source/confidence (T-10-05): a non-first-party source at high
+    #     confidence is flagged; low without a hypothesis is flagged; low WITH a
+    #     hypothesis, a first-party source at high, a lookalike host, and a
+    #     non-URL source each behave as specified ---
+    cases += 1
+    for label, row, want in (
+        ("third-party at high", _valid_row(source="https://blog.example.net/x", confidence="high"), 1),
+        ("low without hypothesis", _valid_row(source="https://blog.example.net/x", confidence="low"), 1),
+        ("low with blank hypothesis", _valid_row(source="https://blog.example.net/x", confidence="low", hypothesis="  "), 1),
+        ("third-party low + hypothesis", _valid_row(source="https://blog.example.net/x", confidence="low", hypothesis="h"), 0),
+        ("first-party subdomain at high", _valid_row(source="https://platform.openai.com/docs/x", confidence="high"), 0),
+        ("lookalike host at high", _valid_row(source="https://evilopenai.com/docs", confidence="high"), 1),
+        ("non-URL research source", _valid_row(source=".planning/research/FEATURES.md", confidence="high"), 0),
+    ):
+        _, p = check_source_confidence([row])
+        if p != want:
+            problems += 1
+            print(f"FAIL selftest: check_source_confidence on {label!r} gave {p} finding(s), expected {want}", file=sys.stderr)
 
     # --- boundary_contract: >1 probe_values without boundary_contract: true is
     #     flagged; the same row with boundary_contract: true is accepted (D-03) ---
