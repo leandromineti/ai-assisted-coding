@@ -148,3 +148,11 @@ quality (J 72.90) — the measured claim is an efficiency frontier (p95 1.44s vs
 7K-token store), not accuracy; and the evaluated instrument is LoCoMo-minus-adversarial
 at 10 conversations, so released LoCoMo ≠ the paper's 50 (limitation added to
 2024-locomo). mem0 tool note and benchmark-survey §6 updated in place.
+
+## [2026-11-04] ingest | Memória de Agentes IA: Karpathy LLM Wiki e agentmemory na Prática
+
+**[2026-akita-agent-memory](papers/2026-akita-agent-memory.md)** (the ai-memory author's 2026-05-18 essay with its 2026-05-23 retraction of agentmemory) · read_depth full: PT page read end to end, the author's own EN page used for translations. Record: Wayback capture `https://web.archive.org/web/20261104222431/https://akitaonrails.com/2026/05/18/memoria-agentes-karpathy-llm-wiki-agentmemory/` (save-page-now, 2026-11-04). Ingested as the from-essay source for the agentmemory ledger row (phase 15) and an owed confrontation for the ai-memory re-read.
+
+## [2026-11-04] ingest | AI-MEMORY 2.0 - o melhor sistema de memória para agentes e times
+
+**[2026-akita-ai-memory-2](papers/2026-akita-ai-memory-2.md)** (the ai-memory maker's 2026-09-02 release essay) · read_depth full: PT page read end to end, the author's own EN page used for translations. Record: Wayback capture `https://web.archive.org/web/20261104222606/https://akitaonrails.com/2026/09/02/ai-memory-2-0-melhor-sistema-memoria-agentes-e-times/` (save-page-now, 2026-11-04). Ingested as the from-essay source for the rival characterisations (MemPalace, agentmemory, basic-memory) in the phase 15 ledger rows and an owed confrontation for the ai-memory re-read.
