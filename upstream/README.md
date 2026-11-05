@@ -4,8 +4,9 @@ Read-only study copies of open-source tools. **Everything here is gitignored** e
 file and `repos.txt` — the clones belong to their own projects and would bury this repo's
 history in someone else's commits.
 
-Nothing in here is ever edited. If you want to try a modification, that's an experiment —
-it goes in `experiments/`, not here.
+Nothing in here is ever edited, except that `_runtimes/` (below) holds our own downloads —
+never edits to a clone. If you want to try a modification, that's an experiment — it goes in
+`experiments/`, not here.
 
 ## Usage
 
@@ -32,6 +33,29 @@ Clones are **blobless** (`--filter=blob:none`): full commit history and file lis
 file contents fetched on demand. That keeps `git log`, `git blame`, and
 `git log --follow` usable — which matters, because *when* a design appeared is often more
 informative than the design itself.
+
+## Probe runtimes — `_runtimes/`
+
+`upstream/_runtimes/<tool>-v<version>/` holds what a run probe downloaded and verified: a
+release tarball with its `.sha256` and the verification transcript (`verify.txt`), or a Python
+venv with its lock and freeze files. Each also holds the probe's kept evidence copies in
+`evidence-<date>/` (logs, row dumps, listings and gzipped strace files that a report or a
+reader brief cites). `upstream/_runtimes/models/` holds shared embedding weights, one
+subdirectory per tool.
+
+It is gitignored by the same `upstream/*` rule as the clones, and it is **not a clone**: it is
+absent from [`repos.txt`](repos.txt), and `scripts/sync-upstream.sh` never visits it (the sync
+loop reads only the manifest). It is kept so the next re-read reuses an already-verified
+artifact and a probe can be reproduced without re-downloading. Probe *state* — the scratch
+home, data directories, server logs, the uv download cache — is never kept here; it is
+disposable and lives in a session scratch directory.
+
+Convention for Python probe runtimes (owner decision, 2026-11-05; later phases follow it):
+build them with uv — `uv venv <dir>/venv`, then a hash-locked
+`uv pip compile --generate-hashes --no-build` of the pinned requirements written to
+`requirements.lock.txt`, then `uv pip install --require-hashes --no-build -r requirements.lock.txt`,
+with `UV_CACHE_DIR` pointed at a scratch directory, never the default user cache. Keep the lock
+file and the `uv pip freeze` output (`pip-freeze.txt`) beside the venv.
 
 ## Where the analysis goes
 
