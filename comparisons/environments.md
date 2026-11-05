@@ -23,4 +23,4 @@ Cells: **✓** verified · **·** not yet checked. Same discipline as the featur
 | [cecli](../tools/2-harnesses/cecli.md) | 2 | ✓ | · | · | · | · |
 | [claude-code](../tools/2-harnesses/claude-code.md) | 2 | ✓ | ✓ | · | ✓ | **bundle** |
 
-**11 of 53 reports declare `environments:`.**
+**11 of 54 reports declare `environments:`.**
