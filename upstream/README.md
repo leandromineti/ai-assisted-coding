@@ -43,6 +43,12 @@ venv with its lock and freeze files. Each also holds the probe's kept evidence c
 reader brief cites). `upstream/_runtimes/models/` holds shared embedding weights, one
 subdirectory per tool.
 
+As of 2026-11-05 a runtime directory can also hold an npm package tarball kept with its registry
+integrity record (`integrity.txt`: the registry's sha512 and shasum beside the locally recomputed
+values) and the `--ignore-scripts` install made from it, and a third-party binary that the subject
+downloads at run time, verified against the SHA-256 the subject's own source pins; bytes a probe
+observed but nothing pinned are recorded by hash in the evidence and never kept as verified.
+
 It is gitignored by the same `upstream/*` rule as the clones, and it is **not a clone**: it is
 absent from [`repos.txt`](repos.txt), and `scripts/sync-upstream.sh` never visits it (the sync
 loop reads only the manifest). It is kept so the next re-read reuses an already-verified
