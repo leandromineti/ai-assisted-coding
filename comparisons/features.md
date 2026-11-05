@@ -72,11 +72,11 @@ here do NOT count toward the cross-category table's demand side (that filter is
 | [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | `background` |
 | [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | · | · | · | ✓ | · | · | · | · | · | · | · | · | · | · | · | · | · | · | `background` |
 | [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | `background` |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | `background` |
 | [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | ✗ |
 | [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [ecc](../tools/6-extensions/ecc.md) | `open-source` | MIT | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | `background` |
 
 ## Workflow frameworks (category 4)
@@ -112,11 +112,11 @@ of dots are stub-depth reports — unread, honestly unclaimed.
 | [ai-memory](../tools/5-memory/ai-memory.md) | `open-source` | MIT | `files-git` | `project`, `user` | ✓ | `self-host` | `attribution-only` | `hook` | `evidence-gated` | ✓ | `auto` | `both` | ✓ | ✓ | ✓ | ✓ | ✓ |
 | [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | ✗ | `hook` | `unfiltered` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · | ✓ |
 | [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | ✗ | `adapter` | `scored` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | `files-git`, `vector` | `user`, `project` | ✓ | `both` | `acl` | `hook` | `unfiltered` | ✓ | `auto` | `both` | ✓ | ✗ | ✓ | ✓ | ✓ |
 | [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `acl` | `agent-invoked` | · | · | · | `pull-only` | · | · | · | ✓ | ✓ |
 | [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
-| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Execution environments (category 3)
 
