@@ -151,6 +151,12 @@ named allowlist entry (file + shape + fingerprint + written reason), and a value
 allowlistable. With no env/secrets values it says so and runs the shape scan alone. It complements
 the fourth command, which covers only `probes/raw/` and the ledger. `--selftest` is its
 calibration: read the verdict from the trailing `0 problem(s)` line and the exit code.
+`--history` runs the same rules over every unique blob reachable from any ref plus every commit
+message, labels findings `path@commit`, and takes history-only exemptions from its own pinned
+allowlist. It is on demand, not part of the battery (about 15 s); run it after any phase that
+handled real keys. A history finding is fixed by rotating the secret first; rewriting history is
+the owner's call. Baseline 2026-11-05: 3,302 blobs and 542 messages, 0 value hits, one synthetic
+fixture allowlisted.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned

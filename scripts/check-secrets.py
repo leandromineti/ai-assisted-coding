@@ -11,11 +11,26 @@ org/account-identifying content, not credentials. Nothing else guarded the rest
 of the tree.
 
     python3 scripts/check-secrets.py --check
+    python3 scripts/check-secrets.py --history
     python3 scripts/check-secrets.py --selftest
 
-Exit codes: 0 clean, 1 findings, 2 bad invocation (no flag, both flags, an
-unknown flag) or a failed `git ls-files` (an unenumerated tree is never
-reported as clean).
+Exit codes: 0 clean, 1 findings, 2 bad invocation (no mode or more than one
+mode, an unknown flag) or a failed git enumeration (an unenumerated tree or
+history is never reported as clean).
+
+HISTORY MODE (--history, on demand, NOT in the battery). The same two rule
+classes over everything git has ever published or could publish: every unique
+blob reachable from any ref (`git rev-list --objects --all`: branches, remote
+branches, tags), read once each via `git cat-file --batch`, plus every commit
+message on those refs. A blob is labelled with the first path rev-list names
+for it and the oldest commit that introduced it (`git log --find-object`);
+a message with its commit. The shape allowlist applies by (path, shape, fp),
+so an allowlisted synthetic fixture stays suppressed in every historical
+version that carries the same match. There is no stale-allowlist rule in this
+mode (--check owns that). A history finding cannot be fixed by editing the
+tree: a real secret is rotated first, then the owner decides whether to
+rewrite history. Added 2026-11-05 after the owner asked for the history scan
+the battery's --check does not cover.
 
 SCOPE. Every path `git ls-files --cached --others --exclude-standard` lists:
 tracked files plus untracked files that are not gitignored (a file not yet
@@ -100,7 +115,7 @@ DEFAULT_SECRETS_DIR = Path.home() / ".secrets"
 
 MIN_VALUE_LEN = 12
 
-USAGE = "check-secrets.py --check | --selftest"
+USAGE = "check-secrets.py --check | --history | --selftest"
 
 # Env-var NAMEs that make a variable a value candidate. AUTH is not matched when
 # it is the start of AUTHOR (GIT_AUTHOR_NAME/EMAIL values are never secrets and
@@ -136,6 +151,24 @@ SHAPE_ALLOWLIST = (
         "fp": "4d5c556d828d",
         "reason": "audit-evidence.py's own selftest fixture: a synthetic value planted "
                   "to prove its vendor-key-fragment rule fires, not a credential.",
+    },
+)
+
+
+# History-only exemptions (--history), same (file, shape, fp) pinning, for
+# synthetic matches that no longer exist at HEAD (so SHAPE_ALLOWLIST cannot hold
+# them without tripping --check's stale rule). --history reports an entry here
+# that matches nothing as stale. Calibration 2026-11-05: 3,302 blobs + 542
+# messages, 0 value hits, exactly this one shape hit.
+HISTORY_ALLOWLIST = (
+    {
+        "file": "probes/harness/runner.py",
+        "shape": "sk-api-key",
+        "fp": "c4349227670f",
+        "reason": "runner.py's selftest fixture as first committed in 5141fb5 (Phase 9, "
+                  "2026-09-01): a 37-char sk-FAKE... not-a-real-key value proving header "
+                  "values never reach a record; later deliberately de-prefixed (runner.py "
+                  "'Deliberately NOT prefixed' comment). Not a credential.",
     },
 )
 
@@ -281,6 +314,92 @@ def scan_repo(root: Path, environ, secrets_dir, allowlist=SHAPE_ALLOWLIST) -> di
     n_sources = len({label for labels in cands.values() for label in labels})
     return {"findings": findings, "files": scanned, "binary": binary, "skipped": skipped,
             "candidates": len(cands), "sources": n_sources}
+
+
+def _git_out(root: Path, *args: str, stdin: bytes | None = None) -> bytes:
+    try:
+        proc = subprocess.run(["git", "-C", str(root), *args], input=stdin, capture_output=True)
+    except OSError as e:
+        raise EnumerationError(f"cannot run git: {e.strerror or e}") from e
+    if proc.returncode != 0:
+        raise EnumerationError(f"git {args[0]} failed (exit {proc.returncode})")
+    return proc.stdout
+
+
+def scan_history(root: Path, environ, secrets_dir, allowlist=SHAPE_ALLOWLIST,
+                 history_allowlist=HISTORY_ALLOWLIST) -> dict:
+    """Scan every unique blob reachable from any ref, plus every commit message.
+    Raises EnumerationError. Findings label path@commit, never a value.
+    history_allowlist entries that match nothing are stale findings."""
+    allowlist = tuple(allowlist) + tuple(history_allowlist)
+    hist_base = len(allowlist) - len(history_allowlist)
+    cands, findings = collect_candidates(environ, secrets_dir)
+    cand_pairs = [(v.encode("utf-8"), ",".join(labels)) for v, labels in cands.items()]
+    # object -> first path rev-list names for it (commits and trees carry no path
+    # or are filtered out by type below)
+    paths: dict[str, str] = {}
+    for line in _git_out(root, "rev-list", "--objects", "--all").decode(
+            "utf-8", errors="surrogateescape").splitlines():
+        sha, _, path = line.partition(" ")
+        if path and sha not in paths:
+            paths[sha] = path
+    if not paths:
+        return {"findings": findings, "blobs": 0, "binary": 0, "messages": 0,
+                "candidates": len(cands), "sources": len({l for ls in cands.values() for l in ls})}
+    req = "".join(f"{s}\n" for s in paths).encode()
+    out = _git_out(root, "cat-file", "--batch", stdin=req)
+    used: set[int] = set()
+    blobs = binary = 0
+    pos = 0
+    blob_hits: dict[str, list[dict]] = {}
+    while pos < len(out):
+        nl = out.index(b"\n", pos)
+        header = out[pos:nl].decode()
+        parts = header.split()
+        if len(parts) < 3:  # "<sha> missing"
+            pos = nl + 1
+            continue
+        sha, otype, size = parts[0], parts[1], int(parts[2])
+        data = out[nl + 1: nl + 1 + size]
+        pos = nl + 1 + size + 1
+        if otype != "blob":
+            continue
+        blobs += 1
+        hits, is_bin = scan_bytes(paths[sha], data, cand_pairs, allowlist, used)
+        binary += 1 if is_bin else 0
+        if hits:
+            blob_hits[sha] = hits
+    for sha, hits in blob_hits.items():
+        intro = _git_out(root, "log", "--all", "--reverse", "--format=%h",
+                         f"--find-object={sha}").decode().split()
+        commit = intro[0] if intro else "?"
+        for h in hits:
+            h["file"] = f"{h['file']}@{commit}"
+            findings.append(h)
+    log = _git_out(root, "log", "--all", "--format=%H%x00%B%x01").decode(
+        "utf-8", errors="surrogateescape")
+    messages = 0
+    for rec in log.split("\x01"):
+        rec = rec.lstrip("\n")
+        if not rec:
+            continue
+        sha, _, body = rec.partition("\x00")
+        messages += 1
+        hits, _ = scan_bytes(f"commit-message@{sha[:10]}", body.encode("utf-8", errors="surrogateescape"),
+                             cand_pairs, (), set())
+        findings.extend(hits)
+    for i in range(hist_base, len(allowlist)):
+        if i not in used:
+            e = allowlist[i]
+            findings.append({"file": "allowlist", "line": None, "rule": "stale-allowlist",
+                             "entry_file": e["file"], "shape": e["shape"], "fp": e["fp"]})
+    return {"findings": findings, "blobs": blobs, "binary": binary, "messages": messages,
+            "candidates": len(cands), "sources": len({l for ls in cands.values() for l in ls})}
+
+
+def _history_summary_line(res: dict) -> str:
+    return (f"history: {res['blobs']} unique blobs ({res['binary']} binary: value scan only) "
+            f"+ {res['messages']} commit messages scanned, {len(res['findings'])} problem(s)")
 
 
 def _print_findings(findings: list[dict]) -> None:
@@ -469,6 +588,40 @@ def _run_cases(note) -> tuple[int, int]:
               "end-to-end scan did not report exactly the tracked and untracked-unignored files")
         check(res["files"] == 3 and res["candidates"] == 1, "end-to-end counts are wrong")
 
+    # --- HISTORY: a value committed then deleted, and a shape in a commit
+    # message, are invisible to --check but found by --history ---
+    hist_val = _blk(30, "Wq2Er4Ty6Ui8")
+    note(hist_val)
+    msg_tok = "gh" + "p_" + _blk(36, "Zx1Cv2Bn3Mm4")
+    note(msg_tok)
+    with tempfile.TemporaryDirectory() as td:
+        _git(td, "init", "-q")
+        _git(td, "config", "user.email", "selftest@example.invalid")
+        _git(td, "config", "user.name", "selftest")
+        (Path(td) / "old.txt").write_text("k: " + hist_val + "\n")
+        _git(td, "add", "old.txt")
+        _git(td, "commit", "-q", "-m", "add file")
+        (Path(td) / "old.txt").unlink()
+        (Path(td) / "keep.txt").write_text("clean\n")
+        _git(td, "add", "-A")
+        _git(td, "commit", "-q", "-m", "remove it; pasted " + msg_tok)
+        env = {"FAKE_HIST_TOKEN": hist_val}
+        head = scan_repo(Path(td), env, None, allowlist=())
+        hist = scan_history(Path(td), env, None, allowlist=(), history_allowlist=())
+        stale = scan_history(Path(td), env, None, allowlist=(), history_allowlist=(
+            {"file": "nope.txt", "shape": "jwt", "fp": "000000000000", "reason": "fixture"},))
+        check(any(f.get("rule") == "stale-allowlist" for f in stale["findings"]),
+              "--history did not report an unmatched history-allowlist entry as stale")
+        _print_findings(hist["findings"])
+        check(head["findings"] == [], "--check saw a value that only exists in history")
+        val_hits = [f for f in hist["findings"] if f.get("source") == "env:FAKE_HIST_TOKEN"]
+        check(len(val_hits) == 1 and val_hits[0]["file"].startswith("old.txt@"),
+              "--history did not find the deleted file's value, labelled path@commit")
+        msg_hits = [f for f in hist["findings"] if f.get("shape") == "github-token"]
+        check(len(msg_hits) == 1 and msg_hits[0]["file"].startswith("commit-message@"),
+              "--history did not find the token shape in a commit message")
+        check(hist["messages"] == 2 and hist["blobs"] == 2, "--history counts are wrong")
+
     # --- non-repo directory raises the enumeration error (exit-2 path) ---
     with tempfile.TemporaryDirectory() as td:
         old = os.environ.get("GIT_CEILING_DIRECTORIES")
@@ -512,12 +665,24 @@ def selftest() -> tuple[int, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(prog="check-secrets.py", usage=USAGE)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--history", action="store_true")
     parser.add_argument("--selftest", action="store_true")
     args = parser.parse_args()
 
-    if args.check == args.selftest:  # neither or both
+    if (args.check + args.history + args.selftest) != 1:  # exactly one mode
         print(f"usage: {USAGE}", file=sys.stderr)
         return 2
+
+    if args.history:
+        try:
+            res = scan_history(REPO_ROOT, os.environ, DEFAULT_SECRETS_DIR)
+        except EnumerationError as e:
+            print(f"check-secrets.py: {e}", file=sys.stderr)
+            return 2
+        print(_value_line(res))
+        _print_findings(res["findings"])
+        print(_history_summary_line(res))
+        return 1 if res["findings"] else 0
 
     if args.selftest:
         cases, problems = selftest()
