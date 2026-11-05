@@ -75,7 +75,7 @@ measure, and a **scored-predictions section** confronting the candidates row's o
 forecasts. Promotion removes the candidates row (anything still load-bearing moves
 into the report first); the category README's seed inventory gains a dated entry; the
 generators re-run (`build-tool-index.py` — never hand-edit `comparisons/`); the
-**six-command lint battery** (`CLAUDE.md` § Lint) runs green, and a deny-list finding
+**seven-command lint battery** (`CLAUDE.md` § Lint) runs green, and a deny-list finding
 in fresh prose is fixed in the prose, never by loosening the lint.
 
 *Gate:* the battery. *Governing text:* `CLAUDE.md` § Lint;

@@ -58,7 +58,7 @@ searched; commits go straight to `main` after a green battery.
       confronting the candidates row.
 - [ ] Promotion bookkeeping: remove the candidates row, add the category README seed
       entry, re-run `python3 scripts/build-tool-index.py`.
-- [ ] Six-command battery (`CLAUDE.md` § Lint) — fix deny-list findings in the
+- [ ] Seven-command battery (`CLAUDE.md` § Lint) — fix deny-list findings in the
       prose, never in the lint.
 - **Done-check:** battery green; every citation spot-checked; commit + push.
 

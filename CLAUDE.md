@@ -110,6 +110,7 @@ python3 scripts/check-taxonomy.py --check     # deny-listed synonyms, stale cate
 python3 probes/audit-evidence.py --check      # scans probes/raw/*.jsonl + ledger.jsonl for account-identifying leaks before they're committed
 python3 probes/check-docs-claims.py --check   # docs-claims.yaml completeness, first-party sourcing, rule-1b searched surfaces
 python3 scripts/check-probe-drift.py --check  # ADR-0050 promoted-key OBSERVED cells vs. classified evidence, both directions
+python3 scripts/check-secrets.py --check      # real secret values (env + ~/.secrets) and secret-shaped strings in every file git would publish
 ```
 
 The fourth command is `probes/`'s own gate, D-05's fail-closed privacy scanner: exit 0
@@ -137,6 +138,19 @@ Phase 13 script that joins the battery; the two Phase 12 generator drift checks
 (`comparisons/behavioral.md`'s and `comparisons/probes.md`'s own `--check` flags)
 deliberately did not, because their inputs are read-only registry renders with no
 hand-kept report cell that could drift out from under them the way an OBSERVED cell can.
+
+The seventh command is the published-text secret scan (since 2026-11-05, quick task 261105-mud;
+the repo is public). It scans every file `git ls-files` lists plus untracked files that are not
+gitignored — gitignored paths are never published, so never scanned — for (a) the real secret
+VALUES this machine holds, read locally from TOKEN/SECRET/KEY/PASS/AUTH/CRED-named env vars and
+`NAME=value` lines in `~/.secrets/*`, and (b) secret-shaped strings. It never prints a value:
+a finding names file:line plus the source NAME or shape class. Exit 0 clean / 1 findings / 2 bad
+invocation, including a failed `git ls-files`. A finding is fixed in the content (rotate a real
+secret it finds, then remove it), never by loosening the scanner; a synthetic shape match gets a
+named allowlist entry (file + shape + fingerprint + written reason), and a value match is never
+allowlistable. With no env/secrets values it says so and runs the shape scan alone. It complements
+the fourth command, which covers only `probes/raw/` and the ledger. `--selftest` is its
+calibration: read the verdict from the trailing `0 problem(s)` line and the exit code.
 
 For the two index generators (`build-tool-index.py`, `build-refs-index.py`), `--check`
 distinguishes two conditions. **UNVERIFIABLE** (exit non-zero) means a pinned
