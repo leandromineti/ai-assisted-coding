@@ -24,13 +24,16 @@ matrix with a false rejection. Anthropic's spend-cap 429 (no Retry-After, "keeps
 failing until access resumes" per RESEARCH.md, possibly for days) is checked first and
 returns `'fatal'` without spending the attempt budget; every other retryable status
 respects an UNCONDITIONAL attempt cap — `'exhausted'` at the final permitted attempt
-regardless of whether Retry-After was present. Both refine
+regardless of whether Retry-After was present. A `Retry-After` is honoured only up to
+`_BACKOFF_CAP_S`: a longer request ends the probe as `'exhausted'` instead of sleeping
+(T-09-08, 2026-11-04), so no vendor header can park the run. Both refine
 scripts/fetch-citations.py's 429-only, linear-backoff, header-only precedent: the shape
 (try/except, branch on status, sleep, loop) transfers, the semantics do not.
 """
 from __future__ import annotations
 
 import json
+import math
 import random
 import re
 import sys
@@ -133,7 +136,10 @@ def _retry_after_wait(headers_message: Message | None) -> float | None:
         return None
     try:
         wait = float(raw)
-        return wait if wait >= 0 else None
+        # Non-finite values (`inf`, `1e999`, `nan`) are malformed, not a request to
+        # wait forever: they fall back to backoff like any unparseable value, and
+        # never reach time.sleep() (where `inf` raised OverflowError — T-09-08).
+        return wait if math.isfinite(wait) and wait >= 0 else None
     except (TypeError, ValueError):
         pass
     try:
@@ -193,6 +199,12 @@ def retry_decision(
        final permitted attempt is `'exhausted'` whether or not `Retry-After` was sent.
     5. Otherwise `'retry'`, with the wait taken verbatim from `Retry-After` when
        present and parseable, falling back to capped exponential backoff with jitter.
+       A parseable `Retry-After` LONGER than `_BACKOFF_CAP_S` is `'exhausted'` at
+       once (T-09-08/T-09-09, retroactive security audit 2026-11-04): the run never
+       sleeps past the cap, and the vendor is never retried sooner than it asked —
+       WR-05's reason for honouring long waits. The requested wait survives in the
+       attempt's recorded `retry-after` response header, and `--refire-exhausted`
+       re-fires the probe later.
     """
     if 200 <= status < 300:
         return "verdict", 0.0
@@ -210,6 +222,8 @@ def retry_decision(
     wait = _retry_after_wait(headers_message)
     if wait is None:
         wait = _backoff_wait(attempt)
+    elif wait > _BACKOFF_CAP_S:
+        return "exhausted", 0.0
     return "retry", wait
 
 
@@ -434,6 +448,29 @@ def selftest() -> tuple[int, int]:
     except Exception as e:
         problems += 1
         print(f"FAIL post_json(unreachable): raised {e!r}, must never raise on a connection-level failure", file=sys.stderr)
+
+    # --- T-09-08/T-09-09: a Retry-After past the 60s cap ends the probe as exhausted
+    #     (never sleeps it); non-finite values fall back to backoff; exactly the cap
+    #     is still honoured; a far-future HTTP-date is capped the same way ---
+    for label, header, want in (
+        ("Retry-After=86400", "86400", "exhausted"),
+        ("Retry-After=60.5", "60.5", "exhausted"),
+        ("Retry-After=1e999", "1e999", "backoff"),
+        ("Retry-After=inf", "inf", "backoff"),
+        ("Retry-After=nan", "nan", "backoff"),
+        ("Retry-After=60", "60", "exact60"),
+        ("HTTP-date ~1h out", format_datetime(datetime.now(timezone.utc) + timedelta(hours=1), usegmt=True), "exhausted"),
+    ):
+        cases += 1
+        action, wait = retry_decision(429, _hm(Retry_After=header), 0, b"{}", 5)
+        ok = (
+            (want == "exhausted" and (action, wait) == ("exhausted", 0.0))
+            or (want == "backoff" and action == "retry" and 0 < wait <= _BACKOFF_CAP_S)
+            or (want == "exact60" and (action, wait) == ("retry", 60.0))
+        )
+        if not ok:
+            problems += 1
+            print(f"FAIL retry_decision(429, {label}): expected {want}, got {(action, wait)}", file=sys.stderr)
 
     # --- a retryable status at the final permitted attempt -> exhausted, WITH Retry-After ---
     cases += 1
