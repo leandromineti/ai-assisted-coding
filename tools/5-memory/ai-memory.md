@@ -109,9 +109,10 @@ v3.3.3 than the report said at v2.0.2:
    loop). Two later deep-dives record a zero-LLM default path too: MemPalace (verbatim filing, no
    model on capture or recall) and agentmemory (synthetic observations, keyless by default). mem0,
    cognee and memori put an LLM in the extraction path itself (checked for those three when
-   this sentence was written; `git ls-tree --name-only HEAD tools/5-memory/` lists nine reports besides this one
+   this sentence was written; `git ls-tree --name-only HEAD tools/5-memory/ | grep -v -e README -e ai-memory | wc -l` prints nine
    on 2026-11-05, seven at 4f336e1, [#29]). Corrected 2026-11-05 (report-conventions audit): this sentence first read
-   "No other report in the category records this bet at depth".
+   "No other report in the category records this bet at depth". Corrected 2026-11-06 (report-conventions audit): the
+   count's command first lacked the `grep -v` filter and, run as written, printed 11 lines (ten reports, this one included, and the README).
 
 ## Main features
 
