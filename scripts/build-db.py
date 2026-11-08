@@ -96,7 +96,8 @@ def build() -> sqlite3.Connection:
     for path, fm in notes(ROOT / "tools"):
         if "category" not in fm:
             continue
-        known = set(SCALARS) | set(LISTS) | set(BLOCKS) | {"pricing"}
+        # `options` (ADR-0060) is exported as `features` rows below, so it stays out of `extra`.
+        known = set(SCALARS) | set(LISTS) | set(BLOCKS) | {"pricing", "options"}
         row = [fm.get(c) for c in SCALARS]
         row.append(path.relative_to(ROOT).as_posix())
         row += [json.dumps(fm.get(b)) if fm.get(b) is not None else None for b in BLOCKS]
@@ -120,6 +121,16 @@ def build() -> sqlite3.Connection:
                 con.execute(
                     "INSERT INTO features VALUES (?,?,?,?)",
                     (fm.get("name"), block, key,
+                     json.dumps(value) if isinstance(value, (list, dict)) else str(value)),
+                )
+        # One row per configured alternative (ADR-0060), block `options`, key the registry id,
+        # the value formatted as a cell value is; "who offers `acl`" is a WHERE on this block.
+        for key, alts in (fm.get("options") or {}).items():
+            for rec in alts:
+                value = rec["value"]
+                con.execute(
+                    "INSERT INTO features VALUES (?,?,?,?)",
+                    (fm.get("name"), "options", key,
                      json.dumps(value) if isinstance(value, (list, dict)) else str(value)),
                 )
 

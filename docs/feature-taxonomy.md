@@ -91,6 +91,22 @@ Conventions:
   (`rules_files`, `memory_store`) keeps its scalar type and says so in its definition —
   list-ness is a property of an instance, not a second type. Unknown values are a
   generator **error**, the same treatment `block` and `verification` already get.
+- **Options with a default** (2026-11-08, [ADR-0060](../adrs/0060-options-with-default-grammar.md)).
+  A cell holds the tool's **shipped default**, and every matrix, tally and database row
+  reads it. Configuration alternatives live beside the cell in a top-level `options:`
+  mapping of the report, keyed by registry id, each a `{value, via}` record: `value` is the
+  alternative cell value, `via` names the switch, route or command that selects it. A key
+  that carries options declares its legal named values in a one-line **`values:`** list on
+  its registry entry (a presence key implies true or false; `false` stays registry
+  notation for "checked and absent"), and every `values:` token must occur in the entry's
+  `definition`. The generator's `check_options` enforces both: an alternative outside
+  `values:`, one equal to the default, a duplicate, an empty `via`, an unregistered key or
+  a key with no cell to be the default of exits non-zero, and so does any cell of a key
+  that declares `values:` whose value falls outside it. A dark capability whose shipped
+  state has no legal value of its own stays in the cell comment. The matrix renders
+  `` `default` (also `alternative`) ``, and `∅` is an empty list, distinct from `·` (not
+  checked) and `✗` (checked and absent). `reasoning_effort`'s in-value
+  `levels:<set>@<default>` (ADR-0040) is unchanged.
 - "Vocabulary" remains the mechanism phrase for this closed key list; the *concept* is
   the feature taxonomy (naming settled 2026-08-18, ADR-0010).
 

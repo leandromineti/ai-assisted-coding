@@ -34,14 +34,16 @@ a pipeline stage.
 
 ## What we assess here
 
-The assessed block is **`memory_features:`, 15 keys** (2026-09-04,
+The assessed block is **`memory_features:`, 19 keys** (2026-11-08, from 15 on 2026-09-04:
 [ADR-0013](../../adrs/0013-memory-features-block.md) + `memory_import` via
 [ADR-0051](../../adrs/0051-memory-import-key.md) + `team_sharing` via
-[ADR-0052](../../adrs/0052-team-sharing-key.md)): `memory_store`, `capture_path`,
+[ADR-0052](../../adrs/0052-team-sharing-key.md) + four keys via
+[ADR-0059](../../adrs/0059-memory-vocabulary-admission.md)): `memory_store`, `capture_path`,
 `write_admission`, `recall_injection`, `memory_scope`, `memory_tiers`,
 `hybrid_retrieval`, `decay`, `memory_revision`, `injection_trust_boundary`,
 `deployment_mode`, `team_sharing`, `harness_installer`, `rule_extraction`,
-`memory_import`. They map
+`memory_import`, `compaction_capture`, `llm_free_path`, `concurrent_write_safety`,
+`agent_coordination`. They map
 onto the three components above — capture (`capture_path`, `write_admission`),
 consolidation (`memory_store`, `memory_tiers`, `decay`, `memory_revision`,
 `rule_extraction`), and recall (`recall_injection`, `hybrid_retrieval`,
@@ -219,3 +221,22 @@ The census sections of the four probed reports: [mem0](mem0.md), [memos](memos.m
 - A memory-interchange convention would be the next MCP-shaped event — watched from the
   [standards scoreboard](../../docs/standards.md)'s side (zero shared formats as
   of 2026-08-18).
+- **Non-admissions of 2026-11-08 ([ADR-0059](../../adrs/0059-memory-vocabulary-admission.md)):**
+  candidates the census read and the ADR argued and did not admit, each with the trigger
+  that would reopen it.
+  - **The OKF open-format axis** — one conformant instance (ai-memory); openviking's is a
+    declaration of a house version, not conformance. Trigger: a second conformant OKF
+    adopter on the roster.
+  - **Harness-native agent messaging** — prose in category-2 reports, traced to no cell.
+    Trigger: a second harness read whose messaging is traced in source.
+  - **`several-hosts` on `concurrent_write_safety`** — no observed cell; the only lead
+    is a non-default, unrun lock provider. Trigger: a cell or verified option whose
+    default guard spans hosts.
+  - **Tenant, peer, group, wing and room labels and `_profile` as `memory_scope`
+    values** — labels within one tool. Trigger: a second tool with the same axis.
+  - **`single-principal` as a `team_sharing` value**, **an injection-posture enum**,
+    **a bare numeric threshold on `write_admission`**, **splitting expiry from decay**,
+    **an MCP-entry merge as its own `harness_installer` value** and **sub-typing
+    `learning_loop`'s `background`** — each with its trigger in the ADR.
+  - **A delivery-shape regrade of `agent_coordination`.** Trigger: delivery semantics
+    traced in source for two tools.

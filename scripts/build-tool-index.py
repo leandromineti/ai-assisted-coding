@@ -191,6 +191,23 @@ def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
                 f"feature taxonomy entry `{e['id']}` has unknown block `{e['block']}` "
                 f"(known: {sorted(known_blocks)}) — a typo here silently empties a matrix"
             )
+        if "values" in e:
+            # Optional legal-value list (ADR-0060). Presence keys carry none (true|false is
+            # implied). Every string token must occur, as a whole token, in the entry's own
+            # `definition`, so the list cannot drift from the prose it summarises — the failure
+            # mode of the hardcoded sets above. Boolean `false` is registry notation for
+            # "checked and absent" and is exempt.
+            vals = e["values"]
+            if not isinstance(vals, list):
+                sys.exit(f"feature taxonomy entry `{e['id']}`: `values:` must be a list")
+            for tok in vals:
+                if isinstance(tok, str) and not re.search(
+                    r"(?<![\w-])" + re.escape(tok) + r"(?![\w-])", str(e["definition"])
+                ):
+                    sys.exit(
+                        f"feature taxonomy entry `{e['id']}`: `values:` token {tok!r} "
+                        f"not in its definition"
+                    )
     return entries, t_fields, sorted(groups, key=lambda g: g["order"])
 
 
@@ -482,6 +499,88 @@ def check_shape_axes(reports: list[dict]) -> None:
                 sys.exit(
                     f"{rel}: `surfaces:` contains {sfc!r} — known: {sorted(SURFACE_VALUES)}"
                 )
+
+
+def _opt_key(v):
+    """Comparison key for an option value: a bool never equals a string or an int, a list
+    compares as a set (order is not meaning), and the scalar/list distinction is kept."""
+    if isinstance(v, list):
+        return ("list", frozenset((isinstance(x, bool), repr(x)) for x in v))
+    return ("scalar", isinstance(v, bool), repr(v))
+
+
+def _opt_legal(e: dict) -> list | None:
+    """The legal values of a registry entry: a presence key implies true|false, any other
+    key carries its own `values:` list, or None when it declares none."""
+    if e["value_type"] == "presence":
+        return [True, False]
+    return e.get("values")
+
+
+def _opt_outside(v, legal: list) -> list:
+    """Elements of `v` (every element when it is a list) that are not in `legal`, compared
+    as parsed values so `false` (bool) never matches the string "false"."""
+    ok = {(isinstance(x, bool), repr(x)) for x in legal}
+    return [x for x in (v if isinstance(v, list) else [v]) if (isinstance(x, bool), repr(x)) not in ok]
+
+
+def check_options(reports: list[dict]) -> None:
+    """Validate the report-level `options:` mapping and every value-bearing cell (ADR-0060).
+
+    Eighth cell-value check. A cell holds the shipped default; configuration alternatives
+    live in `options:`, keyed by registry id, each a `{value, via}` record. They are data,
+    not a `# options:` comment, because `yaml.safe_load` drops comments: an alternative that
+    must reach a matrix, a tally or the build-db export has to survive parsing. Fails the
+    run rather than warning, under both a plain and a `--check` run, like its siblings.
+    Rule (g) is separable: it also checks each cell of a key that declares `values:`.
+    """
+    by_id = {e["id"]: e for e in FEATURE_REGISTRY}
+    for r in reports:
+        rel = r["_path"].relative_to(ROOT)
+
+        # (g) every cell of a key that declares `values:` stays inside it
+        for e in FEATURE_REGISTRY:
+            legal = e.get("values")
+            cells = r.get(e["block"])
+            if legal is None or not isinstance(cells, dict) or cells.get(e["id"]) is None:
+                continue
+            out = _opt_outside(cells[e["id"]], legal)
+            if out:
+                sys.exit(f"{rel}: {e['block']}.{e['id']} value {out[0]!r} not in values {legal}")
+
+        opts = r.get("options")
+        if opts is None:
+            continue
+        if not isinstance(opts, dict):
+            sys.exit(f"{rel}: options must be a mapping keyed by registry id")
+        for key, alts in opts.items():
+            e = by_id.get(key)
+            if e is None:
+                sys.exit(f"{rel}: options.{key} is not a registered key")
+            cells = r.get(e["block"])
+            if not isinstance(cells, dict) or key not in cells:
+                sys.exit(f"{rel}: options.{key} has no cell in {e['block']} to be the default of")
+            legal = _opt_legal(e)
+            if legal is None:
+                sys.exit(f"{rel}: options.{key} has no `values:` in the registry")
+            if not isinstance(alts, list) or not all(
+                isinstance(a, dict) and set(a) == {"value", "via"} for a in alts
+            ):
+                sys.exit(f"{rel}: options.{key} must be a list of {{value, via}} records")
+            default = _opt_key(cells[key])
+            seen = set()
+            for a in alts:
+                out = _opt_outside(a["value"], legal)
+                if out:
+                    sys.exit(f"{rel}: options.{key} alternative {out[0]!r} not in values {legal}")
+                k = _opt_key(a["value"])
+                if k == default:
+                    sys.exit(f"{rel}: options.{key} alternative {a['value']!r} equals the default")
+                if k in seen:
+                    sys.exit(f"{rel}: options.{key} duplicate alternative {a['value']!r}")
+                seen.add(k)
+                if not isinstance(a["via"], str) or not a["via"].strip():
+                    sys.exit(f"{rel}: options.{key} has an empty via")
 
 
 def check(reports: list[dict]) -> int:
@@ -833,7 +932,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         unknown.update(k for k in feats if k not in HARNESS_FEATURE_KEYS)
-        cells = [fmt_feature_cell(feats.get(key)) for key in HARNESS_FEATURE_KEYS]
+        cells = [fmt_feature_cell(feats.get(key), feature_alts(r, key)) for key in HARNESS_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -867,7 +966,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         m_unknown.update(k for k in feats if k not in MODEL_FEATURE_KEYS)
-        cells = [fmt_feature_cell(feats.get(k)) for k in MODEL_FEATURE_KEYS]
+        cells = [fmt_feature_cell(feats.get(k), feature_alts(r, k)) for k in MODEL_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -931,17 +1030,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         wf_unknown.update(k for k in feats if k not in WORKFLOW_FEATURE_KEYS)
-        cells = []
-        for key in WORKFLOW_FEATURE_KEYS:
-            v = feats.get(key)
-            if v is True:
-                cells.append("✓")
-            elif v is False:
-                cells.append("✗")
-            elif v is None:
-                cells.append("·")
-            else:
-                cells.append(f"`{v}`")
+        cells = [fmt_feature_cell(feats.get(key), feature_alts(r, key)) for key in WORKFLOW_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -956,7 +1045,10 @@ def render_features(reports: list[dict]) -> str:
         "The category-5 slice of the feature taxonomy — `memory_features:` frontmatter",
         "(ADR-0013; a full category since ADR-0020). Values are",
         "descriptive enums (mechanism choices), not ADR-0011 enforcement grades. Rows",
-        "of dots are stub-depth reports — unread, honestly unclaimed.",
+        "of dots are stub-depth reports — unread, honestly unclaimed. A cell is the",
+        "shipped default; a parenthesised `also` annotation lists configured alternatives",
+        "from the report's `options:` mapping (ADR-0060), and every tally reads the",
+        "default. `∅` is an empty list: checked, and nothing qualifies.",
         "",
         "| Tool | access | license | " + " | ".join(k.replace("_", " ") for k in MEMORY_FEATURE_KEYS) + " |",
         "|---|---|---|" + "---|" * len(MEMORY_FEATURE_KEYS),
@@ -969,19 +1061,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         mem_unknown.update(k for k in feats if k not in MEMORY_FEATURE_KEYS)
-        cells = []
-        for key in MEMORY_FEATURE_KEYS:
-            v = feats.get(key)
-            if v is True:
-                cells.append("✓")
-            elif v is False:
-                cells.append("✗")
-            elif isinstance(v, list):
-                cells.append(", ".join(f"`{x}`" for x in v))
-            elif v is None:
-                cells.append("·")
-            else:
-                cells.append(f"`{v}`")
+        cells = [fmt_feature_cell(feats.get(key), feature_alts(r, key)) for key in MEMORY_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -1010,19 +1090,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         env_unknown.update(k for k in feats if k not in ENVIRONMENT_FEATURE_KEYS)
-        cells = []
-        for key in ENVIRONMENT_FEATURE_KEYS:
-            v = feats.get(key)
-            if v is True:
-                cells.append("✓")
-            elif v is False:
-                cells.append("✗")
-            elif isinstance(v, list):
-                cells.append(", ".join(f"`{x}`" for x in v))
-            elif v is None:
-                cells.append("·")
-            else:
-                cells.append(f"`{v}`")
+        cells = [fmt_feature_cell(feats.get(key)) for key in ENVIRONMENT_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -1102,23 +1170,37 @@ def render_models(reports: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def fmt_feature_cell(v) -> str:
+def fmt_feature_cell(v, alts=None) -> str:
     """One registry cell, rendered. Shared by every feature matrix so a `presence`
     key reads the same wherever it appears — `·` is not-checked, `✗` is
-    checked-and-absent, and the two are never collapsed. Extracted from
+    checked-and-absent, `∅` is an empty list (checked, and nothing qualifies), and the
+    three are never collapsed. Extracted from
     `render_features`'s harness rows when ADR-0040 gave the `model_features` block
     its first boolean (`reasoning`): the models matrices formatted every cell as
     code, so a bare True would have rendered as `` `True` ``.
+
+    `alts` is the report's configured alternatives for this key (ADR-0060, the values of
+    its `options:` records). The cell stays the shipped default and every tally reads it;
+    the alternatives follow as ` (also …)`, rendered by this same formatter.
     """
     if v is True:
-        return "✓"
-    if v is False:
-        return "✗"
-    if isinstance(v, list):
-        return ", ".join(f"`{x}`" for x in v)
-    if v is None:
-        return "·"
-    return f"`{v}`"
+        out = "✓"
+    elif v is False:
+        out = "✗"
+    elif isinstance(v, list):
+        out = ", ".join(f"`{x}`" for x in v) if v else "∅"
+    elif v is None:
+        out = "·"
+    else:
+        out = f"`{v}`"
+    if alts:
+        out += " (also " + "; ".join(fmt_feature_cell(a) for a in alts) + ")"
+    return out
+
+
+def feature_alts(r: dict, key: str) -> list:
+    """The alternative values a report's `options:` records for `key` (ADR-0060)."""
+    return [rec["value"] for rec in (r.get("options") or {}).get(key, [])]
 
 
 _REL_LINK = re.compile(r"\]\((?!https?://|mailto:|#)([^)\s]+?)(#[^)]*)?\)")
@@ -1295,6 +1377,16 @@ def render_feature_registry() -> str:
         "is informative (`rules_files`, `memory_store`) keeps its scalar type and says",
         "so in its definition — list-ness is a property of an instance, not a type.",
         "",
+        "**Options with a default** (ADR-0060) — a cell is the tool's shipped default,",
+        "and every tally reads it. Configured alternatives live in the report's",
+        "top-level `options:` mapping, keyed by registry id, each a `{value, via}`",
+        "record, and the matrix renders them after the default as `(also …)`. A key",
+        "that carries options declares its legal named values in a one-line `values:`",
+        "list (a presence key implies true or false), and the generator checks every",
+        "alternative, and every cell of a key that declares `values:`, against it.",
+        "`∅` is an empty list: checked, and nothing qualifies — never confused with `·`",
+        "(not checked) or `✗` (checked and absent).",
+        "",
         "**Kind link** names the demand↔supply correspondence: the installable artifact",
         "kind that supplies the feature — `memory` from category 5, every other kind",
         "from category 6 (ADR-0020). **Provenance** carries an assessed key's `note:`",
@@ -1465,6 +1557,7 @@ def main() -> int:
     check_access(reports)
     check_release_date(reports)
     check_shape_axes(reports)
+    check_options(reports)
 
     if "--check" in sys.argv:
         problems = check(reports)

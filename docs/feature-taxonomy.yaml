@@ -12,8 +12,10 @@
 # --- groups (added 2026-08-26, ADR-0045) — what TEACHES the reader ---------------
 # Every entry in both lists below carries a `group:`. Groups exist for the reader, not
 # for the schema: the registry renders one subsection per group instead of one flat
-# table per category (30 rows for harnesses, 24 for memory — derived from the rendered
-# registry sections, re-counted 2026-09-04), and each group's `blurb`
+# table per category (32 rows for harnesses, 28 for memory — derived from the rendered
+# registry sections, re-counted 2026-11-08; assessed plus transcribed rows, and the
+# harness figure of 30 written 2026-09-04 was already stale at 32 after ADR-0058), and
+# each group's `blurb`
 # says what the group is ABOUT and how its keys read together. The division of labour
 # is deliberate — feature-registry.md's intro teaches NOTATION (presence vs graded,
 # omitted vs false, the three verification routes), and these blurbs teach SUBJECT
@@ -253,10 +255,14 @@ groups:
     blurb: >-
       How something becomes a memory, and how it stops being one. `capture_path` says what
       triggers a write — an explicit command, an inferred decision, a background pass — and
-      `write_admission` whether anything stands between a candidate and the store.
-      `memory_revision` and `decay` are the far end: whether a wrong memory can be corrected,
-      and whether an old one loses weight on its own. A system with no admission and no decay
-      accumulates its errors permanently.
+      `compaction_capture` whether the tool writes at the one moment a session's context is
+      about to be thrown away. `llm_free_path` says which of capture, consolidation and recall
+      run without a generative model on the default path, which is a cost and privacy question
+      before it is an architecture one, and `write_admission` whether anything stands between
+      a candidate and the store. `concurrent_write_safety` is what keeps two writers from
+      corrupting the store, and over how wide a scope. `memory_revision` and `decay` are the
+      far end: whether a wrong memory can be corrected, and whether an old one loses weight
+      on its own. A system with no admission and no decay accumulates its errors permanently.
   - id: read-path
     title: Read path
     order: 82
@@ -277,7 +283,10 @@ groups:
       tool starts doing a workflow framework's job, and the reason the two categories bleed.
       `memory_import` is the switching-cost key: whether you can arrive with memory you
       already have, the in-direction mirror of the displacement moves some tools make
-      against a harness's native store.
+      against a harness's native store. `agent_coordination` asks whether agents can hand
+      work to one another through the tool itself, so that the store is also the channel —
+      the second place, after `rule_extraction`, where a memory tool starts doing a
+      neighbouring category's job.
 
 features:
   # --- harness block (`harness_features:`), applies to category 2 ---
@@ -478,6 +487,7 @@ features:
     block: harness_features
     applies_to: [2]
     value_type: closed-enum
+    values: [background, in-loop, proposed, false]
     definition: "who writes and who commits the agent's autonomous memory/skills: background (an out-of-loop process — scheduler, fork, pipeline, event cascade, or hook-fed extractor — writes AND auto-applies) | in-loop (the main agent writes persistent memory during the session, auto-applied) | proposed (an autonomous path produces candidates; a human commits — nothing auto-applies); false = no autonomous write path. Distinct from `skills` and from user-curated memory files"
     kind_link: memory
     note: >-
@@ -491,7 +501,19 @@ features:
       .inbox nothing auto-applies), ✗ 4 (dsh, aider, pi, cognee), 3 honest dots (opencode, cline,
       continue). Default-on vs off stays in cell comments; sub-typing background by trigger
       (five verified shapes) argued and parked in ADR-0056 with a trigger. Also set by convention
-      on category-5/6 reports as the demand-side supply row — same enum
+      on category-5/6 reports as the demand-side supply row — same enum.
+      Census re-derived 2026-11-08 from cells (ADR-0059; measure: every report's
+      harness_features.learning_loop cell across all categories, 17 set cells; the three honest
+      dots stay unset): background 10 (agentmemory, ai-memory, codex, ecc, hermes-agent, mem0,
+      memos, mempalace, openviking, qwen-code), in-loop 1 (claude-code), proposed 2 (gemini-cli,
+      warp), false 4 (aider, dsh, pi, cognee). The three newest background cells, from their
+      comments: openviking is default-on in config but dark on a bare install (it needs a VLM
+      and a client-supplied commit); mempalace is a hook-fed verbatim filer with no extraction,
+      default-on once a plugin is installed and unmounted before; agentmemory's hook-fed capture
+      and server timers write and apply with no model on the keyless default, and a provider key
+      visible in the launching shell mounts the model-driven family on top with the same cell
+      value, so ambient-key presence is a comment fact and not an option. The key does not
+      separate filing from extraction; sub-typing background stays parked per ADR-0056's trigger
   # --- category-1 block (`model_features:`), ADR-0014 — verified against the report's
   # `url` on its `checked` date. The two economics keys stay free-text (vendor economics
   # differ structurally); the three reasoning keys are typed (ADR-0040) ---
@@ -643,111 +665,275 @@ features:
   # Descriptive enums per the category-4 `state_store` precedent — mechanism choices, not
   # ADR-0011 enforcement grades. No kind_link on these entries by design: category-5
   # supply participation flows through `learning_loop`'s kind_link above.
+  # A cell reads the shipped capability at the pin: a capability that is built but dark
+  # carries DEFAULT-UNMOUNTED or DEFAULT-OFF in its comment, and becomes an `options:` record
+  # (ADR-0060) only when the dark state has a different legal value of the same key.
   - id: memory_store
     group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
-    definition: "what the store is: files-git | vector | graph | rows (list allowed for hybrids, primary first)"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (git-versioned markdown wiki), mem0 (vector+BM25), memos (SQLite rows+vectors), cognee (graph+vector+relational)"
+    definition: "what the store is: files-git | files | vector | graph | rows (list allowed for hybrids, primary first). files-git = the files are the record and git sits on the write path; files = the files are the record and git is absent or only on request. The value names the data model's query surface, not the engine: entity-first traversal is graph even over a SQLite triple table, and key-value records in an engine the tool does not own are rows. A list names what the shipped code builds; a half that ships dark goes in the cell comment"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (git-versioned markdown wiki), mem0 (vector+BM25), memos (SQLite rows+vectors), cognee (graph+vector+relational). 2026-11-08 amendments per ADR-0059: files minted on one instance (openviking's record is plain files with a derived vector index and a git snapshot service that is enabled by default but caller-requested, so its cell becomes [files, vector] in the cells commit; ai-memory's per-write git versioning stays files-git). The value names the data model's query surface, not the engine: agentmemory's key-value records in an engine it does not own are rows, mempalace's graph over a SQLite triple table is a graph, and a half that ships dark (a vector index that exists only with an embedding provider, a graph that exists after the first write) goes in the comment and not in the list. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=[rows, graph, vector], ai-memory=files-git, cognee=[graph, vector, rows], mem0=vector, memos=[rows, vector], mempalace=[vector, graph], openviking=[files-git, vector]"
   - id: memory_scope
     group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: list
-    definition: "scoping axes the store natively supports (list): project | agent | user | session"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee"
+    values: [project, agent, user, session, global]
+    definition: "scoping axes the store natively supports (list): project | agent | user | session | global (one store-wide scope outside any single project or user). An axis counts when records are partitioned by it on write and at least one shipped read path uses it (a filter, a namespace or a score); an axis that is only a plugin's convention, or a label within one tool, does not"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee. 2026-11-08 amendments per ADR-0059: global minted on one instance (ai-memory's default/_global scope, crates/ai-memory-core/src/lib.rs:55; one instance suffices for a value, issue #34), and ai-memory's cell gains it in the cells commit. Reading rule: an axis counts when records are partitioned by it on write and at least one shipped read path uses it. openviking's project axis is the plugins' convention, write-partitioned with a recall penalty, and counts on that reading; mempalace's agent axis is diary-scoped on read and write-stamped, and counts; agentmemory's session partitions observations in the store but takes no session filter on text recall, so it is the boundary case and is not listed. Not minted (a label within one tool, no second instance): ai-memory's _profile workspace scope, openviking's tenant, peer and group axes, mempalace's wing, room and source-file labels. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=[project, agent], ai-memory=[project, user], cognee=[agent, session], mem0=[user, agent, session], memos=[agent, project, session], mempalace=[project, agent], openviking=[user, project]"
   - id: memory_tiers
     group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: presence
-    definition: typed memory tiers rather than one flat store (working/episodic/semantic, traces/policies, session/permanent)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos, cognee — WAS 'all four' until mem0's deep-dive (2026-08-19) flipped its cell: procedural_memory is a metadata tag on one collection, not a tier"
+    definition: "typed memory tiers rather than one flat store (working/episodic/semantic, traces/policies, session/permanent). A loading depth over one flat store (a wake-up level) is not a tier; a typed second store counts even when it ships unmounted, the cell comment saying so"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos, cognee — WAS 'all four' until mem0's deep-dive (2026-08-19) flipped its cell: procedural_memory is a metadata tag on one collection, not a tier. 2026-11-08 amendment per ADR-0059: mempalace advertises four wake-up depths over one flat store, which are loading depths and not tiers, and its only typed split (drawers against an unmounted knowledge graph) is a close call recorded true; agentmemory names four typed tiers whose upper two are written only when consolidation is on, empty on a keyless install, and count because the typed store exists. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, cognee=true, mem0=false, memos=true, mempalace=true, openviking=true"
   - id: deployment_mode
     group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
     definition: "self-host | cloud | both"
-    note: "added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon)"
+    note: "added 2026-08-19 per ADR-0013; instances: mem0 (OSS vs platform; plugin defaults platform), cognee (direct vs API mode — with a BEHAVIOR difference: rule extraction skipped in API mode), ai-memory (localhost daemon). Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=self-host, ai-memory=self-host, cognee=both, mem0=both, memos=both, mempalace=self-host, openviking=both"
   - id: team_sharing
     group: store-scope
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
-    definition: "multiple humans read/write one store as designed behavior: attribution-only (single-tenant shared data, writes attributed to named users, no access control) | acl (per-container grants; sharing is itself a permission)"
-    note: "added 2026-09-04 per ADR-0052 — probed into existence by a stack question the vocabulary could not express; the two instances answer it in OPPOSITE postures: ai-memory attribution-only (docs/users.md: every authenticated request sees the same wiki pages, RBAC absent by design, design-decisions.md §13), cognee acl (ACL rows principal × permission × dataset, Principal polymorphic over User/Role/Tenant, `share` a first-class permission gating grants). mem0 ✗ (org/project constructs platform-only — the tiers/decay precedent), memos ✗ (ShareScope private|public|hub is hub visibility, no human identity model locally). NOT this fact: multi-agent isolation, multi-operator auth alone, vendor interchange (memory_import)"
+    values: [attribution-only, acl, false]
+    definition: "multiple humans read/write one store as designed behavior: attribution-only (single-tenant shared data, writes attributed to named users, no access control) | acl (grants on any container, even a single namespace; sharing is itself a permission). Attribution-only covers authenticated, caller-supplied and server-configured attribution. Instance-to-instance sync is replication, not sharing"
+    note: "added 2026-09-04 per ADR-0052 — probed into existence by a stack question the vocabulary could not express; the two instances answer it in OPPOSITE postures: ai-memory attribution-only (docs/users.md: every authenticated request sees the same wiki pages, RBAC absent by design, design-decisions.md §13), cognee acl (ACL rows principal × permission × dataset, Principal polymorphic over User/Role/Tenant, `share` a first-class permission gating grants). mem0 ✗ (org/project constructs platform-only — the tiers/decay precedent), memos ✗ (ShareScope private|public|hub is hub visibility, no human identity model locally). NOT this fact: multi-agent isolation, multi-operator auth alone, vendor interchange (memory_import). 2026-11-08 corrections per ADR-0059 (ADR-0052's text records its own pin 7e787c9 and is not edited): the posture sentence about ai-memory is true of its default; per-project grants (open or restricted, read and write grants, root-only administration) shipped in v2.5.0 behind a root-only switch, so the OPPOSITE-postures pairing is default against default, and ai-memory carries acl as an alternative in the cells commit. openviking is a third instance, acl by design (grants on viking://resources only, sharing gated on manage) with a shipped default that is unmounted (dev auth, one root principal); single-principal is not minted, because it is the unmounted state of a designed mode (the comment says so) or ✗ when no team mode exists. mempalace (a caller-supplied added_by string, single-principal loopback default) and agentmemory (the server process's configured user id) are attribution-only; instance-to-instance sync is replication. NOT this fact (added): replication between instances. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=attribution-only, ai-memory=attribution-only, cognee=acl, mem0=false, memos=false, mempalace=attribution-only, openviking=acl"
   - id: capture_path
     group: write-path
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
+    values: [hook, adapter, agent-invoked]
     definition: "how sessions become memory: hook | adapter | agent-invoked"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory + mem0 (harness hooks), memos (in-process adapter cascade), cognee (agent-invoked MCP tools — the learning_loop: false pole)"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory + mem0 (harness hooks), memos (in-process adapter cascade), cognee (agent-invoked MCP tools — the learning_loop: false pole). Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=hook, ai-memory=hook, cognee=agent-invoked, mem0=hook, memos=adapter, mempalace=hook, openviking=hook"
+  - id: compaction_capture
+    group: write-path
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    values: [writes-to-store, reinject-only, false]
+    definition: "whether the tool writes to its store from the harness's pre-compaction event: writes-to-store (a handler the tool registers, in a hook manifest, plugin or installer at the pin, on that event writes to the tool's store, directly or through its write endpoint, at once or by starting a job) | reinject-only (a registered handler only re-injects or prints context and writes nothing to the store); false = no registered pre-compaction handler. Across harnesses the strongest registered handler wins: writes-to-store over reinject-only over false"
+    note: >-
+      added 2026-11-08 per ADR-0059, single-valued where the roadmap said list-valued: no
+      tool's handlers differ in kind across its harnesses (openviking's nine handlers all
+      commit and four installer products have none; mem0's OpenCode hook writes and then
+      re-injects, so the stronger value holds; mempalace's Hermes handler is a no-op beside
+      two writing ones), so the cell comment carries per-harness counts instead of a second
+      value. Census at existing pins (tools/5-memory/README.md, 2026-11-06): 4 present · 3 ✗
+      · 1 omitted, everos and memmachine unset. writes-to-store: ai-memory, openviking,
+      mempalace, mem0; reinject-only: agentmemory, memos; ✗: memori, a stub that carries no
+      cell; omitted: cognee. Cells are set in the cells commit, not here. The engine is judged per
+      key (engine per key): for mem0 the in-pin plugin handler is the evidence and the hosted
+      store is only the write target. Outside the pin: an integration outside the pin turns a ✗ into omitted only
+      when the pin names it as the home of a handler of this key's class, not merely when
+      that integration exists. No kind_link to context_compaction: a memory tool writing at
+      the pre-compaction event does not supply the harness's own compaction, so a link would
+      overstate the demand-supply correspondence (owner decision, 2026-11-08). NOT this
+      fact: compaction inside the store (a graph, an index or vectors), re-injection after
+      compaction at session start, an unregistered handler, a design described but not
+      wired, the harness's own compaction. Rhymes: capture_path (the trigger kind is not
+      derivable from this key, agentmemory is hook yet reinject-only), learning_loop (who
+      commits, not when), context_compaction (the harness side), memory_store (what the
+      store is).
+      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
+      commit; the cells commit sets cells on ai-memory, openviking, mempalace, agentmemory,
+      mem0, memos, and the matrix shows them once it lands
+  - id: llm_free_path
+    group: write-path
+    block: memory_features
+    applies_to: [5]
+    value_type: list
+    values: [capture, consolidation, recall]
+    definition: "the components, among capture, consolidation and recall (ADR-0023), whose default path (the shipped configuration, no provider key in the launching environment) makes no call to a generative model, listed in that order; [] when all three call one. A component with no default-path process counts model-free and is marked (no process) in the cell comment, and the comment names what turns the model path on: an explicit flag, ambient API-key presence, or always. The cell is omitted when any component is undecided, because a list cannot say undecided. The engine is judged per key (engine per key): mem0 is judged on the open Python SDK, and a hosted route is never source evidence for what a component does. A setup-type check counts inside a component only when that component's own entry point sends a generative request on its default path; a client-construction or key-presence check that sends none does not"
+    note: >-
+      added 2026-11-08 per ADR-0059 as one list-valued key (a presence key per component
+      was weighed and not taken: it would state one concept three times). Census at existing
+      pins (tools/5-memory/README.md, Candidate-key census, 2026-11-06; measure: each tool's
+      verdict per component against the frozen presence test; population: eight tools at named
+      pins, everos and memmachine unset): capture 3 present · 4 ✗ · 1 omitted, consolidation
+      6 present · 1 ✗ · 1 omitted, recall 5 present · 2 ✗ · 1 omitted. Six tools carry cells:
+      ai-memory, mempalace and agentmemory [capture, consolidation, recall]; mem0
+      [consolidation, recall] (capture calls a model by default, consolidation has no
+      process); memos [consolidation] (no process; capture and recall call the host's or the
+      configured model); cognee [] (all three call a model on the default text path).
+      openviking carries none (capture ✗, consolidation and recall omitted because its degraded
+      run stopped at start) and memori carries none (a stub with no memory block): a list that
+      dropped an undecided component would state it checked and absent, and for openviking the
+      only encodable list, [], would collide with cognee's. Tallies over the six cells:
+      capture 3 · consolidation 5 · recall 4; the census rows count more tools because they
+      include openviking's decided capture ✗ and memori's decided components. What turns the
+      model path on, from the cell comments: ai-memory a configured provider; mempalace
+      opt-in model reaches; agentmemory ambient provider-key presence with no flag; mem0
+      capture always (a per-call switch is the only off-switch) and recall a reranker plus
+      the rerank switch; memos always on hermes and DSH and an explicit provider and key on
+      OpenClaw; cognee always on the default text path. Two rules the census used and the
+      definition now states. Engine per key: the judged engine is named by each entry, mem0's
+      open SDK decides here. Setup-type check: cognee's consolidation stays ✗ because its
+      entry point reaches a first-run connection prompt that is a real generative request,
+      and mem0's recall stays listed because client construction sends nothing; no census
+      verdict moves under the rule (under the opposite rule, that setup never counts, cognee
+      consolidation would move to present, 6·1·1 to 7·0·1, and its cell [] to
+      [consolidation]). NOT this fact: egress-free (ai-memory fetches an embedder; a zero-model
+      probe was not zero-egress), spend-free, embedder-free (an embedding model is not
+      generative), a setup command (mempalace init, mem0 client construction), a whole-tool
+      verdict, the hosted route. Rhymes: learning_loop (who writes and commits; a switch
+      that turns a background writer on can also turn the model path on, so read the two
+      together), write_admission (an extraction model's judgment is the admission),
+      capture_path (the trigger, not model use), deployment_mode.
+      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
+      commit; the cells commit sets cells on ai-memory, mempalace, agentmemory, mem0, memos,
+      cognee, and the matrix shows them once it lands
   - id: write_admission
     group: write-path
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
-    definition: "what earns AUTONOMOUS storage: evidence-gated (enactment/outcomes required) | scored (reward/confidence thresholds with probation) | unfiltered (assertion suffices)"
-    note: "added 2026-08-19 post exp-04 arm C (conclusion 14): the write-side half of the injection story injection_trust_boundary tells on the read side — unfiltered admission + authoritative recall = the injection-to-authority pipeline. Instances: ai-memory (evidence-gated — 12 verbatim rejections archived, 'no implementation evidence'), memos (scored — gain thresholds + probation, golden-tested), mem0 (unfiltered — ADD-only extraction from say-so, verified opposite pole). Explicit/deliberate write paths (write-page, add_memory) are NOT gated by this key — it classifies the autonomous path only"
+    values: [evidence-gated, scored, unfiltered]
+    definition: "what earns AUTONOMOUS storage: evidence-gated (enactment/outcomes required) | scored (reward/confidence thresholds with probation) | unfiltered (assertion suffices). Gates that judge nothing about worth (a deny list, a size or rate cap, a constant stamped confidence) are not admission"
+    note: "added 2026-08-19 post exp-04 arm C (conclusion 14): the write-side half of the injection story injection_trust_boundary tells on the read side — unfiltered admission + authoritative recall = the injection-to-authority pipeline. Instances: ai-memory (evidence-gated — 12 verbatim rejections archived, 'no implementation evidence'), memos (scored — gain thresholds + probation, golden-tested), mem0 (unfiltered — ADD-only extraction from say-so, verified opposite pole). Explicit/deliberate write paths (write-page, add_memory) are NOT gated by this key — it classifies the autonomous path only. 2026-11-08 per ADR-0059: ai-memory's evidence-gated describes its provider-gated auto-improve path; a second autonomous writer, the model-free cross-project profile pass (crates/ai-memory-consolidate/src/profile.rs), admits on one say-so sentence with an explicit marker or on recurrence across projects, default-on on a single-operator install, and the key has no value for the combined posture, so the cell keeps evidence-gated as its report's stated exception (exp-04, conclusion 14) with the profile pass in the comment. agentmemory's tool-name deny list and per-session cap, and its constant 0.3 confidence on synthetic compression, judge nothing about worth and do not make it admission. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=unfiltered, ai-memory=evidence-gated, mem0=unfiltered, memos=scored, mempalace=unfiltered, openviking=unfiltered"
+  - id: concurrent_write_safety
+    group: write-path
+    block: memory_features
+    applies_to: [5]
+    value_type: closed-enum
+    values: [one-process, one-host, false]
+    definition: "the widest scope covered by the default-path guard that orders or excludes concurrent writes to the tool's store: one-process (a lock, a single-writer actor, a queue or an optimistic check inside one process) | one-host (a guard that several processes on one host share, such as a file lock, a lease in a shared SQLite file, or a write-ahead log chosen for concurrent writers); false = no guard found on the write paths searched. The scope is of the guard itself, not of who can reach it: a single-owner daemon that serves many clients is one-process. Judged on the default path (the shipped configuration); the mechanisms, the write paths covered and the contention behaviour (refuse or queue) go in the cell comment. The engine is judged per key (engine per key): mem0 is judged on the open Python SDK, and a storage engine's own guarantee that the tool only relies on is the engine's, not the tool's"
+    note: >-
+      added 2026-11-08 per ADR-0059 as a closed enum of scope, because presence alone would
+      not discriminate (methodology rule 5d): the census at existing pins (tools/5-memory/
+      README.md, Candidate-key census, 2026-11-06; measure: the frozen presence test, a
+      mechanism whose evident purpose is to order or exclude concurrent writes to the tool's
+      store, once per tool; population: eight tools, everos and memmachine unset) reads 8
+      present · 0 ✗ · 0 omitted, while the scope splits them. Cells, judged on the default path
+      under the reading that scope is the guard's own: one-process: ai-memory (a single-writer
+      SQLite actor, crates/ai-memory-store/src/writer.rs:1-8 at 8c39e4e67; the hook spool's
+      exclusive file locks sit in a client-side buffer before the store and go in the
+      comment), agentmemory (one worker process serves every host's hooks, guarded by an
+      in-process keyed mutex), mem0 (one shared sqlite3 connection behind a threading.Lock,
+      mem0/memory/storage.py:14-15 at 001c2352); one-host: openviking (the default PathLock
+      provider is filesystem, openviking_cli/utils/config/agfs_config.py:300-303 at
+      178a8cdfb), mempalace (a non-blocking fcntl.flock that refuses rather than queues),
+      memos (an embedding-retry lease with a conditional claim, shared through the SQLite
+      file; ordinary trace writes from several processes are not covered), cognee (the SQLite
+      write-ahead log with a busy timeout, chosen for concurrent writers). memori, a stub
+      whose serial queue reads one-process, carries no cell. Over the seven cells: one-process
+      3 · one-host 4 · several-hosts 0. A scope enum flattens coverage (memos' lease guards one
+      queue, mempalace's guard covers every default write path), so covered write paths and
+      contention behaviour belong in the comment. several-hosts is NOT minted, because no
+      observed cell exhibits it: openviking's non-default cache PathLock provider (a
+      Redis-backed provider built at crates/ragfs/src/core/builder.rs:278 under the cache
+      feature, read at 178a8cdfb) is the lead, but that it spans hosts is INFERENCE (no source
+      line says so; not run) and it is not the default path; cognee's several-hosts mechanism
+      is a migration mutex (a Postgres advisory lock, cognee/modules/migrations/runner.py:17-24
+      at b948f88d4), which covers migration runs and not data writes, and Postgres's own
+      concurrency is the engine's. Engine per key: mem0's open SDK decides. NOT this fact: an
+      engine guarantee the tool only relies on (SQLite write-ahead log for readers, Postgres),
+      a routine commit, a job bound or semaphore, pid files that prevent process leaks, backup
+      or replication (agentmemory's mesh sync is replication), access control. Rhymes:
+      memory_store (the engine decides much of safety), team_sharing (several humans, not
+      write ordering), memory_revision (who may change a memory, not who may write at once).
+      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
+      commit; the cells commit sets cells on ai-memory, openviking, mempalace, agentmemory,
+      mem0, memos, cognee, and the matrix shows them once it lands
   - id: decay
     group: write-path
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: expiry/forgetting/retirement lifecycle on stored memories
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (exponential retention + forget sweep), mem0 (expiration_date), memos (time-decayed value, candidate→active→retired)"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (exponential retention + forget sweep), mem0 (expiration_date), memos (time-decayed value, candidate→active→retired). Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, mem0=false, memos=true, mempalace=false, openviking=true"
   - id: memory_revision
     group: write-path
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
+    values: [auto, proposed, caller-only]
     definition: "who can change an existing memory once stored: auto (the system revises/supersedes/retires on its own) | proposed (system proposes, human approves) | caller-only (only explicit API calls)"
-    note: "added 2026-08-19 from the mem0 deep-dive's central finding; instances: ai-memory (auto — background consolidation auto-approves wiki edits, require_approval=false), memos (auto — three live demotion paths, candidate→active→archived; confirmed in source at deep-dive but default-UNMOUNTED under lightweight mode), mem0 (caller-only — no auto-supersession anywhere; the prompt's linking mechanism is parsed and discarded). The kind's sharpest trust axis: what happens when a memory is WRONG"
+    note: "added 2026-08-19 from the mem0 deep-dive's central finding; instances: ai-memory (auto — background consolidation auto-approves wiki edits, require_approval=false), memos (auto — three live demotion paths, candidate→active→archived; confirmed in source at deep-dive but default-UNMOUNTED under lightweight mode), mem0 (caller-only — no auto-supersession anywhere; the prompt's linking mechanism is parsed and discarded). The kind's sharpest trust axis: what happens when a memory is WRONG. 2026-11-08 per ADR-0059: at ai-memory v3.3.3 require_approval = true makes the auto-improve path proposal-gated (proposed), while the profile pass supersedes by latest ruling wins with no approval step; the default is still auto and the cell keeps it, with proposed as an alternative in the cells commit. mem0's caller-only holds for the open SDK, and three integrations ship an agent-driven dream pass through the hosted store, which the cell comment names in the cells commit. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=auto, ai-memory=auto, mem0=caller-only, memos=auto, mempalace=caller-only, openviking=auto"
   - id: recall_injection
     group: read-path
     block: memory_features
     applies_to: [5]
     value_type: closed-enum
-    definition: "how memory reaches the next session: auto | pull-only | both"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (auto baton + pull-only wiki = both), memos (turn-start auto, bounded), mem0 (session-start/prompt-submit auto), cognee (pull-only)"
+    values: [auto, pull-only, both]
+    definition: "how memory reaches the next session: auto | pull-only | both. The value is the leading integration's (the one the README leads with and the installer defaults to); an injection whose output never reaches the model is not injection"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (auto baton + pull-only wiki = both), memos (turn-start auto, bounded), mem0 (session-start/prompt-submit auto), cognee (pull-only). 2026-11-08 per ADR-0059: agentmemory's value varies by harness target (5 of 22 adapters inject automatically, 6 counting the Hermes provider) and its PreCompact injection prints to a log the model never reads on Claude Code, so it is read on its leading integration and the per-harness differences are alternatives in the cells commit. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=pull-only, ai-memory=both, cognee=pull-only, mem0=auto, memos=auto, mempalace=pull-only, openviking=both"
   - id: hybrid_retrieval
     group: read-path
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: multi-stream retrieval fusion (RRF/MMR/reranker over lexical+vector+structural)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓. The calibration cuts both ways (ai-memory v2.0.2 re-read, 2026-09-04): ai-memory's ✓ became RICHER than its comment implied when 2.0 made hybrid default-on via in-process local embeddings — the default install is the fact to re-check in both directions"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (RRF over 4 streams), memos (RRF+MMR), mem0 (additive fusion, NOT RRF). Calibration (mem0 deep-dive): presence ≠ operative — mem0's ✓ silently degrades to pure vector search on a bare install (spaCy/fastembed are optional extras); ask what the DEFAULT install does before reading a ✓. The calibration cuts both ways (ai-memory v2.0.2 re-read, 2026-09-04): ai-memory's ✓ became RICHER than its comment implied when 2.0 made hybrid default-on via in-process local embeddings — the default install is the fact to re-check in both directions. 2026-11-08 per ADR-0059: ai-memory runs five streams at v3.3.3 (FTS5, an entity index, link neighbors, vectors, and an observation stream on by default since 3.0.0), where the instance above recorded 4 at v2.0.2. Calibration cases since: openviking's tick is present but default-off (single-stream dense on a bare install; sparse fusion and a reranker are config-gated); mempalace re-ranks one vector-only pool with BM25 and counts, as mem0's precedent does, with a second lexical stream only on the MCP path; agentmemory fuses by weighted reciprocal rank over BM25, vector and graph, default-on, but its keyless default has BM25 plus an entity-gated graph stream and no vector stream. Which streams the default install runs is the fact to read in the comment. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, mem0=true, memos=true, mempalace=true, openviking=true"
   - id: injection_trust_boundary
     group: read-path
     block: memory_features
     applies_to: [5]
     value_type: presence
-    definition: injected memory is delimited/framed as untrusted data, not instructions
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos. mem0 SETTLED ✗ at its 2026-08-19 deep-dive — bare-markdown injection, and its openclaw recall protocol actively inverts the boundary (memories as authoritative rules). Security-relevant: memory injection is a prompt-injection vector"
+    definition: "injected memory is delimited/framed as untrusted data, not instructions: the injected text itself says data not instructions, or fences it as untrusted; delimiters alone, or an epistemic label alone, do not suffice"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, memos. mem0 SETTLED ✗ at its 2026-08-19 deep-dive — bare-markdown injection, and its openclaw recall protocol actively inverts the boundary (memories as authoritative rules). Security-relevant: memory injection is a prompt-injection vector. 2026-11-08 per ADR-0059, the strict reading: openviking settles ✗ (delimiters, forged-tag neutralization and an epistemic label, but no data-not-instructions wording in the default Claude Code or Codex injected text), and mempalace settles absent across every recall surface. agentmemory is absent on the Claude Code and MCP surfaces and present on pi, OMP, OpenClaw and DSH, which label recalled text as data, so the per-surface true values are alternatives in the cells commit; a posture enum is not minted. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=false, ai-memory=true, mem0=false, memos=true, mempalace=false, openviking=false"
   - id: harness_installer
     group: integration
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: ships an installer that mutates the harness's own config (settings/hooks) rather than only offering an MCP endpoint
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (install-hooks --apply rewrites settings.json), mem0 (hooks.json bundle, 6 harnesses), memos (one-command installer + adapters)"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (install-hooks --apply rewrites settings.json), mem0 (hooks.json bundle, 6 harnesses), memos (one-command installer + adapters). Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, mem0=true, memos=true, mempalace=true, openviking=true"
   - id: rule_extraction
     group: integration
     block: memory_features
     applies_to: [5]
     value_type: presence
-    definition: synthesizes standing instructions/rules from sessions (memory that mints category-6 artifacts of another kind)
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts"
+    definition: "synthesizes standing instructions/rules from sessions (memory that mints category-6 artifacts of another kind). A derived standing-instruction or skill record in the store counts; a file a host loads is the stronger form, and the cell comment says which"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (_rules/ + procedures/ proposals), cognee (coding_agent_rules NodeSet, direct mode only); cross-kind echo: ECC instincts. 2026-11-08 per ADR-0059, reading (b): agentmemory mints procedural-skill records inside its own store behind a provider key, and cognee, memos and agentmemory cells already count a record in the store; the stricter reading (only a file a host loads) would flip those three and is not adopted. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, cognee=true, memos=true, mempalace=false, openviking=true"
   - id: memory_import
     group: integration
     block: memory_features
     applies_to: [5]
     value_type: presence
     definition: "ingests memory born outside the tool's own capture pipeline (rival stores, repo rule files, transcript/conversation exports) — NOT re-ingesting its own exports, NOT document/RAG content loading"
-    note: "added 2026-09-04 per ADR-0051 — the 'competitor import' watch-list entry graduated when ai-memory's companions importer (OMC wikis + generic conversation-export replay through the public hook pipeline, v2.0.2 re-read) became the second instance beside mem0's import skill + auto_import.py (CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules → platform, deep-dive 2026-08-19). Same-day targeted probe-pass filled the column 4-for-4 among read seeds: memos (host harness's native MEMORY.md + OpenClaw session JSONL), cognee (dedicated mem0/zep/letta/langmem importers). The in-direction of the switching-cost story is UNIVERSAL among mature seeds — what discriminates is the source family (rival SaaS stores · harness-native stores · repo rule files · transcripts), carried in cell comments; displacement (the out-direction) remains mem0-only"
+    note: "added 2026-09-04 per ADR-0051 — the 'competitor import' watch-list entry graduated when ai-memory's companions importer (OMC wikis + generic conversation-export replay through the public hook pipeline, v2.0.2 re-read) became the second instance beside mem0's import skill + auto_import.py (CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules → platform, deep-dive 2026-08-19). Same-day targeted probe-pass filled the column 4-for-4 among read seeds: memos (host harness's native MEMORY.md + OpenClaw session JSONL), cognee (dedicated mem0/zep/letta/langmem importers). The in-direction of the switching-cost story is UNIVERSAL among mature seeds — what discriminates is the source family (rival SaaS stores · harness-native stores · repo rule files · transcripts), carried in cell comments; displacement (the out-direction) remains mem0-only. 2026-11-08 per ADR-0059, source-family census over the seven cells, read from the cell comments: transcripts and conversation exports (ai-memory, memos, mempalace, openviking, agentmemory); harness-native stores (memos, openviking); rival stores (ai-memory's agentmemory importer, cognee's mem0, zep, letta and langmem importers); repo rule files (mem0); and one unattributed SQLite source (agentmemory's migrate, whose originating tool the source does not name). Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, cognee=true, mem0=true, memos=true, mempalace=true, openviking=true"
+  - id: agent_coordination
+    group: integration
+    block: memory_features
+    applies_to: [5]
+    value_type: presence
+    definition: "one agent addresses or hands work to another through the tool, exposed to agents as an MCP tool, a CLI command or an API: directed messages or a mailbox, a task, action or lease queue, signals, or a shared event log whose entries agents address or claim. Per-agent isolation (agent-scoped records, ownership columns, agent ids used as filters) and sharing between humans are not coordination. An integration outside the pin turns a ✗ into omitted only when the pin names a surface of this key's class that it does not contain (outside the pin: an agent-facing tool registry the pin names), not merely when that integration exists"
+    note: >-
+      added 2026-11-08 per ADR-0059 as a presence key in the integration group. Census at
+      existing pins (tools/5-memory/README.md, Candidate-key census, 2026-11-06, the row as
+      corrected that day; measure: the frozen presence test, once per tool; population: eight
+      tools, everos and memmachine unset): 3 present · 1 ✗ · 4 omitted. Present: ai-memory (a
+      directed, claim-once mailbox addressed to a project, traced in source) and mempalace
+      and agentmemory (registration-level: an append-only SQLite event log with task, event,
+      artifact and patch exchange, and ten orchestration tools by name including a lease and
+      a signal; delivery semantics not traced in either); ✗: memos; omitted: openviking (its
+      search left in-pin channels and two plugins unsearched), mem0, cognee, memori (an
+      integration outside the pin, no coordination surface named by the pin). Outside the pin:
+      the container reading, so a vendor tool list naming only other-class tools is testimony
+      and does not turn an omission into ✗; the test that would is a dated tools/list or a
+      pinned read of the separate repository. The presence value flattens delivery shape
+      (mailbox, event log, lease queue); regrade trigger: semantics traced in source for two
+      tools, then a delivery-shape enum replaces the presence key. The harness side is not
+      admitted here: category-2 reports mention agent-to-agent messaging in prose (the surface
+      searched is the harness and workflow reports for SendMessage, mailbox, agent teams,
+      inter-agent, agent-to-agent and a2a), none of it traced to a cell that could state a
+      delivery shape. No kind_link: no category-2 key exists to link to. NOT this fact:
+      per-agent isolation (memory_scope's agent axis), sharing between humans (team_sharing),
+      harness-native subagent messaging (subagents), workflow task queues
+      (parallel_orchestration), replication between instances. Rhymes: team_sharing and
+      memory_scope (who may see, not who may hand work over), subagents and
+      parallel_orchestration (the harness and workflow sides of the same word).
+      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
+      commit; the cells commit sets cells on ai-memory, mempalace, agentmemory, memos, and the
+      matrix shows them once it lands
   # --- category-3 environment block (`environment_features:`), category == 3 only (ADR-0017) ---
   # Mechanism choices, not ADR-0011 enforcement grades — contrast explicit per ADR-0017
   # scoping rule 2. No kind_link on these entries by design: category-3 demand-side
