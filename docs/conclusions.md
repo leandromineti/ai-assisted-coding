@@ -1,6 +1,6 @@
 # Conclusions
 
-`checked: 2026-09-09`
+`checked: 2026-11-10`
 
 The repo's actual output: the running answer to "what did I actually learn?"
 Numbered, dated, each traceable to a note — a conclusion without a linked note is
@@ -222,6 +222,19 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    standard), and 51% of the window's merged PRs came from outside contributors. →
    [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md),
    [`tools/5-memory/memos.md`](../tools/5-memory/memos.md)
+   *Corrected 2026-11-10 (fold-in):* two clauses of the 2026-09-04 note above moved at
+   the 2026-11-05 re-read (v3.3.3). "Natively conforms" is partial: the export is
+   conformant (observed on a three-file bundle) and the on-disk tree is not by the
+   spec's letter (frontmatter-less `log-YYYY-MM.md` ledgers, outside git), and the
+   spec location ai-memory cites is a copy its owner calls frozen (OKF spec read
+   2026-11-05). "51% of the window's merged PRs" did not reproduce: re-queried on the
+   report's measure (merged PRs, authors by login, non-owner against all merged), it is
+   63 of 121 (52.1%) to the v2.0.2 tag time over 32 logins, and 68 of 126 (54.0%) to
+   2026-09-04T23:59:59Z over 34; across v3.0.0 to v3.3.3 the owner merged 59 of 443 PRs
+   and two outside contributors 100 and 62. The star figure above is a dated growth
+   figure and stands; the report's `stars:` pair now reads 15,119 at 2026-11-04. →
+   [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md) § Claims confronted at v3.3.3,
+   § Re-traces at v3.3.3, § Release assessment
 9. **The environments category (3) is a real category, not an axis of the harness category —
    decided by its own falsifier** (2026-08-16, decision record
    [ADR-0003](../adrs/0003-environments-stay-a-rung.md)). The taxonomy pre-committed to
@@ -330,6 +343,34 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     now symmetric: mem0 benchmarks what the OSS artifact doesn't contain; memos
     benchmarks what the shipped default doesn't enable. →
     [`tools/5-memory/memos.md`](../tools/5-memory/memos.md)
+    **Absence clause re-stated with its searched surface (2026-11-05 to 2026-11-06 reads; re-derived 2026-11-10).**
+    The clause "No coding-agent memory benchmark exists" (2026-08-18; it sits in
+    conclusion 14's block below, where it was first written) is only as good as the
+    surface searched (methodology rule 1b), so the surface is named. Searched, as the
+    reports record it and with no retrieval run: the benchmark sections of the 2026-11
+    reads — agentmemory and mempalace (`§ Benchmark claims`, each vendor's committed
+    result files read as data, stored per-question scores re-added), ai-memory
+    (`§ Release assessment`, its per-release LongMemEval-S reports) — and memos'
+    2026-08 `§ Benchmarks`. openviking's report has no benchmark section: its
+    top-level `benchmark/` directory is listed and was not opened. Unsearched: the
+    external OmniMemEval repository that memos attributes its five coding benchmark
+    numbers to ([issue #26](https://github.com/leandromineti/ai-assisted-coding/issues/26)).
+    **The clause narrows, and the headline holds.** Found: agentmemory's in-house
+    `coding-agent-life-v1`, a 15-query corpus run by its vendor (TESTIMONY), which the
+    vendor's own later baseline calls "saturated" and fit "only as a smoke test". So "none
+    exists" becomes "none independent of its vendor and larger than a smoke test was
+    seen in the searched surface" — the memos table already sat outside that surface in
+    2026-08. The benchmark-on-chat instances carry on, each vendor testimony and none
+    reproduced: agentmemory's 95.2% R@5 and mempalace's 96.6% R@5 are both LongMemEval-S
+    over 500 questions, retrieval-only (mempalace's raw path builds no MemPalace code,
+    issue #27; agentmemory's own text says "We do NOT claim these as 'LongMemEval
+    scores'"), and ai-memory's per-release reports are LongMemEval-S too (hit@5 0.943
+    at v3.3.3). This re-checks the benchmark half of the headline only; the
+    sells-to-coding-agents half was not re-derived here. →
+    [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Reports ·
+    [`tools/5-memory/agentmemory.md`](../tools/5-memory/agentmemory.md) § Benchmark claims,
+    [`tools/5-memory/mempalace.md`](../tools/5-memory/mempalace.md) § Benchmark claims,
+    [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md) § Release assessment
 14. **Cross-harness memory continuity is real and entirely pull-shaped** (2026-08-19,
     exp-04, n=1 per arm — a probe). The memory type's headline bet, measured for the
     only tool that ships a continuity mechanism (ai-memory, pin-built): the automatic
@@ -365,6 +406,31 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     describe.* →
     [`docs/benchmark-survey.md`](benchmark-survey.md) §6 ·
     [`tools/5-memory/README.md`](../tools/5-memory/README.md)
+    **Population count beside the measurement, at the 2026-11 reads (2026-11-05 to 2026-11-06; re-derived 2026-11-10).**
+    A SOURCE count, not a measurement: 3 of 7 category-5 reports ship a pull-only
+    `recall_injection` default (agentmemory, cognee, mempalace). Measure: the
+    shipped-default cell of each report's `memory_features` frontmatter, `options:`
+    alternatives not counted; the other four are `auto` for mem0 and memos and `both` for
+    ai-memory and openviking, and the three stubs (everos, memmachine, memori) carry no
+    cell. The count says how many tools ship a push side by default, not that any push
+    side delivered anything. Only ai-memory was ever measured, by exp-04 at its own
+    pin (acd9c0b, the v1.28.1 release binary), and **exp-04 was not re-run** at v3.3.3 or
+    against any 2026-11 read: the 0/10 and 10/10 above stand at that pin and nowhere
+    else. What the v3.3.3 re-read found on the push side the 0/10 rests on, SOURCE
+    unless marked: the SessionStart envelope grew two small items (a profile digest and
+    an inbox notice) and, since 2.6.0, the digest is a push of the user's own
+    preference-shaped sentences that the exp-04 pin did not have, unexercised by the
+    re-read's run probe; the automatic handoff is still first and last user prompt (each
+    capped at 1,500 characters) plus tool names, now led by a "Last failed tool call"
+    entry, and the report finds nothing in the change that reaches mid-session facts;
+    compaction capture is new to the report (PreCompact and PostCompaction refresh the
+    session page, observed in the probe), and nothing is re-injected after a compaction
+    except on a user's explicit "reload context" prompt. A later automatic post-compaction
+    anchor (v3.4.0, 2026-11-04, commit subjects only) is post-pin and untraced. Whether
+    the profile digest would carry exp-04's fact kind is unmeasured. →
+    [`tools/5-memory/README.md`](../tools/5-memory/README.md) § The memory matrix — first cut ·
+    [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md) § Context assembly,
+    § Compaction capture — issue #1983, § Release assessment
 
 
 15. **Harnesses track models by name, so a model's own API drift silently disarms them**
@@ -758,8 +824,8 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [ADR-0055](../adrs/0055-context-assembly-group.md) ·
     [`comparisons/features.md § Harnesses`](../comparisons/features.md) ·
     [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) § What we assess here
-24. **Every memory vendor's learning loop auto-applies; propose-and-commit exists only
-    as a harness posture** (2026-09-04, the ADR-0056 census across three categories).
+24. **Every memory vendor's learning loop auto-applies by default; propose-and-commit is
+    a shipped default only in harnesses** (2026-09-04, the ADR-0056 census across three categories).
     When `learning_loop` became a mechanism enum, the cross-category split was already
     sitting in the cells: harnesses span the whole range — `background` (hermes-agent,
     codex, qwen-code), `in-loop` (claude-code), `proposed` (warp and gemini-cli, both
@@ -781,6 +847,31 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [ADR-0056](../adrs/0056-learning-loop-mechanism-enum.md) ·
     [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
     [issue #13](https://github.com/leandromineti/ai-assisted-coding/issues/13)
+    **Re-counted at the 2026-11 reads (2026-11-05 to 2026-11-06; re-derived 2026-11-10).**
+    Loop-bearing count, SOURCE: 6 of the 7 category-5 reports that carry a `learning_loop`
+    cell are `background` (agentmemory, ai-memory, mem0, memos, mempalace, openviking).
+    Measure: the cell in each report's `harness_features` frontmatter, the shipped
+    default, `options:` alternatives not counted. The seventh, cognee's `false` cell, is
+    no loop — nothing auto-applies and nothing proposes — and the three stubs (everos,
+    memmachine, memori) carry no cell. So "every" holds over the loop-bearing vendors,
+    and "every set category-5 cell is `background`" was false of cognee's cell, which is
+    why the index line's parenthetical is corrected. The census is of shipped defaults,
+    and so is the second clause: ai-memory ships propose-and-commit for its own loop as
+    a switch (`[auto_improve] require_approval = true` stages proposals for a human) and
+    mempalace ships opt-in plan-then-`--yes` commands, both recorded as `memory_revision`
+    `proposed` options, not as `learning_loop` defaults; no memory product's default is
+    propose-and-commit. The corollary's population moved with the cells. `write_admission`
+    has 6 cells, of which 4 `unfiltered` (agentmemory, mem0, mempalace, openviking), 1
+    `evidence-gated` (ai-memory) and 1 `scored` (memos): three of the 2026-11
+    deep-dives (agentmemory, mempalace, openviking) admit everything by default, and
+    ai-memory's `evidence-gated` default has `unfiltered` as its recorded alternative for a
+    fresh zero-LLM install, where its profile pass admits on one marked sentence (SOURCE
+    only, never run). Nothing here is a rate; these are cells read at their own pins.
+    *Headline revised 2026-11-10; it read: "Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture".* →
+    [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
+    [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md),
+    [`tools/5-memory/mempalace.md`](../tools/5-memory/mempalace.md),
+    [`tools/5-memory/cognee.md`](../tools/5-memory/cognee.md)
 25. **Subagent execution in category 4 has one shape: three independent frameworks
     converged on it, and the fourth tried it, froze, and reverted** (2026-09-09, the
     superpowers deep-dive closing the count; re-derived from the five deep-dive
