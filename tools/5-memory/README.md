@@ -306,9 +306,10 @@ The census sections of the four probed reports: [mem0](mem0.md), [memos](memos.m
   applies out-of-loop with no approval step, whenever the loop runs. (Re-derived 2026-11-10 over the seven reports with
   a `learning_loop` cell, measure: `harness_features.learning_loop` in each report's frontmatter:
   `background` 6 — agentmemory, ai-memory, mem0, memos, mempalace, openviking — and cognee `false`,
-  no loop; the three stubs, everos, memmachine and memori, carry no cell and are unset. Three of the six
-  `background` cells ship the loop unmounted or model-gated at a bare install — memos, mempalace and openviking, per
-  their own cell comments.) The `proposed` value's two instances are both
+  no loop; the three stubs, everos, memmachine and memori, carry no cell and are unset. Two of the six
+  `background` cells ship the loop unmounted or model-gated at a bare install — mempalace and openviking, per
+  their own cell comments; memos' lite capture writer runs at the default and only its evolution cascade
+  is unmounted. Corrected 2026-11-10: this sentence said three and counted memos.) The `proposed` value's two instances are both
   harnesses (warp, gemini-cli) — propose-and-commit is, so far, a harness posture,
   not a memory-vendor one.
 - A memory-interchange convention would be the next MCP-shaped event — watched from the

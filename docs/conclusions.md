@@ -857,13 +857,16 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     cell are `background` (agentmemory, ai-memory, mem0, memos, mempalace, openviking).
     Measure: the cell in each report's `harness_features` frontmatter, the shipped
     default, `options:` alternatives not counted. The six `background` cells record how
-    the loop applies (no approval step), not that it runs at a bare install: three of them
-    are not running there, and each report's own cell comment says so (memos: "NOT MOUNTED
-    by default", lightweight mode leaves the cascade unmounted, `tools/5-memory/memos.md:19`;
-    mempalace: "DEFAULT-UNMOUNTED until a plugin is installed", hooks only after a plugin
+    the loop applies (no approval step), not that it runs at a bare install: two of them
+    are not running there, and each report's own cell comment says so (mempalace:
+    "DEFAULT-UNMOUNTED until a plugin is installed", hooks only after a plugin
     install, `tools/5-memory/mempalace.md:22`; openviking: "a bare install with no VLM writes
     nothing autonomously", no autonomous write without a configured VLM,
-    `tools/5-memory/openviking.md:25`). The seventh, cognee's `false` cell, is
+    `tools/5-memory/openviking.md:25`). memos' loop runs at the shipped default as a lite
+    capture writer; only its evolution cascade is unmounted (`tools/5-memory/memos.md:19`).
+    *Corrected 2026-11-10: this sentence said three and counted memos, reading its cell
+    comment's "NOT MOUNTED by default" as the whole loop; a re-read at memos' pin found the
+    lite capture path persisting trace rows per turn at the default.* The seventh, cognee's `false` cell, is
     no loop — nothing auto-applies and nothing proposes — and the three stubs (everos,
     memmachine, memori) carry no cell. So "every" holds over the loop-bearing vendors,
     and "every set category-5 cell is `background`" was false of cognee's cell, which is
@@ -879,7 +882,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     ai-memory's `evidence-gated` default has `unfiltered` as its recorded alternative for a
     fresh zero-LLM install, where its profile pass admits on one marked sentence (SOURCE
     only, never run). Nothing here is a rate; these are cells read at their own pins.
-    *Headline revised 2026-11-10 (twice): it read "Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture", then "Every memory vendor's learning loop auto-applies by default; propose-and-commit is a shipped default only in harnesses" — the second wording dropped because three of the six `background` loops (memos, mempalace, openviking) are off at a bare install per their own cell comments.* →
+    *Headline revised 2026-11-10 (twice): it read "Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture", then "Every memory vendor's learning loop auto-applies by default; propose-and-commit is a shipped default only in harnesses" — the second wording dropped because three of the six `background` loops (memos, mempalace, openviking) are off at a bare install per their own cell comments. Corrected later the same day: two, not three (memos' lite capture writer runs at the default); the reason still holds on mempalace and openviking.* →
     [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
     [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md),
     [`tools/5-memory/mempalace.md`](../tools/5-memory/mempalace.md),

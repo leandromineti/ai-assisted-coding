@@ -513,7 +513,10 @@ features:
       and server timers write and apply with no model on the keyless default, and a provider key
       visible in the launching shell mounts the model-driven family on top with the same cell
       value, so ambient-key presence is a comment fact and not an option. The key does not
-      separate filing from extraction; sub-typing background stays parked per ADR-0056's trigger
+      separate filing from extraction; sub-typing background stays parked per ADR-0056's trigger.
+      Corrected 2026-11-10: memos' "mounted OFF by default" (census above) is its evolution cascade;
+      its lite capture writer persists trace rows per turn at the shipped default, so its cell is
+      the default, not an off-by-default loop (tools/5-memory/memos.md:19).
   # --- category-1 block (`model_features:`), ADR-0014 — verified against the report's
   # `url` on its `checked` date. The two economics keys stay free-text (vendor economics
   # differ structurally); the three reasoning keys are typed (ADR-0040) ---
