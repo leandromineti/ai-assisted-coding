@@ -62,6 +62,10 @@ source actually touches, append a line to `references/log.md`, and re-run
 the clone's HEAD and can move pins), write the report, re-run
 `python3 scripts/build-tool-index.py`. Set a `harness_features:` key **only** when verified in source or
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
+A cell holds the **shipped default**. A configuration alternative goes in the report's top-level
+`options:` mapping as `{value, via}`, never in the cell value or a comment, and only for a key
+whose registry entry lists `values:` (ADR-0060; the grammar is in
+[`docs/feature-taxonomy.md`](docs/feature-taxonomy.md) § Options with a default).
 
 Three report-writing disciplines — the first two scars from the gsd-core v1.11.0 re-read
 (2026-08-21), the third from the ai-memory v2.0.2 re-read (2026-09-04):
@@ -179,6 +183,13 @@ exempt); exit 0 prints a trailing `0 problem(s)`; exit 2 means a bad argument. R
 lint itself — it is the lint's permanent calibration (methodology rule 5d). `--selftest`
 deliberately prints ERROR diagnostics from fixtures designed to fail, so its verdict is
 the trailing `0 problem(s)` line and the exit code, never the absence of ERROR output.
+
+`python3 scripts/build-tool-index.py --selftest` is `check_options`' calibration (rule 5d):
+ADR-0060's negative suite plus the shapes decided since, run as in-process fixtures that
+touch no file. Run it after touching the options grammar, a registry `values:` list or the
+generator's options rules. Its verdict is the trailing `0 problem(s)` line plus the exit
+code (a fixture prints `ok` when the rule behaved, an ERROR line only when it did not). Like
+check-taxonomy's, it stays out of the seven-command battery.
 
 Three green `--check` runs are not proof the repo's vocabulary is correct — the lint
 enforces only what `tool-taxonomy.yaml` lists. `tool-taxonomy.yaml`'s own `split_meaning_terms`

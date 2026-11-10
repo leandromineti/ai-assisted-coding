@@ -15,8 +15,13 @@ Three tables plus one derived:
   reports   one row per tool report — the spine every category shares, plus the
             category-specific transcription fields, plus each nested feature block kept
             whole as a JSON column (queryable with json_extract)
-  features  the same blocks unpivoted to (report, block, key, value) — because most
-            questions are "who has X" and that is a WHERE, not a JSON path
+  features  the same blocks unpivoted to (report, block, key, value, via) — because most
+            questions are "who has X" and that is a WHERE, not a JSON path. Rows with
+            block `options` are a report's configured alternatives (ADR-0060), each
+            carrying its `via`; every other row is a cell (the shipped default) with a
+            NULL `via`. A default-only tally filters `block != 'options'`; "who offers
+            `acl`, by default or by option" is a WHERE on key and value with no block
+            filter.
   papers    one row per references/papers/ note
   cards     one row per references/cards/ note
 """
@@ -83,7 +88,7 @@ def build() -> sqlite3.Connection:
             {", ".join(f'"{b}" TEXT' for b in BLOCKS)},
             {", ".join(f'"{l}" TEXT' for l in LISTS)},
             pricing TEXT, extra TEXT);
-        CREATE TABLE features (report TEXT, block TEXT, key TEXT, value TEXT);
+        CREATE TABLE features (report TEXT, block TEXT, key TEXT, value TEXT, via TEXT);
         CREATE TABLE papers (key TEXT, title TEXT, year INTEGER, venue TEXT, kind TEXT,
             read_depth TEXT, retrieved TEXT, arxiv TEXT, doi TEXT, url TEXT,
             citations TEXT, bears_on TEXT, path TEXT);
@@ -119,19 +124,33 @@ def build() -> sqlite3.Connection:
         for block in BLOCKS:
             for key, value in (fm.get(block) or {}).items():
                 con.execute(
-                    "INSERT INTO features VALUES (?,?,?,?)",
+                    "INSERT INTO features VALUES (?,?,?,?,?)",
                     (fm.get("name"), block, key,
-                     json.dumps(value) if isinstance(value, (list, dict)) else str(value)),
+                     json.dumps(value) if isinstance(value, (list, dict)) else str(value),
+                     None),
                 )
         # One row per configured alternative (ADR-0060), block `options`, key the registry id,
-        # the value formatted as a cell value is; "who offers `acl`" is a WHERE on this block.
-        for key, alts in (fm.get("options") or {}).items():
+        # the value formatted as a cell value is, and the record's `via`. These rows sit in
+        # the same table as the cells, so a tally of defaults filters `block != 'options'`
+        # and "who offers `acl`, by default or by option" is a WHERE on key and value alone.
+        opts = fm.get("options")
+        rel = path.relative_to(ROOT)
+        if opts is not None and not isinstance(opts, dict):
+            sys.exit(f"build-db: {rel}: options must be a mapping keyed by registry id; "
+                     f"python3 scripts/build-tool-index.py names the rule")
+        for key, alts in (opts or {}).items():
+            if not isinstance(alts, list) or not all(
+                isinstance(a, dict) and set(a) == {"value", "via"} for a in alts
+            ):
+                sys.exit(f"build-db: {rel}: options.{key} must be a list of {{value, via}} "
+                         f"records; python3 scripts/build-tool-index.py names the rule")
             for rec in alts:
                 value = rec["value"]
                 con.execute(
-                    "INSERT INTO features VALUES (?,?,?,?)",
+                    "INSERT INTO features VALUES (?,?,?,?,?)",
                     (fm.get("name"), "options", key,
-                     json.dumps(value) if isinstance(value, (list, dict)) else str(value)),
+                     json.dumps(value) if isinstance(value, (list, dict)) else str(value),
+                     rec["via"]),
                 )
 
     for path, fm in notes(ROOT / "references" / "papers"):

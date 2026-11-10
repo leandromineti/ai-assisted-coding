@@ -109,6 +109,28 @@ RESIDENCY_VALUES = {"session", "resident"}
 SURFACE_VALUES = {"terminal", "ide", "desktop", "web", "messaging"}
 
 
+def _check_values_field(e: dict) -> None:
+    """Validate one registry entry's optional `values:` list (ADR-0060).
+
+    Presence keys carry none (true|false is implied). Every string token must occur, as a
+    whole token, in the entry's own `definition`, so the list cannot drift from the prose it
+    summarises, the failure mode of the hardcoded sets above. Boolean `false` is registry
+    notation for "checked and absent" and is exempt. Split out of the loader so the
+    `--selftest` fixtures can call it on a mutated entry.
+    """
+    vals = e["values"]
+    if not isinstance(vals, list):
+        sys.exit(f"feature taxonomy entry `{e['id']}`: `values:` must be a list")
+    for tok in vals:
+        if isinstance(tok, str) and not re.search(
+            r"(?<![\w-])" + re.escape(tok) + r"(?![\w-])", str(e["definition"])
+        ):
+            sys.exit(
+                f"feature taxonomy entry `{e['id']}`: `values:` token {tok!r} "
+                f"not in its definition"
+            )
+
+
 def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
     try:
         text = FEATURE_REGISTRY_PATH.read_text(encoding="utf-8")
@@ -192,22 +214,7 @@ def _load_feature_registry() -> tuple[list[dict], list[dict], list[dict]]:
                 f"(known: {sorted(known_blocks)}) — a typo here silently empties a matrix"
             )
         if "values" in e:
-            # Optional legal-value list (ADR-0060). Presence keys carry none (true|false is
-            # implied). Every string token must occur, as a whole token, in the entry's own
-            # `definition`, so the list cannot drift from the prose it summarises — the failure
-            # mode of the hardcoded sets above. Boolean `false` is registry notation for
-            # "checked and absent" and is exempt.
-            vals = e["values"]
-            if not isinstance(vals, list):
-                sys.exit(f"feature taxonomy entry `{e['id']}`: `values:` must be a list")
-            for tok in vals:
-                if isinstance(tok, str) and not re.search(
-                    r"(?<![\w-])" + re.escape(tok) + r"(?![\w-])", str(e["definition"])
-                ):
-                    sys.exit(
-                        f"feature taxonomy entry `{e['id']}`: `values:` token {tok!r} "
-                        f"not in its definition"
-                    )
+            _check_values_field(e)
     return entries, t_fields, sorted(groups, key=lambda g: g["order"])
 
 
@@ -524,6 +531,20 @@ def _opt_outside(v, legal: list) -> list:
     return [x for x in (v if isinstance(v, list) else [v]) if (isinstance(x, bool), repr(x)) not in ok]
 
 
+def _opt_shape(v) -> str:
+    """"list" for a list value, else "scalar": an alternative must have its default's shape."""
+    return "list" if isinstance(v, list) else "scalar"
+
+
+def _opt_repeats(v) -> bool:
+    """True when a list value holds the same parsed element twice (compared as `_opt_outside`
+    does, so a bool never equals a string). A scalar never repeats."""
+    if not isinstance(v, list):
+        return False
+    keys = [(isinstance(x, bool), repr(x)) for x in v]
+    return len(keys) != len(set(keys))
+
+
 def check_options(reports: list[dict]) -> None:
     """Validate the report-level `options:` mapping and every value-bearing cell (ADR-0060).
 
@@ -533,6 +554,13 @@ def check_options(reports: list[dict]) -> None:
     must reach a matrix, a tally or the build-db export has to survive parsing. Fails the
     run rather than warning, under both a plain and a `--check` run, like its siblings.
     Rule (g) is separable: it also checks each cell of a key that declares `values:`.
+
+    Rules, each its own `sys.exit` message: the key is registered; the key has a cell in its
+    block; that cell is not null (a not-checked cell is no default to offer alternatives to);
+    the key has a legal-value list; the mapping holds `{value, via}` records; every alternative
+    is inside the legal values; has the same shape (list or scalar) as the default; does not
+    repeat a list element; is not equal to the default; is not a duplicate; and has a
+    non-empty via. `python3 scripts/build-tool-index.py --selftest` runs these as fixtures.
     """
     by_id = {e["id"]: e for e in FEATURE_REGISTRY}
     for r in reports:
@@ -560,6 +588,11 @@ def check_options(reports: list[dict]) -> None:
             cells = r.get(e["block"])
             if not isinstance(cells, dict) or key not in cells:
                 sys.exit(f"{rel}: options.{key} has no cell in {e['block']} to be the default of")
+            if cells[key] is None:
+                sys.exit(
+                    f"{rel}: options.{key} has a null cell in {e['block']}: a not-checked "
+                    f"cell is no default to offer alternatives to"
+                )
             legal = _opt_legal(e)
             if legal is None:
                 sys.exit(f"{rel}: options.{key} has no `values:` in the registry")
@@ -573,6 +606,14 @@ def check_options(reports: list[dict]) -> None:
                 out = _opt_outside(a["value"], legal)
                 if out:
                     sys.exit(f"{rel}: options.{key} alternative {out[0]!r} not in values {legal}")
+                if _opt_shape(a["value"]) != _opt_shape(cells[key]):
+                    sys.exit(
+                        f"{rel}: options.{key} alternative {a['value']!r} is a "
+                        f"{_opt_shape(a['value'])} but the default {cells[key]!r} is a "
+                        f"{_opt_shape(cells[key])}"
+                    )
+                if _opt_repeats(a["value"]):
+                    sys.exit(f"{rel}: options.{key} alternative {a['value']!r} repeats an element")
                 k = _opt_key(a["value"])
                 if k == default:
                     sys.exit(f"{rel}: options.{key} alternative {a['value']!r} equals the default")
@@ -997,6 +1038,10 @@ def render_features(reports: list[dict]) -> str:
         "here do NOT count toward the cross-category table's demand side (that filter is",
         "`applies_to`).",
         "",
+        "A cell is the tool's shipped default, and every tally reads it. A parenthesised",
+        "`also` annotation lists the configured alternatives from the report's `options:`",
+        "mapping (ADR-0060); a list alternative shows in brackets.",
+        "",
         header_row,
         divider,
     ]
@@ -1090,7 +1135,7 @@ def render_features(reports: list[dict]) -> str:
         if not isinstance(feats, dict):
             feats = {}
         env_unknown.update(k for k in feats if k not in ENVIRONMENT_FEATURE_KEYS)
-        cells = [fmt_feature_cell(feats.get(key)) for key in ENVIRONMENT_FEATURE_KEYS]
+        cells = [fmt_feature_cell(feats.get(key), feature_alts(r, key)) for key in ENVIRONMENT_FEATURE_KEYS]
         rel = r["_path"].relative_to(ROOT)
         # the license+access PAIR, rendered as two cells (ADR-0044): terms, then reach
         pair = f"`{r.get('access') or '·'}` | {r.get('license') or '·'}"
@@ -1181,7 +1226,9 @@ def fmt_feature_cell(v, alts=None) -> str:
 
     `alts` is the report's configured alternatives for this key (ADR-0060, the values of
     its `options:` records). The cell stays the shipped default and every tally reads it;
-    the alternatives follow as ` (also …)`, rendered by this same formatter.
+    the alternatives follow as ` (also …)`, rendered by this same formatter, except that a
+    list alternative shows in brackets (`[` + its elements + `]`) so it reads as one
+    alternative and not as several scalar ones; an empty list alternative stays `∅`.
     """
     if v is True:
         out = "✓"
@@ -1194,7 +1241,10 @@ def fmt_feature_cell(v, alts=None) -> str:
     else:
         out = f"`{v}`"
     if alts:
-        out += " (also " + "; ".join(fmt_feature_cell(a) for a in alts) + ")"
+        out += " (also " + "; ".join(
+            f"[{fmt_feature_cell(a)}]" if isinstance(a, list) and a else fmt_feature_cell(a)
+            for a in alts
+        ) + ")"
     return out
 
 
@@ -1383,7 +1433,8 @@ def render_feature_registry() -> str:
         "record, and the matrix renders them after the default as `(also …)`. A key",
         "that carries options declares its legal named values in a one-line `values:`",
         "list (a presence key implies true or false), and the generator checks every",
-        "alternative, and every cell of a key that declares `values:`, against it.",
+        "alternative, and every cell of a key that declares `values:`, against it. A list",
+        "alternative renders in brackets, so it reads as one alternative and not several.",
         "`∅` is an empty list: checked, and nothing qualifies — never confused with `·`",
         "(not checked) or `✗` (checked and absent).",
         "",
@@ -1544,7 +1595,156 @@ def render_environments(reports: list[dict]) -> str:
 
 
 
+def _selftest_fixtures() -> list[dict]:
+    """The fixtures `--selftest` runs. ADR-0060's fifteen-case negative suite, then the shapes
+    the Phase 19 review found loose. Each is `{id, expect, needle, why, ...}`: `expect` is
+    "pass" or "fail"; a failing fixture must exit with a message containing `needle`. A
+    fixture is either a report (`cells`, `options`, run through `check_options`) or a registry
+    entry mutation (`entry`, run through `_check_values_field`)."""
+    base = {
+        "memory_scope": ["user", "project"],
+        "team_sharing": "attribution-only",
+        "decay": True,
+        "memory_store": "files-git",
+    }
+
+    def rec(value, via="selftest fixture"):
+        return {"value": value, "via": via}
+
+    def rpt(cells=None, options=None, drop=()):
+        mf = {k: v for k, v in {**base, **(cells or {})}.items() if k not in drop}
+        r = {
+            "_path": ROOT / "tools" / "5-memory" / "selftest-fixture.md",
+            "category": 5,
+            "memory_features": mf,
+        }
+        if options is not None:
+            r["options"] = options
+        return r
+
+    def drift(e):
+        e["values"] = list(e["values"]) + ["selftest-token"]
+        return e
+
+    def not_a_list(e):
+        e["values"] = "acl"
+        return e
+
+    return [
+        # ADR-0060's fifteen cases: one accepting control, fourteen rejections
+        dict(id="clean", expect="pass", why="a legal alternative must be accepted",
+             report=rpt(options={"team_sharing": [rec("acl")]})),
+        dict(id="alt-outside-values", expect="fail", needle="not in values",
+             why="an alternative outside `values:` must be rejected",
+             report=rpt(options={"team_sharing": [rec("wide-open")]})),
+        dict(id="alt-equals-default", expect="fail", needle="equals the default",
+             why="an alternative equal to the default is no alternative",
+             report=rpt(options={"team_sharing": [rec("attribution-only")]})),
+        dict(id="no-cell", expect="fail", needle="has no cell",
+             why="options need a cell to be the default of",
+             report=rpt(drop=("team_sharing",), options={"team_sharing": [rec("acl")]})),
+        dict(id="no-values", expect="fail", needle="has no `values:`",
+             why="a key with no legal-value list takes no options",
+             report=rpt(options={"memory_store": [rec("files")]})),
+        dict(id="empty-via", expect="fail", needle="empty via",
+             why="a record needs a via",
+             report=rpt(options={"team_sharing": [rec("acl", via=" ")]})),
+        dict(id="duplicate", expect="fail", needle="duplicate alternative",
+             why="the same alternative twice is a duplicate",
+             report=rpt(options={"team_sharing": [rec("acl"), rec("acl")]})),
+        dict(id="unregistered", expect="fail", needle="not a registered key",
+             why="options are keyed by registry id",
+             report=rpt(options={"selftest_unregistered_key": [rec(True)]})),
+        dict(id="not-mapping", expect="fail", needle="must be a mapping",
+             why="`options:` is a mapping",
+             report=rpt(options=[rec("acl")])),
+        dict(id="not-records", expect="fail", needle="must be a list of {value, via} records",
+             why="a key holds a list of {value, via} records",
+             report=rpt(options={"team_sharing": ["acl"]})),
+        dict(id="presence-alt", expect="fail", needle="not in values",
+             why="a presence key's alternative is true or false",
+             report=rpt(options={"decay": [rec("maybe")]})),
+        dict(id="list-alt", expect="fail", needle="not in values",
+             why="every element of a list alternative must be legal",
+             report=rpt(options={"memory_scope": [rec(["user", "tenant"])]})),
+        dict(id="cell-outside-values", expect="fail", needle="not in values",
+             why="a cell of a `values:` key stays inside the list",
+             report=rpt(cells={"team_sharing": "wide-open"})),
+        dict(id="values-drift", expect="fail", needle="not in its definition",
+             why="a `values:` token must occur in the entry's definition",
+             entry=("team_sharing", drift)),
+        dict(id="values-not-list", expect="fail", needle="`values:` must be a list",
+             why="`values:` is a list",
+             entry=("team_sharing", not_a_list)),
+        # shapes the Phase 19 review found loose, decided as rejections
+        dict(id="null-cell", expect="fail", needle="has a null cell",
+             why="a not-checked cell is no default to offer alternatives to",
+             report=rpt(cells={"team_sharing": None}, options={"team_sharing": [rec("acl")]})),
+        dict(id="scalar-for-list", expect="fail", needle="is a scalar but the default",
+             why="a scalar alternative on a list default changes the cell's shape",
+             report=rpt(cells={"memory_scope": ["project"]},
+                        options={"memory_scope": [rec("project")]})),
+        dict(id="list-for-presence", expect="fail", needle="is a list but the default",
+             why="a list alternative on a presence default changes the cell's shape",
+             report=rpt(options={"decay": [rec([True])]})),
+        dict(id="list-for-scalar-enum", expect="fail", needle="is a list but the default",
+             why="a list alternative on a scalar closed-enum default changes the cell's shape",
+             report=rpt(options={"team_sharing": [rec(["acl"])]})),
+        dict(id="repeated-element", expect="fail", needle="repeats an element",
+             why="a list alternative must not repeat an element",
+             report=rpt(cells={"memory_scope": ["project"]},
+                        options={"memory_scope": [rec(["user", "user", "project"])]})),
+        dict(id="repeat-before-equals", expect="fail", needle="repeats an element",
+             why="the repeat message comes before the equals-the-default test",
+             report=rpt(cells={"memory_scope": ["project"]},
+                        options={"memory_scope": [rec(["project", "project"])]})),
+        dict(id="list-alt-ok", expect="pass",
+             why="a list alternative of the default's shape, with legal distinct elements, is accepted",
+             report=rpt(options={"memory_scope": [rec(["user"])]})),
+    ]
+
+
+def selftest() -> int:
+    """Run the `check_options` / `values:` fixtures in-process; return 0 clean, 1 on problems.
+
+    The calibration for ADR-0060's enforcement claim (methodology rule 5d): a rule that cannot
+    be seen failing is a rule nobody knows is working. Fixtures call the module's own
+    `check_options` and `_check_values_field`, never a copy, and touch no file. Fixtures
+    designed to fail print nothing themselves; a problem prints an ERROR line to stderr, and
+    the verdict is the trailing `0 problem(s)` line plus the exit code."""
+    by_id = {e["id"]: e for e in FEATURE_REGISTRY}
+    fixtures = _selftest_fixtures()
+    problems = 0
+    for fx in fixtures:
+        try:
+            if "report" in fx:
+                check_options([fx["report"]])
+            else:
+                key, mutate = fx["entry"]
+                _check_values_field(mutate(dict(by_id[key])))
+            got, msg = "pass", ""
+        except SystemExit as exc:
+            got, msg = "fail", str(exc.code)
+        if got != fx["expect"]:
+            print(f"ERROR: fixture '{fx['id']}' expected {fx['expect']} but got {got}"
+                  f"{' (' + msg + ')' if msg else ''} — {fx['why']}", file=sys.stderr)
+            problems += 1
+        elif got == "fail" and fx["needle"] not in msg:
+            print(f"ERROR: fixture '{fx['id']}' expected fail with {fx['needle']!r} but the "
+                  f"message was {msg!r} — {fx['why']}", file=sys.stderr)
+            problems += 1
+        else:
+            print(f"fixture {fx['id']}: ok (expected {fx['expect']})")
+    print(f"{len(fixtures)} fixtures run, {problems} problem(s)")
+    return 1 if problems else 0
+
+
 def main() -> int:
+    if "--selftest" in sys.argv[1:]:
+        if sys.argv[1:] != ["--selftest"]:
+            print("usage: build-tool-index.py [--check|--selftest]", file=sys.stderr)
+            return 2
+        return selftest()
     reports = collect()
     if not reports:
         print("no reports with frontmatter found", file=sys.stderr)

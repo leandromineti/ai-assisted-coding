@@ -52,7 +52,8 @@ top-level `options:` mapping, keyed by registry id, each a `{value, via}`
 record, and the matrix renders them after the default as `(also …)`. A key
 that carries options declares its legal named values in a one-line `values:`
 list (a presence key implies true or false), and the generator checks every
-alternative, and every cell of a key that declares `values:`, against it.
+alternative, and every cell of a key that declares `values:`, against it. A list
+alternative renders in brackets, so it reads as one alternative and not several.
 `∅` is an empty list: checked, and nothing qualifies — never confused with `·`
 (not checked) or `✗` (checked and absent).
 

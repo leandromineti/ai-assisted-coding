@@ -62,6 +62,10 @@ environment exposing session sharing). Same columns, same discipline; rows
 here do NOT count toward the cross-category table's demand side (that filter is
 `applies_to`).
 
+A cell is the tool's shipped default, and every tally reads it. A parenthesised
+`also` annotation lists the configured alternatives from the report's `options:`
+mapping (ADR-0060); a list alternative shows in brackets.
+
 | Tool | access | license | mcp | lsp | hooks | skills | subagents | ptc | rules files | context retrieval | context compaction | turn end gates | tool approval | gate model authority | unbypassable gates | headless approval | plan mode | model agnostic | session sharing | evals | learning loop |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [cloudflare-sandbox-sdk](../tools/3-execution-environments/cloudflare-sandbox-sdk.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
@@ -119,8 +123,8 @@ default. `∅` is an empty list: checked, and nothing qualifies.
 | [mem0](../tools/5-memory/mem0.md) | `open-source` | Apache-2.0 | `vector` | `user`, `agent`, `session` | ✗ | `both` | ✗ | `hook` | `writes-to-store` | `consolidation`, `recall` | `unfiltered` | `one-process` | ✗ | `caller-only` | `auto` | ✓ | ✗ | ✓ | · | ✓ | · |
 | [memos](../tools/5-memory/memos.md) | `open-source` | Apache-2.0 | `rows`, `vector` | `agent`, `project`, `session` | ✓ | `both` | ✗ | `adapter` | `reinject-only` | `consolidation` | `scored` | `one-host` | ✓ | `auto` | `auto` | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ |
 | [mempalace](../tools/5-memory/mempalace.md) | `open-source` | MIT | `vector`, `graph` | `project`, `agent` | ✓ | `self-host` | `attribution-only` | `hook` (also `agent-invoked`; `adapter`) | `writes-to-store` | `capture`, `consolidation`, `recall` | `unfiltered` | `one-host` | ✗ | `caller-only` (also `proposed`) | `pull-only` (also `both`) | ✓ (also ✗) | ✗ | ✓ | ✗ | ✓ | ✓ |
-| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | `files`, `vector` | `user`, `project` (also `user`) | ✓ | `both` | `acl` | `hook` (also `adapter`; `agent-invoked`) | `writes-to-store` | · | `unfiltered` | `one-host` | ✓ | `auto` (also `caller-only`) | `both` (also `pull-only`) | ✓ | ✗ (also ✓) | ✓ | ✓ | ✓ | · |
-| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `acl` | `agent-invoked` | · | ∅ (also `consolidation`) | · | `one-host` | · | · | `pull-only` | · | · | · | ✓ | ✓ | · |
+| [openviking](../tools/5-memory/openviking.md) | `open-source` | AGPL-3.0 | `files`, `vector` | `user`, `project` (also [`user`]) | ✓ | `both` | `acl` | `hook` (also `adapter`; `agent-invoked`) | `writes-to-store` | · | `unfiltered` | `one-host` | ✓ | `auto` (also `caller-only`) | `both` (also `pull-only`) | ✓ | ✗ (also ✓) | ✓ | ✓ | ✓ | · |
+| [cognee](../tools/5-memory/cognee.md) | `open-source` | Apache-2.0 | `graph`, `vector`, `rows` | `agent`, `session` | ✓ | `both` | `acl` | `agent-invoked` | · | ∅ (also [`consolidation`]) | · | `one-host` | · | · | `pull-only` | · | · | · | ✓ | ✓ | · |
 | [everos](../tools/5-memory/everos.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memmachine](../tools/5-memory/memmachine.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 | [memori](../tools/5-memory/memori.md) | `open-source` | Apache-2.0 | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |

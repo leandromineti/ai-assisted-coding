@@ -106,7 +106,13 @@ Conventions:
   state has no legal value of its own stays in the cell comment. The matrix renders
   `` `default` (also `alternative`) ``, and `∅` is an empty list, distinct from `·` (not
   checked) and `✗` (checked and absent). `reasoning_effort`'s in-value
-  `levels:<set>@<default>` (ADR-0040) is unchanged.
+  `levels:<set>@<default>` (ADR-0040) is unchanged. (Amended 2026-11-10: `check_options` also
+  rejects an `options:` record on a null cell, an alternative whose shape (list or scalar)
+  differs from the default's, and a list alternative that repeats an element, and
+  `python3 scripts/build-tool-index.py --selftest` runs all the rules as fixtures. A list
+  alternative renders in brackets, the environment matrix renders alternatives like the
+  others, and build-db's `features` table carries a `via` column, filled on the `options`
+  rows, so a tally of defaults filters `block != 'options'`.)
 - "Vocabulary" remains the mechanism phrase for this closed key list; the *concept* is
   the feature taxonomy (naming settled 2026-08-18, ADR-0010).
 
