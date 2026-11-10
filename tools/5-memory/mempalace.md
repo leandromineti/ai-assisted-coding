@@ -361,7 +361,7 @@ Two dated, falsifiable predictions for the next re-read, each bounded on both si
 
 ## Candidate vocabulary collected
 
-Collected for Phase 19, prose only: no cell exists for anything below, and no value outside a key's legal set is written into any cell.
+Collected for Phase 19, prose only: no cell exists for anything below (as of 2026-11-05), and no value outside a key's legal set is written into any cell. Cells set 2026-11-08 (ADR-0059): see the frontmatter.
 
 **Options census** (cells whose value depends on configuration carry the shipped default and a trailing `# options:` comment in the frontmatter; each bullet is one instance, collected for Phase 19's options-with-default grammar decision; this report has 5 such comments, counted from its frontmatter, against 6 in OpenViking's and 4 in ai-memory's). Here `(default)` means what a fresh install gets: the shipped configuration defaults with the Claude Code plugin installed, the integration the README leads with. OpenViking's report defines it as the config default, operative only with a configured VLM; the two readings agree where no model prerequisite exists, and MemPalace has none on these cells. ai-memory's block uses the fresh-install reading with one stated exception: its `write_admission` `(default)` is the provider path, the same direction as OpenViking's. Migrated 2026-11-08 to the frontmatter `options:` mapping ([ADR-0060](../../adrs/0060-options-with-default-grammar.md)); the counts above are unchanged.
 

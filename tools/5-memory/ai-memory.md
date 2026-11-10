@@ -475,8 +475,8 @@ TESTIMONY, inside its stated run-to-run variance).
 
 ## Candidate vocabulary collected
 
-Collected for Phase 19, prose only: no cell exists for anything below, and no value outside a
-key's legal set is written into any cell.
+Collected for Phase 19, prose only: no cell exists for anything below (as of 2026-11-05), and no value outside a
+key's legal set is written into any cell. Cells set 2026-11-08 (ADR-0059): see the frontmatter.
 
 **Options census** (cells whose value depends on configuration carry the shipped default and a
 trailing `# options:` comment in the frontmatter; each bullet is one instance, collected for

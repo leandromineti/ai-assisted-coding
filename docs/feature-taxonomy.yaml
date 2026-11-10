@@ -674,7 +674,7 @@ features:
     applies_to: [5]
     value_type: closed-enum
     definition: "what the store is: files-git | files | vector | graph | rows (list allowed for hybrids, primary first). files-git = the files are the record and git sits on the write path; files = the files are the record and git is absent or only on request. The value names the data model's query surface, not the engine: entity-first traversal is graph even over a SQLite triple table, and key-value records in an engine the tool does not own are rows. A list names what the shipped code builds; a half that ships dark goes in the cell comment"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (git-versioned markdown wiki), mem0 (vector+BM25), memos (SQLite rows+vectors), cognee (graph+vector+relational). 2026-11-08 amendments per ADR-0059: files minted on one instance (openviking's record is plain files with a derived vector index and a git snapshot service that is enabled by default but caller-requested, so its cell becomes [files, vector] in the cells commit; ai-memory's per-write git versioning stays files-git). The value names the data model's query surface, not the engine: agentmemory's key-value records in an engine it does not own are rows, mempalace's graph over a SQLite triple table is a graph, and a half that ships dark (a vector index that exists only with an embedding provider, a graph that exists after the first write) goes in the comment and not in the list. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=[rows, graph, vector], ai-memory=files-git, cognee=[graph, vector, rows], mem0=vector, memos=[rows, vector], mempalace=[vector, graph], openviking=[files-git, vector]"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory (git-versioned markdown wiki), mem0 (vector+BM25), memos (SQLite rows+vectors), cognee (graph+vector+relational). 2026-11-08 amendments per ADR-0059: files minted on one instance (openviking's record is plain files with a derived vector index and a git snapshot service that is enabled by default but caller-requested, so its cell becomes [files, vector] in the cells commit; ai-memory's per-write git versioning stays files-git). The value names the data model's query surface, not the engine: agentmemory's key-value records in an engine it does not own are rows, mempalace's graph over a SQLite triple table is a graph, and a half that ships dark (a vector index that exists only with an embedding provider, a graph that exists after the first write) goes in the comment and not in the list. Corrected 2026-11-10 (fold-in): the 2026-11-08 list predated the cells commit; openviking's cell is [files, vector] (the list printed files-git). Instances re-derived 2026-11-10 from cells (fold-in; population: the reports that carry a memory_features block, unset cells omitted): agentmemory=[rows, graph, vector], ai-memory=files-git, cognee=[graph, vector, rows], mem0=vector, memos=[rows, vector], mempalace=[vector, graph], openviking=[files, vector]"
   - id: memory_scope
     group: store-scope
     block: memory_features
@@ -682,7 +682,7 @@ features:
     value_type: list
     values: [project, agent, user, session, global]
     definition: "scoping axes the store natively supports (list): project | agent | user | session | global (one store-wide scope outside any single project or user). An axis counts when records are partitioned by it on write and at least one shipped read path uses it (a filter, a namespace or a score); an axis that is only a plugin's convention, or a label within one tool, does not"
-    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee. 2026-11-08 amendments per ADR-0059: global minted on one instance (ai-memory's default/_global scope, crates/ai-memory-core/src/lib.rs:55; one instance suffices for a value, issue #34), and ai-memory's cell gains it in the cells commit. Reading rule: an axis counts when records are partitioned by it on write and at least one shipped read path uses it. openviking's project axis is the plugins' convention, write-partitioned with a recall penalty, and counts on that reading; mempalace's agent axis is diary-scoped on read and write-stamped, and counts; agentmemory's session partitions observations in the store but takes no session filter on text recall, so it is the boundary case and is not listed. Not minted (a label within one tool, no second instance): ai-memory's _profile workspace scope, openviking's tenant, peer and group axes, mempalace's wing, room and source-file labels. Instances re-derived 2026-11-08 from cells (ADR-0059; population: the seven reports that carry a memory_features block, unset cells omitted): agentmemory=[project, agent], ai-memory=[project, user], cognee=[agent, session], mem0=[user, agent, session], memos=[agent, project, session], mempalace=[project, agent], openviking=[user, project]"
+    note: "added 2026-08-19 per ADR-0013; instances: ai-memory, mem0, memos, cognee. 2026-11-08 amendments per ADR-0059: global minted on one instance (ai-memory's default/_global scope, crates/ai-memory-core/src/lib.rs:55; one instance suffices for a value, issue #34), and ai-memory's cell gains it in the cells commit. Reading rule: an axis counts when records are partitioned by it on write and at least one shipped read path uses it. openviking's project axis is the plugins' convention, write-partitioned with a recall penalty, and counts on that reading; mempalace's agent axis is diary-scoped on read and write-stamped, and counts; agentmemory's session partitions observations in the store but takes no session filter on text recall, so it is the boundary case and is not listed. Not minted (a label within one tool, no second instance): ai-memory's _profile workspace scope, openviking's tenant, peer and group axes, mempalace's wing, room and source-file labels. Corrected 2026-11-10 (fold-in): the 2026-11-08 list predated the cells commit; ai-memory's cell is [project, user, global] (the list printed [project, user]). Instances re-derived 2026-11-10 from cells (fold-in; population: the reports that carry a memory_features block, unset cells omitted): agentmemory=[project, agent], ai-memory=[project, user, global], cognee=[agent, session], mem0=[user, agent, session], memos=[agent, project, session], mempalace=[project, agent], openviking=[user, project]"
   - id: memory_tiers
     group: store-scope
     block: memory_features
@@ -742,9 +742,15 @@ features:
       derivable from this key, agentmemory is hook yet reinject-only), learning_loop (who
       commits, not when), context_compaction (the harness side), memory_store (what the
       store is).
-      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
-      commit; the cells commit sets cells on ai-memory, openviking, mempalace, agentmemory,
-      mem0, memos, and the matrix shows them once it lands
+      Corrected 2026-11-10 (fold-in): 3 of its 12 installer products (TRAE, TRAE CN, ZCode) have
+      no such handler, not four of twelve. Hermes, one of the two products installed outside the
+      12, has none either, so the note's four products with no handler count those three plus
+      Hermes among openviking's 14 products (measure: the openviking report's integrations
+      section, the 12 installer products plus OpenClaw and Hermes). ADR-0059 repeats the earlier
+      four of twelve and stays as decided. Instances re-derived 2026-11-10 from cells (fold-in;
+      population: the reports that carry a memory_features block, unset cells omitted):
+      agentmemory=reinject-only, ai-memory=writes-to-store, mem0=writes-to-store,
+      memos=reinject-only, mempalace=writes-to-store, openviking=writes-to-store
   - id: llm_free_path
     group: write-path
     block: memory_features
@@ -787,9 +793,18 @@ features:
       that turns a background writer on can also turn the model path on, so read the two
       together), write_admission (an extraction model's judgment is the admission),
       capture_path (the trigger, not model use), deployment_mode.
-      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
-      commit; the cells commit sets cells on ai-memory, mempalace, agentmemory, mem0, memos,
-      cognee, and the matrix shows them once it lands
+      Corrected 2026-11-10 (fold-in): memos' cell is omitted, under this key's own rule that the
+      cell is omitted when any component is undecided. Capture and recall differ by adapter on an
+      unrun host-bridge chain (model-free on OpenClaw, model-backed on hermes and DSH), so the
+      verdict is INFERENCE and no list encodes it. Five tools carry cells (ai-memory, mempalace,
+      agentmemory, mem0 and cognee), and the tallies over those five cells are capture 3 of 5,
+      consolidation 4 of 5, recall 4 of 5 (measure: the cells of the reports under tools/5-memory/
+      that carry a llm_free_path value, counting a component present in the list). The census rows
+      above are the 2026-11-06 verdicts and are not recounted; memos is the omitted-by-rule case,
+      as openviking is. Instances re-derived 2026-11-10 from cells (fold-in; population: the
+      reports that carry a memory_features block, unset cells omitted): agentmemory=[capture,
+      consolidation, recall], ai-memory=[capture, consolidation, recall], cognee=[],
+      mem0=[consolidation, recall], mempalace=[capture, consolidation, recall]
   - id: write_admission
     group: write-path
     block: memory_features
@@ -839,9 +854,15 @@ features:
       or replication (agentmemory's mesh sync is replication), access control. Rhymes:
       memory_store (the engine decides much of safety), team_sharing (several humans, not
       write ordering), memory_revision (who may change a memory, not who may write at once).
-      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
-      commit; the cells commit sets cells on ai-memory, openviking, mempalace, agentmemory,
-      mem0, memos, cognee, and the matrix shows them once it lands
+      Corrected 2026-11-10 (fold-in): ADR-0059's rationale for this key says the scope of the
+      guard splits the same tools 3 · 4, a wording that leaves memori out. Over the seven reports
+      that carry this cell the split is one-process 3 · one-host 4 (measure: the
+      concurrent_write_safety cells of the reports under tools/5-memory/), and memori, one-process
+      by this note's own account and carrying no cell as a stub, would make the eight-tool census
+      split 4 · 4. Instances re-derived 2026-11-10 from cells (fold-in; population: the reports
+      that carry a memory_features block, unset cells omitted): agentmemory=one-process,
+      ai-memory=one-process, cognee=one-host, mem0=one-process, memos=one-host,
+      mempalace=one-host, openviking=one-host
   - id: decay
     group: write-path
     block: memory_features
@@ -931,9 +952,18 @@ features:
       (parallel_orchestration), replication between instances. Rhymes: team_sharing and
       memory_scope (who may see, not who may hand work over), subagents and
       parallel_orchestration (the harness and workflow sides of the same word).
-      Instances re-derived 2026-11-08 from cells (ADR-0059): no cell is set at the registry
-      commit; the cells commit sets cells on ai-memory, mempalace, agentmemory, memos, and the
-      matrix shows them once it lands
+      Graded 2026-11-10 (fold-in): the two-instance bar is met by one traced instance (ai-memory)
+      and two named ones (mempalace and agentmemory), whose agent-facing surfaces are named in
+      source by tool registration and not traced in behavior, so the key clears the bar on named
+      surfaces and not on traced behavior. A trace would have to show a message or claim one agent
+      writes reaching another agent through the tool's store, with its delivery and claim
+      semantics (who may read it, whether it is delivered once, how a claim is released).
+      agentmemory's ten orchestration tools (the count its report gives for the V050_TOOLS array)
+      include memory_mesh_sync, replication between instances, which this key's NOT list excludes,
+      so nine remain. The key stays admitted, as the owner decided on 2026-11-08. Instances
+      re-derived 2026-11-10 from cells (fold-in; population: the reports that carry a
+      memory_features block, unset cells omitted): agentmemory=true, ai-memory=true, memos=false,
+      mempalace=true
   # --- category-3 environment block (`environment_features:`), category == 3 only (ADR-0017) ---
   # Mechanism choices, not ADR-0011 enforcement grades — contrast explicit per ADR-0017
   # scoping rule 2. No kind_link on these entries by design: category-3 demand-side
