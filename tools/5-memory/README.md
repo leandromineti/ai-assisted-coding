@@ -1,6 +1,6 @@
 # 5 — Memory
 
-`checked: 2026-09-04`
+`checked: 2026-11-10`
 
 Persistent cross-session state as an installable product — **the agent↔time edge**. Fed
 by hooks/MCP during a session, consolidated between sessions, injected back at the next
@@ -8,19 +8,42 @@ session start, on any harness. A full category since the 2026-08-22 split
 ([ADR-0020](../../adrs/0020-memory-category-extensions-renumbered.md)); born 2026-08-18
 as the extensions bucket's `memory` type (the bucket is now
 [category 6](../6-extensions/README.md)). Reports keep `type: memory` in frontmatter as
-residual data. Roster count (2026-08-22): **eight**
-reports carry `category: 5` — the eight rows in the generated
-[tools matrix](../../comparisons/tools.md). ADR-0020's "all nine reports stay" counted
-the pre-split bucket's nine files, which included ecc — moved to category 6 by the same
-ADR; the immutable ADR body stays as written, this note is the correction.
+residual data. Roster count (2026-11-10, measure: the reports under `tools/5-memory/`, this
+README excluded, whose frontmatter carries `category: 5`, split by their `depth:` value): **ten**
+reports carry `category: 5` — six deep-dives, one survey and three stubs — the ten rows in the
+generated [tools matrix](../../comparisons/tools.md). The earlier count, kept as history,
+was **eight** on 2026-08-22: openviking was one of those eight, as a stub, and is a deep-dive since
+2026-11-05, and mempalace and agentmemory were added as new deep-dives on 2026-11-05. ADR-0020's
+"all nine reports stay" counted the pre-split bucket's nine files, which included ecc — moved to
+category 6 by the same ADR; the immutable ADR body stays as written, this note is the correction.
 
-What the category's seeds wager, in one line each: markdown wiki (ai-memory), RL policy
+What the category's reports wager (2026-11-10), in one line each: markdown wiki (ai-memory), RL policy
 database that mints skills (memos), knowledge graph over a tripartite store (cognee),
-LLM-extraction platform sold on benchmarks (mem0), plus four stubs (memori, everos,
-memmachine, openviking). Four consolidation postures verified: background cron, per-turn
-event cascade, agent-invoked, hook-capture-to-platform. **Zero shared formats** — each
+LLM-extraction platform sold on benchmarks (mem0), a browsable `viking://` context database
+whose every autonomous memory write needs a configured model (openviking: the model-required
+pole, a stub until its 2026-11-05 deep-dive), verbatim exchanges filed with no model on capture
+or recall (mempalace: the verbatim, model-free store), and hook-fed events kept as synthetic
+observations, with the model optional and the storage engine borrowed from a third party
+(agentmemory); three stubs remain as of 2026-11-10, facts collected mechanically and no full
+source read (everos, memmachine, memori). Memori's five census keys were read in source on
+2026-11-06 as targeted probes, which did not change its depth: it is counted a stub by its
+`depth:` value, not by how much evidence it carries.
+
+Four consolidation postures were verified at the first cut: background cron, per-turn event
+cascade, agent-invoked, hook-capture-to-platform. The 2026-11 reads add two: openviking's
+client-triggered commit with a model-backed queued extraction, and agentmemory's model family,
+mounted by ambient provider-key presence with no opt-in flag (`CONSOLIDATION_ENABLED=false`
+switches it off). Counted 2026-11-10, **six** postures, measure: the postures this paragraph
+names; no registry key enumerates them, so this is a dated reading, not a tally over cells.
+**Zero shared formats** (as first counted 2026-08-18) — each
 vendor pays the harness-fragmentation cost separately, in code (tracked as a dated watch
-note beside the [standards scoreboard](../../docs/standards.md)). The SDK-facing
+note beside the [standards scoreboard](../../docs/standards.md)). Qualified 2026-11-10: the
+Open Knowledge Format (OKF) now has one conformant export, ai-memory's v0.2 `export-okf`
+(its on-disk tree is not conformant by the spec's letter), and one house declaration,
+openviking's `OKF_VERSION = "0.1"`, which cites no spec: a declaration, not conformance.
+So two reports now name one format, but only one instance conforms to it, and the spec's own
+location has skewed (a frozen copy and a live repository); the standards watch note beside the
+scoreboard tracks the format question. The SDK-facing
 shapes earn membership via their shims, and the shims are where the coding-agent
 behavior lives — up to and including mem0's plugin *blocking the harness's native memory
 writes* (the displacement finding, conclusion 8).
@@ -44,18 +67,29 @@ The assessed block is **`memory_features:`, 19 keys** (2026-11-08, from 15 on 20
 `deployment_mode`, `team_sharing`, `harness_installer`, `rule_extraction`,
 `memory_import`, `compaction_capture`, `llm_free_path`, `concurrent_write_safety`,
 `agent_coordination`. They map
-onto the three components above — capture (`capture_path`, `write_admission`),
-consolidation (`memory_store`, `memory_tiers`, `decay`, `memory_revision`,
-`rule_extraction`), and recall (`recall_injection`, `hybrid_retrieval`,
-`injection_trust_boundary`) — with `harness_installer` and `memory_import` the two
-apertures onto the outside: how the tool meets a harness, and whether memory made
-elsewhere can come in.
+onto the three components above, taking the registry's own groups (store-scope, write-path,
+read-path, integration) as the basis. **Capture** takes the write-path keys that act as a
+memory arrives: `capture_path`, `write_admission`, `compaction_capture` (whether a handler on
+the harness's pre-compaction event writes to the store) and `concurrent_write_safety` (how
+concurrent writers are ordered, a key that sits between capture and the store).
+**Consolidation and the store** takes the store-scope keys — `memory_store`, `memory_scope`,
+`memory_tiers`, `deployment_mode` and `team_sharing` — together with `decay` and
+`memory_revision`, which the registry files under write-path but which act on memories already
+stored. **Recall** takes `recall_injection`, `hybrid_retrieval` and
+`injection_trust_boundary`. `llm_free_path` is judged once per component and spans all three: a
+list of the components whose default path makes no generative-model call. The apertures onto
+the outside are the integration keys: `harness_installer` (how the tool meets a harness),
+`memory_import` (whether memory made elsewhere can come in), `agent_coordination` (whether one
+agent can address another through the tool) and `rule_extraction`, which sits between an
+aperture and consolidation: the registry files it under integration, while this note's
+2026-08 reading counted it as consolidation, because the rules are a consolidation product.
 
 Values are **descriptive enums naming a mechanism choice, not ADR-0011 enforcement
 grades**: every tool in this category stores something and recalls something, so the
-finding is always *which* posture, never *whether*. Four consolidation postures are
-verified so far, and the roster's zero shared formats is the population-level version of
-the same point.
+finding is always *which* posture, never *whether*. Six consolidation postures are
+verified as of 2026-11-10 (the opening names them), and the roster's zero shared formats
+(qualified in the opening: one conformant OKF export, one house declaration) is the
+population-level version of the same point.
 
 The other half is **9 transcription fields** — `maker`, `license`, `access`, `stars`,
 `first_commit`, `version`, `commit`, `stack`, `harness_targets` — facts copied from a dated
@@ -78,7 +112,9 @@ The reading arc's prose comparison became a registry block
 (13 since, same day: `memory_revision` after the mem0 deep-dive, `write_admission`
 after exp-04 arm C), generated
 [matrix](../../comparisons/features.md), cells
-set only on the four read tools. What the first cut shows:
+set only on the four read tools (seven reports carry a `memory_features` block as of
+2026-11-10, the last two having landed on 2026-11-05; the three stubs carry none). What the
+first cut shows:
 
 - **Where the type agrees** — *weakened by the mem0 deep-dive (2026-08-19), which
   flipped two of its survey ✓s*: typed tiers are now 3/4 (mem0's "tier" is a metadata
@@ -103,6 +139,27 @@ set only on the four read tools. What the first cut shows:
   (conclusion 14). The type's pitch says "your agent remembers"; the measurement says
   "your agent can look it up, if it asks".
 
+Re-derived 2026-11-10 over the seven reports with a memory_features block (measure: each
+report's default cells in its frontmatter, read per [ADR-0060](../../adrs/0060-options-with-default-grammar.md)
+with `options:` alternatives left out; the seven are agentmemory, ai-memory, cognee, mem0,
+memos, mempalace and openviking; the three stubs everos, memmachine and memori carry no block,
+so they sit outside every denominator and are unset, never ✗; a value with no instance is
+written 0; tools are listed alphabetically). The first cut's tallies above stay as read on
+2026-08-19; these are the same axes at the final roster:
+
+- **Where the type agrees.** Typed tiers 6 ✓ (agentmemory, ai-memory, cognee, memos, mempalace, openviking) · 1 ✗ (mem0) · 0 unset.
+  Hybrid fusion (`hybrid_retrieval`) 6 ✓ · 0 ✗ · 1 unset (cognee). Installers (`harness_installer`)
+  6 ✓ · 0 ✗ · 1 unset (cognee). Decay 4 ✓ (agentmemory, ai-memory, memos, openviking) · 2 ✗ (mem0, mempalace) · 1 unset (cognee),
+  so decay is the most split of the four (tiers has one ✗, mem0; hybrid fusion and installers have none).
+- **Where it splits.** Trust boundary 2 ✓ (ai-memory, memos) · 4 ✗ (agentmemory, mem0, mempalace, openviking) · 1 unset (cognee):
+  the least converged axis moved from 2 ✓ against 1 ✗ at the first cut to ✗ outnumbering ✓ two to one among the
+  cells set. Capture path: `hook` 5 (agentmemory, ai-memory, mem0, mempalace, openviking) · `adapter` 1 (memos) · `agent-invoked` 1 (cognee).
+  Recall injection: `auto` 2 (mem0, memos) · `both` 2 (ai-memory, openviking) · `pull-only` 3 (agentmemory, cognee, mempalace).
+- **The store wager, and whether "no two alike" holds.** It holds as the lists are written, because
+  a list puts the primary store first and so order counts: 7 distinct `memory_store` values over 7 cells. Counted by members
+  regardless of order it fails for one pair, agentmemory (`rows`, `graph`, `vector`) and cognee (`graph`, `vector`, `rows`),
+  which hold the same three members with a different primary: 6 distinct member sets over 7 cells.
+
 Single-instance bets stay out of the vocabulary by the two-instance rule but are the
 differentiators to watch: zero-LLM default (ai-memory), git-versioned store
 (ai-memory), native-memory displacement (mem0), skill crystallization (memos),
@@ -118,6 +175,19 @@ stores, repo rule files, transcripts — and only mem0 pairs the in-direction wi
 displacement on the way out. Newly watched from the same re-read, each one instance:
 tombstoned deletion (ai-memory `purge-session`), temporal recall (ai-memory `as_of`),
 typed relation edges (ai-memory).
+
+Qualified 2026-11-10: the zero-LLM default is no longer a single-instance bet, and the phrase
+promises less than the first cut gave it. MemPalace and agentmemory are model-free on capture
+and recall by default (their reports). ai-memory, the first instance, now runs a provider-free
+cross-project profile pass, default-on for a single-operator install, and is not egress-free by
+default: it background-fetches a keyless embedder on install. agentmemory's model family follows
+ambient provider-key presence, and MemPalace's `init` is model-on by default, a setup step
+outside the three components. Counts from this README's own census table (§ Candidate-key
+census, the 2026-11-06 verdicts; measure: each tool's verdict per component against the frozen
+presence test): capture present 3 of the eight tools read, recall present 5 of the eight tools read,
+consolidation present 6 of the eight tools read. Over the cells themselves as of 2026-11-10 (measure: the
+components listed in each `llm_free_path` cell, over the five reports that carry one, memos'
+having been omitted as the census section records): capture 3, consolidation 4, recall 4.
 
 A second key was probed into existence the same day, from the other direction
 (2026-09-04, [ADR-0052](../../adrs/0052-team-sharing-key.md)): a stack question —
@@ -136,7 +206,23 @@ seeds: mem0's and cognee's clouds both sell member-managed team scopes, memori's
 docs list "Team Memory" as explicitly roadmap-only, openviking's auth docs describe
 a multi-human account/role model at mechanism level, and everos/memmachine surfaces
 showed nothing — stub cells stay unset (stub honesty), but the axis is worth a look
-whenever one of the four is next read.
+whenever one of those four is next read (openviking since was; the amendment below).
+
+Amended 2026-11-10 (fold-in), from the cells (measure: default cells over the seven reports with
+a memory_features block; the three stubs carry none and stay unset): `team_sharing` reads
+`attribution-only` 3 (agentmemory, ai-memory, mempalace), `acl` 2 (cognee, openviking),
+✗ 2 (mem0, memos), 0 unset. The 2026-09-04 text above stays as the record of that day's two
+instances; four things moved since. (1) ai-memory still ships `attribution-only` as its default
+and now offers `acl` beside it: per-project `restricted` grants since 2.5.0, behind a root-only
+switch, so "no RBAC" holds within a project and no longer at the project boundary. (2) openviking
+is no longer a stub: read in source on 2026-11-05 it is `acl` by design (accounts, groups and
+per-container grants on `viking://resources` only), default-unmounted (the shipped auth is
+`dev`, one ROOT principal on a loopback bind), and its memories stay per-user private rather
+than shared. (3) mempalace and agentmemory are `attribution-only` and default-unmounted, both
+with a weaker attribution than ai-memory's authenticated-user kind: mempalace's is a
+caller-supplied `added_by` string, agentmemory's is the server process's configured user id.
+(4) What stays unread is the stub side, memori, everos and memmachine; memori's "Team Memory is
+roadmap-only" reading above is a vendor-docs claim of 2026-09-04 and was never source-read.
 
 ## Reports
 
@@ -144,9 +230,9 @@ whenever one of the four is next read.
 |---|---|---|
 | [**ai-memory**](ai-memory.md) | deep-dive (2026-08-18; **v3.3.3 release re-read 2026-11-05**) | Cross-harness memory as one Rust daemon: hook capture (closed 10-type vocabulary) → rule-based session pages in a git-versioned markdown wiki → heuristic handoff injected at next session start, any harness. Zero-LLM default path, but no longer loop-free: a provider-free cross-project profile pass is default-on for a single-operator install and admits a standing preference on one prompt sentence that says "everywhere" (source-read, not observed); with a provider, a **source-verified background learning loop** auto-approves its own wiki edits (`_rules/`, `procedures/`) — second harness-independent instance after ECC. Surprise: the continuity baton is still first + last prompt + tool names, no LLM; the rich memory is pull-only via 25 served MCP tools (18 at v2.0.2). The default install background-fetches an ~87 MB keyless embedder from huggingface.co and turns hybrid retrieval on, so it is not egress-free. Pages carry Google-Cloud-OKF v0.2 frontmatter, but only the export is conformant by the spec's letter (the on-disk event ledgers are not) and the spec location ai-memory cites is a frozen copy. `team_sharing` default stays attribution-only; per-project `restricted` access with root-only grants ships since 2.5.0. 162 claim units confronted across 44 releases; stars 5.7k → 15.1k in two months (2026-09-04 → 2026-11-04). |
 | [**mem0**](mem0.md) | **deep-dive (2026-08-19)** | The type's commercial pole (YC-backed platform + OSS SDK). Shipped write path ≠ the 553-citation paper: V3 is ADD-only extraction with linking, the paper's ADD/UPDATE/DELETE/NOOP phase is retired. In-repo plugin installs hook capture into six harnesses with a **background learning loop** (Stop-hook capture, `infer=True`) — fourth verified instance — plus the type's most aggressive move: a PreToolUse gate that **blocks the harness's native MEMORY.md writes** and redirects to mem0's tool. Displacement, not just colonization. Vendor paper graded separately ([2025-mem0](../../references/papers/2025-mem0.md)): its own full-context baseline beats the memory system on quality. **Deep-dive 2026-08-19** (same pin): two matrix cells flipped (tiers, decay — both platform-only or tag-deep in OSS); trust boundary settled ✗ (openclaw protocol makes memories authoritative: "Rules override your defaults"); the displacement gate run-probed — narrow path glob, fails open without jq, broader on Cursor than Claude Code, prose carries the real intent; V3 removed graph from OSS in the commit that added it; and the SDK ships a 1,582-line remotely-scripted A/B upsell funnel (notices.py) with 5× the add-pipeline's test coverage. |
-| [**cognee**](cognee.md) | survey (2026-08-18) | The type's incumbent (2023-08, 30.1k stars) and its knowledge-graph pole — at the price of a tripartite graph+vector+relational consistency surface. Membership verdict: the SDK sits in the category **via its shims**, and the shims are where the coding-agent product lives (agent-scoped datasets, session/permanent split, agent-invoked `improve` consolidation, coding-rule extraction). No autonomous loop in-repo (`learning_loop: false`); the marketplace plugin automates capture but runs in API mode, where rule extraction is explicitly skipped. ai-memory's opposition dossier spot-checked: both structural claims corroborated (LiteLLM/Instructor churn guard; the Ladybug fork's costs written into pyproject). |
-| [**memori**](memori.md) | stub (2026-08-18) | "Memory from what agents do, not just what they say" — Rust core with Python/Node bindings, BYODB or cloud, 16.1k stars in ~13 months. Action-capture framing, embeddable-engine shape. |
-| [**everos**](everos.md) | stub (2026-08-18) | EverMind's "Ever OS": durable writes + retrieval, Claude Code plugin shipped in-repo. Youngest seed (first commit 2026-06-05; 12.1k stars in ~10 weeks, on only 88 commits — read its numbers with that ratio in mind). |
+| [**cognee**](cognee.md) | survey (2026-08-18) | The type's incumbent (2023-08, 33.1k stars at 2026-11-04) and its knowledge-graph pole — at the price of a tripartite graph+vector+relational consistency surface. Membership verdict: the SDK sits in the category **via its shims**, and the shims are where the coding-agent product lives (agent-scoped datasets, session/permanent split, agent-invoked `improve` consolidation, coding-rule extraction). No autonomous loop in-repo (`learning_loop: false`); the marketplace plugin automates capture but runs in API mode, where rule extraction is explicitly skipped. ai-memory's opposition dossier spot-checked: both structural claims corroborated (LiteLLM/Instructor churn guard; the Ladybug fork's costs written into pyproject). |
+| [**memori**](memori.md) | stub (2026-08-18) | "Memory from what agents do, not just what they say" — Rust core with Python/Node bindings, BYODB or cloud, 17.4k stars at 2026-11-04, about 15 months after its first commit of 2025-07-24. Action-capture framing, embeddable-engine shape. |
+| [**everos**](everos.md) | stub (2026-08-18) | EverMind's "Ever OS": durable writes + retrieval, Claude Code plugin shipped in-repo. Youngest seed (first commit 2026-06-05; 13.8k stars at 2026-11-04, about 22 weeks after it). The stub read's note of a very high stars-to-commits ratio dates from 2026-08-18 and is not restated here as a figure, because its commit count has no date at this pin. |
 | [**memos**](memos.md) | **deep-dive (2026-08-19)** | Two products in one repo: the Python research OS (MemCube, paper lineage) and — what harnesses actually install — a standalone TS core ("Reflect2Evolve V7") behind OpenClaw/DSH/hermes adapters. **Learning loop verified: background**, an event-driven cascade (trace capture → reward backprop → policy induction → world models → skill crystallization) — the type's formal ceiling: memory as a scored, evolving policy database that *mints skills*, not prose. Third harness-independent instance; issue #13's trigger still unfired. **Deep-dive 2026-08-19** (same pin): the anti-mem0 — every survey cell CONFIRMED in source (golden-tested backprop, genuinely distinct tier stores, three live demotion paths, the type's strongest trust boundary) — and then the twist: `lightweightMemory: true` ships as default in code, templates, AND the published npm artifact (probed), unmounting the entire evolution cascade; the installer is the study's most aggressive (a `.pth` hook monkey-patching hermes' profile creation, no uninstall); and telemetry credentials are injected at npm publish — the pin doesn't describe the artifact. |
 | [**memmachine**](memmachine.md) | stub (2026-08-18) | "The open-source memory layer for AI agents" — plain store-and-retrieve SDK (Python), OpenClaw/Strands integrations. The type's commodity baseline. |
 | [**openviking**](openviking.md) | **deep-dive (2026-11-05)** | ByteDance/Volcengine's "context database": memories, resources and skills in one `viking://` virtual filesystem the agent browses (`ls`/`tree`/`grep`) and an operator can inspect, with per-directory L0/L1 sidecars. The stub's retrieval claim did not survive: directory-recursive search with a browsing trajectory was removed on 2026-09-29, and recall is now one global vector search scoped by a path prefix. The model-required pole: every autonomous memory write needs a configured VLM, the commit is client-triggered by default, and one shared installer reaches 14 harnesses (ai-memory's `install-hooks` registry is wider: 29 agent variants, 40 documented targets). OKF is a house name rather than a followed standard (v0.1-shaped, spec never cited, no conformance gate). The degraded-mode run (no VLM) stopped at server start on a musl-linked embedder wheel, so commit, resource and search are source-read only. 41.5k stars at 2026-11-04 (Phase 14's dated value); the set's only AGPL-3.0. |
@@ -163,7 +249,7 @@ whenever one of the four is next read.
 
 ## Candidate-key census at existing pins (2026-11-06)
 
-Phase 19 decides which candidate keys the registry admits, and it starts from the whole roster, not from the four reports read in Phases 16 and 17. This section counts five candidate keys (`llm_free_path`, judged per component, `concurrent_write_safety`, `compaction_capture`, the OKF open-format axis and `agent_coordination`) across the eight tools that have a source read of them. It is prose only: the keys are unregistered, so no cell exists, and nothing here changes a report's frontmatter or a generated page.
+Phase 19 decides which candidate keys the registry admits, and it starts from the whole roster, not from the four reports read in Phases 16 and 17. This section counts five candidate keys (`llm_free_path`, judged per component, `concurrent_write_safety`, `compaction_capture`, the OKF open-format axis and `agent_coordination`) across the eight tools that have a source read of them. It is prose only: the keys are unregistered, so no cell exists (as of 2026-11-06), and nothing here changes a report's frontmatter or a generated page. Cells set 2026-11-08 ([ADR-0059](../../adrs/0059-memory-vocabulary-admission.md)): see [the matrix](../../comparisons/features.md#memory-category-5).
 
 Measure: each tool's verdict word, present, ✗ or omitted, against the presence test frozen below, once per component for `llm_free_path` (capture, consolidation and recall) and never as one verdict for the whole key; `(no process)` marks a present consolidation with no default-path process. The default-path rule: the open engine as a fresh install runs it, with shipped configuration and no provider key in the launching environment; a hosted route is named in the entry and is never source evidence. The population is eight tools at named pins: ai-memory `8c39e4e67`, openviking `178a8cdfb`, mempalace `602d796c6` and agentmemory `c5b8ebfb3`, mapped from their own committed sections and not re-read here, and mem0 `001c2352`, memos `85532420`, cognee `b948f88d4` and memori `538b61f`, read at their pins on 2026-11-06 as targeted probes, not re-reads (memori is a stub and stays one). everos and memmachine are stubs whose source was not searched for these keys, so they are unset, not ✗. A tool with several mechanisms for one key is counted once in that row, and its report names each mechanism.
 
@@ -184,6 +270,8 @@ Presence tests, frozen 2026-11-06 before the four reads at the pins (each names 
 | `compaction_capture` | 4 — ai-memory, openviking, mempalace, mem0 | 3 — agentmemory, memos, memori | 1 — cognee | 2 — everos, memmachine |
 | OKF open-format axis | 2 — ai-memory, openviking | 6 — mempalace, agentmemory, mem0, memos, cognee, memori | 0 — none | 2 — everos, memmachine |
 | `agent_coordination` | 3 — ai-memory, mempalace, agentmemory | 1 — memos | 4 — openviking, mem0, cognee, memori | 2 — everos, memmachine |
+
+Omission recorded 2026-11-10: memos' `llm_free_path` cell, set 2026-11-08 as `[consolidation]`, was omitted on 2026-11-10 (the 2026-11-09 decision, landed in the fold-in), under the key's undecided-component rule: a cell is omitted when any component is undecided, and memos' capture and recall verdicts differ by adapter, model-free on OpenClaw and model-backed on hermes and DSH through the host bridge, a chain nobody ran, so the per-adapter verdict is INFERENCE. The census row for memos stays as read on 2026-11-06: this table is a dated table of verdicts and was not recounted. [The memos report](memos.md) carries the correction; the matrix renders its cell as `·`, and five reports carry an `llm_free_path` cell as of 2026-11-10.
 
 Verdicts for the four reports read in Phases 16 and 17, mapped from their own sections against the tests above (not re-read here):
 
@@ -215,12 +303,21 @@ The census sections of the four probed reports: [mem0](mem0.md), [memos](memos.m
   key-scope decision dissolved the value-scope deferral. The key is now a mechanism
   enum — background \| in-loop \| proposed — and every set cell in this category reads
   `background` (ai-memory, mem0, memos; cognee stays ✗): the type's entire verified
-  supply side auto-applies out-of-loop. The `proposed` value's two instances are both
+  supply side auto-applies out-of-loop. (Re-derived 2026-11-10 over the seven reports with
+  a `learning_loop` cell, measure: `harness_features.learning_loop` in each report's frontmatter:
+  `background` 6 — agentmemory, ai-memory, mem0, memos, mempalace, openviking — and cognee `false`,
+  no loop; the three stubs, everos, memmachine and memori, carry no cell and are unset.) The `proposed` value's two instances are both
   harnesses (warp, gemini-cli) — propose-and-commit is, so far, a harness posture,
   not a memory-vendor one.
 - A memory-interchange convention would be the next MCP-shaped event — watched from the
   [standards scoreboard](../../docs/standards.md)'s side (zero shared formats as
-  of 2026-08-18).
+  of 2026-08-18). Qualified 2026-11-10: one conformant OKF export (ai-memory v0.2,
+  `export-okf`; its on-disk tree is not conformant by the spec's letter) and one house
+  declaration (openviking's `OKF_VERSION = "0.1"`, which cites no spec: a declaration, not
+  conformance). The spec itself is skewed between a frozen copy, the one ai-memory cites, and
+  its live repository; a read of 2026-11-05 found the two byte-identical, so the skew is of
+  location today and not of content. The watch note beside the scoreboard carries the
+  standing count.
 - **Non-admissions of 2026-11-08 ([ADR-0059](../../adrs/0059-memory-vocabulary-admission.md)):**
   candidates the census read and the ADR argued and did not admit, each with the trigger
   that would reopen it.
