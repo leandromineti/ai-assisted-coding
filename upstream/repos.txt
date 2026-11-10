@@ -132,3 +132,4 @@
 # lightweight tag). Each assertion is the same as above: tag^{commit} equals HEAD and is a
 # commit object. Their reports keep the old pins (7e787c9, 2af48624; both still resolve) until
 # the Phase 16 re-reads move them.
+4|elephant-goldfish-model|https://github.com/google/elephant-goldfish-model

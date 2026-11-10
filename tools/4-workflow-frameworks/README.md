@@ -160,6 +160,25 @@ frameworks; this entry's first draft said "4/4", corrected 2026-09-09 by the
 re-derivation recorded in [conclusion 25](../../docs/conclusions.md)) while the
 enforcement architecture occupies the opposite pole.
 
+### elephant-goldfish-model (EGM) — <https://github.com/google/elephant-goldfish-model> · [report](elephant-goldfish-model.md)
+
+*(Candidate 2026-11-10, deep-dived the same day at pin `dea7761` = tag v0.1.1 — the category's
+sixth deep-dive; source note for the 2026-10-22 launch post:
+[2026-egm-launch](../../references/papers/2026-egm-launch.md).)* Google's design-only
+framework: the main session drafts a spec with the human, and up to ten fresh-context
+reviewer subagents per review critique it without the conversation that produced it. It is
+the first deep-dived framework with **no implementation step**; the other five each ship one.
+Every gate is prose, and the packager refuses hooks outright. "Proceed" is Option 0 at every
+review stage, and a 1-re-audit cap records leftover Blockers as accepted trade-offs and
+advances, so the launch post's "strict go/no-go" has no mechanism. Grounding is read-only
+lookup that never reaches implemented code. What it pushes outside the model is **reviewer
+isolation, declared per host**: `omitClaudeMd` on Claude, `include-custom-instructions: false`
+on Copilot, `permissionMode: readonly` on Cursor, generated permissions on OpenCode. Antigravity
+and Codex get no declared control, and the subject records instruction-file leaks on both. It
+ships probes that test whether isolation held. Three deep-dived frameworks now enforce
+`context_isolation` three different ways (prose, hook, host-declared), the who-enforces question
+ADR-0011 answered for gates (report § Vocabulary candidates, not admitted).
+
 ### Stubs — promoted from the ledger (2026-08-18)
 
 Five candidates ingested at stub depth in one sweep — mechanical facts plus README
@@ -258,6 +277,11 @@ spec-kit" as brands was the wrong comparison — this table is the real one.
   and bounded by it: the methodology can't use any capability beyond prose-following, so
   forks, code-level hooks, and context isolation are structurally unavailable. Behavioral
   equivalence across harnesses remains untested.
+  *2026-11-10, EGM deep-dive:* the "structurally unavailable" half no longer holds for
+  isolation. EGM declares reviewer isolation in each host's agent-definition schema, and the
+  subject's own probes record it diverging by host (instruction files excluded on Claude, leaked
+  on Codex and Antigravity). On this record the harness does dominate that one mechanism
+  ([report](elephant-goldfish-model.md) § Substrate).
 - ~~Claude Code ships plan mode natively. Where's the line between a harness's built-in
   process features and an installed framework — and is category 4 being absorbed into category 2?~~
   **Answered 2026-08-18** — systematized against the feature registry: 6 of the 9

@@ -525,6 +525,17 @@ is to harden the prose instead, and no measurement yet says which pole wins.
 → [superpowers](../tools/4-workflow-frameworks/superpowers.md) § The distinguishing
 bet, § Run probe
 
+*Confronted 2026-11-10 (EGM deep-dive): refines the escape-hatch half.* EGM declines
+every escape hatch F1 names: its packager raises on hooks (`scripts/pack_plugin.py:83-84`),
+its one PreToolUse hook lasted four days (`a9738d4` → `f91dccb`), and its architecture doc
+says of the phase write boundary "This is a convention, and nothing enforces it". It found a
+third route instead: it declares the one rule it cares about, reviewer isolation, in each
+host's agent-definition schema (`omitClaudeMd`, `include-custom-instructions: false`,
+`permissionMode: readonly`, a generated permission map), so the host enforces it. The escape
+hatch can be the host's schema rather than the framework's own engine. Its reach is what host
+schemas can express (tools, instruction files), and no workflow gate fits in one.
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § Substrate
+
 **F2. Spend tokens measuring the domain, not on ceremony.** *(n=1, preregistered;
 under active test)* Exp-01's entire observed quality margin traced to agents that
 *measured* git (fixture repos, crafted commits, timezone probes) and to verification
@@ -556,6 +567,14 @@ No experiment ran, so this confronts F2 with silence on the margin — but it ma
 principle's sharpest available A/B concrete: the same subagent-execution shape now
 exists with (GSD) and without (superpowers) domain measurement.
 
+*Confronted 2026-11-10 (EGM deep-dive): silence on the margin, and the clearest
+counter-design yet.* EGM spends its whole verification budget on ceremony: ten fresh-context
+reviewers per full review of the spec, and zero domain measurement (no build, test or command
+run anywhere in its skills, personas or standards). Its launch post states the outcome it
+expects ("for the AI to correctly produce the code you wanted the first time"), and nothing it
+ships measures that. No experiment ran.
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § What it means for conclusion 6
+
 **F3. Fresh context per stage works as a refinement funnel — but only if the return
 path is compact.** *(convergent, with the boundary condition observed in both
 directions)* GSD's staged fresh contexts caught each prior stage's vagueness four times
@@ -574,6 +593,13 @@ frameworks on fresh per-unit contexts + file-only handoffs + context-free work-u
 grammar ([conclusion 25](conclusions.md)); spec-kit's #3185 reversal stays the
 boundary case in the other direction.
 → [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Architecture
+
+*Confronted 2026-11-10 (EGM deep-dive): consistent, and a new use.* EGM's reviewers
+write findings to per-stage report files that a synthesizer deduplicates before the elephant
+reads them, so the return path is a findings list, not a transcript. But EGM uses fresh
+context as an **independence instrument for review**, not as a refinement funnel for
+execution: it executes nothing, so it stays outside conclusion 25's denominator.
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § F4 — verification
 
 **F4. Budget human attention as an explicit, designed quantity.** *(convergent across
 categories)* spec-kit caps clarification markers at 3, clarify questions at 5, asks one at
@@ -595,6 +621,14 @@ so the human "reads it and reworks whatever you got wrong". Attention moves from
 in-loop approvals to post-hoc audit; whether the audit actually gets read is the
 unpriced half, same as exp-02's answer-quality gap.
 → [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Main features
+
+*Confirmed 2026-11-10 (EGM deep-dive), with the price visible.* Attention is budgeted
+in the grammar: "ONE QUESTION AT A TIME (CRITICAL)" (`resources/execution_instructions.md`),
+an approval question after each drafted section, single-select stage gates, and a cap of one
+re-audit per review stage. The cap is where the budget is paid for: at the cap the skill
+records residual findings "as accepted trade-offs" and advances on its own, so bounding human
+attention is bought with F5's fail-closed property.
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § F4 — verification
 
 **F5. Verification gates must fail closed, abstain when subjective, and control their
 false-positive rate.** *(convergent, three complementary lessons)* Fail-closed: the
@@ -625,6 +659,14 @@ and the measured column not at all.
 → [superpowers](../tools/4-workflow-frameworks/superpowers.md) § F4 — verification,
 § Run probe
 
+*Contradicted in design 2026-11-10 (EGM deep-dive), with one abstention lesson kept.*
+Every EGM gate fails open: "Proceed" is Option 0 at every review stage, the 1-re-audit cap
+auto-advances, and a draft with no recognised plan section degrades the review to stages 5–8
+instead of failing it. The abstention half survives as prose: a reviewer that fails is
+recorded as `not run`, "Never count it as a reviewer with zero findings", and its absence makes
+the round not clean (`skills/egm-review-loop/SKILL.md:140-144, 169-172`).
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § F4 — verification
+
 **F6. Installing a methodology means granting prose your harness's authority —
 maintainership is a security property.** *(single-instance, structural)* GSD's upstream
 went dark amid a token rug-pull association; the community fork explicitly states it
@@ -644,6 +686,16 @@ surface is one disclosed, version-tagged image beacon on an optional path, honor
 three opt-outs.
 → [superpowers](../tools/4-workflow-frameworks/superpowers.md) § Stack & repo shape,
 § Substrate
+
+*Third instance 2026-11-10 (EGM deep-dive), the code-free-payload polarity.* EGM's
+installed payload contains no executable code: the packager refuses hooks, MCP servers and
+symlinks (`scripts/pack_plugin.py:62-87`), and both v0.1.1 release ZIPs were checksum-verified
+and found byte-identical, file for file, to the tagged tree (run probe, 2026-11-10). Two
+prose-authority surfaces remain, both of them host-side. Cursor's routing rule is
+`alwaysApply: true`, so it enters every Cursor session where the plugin is enabled. OpenCode
+evaluates shell markers in slash-command arguments before agent permissions apply, which the
+subject warns about itself (`docs/opencode.md:52-55`).
+→ [elephant-goldfish-model](../tools/4-workflow-frameworks/elephant-goldfish-model.md) § Bleed, § Run probe
 
 ## The extensions bucket (6) — extension design *(three principles; bucket status per ADR-0002, renumbered per ADR-0007 and again per ADR-0020)*
 
