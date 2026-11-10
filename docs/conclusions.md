@@ -365,7 +365,8 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     2026-08. The benchmark-on-chat instances carry on, each vendor testimony and none
     reproduced: agentmemory's 95.2% R@5 and mempalace's 96.6% R@5 are both LongMemEval-S
     over 500 questions, retrieval-only (mempalace's raw path builds no MemPalace code,
-    issue #27; agentmemory's own text says "We do NOT claim these as 'LongMemEval
+    MemPalace's upstream issue #27, quoted in [the report](../tools/5-memory/mempalace.md)
+    § Benchmark claims; agentmemory's own text says "We do NOT claim these as 'LongMemEval
     scores'"), and ai-memory's per-release reports are LongMemEval-S too (hit@5 0.943
     at v3.3.3). This re-checks the benchmark half of the headline only; the
     sells-to-coding-agents half was not re-derived here. →
@@ -396,7 +397,9 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [`experiments/04-memory-continuity/`](../experiments/04-memory-continuity/README.md) But every
     instrument the vendors self-report on — LoCoMo, LongMemEval, BEAM — measures
     personal chat-assistant memory: no tool traces, no repo state, no code entities.
-    **No coding-agent memory benchmark exists**, and the two vendor headline numbers
+    **No coding-agent memory benchmark exists** (*narrowed 2026-11-10 to "none independent of
+    its vendor and larger than a smoke test was seen in the searched surface"; see
+    conclusion 13's addendum*), and the two vendor headline numbers
     checked exceed their instruments' own published scales (mem0's 92.5 vs LoCoMo's
     87.9 *human* baseline; cognee's 0.79 vs BEAM's ~0.36 best configs) — so the
     type's efficacy for coding is currently an unmeasured claim resting on
@@ -826,7 +829,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     [ADR-0055](../adrs/0055-context-assembly-group.md) ·
     [`comparisons/features.md § Harnesses`](../comparisons/features.md) ·
     [`tools/2-harnesses/README.md`](../tools/2-harnesses/README.md) § What we assess here
-24. **Every memory vendor's learning loop auto-applies by default; propose-and-commit is
+24. **Every memory vendor's learning loop auto-applies; propose-and-commit is
     a shipped default only in harnesses** (2026-09-04, the ADR-0056 census across three categories).
     When `learning_loop` became a mechanism enum, the cross-category split was already
     sitting in the cells: harnesses span the whole range — `background` (hermes-agent,
@@ -853,7 +856,14 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     Loop-bearing count, SOURCE: 6 of the 7 category-5 reports that carry a `learning_loop`
     cell are `background` (agentmemory, ai-memory, mem0, memos, mempalace, openviking).
     Measure: the cell in each report's `harness_features` frontmatter, the shipped
-    default, `options:` alternatives not counted. The seventh, cognee's `false` cell, is
+    default, `options:` alternatives not counted. The six `background` cells record how
+    the loop applies (no approval step), not that it runs at a bare install: three of them
+    are not running there, and each report's own cell comment says so (memos: "NOT MOUNTED
+    by default", lightweight mode leaves the cascade unmounted, `tools/5-memory/memos.md:19`;
+    mempalace: "DEFAULT-UNMOUNTED until a plugin is installed", hooks only after a plugin
+    install, `tools/5-memory/mempalace.md:22`; openviking: "a bare install with no VLM writes
+    nothing autonomously", no autonomous write without a configured VLM,
+    `tools/5-memory/openviking.md:25`). The seventh, cognee's `false` cell, is
     no loop — nothing auto-applies and nothing proposes — and the three stubs (everos,
     memmachine, memori) carry no cell. So "every" holds over the loop-bearing vendors,
     and "every set category-5 cell is `background`" was false of cognee's cell, which is
@@ -869,7 +879,7 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
     ai-memory's `evidence-gated` default has `unfiltered` as its recorded alternative for a
     fresh zero-LLM install, where its profile pass admits on one marked sentence (SOURCE
     only, never run). Nothing here is a rate; these are cells read at their own pins.
-    *Headline revised 2026-11-10; it read: "Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture".* →
+    *Headline revised 2026-11-10 (twice): it read "Every memory vendor's learning loop auto-applies; propose-and-commit exists only as a harness posture", then "Every memory vendor's learning loop auto-applies by default; propose-and-commit is a shipped default only in harnesses" — the second wording dropped because three of the six `background` loops (memos, mempalace, openviking) are off at a bare install per their own cell comments.* →
     [`tools/5-memory/README.md`](../tools/5-memory/README.md) § Open questions ·
     [`tools/5-memory/ai-memory.md`](../tools/5-memory/ai-memory.md),
     [`tools/5-memory/mempalace.md`](../tools/5-memory/mempalace.md),

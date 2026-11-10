@@ -171,7 +171,10 @@ full reads the same day.)* The instruments the memory vendors self-report on:
 
 Three take-aways, each recorded in the refs notes:
 
-1. **No coding-agent memory benchmark exists.** All three measure personal
+1. **No coding-agent memory benchmark exists** (*narrowed 2026-11-10: the clause holds of
+   these three instruments; across the wider surface the repo now reads "none independent
+   of its vendor and larger than a smoke test", because agentmemory ships an in-house
+   15-query coding corpus — see [conclusion 13's addendum](conclusions.md)*). All three measure personal
    chat-assistant memory — no tool traces, no repo state, no code entities. The type's
    vendors benchmark on conversation and sell to coding harnesses; every transfer claim
    is unmeasured.

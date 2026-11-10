@@ -560,7 +560,7 @@ def check_options(reports: list[dict]) -> None:
     the key has a legal-value list; the mapping holds `{value, via}` records; every alternative
     is inside the legal values; has the same shape (list or scalar) as the default; does not
     repeat a list element; is not equal to the default; is not a duplicate; and has a
-    non-empty via. `python3 scripts/build-tool-index.py --selftest` runs these as fixtures.
+    non-empty string via. `python3 scripts/build-tool-index.py --selftest` runs these as fixtures.
     """
     by_id = {e["id"]: e for e in FEATURE_REGISTRY}
     for r in reports:
@@ -621,7 +621,7 @@ def check_options(reports: list[dict]) -> None:
                     sys.exit(f"{rel}: options.{key} duplicate alternative {a['value']!r}")
                 seen.add(k)
                 if not isinstance(a["via"], str) or not a["via"].strip():
-                    sys.exit(f"{rel}: options.{key} has an empty via")
+                    sys.exit(f"{rel}: options.{key} via must be a non-empty string (got {a['via']!r})")
 
 
 def check(reports: list[dict]) -> int:
@@ -1600,7 +1600,10 @@ def _selftest_fixtures() -> list[dict]:
     the Phase 19 review found loose. Each is `{id, expect, needle, why, ...}`: `expect` is
     "pass" or "fail"; a failing fixture must exit with a message containing `needle`. A
     fixture is either a report (`cells`, `options`, run through `check_options`) or a registry
-    entry mutation (`entry`, run through `_check_values_field`)."""
+    entry mutation (`entry`, run through `_check_values_field`). Coupling: the report fixtures
+    read the live registry, so `no-values` assumes `memory_store` declares no `values:` and
+    the others assume `attribution-only` and `acl` are legal `team_sharing` members and
+    `wide-open` is not; a registry change that breaks one fails it for that reason, not a rule regression."""
     base = {
         "memory_scope": ["user", "project"],
         "team_sharing": "attribution-only",
@@ -1646,9 +1649,12 @@ def _selftest_fixtures() -> list[dict]:
         dict(id="no-values", expect="fail", needle="has no `values:`",
              why="a key with no legal-value list takes no options",
              report=rpt(options={"memory_store": [rec("files")]})),
-        dict(id="empty-via", expect="fail", needle="empty via",
+        dict(id="empty-via", expect="fail", needle="via must be a non-empty string (got ' ')",
              why="a record needs a via",
              report=rpt(options={"team_sharing": [rec("acl", via=" ")]})),
+        dict(id="non-string-via", expect="fail", needle="via must be a non-empty string (got 5)",
+             why="a via that YAML parses as a number, list or null is no switch name",
+             report=rpt(options={"team_sharing": [rec("acl", via=5)]})),
         dict(id="duplicate", expect="fail", needle="duplicate alternative",
              why="the same alternative twice is a duplicate",
              report=rpt(options={"team_sharing": [rec("acl"), rec("acl")]})),

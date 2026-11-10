@@ -64,7 +64,7 @@ the clone's HEAD and can move pins), write the report, re-run
 docs — omitted means "not checked", `false` means "checked and absent", and both are claims.
 A cell holds the **shipped default**. A configuration alternative goes in the report's top-level
 `options:` mapping as `{value, via}`, never in the cell value or a comment, and only for a key
-whose registry entry lists `values:` (ADR-0060; the grammar is in
+whose registry entry lists `values:` or is a presence key, which implies true | false (ADR-0060; the grammar is in
 [`docs/feature-taxonomy.md`](docs/feature-taxonomy.md) § Options with a default).
 
 Three report-writing disciplines — the first two scars from the gsd-core v1.11.0 re-read

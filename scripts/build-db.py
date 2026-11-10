@@ -144,6 +144,9 @@ def build() -> sqlite3.Connection:
             ):
                 sys.exit(f"build-db: {rel}: options.{key} must be a list of {{value, via}} "
                          f"records; python3 scripts/build-tool-index.py names the rule")
+            if not all(isinstance(a["via"], str) and a["via"].strip() for a in alts):
+                sys.exit(f"build-db: {rel}: options.{key} via must be a non-empty string in "
+                         f"every record; python3 scripts/build-tool-index.py names the rule")
             for rec in alts:
                 value = rec["value"]
                 con.execute(
