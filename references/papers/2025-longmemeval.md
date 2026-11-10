@@ -76,6 +76,8 @@ shipped (2026-09-02, v2.0.0): an in-repo end-to-end harness replaying haystacks 
 the production hook path, with published, provenance-stamped baselines (hit@5 0.617
 FTS-only → 0.823 with 2.0's default local embeddings) that also print agentmemory's
 0.967 beating them — the future-work claim scored as landed at the 2026-09-04 re-read*.
+
+*Corrected 2026-11-10 (fold-in): the in-repo baselines do not "print agentmemory's 0.967 beating them". 0.967 is agentmemory's grep baseline on its own 15-query `coding-agent-life-v1` corpus (its hybrid adapter scores 1.000), and its LongMemEval-S headline is 95.2% `recall_any@5`, a different metric and split. ai-memory's v2.0.2 benchmarks README had attributed 0.967 to agentmemory on LongMemEval-S, and ai-memory withdrew that attribution on 2026-10-12 (`docs/competitive-parity.md:238-242` at v3.3.3, TESTIMONY); its v3.3.3 README claims no ranking between the two. See the [ai-memory report](../../tools/5-memory/ai-memory.md) (Open questions; claims row 123). The 0.823 and 0.617 figures are unaffected.*
 The paper's
 "even perfect recall loses 10 points to bad reading" is the sharpest available
 argument that injection format — the thing the memory kind's harness shims control —

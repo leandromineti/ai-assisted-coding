@@ -79,6 +79,14 @@ box, memos is summarize + embed + retrieve. Every headline capability — three 
 five entry points, self-evolution, rule extraction, skill crystallization — describes an
 opt-in configuration. The viewer surfaces the inverse toggle as "memory self-evolution."
 
+*Corrected 2026-11-10 (fold-in): "summarize + embed + retrieve" is consistent with the
+census below, with one qualification this paragraph did not state. The two model-backed
+steps of that lightweight default are the per-step summary (`core/capture/summarizer.ts:61`)
+and a per-recall relevance filter that lightweight mode forces on
+(`core/pipeline/deps.ts:166-168`, `core/retrieval/llm-filter.ts:138`), and both make a
+generative call on the hermes and DSH shipped defaults, where the census entries for
+capture and recall read ✗. Read the line as "no evolution loop runs", not "no model is called".*
+
 Doc-vs-code casualties of tracing the math: the survey's "Beta(1,1) probation" exists
 only in `ALGORITHMS.md` — the code implements an η-anchored one-pseudo-observation
 blend that disagrees numerically (0.75 vs 0.667 for the first pass) and **the tests
@@ -157,6 +165,14 @@ its background summarization/evolution prompts replay through the harness's
 authenticated provider (`_handle_host_llm_complete`; DSH ships `hostLlmEnabled: true`).
 The `host` LLM delegation itself is clean engineering: an in-process bridge holding a
 function reference, never a key — egress follows the host's model config.
+
+*Corrected 2026-11-10 (fold-in): the host-credential billing sentence above holds for
+hermes (template `provider: openai_compatible` with a blank key, `fallbackToHost` default
+true, `host.llm.complete` bound at `adapters/hermes/memos_provider/__init__.py:520-522`) and
+DSH (`hostLlmEnabled` default true, `provider` rewritten to `host`). On OpenClaw the pin
+registers no host bridge, so the core nulls its model client (`core/pipeline/memory-core.ts:413-422`)
+and capture uses the heuristic summary with no model call (INFERENCE). The behaviour
+depends on the adapter.*
 
 ## Telemetry — the clone-blind finding, probed
 

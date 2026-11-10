@@ -1,6 +1,6 @@
 # A taxonomy of AI-assisted-coding tooling
 
-`checked: 2026-08-28`
+`checked: 2026-11-10`
 
 The point of this document is a **shared vocabulary**: without one, "Claude Code vs.
 GSD vs. Opus 5" is a category error — three things that aren't the same kind of thing
@@ -329,8 +329,10 @@ ambition — both frameworks studied grew deterministic engines (GSD's `gsd-pi`,
 
 Persistent cross-session state as an installable product — **the agent↔time edge**. Fed
 by hooks/MCP during a session, consolidated between sessions, injected back at the next
-session start, on any harness. Reports carry the 13-key `memory_features`
-block[^adr-0013]; the category's survival bet is the one
+session start, on any harness. Reports carry the `memory_features`
+block[^adr-0013] (19 keys on 2026-11-10, counted from the registry's
+`block: memory_features` entries; the admission of the latest ones is
+ADR-0059[^adr-0059]); the category's survival bet is the one
 thing a single harness cannot absorb — cross-harness continuity — measured pull-shaped
 in exp-04 (conclusion 14).
 
@@ -364,7 +366,8 @@ where the coding-agent behavior lives, not a pipeline stage.
 
 A full category since the 2026-08-22 split[^adr-0020]: born 2026-08-18 as the
 extensions bucket's `memory` type, promoted by owner decision — the earlier
-sample-bias caution[^adr-0016] still applies to the category's eight-report roster, and is carried as
+sample-bias caution[^adr-0016] still applies to the category's roster (eight reports when
+it was written, ten on 2026-11-10, counted as the `category: 5` reports), and is carried as
 calibration, not erased. Reports keep `type: memory` as residual data.
 
 Distinct from category 6: memory governs **what survives the session**; extensions
@@ -662,3 +665,4 @@ reads in superseded vocabulary — [`adrs/`](../adrs/README.md) carries the deco
 [^adr-0022]: [ADR-0022 — repo-voice prose in refs is sweepable; decoders relocate to the ADR index](../adrs/0022-refs-repo-voice-sweepable.md), decided 2026-08-22.
 [^adr-0023]: [ADR-0023 — components for categories 4 and 5; tracing discipline goes category-generic](../adrs/0023-category-4-5-components.md), decided 2026-08-25.
 [^adr-0048]: [ADR-0048 — category 1 assesses the first-party API-served version only](../adrs/0048-category-1-assesses-api-versions-only.md), decided 2026-08-27.
+[^adr-0059]: [ADR-0059 — the memory vocabulary admission: four candidate keys, two values, and the ripple rows of the 2026-11 re-reads](../adrs/0059-memory-vocabulary-admission.md), decided 2026-11-08.

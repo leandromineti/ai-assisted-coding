@@ -13,7 +13,7 @@ first_commit: 2025-07-24
 stars: 17410
 stars_at: 2026-11-04   # gh api; 16,128 at 2026-08-18 (+16.4/day net)
 read_at: 2026-08-18
-depth: stub   # facts from repo-facts.sh + README skim; source not read
+depth: stub   # facts from repo-facts.sh + README skim; source not read for the report as a whole. Corrected 2026-11-10 (fold-in): the five census keys were read in source at 538b61f on 2026-11-06, a targeted read, not a codebase read, so the depth stays stub
 ---
 
 # memori
@@ -26,7 +26,15 @@ they say" — i.e. capturing actions/tool use, not only conversation. Rust core
 agnostic," offered both as bring-your-own-DB (`memori-byodb` docs tree) and as a
 cloud product (`memori-cloud`; quickstart wants a `MEMORI_API_KEY`). In-repo
 `benchmarks/` tree. 16.1k stars in ~13 months. (README + file listing at the pin;
-source unread.)
+source unread, apart from the targeted census read dated below.)
+
+*Corrected 2026-11-10 (fold-in): "source unread" needs a qualifier. The five census keys
+were read in source at `538b61f` on 2026-11-06 (a targeted read of those keys, not a
+codebase read, so the depth stays `stub`); see the census section below. The
+bring-your-own-database framing above also omits that this path still posts each captured
+turn to the hosted augmentation endpoint under a built-in client key (named by variable
+only: `MEMORI_X_API_KEY`, `core/src/network/client.rs:39-57`), so a bring-your-own-database
+install is not a no-egress install.*
 
 ## Notes for the type comparison
 

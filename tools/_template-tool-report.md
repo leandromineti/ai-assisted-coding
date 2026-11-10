@@ -67,21 +67,38 @@ workflow_features:
   retrospectives: <true | false>
 # memory_features: category-5 `type: memory` reports only — same verified-only discipline.
 # Values are descriptive enums (mechanism choices), NOT ADR-0011 grades. Definitions
-# live in the feature taxonomy (ADR-0013); the generator warns on unregistered keys.
+# live in the feature taxonomy (ADR-0013, ADR-0059); the generator warns on unregistered keys.
+# The 19 keys below are the registry's `block: memory_features` entries in registry order
+# (counted 2026-11-10); a key with a `values:` list in the registry lists exactly those values.
 memory_features:
-  memory_store: <files-git | vector | graph | rows | [list, for, hybrids]>
-  capture_path: <hook | adapter | agent-invoked>
-  write_admission: <evidence-gated | scored | unfiltered>
-  recall_injection: <auto | pull-only | both>
-  memory_scope: [<project | agent | user | session>]
+  memory_store: <files-git | files | vector | graph | rows | [list, for, hybrids]>
+  memory_scope: [<project | agent | user | session | global>]
   memory_tiers: <true | false>
-  hybrid_retrieval: <true | false>
+  deployment_mode: <self-host | cloud | both>
+  team_sharing: <attribution-only | acl | false>
+  capture_path: <hook | adapter | agent-invoked>
+  compaction_capture: <writes-to-store | reinject-only | false>
+  llm_free_path: [<capture | consolidation | recall>]    # in that order; [] when all three call a model
+  write_admission: <evidence-gated | scored | unfiltered>
+  concurrent_write_safety: <one-process | one-host | false>
   decay: <true | false>
   memory_revision: <auto | proposed | caller-only>
+  recall_injection: <auto | pull-only | both>
+  hybrid_retrieval: <true | false>
   injection_trust_boundary: <true | false>
-  deployment_mode: <self-host | cloud | both>
   harness_installer: <true | false>
   rule_extraction: <true | false>
+  memory_import: <true | false>
+  agent_coordination: <true | false>
+# options: (optional, a top-level mapping of the report, ADR-0060). A cell above keeps the
+# tool's SHIPPED DEFAULT; a configuration alternative goes here, never in the cell value or a
+# comment, and only for a key whose registry entry lists `values:` (a presence key implies
+# true | false). `value` is the alternative cell value, `via` names the switch, route or
+# command that selects it. An alternative may not equal the default or repeat another.
+# options:
+#   memory_scope:
+#     - value: [<user>]
+#       via: "<the switch, flag or command that selects it, with its source file:line>"
 # harness_features: set a key ONLY when verified in source or official docs — omitted means
 # "not yet checked", false means "checked and absent". Both are claims; only one is safe
 # to guess, and neither should be. Keep the vocabulary to this fixed set so the generated

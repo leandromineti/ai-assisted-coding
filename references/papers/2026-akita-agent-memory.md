@@ -76,6 +76,8 @@ no benchmark and no controlled comparison.
 
 > EN: Without a provider key configured, agentmemory runs in “no-op mode” — still indexes observations and searches, but doesn’t compress or consolidate.
 
+*Corrected 2026-11-10 (fold-in): the no-op-mode description is the author's testimony about an earlier version. At `v0.9.31` the keyless default stores a synthetic compression with no model (a title equal to the tool name, a narrative cut to 400 characters, a constant confidence of 0.3), rebuilds its keyword index from stored memories and observations at each start, and searches by BM25 plus an entity-gated graph stream; model-driven consolidation follows provider-key presence (agentmemory report, Architecture: Capture, Consolidation). The essay is kept above as the record of what was read on 2026-05-18.*
+
 > a porta 49134 do iii engine bindeia em 0.0.0.0 por default (passa pelo firewall, vale conferir)
 
 > EN: the iii engine’s port 49134 binds to 0.0.0.0 by default (passes through your firewall, worth checking)
@@ -154,6 +156,8 @@ Copied, never rounded; locators are PT section headings.
   for Codex, RRF "k=60", ports 3111 (REST) and 3113 (viewer), 4 consolidation tiers (section
   *agentmemory: implementação prática do padrão*). These are the author's description of the
   tool as of 2026-05-18, not a source reading.
+
+  *Corrected 2026-11-10 (fold-in): at `v0.9.31` the registry holds 54 tools (8 under `AGENTMEMORY_TOOLS=core`), counted by the agentmemory report's own measure (a script over the `export const X: McpToolDef[]` arrays and their `name:` lines); "51 tools" is dated testimony about an earlier version.*
 - The retraction's figures: "5s" window and "~47%" of Claude Code tool calls (update at the top);
   both are the author's, unmeasured in this post and in the 05-23 post it points to.
 - Claude Code's compaction constants, as the author read them in the leaked source (section
@@ -183,6 +187,8 @@ Copied, never rounded; locators are PT section headings.
   the essay's claim that ai-memory "resolve esses problemas": a rival's retraction note is a
   maker's marketing claim about the replacement, to be confronted with source at the re-read
   pin. The agentmemory deep dive owes a source check of each of the three defects at its pin.
+
+  *Corrected 2026-11-10 (fold-in): the agentmemory deep dive is done, at `v0.9.31` ([report](../../tools/5-memory/agentmemory.md)). Defects 1 and 2 are CHANGED and defect 3 is GONE, each with a fix commit that is an ancestor of the pin, and the report's six scored predictions read TRUE 2, FALSE 3 and UNDECIDABLE-BY-SOURCE 1 (the ~47% fraction is the undecidable one: a rate over live traffic, left to issue #53). The ledger row named above was removed when the report landed, so the two bullets above describe an obligation that is now discharged.*
 - **Conclusion 14** (cross-harness continuity is real and pull-shaped): the "handoff sem
   fricção" section is the author's practitioner claim of the same phenomenon from a
   daemon-plus-MCP design. It supports the direction of the conclusion as testimony and adds no

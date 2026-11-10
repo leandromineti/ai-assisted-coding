@@ -83,6 +83,17 @@ Read in source at `cognee-mcp/src/server.py`:
   into the permanent graph, enrich with triplet embeddings, sync back to session
   caches. Consolidation is a *tool the agent calls*, not a background process — the
   inverse of ai-memory's and memos' posture.
+
+  *Corrected 2026-11-10 (fold-in): `improve` is not a registered MCP tool at `b948f88d4`,
+  so "a tool the agent calls" and the contrast with ai-memory and memos hold for the MCP
+  surface only. `cognee-mcp/src/server.py` registers 10 tools through `@registry.tool`
+  (measure: `git grep -c -E '@registry\.tool' b948f88d4 -- cognee-mcp/src/server.py`);
+  `save_interaction` (`:485`) and `improve` (`:1348`) carry only `@log_usage` and are not
+  registered. That an unregistered function is not an MCP tool is INFERENCE, because
+  FastMCP's registration code was not read. In the SDK, `remember()` runs `improve()`
+  after `cognify` by default (`self_improvement: bool = True`, `remember.py:660`,
+  `:1284-1291`), and `remember(session_id=…)` starts `improve(session_ids=[…])` as a
+  background job (`remember.py:1232-1249`).*
 - **Coding-rule learning exists, but is dark in the newest deployment shape.**
   `save_interaction` add+cognifies the exchange and then LLM-extracts developer
   rules into a `coding_agent_rules` NodeSet (`codingagents/coding_rule_associations.py`)
@@ -91,6 +102,11 @@ Read in source at `cognee-mcp/src/server.py`:
   mode" warning. The Claude Code plugin bootstraps a local *API* and talks HTTP, so
   the marketplace-installed path skips exactly this learning feature. Nothing in the
   plugin README says so.
+
+  *Corrected 2026-11-10 (fold-in): the rule extraction at `server.py:517-531` sits inside
+  `save_interaction`, which is not a registered MCP tool at `b948f88d4` (INFERENCE, as
+  above), so the path is unreachable from an MCP client in direct mode as well. The
+  API-mode explanation is true but is not the only reason the feature is dark.*
 - **Tool-catalog economy as a feature.** `apply_tool_mode` (server.py:189) gates
   `tools/list` behind a BM25 search transform: default mode advertises a pinned
   memory API plus `search_tools`/`call_tool` instead of the full catalog. A memory
@@ -146,6 +162,9 @@ repeated — and the report itself flags the 10M figure (0.67) as in-sample/expl
    the agent decide when to consolidate. With the plugin's hooks automating the calls,
    the trigger moves into the integration seam — the loop is assembled from parts
    that live in different repos.
+   *Corrected 2026-11-10 (fold-in): agent-invoked consolidation holds for the MCP
+   surface only, where `improve` is not a registered tool; the SDK `remember()` runs it by
+   default (see the correction under The MCP surface).*
 4. **A competitor's issue-tracker dossier held up.** Both spot-checked structural
    claims from ai-memory's opposition research were corroborated in cognee's own
    dependency spec — including the Ladybug fork whose costs are now written into

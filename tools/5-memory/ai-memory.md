@@ -472,6 +472,17 @@ TESTIMONY, inside its stated run-to-run variance).
   (`docs/benchmarks/` holds none), and the stale 0.779 survives in the archived 2.x changelog
   (`docs/changelog/2.x.md:4501`, [#127]). Consolidation *quality* is measured only by the `ab`
   A/B harness — no published numbers.
+  *Corrected 2026-11-10 (fold-in): the "competitor beating it (agentmemory 0.967 R@5)"
+  clause above is wrong at its own pin and is kept only as the record of what was written
+  on 2026-09-04. 0.967 is agentmemory's **grep baseline** on its own 15-query
+  `coding-agent-life-v1` corpus (its hybrid adapter scores 1.000; its LongMemEval-S
+  headline is 95.2% `recall_any@5`, a different metric and split; agentmemory report,
+  Benchmark claims). The v2.0.2 `docs/benchmarks/README.md:28-29` had attributed that
+  figure to agentmemory on LongMemEval-S, and ai-memory withdrew the attribution on
+  2026-10-12 (`docs/competitive-parity.md:238-242` at v3.3.3, TESTIMONY). The v3.3.3
+  `docs/benchmarks/README.md:199-201` claims no ranking between the two systems, and
+  `GIT_NO_LAZY_FETCH=1 git -C upstream/ai-memory grep -n '0\.967' 8c39e4e67 -- docs/benchmarks`
+  prints 6 lines, all ai-memory's own multi-session per-type rows (claims row [#123]).*
 
 ## Candidate vocabulary collected
 
@@ -701,9 +712,11 @@ Verdicts, one sentence each. HOLDS means the claim is still true at v3.3.3 (a fi
 
 The per-claim rows came from the confrontation tract and were sampled before use: 25 claims across the three tracts were re-run against the clone, and one failed (the `team_sharing` row had cited an observed `access_mode` value that the kept files do not contain; it is regraded SOURCE). Seven verdicts were changed on the traced chain: [#5], [#8] and [#27] to CHANGED, [#7], [#13], [#15] and [#18] to MOVED.
 
-Tally: 162 claim units — HOLDS 95 · MOVED 22 · CHANGED 44 · GONE 1; with-measure counts reproduced at 7e787c9 60/61, without-measure 1/9.
+Tally: 162 claim units — HOLDS 94 · MOVED 22 · CHANGED 45 · GONE 1; with-measure counts reproduced at 7e787c9 60/61, without-measure 1/9.
 
 *(2026-11-05, post-review correction: the tally first read HOLDS 99 · CHANGED 40. Rows [#50], [#51], [#139] and [#140] were scored HOLDS although their own-pin column says "not reproduced"; by the verdict definition above a figure holds only when it reproduces at its rev, so they are CHANGED, like the other not-reproduced counts [#86], [#105], [#109] and [#134]. The total, MOVED, GONE and the with/without-measure figures are unchanged.)*
+
+*(Corrected 2026-11-10, fold-in: row [#123] moved HOLDS → CHANGED after its measure was re-run at the pin, so the tally read HOLDS 95 · CHANGED 44 until then and reads HOLDS 94 · CHANGED 45 now. The total, MOVED, GONE and the with/without-measure reproduction counts are unchanged, because [#123] is a no-measure row. Measure: a recount of the verdict cells of this table.)*
 
 *Corrected 2026-11-05 (report-conventions audit). Two wording breaks found by a read of all four category-5 deep-dives
 against each other, fixed in place with no pin, cell value or verdict moved: the `memory_store`
@@ -724,7 +737,7 @@ What moved, by area (every non-HOLDS unit is named here; the table below has the
 - **Ingest and session end.** [#67], [#71] and [#73] moved; [#74] is GONE — `checkpoint_degrades_to_synth` was removed when PreCompact LLM work moved onto the durable worker.
 - **Baton and retrieval.** [#82] and [#85] moved; [#107]: the baton also gained "Latest assistant response" and "Last failed tool call"; [#86] is the 27-phrase filter; [#142] the embedder announcement moved into `configure_embedder`; [#127] the stale 0.779 moved into the archived 2.x changelog.
 - **Providers.** [#93] and [#94]: ten `ProviderChoice` variants (adds Codex and Cursor); [#95] and [#97] moved.
-- **Docs, OKF and repo shape.** [#27]: "no export step forks the truth" is contradicted by its own file at v3.3.3 (the export drops ledgers, regenerates the index and backfills fields; the on-disk tree carries frontmatter-less ledgers outside git). [#34] and [#35] moved. [#41] and [#42]: `ARCHITECTURE.md` is 1,833 lines and its layout block lists 11 crates including `web`. [#54], [#55], [#56] and [#57]: `CLAUDE.md` is 17 lines (an `@AGENTS.md` import plus a comment) and `AGENTS.md` is 845. [#104]: the landscape note is 1,106 lines. [#147]: the stale `active_project.rs` doc comment was fixed.
+- **Docs, OKF and repo shape.** [#27]: "no export step forks the truth" is contradicted by its own file at v3.3.3 (the export drops ledgers, regenerates the index and backfills fields; the on-disk tree carries frontmatter-less ledgers outside git). [#34] and [#35] moved. [#41] and [#42]: `ARCHITECTURE.md` is 1,833 lines and its layout block lists 11 crates including `web`. [#54], [#55], [#56] and [#57]: `CLAUDE.md` is 17 lines (an `@AGENTS.md` import plus a comment) and `AGENTS.md` is 845. [#104]: the landscape note is 1,106 lines. [#147]: the stale `active_project.rs` doc comment was fixed. [#123]: the "0.967" read as agentmemory's competing figure is not in `docs/benchmarks/` at the pin (its six `0.967` hits are ai-memory's own rows) and the attribution was withdrawn on 2026-10-12 (HOLDS → CHANGED on 2026-11-10, fold-in).
 - **Provenance and velocity.** [#29] (a repo-side count), [#38] and [#39] (120 `.sh`, 103 `.ps1` by `git ls-tree`), [#43] and [#44] (5,396 commits over about 5.5 months), [#47], [#49], [#50], [#51], [#139] and [#140] (GitHub-API population figures that did not reproduce at any cut tried), [#105], [#109], [#110] (the corrected figure is itself 11) and [#134].
 
 Nothing here is a v3.4.0 claim: post-pin material (2026-11-04 onward) is drift and sits only in the release assessment's dated drift subsection.
@@ -856,7 +869,7 @@ Nothing here is a v3.4.0 claim: post-pin material (2026-11-04 onward) is drift a
 | 120 | "0.823" (L350) | other | — | — | HOLDS | — | historical run file present; current release run 0.943 local (`longmemeval-s-3.3.3-release.md:50`) [TESTIMONY] |
 | 121 | "0.668" | other | — | — | HOLDS | — | historical file present |
 | 122 | "0.617" | other | — | — | HOLDS | — | historical file present |
-| 123 | "0.967" | other | — | — | HOLDS | — | still cited in `docs/benchmarks/` (7 hits) |
+| 123 | "0.967" | other | — | — | CHANGED | — | was HOLDS, "still cited in `docs/benchmarks/` (7 hits)"; Corrected 2026-11-10 (fold-in): `GIT_NO_LAZY_FETCH=1 git -C upstream/ai-memory grep -n '0\.967' 8c39e4e67 -- docs/benchmarks` prints 6 lines at the pin, all ai-memory's own multi-session per-type rows (the seven-hit count did not reproduce), none agentmemory's figure. The figure the claim carried, agentmemory's 0.967 as a competitor beating ai-memory, is agentmemory's grep baseline on its 15-query corpus, and ai-memory withdrew the attribution on 2026-10-12 (`docs/competitive-parity.md:238-242`) [TESTIMONY]; by the verdict definition above the content no longer holds |
 | 124 | "6.6 points" | count | with | reproduced | HOLDS | — | [TESTIMONY] `docs/benchmarks/README.md:144` (was :24) |
 | 125 | "2 KB" (L353) | count | with | reproduced | HOLDS | — | as #70 |
 | 126 | "30 abstention questions" | count | with | reproduced | HOLDS | — | `longmemeval-s-2026-09-01-local.md:7`; still no separate abstention report (`git ls-tree -r --name-only v3.3.3 docs \| grep -i abstention` → nothing) |

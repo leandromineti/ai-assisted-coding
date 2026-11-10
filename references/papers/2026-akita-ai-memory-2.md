@@ -96,6 +96,8 @@ with the competitor's source, not accepted:
 
 > EN: There’s agentmemory, a TypeScript MCP server tied to a native sidecar and a giant surface of dozens of tools.
 
+*Corrected 2026-11-10 (fold-in): read at `v0.9.31`, the sidecar is the iii engine, a separately downloaded prebuilt binary whose licence file declares Apache-2.0 AND Elastic-2.0 (agentmemory report, Engine dependency; iii's source was not read, so the licence is TESTIMONY), and the surface is 54 tools in the registry and 7 on the no-server shim. The maker's characterisation above is kept as read on its date.*
+
 > Tem o basic-memory, em Python, Markdown no disco, mas com captura manual: você tem que pedir pra ele lembrar.
 
 > EN: There’s basic-memory, in Python, Markdown on disk, but with manual capture: you have to ask it to remember.
@@ -155,6 +157,8 @@ Copied, never rounded; all are the author's, stated on 2026-09-02.
   MemPalace claims (an audited, inflated benchmark number; corruption on two simultaneous
   writes) are exactly the concurrency-per-write-path questions the later MemPalace deep dive
   has to decide from source.
+
+  *Corrected 2026-11-10 (fold-in): decided from source at MemPalace `v3.11.0`: every write path the prediction names reaches the same cross-process lock (prediction 1 TRUE, with bounds), and the benchmark clause is partly the vendor's own record (`docs/HISTORY.md`), per the [MemPalace report](../../tools/5-memory/mempalace.md) (Scored pre-read predictions; Benchmark claims). The ledger rows that quoted this essay's characterisations of MemPalace and agentmemory were removed when those reports landed, so the "owed" wording above describes a discharged obligation.*
 - No conclusion, report or README is edited by this note.
 
 ## Limits
