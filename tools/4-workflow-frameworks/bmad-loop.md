@@ -31,7 +31,7 @@ for the BMAD-METHOD implementation phase" (README). Plain Python drives pick-sto
 implement → adversarially review → verify → commit; LLMs run only inside disposable
 sessions the orchestrator spawns via a tmux adapter and watches through **harness hooks**
 (`Stop`/`SessionStart`/`SessionEnd`/`PreCompact` writing structured event files — "no
-pane-scraping"). Young and small (public 2026-06-19, 93 stars, early open beta,
+pane-scraping"). Young and small (public 2026-06-19, 177 stars at 2026-11-04, early open beta,
 pre-1.0 breaking changes disclaimed) but built fast and seriously: 1,417 commits in ~10
 weeks, 167 Python files, a TUI dashboard, pluggable OS/multiplexer seams, and tests.
 

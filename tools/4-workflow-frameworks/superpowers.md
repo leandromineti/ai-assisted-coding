@@ -32,8 +32,10 @@ Jesse Vincent's "complete software development methodology for your coding agent
 14 skills (`find skills -name SKILL.md | wc -l` @ b36e082) covering
 brainstorm → plan → subagent-driven execution → TDD → review → merge, plus one
 SessionStart hook that injects a 3,333-byte bootstrap telling the model it must use
-them. The category's largest tool by an order of magnitude (283.4k stars in eleven
-months; the next largest tracked category-4 repo is 38k) and its purest test of the
+them. The category's largest tool by stars (283.4k in eleven months at the 2026-09-09
+read; 312.3k at 2026-11-04, 2.1× the next largest tracked category-4 repo, spec-kit's
+147.2k — corrected 2026-11-10 (fold-in) from "an order of magnitude" and "38k", neither of
+which reproduces against the 2026-11-04 pairs) and its purest test of the
 **methodology-as-prose** position: where GSD grew a 121k-line TypeScript runtime and
 OpenSpec a validator, superpowers ships **zero workflow engine on purpose** — 127
 lines of bash that check argument validity, and everything else compliance-by-persuasion.
@@ -360,7 +362,7 @@ non-compliant model, or GSD's engine surface area.
 3. **Two orphaned reviewer prompts** mark a quality-gate regression (independent
    spec/plan review → self-review) that the README and release notes never state as
    a removal.
-4. **No CI in a 283k-star repo** — and an inert pre-commit config linting an absent
+4. **No CI in a 283k-star repo** (at the 2026-09-09 read; 312.3k at 2026-11-04) — and an inert pre-commit config linting an absent
    directory. The portability story rests on tests run by hand.
 5. **The README drifts from its own source** at five+ points (two-stage review,
    worktree timing, task granularity, executing-plans checkpoints, root `npm test`)

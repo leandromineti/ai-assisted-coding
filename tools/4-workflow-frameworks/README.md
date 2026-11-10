@@ -107,7 +107,7 @@ engine; machine validation; prose shrunk to thin CLI adapters), not an escape ha
 grown after prose failed. But its gates are **format** gates, never *measured* gates —
 it validates artifacts, not behavior (empirical grounding: absent, as predicted).
 Dogfooded at scale: 91 changes through its own pipeline over 36 living specs. 29
-harness adapters. 63k stars, MIT, 71% single-author.
+harness adapters. MIT, 71% single-author.
 
 ### ECC (everything-claude-code) — **moved to the extensions bucket** (2026-07-30; category 5 then, 6 since the 2026-08-22 split)
 
@@ -145,7 +145,7 @@ hooks. Even there, retro→plan stays roadmap.
 
 *(Candidate 2026-09-09, deep-dived 2026-09-09 at pin `b36e082` = tag v6.3.0 — the category's
 fifth deep-dive; stub facts collected en route, the bmad-method same-day precedent.)* The
-category's largest tool (283.4k stars) and its purest **methodology-as-prose** specimen:
+category's largest tool by stars (283.4k at 2026-09-09; 312.3k at 2026-11-04) and its purest **methodology-as-prose** specimen:
 14 skills, one SessionStart hook injecting a 3,333-byte bootstrap, and deliberately no
 engine — every gate is behavioral (Iron Laws, rationalization tables, pressure-tested
 prose), verification authority rests on an adversarial reviewer subagent, and the only

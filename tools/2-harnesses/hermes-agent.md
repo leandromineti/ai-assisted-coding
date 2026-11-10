@@ -54,9 +54,9 @@ an Electron desktop app, a web dashboard, editors over ACP, and — through a si
 gateway daemon — Telegram, Discord, Slack, WhatsApp, Signal and ~20 other messaging
 platforms. It persists memory and skills across sessions, spawns subagents, runs cron
 jobs unattended, and executes commands through eight terminal-backend implementations
-(local, Docker, SSH, Singularity, Modal ×2, Daytona, Vercel Sandbox). Third-largest tool
-in this study by stars (see frontmatter; passed opencode during 2026 —
-[issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
+(local, Docker, SSH, Singularity, Modal ×2, Daytona, Vercel Sandbox). Fourth-largest tool
+in this study by stars at 2026-11-04 (ranked by the reports'
+`stars:` pairs; passed opencode during 2026 — [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
 
 The category question the issue flagged is settled: **category 2 confirmed**. spec-kit installs
 *into* it (`~/.hermes/skills` in spec-kit's own integration tests — verified in

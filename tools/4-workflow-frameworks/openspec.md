@@ -191,5 +191,5 @@ design is consistent with them.)
 - The archive corpus invites a measurement: sample archived deltas and check whether
   the merged spec tree actually matches what re-applying history would produce —
   a determinism audit the tool's own data makes possible.
-- 63k stars vs spec-kit's 124k: substitution or coexistence? Still open; the bets are
+- 73.9k stars vs spec-kit's 147.2k at 2026-11-04: substitution or coexistence? Still open; the bets are
   compatible (system-of-record vs change-unit could compose).

@@ -33,8 +33,8 @@ into the user's harness via `npx bmad-method install`. 29 real skills plus
 20 deprecated shims (49 `SKILL.md` total; the source predicts fresh installs get 29 —
 `shim-policy.js:96` — but the run probe below observed all 49 installed), ~123k words of
 methodology prose (12,185 lines across 182 markdown files in `src/`), a ~2.6k-line Python
-`script layer` the skills call at runtime, and a 10.4k-line Node installer. 52k stars in
-~16 months. MIT but trademarked (TRADEMARK.md, "BMad Code, LLC") — open method, protected
+`script layer` the skills call at runtime, and a 10.4k-line Node installer. 55.0k stars at
+2026-11-04, about 19 months after its first commit of 2025-04-13. MIT but trademarked (TRADEMARK.md, "BMad Code, LLC") — open method, protected
 brand.
 
 ## The right-sizing verdict — the stub's live question, answered
@@ -250,7 +250,7 @@ constrain it (every script failure ends in "deliver the same outcome by best jud
 That makes BMAD the purest large-scale test of the model-trust position, and it is
 falsifiable: if exp-01's mechanism finding generalizes — self-enforced prose gates
 measure near zero — BMAD's entire gate structure rests on the model's goodwill, at
-whatever scale its 52k stars imply. Second, the anti-translation portability bet: shipping one byte-exact
+whatever scale its 55.0k stars (at 2026-11-04) imply. Second, the anti-translation portability bet: shipping one byte-exact
 artifact to 47 destinations is either the cheapest portability in the category or not
 portability at all, depending entirely on whether the `.agents/skills/` convention
 consolidates — a bet worth a dated re-check in six months.

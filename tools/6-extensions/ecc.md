@@ -23,8 +23,8 @@ harness_features:
 
 Self-described "agent harness operating system": 281 skills, 67 agents, rules packs,
 enforcement hooks, memory persistence, and an instinct-based learning system, installed
-*into* a dozen-plus harnesses. The fastest-adopted tool in the study — 236k stars in
-~6.5 months — and, as of this read, a **solo-author product**: 1,517 of 2,336 commits
+*into* a dozen-plus harnesses. The second-fastest-adopted tool in the study by stars per day since `first_commit` (1,021 at
+2026-11-04, behind dsh's 1,853; 236k stars in ~6.5 months when first read) — and, as of this read, a **solo-author product**: 1,517 of 2,336 commits
 (65%) from the maintainer, plus dependabot and `copilot-swe-agent[bot]` (agents
 maintaining the agent-config repo). A commercial arm exists: ECC Pro, a GitHub App,
 hosted badges at `api.ecc.tools` — the only tool in the set with a pricing page.

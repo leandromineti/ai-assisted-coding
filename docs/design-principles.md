@@ -510,8 +510,8 @@ CLI adapters (`allowed-tools: Bash(openspec:*)`) —
 eventually needs code, not capitalization — and the lean pole shows starting there is
 viable.
 *Confronted 2026-09-09 (superpowers deep-dive + live probe): the mechanism confirmed,
-the "day one" advice acquires its strongest dissent.* The category's largest tool
-(283.4k stars) refuses the escape hatch **by design** — no engine, enforcement by
+the "day one" advice acquires its strongest dissent.* By stars, the category's largest tool
+(283.4k at 2026-09-09; 312.3k at 2026-11-04) refuses the escape hatch **by design** — no engine, enforcement by
 engineered persuasion (rationalization tables, pressure-tested prose, an adversarial
 reviewer subagent) — yet the pattern this principle predicts still surfaced at minimum
 viable size (one awk format gate; a plan-scoped ledger workspace, built after an
@@ -549,7 +549,7 @@ compliance (README conclusion 12). F2's "spend tokens measuring" survives as a
 statement about *affordances and weak tiers*, not as universal framework design
 advice.
 *Noted 2026-09-09 (superpowers deep-dive): a structural datapoint, no margin test.*
-The category's largest framework omits the measuring function entirely — F3/gap
+The category's largest framework by stars (312.3k at 2026-11-04) omits the measuring function entirely — F3/gap
 research is a graded absence (zero research dispatch across all 51 skill files;
 uncertainty routes to the human partner or a stronger model, never to investigation).
 No experiment ran, so this confronts F2 with silence on the margin — but it makes the

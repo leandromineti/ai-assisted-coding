@@ -138,8 +138,10 @@ an assertion, and a finding that changed no note is an anecdote (methodology rul
    hook files at both pins. →
    [release assessment](../tools/4-workflow-frameworks/gsd-core.md#release-assessment--v1110-2026-08-21-pin-fee72d55--182f60b4)
    **Fourth shape added (2026-09-09, superpowers deep-dive): the framework that
-   refuses the escape hatch.** The category's largest tool (283.4k stars, an order of
-   magnitude above the rest) ships `deterministic_engine: false` **by design** — no
+   refuses the escape hatch.** The category's largest tool by stars (283.4k at
+   2026-09-09; 312.3k at 2026-11-04, 2.1× the next, spec-kit's 147.2k — corrected
+   2026-11-10 (fold-in) from "an order of magnitude above the rest", which does not
+   reproduce against the 2026-11-04 pairs) ships `deterministic_engine: false` **by design** — no
    orchestrator, no state machine, no scheduler; the porting guide states the position
    plainly ("The bootstrap is the entire integration. Without it, the skill files are
    inert") and the runtime contract with the model is one 3,333-byte SessionStart

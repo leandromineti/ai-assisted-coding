@@ -23,8 +23,9 @@ harness_targets: "integrations/openclaw/ and a Strands integration in-repo (file
 
 "The open-source memory layer for AI agents" — persistent memory behind a
 five-lines-of-code SDK, Python packages (`packages/client`, `packages/common`) plus
-a REST client and integrations (OpenClaw, AWS Strands). Smallest of the memory-type
-seeds (3.2k stars, first commit 2025-08-15). (README + file listing at the pin;
+a REST client and integrations (OpenClaw, AWS Strands). Smallest by stars of the memory-type
+seeds (3.1k stars at 2026-11-04, the lowest of the ten reports' `stars:` pairs; first commit
+2025-08-15). (README + file listing at the pin;
 source unread.)
 
 ## Notes for the type comparison

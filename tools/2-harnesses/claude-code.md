@@ -53,8 +53,8 @@ Anthropic's agentic coding harness: one agent core surfaced as a terminal CLI, a
 app, claude.ai/code on the web, and IDE extensions, with local execution plus cloud
 sessions as the async-remote side (a local session can list and message its own cloud
 sessions — OBSERVED in the product's session-management surface). Distributed via npm as
-a bundled TypeScript/Node application; the 141k-star (148k at 2026-09-24) GitHub repo is an issue tracker and
-distribution point, not source.
+a bundled TypeScript/Node application; the GitHub repo is an issue tracker and distribution point, not
+source.
 
 ## The distinguishing bet
 
@@ -159,8 +159,9 @@ every token. Cloud sessions bill separately from local API use.
    trap being the category's founding scar. First answer, and it's ironic: the harness with
    native worktree operations is the *closed* one — observed from product surface, not
    source. The trap and the first-class support belong to the same ecosystem.
-3. **The distribution repo out-stars every tracked tool.** 141,660 stars on a repo that
-   contains no product source — more than ECC (236k excepted), more than any open
+3. **The distribution repo drew more stars than most tracked tools.** 141,660 stars at the
+   2026-08-17 read (154,528 at 2026-11-04, sixth of the 39 tracked tools carrying a `stars:`
+   pair) on a repo that contains no product source — more than ECC (236k excepted), more than any open
    harness except hermes and opencode's class. Stars measure gravity, not code.
 4. **Self-observation works better than expected as an instrument.** Config surfaces,
    tool inventory, mode behavior, and conventions were all confirmable from a live

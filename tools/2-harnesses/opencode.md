@@ -48,8 +48,8 @@ harness_features:
 # opencode
 
 An open-source agent harness that runs in the terminal, as a desktop app, and as an IDE
-extension. Among the most-starred agents on GitHub (see frontmatter; hermes-agent passed
-it during 2026 — [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
+extension. Fifth-largest tool in this study by stars at 2026-11-04 (ranked by the reports'
+`stars:` pairs; hermes-agent passed it during 2026 — [issue #1](https://github.com/leandromineti/ai-assisted-coding/issues/1)).
 Provider-agnostic by design: 75+ LLM
 providers through Models.dev, including local models, plus GitHub Copilot and ChatGPT
 Plus/Pro accounts. Stores no code or context server-side (TESTIMONY, enterprise.mdx:11 — and the same docs set says sharing "Syncs your conversation history to our servers", share.mdx:19; the posture holds with sharing off).

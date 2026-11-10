@@ -25,7 +25,7 @@ they say" — i.e. capturing actions/tool use, not only conversation. Rust core
 (`core/Cargo.toml`) with Python and Node bindings; "LLM, datastore and framework
 agnostic," offered both as bring-your-own-DB (`memori-byodb` docs tree) and as a
 cloud product (`memori-cloud`; quickstart wants a `MEMORI_API_KEY`). In-repo
-`benchmarks/` tree. 16.1k stars in ~13 months. (README + file listing at the pin;
+`benchmarks/` tree. 17.4k stars at 2026-11-04, about 15 months after its first commit. (README + file listing at the pin;
 source unread, apart from the targeted census read dated below.)
 
 *Corrected 2026-11-10 (fold-in): "source unread" needs a qualifier. The five census keys

@@ -24,8 +24,10 @@ harness_targets: "use-cases/claude-code-plugin/ exists in-repo (file listing at 
 "Ever OS" — a memory OS for agents from EverMind: durable memory writes plus
 retrieval (keyword search first, per the quickstart: "one OpenRouter API key is
 enough to start EverOS, write durable memories, and retrieve them"). Youngest
-tool in the memory-type set (first commit 2026-06-05) and the fastest to stars per
-month after ai-memory (12.1k in ~10 weeks). Ships a Claude Code plugin among its
+tool in the memory-type set (first commit 2026-06-05) and, at the 2026-08-18 stub read, the
+fastest to stars per month after ai-memory (12.1k in ~10 weeks); by stars per day since
+first commit at 2026-11-04 it ranks fourth of the ten memory reports (90.8, behind mempalace,
+openviking and agentmemory). Ships a Claude Code plugin among its
 use cases. (README + file listing at the pin; source unread.)
 
 ## Notes for the type comparison
