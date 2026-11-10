@@ -337,3 +337,7 @@ The census sections of the four probed reports: [mem0](mem0.md), [memos](memos.m
     `learning_loop`'s `background`** — each with its trigger in the ADR.
   - **A delivery-shape regrade of `agent_coordination`.** Trigger: delivery semantics
     traced in source for two tools.
+- **Next re-read triggers, parked 2026-11-10:** the four 2026-11 reads' next triggers and
+  their two-sided falsifiers (ai-memory, OpenViking, MemPalace, agentmemory) are in
+  [issue #57](https://github.com/leandromineti/ai-assisted-coding/issues/57), and the
+  non-admission triggers above are checked at each re-read.
